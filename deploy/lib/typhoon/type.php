@@ -11,7 +11,7 @@ abstract class Type
   {
     if ($this->check($value)) return $value;
     
-    throw new Type\Exception\UnexpectedType;
+    throw new Type\Exception\UnexpectedType($this);
   }
   
   /**

@@ -39,6 +39,11 @@ class TypeTest extends \PHPUnit_Framework_TestCase
       ->with($value)
       ->will($this->returnValue(false))
     ;
+    $this->_type
+      ->expects($this->once())
+      ->method('string')
+      ->will($this->returnValue(''))
+    ;
 
     $this->setExpectedException('\Typhoon\Type\Exception\UnexpectedType');
     $this->_type->assert($value);
