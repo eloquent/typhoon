@@ -4,21 +4,12 @@ namespace Typhoon\Type\Exception;
 
 class UnexpectedTypeTest extends \PHPUnit_Framework_TestCase
 {
-  public function setUp()
-  {
-    $this->_exception = new UnexpectedType;
-  }
-  
   /**
-   * @covers \Typhoon\Type\Exception\UnexpectedType::generateMessage
+   * @covers \Typhoon\Type\Exception\UnexpectedType::__construct
    */
-  public function testGenerateMessage()
+  public function testConstructor()
   {
-    $this->assertEquals('Unexpected type.', $this->_exception->getMessage());
+    $exception = new UnexpectedType;
+    $this->assertEquals('Unexpected type.', $exception->getMessage());
   }
-  
-  /**
-   * @var UnexpectedType
-   */
-  protected $_exception;
 }

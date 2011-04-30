@@ -4,11 +4,10 @@ namespace Typhoon\Type\Exception;
 
 final class UnexpectedType extends Exception
 {
-  /**
-   * @return string
-   */
-  protected function generateMessage()
+  public function __construct(\Exception $previous = null)
   {
-    return 'Unexpected type.';
+    $this->message = 'Unexpected type.';
+    
+    parent::__construct($previous);
   }
 }
