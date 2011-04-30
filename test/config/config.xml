@@ -11,12 +11,12 @@
   <logging>
     <log
       type="coverage-clover"
-      target="../coverage/coverage.xml"
+      target="../report/coverage.xml"
     />
     
     <log
       type="coverage-html"
-      target="../coverage/report"
+      target="../report/coverage"
       charset="UTF-8"
       yui="true"
       highlight="true"
