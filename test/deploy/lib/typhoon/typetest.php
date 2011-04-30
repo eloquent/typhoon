@@ -16,10 +16,12 @@ class TypeTest extends \PHPUnit_Framework_TestCase
   {
     $value = 'foo';
     
-    $this->_type->expects($this->once())
-       ->method('check')
-       ->with($value)
-       ->will($this->returnValue(true));
+    $this->_type
+      ->expects($this->once())
+      ->method('check')
+      ->with($value)
+      ->will($this->returnValue(true))
+    ;
 
     $this->assertEquals($value, $this->_type->assert($value));
   }
@@ -31,10 +33,12 @@ class TypeTest extends \PHPUnit_Framework_TestCase
   {
     $value = 'foo';
     
-    $this->_type->expects($this->once())
-       ->method('check')
-       ->with($value)
-       ->will($this->returnValue(false));
+    $this->_type
+      ->expects($this->once())
+      ->method('check')
+      ->with($value)
+      ->will($this->returnValue(false))
+    ;
 
     $this->setExpectedException('\Typhoon\Type\Exception\UnexpectedType');
     $this->_type->assert($value);
@@ -45,9 +49,11 @@ class TypeTest extends \PHPUnit_Framework_TestCase
    */
   public function testToString()
   {
-    $this->_type->expects($this->once())
-       ->method('string')
-       ->will($this->returnValue('foo'));
+    $this->_type
+      ->expects($this->once())
+      ->method('string')
+      ->will($this->returnValue('foo'))
+    ;
 
     $this->assertEquals('foo', (string)$this->_type);
   }

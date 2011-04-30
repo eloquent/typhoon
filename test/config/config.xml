@@ -2,7 +2,7 @@
 <phpunit
   bootstrap="../lib/bootstrap.php"
   strict="true"
-  mapTestClassNameToCoveredClassName="true"
+  forceCoversAnnotation="true"
 >
   <php>
     <includePath>.;../lib;../../deploy/lib</includePath>
