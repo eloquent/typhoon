@@ -16,4 +16,11 @@ abstract class Type
    * @return string
    */
   abstract public function string();
+  
+  /**
+   * @param mixed value
+   * 
+   * @return boolean
+   */
+  abstract public function check($value);
 }

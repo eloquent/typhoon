@@ -6,25 +6,23 @@ class TypeTest extends \PHPUnit_Framework_TestCase
 {
   protected function setUp()
   {
-    $this->object = new TestType;
+    $this->_type = $this->getMockForAbstractClass('Typhoon\Type');
   }
   
-  public function testString()
+  /**
+   * @covers Typhoon\Type::__toString
+   */
+  public function testToString()
   {
-    $this->assertEquals('test', $this->object->string());
-    $this->assertEquals('test', (string)$this->object);
+    $this->_type->expects($this->once())
+       ->method('string')
+       ->will($this->returnValue('foo'));
+
+    $this->assertEquals('foo', (string)$this->_type);
   }
 
   /**
    * @var TestType
    */
-  protected $object;
-}
-
-class TestType extends Type
-{
-  public function string()
-  {
-    return 'test';
-  }
+  protected $_type;
 }

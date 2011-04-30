@@ -11,4 +11,14 @@ class String extends \Typhoon\Type
   {
     return 'string';
   }
+  
+  /**
+   * @param mixed value
+   * 
+   * @return boolean
+   */
+  public function check($value)
+  {
+    return is_string($value);
+  }
 }

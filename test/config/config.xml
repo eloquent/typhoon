@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit
-  bootstrap="bootstrap.php"
+  bootstrap="../lib/bootstrap.php"
   strict="true"
   mapTestClassNameToCoveredClassName="true"
 >
   <logging>
     <log
       type="coverage-clover"
-      target="coverage/coverage.xml"
+      target="../coverage/coverage.xml"
     />
     
     <log
       type="coverage-html"
-      target="coverage/report"
+      target="../coverage/report"
       charset="UTF-8"
       yui="true"
       highlight="true"
@@ -21,7 +21,7 @@
   
   <filter>
     <whitelist>
-      <directory>../deploy</directory>
+      <directory>../../deploy</directory>
     </whitelist>
   </filter>
 </phpunit>
