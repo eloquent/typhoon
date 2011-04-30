@@ -25,6 +25,9 @@ class UnexpectedTypeTest extends \PHPUnit_Framework_TestCase
     $this->assertEquals("Unexpected type - expected '".$this->_expectedTypeName."'.", $this->_exception->getMessage());
   }
 
+  /**
+   * @covers \Typhoon\Type\Exception\UnexpectedType::expectedType
+   */
   public function testExpectedType()
   {
     $this->assertSame($this->_expectedType, $this->_exception->expectedType());
