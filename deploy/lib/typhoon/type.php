@@ -5,6 +5,16 @@ namespace Typhoon;
 abstract class Type
 {
   /**
+   * @param mixed $value
+   */
+  public function assert($value)
+  {
+    if ($this->check($value)) return $value;
+    
+    throw new Type\Exception\UnexpectedType;
+  }
+  
+  /**
    * @return string
    */
   public function __toString()

@@ -4,6 +4,10 @@
   strict="true"
   mapTestClassNameToCoveredClassName="true"
 >
+  <php>
+    <includePath>.;../lib;../../deploy/lib</includePath>
+  </php>
+
   <logging>
     <log
       type="coverage-clover"
