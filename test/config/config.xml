@@ -27,6 +27,32 @@
       yui="true"
       highlight="true"
     />
+
+    <log
+      type="json"
+      target="../report/logfile.json"
+    />
+
+    <log
+      type="tap"
+      target="../report/logfile.tap"
+    />
+
+    <log
+      type="junit"
+      target="../report/logfile.xml"
+      logIncompleteSkipped="false"
+    />
+
+    <log
+      type="testdox-html"
+      target="../report/testdox.html"
+    />
+
+    <log
+      type="testdox-text"
+      target="../report/testdox.txt"
+    />
   </logging>
   
   <filter>
