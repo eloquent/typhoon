@@ -1,0 +1,17 @@
+#!/usr/bin/env php
+<?php
+
+define('TYPHOON_TEST_ROOT_DIR', dirname(__DIR__));
+define('TYPHOON_TEST_CONFIG_DIR', TYPHOON_TEST_ROOT_DIR.DIRECTORY_SEPARATOR.'config');
+define('TYPHOON_TEST_SUITE_DIR', TYPHOON_TEST_ROOT_DIR.DIRECTORY_SEPARATOR.'suite');
+define('TYPHOON_TEST_CONFIG_PATH', TYPHOON_TEST_CONFIG_DIR.DIRECTORY_SEPARATOR.'config.xml');
+
+$command = 'phpunit --configuration '.escapeshellarg(TYPHOON_TEST_CONFIG_PATH);
+if (isset($_SERVER['argv'][1]))
+{
+  $command .= ' '.escapeshellarg(realpath($_SERVER['argv'][1]));
+}
+
+chdir(TYPHOON_TEST_SUITE_DIR);
+passthru($command, $code);
+exit($code);
