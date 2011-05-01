@@ -11,6 +11,10 @@ class ParameterTest extends \PHPUnit_Framework_TestCase
     $this->_mixed_type = new Type\Mixed;
   }
 
+  /**
+   * @covers \Typhoon\Parameter::setType
+   * @covers \Typhoon\Parameter::type
+   */
   public function testType()
   {
     $this->assertEquals($this->_mixed_type, $this->_parameter->type());

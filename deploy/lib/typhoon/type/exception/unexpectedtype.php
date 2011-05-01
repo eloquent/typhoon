@@ -7,9 +7,8 @@ final class UnexpectedType extends Exception
   public function __construct(\Typhoon\Type $expectedType, \Exception $previous = null)
   {
     $this->expectedType = $expectedType;
-    $this->message = "Unexpected type - expected '".$this->expectedType."'.";
     
-    parent::__construct($previous);
+    parent::__construct("Unexpected type - expected '".$this->expectedType."'.", $previous);
   }
 
   /**

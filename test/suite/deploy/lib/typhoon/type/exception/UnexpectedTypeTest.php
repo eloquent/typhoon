@@ -9,12 +9,13 @@ class UnexpectedTypeTest extends \PHPUnit_Framework_TestCase
     $this->_expectedTypeName = 'foo';
     $this->_expectedType = $this->getMockForAbstractClass('\Typhoon\Type');
     $this->_expectedType
-      ->expects($this->once())
+      ->expects($this->atLeastOnce())
       ->method('string')
       ->will($this->returnValue($this->_expectedTypeName))
     ;
 
     $this->_exception = new UnexpectedType($this->_expectedType);
+    $this->_previous = new \Exception;
   }
 
   /**
@@ -23,6 +24,10 @@ class UnexpectedTypeTest extends \PHPUnit_Framework_TestCase
   public function testConstructor()
   {
     $this->assertEquals("Unexpected type - expected '".$this->_expectedTypeName."'.", $this->_exception->getMessage());
+
+    $this->_exception = new UnexpectedType($this->_expectedType, $this->_previous);
+
+    $this->assertSame($this->_previous, $this->_exception->getPrevious());
   }
 
   /**
@@ -47,4 +52,9 @@ class UnexpectedTypeTest extends \PHPUnit_Framework_TestCase
    * @var string
    */
   protected $_expectedTypeName;
+
+  /**
+   * @var \Exception
+   */
+  protected $_previous;
 }

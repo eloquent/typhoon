@@ -4,21 +4,8 @@ namespace Typhoon\Exception;
 
 abstract class Exception extends \Exception
 {
-  public function __construct(\Exception $previous = null)
+  public function __construct($message, \Exception $previous = null)
   {
-    $this->previous = $previous;
+    parent::__construct($message, 0, $previous);
   }
-
-  /**
-   * @return \Exception
-   */
-  public function previous()
-  {
-    return $this->previous;
-  }
-
-  /**
-   * @var \Exception
-   */
-  protected $previous;
 }

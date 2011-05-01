@@ -31,7 +31,7 @@ class MixedTest extends \Typhoon\Test\TypeTestCase
   
   public function invalidValues()
   {
-    return array();
+    return array(array(null));
   }
   
   // methods below must be manually overridden to implement @covers
@@ -50,7 +50,9 @@ class MixedTest extends \Typhoon\Test\TypeTestCase
   public function testCheckPass($value) { parent::testCheckPass($value); }
   
   /**
+   * @covers \Typhoon\Type\Mixed::check
+   * @dataProvider invalidValues
    * @group typhoon_types
    */
-  public function testCheckFailure() {} // nothing fails
+  public function testCheckFailure($value) { $this->assertTrue(true); } // nothing fails
 }
