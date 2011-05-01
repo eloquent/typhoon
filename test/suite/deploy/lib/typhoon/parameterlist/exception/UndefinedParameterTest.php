@@ -7,11 +7,6 @@ use Typhoon\Test\ExceptionTestCase;
 
 class UndefinedParameterTest extends ExceptionTestCase
 {
-  protected function setUp()
-  {
-    $this->_index = new Integer(0);
-  }
-
   /**
    * @return string
    */
@@ -26,6 +21,11 @@ class UndefinedParameterTest extends ExceptionTestCase
   protected function defaultArguments()
   {
     return array($this->_index);
+  }
+
+  protected function setUp()
+  {
+    $this->_index = new Integer(0);
   }
 
   /**

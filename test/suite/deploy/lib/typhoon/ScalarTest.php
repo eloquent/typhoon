@@ -16,39 +16,34 @@ class ScalarTest extends PHPUnit_Framework_TestCase
   {
     $value = 'foo';
 
-    $this->_type = $this->getMock(
+    $type = $this->getMock(
       __NAMESPACE__.'\Type',
       array('string', 'check', 'assert'),
       array(),
       'TypeMock'
      );
-    $this->_type
+    $type
       ->expects($this->once())
       ->method('assert')
       ->with($this->equalTo($value))
       ->will($this->returnCallback(function($value) { return $value; }))
     ;
 
-    $this->_scalar = $this->getMockForAbstractClass(
+    $scalar = $this->getMockForAbstractClass(
       __NAMESPACE__.'\Scalar',
       array(),
       'ScalarMock',
       false
      );
-    $this->_scalar
+    $scalar
       ->expects($this->once())
       ->method('type')
-      ->will($this->returnValue($this->_type))
+      ->will($this->returnValue($type))
     ;
 
-    $this->_scalar->__construct($value);
+    $scalar->__construct($value);
 
-    $this->assertEquals($value, $this->_scalar->value());
-    $this->assertEquals((string)$value, (string)$this->_scalar);
+    $this->assertEquals($value, $scalar->value());
+    $this->assertEquals((string)$value, (string)$scalar);
   }
-
-  /**
-   * @var Scalar
-   */
-  protected $_scalar;
 }

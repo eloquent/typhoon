@@ -7,11 +7,6 @@ use Typhoon\Test\ExceptionTestCase;
 
 class NotImplementedTest extends ExceptionTestCase
 {
-  protected function setUp()
-  {
-    $this->_feature = new String('foo');
-  }
-
   /**
    * @return string
    */
@@ -26,6 +21,11 @@ class NotImplementedTest extends ExceptionTestCase
   protected function defaultArguments()
   {
     return array($this->_feature);
+  }
+
+  protected function setUp()
+  {
+    $this->_feature = new String('foo');
   }
 
   /**

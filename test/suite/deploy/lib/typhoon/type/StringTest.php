@@ -8,22 +8,6 @@ use Typhoon\Test\TypeTestCase;
 class StringTest extends TypeTestCase
 {
   /**
-   * @return string
-   */
-  protected function typeClass()
-  {
-    return __NAMESPACE__.'\String';
-  }
-
-  /**
-   * @return string
-   */
-  protected function expectedString()
-  {
-    return 'string';
-  }
-
-  /**
    * @return array
    */
   public function typeValues()
@@ -39,6 +23,22 @@ class StringTest extends TypeTestCase
       array(false, function(){}),              // #7: closure
       array(false, $this->resourceFixture()),  // #8: resource
     );
+  }
+  
+  /**
+   * @return string
+   */
+  protected function typeClass()
+  {
+    return __NAMESPACE__.'\String';
+  }
+
+  /**
+   * @return string
+   */
+  protected function expectedString()
+  {
+    return 'string';
   }
 
   // methods below must be manually overridden to implement @covers

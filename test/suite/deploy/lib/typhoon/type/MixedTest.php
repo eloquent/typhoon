@@ -8,22 +8,6 @@ use Typhoon\Test\TypeTestCase;
 class MixedTest extends TypeTestCase
 {
   /**
-   * @return string
-   */
-  protected function typeClass()
-  {
-    return __NAMESPACE__.'\Mixed';
-  }
-
-  /**
-   * @return string
-   */
-  protected function expectedString()
-  {
-    return 'mixed';
-  }
-
-  /**
    * @return array
    */
   public function typeValues()
@@ -39,6 +23,22 @@ class MixedTest extends TypeTestCase
       array(true, function(){}),              // #7: closure
       array(true, $this->resourceFixture()),  // #8: resource
     );
+  }
+  
+  /**
+   * @return string
+   */
+  protected function typeClass()
+  {
+    return __NAMESPACE__.'\Mixed';
+  }
+
+  /**
+   * @return string
+   */
+  protected function expectedString()
+  {
+    return 'mixed';
   }
 
   // methods below must be manually overridden to implement @covers

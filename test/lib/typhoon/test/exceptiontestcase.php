@@ -8,17 +8,6 @@ use Typhoon\Exception\Exception;
 
 abstract class ExceptionTestCase extends PHPUnit_Framework_TestCase
 {
-  protected function setUp()
-  {
-    $this->_previous = new \Exception();
-  }
-
-  public function testConstructor()
-  {
-    $this->assertNull($this->exceptionFixture()->getPrevious());
-    $this->assertSame($this->_previous, $this->exceptionFixture(null, $this->_previous)->getPrevious());
-  }
-
   /**
    * @return Exception
    */
@@ -35,6 +24,17 @@ abstract class ExceptionTestCase extends PHPUnit_Framework_TestCase
     }
 
     return $reflector->newInstanceArgs($arguments);
+  }
+  
+  protected function setUp()
+  {
+    $this->_previous = new \Exception();
+  }
+
+  public function testConstructor()
+  {
+    $this->assertNull($this->exceptionFixture()->getPrevious());
+    $this->assertSame($this->_previous, $this->exceptionFixture(null, $this->_previous)->getPrevious());
   }
 
   /**

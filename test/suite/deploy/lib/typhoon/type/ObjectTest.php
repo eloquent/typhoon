@@ -8,22 +8,6 @@ use Typhoon\Test\TypeTestCase;
 class ObjectTest extends TypeTestCase
 {
   /**
-   * @return string
-   */
-  protected function typeClass()
-  {
-    return __NAMESPACE__.'\Object';
-  }
-
-  /**
-   * @return string
-   */
-  protected function expectedString()
-  {
-    return 'object';
-  }
-
-  /**
    * @return array
    */
   public function typeValues()
@@ -54,6 +38,22 @@ class ObjectTest extends TypeTestCase
       array(false, function(){},             array($class)),  // #17: closure
       array(false, $this->resourceFixture(), array($class)),  // #18: resource
     );
+  }
+
+  /**
+   * @return string
+   */
+  protected function typeClass()
+  {
+    return __NAMESPACE__.'\Object';
+  }
+
+  /**
+   * @return string
+   */
+  protected function expectedString()
+  {
+    return 'object';
   }
 
   /**

@@ -6,11 +6,6 @@ use Typhoon\Test\ExceptionTestCase;
 
 class ExceptionTest extends ExceptionTestCase
 {
-  protected function setUp()
-  {
-    $this->_message = 'foo';
-  }
-
   /**
    * @return string
    */
@@ -25,6 +20,11 @@ class ExceptionTest extends ExceptionTestCase
   protected function defaultArguments()
   {
     return array($this->_message);
+  }
+
+  protected function setUp()
+  {
+    $this->_message = 'foo';
   }
   
   /**

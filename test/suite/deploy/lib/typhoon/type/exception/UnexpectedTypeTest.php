@@ -7,11 +7,6 @@ use Typhoon\Test\ExceptionTestCase;
 
 class UnexpectedTypeTest extends ExceptionTestCase
 {
-  protected function setUp()
-  {
-    $this->_expectedTypeName = 'foo';
-  }
-
   /**
    * @return string
    */
@@ -41,6 +36,11 @@ class UnexpectedTypeTest extends ExceptionTestCase
     ;
 
     return $type;
+  }
+
+  protected function setUp()
+  {
+    $this->_expectedTypeName = 'foo';
   }
 
   /**

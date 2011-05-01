@@ -8,22 +8,6 @@ use Typhoon\Test\TypeTestCase;
 class IntegerTest extends TypeTestCase
 {
   /**
-   * @return string
-   */
-  protected function typeClass()
-  {
-    return __NAMESPACE__.'\Integer';
-  }
-
-  /**
-   * @return string
-   */
-  protected function expectedString()
-  {
-    return 'integer';
-  }
-
-  /**
    * @return array
    */
   public function typeValues()
@@ -42,6 +26,22 @@ class IntegerTest extends TypeTestCase
       array(false, 1.0),                       // #10: whole number float
       array(true, -1),                         // #11: negative integer
     );
+  }
+
+  /**
+   * @return string
+   */
+  protected function typeClass()
+  {
+    return __NAMESPACE__.'\Integer';
+  }
+
+  /**
+   * @return string
+   */
+  protected function expectedString()
+  {
+    return 'integer';
   }
 
   // methods below must be manually overridden to implement @covers
