@@ -29,7 +29,7 @@ abstract class TypeTestCase extends \PHPUnit_Framework_TestCase
   }
 
   /**
-   * @return Object
+   * @return \Typhoon\Type
    */
   protected function typeFixture(array $arguments = null)
   {
