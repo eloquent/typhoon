@@ -4,7 +4,7 @@ namespace Typhoon\Type\Exception;
 
 class UnexpectedTypeTest extends \PHPUnit_Framework_TestCase
 {
-  public function setUp()
+  protected function setUp()
   {
     $this->_expectedTypeName = 'foo';
     $this->_expectedType = $this->getMockForAbstractClass('\Typhoon\Type');
