@@ -2,13 +2,27 @@
 
 namespace Typhoon\Exception;
 
-class NotImplementedTest extends \PHPUnit_Framework_TestCase
+class NotImplementedTest extends \Typhoon\Test\ExceptionTestCase
 {
   protected function setUp()
   {
     $this->_feature = 'foo';
-    $this->_exception = new NotImplemented($this->_feature);
-    $this->_previous = new \Exception;
+  }
+
+  /**
+   * @return string
+   */
+  protected function exceptionClass()
+  {
+    return __NAMESPACE__.'\NotImplemented';
+  }
+
+  /**
+   * @return array
+   */
+  protected function defaultArguments()
+  {
+    return array($this->_feature);
   }
 
   /**
@@ -16,25 +30,13 @@ class NotImplementedTest extends \PHPUnit_Framework_TestCase
    */
   public function testConstructor()
   {
-    $this->assertEquals($this->_feature.' is not implemented.', $this->_exception->getMessage());
+    $this->assertEquals($this->_feature.' is not implemented.', $this->exceptionFixture()->getMessage());
 
-    $this->_exception = new NotImplemented($this->_feature, $this->_previous);
-
-    $this->assertSame($this->_previous, $this->_exception->getPrevious());
+    parent::testConstructor();
   }
-
-  /**
-   * @var NotImplemented
-   */
-  protected $_exception;
 
   /**
    * @var string
    */
   protected $_feature;
-
-  /**
-   * @var \Exception
-   */
-  protected $_previous;
 }

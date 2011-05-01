@@ -2,36 +2,41 @@
 
 namespace Typhoon\Exception;
 
-class ExceptionTest extends \PHPUnit_Framework_TestCase
+class ExceptionTest extends \Typhoon\Test\ExceptionTestCase
 {
-  public function setUp()
+  protected function setUp()
   {
     $this->_message = 'foo';
-    $this->_previous = new \Exception();
   }
+
+  /**
+   * @return string
+   */
+  protected function exceptionClass()
+  {
+    return __NAMESPACE__.'\Exception';
+  }
+
+  /**
+   * @return array
+   */
+  protected function defaultArguments()
+  {
+    return array($this->_message);
+  }
+  
   /**
    * @covers \Typhoon\Exception\Exception::__construct
    */
   public function testConstructor()
   {
-    $exception = $this->getMockForAbstractClass('\Typhoon\Exception\Exception', array($this->_message));
+    $this->assertEquals($this->_message, $this->exceptionFixture()->getMessage());
 
-    $this->assertEquals($this->_message, $exception->getMessage());
-    $this->assertNull($exception->getPrevious());
-
-    $exception = $this->getMockForAbstractClass('\Typhoon\Exception\Exception', array($this->_message, $this->_previous));
-
-    $this->assertEquals($this->_message, $exception->getMessage());
-    $this->assertSame($this->_previous, $exception->getPrevious());
+    parent::testConstructor();
   }
 
   /**
    * @var string
    */
   protected $_message;
-
-  /**
-   * @var \Exception
-   */
-  protected $_previous;
 }

@@ -2,20 +2,42 @@
 
 namespace Typhoon\Type\Exception;
 
-class UnexpectedTypeTest extends \PHPUnit_Framework_TestCase
+class UnexpectedTypeTest extends \Typhoon\Test\ExceptionTestCase
 {
   protected function setUp()
   {
     $this->_expectedTypeName = 'foo';
-    $this->_expectedType = $this->getMockForAbstractClass('\Typhoon\Type');
-    $this->_expectedType
-      ->expects($this->atLeastOnce())
+  }
+
+  /**
+   * @return string
+   */
+  protected function exceptionClass()
+  {
+    return __NAMESPACE__.'\UnexpectedType';
+  }
+
+  /**
+   * @return array
+   */
+  protected function defaultArguments()
+  {
+    return array($this->typeFixture());
+  }
+
+  /**
+   * @return \Typhoon\Type
+   */
+  protected function typeFixture()
+  {
+    $type = $this->getMockForAbstractClass('\Typhoon\Type');
+    $type
+      ->expects($this->once())
       ->method('string')
       ->will($this->returnValue($this->_expectedTypeName))
     ;
 
-    $this->_exception = new UnexpectedType($this->_expectedType);
-    $this->_previous = new \Exception;
+    return $type;
   }
 
   /**
@@ -23,11 +45,9 @@ class UnexpectedTypeTest extends \PHPUnit_Framework_TestCase
    */
   public function testConstructor()
   {
-    $this->assertEquals("Unexpected type - expected '".$this->_expectedTypeName."'.", $this->_exception->getMessage());
+    $this->assertEquals("Unexpected type - expected '".$this->_expectedTypeName."'.", $this->exceptionFixture()->getMessage());
 
-    $this->_exception = new UnexpectedType($this->_expectedType, $this->_previous);
-
-    $this->assertSame($this->_previous, $this->_exception->getPrevious());
+    parent::testConstructor();
   }
 
   /**
@@ -35,26 +55,13 @@ class UnexpectedTypeTest extends \PHPUnit_Framework_TestCase
    */
   public function testExpectedType()
   {
-    $this->assertSame($this->_expectedType, $this->_exception->expectedType());
+    $expectedType = $this->typeFixture();
+
+    $this->assertSame($expectedType, $this->exceptionFixture(array($expectedType))->expectedType());
   }
-
-  /**
-   * @var UnexpectedType
-   */
-  protected $_exception;
-
-  /**
-   * @var \Typhoon\Type
-   */
-  protected $_expectedType;
 
   /**
    * @var string
    */
   protected $_expectedTypeName;
-
-  /**
-   * @var \Exception
-   */
-  protected $_previous;
 }
