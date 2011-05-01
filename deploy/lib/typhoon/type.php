@@ -2,6 +2,8 @@
 
 namespace Typhoon;
 
+use Typhoon\Type\Exception\UnexpectedType;
+
 abstract class Type
 {
   /**
@@ -11,7 +13,7 @@ abstract class Type
   {
     if ($this->check($value)) return $value;
     
-    throw new Type\Exception\UnexpectedType($this);
+    throw new UnexpectedType($this);
   }
   
   /**

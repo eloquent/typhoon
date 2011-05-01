@@ -2,7 +2,9 @@
 
 namespace Typhoon;
 
-class ScalarTest extends \PHPUnit_Framework_TestCase
+use PHPUnit_Framework_TestCase;
+
+class ScalarTest extends PHPUnit_Framework_TestCase
 {
   /**
    * @covers \Typhoon\Scalar::__construct
@@ -46,7 +48,7 @@ class ScalarTest extends \PHPUnit_Framework_TestCase
   }
 
   /**
-   * @var \Typhoon\Scalar
+   * @var Scalar
    */
   protected $_scalar;
 }

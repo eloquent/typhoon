@@ -2,7 +2,11 @@
 
 namespace Typhoon\Test;
 
-abstract class ExceptionTestCase extends \PHPUnit_Framework_TestCase
+use PHPUnit_Framework_TestCase;
+use ReflectionClass;
+use Typhoon\Exception\Exception;
+
+abstract class ExceptionTestCase extends PHPUnit_Framework_TestCase
 {
   protected function setUp()
   {
@@ -16,14 +20,14 @@ abstract class ExceptionTestCase extends \PHPUnit_Framework_TestCase
   }
 
   /**
-   * @return \Typhoon\Exception\Exception
+   * @return Exception
    */
   protected function exceptionFixture(array $arguments = null, \Exception $previous = null)
   {
     if (null === $arguments) $arguments = $this->defaultArguments();
     if ($previous) $arguments[] = $previous;
 
-    $reflector = new \ReflectionClass($this->exceptionClass());
+    $reflector = new ReflectionClass($this->exceptionClass());
 
     if ($reflector->isAbstract())
     {

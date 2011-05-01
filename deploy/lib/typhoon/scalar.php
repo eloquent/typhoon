@@ -2,6 +2,8 @@
 
 namespace Typhoon;
 
+use Typhoon\Type;
+
 abstract class Scalar
 {
   final public function __construct($value)
@@ -28,7 +30,7 @@ abstract class Scalar
   }
 
   /**
-   * @return \Typhoon\Type
+   * @return Type
    */
   abstract public function type();
 

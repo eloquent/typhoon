@@ -2,7 +2,9 @@
 
 namespace Typhoon\Type;
 
-class Mixed extends \Typhoon\Type
+use Typhoon\Type;
+
+class Mixed extends Type
 {
   /**
    * @return string

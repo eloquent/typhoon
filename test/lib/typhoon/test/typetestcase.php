@@ -2,7 +2,11 @@
 
 namespace Typhoon\Test;
 
-abstract class TypeTestCase extends \PHPUnit_Framework_TestCase
+use PHPUnit_Framework_TestCase;
+use ReflectionClass;
+use Typhoon;
+
+abstract class TypeTestCase extends PHPUnit_Framework_TestCase
 {
   protected function tearDown()
   {
@@ -29,7 +33,7 @@ abstract class TypeTestCase extends \PHPUnit_Framework_TestCase
   }
 
   /**
-   * @return \Typhoon\Type
+   * @return Type
    */
   protected function typeFixture(array $arguments = null)
   {
@@ -37,7 +41,7 @@ abstract class TypeTestCase extends \PHPUnit_Framework_TestCase
 
     if (null === $arguments) return new $class;
 
-    $reflector = new \ReflectionClass($class);
+    $reflector = new ReflectionClass($class);
 
     return $reflector->newInstanceArgs($arguments);
   }

@@ -2,7 +2,10 @@
 
 namespace Typhoon\Type;
 
-class MixedTest extends \Typhoon\Test\TypeTestCase
+use stdClass;
+use Typhoon\Test\TypeTestCase;
+
+class MixedTest extends TypeTestCase
 {
   /**
    * @return string
@@ -32,7 +35,7 @@ class MixedTest extends \Typhoon\Test\TypeTestCase
       array(true, 1),                         // #3: integer
       array(true, .1),                        // #4: float
       array(true, array()),                   // #5: array
-      array(true, new \stdClass),             // #6: object
+      array(true, new stdClass),              // #6: object
       array(true, function(){}),              // #7: closure
       array(true, $this->resourceFixture()),  // #8: resource
     );

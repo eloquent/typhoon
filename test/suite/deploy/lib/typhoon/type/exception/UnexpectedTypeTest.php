@@ -2,7 +2,10 @@
 
 namespace Typhoon\Type\Exception;
 
-class UnexpectedTypeTest extends \Typhoon\Test\ExceptionTestCase
+use Typhoon;
+use Typhoon\Test\ExceptionTestCase;
+
+class UnexpectedTypeTest extends ExceptionTestCase
 {
   protected function setUp()
   {
@@ -26,7 +29,7 @@ class UnexpectedTypeTest extends \Typhoon\Test\ExceptionTestCase
   }
 
   /**
-   * @return \Typhoon\Type
+   * @return Type
    */
   protected function typeFixture()
   {

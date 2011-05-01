@@ -2,13 +2,16 @@
 
 namespace Typhoon;
 
-class ParameterTest extends \PHPUnit_Framework_TestCase
+use PHPUnit_Framework_TestCase;
+use Typhoon\Type\Mixed;
+
+class ParameterTest extends PHPUnit_Framework_TestCase
 {
   protected function setUp()
   {
     $this->_parameter = new Parameter;
     $this->_type = $this->getMockForAbstractClass(__NAMESPACE__.'\Type');
-    $this->_mixed_type = new Type\Mixed;
+    $this->_mixed_type = new Mixed;
   }
 
   /**
@@ -35,7 +38,7 @@ class ParameterTest extends \PHPUnit_Framework_TestCase
   protected $_type;
 
   /**
-   * @var Type\Mixed
+   * @var Mixed
    */
   protected $_mixed_type;
 }

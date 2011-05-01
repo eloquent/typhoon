@@ -2,7 +2,10 @@
 
 namespace Typhoon\Type;
 
-class IntegerTest extends \Typhoon\Test\TypeTestCase
+use stdClass;
+use Typhoon\Test\TypeTestCase;
+
+class IntegerTest extends TypeTestCase
 {
   /**
    * @return string
@@ -32,7 +35,7 @@ class IntegerTest extends \Typhoon\Test\TypeTestCase
       array(true, 1),                          // #3: integer
       array(false, .1),                        // #4: float
       array(false, array()),                   // #5: array
-      array(false, new \stdClass),             // #6: object
+      array(false, new stdClass),              // #6: object
       array(false, function(){}),              // #7: closure
       array(false, $this->resourceFixture()),  // #8: resource
       array(false, '1'),                       // #9: integer string

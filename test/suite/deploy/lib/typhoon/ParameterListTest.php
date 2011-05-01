@@ -2,7 +2,10 @@
 
 namespace Typhoon;
 
-class ParameterListTest extends \PHPUnit_Framework_TestCase
+use ArrayIterator;
+use PHPUnit_Framework_TestCase;
+
+class ParameterListTest extends PHPUnit_Framework_TestCase
 {
   protected function setUp()
   {
@@ -116,7 +119,7 @@ class ParameterListTest extends \PHPUnit_Framework_TestCase
     $this->_parameter_list
       ->expects($this->once())
       ->method('iterator')
-      ->will($this->returnValue(new \ArrayIterator(array())))
+      ->will($this->returnValue(new ArrayIterator(array())))
     ;
 
     foreach ($this->_parameter_list as $paramter) {}

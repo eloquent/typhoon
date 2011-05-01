@@ -2,7 +2,9 @@
 
 namespace Typhoon\Exception;
 
-class ExceptionTest extends \Typhoon\Test\ExceptionTestCase
+use Typhoon\Test\ExceptionTestCase;
+
+class ExceptionTest extends ExceptionTestCase
 {
   protected function setUp()
   {

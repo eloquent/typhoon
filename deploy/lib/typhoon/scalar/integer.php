@@ -2,7 +2,9 @@
 
 namespace Typhoon\Scalar;
 
-final class Integer extends \Typhoon\Scalar
+use Typhoon\Scalar;
+
+final class Integer extends Scalar
 {
   /**
    * @return \Typhoon\Type

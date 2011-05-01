@@ -2,9 +2,10 @@
 
 namespace Typhoon\Exception;
 
-use \Typhoon\Scalar\String;
+use Typhoon\Scalar\String;
+use Typhoon\Test\ExceptionTestCase;
 
-class NotImplementedTest extends \Typhoon\Test\ExceptionTestCase
+class NotImplementedTest extends ExceptionTestCase
 {
   protected function setUp()
   {

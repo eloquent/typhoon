@@ -2,7 +2,10 @@
 
 namespace Typhoon\Type;
 
-class ObjectTest extends \Typhoon\Test\TypeTestCase
+use stdClass;
+use Typhoon\Test\TypeTestCase;
+
+class ObjectTest extends TypeTestCase
 {
   /**
    * @return string
@@ -35,12 +38,12 @@ class ObjectTest extends \Typhoon\Test\TypeTestCase
       array(false, 1),                         // #3: integer
       array(false, .1),                        // #4: float
       array(false, array()),                   // #5: array
-      array(true,  new \stdClass),             // #6: object
+      array(true,  new stdClass),              // #6: object
       array(true,  function(){}),              // #7: closure
       array(false, $this->resourceFixture()),  // #8: resource
 
       // object of a specific class
-      array(true,  new \stdClass,            array($class)),  // #9: object of correct class
+      array(true,  new stdClass,             array($class)),  // #9: object of correct class
       array(false, new Object,               array($class)),  // #10: object of incorrect class
       array(false, null,                     array($class)),  // #11: null
       array(false, true,                     array($class)),  // #12: boolean

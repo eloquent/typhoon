@@ -2,7 +2,9 @@
 
 namespace Typhoon\Scalar;
 
-class IntegerTest extends \PHPUnit_Framework_TestCase
+use PHPUnit_Framework_TestCase;
+
+class IntegerTest extends PHPUnit_Framework_TestCase
 {
   /**
    * @covers \Typhoon\Scalar\Integer::type

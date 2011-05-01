@@ -2,7 +2,9 @@
 
 namespace Typhoon\Scalar;
 
-final class String extends \Typhoon\Scalar
+use Typhoon\Scalar;
+
+final class String extends Scalar
 {
   /**
    * @return \Typhoon\Type

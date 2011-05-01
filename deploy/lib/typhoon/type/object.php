@@ -2,7 +2,9 @@
 
 namespace Typhoon\Type;
 
-class Object extends \Typhoon\Type
+use Typhoon\Type;
+
+class Object extends Type
 {
   public function __construct($class = null)
   {

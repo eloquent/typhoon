@@ -2,7 +2,9 @@
 
 namespace Typhoon;
 
-class TypeTest extends \PHPUnit_Framework_TestCase
+use PHPUnit_Framework_TestCase;
+
+class TypeTest extends PHPUnit_Framework_TestCase
 {
   protected function setUp()
   {

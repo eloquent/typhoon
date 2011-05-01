@@ -2,7 +2,9 @@
 
 namespace Typhoon\Scalar;
 
-class StringTest extends \PHPUnit_Framework_TestCase
+use PHPUnit_Framework_TestCase;
+
+class StringTest extends PHPUnit_Framework_TestCase
 {
   /**
    * @covers \Typhoon\Scalar\String::type

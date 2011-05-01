@@ -2,7 +2,9 @@
 
 namespace Typhoon\Type;
 
-class String extends \Typhoon\Type
+use Typhoon\Type;
+
+class String extends Type
 {
   /**
    * @return string

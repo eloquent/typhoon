@@ -2,7 +2,9 @@
 
 namespace Typhoon\Type;
 
-class Integer extends \Typhoon\Type
+use Typhoon\Type;
+
+class Integer extends Type
 {
   /**
    * @return string

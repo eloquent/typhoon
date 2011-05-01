@@ -2,7 +2,7 @@
 
 namespace Typhoon\ParameterList\Exception;
 
-use \Typhoon\Scalar\Integer;
+use Typhoon\Scalar\Integer;
 
 class UndefinedParameter extends Exception
 {

@@ -2,10 +2,17 @@
 
 namespace Typhoon;
 
-use \Typhoon\Scalar\Integer;
-use \Typhoon\Scalar\String;
+use ArrayAccess;
+use ArrayIterator;
+use IteratorAggregate;
+use Typhoon\Exception\NotImplemented;
+use Typhoon\ParameterList\Exception\UndefinedParameter;
+use Typhoon\Scalar\Integer;
+use Typhoon\Scalar\String;
+use Typhoon\Type\Exception\UnexpectedType;
+use Typhoon\Type\Object;
 
-class ParameterList implements \ArrayAccess, \IteratorAggregate
+class ParameterList implements ArrayAccess, IteratorAggregate
 {
   public function add(Parameter $parameter)
   {
@@ -22,8 +29,8 @@ class ParameterList implements \ArrayAccess, \IteratorAggregate
 
   public function offsetSet($index, $parameter)
   {
-    if (!$parameter instanceof Parameter) throw new Type\Exception\UnexpectedType(
-      new Type\Object(__NAMESPACE__.'\Parameter')
+    if (!$parameter instanceof Parameter) throw new UnexpectedType(
+      new Object(__NAMESPACE__.'\Parameter')
     );
 
     if (null === $index)
@@ -43,24 +50,24 @@ class ParameterList implements \ArrayAccess, \IteratorAggregate
   {
     if (isset($this[$index])) return $this->parameters[$index];
 
-    throw new ParameterList\Exception\UndefinedParameter(new Integer($index));
+    throw new UndefinedParameter(new Integer($index));
   }
 
   public function offsetUnset($index)
   {
-    throw new \Typhoon\Exception\NotImplemented(new String('Unset'));
+    throw new NotImplemented(new String('Unset'));
   }
 
   /**
-   * @return \ArrayIterator
+   * @return ArrayIterator
    */
   public function iterator()
   {
-    return new \ArrayIterator($this->parameters);
+    return new ArrayIterator($this->parameters);
   }
 
   /**
-   * @return \ArrayIterator
+   * @return ArrayIterator
    */
   public function getIterator()
   {

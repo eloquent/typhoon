@@ -2,9 +2,11 @@
 
 namespace Typhoon\Type\Exception;
 
+use Typhoon\Type;
+
 final class UnexpectedType extends Exception
 {
-  public function __construct(\Typhoon\Type $expectedType, \Exception $previous = null)
+  public function __construct(Type $expectedType, \Exception $previous = null)
   {
     $this->expectedType = $expectedType;
     
@@ -12,7 +14,7 @@ final class UnexpectedType extends Exception
   }
 
   /**
-   * @return \Typhoon\Type
+   * @return Type
    */
   public function expectedType()
   {
@@ -20,7 +22,7 @@ final class UnexpectedType extends Exception
   }
 
   /**
-   * @var \Typhoon\Type
+   * @var Type
    */
   protected $expectedType;
 }
