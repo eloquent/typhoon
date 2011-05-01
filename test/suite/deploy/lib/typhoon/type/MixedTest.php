@@ -9,7 +9,7 @@ class MixedTest extends \Typhoon\Test\TypeTestCase
    */
   protected function typeClass()
   {
-    return '\Typhoon\Type\Mixed';
+    return __NAMESPACE__.'\Mixed';
   }
 
   /**

@@ -7,7 +7,7 @@ class ParameterTest extends \PHPUnit_Framework_TestCase
   protected function setUp()
   {
     $this->_parameter = new Parameter;
-    $this->_type = $this->getMockForAbstractClass('\Typhoon\Type');
+    $this->_type = $this->getMockForAbstractClass(__NAMESPACE__.'\Type');
     $this->_mixed_type = new Type\Mixed;
   }
 

@@ -20,7 +20,7 @@ class ParameterList implements \ArrayAccess, \IteratorAggregate
   public function offsetSet($index, $parameter)
   {
     if (!$parameter instanceof Parameter) throw new Type\Exception\UnexpectedType(
-      new Type\Object('\Typhoon\Parameter')
+      new Type\Object(__NAMESPACE__.'\Parameter')
     );
 
     if (null === $index)

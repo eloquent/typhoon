@@ -6,7 +6,7 @@ class TypeTest extends \PHPUnit_Framework_TestCase
 {
   protected function setUp()
   {
-    $this->_type = $this->getMockForAbstractClass('\Typhoon\Type');
+    $this->_type = $this->getMockForAbstractClass(__NAMESPACE__.'\Type');
   }
   
   /**
@@ -45,7 +45,7 @@ class TypeTest extends \PHPUnit_Framework_TestCase
       ->will($this->returnValue(''))
     ;
 
-    $this->setExpectedException('\Typhoon\Type\Exception\UnexpectedType');
+    $this->setExpectedException(__NAMESPACE__.'\Type\Exception\UnexpectedType');
     $this->_type->assert($value);
   }
   

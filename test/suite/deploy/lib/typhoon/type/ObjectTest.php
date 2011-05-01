@@ -9,7 +9,7 @@ class ObjectTest extends \Typhoon\Test\TypeTestCase
    */
   protected function typeClass()
   {
-    return '\Typhoon\Type\Object';
+    return __NAMESPACE__.'\Object';
   }
 
   /**

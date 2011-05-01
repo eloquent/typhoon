@@ -9,7 +9,7 @@ class StringTest extends \Typhoon\Test\TypeTestCase
    */
   protected function typeClass()
   {
-    return '\Typhoon\Type\String';
+    return __NAMESPACE__.'\String';
   }
 
   /**

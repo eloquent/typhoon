@@ -37,7 +37,7 @@ class ParameterListTest extends \PHPUnit_Framework_TestCase
    */
   public function testOffsetSetFailureInterim()
   {
-    $this->setExpectedException('\Typhoon\Type\Exception\UnexpectedType');
+    $this->setExpectedException(__NAMESPACE__.'\Type\Exception\UnexpectedType');
     $this->_parameter_list[] = null;
   }
 
@@ -48,7 +48,7 @@ class ParameterListTest extends \PHPUnit_Framework_TestCase
   {
     $this->markTestIncomplete('Unexpected argument is not yet implemented.');
 
-    $this->setExpectedException('\Typhoon\Parameter\Exception\UnexpectedArgument');
+    $this->setExpectedException(__NAMESPACE__.'\Parameter\Exception\UnexpectedArgument');
     $this->_parameter_list[] = null;
   }
 
@@ -57,7 +57,7 @@ class ParameterListTest extends \PHPUnit_Framework_TestCase
    */
   public function testOffsetGetFailure()
   {
-    $this->setExpectedException('\Typhoon\ParameterList\Exception\UndefinedParameter');
+    $this->setExpectedException(__NAMESPACE__.'\ParameterList\Exception\UndefinedParameter');
     $this->_parameter_list[0];
   }
 
@@ -69,7 +69,7 @@ class ParameterListTest extends \PHPUnit_Framework_TestCase
     $parameter = new Parameter;
     $this->_parameter_list[] = $parameter;
 
-    $this->setExpectedException('\Typhoon\Exception\NotImplemented');
+    $this->setExpectedException(__NAMESPACE__.'\Exception\NotImplemented');
     unset($this->_parameter_list[0]);
   }
 
@@ -112,7 +112,7 @@ class ParameterListTest extends \PHPUnit_Framework_TestCase
   {
     $this->assertInstanceOf('\Traversable', $this->_parameter_list);
 
-    $this->_parameter_list = $this->getMock('\Typhoon\ParameterList', array('iterator'));
+    $this->_parameter_list = $this->getMock(__NAMESPACE__.'\ParameterList', array('iterator'));
     $this->_parameter_list
       ->expects($this->once())
       ->method('iterator')
