@@ -4,37 +4,40 @@ namespace Typhoon\Type;
 
 class StringTest extends \Typhoon\Test\TypeTestCase
 {
-  protected function typeFixture()
+  /**
+   * @return String
+   */
+  protected function typeFixture(array $arguments = null)
   {
     return new String;
   }
 
+  /**
+   * @return string
+   */
   protected function expectedString()
   {
     return 'string';
   }
 
-  public function validValues()
+  /**
+   * @return array
+   */
+  public function typeValues()
   {
     return array(
-      array('string'),                  // string
+      array(false, null),                      // #0: null
+      array(false, true),                      // #1: boolean
+      array(true,  'string'),                  // #2: string
+      array(false, 1),                         // #3: integer
+      array(false, .1),                        // #4: float
+      array(false, array()),                   // #5: array
+      array(false, new \stdClass),             // #6: object
+      array(false, function(){}),              // #7: closure
+      array(false, $this->resourceFixture()),  // #8: resource
     );
   }
-  
-  public function invalidValues()
-  {
-    return array(
-      array(null),                      // null
-      array(true),                      // boolean
-      array(1),                         // integer
-      array(.1),                        // float
-      array(array()),                   // array
-      array(new \stdClass),             // object
-      array(function(){}),              // closure
-      array($this->resourceFixture()),  // resource
-    );
-  }
-  
+
   // methods below must be manually overridden to implement @covers
   
   /**
@@ -45,15 +48,8 @@ class StringTest extends \Typhoon\Test\TypeTestCase
   
   /**
    * @covers \Typhoon\Type\String::check
-   * @dataProvider validValues
+   * @dataProvider typeValues
    * @group typhoon_types
    */
-  public function testCheckPass($value) { parent::testCheckPass($value); }
-  
-  /**
-   * @covers \Typhoon\Type\String::check
-   * @dataProvider invalidValues
-   * @group typhoon_types
-   */
-  public function testCheckFailure($value) { parent::testCheckFailure($value); }
+  public function testCheck($expected, $value, $arguments = null) { parent::testCheck($expected, $value, $arguments); }
 }

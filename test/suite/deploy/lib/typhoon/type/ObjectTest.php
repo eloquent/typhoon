@@ -4,90 +4,79 @@ namespace Typhoon\Type;
 
 class ObjectTest extends \Typhoon\Test\TypeTestCase
 {
-  public function setUp()
+  /**
+   * @return Object
+   */
+  protected function typeFixture(array $arguments = null)
   {
-    $this->_class = '\stdClass';
+    if (null === $arguments) return new Object;
+
+    $reflector = new \ReflectionClass('\Typhoon\Type\Object');
+
+    return $reflector->newInstanceArgs($arguments);
   }
 
-  protected function typeFixture()
-  {
-    return new Object;
-  }
-
+  /**
+   * @return string
+   */
   protected function expectedString()
   {
     return 'object';
   }
 
-  public function validValues()
+  /**
+   * @return array
+   */
+  public function typeValues()
   {
+    $class = '\stdClass';
+
     return array(
-      array(new \stdClass),             // object
-      array(function(){}),              // closure
-    );
-  }
-  
-  public function invalidValues()
-  {
-    return array(
-      array(null),                      // null
-      array(true),                      // boolean
-      array('string'),                  // string
-      array(1),                         // integer
-      array(.1),                        // float
-      array(array()),                   // array
-      array($this->resourceFixture()),  // resource
+      // object of any class
+      array(false, null),                      // #0: null
+      array(false, true),                      // #1: boolean
+      array(false, 'string'),                  // #2: string
+      array(false, 1),                         // #3: integer
+      array(false, .1),                        // #4: float
+      array(false, array()),                   // #5: array
+      array(true,  new \stdClass),             // #6: object
+      array(true,  function(){}),              // #7: closure
+      array(false, $this->resourceFixture()),  // #8: resource
+
+      // object of a specific class
+      array(true,  new \stdClass,            array($class)),  // #9: object of correct class
+      array(false, new Object,               array($class)),  // #10: object of incorrect class
+      array(false, null,                     array($class)),  // #11: null
+      array(false, true,                     array($class)),  // #12: boolean
+      array(false, 'string',                 array($class)),  // #13: string
+      array(false, 1,                        array($class)),  // #14: integer
+      array(false, .1,                       array($class)),  // #15: float
+      array(false, array(),                  array($class)),  // #16: array
+      array(false, function(){},             array($class)),  // #17: closure
+      array(false, $this->resourceFixture(), array($class)),  // #18: resource
     );
   }
 
   /**
    * @covers \Typhoon\Type\Object::__construct
    * @covers \Typhoon\Type\Object::string
+   * @group typhoon_types
    */
-  public function testConstructorAndString()
+  public function testString()
   {
-    $type = new Object($this->_class);
+    parent::testString();
 
-    $this->assertEquals($this->expectedString().'('.$this->_class.')', $type->string());
+    $class = '\stdClass';
+    $this->assertEquals($this->expectedString().'('.$class.')', $this->typeFixture(array($class))->string());
   }
 
-  /**
-   * @covers \Typhoon\Type\Object::__construct
-   * @covers \Typhoon\Type\Object::check
-   */
-  public function testConstructorAndCheck()
-  {
-    $type = new Object($this->_class);
-
-    $this->assertTrue($type->check(new \stdClass()));
-    $this->assertFalse($type->check($type));
-    $this->assertFalse($type->check(true));
-  }
-  
   // methods below must be manually overridden to implement @covers
   
   /**
-   * @covers \Typhoon\Type\Object::string
-   * @group typhoon_types
-   */
-  public function testString() { parent::testString(); }
-  
-  /**
+   * @covers \Typhoon\Type\Object::__construct
    * @covers \Typhoon\Type\Object::check
-   * @dataProvider validValues
+   * @dataProvider typeValues
    * @group typhoon_types
    */
-  public function testCheckPass($value) { parent::testCheckPass($value); }
-  
-  /**
-   * @covers \Typhoon\Type\Object::check
-   * @dataProvider invalidValues
-   * @group typhoon_types
-   */
-  public function testCheckFailure($value) { parent::testCheckFailure($value); }
-
-  /**
-   * @var string
-   */
-  protected $_class;
+  public function testCheck($expected, $value, $arguments = null) { parent::testCheck($expected, $value, $arguments); }
 }

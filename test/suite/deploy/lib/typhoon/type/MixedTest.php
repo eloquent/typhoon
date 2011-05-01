@@ -4,36 +4,40 @@ namespace Typhoon\Type;
 
 class MixedTest extends \Typhoon\Test\TypeTestCase
 {
-  protected function typeFixture()
+  /**
+   * @return Mixed
+   */
+  protected function typeFixture(array $arguments = null)
   {
     return new Mixed;
   }
 
+  /**
+   * @return string
+   */
   protected function expectedString()
   {
     return 'mixed';
   }
 
-  public function validValues()
+  /**
+   * @return array
+   */
+  public function typeValues()
   {
     return array(
-      array(null),                      // null
-      array(true),                      // boolean
-      array('string'),                  // string
-      array(1),                         // integer
-      array(.1),                        // float
-      array(array()),                   // array
-      array(new \stdClass),             // object
-      array(function(){}),              // closure
-      array($this->resourceFixture()),  // resource
+      array(true, null),                      // #0: null
+      array(true, true),                      // #1: boolean
+      array(true, 'string'),                  // #2: string
+      array(true, 1),                         // #3: integer
+      array(true, .1),                        // #4: float
+      array(true, array()),                   // #5: array
+      array(true, new \stdClass),             // #6: object
+      array(true, function(){}),              // #7: closure
+      array(true, $this->resourceFixture()),  // #8: resource
     );
   }
-  
-  public function invalidValues()
-  {
-    return array(array(null));
-  }
-  
+
   // methods below must be manually overridden to implement @covers
   
   /**
@@ -44,15 +48,8 @@ class MixedTest extends \Typhoon\Test\TypeTestCase
   
   /**
    * @covers \Typhoon\Type\Mixed::check
-   * @dataProvider validValues
+   * @dataProvider typeValues
    * @group typhoon_types
    */
-  public function testCheckPass($value) { parent::testCheckPass($value); }
-  
-  /**
-   * @covers \Typhoon\Type\Mixed::check
-   * @dataProvider invalidValues
-   * @group typhoon_types
-   */
-  public function testCheckFailure($value) { $this->assertTrue(true); } // nothing fails
+  public function testCheck($expected, $value, $arguments = null) { parent::testCheck($expected, $value, $arguments); }
 }

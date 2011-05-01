@@ -18,23 +18,16 @@ abstract class TypeTestCase extends \PHPUnit_Framework_TestCase
   }
   
   /**
-   * @dataProvider validValues
+   * @dataProvider typeValues
    * @group typhoon_types
    */
-  public function testCheckPass($value)
+  public function testCheck($expected, $value, $arguments = null)
   {
-    $this->assertTrue($this->typeFixture()->check($value));
+    if (null === $arguments) $arguments = array();
+
+    $this->assertEquals($expected, $this->typeFixture($arguments)->check($value));
   }
-  
-  /**
-   * @dataProvider invalidValues
-   * @group typhoon_types
-   */
-  public function testCheckFailure($value)
-  {
-    $this->assertFalse($this->typeFixture()->check($value));
-  }
-  
+
   /**
    * @return resource
    */
@@ -48,7 +41,7 @@ abstract class TypeTestCase extends \PHPUnit_Framework_TestCase
   /**
    * @return \Typhoon\Type
    */
-  abstract protected function typeFixture();
+  abstract protected function typeFixture(array $arguments = null);
   
   /**
    * @return string
@@ -58,12 +51,7 @@ abstract class TypeTestCase extends \PHPUnit_Framework_TestCase
   /**
    * @return array
    */
-  abstract public function validValues();
-  
-  /**
-   * @return array
-   */
-  abstract public function invalidValues();
+  abstract public function typeValues();
   
   /**
    * @var resource
