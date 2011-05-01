@@ -2,6 +2,9 @@
 
 namespace Typhoon;
 
+use \Typhoon\Scalar\Integer;
+use \Typhoon\Scalar\String;
+
 class ParameterList implements \ArrayAccess, \IteratorAggregate
 {
   public function add(Parameter $parameter)
@@ -40,12 +43,12 @@ class ParameterList implements \ArrayAccess, \IteratorAggregate
   {
     if (isset($this[$index])) return $this->parameters[$index];
 
-    throw new ParameterList\Exception\UndefinedParameter($index);
+    throw new ParameterList\Exception\UndefinedParameter(new Integer($index));
   }
 
   public function offsetUnset($index)
   {
-    throw new \Typhoon\Exception\NotImplemented('Unset');
+    throw new \Typhoon\Exception\NotImplemented(new String('Unset'));
   }
 
   /**

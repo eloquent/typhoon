@@ -2,11 +2,13 @@
 
 namespace Typhoon\Exception;
 
+use \Typhoon\Scalar\String;
+
 class NotImplementedTest extends \Typhoon\Test\ExceptionTestCase
 {
   protected function setUp()
   {
-    $this->_feature = 'foo';
+    $this->_feature = new String('foo');
   }
 
   /**
@@ -36,7 +38,7 @@ class NotImplementedTest extends \Typhoon\Test\ExceptionTestCase
   }
 
   /**
-   * @var string
+   * @var String
    */
   protected $_feature;
 }

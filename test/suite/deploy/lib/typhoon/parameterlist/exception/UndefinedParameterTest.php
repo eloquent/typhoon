@@ -2,11 +2,13 @@
 
 namespace Typhoon\ParameterList\Exception;
 
+use \Typhoon\Scalar\Integer;
+
 class UndefinedParameterTest extends \Typhoon\Test\ExceptionTestCase
 {
   protected function setUp()
   {
-    $this->_index = 0;
+    $this->_index = new Integer(0);
   }
 
   /**
@@ -36,7 +38,7 @@ class UndefinedParameterTest extends \Typhoon\Test\ExceptionTestCase
   }
 
   /**
-   * @var integer
+   * @var Integer
    */
   protected $_index;
 }

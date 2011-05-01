@@ -6,6 +6,7 @@ class StringTest extends \PHPUnit_Framework_TestCase
 {
   /**
    * @covers \Typhoon\Scalar\String::type
+   * @group typhoon_scalars
    */
   public function testType()
   {
