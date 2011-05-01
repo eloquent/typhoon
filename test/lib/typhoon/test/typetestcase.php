@@ -29,6 +29,20 @@ abstract class TypeTestCase extends \PHPUnit_Framework_TestCase
   }
 
   /**
+   * @return Object
+   */
+  protected function typeFixture(array $arguments = null)
+  {
+    $class = $this->typeClass();
+
+    if (null === $arguments) return new $class;
+
+    $reflector = new \ReflectionClass($class);
+
+    return $reflector->newInstanceArgs($arguments);
+  }
+
+  /**
    * @return resource
    */
   protected function resourceFixture()
@@ -37,12 +51,12 @@ abstract class TypeTestCase extends \PHPUnit_Framework_TestCase
     
     return $this->_resource;
   }
-  
+
   /**
-   * @return \Typhoon\Type
+   * @return string
    */
-  abstract protected function typeFixture(array $arguments = null);
-  
+  abstract protected function typeClass();
+
   /**
    * @return string
    */

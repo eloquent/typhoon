@@ -5,11 +5,11 @@ namespace Typhoon\Type;
 class MixedTest extends \Typhoon\Test\TypeTestCase
 {
   /**
-   * @return Mixed
+   * @return string
    */
-  protected function typeFixture(array $arguments = null)
+  protected function typeClass()
   {
-    return new Mixed;
+    return '\Typhoon\Type\Mixed';
   }
 
   /**

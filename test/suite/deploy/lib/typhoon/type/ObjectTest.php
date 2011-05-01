@@ -5,15 +5,11 @@ namespace Typhoon\Type;
 class ObjectTest extends \Typhoon\Test\TypeTestCase
 {
   /**
-   * @return Object
+   * @return string
    */
-  protected function typeFixture(array $arguments = null)
+  protected function typeClass()
   {
-    if (null === $arguments) return new Object;
-
-    $reflector = new \ReflectionClass('\Typhoon\Type\Object');
-
-    return $reflector->newInstanceArgs($arguments);
+    return '\Typhoon\Type\Object';
   }
 
   /**

@@ -5,11 +5,11 @@ namespace Typhoon\Type;
 class StringTest extends \Typhoon\Test\TypeTestCase
 {
   /**
-   * @return String
+   * @return string
    */
-  protected function typeFixture(array $arguments = null)
+  protected function typeClass()
   {
-    return new String;
+    return '\Typhoon\Type\String';
   }
 
   /**
