@@ -7,6 +7,19 @@ use PHPUnit_Framework_TestCase;
 
 class ParameterListTest extends PHPUnit_Framework_TestCase
 {
+  /**
+   * @return array
+   */
+  public function unexpectedArgumentData()
+  {
+    return array(
+      array('offsetExists', array('foo')),
+      array('offsetSet', array(1, null)),
+      array('offsetSet', array('foo', new Parameter)),
+      array('offsetGet', array('foo')),
+    );
+  }
+
   protected function setUp()
   {
     $this->_parameter_list = new ParameterList;
@@ -36,15 +49,6 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
   }
 
   /**
-   * @covers \Typhoon\ParameterList::offsetSet
-   */
-  public function testOffsetSetFailure()
-  {
-    $this->setExpectedException(__NAMESPACE__.'\ParameterList\Exception\UnexpectedArgument');
-    $this->_parameter_list[] = null;
-  }
-
-  /**
    * @covers \Typhoon\ParameterList::offsetGet
    */
   public function testOffsetGetFailure()
@@ -63,6 +67,19 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
 
     $this->setExpectedException(__NAMESPACE__.'\Exception\NotImplemented');
     unset($this->_parameter_list[0]);
+  }
+
+  /**
+   * @covers \Typhoon\ParameterList::offsetExists
+   * @covers \Typhoon\ParameterList::offsetSet
+   * @covers \Typhoon\ParameterList::offsetGet
+   * @covers \Typhoon\ParameterList::assertIndex
+   * @dataProvider unexpectedArgumentData
+   */
+  public function testUnexpectedArgumentFailure($method, array $arguments)
+  {
+    $this->setExpectedException(__NAMESPACE__.'\ParameterList\Exception\UnexpectedArgument');
+    call_user_func_array(array($this->_parameter_list, $method), $arguments);
   }
 
   /**

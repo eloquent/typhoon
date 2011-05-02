@@ -10,6 +10,7 @@ use Typhoon\ParameterList\Exception\UndefinedParameter;
 use Typhoon\ParameterList\Exception\UnexpectedArgument;
 use Typhoon\Primitive\Integer as IntegerPrimitive;
 use Typhoon\Primitive\String as StringPrimitive;
+use Typhoon\Type\Integer as IntegerType;
 use Typhoon\Type\Object as ObjectType;
 
 class ParameterList implements ArrayAccess, IteratorAggregate
@@ -27,6 +28,8 @@ class ParameterList implements ArrayAccess, IteratorAggregate
    */
   public function offsetExists($index)
   {
+    $this->assertIndex($index);
+
     return isset($this->parameters[$index]);
   }
 
@@ -36,6 +39,8 @@ class ParameterList implements ArrayAccess, IteratorAggregate
    */
   public function offsetSet($index, $parameter)
   {
+    if (null !== $index) $this->assertIndex($index);
+
     if (!$parameter instanceof Parameter)
     {
       $parameterParameter = new Parameter;
@@ -61,6 +66,8 @@ class ParameterList implements ArrayAccess, IteratorAggregate
    */
   public function offsetGet($index)
   {
+    $this->assertIndex($index);
+
     if (isset($this[$index])) return $this->parameters[$index];
 
     throw new UndefinedParameter(new IntegerPrimitive($index));
@@ -80,6 +87,20 @@ class ParameterList implements ArrayAccess, IteratorAggregate
   public function getIterator()
   {
     return new ArrayIterator($this->parameters);
+  }
+
+  /**
+   * @param mixed $index
+   */
+  protected function assertIndex($index)
+  {
+    if (!is_integer($index))
+    {
+      $parameter = new Parameter;
+      $parameter->setType(new IntegerType);
+
+      throw new UnexpectedArgument($index, new IntegerPrimitive(0), $parameter);
+    }
   }
 
   /**
