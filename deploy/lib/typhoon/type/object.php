@@ -2,12 +2,12 @@
 
 namespace Typhoon\Type;
 
-use Typhoon\Scalar\String as StringScalar;
+use Typhoon\Primitive\String as StringPrimitive;
 use Typhoon\Type;
 
 class Object extends Type
 {
-  public function __construct(StringScalar $class = null)
+  public function __construct(StringPrimitive $class = null)
   {
     $this->class = $class;
   }
@@ -42,7 +42,7 @@ class Object extends Type
   }
 
   /**
-   * @var StringScalar
+   * @var StringPrimitive
    */
   protected $class;
 }

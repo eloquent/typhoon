@@ -3,7 +3,7 @@
 namespace Typhoon;
 
 use PHPUnit_Framework_TestCase;
-use Typhoon\Scalar\String;
+use Typhoon\Primitive\String;
 use Typhoon\Type\Mixed;
 
 class ParameterTest extends PHPUnit_Framework_TestCase

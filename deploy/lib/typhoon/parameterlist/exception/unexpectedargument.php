@@ -3,8 +3,8 @@
 namespace Typhoon\ParameterList\Exception;
 
 use Typhoon\Parameter;
-use Typhoon\Scalar\Integer;
-use Typhoon\Scalar\String;
+use Typhoon\Primitive\Integer;
+use Typhoon\Primitive\String;
 
 class UnexpectedArgument extends Exception
 {

@@ -2,7 +2,7 @@
 
 namespace Typhoon\ParameterList\Exception;
 
-use Typhoon\Scalar\Integer;
+use Typhoon\Primitive\Integer;
 use Typhoon\Test\ExceptionTestCase;
 
 class UndefinedParameterTest extends ExceptionTestCase

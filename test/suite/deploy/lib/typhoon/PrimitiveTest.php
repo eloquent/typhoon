@@ -4,15 +4,15 @@ namespace Typhoon;
 
 use PHPUnit_Framework_TestCase;
 
-class ScalarTest extends PHPUnit_Framework_TestCase
+class PrimitiveTest extends PHPUnit_Framework_TestCase
 {
   /**
-   * @covers \Typhoon\Scalar::__construct
-   * @covers \Typhoon\Scalar::type
-   * @covers \Typhoon\Scalar::value
-   * @covers \Typhoon\Scalar::__toString
+   * @covers \Typhoon\Primitive::__construct
+   * @covers \Typhoon\Primitive::type
+   * @covers \Typhoon\Primitive::value
+   * @covers \Typhoon\Primitive::__toString
    */
-  public function testScalar()
+  public function testPrimitive()
   {
     $value = 'foo';
 
@@ -30,9 +30,9 @@ class ScalarTest extends PHPUnit_Framework_TestCase
     ;
 
     $scalar = $this->getMockForAbstractClass(
-      __NAMESPACE__.'\Scalar',
+      __NAMESPACE__.'\Primitive',
       array(),
-      'ScalarMock',
+      'PrimitiveMock',
       false
      );
     $scalar

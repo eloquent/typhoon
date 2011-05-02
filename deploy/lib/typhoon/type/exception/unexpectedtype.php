@@ -2,7 +2,7 @@
 
 namespace Typhoon\Type\Exception;
 
-use Typhoon\Scalar\String;
+use Typhoon\Primitive\String;
 use Typhoon\Type;
 
 final class UnexpectedType extends Exception

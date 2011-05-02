@@ -8,8 +8,8 @@ use IteratorAggregate;
 use Typhoon\Exception\NotImplemented;
 use Typhoon\ParameterList\Exception\UndefinedParameter;
 use Typhoon\ParameterList\Exception\UnexpectedArgument;
-use Typhoon\Scalar\Integer as IntegerScalar;
-use Typhoon\Scalar\String as StringScalar;
+use Typhoon\Primitive\Integer as IntegerPrimitive;
+use Typhoon\Primitive\String as StringPrimitive;
 use Typhoon\Type\Object as ObjectType;
 
 class ParameterList implements ArrayAccess, IteratorAggregate
@@ -32,9 +32,9 @@ class ParameterList implements ArrayAccess, IteratorAggregate
     if (!$parameter instanceof Parameter)
     {
       $parameterParameter = new Parameter;
-      $parameterParameter->setType(new ObjectType(new StringScalar(__NAMESPACE__.'\Parameter')));
+      $parameterParameter->setType(new ObjectType(new StringPrimitive(__NAMESPACE__.'\Parameter')));
 
-      throw new UnexpectedArgument($parameter, new IntegerScalar(1), $parameterParameter);
+      throw new UnexpectedArgument($parameter, new IntegerPrimitive(1), $parameterParameter);
     }
 
     if (null === $index)
@@ -54,12 +54,12 @@ class ParameterList implements ArrayAccess, IteratorAggregate
   {
     if (isset($this[$index])) return $this->parameters[$index];
 
-    throw new UndefinedParameter(new IntegerScalar($index));
+    throw new UndefinedParameter(new IntegerPrimitive($index));
   }
 
   public function offsetUnset($index)
   {
-    throw new NotImplemented(new StringScalar('Unset'));
+    throw new NotImplemented(new StringPrimitive('Unset'));
   }
 
   /**

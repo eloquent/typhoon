@@ -2,7 +2,7 @@
 
 namespace Typhoon;
 
-use Typhoon\Scalar\String as StringScalar;
+use Typhoon\Primitive\String as StringPrimitive;
 use Typhoon\Type\Mixed as MixedType;
 
 class Parameter
@@ -25,26 +25,26 @@ class Parameter
     return $this->type;
   }
 
-  public function setName(StringScalar $name)
+  public function setName(StringPrimitive $name)
   {
     $this->name = $name;
   }
 
   /**
-   * @return StringScalar
+   * @return StringPrimitive
    */
   public function name()
   {
     return $this->name;
   }
 
-  public function setDescription(StringScalar $description)
+  public function setDescription(StringPrimitive $description)
   {
     $this->description = $description;
   }
 
   /**
-   * @return StringScalar
+   * @return StringPrimitive
    */
   public function description()
   {
@@ -57,12 +57,12 @@ class Parameter
   protected $type;
 
   /**
-   * @var StringScalar
+   * @var StringPrimitive
    */
   protected $name;
 
   /**
-   * @var StringScalar
+   * @var StringPrimitive
    */
   protected $description;
 }

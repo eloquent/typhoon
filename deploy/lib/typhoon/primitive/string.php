@@ -1,10 +1,10 @@
 <?php
 
-namespace Typhoon\Scalar;
+namespace Typhoon\Primitive;
 
-use Typhoon\Scalar;
+use Typhoon\Primitive;
 
-final class String extends Scalar
+final class String extends Primitive
 {
   /**
    * @return \Typhoon\Type

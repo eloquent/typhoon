@@ -2,8 +2,8 @@
 
 namespace Typhoon\ParameterList\Exception;
 
-use Typhoon\Scalar\Integer;
-use Typhoon\Scalar\String;
+use Typhoon\Primitive\Integer;
+use Typhoon\Primitive\String;
 
 class UndefinedParameter extends Exception
 {

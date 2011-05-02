@@ -4,7 +4,7 @@ namespace Typhoon;
 
 use Typhoon\Type;
 
-abstract class Scalar
+abstract class Primitive
 {
   final public function __construct($value)
   {

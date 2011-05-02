@@ -2,7 +2,7 @@
 
 namespace Typhoon\Exception;
 
-use Typhoon\Scalar\String;
+use Typhoon\Primitive\String;
 
 class NotImplemented extends Exception
 {

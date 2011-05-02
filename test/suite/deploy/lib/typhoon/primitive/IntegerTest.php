@@ -1,13 +1,13 @@
 <?php
 
-namespace Typhoon\Scalar;
+namespace Typhoon\Primitive;
 
 use PHPUnit_Framework_TestCase;
 
 class IntegerTest extends PHPUnit_Framework_TestCase
 {
   /**
-   * @covers \Typhoon\Scalar\Integer::type
+   * @covers \Typhoon\Primitive\Integer::type
    * @group typhoon_scalars
    */
   public function testType()
