@@ -9,6 +9,23 @@ class UnexpectedArgument extends Exception
 {
   public function __construct($value, Integer $index, Parameter $parameter, \Exception $previous = null)
   {
-    parent::__construct("Unexpected argument at index ".$index." - expected '".$parameter->type()."'.", $previous);
+    $message =
+      "Unexpected argument at index "
+      .$index
+    ;
+
+    if ($parameter->name()) $message .=
+      " ("
+      .$parameter->name()
+      .")"
+     ;
+
+    $message .=
+      " - expected '"
+      .$parameter->type()
+      ."'."
+    ;
+
+    parent::__construct($message, $previous);
   }
 }

@@ -3,6 +3,9 @@
   bootstrap="../lib/bootstrap.php"
   strict="true"
   forceCoversAnnotation="true"
+  convertErrorsToExceptions="true"
+  convertNoticesToExceptions="true"
+  convertWarningsToExceptions="true"
 >
   <php>
     <includePath>.;../lib;../../deploy/lib</includePath>

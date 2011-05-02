@@ -4,6 +4,7 @@ namespace Typhoon\ParameterList\Exception;
 
 use Typhoon\Parameter;
 use Typhoon\Scalar\Integer;
+use Typhoon\Scalar\String;
 use Typhoon\Test\ExceptionTestCase;
 
 class UnexpectedArgumentTest extends ExceptionTestCase
@@ -37,7 +38,30 @@ class UnexpectedArgumentTest extends ExceptionTestCase
    */
   public function testConstructor()
   {
-    $this->assertEquals("Unexpected argument at index ".$this->_index." - expected '".$this->_expectedTypeName."'.", $this->exceptionFixture()->getMessage());
+    $expected =
+      "Unexpected argument at index "
+      .$this->_index
+      ." - expected '"
+      .$this->_expectedTypeName
+      ."'."
+    ;
+
+    $this->assertEquals($expected, $this->exceptionFixture()->getMessage());
+
+    $parameterName = new String('foo');
+    $expected =
+      "Unexpected argument at index "
+      .$this->_index
+      ." (".$parameterName.")"
+      ." - expected '"
+      .$this->_expectedTypeName
+      ."'."
+    ;
+
+    $parameter = new Parameter;
+    $parameter->setName($parameterName);
+
+    $this->assertEquals($expected, $this->exceptionFixture(array($this->_value, $this->_index, $parameter))->getMessage());
 
     parent::testConstructor();
   }
