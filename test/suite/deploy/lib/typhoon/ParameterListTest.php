@@ -67,27 +67,27 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
 
   /**
    * @covers \Typhoon\ParameterList::add
-   * @covers \Typhoon\ParameterList::iterator
+   * @covers \Typhoon\ParameterList::getIterator
    */
-  public function testAddAndIterator()
+  public function testAddAndGetIterator()
   {
-    $this->assertInstanceOf('\Iterator', $this->_parameter_list->iterator());
+    $this->assertInstanceOf('\Iterator', $this->_parameter_list->getIterator());
 
     $expected = array();
-    $this->assertEquals($expected, iterator_to_array($this->_parameter_list->iterator()));
+    $this->assertEquals($expected, iterator_to_array($this->_parameter_list->getIterator()));
 
     $this->_parameter_list->add($this->_parameter);
 
     $expected[] = $this->_parameter;
-    $this->assertEquals($expected, iterator_to_array($this->_parameter_list->iterator()));
+    $this->assertEquals($expected, iterator_to_array($this->_parameter_list->getIterator()));
     
     $this->_parameter_list->add($this->_parameter);
 
     $expected[] = $this->_parameter;
-    $this->assertEquals($expected, iterator_to_array($this->_parameter_list->iterator()));
+    $this->assertEquals($expected, iterator_to_array($this->_parameter_list->getIterator()));
 
     $iterations = 0;
-    foreach ($this->_parameter_list->iterator() as $parameter)
+    foreach ($this->_parameter_list->getIterator() as $parameter)
     {
       $this->assertSame($this->_parameter, $parameter);
 
@@ -97,21 +97,9 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
     $this->assertEquals(2, $iterations);
   }
 
-  /**
-   * @covers \Typhoon\ParameterList::getIterator
-   */
   public function testTraversable()
   {
     $this->assertInstanceOf('\Traversable', $this->_parameter_list);
-
-    $this->_parameter_list = $this->getMock(__NAMESPACE__.'\ParameterList', array('iterator'));
-    $this->_parameter_list
-      ->expects($this->once())
-      ->method('iterator')
-      ->will($this->returnValue(new ArrayIterator(array())))
-    ;
-
-    foreach ($this->_parameter_list as $paramter) {}
   }
 
   /**

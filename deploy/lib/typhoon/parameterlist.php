@@ -77,17 +77,9 @@ class ParameterList implements ArrayAccess, IteratorAggregate
   /**
    * @return ArrayIterator
    */
-  public function iterator()
-  {
-    return new ArrayIterator($this->parameters);
-  }
-
-  /**
-   * @return ArrayIterator
-   */
   public function getIterator()
   {
-    return $this->iterator();
+    return new ArrayIterator($this->parameters);
   }
 
   /**
