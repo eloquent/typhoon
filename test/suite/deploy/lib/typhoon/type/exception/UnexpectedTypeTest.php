@@ -20,7 +20,7 @@ class UnexpectedTypeTest extends ExceptionTestCase
    */
   protected function defaultArguments()
   {
-    return array($this->typeFixture());
+    return array($this->_value, $this->typeFixture());
   }
 
   /**
@@ -40,6 +40,7 @@ class UnexpectedTypeTest extends ExceptionTestCase
 
   protected function setUp()
   {
+    $this->_value = 'foo';
     $this->_expectedTypeName = 'foo';
   }
 
@@ -60,8 +61,13 @@ class UnexpectedTypeTest extends ExceptionTestCase
   {
     $expectedType = $this->typeFixture();
 
-    $this->assertSame($expectedType, $this->exceptionFixture(array($expectedType))->expectedType());
+    $this->assertSame($expectedType, $this->exceptionFixture(array($this->_value, $expectedType))->expectedType());
   }
+
+  /**
+   * @var mixed
+   */
+  protected $_value;
 
   /**
    * @var string

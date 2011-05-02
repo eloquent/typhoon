@@ -6,7 +6,7 @@ use Typhoon\Type;
 
 final class UnexpectedType extends Exception
 {
-  public function __construct(Type $expectedType, \Exception $previous = null)
+  public function __construct($value, Type $expectedType, \Exception $previous = null)
   {
     $this->expectedType = $expectedType;
     
