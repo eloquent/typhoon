@@ -7,9 +7,9 @@ use ArrayIterator;
 use IteratorAggregate;
 use Typhoon\Exception\NotImplemented;
 use Typhoon\ParameterList\Exception\UndefinedParameter;
+use Typhoon\ParameterList\Exception\UnexpectedArgument;
 use Typhoon\Scalar\Integer;
 use Typhoon\Scalar\String;
-use Typhoon\Type\Exception\UnexpectedType;
 use Typhoon\Type\Object;
 
 class ParameterList implements ArrayAccess, IteratorAggregate
@@ -29,9 +29,13 @@ class ParameterList implements ArrayAccess, IteratorAggregate
 
   public function offsetSet($index, $parameter)
   {
-    if (!$parameter instanceof Parameter) throw new UnexpectedType(
-      new Object(__NAMESPACE__.'\Parameter')
-    );
+    if (!$parameter instanceof Parameter)
+    {
+      $parameterParameter = new Parameter;
+      $parameterParameter->setType(new Object(__NAMESPACE__.'\Parameter'));
+
+      throw new UnexpectedArgument($parameter, new Integer(1), $parameterParameter);
+    }
 
     if (null === $index)
     {

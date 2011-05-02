@@ -38,20 +38,9 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
   /**
    * @covers \Typhoon\ParameterList::offsetSet
    */
-  public function testOffsetSetFailureInterim()
-  {
-    $this->setExpectedException(__NAMESPACE__.'\Type\Exception\UnexpectedType');
-    $this->_parameter_list[] = null;
-  }
-
-  /**
-   * @covers \Typhoon\ParameterList::offsetSet
-   */
   public function testOffsetSetFailure()
   {
-    $this->markTestIncomplete('Unexpected argument is not yet implemented.');
-
-    $this->setExpectedException(__NAMESPACE__.'\Parameter\Exception\UnexpectedArgument');
+    $this->setExpectedException(__NAMESPACE__.'\ParameterList\Exception\UnexpectedArgument');
     $this->_parameter_list[] = null;
   }
 
