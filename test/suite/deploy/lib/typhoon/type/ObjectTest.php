@@ -58,7 +58,7 @@ class ObjectTest extends TypeTestCase
 
   /**
    * @covers \Typhoon\Type\Object::__construct
-   * @covers \Typhoon\Type\Object::string
+   * @covers \Typhoon\Type\Object::__toString
    * @group typhoon_types
    */
   public function testString()
@@ -66,7 +66,7 @@ class ObjectTest extends TypeTestCase
     parent::testString();
 
     $class = '\stdClass';
-    $this->assertEquals($this->expectedString().'('.$class.')', $this->typeFixture(array($class))->string());
+    $this->assertEquals($this->expectedString().'('.$class.')', (string)$this->typeFixture(array($class)));
   }
 
   // methods below must be manually overridden to implement @covers

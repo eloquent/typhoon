@@ -15,24 +15,16 @@ abstract class Type
     
     throw new UnexpectedType($this);
   }
-  
-  /**
-   * @return string
-   */
-  public function __toString()
-  {
-    return $this->string();
-  }
-  
-  /**
-   * @return string
-   */
-  abstract public function string();
-  
+
   /**
    * @param mixed value
    * 
    * @return boolean
    */
   abstract public function check($value);
+
+  /**
+   * @return string
+   */
+  abstract public function __toString();
 }

@@ -43,7 +43,7 @@ class TypeTest extends PHPUnit_Framework_TestCase
     ;
     $this->_type
       ->expects($this->once())
-      ->method('string')
+      ->method('__toString')
       ->will($this->returnValue(''))
     ;
 
@@ -58,7 +58,7 @@ class TypeTest extends PHPUnit_Framework_TestCase
   {
     $this->_type
       ->expects($this->once())
-      ->method('string')
+      ->method('__toString')
       ->will($this->returnValue('foo'))
     ;
 

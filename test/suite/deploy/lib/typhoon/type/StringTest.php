@@ -44,7 +44,7 @@ class StringTest extends TypeTestCase
   // methods below must be manually overridden to implement @covers
   
   /**
-   * @covers \Typhoon\Type\String::string
+   * @covers \Typhoon\Type\String::__toString
    * @group typhoon_types
    */
   public function testString() { parent::testString(); }

@@ -44,7 +44,7 @@ class MixedTest extends TypeTestCase
   // methods below must be manually overridden to implement @covers
   
   /**
-   * @covers \Typhoon\Type\Mixed::string
+   * @covers \Typhoon\Type\Mixed::__toString
    * @group typhoon_types
    */
   public function testString() { parent::testString(); }

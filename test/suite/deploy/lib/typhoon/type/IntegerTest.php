@@ -47,7 +47,7 @@ class IntegerTest extends TypeTestCase
   // methods below must be manually overridden to implement @covers
   
   /**
-   * @covers \Typhoon\Type\Integer::string
+   * @covers \Typhoon\Type\Integer::__toString
    * @group typhoon_types
    */
   public function testString() { parent::testString(); }

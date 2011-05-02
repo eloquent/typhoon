@@ -12,18 +12,6 @@ class Object extends Type
   }
 
   /**
-   * @return string
-   */
-  public function string()
-  {
-    $string = 'object';
-    
-    if ($this->class) $string .= '('.$this->class.')';
-
-    return $string;
-  }
-
-  /**
    * @param mixed value
    *
    * @return boolean
@@ -33,6 +21,18 @@ class Object extends Type
     if ($this->class) return $value instanceof $this->class;
 
     return is_object($value);
+  }
+
+  /**
+   * @return string
+   */
+  public function __toString()
+  {
+    $string = 'object';
+
+    if ($this->class) $string .= '('.$this->class.')';
+
+    return $string;
   }
 
   /**

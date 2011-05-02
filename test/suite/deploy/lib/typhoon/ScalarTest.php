@@ -18,7 +18,7 @@ class ScalarTest extends PHPUnit_Framework_TestCase
 
     $type = $this->getMock(
       __NAMESPACE__.'\Type',
-      array('string', 'check', 'assert'),
+      array('check', 'assert', '__toString'),
       array(),
       'TypeMock'
      );

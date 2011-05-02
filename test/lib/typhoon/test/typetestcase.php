@@ -42,7 +42,7 @@ abstract class TypeTestCase extends PHPUnit_Framework_TestCase
    */
   public function testString()
   {
-    $this->assertEquals($this->expectedString(), $this->typeFixture()->string());
+    $this->assertEquals($this->expectedString(), (string)$this->typeFixture());
   }
   
   /**

@@ -31,7 +31,7 @@ class UnexpectedTypeTest extends ExceptionTestCase
     $type = $this->getMockForAbstractClass('\Typhoon\Type');
     $type
       ->expects($this->once())
-      ->method('string')
+      ->method('__toString')
       ->will($this->returnValue($this->_expectedTypeName))
     ;
 

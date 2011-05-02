@@ -7,14 +7,6 @@ use Typhoon\Type;
 class Integer extends Type
 {
   /**
-   * @return string
-   */
-  public function string()
-  {
-    return 'integer';
-  }
-  
-  /**
    * @param mixed value
    * 
    * @return boolean
@@ -22,5 +14,13 @@ class Integer extends Type
   public function check($value)
   {
     return is_integer($value);
+  }
+
+  /**
+   * @return string
+   */
+  public function __toString()
+  {
+    return 'integer';
   }
 }
