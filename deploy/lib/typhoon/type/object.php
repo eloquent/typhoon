@@ -2,11 +2,12 @@
 
 namespace Typhoon\Type;
 
+use Typhoon\Scalar\String as StringScalar;
 use Typhoon\Type;
 
 class Object extends Type
 {
-  public function __construct($class = null)
+  public function __construct(StringScalar $class = null)
   {
     $this->class = $class;
   }
@@ -18,7 +19,12 @@ class Object extends Type
    */
   public function check($value)
   {
-    if ($this->class) return $value instanceof $this->class;
+    if ($this->class)
+    {
+      $class = (string)$this->class;
+      
+      return $value instanceof $class;
+    }
 
     return is_object($value);
   }
@@ -36,7 +42,7 @@ class Object extends Type
   }
 
   /**
-   * @var string
+   * @var StringScalar
    */
   protected $class;
 }

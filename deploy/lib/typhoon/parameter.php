@@ -2,14 +2,14 @@
 
 namespace Typhoon;
 
-use Typhoon\Scalar\String;
-use Typhoon\Type\Mixed;
+use Typhoon\Scalar\String as StringScalar;
+use Typhoon\Type\Mixed as MixedType;
 
 class Parameter
 {
   public function __construct()
   {
-    $this->type = new Mixed;
+    $this->type = new MixedType;
   }
 
   public function setType(Type $type)
@@ -25,26 +25,26 @@ class Parameter
     return $this->type;
   }
 
-  public function setName(String $name)
+  public function setName(StringScalar $name)
   {
     $this->name = $name;
   }
 
   /**
-   * @return String
+   * @return StringScalar
    */
   public function name()
   {
     return $this->name;
   }
 
-  public function setDescription(String $description)
+  public function setDescription(StringScalar $description)
   {
     $this->description = $description;
   }
 
   /**
-   * @return String
+   * @return StringScalar
    */
   public function description()
   {
@@ -57,12 +57,12 @@ class Parameter
   protected $type;
 
   /**
-   * @var String
+   * @var StringScalar
    */
   protected $name;
 
   /**
-   * @var String
+   * @var StringScalar
    */
   protected $description;
 }

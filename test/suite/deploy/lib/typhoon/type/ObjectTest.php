@@ -12,7 +12,7 @@ class ObjectTest extends TypeTestCase
    */
   public function typeValues()
   {
-    $class = '\stdClass';
+    $class = new \Typhoon\Scalar\String('\stdClass');
 
     return array(
       // object of any class
@@ -65,7 +65,7 @@ class ObjectTest extends TypeTestCase
   {
     parent::testString();
 
-    $class = '\stdClass';
+    $class = new \Typhoon\Scalar\String('\stdClass');
     $this->assertEquals($this->expectedString().'('.$class.')', (string)$this->typeFixture(array($class)));
   }
 
