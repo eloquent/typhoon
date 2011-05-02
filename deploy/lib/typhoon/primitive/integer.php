@@ -3,14 +3,15 @@
 namespace Typhoon\Primitive;
 
 use Typhoon\Primitive;
+use Typhoon\Type\Integer as IntegerType;
 
 final class Integer extends Primitive
 {
   /**
-   * @return \Typhoon\Type
+   * @return IntegerType
    */
   final public function type()
   {
-    return new \Typhoon\Type\Integer;
+    return new IntegerType;
   }
 }

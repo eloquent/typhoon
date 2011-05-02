@@ -3,8 +3,8 @@
 namespace Typhoon;
 
 use PHPUnit_Framework_TestCase;
-use Typhoon\Primitive\String;
-use Typhoon\Type\Mixed;
+use Typhoon\Primitive\String as StringPrimitive;
+use Typhoon\Type\Mixed as MixedType;
 
 class ParameterTest extends PHPUnit_Framework_TestCase
 {
@@ -12,7 +12,6 @@ class ParameterTest extends PHPUnit_Framework_TestCase
   {
     $this->_parameter = new Parameter;
     $this->_type = $this->getMockForAbstractClass(__NAMESPACE__.'\Type');
-    $this->_mixed_type = new Mixed;
   }
 
   /**
@@ -21,7 +20,7 @@ class ParameterTest extends PHPUnit_Framework_TestCase
    */
   public function testType()
   {
-    $this->assertEquals($this->_mixed_type, $this->_parameter->type());
+    $this->assertEquals(new MixedType, $this->_parameter->type());
     
     $this->_parameter->setType($this->_type);
 
@@ -36,7 +35,7 @@ class ParameterTest extends PHPUnit_Framework_TestCase
   {
     $this->assertNull($this->_parameter->name());
 
-    $name = new String('foo');
+    $name = new StringPrimitive('foo');
     $this->_parameter->setName($name);
 
     $this->assertEquals($name, $this->_parameter->name());
@@ -50,7 +49,7 @@ class ParameterTest extends PHPUnit_Framework_TestCase
   {
     $this->assertNull($this->_parameter->description());
 
-    $description = new String('foo');
+    $description = new StringPrimitive('foo');
     $this->_parameter->setDescription($description);
 
     $this->assertEquals($description, $this->_parameter->description());
@@ -65,9 +64,4 @@ class ParameterTest extends PHPUnit_Framework_TestCase
    * @var Type
    */
   protected $_type;
-
-  /**
-   * @var Mixed
-   */
-  protected $_mixed_type;
 }

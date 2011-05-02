@@ -7,6 +7,9 @@ use Typhoon\Type;
 
 class Object extends Type
 {
+  /**
+   * @param StringPrimitive $class
+   */
   public function __construct(StringPrimitive $class = null)
   {
     $this->class = $class;

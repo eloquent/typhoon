@@ -2,11 +2,16 @@
 
 namespace Typhoon\Exception;
 
-use Typhoon\Primitive\String;
+use Exception as NativeException;
+use Typhoon\Primitive\String as StringPrimitive;
 
-abstract class Exception extends \Exception
+abstract class Exception extends NativeException
 {
-  public function __construct(String $message, \Exception $previous = null)
+  /**
+   * @param StringPrimitive $message
+   * @param NativeException $previous
+   */
+  public function __construct(StringPrimitive $message, NativeException $previous = null)
   {
     parent::__construct((string)$message, 0, $previous);
   }

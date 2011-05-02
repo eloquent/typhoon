@@ -14,6 +14,9 @@ use Typhoon\Type\Object as ObjectType;
 
 class ParameterList implements ArrayAccess, IteratorAggregate
 {
+  /**
+   * @param Parameter $parameter
+   */
   public function add(Parameter $parameter)
   {
     $this->parameters[] = $parameter;
@@ -27,6 +30,10 @@ class ParameterList implements ArrayAccess, IteratorAggregate
     return isset($this->parameters[$index]);
   }
 
+  /**
+   * @param integer $index
+   * @param Parameter $parameter
+   */
   public function offsetSet($index, $parameter)
   {
     if (!$parameter instanceof Parameter)
@@ -48,6 +55,8 @@ class ParameterList implements ArrayAccess, IteratorAggregate
   }
 
   /**
+   * @param integer $index
+   *
    * @return Parameter
    */
   public function offsetGet($index)
@@ -57,6 +66,9 @@ class ParameterList implements ArrayAccess, IteratorAggregate
     throw new UndefinedParameter(new IntegerPrimitive($index));
   }
 
+  /**
+   * @param integer $index
+   */
   public function offsetUnset($index)
   {
     throw new NotImplemented(new StringPrimitive('Unset'));

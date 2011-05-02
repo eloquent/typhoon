@@ -8,6 +8,8 @@ abstract class Type
 {
   /**
    * @param mixed $value
+   *
+   * @return mixed
    */
   public function assert($value)
   {

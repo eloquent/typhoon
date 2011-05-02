@@ -2,4 +2,6 @@
 
 namespace Typhoon\Type\Exception;
 
-abstract class Exception extends \Typhoon\Exception\Exception {}
+use Typhoon\Exception\Exception as TyphoonException;
+
+abstract class Exception extends TyphoonException {}

@@ -6,6 +6,9 @@ use Typhoon\Type;
 
 abstract class Primitive
 {
+  /**
+   * @param mixed $value
+   */
   final public function __construct($value)
   {
     $this->type()->assert($value);
@@ -14,7 +17,7 @@ abstract class Primitive
   }
 
   /**
-   * @return string
+   * @return mixed
    */
   final public function value()
   {

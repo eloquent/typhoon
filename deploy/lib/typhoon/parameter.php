@@ -2,6 +2,7 @@
 
 namespace Typhoon;
 
+use Typhoon\Primitive\Integer as IntegerPrimitive;
 use Typhoon\Primitive\String as StringPrimitive;
 use Typhoon\Type\Mixed as MixedType;
 
@@ -12,6 +13,9 @@ class Parameter
     $this->type = new MixedType;
   }
 
+  /**
+   * @param Type $type
+   */
   public function setType(Type $type)
   {
     $this->type = $type;
@@ -25,6 +29,9 @@ class Parameter
     return $this->type;
   }
 
+  /**
+   * @param StringPrimitive $name
+   */
   public function setName(StringPrimitive $name)
   {
     $this->name = $name;
@@ -38,6 +45,9 @@ class Parameter
     return $this->name;
   }
 
+  /**
+   * @param StringPrimitive $description
+   */
   public function setDescription(StringPrimitive $description)
   {
     $this->description = $description;
