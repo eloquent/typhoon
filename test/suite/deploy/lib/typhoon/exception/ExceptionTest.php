@@ -2,6 +2,7 @@
 
 namespace Typhoon\Exception;
 
+use Typhoon\Scalar\String;
 use Typhoon\Test\ExceptionTestCase;
 
 class ExceptionTest extends ExceptionTestCase
@@ -24,7 +25,7 @@ class ExceptionTest extends ExceptionTestCase
 
   protected function setUp()
   {
-    $this->_message = 'foo';
+    $this->_message = new String('foo');
   }
   
   /**
@@ -32,13 +33,13 @@ class ExceptionTest extends ExceptionTestCase
    */
   public function testConstructor()
   {
-    $this->assertEquals($this->_message, $this->exceptionFixture()->getMessage());
+    $this->assertEquals((string)$this->_message, $this->exceptionFixture()->getMessage());
 
     parent::testConstructor();
   }
 
   /**
-   * @var string
+   * @var String
    */
   protected $_message;
 }

@@ -4,6 +4,7 @@ namespace Typhoon\ParameterList\Exception;
 
 use Typhoon\Parameter;
 use Typhoon\Scalar\Integer;
+use Typhoon\Scalar\String;
 
 class UnexpectedArgument extends Exception
 {
@@ -26,6 +27,6 @@ class UnexpectedArgument extends Exception
       ."'."
     ;
 
-    parent::__construct($message, $previous);
+    parent::__construct(new String($message), $previous);
   }
 }

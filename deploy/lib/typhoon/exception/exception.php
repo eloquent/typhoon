@@ -2,10 +2,12 @@
 
 namespace Typhoon\Exception;
 
+use Typhoon\Scalar\String;
+
 abstract class Exception extends \Exception
 {
-  public function __construct($message, \Exception $previous = null)
+  public function __construct(String $message, \Exception $previous = null)
   {
-    parent::__construct($message, 0, $previous);
+    parent::__construct((string)$message, 0, $previous);
   }
 }
