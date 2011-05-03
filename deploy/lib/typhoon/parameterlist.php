@@ -17,8 +17,8 @@ use IteratorAggregate;
 use Typhoon\Exception\NotImplemented;
 use Typhoon\ParameterList\Exception\UndefinedParameter;
 use Typhoon\ParameterList\Exception\UnexpectedArgument;
-use Typhoon\Primitive\Integer as IntegerPrimitive;
-use Typhoon\Primitive\String as StringPrimitive;
+use Typhoon\Primitive\Integer;
+use Typhoon\Primitive\String;
 use Typhoon\Type\Integer as IntegerType;
 use Typhoon\Type\Object as ObjectType;
 
@@ -53,9 +53,9 @@ class ParameterList implements ArrayAccess, IteratorAggregate
     if (!$parameter instanceof Parameter)
     {
       $parameterParameter = new Parameter;
-      $parameterParameter->setType(new ObjectType(new StringPrimitive(__NAMESPACE__.'\Parameter')));
+      $parameterParameter->setType(new ObjectType(new String(__NAMESPACE__.'\Parameter')));
 
-      throw new UnexpectedArgument($parameter, new IntegerPrimitive(1), $parameterParameter);
+      throw new UnexpectedArgument($parameter, new Integer(1), $parameterParameter);
     }
 
     if (null === $index)
@@ -79,7 +79,7 @@ class ParameterList implements ArrayAccess, IteratorAggregate
 
     if (isset($this[$index])) return $this->parameters[$index];
 
-    throw new UndefinedParameter(new IntegerPrimitive($index));
+    throw new UndefinedParameter(new Integer($index));
   }
 
   /**
@@ -87,7 +87,7 @@ class ParameterList implements ArrayAccess, IteratorAggregate
    */
   public function offsetUnset($index)
   {
-    throw new NotImplemented(new StringPrimitive('Unset'));
+    throw new NotImplemented(new String('Unset'));
   }
 
   /**
@@ -108,7 +108,7 @@ class ParameterList implements ArrayAccess, IteratorAggregate
       $parameter = new Parameter;
       $parameter->setType(new IntegerType);
 
-      throw new UnexpectedArgument($index, new IntegerPrimitive(0), $parameter);
+      throw new UnexpectedArgument($index, new Integer(0), $parameter);
     }
   }
 

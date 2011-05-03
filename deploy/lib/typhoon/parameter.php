@@ -11,8 +11,8 @@
 
 namespace Typhoon;
 
-use Typhoon\Primitive\Boolean as BooleanPrimitive;
-use Typhoon\Primitive\String as StringPrimitive;
+use Typhoon\Primitive\Boolean;
+use Typhoon\Primitive\String;
 use Typhoon\Type\Mixed as MixedType;
 
 class Parameter
@@ -20,7 +20,7 @@ class Parameter
   public function __construct()
   {
     $this->type = new MixedType;
-    $this->optional = new BooleanPrimitive(false);
+    $this->optional = new Boolean(false);
   }
 
   /**
@@ -40,15 +40,15 @@ class Parameter
   }
 
   /**
-   * @param BooleanPrimitive $type
+   * @param Boolean $type
    */
-  public function setOptional(BooleanPrimitive $optional)
+  public function setOptional(Boolean $optional)
   {
     $this->optional = $optional;
   }
 
   /**
-   * @return BooleanPrimitive
+   * @return Boolean
    */
   public function optional()
   {
@@ -56,15 +56,15 @@ class Parameter
   }
 
   /**
-   * @param StringPrimitive $name
+   * @param String $name
    */
-  public function setName(StringPrimitive $name)
+  public function setName(String $name)
   {
     $this->name = $name;
   }
 
   /**
-   * @return StringPrimitive
+   * @return String
    */
   public function name()
   {
@@ -72,15 +72,15 @@ class Parameter
   }
 
   /**
-   * @param StringPrimitive $description
+   * @param String $description
    */
-  public function setDescription(StringPrimitive $description)
+  public function setDescription(String $description)
   {
     $this->description = $description;
   }
 
   /**
-   * @return StringPrimitive
+   * @return String
    */
   public function description()
   {
@@ -93,17 +93,17 @@ class Parameter
   protected $type;
 
   /**
-   * @var BooleanPrimitive
+   * @var Boolean
    */
   protected $optional;
 
   /**
-   * @var StringPrimitive
+   * @var String
    */
   protected $name;
 
   /**
-   * @var StringPrimitive
+   * @var String
    */
   protected $description;
 }

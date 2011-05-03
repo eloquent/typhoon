@@ -12,18 +12,18 @@
 namespace Typhoon\ParameterList\Exception;
 
 use Exception as NativeException;
-use Typhoon\Primitive\Integer as IntegerPrimitive;
-use Typhoon\Primitive\String as StringPrimitive;
+use Typhoon\Primitive\Integer;
+use Typhoon\Primitive\String;
 
 class UndefinedParameter extends Exception
 {
   /**
-   * @param IntegerPrimitive $index
+   * @param Integer $index
    * @param NativeException $previous
    */
-  public function __construct(IntegerPrimitive $index, NativeException $previous = null)
+  public function __construct(Integer $index, NativeException $previous = null)
   {
-    $message = new StringPrimitive('No parameter defined for index '.$index.'.');
+    $message = new String('No parameter defined for index '.$index.'.');
 
     parent::__construct($message, $previous);
   }

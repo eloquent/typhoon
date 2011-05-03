@@ -12,17 +12,17 @@
 namespace Typhoon\Exception;
 
 use Exception as NativeException;
-use Typhoon\Primitive\String as StringPrimitive;
+use Typhoon\Primitive\String;
 
 class NotImplemented extends Exception
 {
   /**
-   * @param StringPrimitive $feature
+   * @param String $feature
    * @param NativeException $previous
    */
-  public function __construct(StringPrimitive $feature, NativeException $previous = null)
+  public function __construct(String $feature, NativeException $previous = null)
   {
-    $message = new StringPrimitive($feature.' is not implemented.');
+    $message = new String($feature.' is not implemented.');
 
     parent::__construct($message, $previous);
   }

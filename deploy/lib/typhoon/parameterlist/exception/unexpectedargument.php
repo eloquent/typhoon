@@ -13,18 +13,18 @@ namespace Typhoon\ParameterList\Exception;
 
 use Exception as NativeException;
 use Typhoon\Parameter;
-use Typhoon\Primitive\Integer as IntegerPrimitive;
-use Typhoon\Primitive\String as StringPrimitive;
+use Typhoon\Primitive\Integer;
+use Typhoon\Primitive\String;
 
 class UnexpectedArgument extends Exception
 {
   /**
    * @param mixed $value
-   * @param IntegerPrimitive $index
+   * @param Integer $index
    * @param Parameter $parameter
    * @param NativeException $previous
    */
-  public function __construct($value, IntegerPrimitive $index, Parameter $parameter, NativeException $previous = null)
+  public function __construct($value, Integer $index, Parameter $parameter, NativeException $previous = null)
   {
     $message =
       "Unexpected argument at index "
@@ -43,6 +43,6 @@ class UnexpectedArgument extends Exception
       ."'."
     ;
 
-    parent::__construct(new StringPrimitive($message), $previous);
+    parent::__construct(new String($message), $previous);
   }
 }
