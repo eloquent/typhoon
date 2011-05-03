@@ -43,12 +43,11 @@ class ParameterTest extends PHPUnit_Framework_TestCase
    */
   public function testOptional()
   {
-    $this->assertEquals(new Boolean(false), $this->_parameter->optional());
+    $this->assertFalse($this->_parameter->optional());
 
-    $optional = new Boolean(true);
-    $this->_parameter->setOptional($optional);
+    $this->_parameter->setOptional(new Boolean(true));
 
-    $this->assertEquals($optional, $this->_parameter->optional());
+    $this->assertTrue($this->_parameter->optional());
   }
 
   /**
@@ -59,8 +58,8 @@ class ParameterTest extends PHPUnit_Framework_TestCase
   {
     $this->assertNull($this->_parameter->name());
 
-    $name = new String('foo');
-    $this->_parameter->setName($name);
+    $name = 'foo';
+    $this->_parameter->setName(new String($name));
 
     $this->assertEquals($name, $this->_parameter->name());
   }
@@ -73,8 +72,8 @@ class ParameterTest extends PHPUnit_Framework_TestCase
   {
     $this->assertNull($this->_parameter->description());
 
-    $description = new String('foo');
-    $this->_parameter->setDescription($description);
+    $description = 'foo';
+    $this->_parameter->setDescription(new String($description));
 
     $this->assertEquals($description, $this->_parameter->description());
   }

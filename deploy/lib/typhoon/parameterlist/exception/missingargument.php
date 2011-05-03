@@ -16,37 +16,31 @@ use Typhoon\Parameter;
 use Typhoon\Primitive\Integer;
 use Typhoon\Primitive\String;
 
-class UnexpectedArgument extends Exception
+class MissingArgument extends Exception
 {
   /**
-   * @param mixed $value
    * @param Integer $index
    * @param Parameter $parameter
    * @param NativeException $previous
    */
-  public function __construct($value, Integer $index, Parameter $parameter = null, NativeException $previous = null)
+  public function __construct(Integer $index, Parameter $parameter, NativeException $previous = null)
   {
     $message =
-      "Unexpected argument at index "
+      "Missing argument at index "
       .$index
     ;
 
-    if ($parameter)
-    {
-      if ($parameter->name()) $message .=
-        " ("
-        .$parameter->name()
-        .")"
-       ;
+    if ($parameter->name()) $message .=
+      " ("
+      .$parameter->name()
+      .")"
+     ;
 
-      $message .=
-        " - expected '"
-        .$parameter->type()
-        ."'"
-      ;
-    }
-
-    $message .= ".";
+    $message .=
+      " - expected '"
+      .$parameter->type()
+      ."'."
+    ;
 
     parent::__construct(new String($message), $previous);
   }

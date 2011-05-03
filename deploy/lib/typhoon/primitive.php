@@ -11,7 +11,9 @@
 
 namespace Typhoon;
 
-use Typhoon\Type;
+use Typhoon\ParameterList\Exception\UnexpectedArgument;
+use Typhoon\Primitive\Integer;
+use Typhoon\Type\Exception\UnexpectedType;
 
 abstract class Primitive
 {
@@ -20,7 +22,17 @@ abstract class Primitive
    */
   final public function __construct($value)
   {
-    $this->type()->assert($value);
+    try
+    {
+      $this->type()->assert($value);
+    }
+    catch (UnexpectedType $e)
+    {
+      $parameter = new Parameter;
+      $parameter->setType($this->type());
+
+      throw new UnexpectedArgument($value, new Integer(0), $parameter, $e);
+    }
 
     $this->value = $value;
   }

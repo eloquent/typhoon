@@ -27,23 +27,20 @@ class PrimitiveTest extends PHPUnit_Framework_TestCase
 
     $type = $this->getMock(
       __NAMESPACE__.'\Type',
-      array('check', 'assert', '__toString'),
-      array(),
-      'TypeMock'
-     );
+      array('check', 'assert', '__toString')
+    );
     $type
       ->expects($this->once())
       ->method('assert')
       ->with($this->equalTo($value))
-      ->will($this->returnCallback(function($value) { return $value; }))
     ;
 
     $scalar = $this->getMockForAbstractClass(
       __NAMESPACE__.'\Primitive',
       array(),
-      'PrimitiveMock',
+      '',
       false
-     );
+    );
     $scalar
       ->expects($this->once())
       ->method('type')
@@ -54,5 +51,36 @@ class PrimitiveTest extends PHPUnit_Framework_TestCase
 
     $this->assertEquals($value, $scalar->value());
     $this->assertEquals((string)$value, (string)$scalar);
+  }
+
+  /**
+   * @covers \Typhoon\Primitive::__construct
+   */
+  public function testPrimitiveFailure()
+  {
+    $value = 'foo';
+
+    $type = $this->getMockForAbstractClass(__NAMESPACE__.'\Type');
+    $type
+      ->expects($this->once())
+      ->method('check')
+      ->with($this->equalTo($value))
+      ->will($this->returnValue(false))
+    ;
+
+    $scalar = $this->getMockForAbstractClass(
+      __NAMESPACE__.'\Primitive',
+      array(),
+      '',
+      false
+    );
+    $scalar
+      ->expects($this->any())
+      ->method('type')
+      ->will($this->returnValue($type))
+    ;
+
+    $this->setExpectedException(__NAMESPACE__.'\ParameterList\Exception\UnexpectedArgument');
+    $scalar->__construct($value);
   }
 }

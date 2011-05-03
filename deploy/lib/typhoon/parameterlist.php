@@ -15,21 +15,81 @@ use ArrayAccess;
 use ArrayIterator;
 use IteratorAggregate;
 use Typhoon\Exception\NotImplemented;
+use Typhoon\ParameterList\Exception\MissingArgument;
 use Typhoon\ParameterList\Exception\UndefinedParameter;
 use Typhoon\ParameterList\Exception\UnexpectedArgument;
+use Typhoon\Primitive\Boolean;
 use Typhoon\Primitive\Integer;
 use Typhoon\Primitive\String;
+use Typhoon\Type\Exception\UnexpectedType;
 use Typhoon\Type\Integer as IntegerType;
 use Typhoon\Type\Object as ObjectType;
 
 class ParameterList implements ArrayAccess, IteratorAggregate
 {
   /**
-   * @param Parameter $parameter
+   * @param array
    */
-  public function add(Parameter $parameter)
+  public function assert(array $arguments)
   {
-    $this->parameters[] = $parameter;
+    $index = -1;
+
+    foreach ($arguments as $index => $value)
+    {
+      $indexPrimitive = new Integer($index);
+      $parameter = null;
+
+      if (isset($this->parameters[$index]))
+      {
+        $parameter = $this->parameters[$index];
+      }
+      elseif ($this->variableLength)
+      {
+        $parameter = $this->parameters[count($this->parameters) - 1];
+      }
+
+      if ($parameter)
+      {
+        try
+        {
+          $parameter->type()->assert($value);
+        }
+        catch (UnexpectedType $e)
+        {
+          throw new UnexpectedArgument($value, $indexPrimitive, $parameter, $e);
+        }
+
+        continue;
+      }
+
+      throw new UnexpectedArgument($value, $indexPrimitive);
+    }
+
+    $index ++;
+
+    if (count($this->parameters) <= $index) return;
+
+    $parameter = $this->parameters[$index];
+
+    if ($parameter->optional()) return;
+
+    throw new MissingArgument(new Integer($index), $parameter);
+  }
+
+  /**
+   * @param Boolean $variableLength
+   */
+  public function setVariableLength(Boolean $variableLength)
+  {
+    $this->variableLength = $variableLength->value();
+  }
+
+  /**
+   * @return boolean
+   */
+  public function variableLength()
+  {
+    return $this->variableLength;
   }
 
   /**
@@ -37,7 +97,7 @@ class ParameterList implements ArrayAccess, IteratorAggregate
    */
   public function offsetExists($index)
   {
-    $this->assertIndex($index);
+    new Integer($index);
 
     return isset($this->parameters[$index]);
   }
@@ -48,7 +108,7 @@ class ParameterList implements ArrayAccess, IteratorAggregate
    */
   public function offsetSet($index, $parameter)
   {
-    if (null !== $index) $this->assertIndex($index);
+    if (null !== $index) throw new NotImplemented(new String('Setting to a specific index'));
 
     if (!$parameter instanceof Parameter)
     {
@@ -58,14 +118,7 @@ class ParameterList implements ArrayAccess, IteratorAggregate
       throw new UnexpectedArgument($parameter, new Integer(1), $parameterParameter);
     }
 
-    if (null === $index)
-    {
-      $this->parameters[] = $parameter;
-    }
-    else
-    {
-      $this->parameters[$index] = $parameter;
-    }
+    $this->parameters[] = $parameter;
   }
 
   /**
@@ -75,7 +128,7 @@ class ParameterList implements ArrayAccess, IteratorAggregate
    */
   public function offsetGet($index)
   {
-    $this->assertIndex($index);
+    new Integer($index);
 
     if (isset($this[$index])) return $this->parameters[$index];
 
@@ -99,21 +152,12 @@ class ParameterList implements ArrayAccess, IteratorAggregate
   }
 
   /**
-   * @param mixed $index
-   */
-  protected function assertIndex($index)
-  {
-    if (!is_integer($index))
-    {
-      $parameter = new Parameter;
-      $parameter->setType(new IntegerType);
-
-      throw new UnexpectedArgument($index, new Integer(0), $parameter);
-    }
-  }
-
-  /**
    * @var array
    */
   protected $parameters = array();
+
+  /**
+   * @var boolean
+   */
+  protected $variableLength = false;
 }

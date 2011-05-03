@@ -34,7 +34,7 @@ class TypeTest extends PHPUnit_Framework_TestCase
       ->will($this->returnValue(true))
     ;
 
-    $this->assertEquals($value, $this->_type->assert($value));
+    $this->_type->assert($value);
   }
   
   /**

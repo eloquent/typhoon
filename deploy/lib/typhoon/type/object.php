@@ -21,7 +21,7 @@ class Object extends Type
    */
   public function __construct(StringPrimitive $class = null)
   {
-    $this->class = $class;
+    if (null !== $class) $this->class = $class->value();
   }
 
   /**
@@ -33,9 +33,7 @@ class Object extends Type
   {
     if ($this->class)
     {
-      $class = (string)$this->class;
-      
-      return $value instanceof $class;
+      return $value instanceof $this->class;
     }
 
     return is_object($value);
@@ -54,7 +52,7 @@ class Object extends Type
   }
 
   /**
-   * @var StringPrimitive
+   * @var string
    */
   protected $class;
 }

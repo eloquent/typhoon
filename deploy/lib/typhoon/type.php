@@ -17,14 +17,10 @@ abstract class Type
 {
   /**
    * @param mixed $value
-   *
-   * @return mixed
    */
   public function assert($value)
   {
-    if ($this->check($value)) return $value;
-    
-    throw new UnexpectedType($value, $this);
+    if (!$this->check($value)) throw new UnexpectedType($value, $this);
   }
 
   /**

@@ -20,7 +20,6 @@ class Parameter
   public function __construct()
   {
     $this->type = new MixedType;
-    $this->optional = new Boolean(false);
   }
 
   /**
@@ -44,11 +43,11 @@ class Parameter
    */
   public function setOptional(Boolean $optional)
   {
-    $this->optional = $optional;
+    $this->optional = $optional->value();
   }
 
   /**
-   * @return Boolean
+   * @return boolean
    */
   public function optional()
   {
@@ -60,11 +59,11 @@ class Parameter
    */
   public function setName(String $name)
   {
-    $this->name = $name;
+    $this->name = $name->value();
   }
 
   /**
-   * @return String
+   * @return string
    */
   public function name()
   {
@@ -76,11 +75,11 @@ class Parameter
    */
   public function setDescription(String $description)
   {
-    $this->description = $description;
+    $this->description = $description->value();
   }
 
   /**
-   * @return String
+   * @return string
    */
   public function description()
   {
@@ -93,17 +92,17 @@ class Parameter
   protected $type;
 
   /**
-   * @var Boolean
+   * @var boolean
    */
-  protected $optional;
+  protected $optional = false;
 
   /**
-   * @var String
+   * @var string
    */
   protected $name;
 
   /**
-   * @var String
+   * @var string
    */
   protected $description;
 }

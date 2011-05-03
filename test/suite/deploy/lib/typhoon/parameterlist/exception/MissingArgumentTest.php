@@ -16,14 +16,14 @@ use Typhoon\Primitive\Integer;
 use Typhoon\Primitive\String;
 use Typhoon\Test\ExceptionTestCase;
 
-class UnexpectedArgumentTest extends ExceptionTestCase
+class MissingArgumentTest extends ExceptionTestCase
 {
   /**
    * @return string
    */
   protected function exceptionClass()
   {
-    return __NAMESPACE__.'\UnexpectedArgument';
+    return __NAMESPACE__.'\MissingArgument';
   }
 
   /**
@@ -31,24 +31,23 @@ class UnexpectedArgumentTest extends ExceptionTestCase
    */
   protected function defaultArguments()
   {
-    return array($this->_value, $this->_index, $this->_parameter);
+    return array($this->_index, $this->_parameter);
   }
 
   protected function setUp()
   {
-    $this->_value = 'foo';
     $this->_index = new Integer(0);
     $this->_parameter = new Parameter;
     $this->_expectedTypeName = (string)$this->_parameter->type();
   }
 
   /**
-   * @covers \Typhoon\ParameterList\Exception\UnexpectedArgument::__construct
+   * @covers \Typhoon\ParameterList\Exception\MissingArgument::__construct
    */
   public function testConstructor()
   {
     $expected =
-      "Unexpected argument at index "
+      "Missing argument at index "
       .$this->_index
       ." - expected '"
       .$this->_expectedTypeName
@@ -59,7 +58,7 @@ class UnexpectedArgumentTest extends ExceptionTestCase
 
     $parameterName = new String('foo');
     $expected =
-      "Unexpected argument at index "
+      "Missing argument at index "
       .$this->_index
       ." (".$parameterName.")"
       ." - expected '"
@@ -70,23 +69,10 @@ class UnexpectedArgumentTest extends ExceptionTestCase
     $parameter = new Parameter;
     $parameter->setName($parameterName);
 
-    $this->assertEquals($expected, $this->exceptionFixture(array($this->_value, $this->_index, $parameter))->getMessage());
-
-    $expected =
-      "Unexpected argument at index "
-      .$this->_index
-      ."."
-    ;
-
-    $this->assertEquals($expected, $this->exceptionFixture(array($this->_value, $this->_index))->getMessage());
+    $this->assertEquals($expected, $this->exceptionFixture(array($this->_index, $parameter))->getMessage());
 
     parent::testConstructor();
   }
-
-  /**
-   * @var mixed
-   */
-  protected $_value;
 
   /**
    * @var Integer
