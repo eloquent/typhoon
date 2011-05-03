@@ -11,7 +11,7 @@
 
 namespace Typhoon;
 
-use Typhoon\Primitive\Integer as IntegerPrimitive;
+use Typhoon\Primitive\Boolean as BooleanPrimitive;
 use Typhoon\Primitive\String as StringPrimitive;
 use Typhoon\Type\Mixed as MixedType;
 
@@ -20,6 +20,7 @@ class Parameter
   public function __construct()
   {
     $this->type = new MixedType;
+    $this->optional = new BooleanPrimitive(false);
   }
 
   /**
@@ -36,6 +37,22 @@ class Parameter
   public function type()
   {
     return $this->type;
+  }
+
+  /**
+   * @param BooleanPrimitive $type
+   */
+  public function setOptional(BooleanPrimitive $optional)
+  {
+    $this->optional = $optional;
+  }
+
+  /**
+   * @return BooleanPrimitive
+   */
+  public function optional()
+  {
+    return $this->optional;
   }
 
   /**
@@ -74,6 +91,11 @@ class Parameter
    * @var Type
    */
   protected $type;
+
+  /**
+   * @var BooleanPrimitive
+   */
+  protected $optional;
 
   /**
    * @var StringPrimitive

@@ -12,6 +12,7 @@
 namespace Typhoon;
 
 use PHPUnit_Framework_TestCase;
+use Typhoon\Primitive\Boolean as BooleanPrimitive;
 use Typhoon\Primitive\String as StringPrimitive;
 use Typhoon\Type\Mixed as MixedType;
 
@@ -34,6 +35,20 @@ class ParameterTest extends PHPUnit_Framework_TestCase
     $this->_parameter->setType($this->_type);
 
     $this->assertSame($this->_type, $this->_parameter->type());
+  }
+
+  /**
+   * @covers \Typhoon\Parameter::setOptional
+   * @covers \Typhoon\Parameter::optional
+   */
+  public function testOptional()
+  {
+    $this->assertEquals(new BooleanPrimitive(false), $this->_parameter->optional());
+
+    $optional = new BooleanPrimitive(true);
+    $this->_parameter->setOptional($optional);
+
+    $this->assertEquals($optional, $this->_parameter->optional());
   }
 
   /**
