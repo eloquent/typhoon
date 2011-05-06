@@ -33,7 +33,7 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
 
   protected function setUp()
   {
-    $this->_parameter_list = new ParameterList;
+    $this->_parameterList = new ParameterList;
     $this->_parameter = new Parameter;
   }
 
@@ -67,11 +67,11 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
     $parameter_2 = new Parameter;
     $parameter_2->setType($type_2);
 
-    $this->_parameter_list[] = $parameter_1;
-    $this->_parameter_list[] = $parameter_2;
-    $this->_parameter_list->setVariableLength(new Boolean(true));
+    $this->_parameterList[] = $parameter_1;
+    $this->_parameterList[] = $parameter_2;
+    $this->_parameterList->setVariableLength(new Boolean(true));
 
-    $this->_parameter_list->assert($arguments);
+    $this->_parameterList->assert($arguments);
   }
 
   /**
@@ -82,17 +82,17 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
     $value = 'foo';
     $arguments = array();
 
-    $this->_parameter_list->assert($arguments);
+    $this->_parameterList->assert($arguments);
 
     $arguments[] = $value;
-    $this->_parameter_list[] = $this->_parameter;
+    $this->_parameterList[] = $this->_parameter;
 
-    $this->_parameter_list->assert($arguments);
+    $this->_parameterList->assert($arguments);
 
     $arguments[] = $value;
-    $this->_parameter_list[] = $this->_parameter;
+    $this->_parameterList[] = $this->_parameter;
 
-    $this->_parameter_list->assert($arguments);
+    $this->_parameterList->assert($arguments);
   }
 
   /**
@@ -106,14 +106,14 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
     $optionalParameter->setOptional(new Boolean(true));
 
     $arguments[] = $value;
-    $this->_parameter_list[] = $this->_parameter;
-    $this->_parameter_list[] = $optionalParameter;
+    $this->_parameterList[] = $this->_parameter;
+    $this->_parameterList[] = $optionalParameter;
 
-    $this->_parameter_list->assert($arguments);
+    $this->_parameterList->assert($arguments);
 
-    $this->_parameter_list[] = $optionalParameter;
+    $this->_parameterList[] = $optionalParameter;
 
-    $this->_parameter_list->assert($arguments);
+    $this->_parameterList->assert($arguments);
   }
 
   /**
@@ -126,10 +126,10 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
 
     $arguments[] = $value;
     $arguments[] = $value;
-    $this->_parameter_list[] = $this->_parameter;
-    $this->_parameter_list->setVariableLength(new Boolean(true));
+    $this->_parameterList[] = $this->_parameter;
+    $this->_parameterList->setVariableLength(new Boolean(true));
 
-    $this->_parameter_list->assert($arguments);
+    $this->_parameterList->assert($arguments);
   }
 
   /**
@@ -149,10 +149,10 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
       ->will($this->returnValue('foo'))
     ;
     $this->_parameter->setType($type);
-    $this->_parameter_list[] = $this->_parameter;
+    $this->_parameterList[] = $this->_parameter;
 
     $this->setExpectedException(__NAMESPACE__.'\ParameterList\Exception\UnexpectedArgument', 'at index 0');
-    $this->_parameter_list->assert(array(null));
+    $this->_parameterList->assert(array(null));
   }
 
   /**
@@ -160,10 +160,10 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
    */
   public function testAssertFailureNoArguments()
   {
-    $this->_parameter_list[] = $this->_parameter;
+    $this->_parameterList[] = $this->_parameter;
 
     $this->setExpectedException(__NAMESPACE__.'\ParameterList\Exception\MissingArgument', 'at index 0');
-    $this->_parameter_list->assert(array());
+    $this->_parameterList->assert(array());
   }
 
   /**
@@ -171,11 +171,11 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
    */
   public function testAssertFailureNotEnoughArguments()
   {
-    $this->_parameter_list[] = $this->_parameter;
-    $this->_parameter_list[] = $this->_parameter;
+    $this->_parameterList[] = $this->_parameter;
+    $this->_parameterList[] = $this->_parameter;
 
     $this->setExpectedException(__NAMESPACE__.'\ParameterList\Exception\MissingArgument', 'at index 1');
-    $this->_parameter_list->assert(array(null));
+    $this->_parameterList->assert(array(null));
   }
 
   /**
@@ -184,7 +184,7 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
   public function testAssertFailureTooManyArguments()
   {
     $this->setExpectedException(__NAMESPACE__.'\ParameterList\Exception\UnexpectedArgument', 'at index 0');
-    $this->_parameter_list->assert(array(null));
+    $this->_parameterList->assert(array(null));
   }
 
   /**
@@ -192,10 +192,10 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
    */
   public function testAssertFailureTooManyArgumentsNonEmpty()
   {
-    $this->_parameter_list[] = $this->_parameter;
+    $this->_parameterList[] = $this->_parameter;
 
     $this->setExpectedException(__NAMESPACE__.'\ParameterList\Exception\UnexpectedArgument', 'at index 1');
-    $this->_parameter_list->assert(array(null, null));
+    $this->_parameterList->assert(array(null, null));
   }
 
   /**
@@ -203,10 +203,10 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
    */
   public function testAssertFailureArgumentKey()
   {
-    $this->_parameter_list[] = $this->_parameter;
+    $this->_parameterList[] = $this->_parameter;
 
     $this->setExpectedException(__NAMESPACE__.'\ParameterList\Exception\UnexpectedArgument', "expected 'integer'");
-    $this->_parameter_list->assert(array('foo' => 'foo'));
+    $this->_parameterList->assert(array('foo' => 'foo'));
   }
 
   /**
@@ -215,11 +215,11 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
    */
   public function testVariableLength()
   {
-    $this->assertFalse($this->_parameter_list->variableLength());
+    $this->assertFalse($this->_parameterList->variableLength());
 
-    $this->_parameter_list->setVariableLength(new Boolean(true));
+    $this->_parameterList->setVariableLength(new Boolean(true));
 
-    $this->assertTrue($this->_parameter_list->variableLength());
+    $this->assertTrue($this->_parameterList->variableLength());
   }
 
   /**
@@ -229,19 +229,19 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
    */
   public function testArrayAccess()
   {
-    $this->assertInstanceOf('\ArrayAccess', $this->_parameter_list);
+    $this->assertInstanceOf('\ArrayAccess', $this->_parameterList);
 
-    $this->assertFalse(isset($this->_parameter_list[0]));
+    $this->assertFalse(isset($this->_parameterList[0]));
 
-    $this->_parameter_list[] = $this->_parameter;
+    $this->_parameterList[] = $this->_parameter;
 
-    $this->assertTrue(isset($this->_parameter_list[0]));
-    $this->assertSame($this->_parameter, $this->_parameter_list[0]);
+    $this->assertTrue(isset($this->_parameterList[0]));
+    $this->assertSame($this->_parameter, $this->_parameterList[0]);
 
-    $this->_parameter_list[] = $this->_parameter;
+    $this->_parameterList[] = $this->_parameter;
 
-    $this->assertTrue(isset($this->_parameter_list[1]));
-    $this->assertSame($this->_parameter, $this->_parameter_list[1]);
+    $this->assertTrue(isset($this->_parameterList[1]));
+    $this->assertSame($this->_parameter, $this->_parameterList[1]);
   }
 
   /**
@@ -250,7 +250,7 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
   public function testOffsetGetFailure()
   {
     $this->setExpectedException(__NAMESPACE__.'\ParameterList\Exception\UndefinedParameter');
-    $this->_parameter_list[0];
+    $this->_parameterList[0];
   }
 
   /**
@@ -259,7 +259,7 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
   public function testOffsetUnsetFailure()
   {
     $this->setExpectedException(__NAMESPACE__.'\Exception\NotImplemented');
-    unset($this->_parameter_list[0]);
+    unset($this->_parameterList[0]);
   }
 
   /**
@@ -271,7 +271,7 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
   public function testUnexpectedArgumentFailure($method, array $arguments)
   {
     $this->setExpectedException(__NAMESPACE__.'\ParameterList\Exception\UnexpectedArgument');
-    call_user_func_array(array($this->_parameter_list, $method), $arguments);
+    call_user_func_array(array($this->_parameterList, $method), $arguments);
   }
 
   /**
@@ -280,23 +280,23 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
    */
   public function testOffsetSetAndGetIterator()
   {
-    $this->assertInstanceOf('\Iterator', $this->_parameter_list->getIterator());
+    $this->assertInstanceOf('\Iterator', $this->_parameterList->getIterator());
 
     $expected = array();
-    $this->assertEquals($expected, iterator_to_array($this->_parameter_list->getIterator()));
+    $this->assertEquals($expected, iterator_to_array($this->_parameterList->getIterator()));
 
-    $this->_parameter_list[] = $this->_parameter;
+    $this->_parameterList[] = $this->_parameter;
 
     $expected[] = $this->_parameter;
-    $this->assertEquals($expected, iterator_to_array($this->_parameter_list->getIterator()));
+    $this->assertEquals($expected, iterator_to_array($this->_parameterList->getIterator()));
     
-    $this->_parameter_list[] = $this->_parameter;
+    $this->_parameterList[] = $this->_parameter;
 
     $expected[] = $this->_parameter;
-    $this->assertEquals($expected, iterator_to_array($this->_parameter_list->getIterator()));
+    $this->assertEquals($expected, iterator_to_array($this->_parameterList->getIterator()));
 
     $iterations = 0;
-    foreach ($this->_parameter_list->getIterator() as $parameter)
+    foreach ($this->_parameterList->getIterator() as $parameter)
     {
       $this->assertSame($this->_parameter, $parameter);
 
@@ -308,13 +308,13 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
 
   public function testTraversable()
   {
-    $this->assertInstanceOf('\Traversable', $this->_parameter_list);
+    $this->assertInstanceOf('\Traversable', $this->_parameterList);
   }
 
   /**
    * @var ParameterList
    */
-  protected $_parameter_list;
+  protected $_parameterList;
 
   /**
    * @var Parameter

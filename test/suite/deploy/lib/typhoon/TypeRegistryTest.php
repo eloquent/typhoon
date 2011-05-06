@@ -21,18 +21,18 @@ class TypeRegistryTest extends PHPUnit_Framework_TestCase
   public function unexpectedArgumentData()
   {
     return array(
-      array('offsetExists', array(0)),                // #0: non-string alias
-      array('offsetSet', array(null, $this->_type)),  // #1: null alias
-      array('offsetSet', array(0, $this->_type)),     // #2: non-string alias
-      array('offsetSet', array('foo', null)),         // #3: non-type type
-      array('offsetGet', array(0)),                   // #4: non-string alias
+      array('offsetExists', array(0)),                     // #0: non-string alias
+      array('offsetSet', array(null, $this->_typeName)),  // #1: null alias
+      array('offsetSet', array(0, $this->_typeName)),     // #2: non-string alias
+      array('offsetSet', array('foo', null)),              // #3: non-string type
+      array('offsetGet', array(0)),                        // #4: non-string alias
     );
   }
 
   public function setUp()
   {
     $this->_registry = new TypeRegistry;
-    $this->_type = $this->getMockForAbstractClass(__NAMESPACE__.'\Type');
+    $this->_typeName = 'foo';
   }
 
   /**
@@ -40,14 +40,18 @@ class TypeRegistryTest extends PHPUnit_Framework_TestCase
    */
   public function testAlias()
   {
+    $type = $this->getMockForAbstractClass('\Typhoon\Type');
+    $typeName = get_class($type);
     $alias = 'foo';
-    $this->_registry[$alias] = $this->_type;
+    $this->_registry[$alias] = $typeName;
 
-    $this->assertEquals($alias, $this->_registry->alias($this->_type));
+    $this->assertEquals($alias, $this->_registry->alias($typeName));
+    $this->assertEquals($alias, $this->_registry->alias($type));
 
-    $this->_registry['bar'] = $this->_type;
+    $this->_registry['bar'] = $typeName;
 
-    $this->assertEquals($alias, $this->_registry->alias($this->_type));
+    $this->assertEquals($alias, $this->_registry->alias($typeName));
+    $this->assertEquals($alias, $this->_registry->alias($type));
   }
 
   /**
@@ -56,7 +60,7 @@ class TypeRegistryTest extends PHPUnit_Framework_TestCase
   public function testAliasFailure()
   {
     $this->setExpectedException(__NAMESPACE__.'\TypeRegistry\Exception\UnregisteredType');
-    $this->_registry->alias($this->_type);
+    $this->_registry->alias($this->_typeName);
   }
 
   /**
@@ -70,21 +74,19 @@ class TypeRegistryTest extends PHPUnit_Framework_TestCase
 
     $this->assertFalse(isset($this->_registry['foo']));
 
-    $this->_registry['Foo'] = $this->_type;
+    $this->_registry['Foo'] = $this->_typeName;
 
     $this->assertTrue(isset($this->_registry['foo']));
-    $this->assertSame($this->_type, $this->_registry['foo']);
+    $this->assertEquals($this->_typeName, $this->_registry['foo']);
 
-    $this->_registry['bar'] = $this->_type;
+    $this->_registry['bar'] = $this->_typeName;
 
     $this->assertTrue(isset($this->_registry['BAR']));
-    $this->assertSame($this->_type, $this->_registry['BAR']);
+    $this->assertEquals($this->_typeName, $this->_registry['BAR']);
 
-    $newType = $this->getMockForAbstractClass(__NAMESPACE__.'\Type');
-    $this->_registry['bar'] = $newType;
+    $this->_registry['bar'] = 'bar';
 
-    $this->assertSame($newType, $this->_registry['bar']);
-    $this->assertNotSame($this->_type, $this->_registry['bar']);
+    $this->assertEquals('bar', $this->_registry['bar']);
   }
 
   /**
@@ -123,7 +125,7 @@ class TypeRegistryTest extends PHPUnit_Framework_TestCase
   protected $_registry;
 
   /**
-   * @var Type
+   * @var string
    */
-  protected $_type;
+  protected $_typeName;
 }

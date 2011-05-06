@@ -23,18 +23,16 @@ use Typhoon\TypeRegistry\Exception\UnregisteredTypeAlias;
 class TypeRegistry implements ArrayAccess
 {
   /**
-   * @param Type $type
+   * @param Type|NULL $type
    *
    * @return string
    */
-  public function alias(Type $type)
+  public function alias($type)
   {
-    foreach ($this->types as $alias => $thisType)
-    {
-      if ($type === $thisType) return $alias;
-    }
+    if (is_object($type)) $type = get_class($type);
+    if (!isset($this->aliases[$type])) throw new UnregisteredType(new String($type));
 
-    throw new UnregisteredType($type);
+    return $this->aliases[$type];
   }
 
   /**
@@ -56,16 +54,10 @@ class TypeRegistry implements ArrayAccess
   public function offsetSet($alias, $type)
   {
     new String($alias);
-
-    if (!$type instanceof Type)
-    {
-      $parameter = new Parameter;
-      $parameter->setType(new ObjectType(new String(__NAMESPACE__.'\Type')));
-
-      throw new UnexpectedArgument($parameter, new Integer(1), $parameter);
-    }
+    new String($type);
 
     $this->types[mb_strtolower($alias)] = $type;
+    if (!isset($this->aliases[$type])) $this->aliases[$type] = $alias;
   }
 
   /**
@@ -92,4 +84,9 @@ class TypeRegistry implements ArrayAccess
    * @var array
    */
   protected $types = array();
+
+  /**
+   * @var array
+   */
+  protected $aliases = array();
 }

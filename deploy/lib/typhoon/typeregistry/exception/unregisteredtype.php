@@ -18,12 +18,12 @@ use Typhoon\Type;
 class UnregisteredType extends Exception
 {
   /**
-   * @param Type $type
+   * @param String $typeName
    * @param NativeException $previous
    */
-  public function __construct(Type $type, NativeException $previous = null)
+  public function __construct(String $typeName, NativeException $previous = null)
   {
-    $message = new String("No registered alias for type '".get_class($type)."'.");
+    $message = new String("No registered alias for type '".$typeName."'.");
 
     parent::__construct($message, $previous);
   }

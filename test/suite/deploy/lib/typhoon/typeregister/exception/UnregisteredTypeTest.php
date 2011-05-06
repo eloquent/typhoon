@@ -30,12 +30,12 @@ class UnregisteredTypeTest extends ExceptionTestCase
    */
   protected function defaultArguments()
   {
-    return array($this->_type);
+    return array($this->_typeName);
   }
 
   protected function setUp()
   {
-    $this->_type = $this->getMockForAbstractClass('\Typhoon\Type');
+    $this->_typeName = new String('foo');
   }
 
   /**
@@ -43,13 +43,13 @@ class UnregisteredTypeTest extends ExceptionTestCase
    */
   public function testConstructor()
   {
-    $this->assertEquals("No registered alias for type '".get_class($this->_type)."'.", $this->exceptionFixture()->getMessage());
+    $this->assertEquals("No registered alias for type '".$this->_typeName."'.", $this->exceptionFixture()->getMessage());
 
     parent::testConstructor();
   }
 
   /**
-   * @var Type
+   * @var String
    */
-  protected $_type;
+  protected $_typeName;
 }
