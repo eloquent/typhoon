@@ -17,10 +17,26 @@ use Typhoon\ParameterList\Exception\UnexpectedArgument;
 use Typhoon\Primitive\Integer;
 use Typhoon\Primitive\String;
 use Typhoon\Type\Object as ObjectType;
+use Typhoon\TypeRegistry\Exception\UnregisteredType;
 use Typhoon\TypeRegistry\Exception\UnregisteredTypeAlias;
 
 class TypeRegistry implements ArrayAccess
 {
+  /**
+   * @param Type $type
+   *
+   * @return string
+   */
+  public function alias(Type $type)
+  {
+    foreach ($this->types as $alias => $thisType)
+    {
+      if ($type === $thisType) return $alias;
+    }
+
+    throw new UnregisteredType($type);
+  }
+
   /**
    * @param string $alias
    *

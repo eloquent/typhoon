@@ -36,6 +36,30 @@ class TypeRegistryTest extends PHPUnit_Framework_TestCase
   }
 
   /**
+   * @covers \Typhoon\TypeRegistry::alias
+   */
+  public function testAlias()
+  {
+    $alias = 'foo';
+    $this->_registry[$alias] = $this->_type;
+
+    $this->assertEquals($alias, $this->_registry->alias($this->_type));
+
+    $this->_registry['bar'] = $this->_type;
+
+    $this->assertEquals($alias, $this->_registry->alias($this->_type));
+  }
+
+  /**
+   * @covers \Typhoon\TypeRegistry::alias
+   */
+  public function testAliasFailure()
+  {
+    $this->setExpectedException(__NAMESPACE__.'\TypeRegistry\Exception\UnregisteredType');
+    $this->_registry->alias($this->_type);
+  }
+
+  /**
    * @covers \Typhoon\TypeRegistry::offsetExists
    * @covers \Typhoon\TypeRegistry::offsetSet
    * @covers \Typhoon\TypeRegistry::offsetGet
