@@ -12,9 +12,26 @@
 namespace Typhoon;
 
 use PHPUnit_Framework_TestCase;
+use Typhoon\TypeRegistry\Exception\UnregisteredType;
+use Typhoon\TypeRegistry\Exception\UnregisteredTypeAlias;
 
 class TypeRegistryTest extends PHPUnit_Framework_TestCase
 {
+  /**
+   * @return array
+   */
+  public function defaultTypes()
+  {
+    return array(
+      array('boolean', 'Typhoon\Type\Boolean'),
+      array('integer', 'Typhoon\Type\Integer'),
+      array('mixed', 'Typhoon\Type\Mixed'),
+      array('null', 'Typhoon\Type\Null'),
+      array('object', 'Typhoon\Type\Object'),
+      array('string', 'Typhoon\Type\String'),
+    );
+  }
+
   /**
    * @return array
    */
@@ -22,8 +39,8 @@ class TypeRegistryTest extends PHPUnit_Framework_TestCase
   {
     return array(
       array('offsetExists', array(0)),                     // #0: non-string alias
-      array('offsetSet', array(null, $this->_typeName)),  // #1: null alias
-      array('offsetSet', array(0, $this->_typeName)),     // #2: non-string alias
+      array('offsetSet', array(null, $this->_typeName)),   // #1: null alias
+      array('offsetSet', array(0, $this->_typeName)),      // #2: non-string alias
       array('offsetSet', array('foo', null)),              // #3: non-string type
       array('offsetGet', array(0)),                        // #4: non-string alias
     );
@@ -33,6 +50,39 @@ class TypeRegistryTest extends PHPUnit_Framework_TestCase
   {
     $this->_registry = new TypeRegistry;
     $this->_typeName = 'foo';
+  }
+
+  /**
+   * @covers \Typhoon\TypeRegistry::registerDefaults
+   * @dataProvider defaultTypes
+   */
+  public function testRegisterDefaults($alias, $type)
+  {
+    $caught = false;
+    try
+    {
+      $this->_registry->alias($type);
+    }
+    catch (UnregisteredType $e)
+    {
+      $caught = true;
+    }
+    $this->assertTrue($caught);
+
+    $caught = false;
+    try
+    {
+      $this->_registry[$alias];
+    }
+    catch (UnregisteredTypeAlias $e)
+    {
+      $caught = true;
+    }
+    $this->assertTrue($caught);
+
+    $this->_registry->registerDefaults();
+    $this->_registry->alias($type);
+    $this->_registry[$alias];
   }
 
   /**

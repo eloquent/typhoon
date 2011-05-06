@@ -22,6 +22,16 @@ use Typhoon\TypeRegistry\Exception\UnregisteredTypeAlias;
 
 class TypeRegistry implements ArrayAccess
 {
+  public function registerDefaults()
+  {
+    $this['boolean'] = __NAMESPACE__.'\Type\Boolean';
+    $this['integer'] = __NAMESPACE__.'\Type\Integer';
+    $this['mixed'] = __NAMESPACE__.'\Type\Mixed';
+    $this['null'] = __NAMESPACE__.'\Type\Null';
+    $this['object'] = __NAMESPACE__.'\Type\Object';
+    $this['string'] = __NAMESPACE__.'\Type\String';
+  }
+
   /**
    * @param Type|NULL $type
    *
@@ -30,6 +40,7 @@ class TypeRegistry implements ArrayAccess
   public function alias($type)
   {
     if (is_object($type)) $type = get_class($type);
+    var_dump($this->aliases);
     if (!isset($this->aliases[$type])) throw new UnregisteredType(new String($type));
 
     return $this->aliases[$type];
