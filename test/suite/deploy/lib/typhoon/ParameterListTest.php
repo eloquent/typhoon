@@ -24,9 +24,10 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
   public function unexpectedArgumentData()
   {
     return array(
-      array('offsetExists', array('foo')),
-      array('offsetSet', array(null, null)),
-      array('offsetGet', array('foo')),
+      array('offsetExists', array('foo')),              // #0: non-integer index
+      array('offsetSet', array(0, $this->_parameter)),  // #1: non-null index
+      array('offsetSet', array(null, null)),            // #2: non-parameter parameter
+      array('offsetGet', array('foo')),                 // #3: non-integer index
     );
   }
 
@@ -244,15 +245,6 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
   }
 
   /**
-   * @covers \Typhoon\ParameterList::offsetSet
-   */
-  public function testOffsetSetFailure()
-  {
-    $this->setExpectedException(__NAMESPACE__.'\Exception\NotImplemented');
-    $this->_parameter_list[0] = $this->_parameter;
-  }
-
-  /**
    * @covers \Typhoon\ParameterList::offsetGet
    */
   public function testOffsetGetFailure()
@@ -266,9 +258,6 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
    */
   public function testOffsetUnsetFailure()
   {
-    $parameter = new Parameter;
-    $this->_parameter_list[] = $parameter;
-
     $this->setExpectedException(__NAMESPACE__.'\Exception\NotImplemented');
     unset($this->_parameter_list[0]);
   }

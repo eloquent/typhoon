@@ -20,6 +20,7 @@ use Typhoon\ParameterList\Exception\UndefinedParameter;
 use Typhoon\ParameterList\Exception\UnexpectedArgument;
 use Typhoon\Primitive\Boolean;
 use Typhoon\Primitive\Integer;
+use Typhoon\Primitive\Null;
 use Typhoon\Primitive\String;
 use Typhoon\Type\Exception\UnexpectedType;
 use Typhoon\Type\Integer as IntegerType;
@@ -108,7 +109,7 @@ class ParameterList implements ArrayAccess, IteratorAggregate
    */
   public function offsetSet($index, $parameter)
   {
-    if (null !== $index) throw new NotImplemented(new String('Setting to a specific index'));
+    new Null($index);
 
     if (!$parameter instanceof Parameter)
     {
