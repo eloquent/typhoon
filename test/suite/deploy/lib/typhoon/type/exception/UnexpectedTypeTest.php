@@ -37,7 +37,7 @@ class UnexpectedTypeTest extends ExceptionTestCase
    */
   protected function typeFixture()
   {
-    $type = $this->getMockForAbstractClass('\Typhoon\Type');
+    $type = $this->getMockForAbstractClass('Typhoon\Type');
     $type
       ->expects($this->once())
       ->method('__toString')

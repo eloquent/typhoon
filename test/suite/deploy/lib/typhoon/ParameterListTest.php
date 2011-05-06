@@ -229,7 +229,7 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
    */
   public function testArrayAccess()
   {
-    $this->assertInstanceOf('\ArrayAccess', $this->_parameterList);
+    $this->assertInstanceOf('ArrayAccess', $this->_parameterList);
 
     $this->assertFalse(isset($this->_parameterList[0]));
 
@@ -280,7 +280,7 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
    */
   public function testOffsetSetAndGetIterator()
   {
-    $this->assertInstanceOf('\Iterator', $this->_parameterList->getIterator());
+    $this->assertInstanceOf('Iterator', $this->_parameterList->getIterator());
 
     $expected = array();
     $this->assertEquals($expected, iterator_to_array($this->_parameterList->getIterator()));
@@ -308,7 +308,7 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
 
   public function testTraversable()
   {
-    $this->assertInstanceOf('\Traversable', $this->_parameterList);
+    $this->assertInstanceOf('Traversable', $this->_parameterList);
   }
 
   /**

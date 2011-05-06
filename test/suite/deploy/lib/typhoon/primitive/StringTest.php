@@ -22,6 +22,6 @@ class StringTest extends PHPUnit_Framework_TestCase
   public function testType()
   {
     $scalar = new String('');
-    $this->assertInstanceOf('\Typhoon\Type\String', $scalar->type());
+    $this->assertInstanceOf('Typhoon\Type\String', $scalar->type());
   }
 }

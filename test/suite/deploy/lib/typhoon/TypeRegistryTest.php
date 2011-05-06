@@ -90,7 +90,7 @@ class TypeRegistryTest extends PHPUnit_Framework_TestCase
    */
   public function testAlias()
   {
-    $type = $this->getMockForAbstractClass('\Typhoon\Type');
+    $type = $this->getMockForAbstractClass('Typhoon\Type');
     $typeName = get_class($type);
     $alias = 'foo';
     $this->_registry[$alias] = $typeName;
@@ -120,7 +120,7 @@ class TypeRegistryTest extends PHPUnit_Framework_TestCase
    */
   public function testArrayAccess()
   {
-    $this->assertInstanceOf('\ArrayAccess', $this->_registry);
+    $this->assertInstanceOf('ArrayAccess', $this->_registry);
 
     $this->assertFalse(isset($this->_registry['foo']));
 

@@ -22,6 +22,6 @@ class NullTest extends PHPUnit_Framework_TestCase
   public function testType()
   {
     $scalar = new Null(null);
-    $this->assertInstanceOf('\Typhoon\Type\Null', $scalar->type());
+    $this->assertInstanceOf('Typhoon\Type\Null', $scalar->type());
   }
 }

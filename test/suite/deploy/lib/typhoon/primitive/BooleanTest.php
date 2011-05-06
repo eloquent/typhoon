@@ -22,6 +22,6 @@ class BooleanTest extends PHPUnit_Framework_TestCase
   public function testType()
   {
     $scalar = new Boolean(true);
-    $this->assertInstanceOf('\Typhoon\Type\Boolean', $scalar->type());
+    $this->assertInstanceOf('Typhoon\Type\Boolean', $scalar->type());
   }
 }
