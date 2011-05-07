@@ -106,18 +106,29 @@ class TypeRegistryTest extends PHPUnit_Framework_TestCase
    */
   public function testAlias()
   {
-    $type = $this->getMockForAbstractClass('Typhoon\Type');
-    $typeName = get_class($type);
-    $alias = 'foo';
-    $this->_registry[$alias] = $typeName;
+    $type_1 = $this->getMockForAbstractClass('Typhoon\Type', array(), 'TypeMock1');
+    $type_2 = $this->getMockForAbstractClass('Typhoon\Type', array(), 'TypeMock2');
+    $typeName_1 = get_class($type_1);
+    $typeName_2 = get_class($type_2);
+    $alias_1 = 'foo';
+    $alias_2 = 'bar';
+    $this->_registry[$alias_1] = $typeName_1;
 
-    $this->assertEquals($alias, $this->_registry->alias($typeName));
-    $this->assertEquals($alias, $this->_registry->alias($type));
+    $this->assertEquals($alias_1, $this->_registry->alias($typeName_1));
+    $this->assertEquals($alias_1, $this->_registry->alias($type_1));
 
-    $this->_registry['bar'] = $typeName;
+    $this->_registry[$alias_2] = $typeName_1;
 
-    $this->assertEquals($alias, $this->_registry->alias($typeName));
-    $this->assertEquals($alias, $this->_registry->alias($type));
+    $this->assertEquals($alias_1, $this->_registry->alias($typeName_1));
+    $this->assertEquals($alias_1, $this->_registry->alias($type_1));
+
+    $this->_registry[$alias_1] = $typeName_2;
+
+    $this->assertEquals($alias_1, $this->_registry->alias($typeName_2));
+    $this->assertEquals($alias_1, $this->_registry->alias($type_2));
+
+    $this->assertEquals($alias_2, $this->_registry->alias($typeName_1));
+    $this->assertEquals($alias_2, $this->_registry->alias($type_1));
   }
 
   /**

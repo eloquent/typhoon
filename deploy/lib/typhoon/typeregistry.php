@@ -72,7 +72,7 @@ class TypeRegistry implements ArrayAccess
     new String($type);
 
     $this->types[mb_strtolower($alias)] = $type;
-    if (!isset($this->aliases[$type])) $this->aliases[$type] = $alias;
+    $this->indexAliases();
   }
 
   /**
@@ -93,6 +93,18 @@ class TypeRegistry implements ArrayAccess
   public function offsetUnset($alias)
   {
     throw new NotImplemented(new String('Unset'));
+  }
+
+  protected function indexAliases()
+  {
+    $this->aliases = array();
+
+    foreach ($this->types as $alias => $type)
+    {
+      if (isset($this->aliases[$type])) continue;
+
+      $this->aliases[$type] = $alias;
+    }
   }
 
   /**
