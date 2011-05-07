@@ -22,6 +22,11 @@ use Typhoon\TypeRegistry\Exception\UnregisteredTypeAlias;
 
 class TypeRegistry implements ArrayAccess
 {
+  public function __construct()
+  {
+    $this->registerDefaults();
+  }
+
   public function registerDefaults()
   {
     $this['boolean'] = __NAMESPACE__.'\Type\Boolean';

@@ -53,15 +53,31 @@ class TypeRegistryTest extends PHPUnit_Framework_TestCase
   }
 
   /**
+   * @covers Typhoon\TypeRegistry::__construct
+   */
+  public function testConstructor()
+  {
+    $registry = $this->getMock('Typhoon\TypeRegistry', array('registerDefaults'), array(), '', false);
+    $registry
+      ->expects($this->once())
+      ->method('registerDefaults')
+    ;
+
+    $registry->__construct();
+  }
+
+  /**
    * @covers \Typhoon\TypeRegistry::registerDefaults
    * @dataProvider defaultTypes
    */
   public function testRegisterDefaults($alias, $type)
   {
+    $registry = $this->getMock('Typhoon\TypeRegistry', array('__construct'), array(), '', false);
+
     $caught = false;
     try
     {
-      $this->_registry->alias($type);
+      $registry->alias($type);
     }
     catch (UnregisteredType $e)
     {
@@ -72,7 +88,7 @@ class TypeRegistryTest extends PHPUnit_Framework_TestCase
     $caught = false;
     try
     {
-      $this->_registry[$alias];
+      $registry[$alias];
     }
     catch (UnregisteredTypeAlias $e)
     {
@@ -80,9 +96,9 @@ class TypeRegistryTest extends PHPUnit_Framework_TestCase
     }
     $this->assertTrue($caught);
 
-    $this->_registry->registerDefaults();
-    $this->_registry->alias($type);
-    $this->_registry[$alias];
+    $registry->registerDefaults();
+    $registry->alias($type);
+    $registry[$alias];
   }
 
   /**
