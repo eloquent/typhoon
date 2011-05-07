@@ -24,12 +24,4 @@ class Integer extends Type
   {
     return is_integer($value);
   }
-
-  /**
-   * @return string
-   */
-  public function __toString()
-  {
-    return 'integer';
-  }
 }

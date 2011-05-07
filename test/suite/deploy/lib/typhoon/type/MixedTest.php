@@ -42,22 +42,8 @@ class MixedTest extends TypeTestCase
     return __NAMESPACE__.'\Mixed';
   }
 
-  /**
-   * @return string
-   */
-  protected function expectedString()
-  {
-    return 'mixed';
-  }
-
   // methods below must be manually overridden to implement @covers
-  
-  /**
-   * @covers Typhoon\Type\Mixed::__toString
-   * @group typhoon_types
-   */
-  public function testString() { parent::testString(); }
-  
+
   /**
    * @covers Typhoon\Type\Mixed::check
    * @dataProvider typeValues

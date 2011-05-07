@@ -17,11 +17,13 @@ use Typhoon\Type;
 class Object extends Type
 {
   /**
-   * @param StringPrimitive $class
+   * @param string $class
    */
-  public function __construct(StringPrimitive $class = null)
+  public function construct($class = null)
   {
-    if (null !== $class) $this->class = $class->value();
+    if (null !== $class) new StringPrimitive($class);
+    
+    $this->class = $class;
   }
 
   /**
@@ -37,18 +39,6 @@ class Object extends Type
     }
 
     return is_object($value);
-  }
-
-  /**
-   * @return string
-   */
-  public function __toString()
-  {
-    $string = 'object';
-
-    if ($this->class) $string .= '('.$this->class.')';
-
-    return $string;
   }
 
   /**

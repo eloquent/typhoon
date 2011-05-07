@@ -10,6 +10,8 @@
  */
 
 use Typhoon\Primitive\String;
+use Typhoon\Renderer\Type;
+use Typhoon\Renderer\Type\Typhax;
 use Typhoon\TypeRegistry;
 
 class Typhoon
@@ -44,7 +46,30 @@ class Typhoon
   }
 
   /**
+   * @param Type $typeRenderer
+   */
+  public function setTypeRenderer(Type $typeRenderer)
+  {
+    $this->typeRenderer = $typeRenderer;
+  }
+
+  /**
+   * @return Type
+   */
+  public function typeRenderer()
+  {
+    if (!$this->typeRenderer) $this->typeRenderer = new Typhax;
+
+    return $this->typeRenderer;
+  }
+
+  /**
    * @var TypeRegistry
    */
   protected $typeRegistry;
+
+  /**
+   * @var Typhax
+   */
+  protected $typeRenderer;
 }

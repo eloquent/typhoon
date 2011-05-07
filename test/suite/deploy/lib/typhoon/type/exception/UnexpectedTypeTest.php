@@ -12,6 +12,7 @@
 namespace Typhoon\Type\Exception;
 
 use Typhoon;
+use Typhoon\Primitive\String;
 use Typhoon\Test\ExceptionTestCase;
 
 class UnexpectedTypeTest extends ExceptionTestCase
@@ -29,28 +30,13 @@ class UnexpectedTypeTest extends ExceptionTestCase
    */
   protected function defaultArguments()
   {
-    return array($this->_value, $this->typeFixture());
-  }
-
-  /**
-   * @return Type
-   */
-  protected function typeFixture()
-  {
-    $type = $this->getMockForAbstractClass('Typhoon\Type');
-    $type
-      ->expects($this->once())
-      ->method('__toString')
-      ->will($this->returnValue($this->_expectedTypeName))
-    ;
-
-    return $type;
+    return array($this->_value, $this->_expectedTypeName);
   }
 
   protected function setUp()
   {
     $this->_value = 'foo';
-    $this->_expectedTypeName = 'foo';
+    $this->_expectedTypeName = new String('foo');
   }
 
   /**
@@ -61,16 +47,6 @@ class UnexpectedTypeTest extends ExceptionTestCase
     $this->assertEquals("Unexpected type - expected '".$this->_expectedTypeName."'.", $this->exceptionFixture()->getMessage());
 
     parent::testConstructor();
-  }
-
-  /**
-   * @covers Typhoon\Type\Exception\UnexpectedType::expectedType
-   */
-  public function testExpectedType()
-  {
-    $expectedType = $this->typeFixture();
-
-    $this->assertSame($expectedType, $this->exceptionFixture(array($this->_value, $expectedType))->expectedType());
   }
 
   /**

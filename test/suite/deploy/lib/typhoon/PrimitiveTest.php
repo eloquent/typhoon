@@ -27,7 +27,7 @@ class PrimitiveTest extends PHPUnit_Framework_TestCase
 
     $type = $this->getMock(
       __NAMESPACE__.'\Type',
-      array('check', 'assert', '__toString')
+      array('check', 'assert')
     );
     $type
       ->expects($this->once())

@@ -21,7 +21,7 @@ class ObjectTest extends TypeTestCase
    */
   public function typeValues()
   {
-    $class = new \Typhoon\Primitive\String('stdClass');
+    $class = 'stdClass';
 
     return array(
       // object of any class
@@ -58,30 +58,18 @@ class ObjectTest extends TypeTestCase
   }
 
   /**
-   * @return string
+   * @covers Typhoon\Type\Object::construct
    */
-  protected function expectedString()
+  public function testConstructor()
   {
-    return 'object';
-  }
-
-  /**
-   * @covers Typhoon\Type\Object::__construct
-   * @covers Typhoon\Type\Object::__toString
-   * @group typhoon_types
-   */
-  public function testString()
-  {
-    parent::testString();
-
-    $class = new \Typhoon\Primitive\String('stdClass');
-    $this->assertEquals($this->expectedString().'('.$class.')', (string)$this->typeFixture(array($class)));
+    $this->setExpectedException('Typhoon\ParameterList\Exception\UnexpectedArgument');
+    new Object(1);
   }
 
   // methods below must be manually overridden to implement @covers
   
   /**
-   * @covers Typhoon\Type\Object::__construct
+   * @covers Typhoon\Type\Object::construct
    * @covers Typhoon\Type\Object::check
    * @dataProvider typeValues
    * @group typhoon_types

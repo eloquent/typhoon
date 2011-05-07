@@ -45,7 +45,6 @@ class TypeRegistry implements ArrayAccess
   public function alias($type)
   {
     if (is_object($type)) $type = get_class($type);
-    var_dump($this->aliases);
     if (!isset($this->aliases[$type])) throw new UnregisteredType(new String($type));
 
     return $this->aliases[$type];

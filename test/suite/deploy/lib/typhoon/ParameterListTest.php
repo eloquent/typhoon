@@ -46,7 +46,7 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
 
     $value_1 = 'foo';
     $arguments[] = $value_1;
-    $type_1 = $this->getMock(__NAMESPACE__.'\Type', array('check', 'assert', '__toString'));
+    $type_1 = $this->getMock(__NAMESPACE__.'\Type', array('check', 'assert'));
     $type_1
       ->expects($this->once())
       ->method('assert')
@@ -58,7 +58,7 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
     $value_2 = 'bar';
     $arguments[] = $value_2;
     $arguments[] = $value_2;
-    $type_2 = $this->getMock(__NAMESPACE__.'\Type', array('check', 'assert', '__toString'));
+    $type_2 = $this->getMock(__NAMESPACE__.'\Type', array('check', 'assert'));
     $type_2
       ->expects($this->exactly(2))
       ->method('assert')
@@ -142,11 +142,6 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
       ->expects($this->once())
       ->method('check')
       ->will($this->returnValue(false))
-    ;
-    $type
-      ->expects($this->any())
-      ->method('__toString')
-      ->will($this->returnValue('foo'))
     ;
     $this->_parameter->setType($type);
     $this->_parameterList[] = $this->_parameter;

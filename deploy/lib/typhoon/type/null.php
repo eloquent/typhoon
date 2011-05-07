@@ -24,12 +24,4 @@ class Null extends Type
   {
     return null === $value;
   }
-
-  /**
-   * @return string
-   */
-  public function __toString()
-  {
-    return 'null';
-  }
 }

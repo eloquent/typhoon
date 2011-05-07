@@ -25,6 +25,7 @@ class ParameterTest extends PHPUnit_Framework_TestCase
   }
 
   /**
+   * @covers Typhoon\Parameter::__construct
    * @covers Typhoon\Parameter::setType
    * @covers Typhoon\Parameter::type
    */

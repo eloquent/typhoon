@@ -45,22 +45,8 @@ class IntegerTest extends TypeTestCase
     return __NAMESPACE__.'\Integer';
   }
 
-  /**
-   * @return string
-   */
-  protected function expectedString()
-  {
-    return 'integer';
-  }
-
   // methods below must be manually overridden to implement @covers
-  
-  /**
-   * @covers Typhoon\Type\Integer::__toString
-   * @group typhoon_types
-   */
-  public function testString() { parent::testString(); }
-  
+
   /**
    * @covers Typhoon\Type\Integer::check
    * @dataProvider typeValues

@@ -24,12 +24,4 @@ class Mixed extends Type
   {
     return true;
   }
-
-  /**
-   * @return string
-   */
-  public function __toString()
-  {
-    return 'mixed';
-  }
 }

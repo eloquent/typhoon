@@ -42,22 +42,8 @@ class BooleanTest extends TypeTestCase
     return __NAMESPACE__.'\Boolean';
   }
 
-  /**
-   * @return string
-   */
-  protected function expectedString()
-  {
-    return 'boolean';
-  }
-
   // methods below must be manually overridden to implement @covers
-  
-  /**
-   * @covers Typhoon\Type\Boolean::__toString
-   * @group typhoon_types
-   */
-  public function testString() { parent::testString(); }
-  
+
   /**
    * @covers Typhoon\Type\Boolean::check
    * @dataProvider typeValues

@@ -9,6 +9,7 @@
  * file that was distributed with this source code.
  */
 
+use Typhoon\Renderer\Type;
 use Typhoon\TypeRegistry;
 
 class TyphoonTest extends PHPUnit_Framework_TestCase
@@ -17,6 +18,7 @@ class TyphoonTest extends PHPUnit_Framework_TestCase
   {
     $this->_typhoon = new Typhoon;
     $this->_typeRegistry = new TypeRegistry;
+    $this->_typeRenderer = $this->getMockForAbstractClass('Typhoon\Renderer\Type');
   }
 
   /**
@@ -44,6 +46,19 @@ class TyphoonTest extends PHPUnit_Framework_TestCase
   }
 
   /**
+   * @covers Typhoon::setTypeRenderer
+   * @covers Typhoon::typeRenderer
+   */
+  public function testTypeRenderer()
+  {
+    $this->assertInstanceOf('Typhoon\Renderer\Type\Typhax', $this->_typhoon->typeRenderer());
+
+    $this->_typhoon->setTypeRenderer($this->_typeRenderer);
+
+    $this->assertSame($this->_typeRenderer, $this->_typhoon->typeRenderer());
+  }
+
+  /**
    * @var Typhoon
    */
   protected $_typhoon;
@@ -52,4 +67,9 @@ class TyphoonTest extends PHPUnit_Framework_TestCase
    * @var TypeRegistry
    */
   protected $_typeRegistry;
+
+  /**
+   * @var Type
+   */
+  protected $_typeRenderer;
 }

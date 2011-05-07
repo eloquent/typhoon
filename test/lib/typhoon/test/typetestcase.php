@@ -47,14 +47,6 @@ abstract class TypeTestCase extends PHPUnit_Framework_TestCase
   }
 
   /**
-   * @group typhoon_types
-   */
-  public function testString()
-  {
-    $this->assertEquals($this->expectedString(), (string)$this->typeFixture());
-  }
-  
-  /**
    * @dataProvider typeValues
    * @group typhoon_types
    */
@@ -70,11 +62,6 @@ abstract class TypeTestCase extends PHPUnit_Framework_TestCase
    */
   abstract protected function typeClass();
 
-  /**
-   * @return string
-   */
-  abstract protected function expectedString();
-  
   /**
    * @return array
    */

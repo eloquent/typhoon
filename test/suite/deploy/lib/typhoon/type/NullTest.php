@@ -42,21 +42,7 @@ class NullTest extends TypeTestCase
     return __NAMESPACE__.'\Null';
   }
 
-  /**
-   * @return string
-   */
-  protected function expectedString()
-  {
-    return 'null';
-  }
-
   // methods below must be manually overridden to implement @covers
-
-  /**
-   * @covers Typhoon\Type\Null::__toString
-   * @group typhoon_types
-   */
-  public function testString() { parent::testString(); }
 
   /**
    * @covers Typhoon\Type\Null::check

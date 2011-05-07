@@ -24,12 +24,4 @@ class String extends Type
   {
     return is_string($value);
   }
-
-  /**
-   * @return string
-   */
-  public function __toString()
-  {
-    return 'string';
-  }
 }

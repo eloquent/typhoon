@@ -114,7 +114,7 @@ class ParameterList implements ArrayAccess, IteratorAggregate
     if (!$parameter instanceof Parameter)
     {
       $parameterParameter = new Parameter;
-      $parameterParameter->setType(new ObjectType(new String(__NAMESPACE__.'\Parameter')));
+      $parameterParameter->setType(new ObjectType(__NAMESPACE__.'\Parameter'));
 
       throw new UnexpectedArgument($parameter, new Integer(1), $parameterParameter);
     }

@@ -24,12 +24,4 @@ class Boolean extends Type
   {
     return is_bool($value);
   }
-
-  /**
-   * @return string
-   */
-  public function __toString()
-  {
-    return 'boolean';
-  }
 }

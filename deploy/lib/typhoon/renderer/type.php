@@ -12,6 +12,7 @@
 namespace Typhoon\Renderer;
 
 use Typhoon;
+use Typhoon\Type as TypeObject;
 use Typhoon\TypeRegistry;
 
 abstract class Type
@@ -33,6 +34,13 @@ abstract class Type
 
     return $this->typeRegistry;
   }
+
+  /**
+   * @param TypeObject $type
+   *
+   * @return string
+   */
+  abstract public function render(TypeObject $type);
 
   /**
    * @var TypeRegistry
