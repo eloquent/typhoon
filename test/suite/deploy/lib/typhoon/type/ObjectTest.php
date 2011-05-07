@@ -66,8 +66,8 @@ class ObjectTest extends TypeTestCase
   }
 
   /**
-   * @covers \Typhoon\Type\Object::__construct
-   * @covers \Typhoon\Type\Object::__toString
+   * @covers Typhoon\Type\Object::__construct
+   * @covers Typhoon\Type\Object::__toString
    * @group typhoon_types
    */
   public function testString()
@@ -81,8 +81,8 @@ class ObjectTest extends TypeTestCase
   // methods below must be manually overridden to implement @covers
   
   /**
-   * @covers \Typhoon\Type\Object::__construct
-   * @covers \Typhoon\Type\Object::check
+   * @covers Typhoon\Type\Object::__construct
+   * @covers Typhoon\Type\Object::check
    * @dataProvider typeValues
    * @group typhoon_types
    */

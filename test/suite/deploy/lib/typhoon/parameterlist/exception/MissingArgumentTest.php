@@ -42,7 +42,7 @@ class MissingArgumentTest extends ExceptionTestCase
   }
 
   /**
-   * @covers \Typhoon\ParameterList\Exception\MissingArgument::__construct
+   * @covers Typhoon\ParameterList\Exception\MissingArgument::__construct
    */
   public function testConstructor()
   {

@@ -39,7 +39,7 @@ class UnregisteredTypeTest extends ExceptionTestCase
   }
 
   /**
-   * @covers \Typhoon\TypeRegistry\Exception\UnregisteredType::__construct
+   * @covers Typhoon\TypeRegistry\Exception\UnregisteredType::__construct
    */
   public function testConstructor()
   {

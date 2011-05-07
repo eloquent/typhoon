@@ -38,7 +38,7 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
   }
 
   /**
-   * @covers \Typhoon\ParameterList::assert
+   * @covers Typhoon\ParameterList::assert
    */
   public function testAssertCallTypeAssert()
   {
@@ -75,7 +75,7 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
   }
 
   /**
-   * @covers \Typhoon\ParameterList::assert
+   * @covers Typhoon\ParameterList::assert
    */
   public function testAssertFixedLength()
   {
@@ -96,7 +96,7 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
   }
 
   /**
-   * @covers \Typhoon\ParameterList::assert
+   * @covers Typhoon\ParameterList::assert
    */
   public function testAssertOptional()
   {
@@ -117,7 +117,7 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
   }
 
   /**
-   * @covers \Typhoon\ParameterList::assert
+   * @covers Typhoon\ParameterList::assert
    */
   public function testAssertVariableLength()
   {
@@ -133,7 +133,7 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
   }
 
   /**
-   * @covers \Typhoon\ParameterList::assert
+   * @covers Typhoon\ParameterList::assert
    */
   public function testAssertFailureType()
   {
@@ -156,7 +156,7 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
   }
 
   /**
-   * @covers \Typhoon\ParameterList::assert
+   * @covers Typhoon\ParameterList::assert
    */
   public function testAssertFailureNoArguments()
   {
@@ -167,7 +167,7 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
   }
 
   /**
-   * @covers \Typhoon\ParameterList::assert
+   * @covers Typhoon\ParameterList::assert
    */
   public function testAssertFailureNotEnoughArguments()
   {
@@ -179,7 +179,7 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
   }
 
   /**
-   * @covers \Typhoon\ParameterList::assert
+   * @covers Typhoon\ParameterList::assert
    */
   public function testAssertFailureTooManyArguments()
   {
@@ -188,7 +188,7 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
   }
 
   /**
-   * @covers \Typhoon\ParameterList::assert
+   * @covers Typhoon\ParameterList::assert
    */
   public function testAssertFailureTooManyArgumentsNonEmpty()
   {
@@ -199,7 +199,7 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
   }
 
   /**
-   * @covers \Typhoon\ParameterList::assert
+   * @covers Typhoon\ParameterList::assert
    */
   public function testAssertFailureArgumentKey()
   {
@@ -210,8 +210,8 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
   }
 
   /**
-   * @covers \Typhoon\ParameterList::setVariableLength
-   * @covers \Typhoon\ParameterList::variableLength
+   * @covers Typhoon\ParameterList::setVariableLength
+   * @covers Typhoon\ParameterList::variableLength
    */
   public function testVariableLength()
   {
@@ -223,9 +223,9 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
   }
 
   /**
-   * @covers \Typhoon\ParameterList::offsetExists
-   * @covers \Typhoon\ParameterList::offsetSet
-   * @covers \Typhoon\ParameterList::offsetGet
+   * @covers Typhoon\ParameterList::offsetExists
+   * @covers Typhoon\ParameterList::offsetSet
+   * @covers Typhoon\ParameterList::offsetGet
    */
   public function testArrayAccess()
   {
@@ -245,7 +245,7 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
   }
 
   /**
-   * @covers \Typhoon\ParameterList::offsetGet
+   * @covers Typhoon\ParameterList::offsetGet
    */
   public function testOffsetGetFailure()
   {
@@ -254,7 +254,7 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
   }
 
   /**
-   * @covers \Typhoon\ParameterList::offsetUnset
+   * @covers Typhoon\ParameterList::offsetUnset
    */
   public function testOffsetUnsetFailure()
   {
@@ -263,9 +263,9 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
   }
 
   /**
-   * @covers \Typhoon\ParameterList::offsetExists
-   * @covers \Typhoon\ParameterList::offsetSet
-   * @covers \Typhoon\ParameterList::offsetGet
+   * @covers Typhoon\ParameterList::offsetExists
+   * @covers Typhoon\ParameterList::offsetSet
+   * @covers Typhoon\ParameterList::offsetGet
    * @dataProvider unexpectedArgumentData
    */
   public function testUnexpectedArgumentFailure($method, array $arguments)
@@ -275,8 +275,8 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
   }
 
   /**
-   * @covers \Typhoon\ParameterList::offsetSet
-   * @covers \Typhoon\ParameterList::getIterator
+   * @covers Typhoon\ParameterList::offsetSet
+   * @covers Typhoon\ParameterList::getIterator
    */
   public function testOffsetSetAndGetIterator()
   {

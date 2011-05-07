@@ -43,7 +43,7 @@ class UnexpectedArgumentTest extends ExceptionTestCase
   }
 
   /**
-   * @covers \Typhoon\ParameterList\Exception\UnexpectedArgument::__construct
+   * @covers Typhoon\ParameterList\Exception\UnexpectedArgument::__construct
    */
   public function testConstructor()
   {

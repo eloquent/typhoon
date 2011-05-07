@@ -54,7 +54,7 @@ class UnexpectedTypeTest extends ExceptionTestCase
   }
 
   /**
-   * @covers \Typhoon\Type\Exception\UnexpectedType::__construct
+   * @covers Typhoon\Type\Exception\UnexpectedType::__construct
    */
   public function testConstructor()
   {
@@ -64,7 +64,7 @@ class UnexpectedTypeTest extends ExceptionTestCase
   }
 
   /**
-   * @covers \Typhoon\Type\Exception\UnexpectedType::expectedType
+   * @covers Typhoon\Type\Exception\UnexpectedType::expectedType
    */
   public function testExpectedType()
   {

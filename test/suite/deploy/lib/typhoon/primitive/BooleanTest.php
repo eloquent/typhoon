@@ -16,7 +16,7 @@ use PHPUnit_Framework_TestCase;
 class BooleanTest extends PHPUnit_Framework_TestCase
 {
   /**
-   * @covers \Typhoon\Primitive\Boolean::type
+   * @covers Typhoon\Primitive\Boolean::type
    * @group typhoon_scalars
    */
   public function testType()

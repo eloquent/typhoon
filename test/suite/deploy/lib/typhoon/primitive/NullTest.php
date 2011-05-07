@@ -16,7 +16,7 @@ use PHPUnit_Framework_TestCase;
 class NullTest extends PHPUnit_Framework_TestCase
 {
   /**
-   * @covers \Typhoon\Primitive\Null::type
+   * @covers Typhoon\Primitive\Null::type
    * @group typhoon_scalars
    */
   public function testType()

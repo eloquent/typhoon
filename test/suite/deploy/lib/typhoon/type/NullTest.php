@@ -53,13 +53,13 @@ class NullTest extends TypeTestCase
   // methods below must be manually overridden to implement @covers
 
   /**
-   * @covers \Typhoon\Type\Null::__toString
+   * @covers Typhoon\Type\Null::__toString
    * @group typhoon_types
    */
   public function testString() { parent::testString(); }
 
   /**
-   * @covers \Typhoon\Type\Null::check
+   * @covers Typhoon\Type\Null::check
    * @dataProvider typeValues
    * @group typhoon_types
    */

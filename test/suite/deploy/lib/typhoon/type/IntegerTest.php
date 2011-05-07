@@ -56,13 +56,13 @@ class IntegerTest extends TypeTestCase
   // methods below must be manually overridden to implement @covers
   
   /**
-   * @covers \Typhoon\Type\Integer::__toString
+   * @covers Typhoon\Type\Integer::__toString
    * @group typhoon_types
    */
   public function testString() { parent::testString(); }
   
   /**
-   * @covers \Typhoon\Type\Integer::check
+   * @covers Typhoon\Type\Integer::check
    * @dataProvider typeValues
    * @group typhoon_types
    */

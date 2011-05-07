@@ -67,7 +67,7 @@ class TypeRegistryTest extends PHPUnit_Framework_TestCase
   }
 
   /**
-   * @covers \Typhoon\TypeRegistry::registerDefaults
+   * @covers Typhoon\TypeRegistry::registerDefaults
    * @dataProvider defaultTypes
    */
   public function testRegisterDefaults($alias, $type)
@@ -102,7 +102,7 @@ class TypeRegistryTest extends PHPUnit_Framework_TestCase
   }
 
   /**
-   * @covers \Typhoon\TypeRegistry::alias
+   * @covers Typhoon\TypeRegistry::alias
    */
   public function testAlias()
   {
@@ -121,7 +121,7 @@ class TypeRegistryTest extends PHPUnit_Framework_TestCase
   }
 
   /**
-   * @covers \Typhoon\TypeRegistry::alias
+   * @covers Typhoon\TypeRegistry::alias
    */
   public function testAliasFailure()
   {
@@ -130,9 +130,9 @@ class TypeRegistryTest extends PHPUnit_Framework_TestCase
   }
 
   /**
-   * @covers \Typhoon\TypeRegistry::offsetExists
-   * @covers \Typhoon\TypeRegistry::offsetSet
-   * @covers \Typhoon\TypeRegistry::offsetGet
+   * @covers Typhoon\TypeRegistry::offsetExists
+   * @covers Typhoon\TypeRegistry::offsetSet
+   * @covers Typhoon\TypeRegistry::offsetGet
    */
   public function testArrayAccess()
   {
@@ -156,7 +156,7 @@ class TypeRegistryTest extends PHPUnit_Framework_TestCase
   }
 
   /**
-   * @covers \Typhoon\TypeRegistry::offsetGet
+   * @covers Typhoon\TypeRegistry::offsetGet
    */
   public function testOffsetGetFailure()
   {
@@ -165,7 +165,7 @@ class TypeRegistryTest extends PHPUnit_Framework_TestCase
   }
 
   /**
-   * @covers \Typhoon\TypeRegistry::offsetUnset
+   * @covers Typhoon\TypeRegistry::offsetUnset
    */
   public function testOffsetUnsetFailure()
   {
@@ -174,9 +174,9 @@ class TypeRegistryTest extends PHPUnit_Framework_TestCase
   }
 
   /**
-   * @covers \Typhoon\TypeRegistry::offsetExists
-   * @covers \Typhoon\TypeRegistry::offsetSet
-   * @covers \Typhoon\TypeRegistry::offsetGet
+   * @covers Typhoon\TypeRegistry::offsetExists
+   * @covers Typhoon\TypeRegistry::offsetSet
+   * @covers Typhoon\TypeRegistry::offsetGet
    * @dataProvider unexpectedArgumentData
    */
   public function testUnexpectedArgumentFailure($method, array $arguments)

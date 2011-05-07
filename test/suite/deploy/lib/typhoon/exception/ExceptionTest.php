@@ -38,7 +38,7 @@ class ExceptionTest extends ExceptionTestCase
   }
   
   /**
-   * @covers \Typhoon\Exception\Exception::__construct
+   * @covers Typhoon\Exception\Exception::__construct
    */
   public function testConstructor()
   {

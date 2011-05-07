@@ -38,7 +38,7 @@ class NotImplementedTest extends ExceptionTestCase
   }
 
   /**
-   * @covers \Typhoon\Exception\NotImplemented::__construct
+   * @covers Typhoon\Exception\NotImplemented::__construct
    */
   public function testConstructor()
   {

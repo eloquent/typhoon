@@ -25,8 +25,8 @@ class ParameterTest extends PHPUnit_Framework_TestCase
   }
 
   /**
-   * @covers \Typhoon\Parameter::setType
-   * @covers \Typhoon\Parameter::type
+   * @covers Typhoon\Parameter::setType
+   * @covers Typhoon\Parameter::type
    */
   public function testType()
   {
@@ -38,8 +38,8 @@ class ParameterTest extends PHPUnit_Framework_TestCase
   }
 
   /**
-   * @covers \Typhoon\Parameter::setOptional
-   * @covers \Typhoon\Parameter::optional
+   * @covers Typhoon\Parameter::setOptional
+   * @covers Typhoon\Parameter::optional
    */
   public function testOptional()
   {
@@ -51,8 +51,8 @@ class ParameterTest extends PHPUnit_Framework_TestCase
   }
 
   /**
-   * @covers \Typhoon\Parameter::setName
-   * @covers \Typhoon\Parameter::name
+   * @covers Typhoon\Parameter::setName
+   * @covers Typhoon\Parameter::name
    */
   public function testName()
   {
@@ -65,8 +65,8 @@ class ParameterTest extends PHPUnit_Framework_TestCase
   }
 
   /**
-   * @covers \Typhoon\Parameter::setDescription
-   * @covers \Typhoon\Parameter::description
+   * @covers Typhoon\Parameter::setDescription
+   * @covers Typhoon\Parameter::description
    */
   public function testDescription()
   {

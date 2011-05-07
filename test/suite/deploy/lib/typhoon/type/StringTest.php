@@ -53,13 +53,13 @@ class StringTest extends TypeTestCase
   // methods below must be manually overridden to implement @covers
   
   /**
-   * @covers \Typhoon\Type\String::__toString
+   * @covers Typhoon\Type\String::__toString
    * @group typhoon_types
    */
   public function testString() { parent::testString(); }
   
   /**
-   * @covers \Typhoon\Type\String::check
+   * @covers Typhoon\Type\String::check
    * @dataProvider typeValues
    * @group typhoon_types
    */

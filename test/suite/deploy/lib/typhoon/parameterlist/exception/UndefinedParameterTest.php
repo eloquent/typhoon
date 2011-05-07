@@ -38,7 +38,7 @@ class UndefinedParameterTest extends ExceptionTestCase
   }
 
   /**
-   * @covers \Typhoon\ParameterList\Exception\UndefinedParameter::__construct
+   * @covers Typhoon\ParameterList\Exception\UndefinedParameter::__construct
    */
   public function testConstructor()
   {

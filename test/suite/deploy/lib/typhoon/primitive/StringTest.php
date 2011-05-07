@@ -16,7 +16,7 @@ use PHPUnit_Framework_TestCase;
 class StringTest extends PHPUnit_Framework_TestCase
 {
   /**
-   * @covers \Typhoon\Primitive\String::type
+   * @covers Typhoon\Primitive\String::type
    * @group typhoon_scalars
    */
   public function testType()

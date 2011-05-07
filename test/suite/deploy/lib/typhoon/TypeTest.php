@@ -21,7 +21,7 @@ class TypeTest extends PHPUnit_Framework_TestCase
   }
   
   /**
-   * @covers \Typhoon\Type::assert
+   * @covers Typhoon\Type::assert
    */
   public function testAssertPass()
   {
@@ -38,7 +38,7 @@ class TypeTest extends PHPUnit_Framework_TestCase
   }
   
   /**
-   * @covers \Typhoon\Type::assert
+   * @covers Typhoon\Type::assert
    */
   public function testAssertFailure()
   {
@@ -61,7 +61,7 @@ class TypeTest extends PHPUnit_Framework_TestCase
   }
   
   /**
-   * @covers \Typhoon\Type::__toString
+   * @covers Typhoon\Type::__toString
    */
   public function testToString()
   {

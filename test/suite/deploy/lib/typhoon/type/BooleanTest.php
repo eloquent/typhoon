@@ -53,13 +53,13 @@ class BooleanTest extends TypeTestCase
   // methods below must be manually overridden to implement @covers
   
   /**
-   * @covers \Typhoon\Type\Boolean::__toString
+   * @covers Typhoon\Type\Boolean::__toString
    * @group typhoon_types
    */
   public function testString() { parent::testString(); }
   
   /**
-   * @covers \Typhoon\Type\Boolean::check
+   * @covers Typhoon\Type\Boolean::check
    * @dataProvider typeValues
    * @group typhoon_types
    */

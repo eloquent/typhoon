@@ -16,10 +16,10 @@ use PHPUnit_Framework_TestCase;
 class PrimitiveTest extends PHPUnit_Framework_TestCase
 {
   /**
-   * @covers \Typhoon\Primitive::__construct
-   * @covers \Typhoon\Primitive::type
-   * @covers \Typhoon\Primitive::value
-   * @covers \Typhoon\Primitive::__toString
+   * @covers Typhoon\Primitive::__construct
+   * @covers Typhoon\Primitive::type
+   * @covers Typhoon\Primitive::value
+   * @covers Typhoon\Primitive::__toString
    */
   public function testPrimitive()
   {
@@ -54,7 +54,7 @@ class PrimitiveTest extends PHPUnit_Framework_TestCase
   }
 
   /**
-   * @covers \Typhoon\Primitive::__construct
+   * @covers Typhoon\Primitive::__construct
    */
   public function testPrimitiveFailure()
   {
