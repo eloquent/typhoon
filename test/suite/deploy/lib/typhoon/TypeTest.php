@@ -45,41 +45,6 @@ class TypeTest extends PHPUnit_Framework_TestCase
 
     $this->assertEquals($expected, $type->arguments());
   }
-  
-  /**
-   * @covers Typhoon\Type::assert
-   */
-  public function testAssertPass()
-  {
-    $value = 'foo';
-    
-    $this->_type
-      ->expects($this->once())
-      ->method('check')
-      ->with($value)
-      ->will($this->returnValue(true))
-    ;
-
-    $this->_type->assert($value);
-  }
-  
-  /**
-   * @covers Typhoon\Type::assert
-   */
-  public function testAssertFailure()
-  {
-    $value = 'foo';
-    
-    $this->_type
-      ->expects($this->once())
-      ->method('check')
-      ->with($value)
-      ->will($this->returnValue(false))
-    ;
-
-    $this->setExpectedException(__NAMESPACE__.'\Type\Exception\UnexpectedType');
-    $this->_type->assert($value);
-  }
 
   /**
    * @covers Typhoon\Type::__toString

@@ -14,6 +14,7 @@ namespace Typhoon;
 use ArrayAccess;
 use ArrayIterator;
 use IteratorAggregate;
+use Typhoon\Assertion\Type as TypeAssertion;
 use Typhoon\Exception\NotImplemented;
 use Typhoon\ParameterList\Exception\MissingArgument;
 use Typhoon\ParameterList\Exception\UndefinedParameter;
@@ -51,9 +52,11 @@ class ParameterList implements ArrayAccess, IteratorAggregate
 
       if ($parameter)
       {
+        $assertion = $this->typeAssertion($parameter->type(), $value);
+
         try
         {
-          $parameter->type()->assert($value);
+          $assertion->assert($value);
         }
         catch (UnexpectedType $e)
         {
@@ -150,6 +153,17 @@ class ParameterList implements ArrayAccess, IteratorAggregate
   public function getIterator()
   {
     return new ArrayIterator($this->parameters);
+  }
+
+  /**
+   * @param Type $type
+   * @param mixed $value
+   *
+   * @return TypeAssertion
+   */
+  protected function typeAssertion(Type $type, $value)
+  {
+    return new TypeAssertion($type, $value);
   }
 
   /**

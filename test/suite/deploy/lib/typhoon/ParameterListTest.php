@@ -13,6 +13,7 @@ namespace Typhoon;
 
 use ArrayIterator;
 use PHPUnit_Framework_TestCase;
+use ReflectionClass;
 use stdClass;
 use Typhoon\Primitive\Boolean;
 
@@ -38,40 +39,54 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
   }
 
   /**
+   * @covers Typhoon\ParameterList::typeAssertion
+   */
+  public function testTypeAssertion()
+  {
+    $type = $this->getMockForAbstractClass(__NAMESPACE__.'\Type');
+    $value = 'foo';
+
+    $reflector = new ReflectionClass(__NAMESPACE__.'\ParameterList');
+    $typeAssertionMethod = $reflector->getMethod('typeAssertion');
+    $typeAssertionMethod->setAccessible(true);
+
+    $this->assertInstanceOf(__NAMESPACE__.'\Assertion\Type', $typeAssertionMethod->invokeArgs($this->_parameterList, array($type, $value)));
+  }
+
+  /**
    * @covers Typhoon\ParameterList::assert
    */
-  public function testAssertCallTypeAssert()
+  public function testAssertUseTypeAssertion()
   {
-    $arguments = array();
+    $argument_0 = 'foo';
+    $argument_1 = 'bar';
+    $arguments = array($argument_0, $argument_1);
 
-    $value_1 = 'foo';
-    $arguments[] = $value_1;
-    $type_1 = $this->getMock(__NAMESPACE__.'\Type', array('check', 'assert'));
-    $type_1
+    $type = $this->getMockForAbstractClass(__NAMESPACE__.'\Type');
+
+    $assertion_0 = $this->getMock(__NAMESPACE__.'\Assertion\Type', array('assert'), array($type, $argument_0));
+    $assertion_0
       ->expects($this->once())
       ->method('assert')
-      ->with($this->equalTo($value_1))
     ;
-    $parameter_1 = new Parameter;
-    $parameter_1->setType($type_1);
-
-    $value_2 = 'bar';
-    $arguments[] = $value_2;
-    $arguments[] = $value_2;
-    $type_2 = $this->getMock(__NAMESPACE__.'\Type', array('check', 'assert'));
-    $type_2
-      ->expects($this->exactly(2))
+    $assertion_1 = $this->getMock(__NAMESPACE__.'\Assertion\Type', array('assert'), array($type, $argument_1));
+    $assertion_1
+      ->expects($this->once())
       ->method('assert')
-      ->with($this->equalTo($value_2))
     ;
-    $parameter_2 = new Parameter;
-    $parameter_2->setType($type_2);
 
-    $this->_parameterList[] = $parameter_1;
-    $this->_parameterList[] = $parameter_2;
-    $this->_parameterList->setVariableLength(new Boolean(true));
+    $parameterList = $this->getMock(__NAMESPACE__.'\ParameterList', array('typeAssertion'));
+    $parameterList
+      ->expects($this->exactly(2))
+      ->method('typeAssertion')
+      ->with($this->isInstanceOf(__NAMESPACE__.'\Type'), $this->isType('string'))
+      ->will($this->onConsecutiveCalls($assertion_0, $assertion_1))
+    ;
+    $parameterList[] = new Parameter;
+    $parameterList[] = new Parameter;
 
-    $this->_parameterList->assert($arguments);
+    $parameterList->assert($arguments);
+    $this->assertTrue(true);
   }
 
   /**
@@ -93,6 +108,7 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
     $this->_parameterList[] = $this->_parameter;
 
     $this->_parameterList->assert($arguments);
+    $this->assertTrue(true);
   }
 
   /**
@@ -114,6 +130,7 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
     $this->_parameterList[] = $optionalParameter;
 
     $this->_parameterList->assert($arguments);
+    $this->assertTrue(true);
   }
 
   /**
@@ -130,6 +147,7 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
     $this->_parameterList->setVariableLength(new Boolean(true));
 
     $this->_parameterList->assert($arguments);
+    $this->assertTrue(true);
   }
 
   /**
@@ -284,7 +302,7 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
 
     $expected[] = $this->_parameter;
     $this->assertEquals($expected, iterator_to_array($this->_parameterList->getIterator()));
-    
+
     $this->_parameterList[] = $this->_parameter;
 
     $expected[] = $this->_parameter;

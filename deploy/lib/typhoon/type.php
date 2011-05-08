@@ -38,14 +38,6 @@ abstract class Type
   }
 
   /**
-   * @param mixed $value
-   */
-  public function assert($value)
-  {
-    if (!$this->check($value)) throw new UnexpectedType($value, new StringPrimitive((string)$this));
-  }
-
-  /**
    * @return string
    */
   public function __toString()
