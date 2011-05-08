@@ -11,32 +11,27 @@
 
 namespace Typhoon;
 
-use PHPUnit_Framework_TestCase;
-use ReflectionClass;
+use Typhoon;
+use Typhoon\Assertion\Type as TypeAssertion;
 use Typhoon\Primitive\String;
+use Typhoon\Test\TestCase;
+use Typhoon\Type;
 use Typhoon\Type\Exception\UnexpectedType;
 
-class PrimitiveTest extends PHPUnit_Framework_TestCase
+class PrimitiveTest extends TestCase
 {
   /**
-   * @covers Typhoon\ParameterList::typeAssertion
+   * @return Primitive
    */
-  public function testTypeAssertion()
+  public function primitiveFixture()
   {
-    $value = 'foo';
-    $type = $this->getMockForAbstractClass('Typhoon\Type');
-
-    $primitive = $this->getMockForAbstractClass(
+    return $this->getMock(
       __NAMESPACE__.'\Primitive',
+      array('type', 'typeAssertion'),
       array(),
       '',
       false
     );
-    $reflector = new ReflectionClass($primitive);
-    $typeAssertionMethod = $reflector->getMethod('typeAssertion');
-    $typeAssertionMethod->setAccessible(true);
-
-    $this->assertInstanceOf('Typhoon\Assertion\Type', $typeAssertionMethod->invokeArgs($primitive, array($type, $value)));
   }
 
   /**
@@ -46,43 +41,38 @@ class PrimitiveTest extends PHPUnit_Framework_TestCase
    */
   public function testPrimitive()
   {
+    $type = $this->getMockForAbstractClass(__NAMESPACE__.'\Type');
     $value = 'foo';
 
-    $type = $this->getMockForAbstractClass(__NAMESPACE__.'\Type');
-
-    $primitive = $this->getMock(
-      __NAMESPACE__.'\Primitive',
-      array('type', 'typeAssertion'),
-      array($value),
-      '',
-      false
+    $typeAssertion = $this->getMock(
+      __NAMESPACE__.'\Assertion\Type',
+      array('setType', 'setValue', 'assert')
     );
-    $primitive
-      ->expects($this->any())
-      ->method('type')
-      ->will($this->returnValue($type))
+    $typeAssertion
+      ->expects($this->once())
+      ->method('setType')
+      ->with($this->equalTo($type))
+    ;
+    $typeAssertion
+      ->expects($this->once())
+      ->method('setValue')
+      ->with($this->equalTo($value))
+    ;
+    $typeAssertion
+      ->expects($this->once())
+      ->method('assert')
     ;
 
-    $_this = $this;
+    $primitive = $this->primitiveFixture();
     $primitive
       ->expects($this->once())
       ->method('typeAssertion')
-      ->with($this->equalTo($type), $this->equalTo($value))
-      ->will($this->returnCallback(function(Type $type, $value) use ($_this)
-        {
-          $assertion = $_this->getMock(
-            __NAMESPACE__.'\Assertion\Type',
-            array('assert'),
-            array($type, $value)
-          );
-          $assertion
-            ->expects($_this->once())
-            ->method('assert')
-          ;
-
-          return $assertion;
-        }
-      ))
+      ->will($this->returnValue($typeAssertion))
+    ;
+    $primitive
+      ->expects($this->once())
+      ->method('type')
+      ->will($this->returnValue($type))
     ;
 
     $primitive->__construct($value);
@@ -93,52 +83,52 @@ class PrimitiveTest extends PHPUnit_Framework_TestCase
 
   /**
    * @covers Typhoon\Primitive::__construct
-   * @covers Typhoon\Primitive::value
-   * @covers Typhoon\Primitive::__toString
    */
   public function testPrimitiveFailure()
   {
+    $type = $this->getMockForAbstractClass(__NAMESPACE__.'\Type');
     $value = 'foo';
 
-    $type = $this->getMockForAbstractClass(__NAMESPACE__.'\Type');
-
-    $primitive = $this->getMock(
-      __NAMESPACE__.'\Primitive',
-      array('type', 'typeAssertion'),
-      array($value),
-      '',
-      false
+    $typeAssertion = $this->getMock(
+      __NAMESPACE__.'\Assertion\Type',
+      array('setType', 'setValue', 'assert')
     );
+    $typeAssertion
+      ->expects($this->once())
+      ->method('assert')
+      ->will($this->throwException(new UnexpectedType($value, new String('typeName'))))
+    ;
+
+    $primitive = $this->primitiveFixture();
     $primitive
-      ->expects($this->any())
+      ->expects($this->once())
+      ->method('typeAssertion')
+      ->will($this->returnValue($typeAssertion))
+    ;
+    $primitive
+      ->expects($this->exactly(2))
       ->method('type')
       ->will($this->returnValue($type))
     ;
 
-    $_this = $this;
-    $primitive
-      ->expects($this->once())
-      ->method('typeAssertion')
-      ->with($this->equalTo($type), $this->equalTo($value))
-      ->will($this->returnCallback(function(Type $type, $value) use ($_this)
-        {
-          $assertion = $_this->getMock(
-            __NAMESPACE__.'\Assertion\Type',
-            array('assert'),
-            array($type, $value)
-          );
-          $assertion
-            ->expects($_this->once())
-            ->method('assert')
-            ->will($_this->throwException(new UnexpectedType($value, new String((string)$type))))
-          ;
-
-          return $assertion;
-        }
-      ))
-    ;
-
     $this->setExpectedException(__NAMESPACE__.'\ParameterList\Exception\UnexpectedArgument');
     $primitive->__construct($value);
+  }
+
+  /**
+   * @covers Typhoon\Primitive::typeAssertion
+   */
+  public function testTypeAssertion()
+  {
+    $primitive = $this->getMock(
+      __NAMESPACE__.'\Primitive',
+      array('type'),
+      array(),
+      '',
+      false
+    );
+    $expected = get_class(Typhoon::instance()->typeAssertion());
+
+    $this->assertInstanceOf($expected, $primitive->typeAssertion());
   }
 }

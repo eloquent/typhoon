@@ -11,14 +11,16 @@
 
 namespace Typhoon\Renderer;
 
-use PHPUnit_Framework_TestCase;
 use Typhoon;
+use Typhoon\Test\TestCase;
 use Typhoon\TypeRegistry;
 
-class TypeTest extends PHPUnit_Framework_TestCase
+class TypeTest extends TestCase
 {
   protected function setUp()
   {
+    parent::setUp();
+    
     $this->_renderer = $this->getMockForAbstractClass('Typhoon\Renderer\Type');
     $this->_typeRegistry = new TypeRegistry;
   }

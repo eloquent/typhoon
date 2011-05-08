@@ -35,6 +35,8 @@ class UnexpectedTypeTest extends ExceptionTestCase
 
   protected function setUp()
   {
+    parent::setUp();
+    
     $this->_value = 'foo';
     $this->_expectedTypeName = new String('foo');
   }

@@ -9,13 +9,16 @@
  * file that was distributed with this source code.
  */
 
-use Typhoon\Renderer\Type;
+use Typhoon\Renderer\Type as TypeRenderer;
+use Typhoon\Test\TestCase;
 use Typhoon\TypeRegistry;
 
-class TyphoonTest extends PHPUnit_Framework_TestCase
+class TyphoonTest extends TestCase
 {
   protected function setUp()
   {
+    parent::setUp();
+    
     $this->_typhoon = new Typhoon;
     $this->_typeRegistry = new TypeRegistry;
     $this->_typeRenderer = $this->getMockForAbstractClass('Typhoon\Renderer\Type');
@@ -23,13 +26,27 @@ class TyphoonTest extends PHPUnit_Framework_TestCase
 
   /**
    * @covers Typhoon::instance
+   * @covers Typhoon::install
    */
-  public function testInstance()
+  public function testInstanceAndInstall()
   {
     $instance = Typhoon::instance();
 
     $this->assertInstanceOf('Typhoon', $instance);
     $this->assertSame($instance, Typhoon::instance());
+
+    $instance = new Typhoon;
+    Typhoon::install($instance);
+
+    $this->assertSame($instance, Typhoon::instance());
+  }
+
+  /**
+   * @covers Typhoon::typeAssertion
+   */
+  public function testTypeAssertion()
+  {
+    $this->assertInstanceOf('Typhoon\Assertion\Type', $this->_typhoon->typeAssertion());
   }
 
   /**
@@ -63,13 +80,14 @@ class TyphoonTest extends PHPUnit_Framework_TestCase
    */
   protected $_typhoon;
 
+
   /**
    * @var TypeRegistry
    */
   protected $_typeRegistry;
 
   /**
-   * @var Type
+   * @var TypeRenderer
    */
   protected $_typeRenderer;
 }

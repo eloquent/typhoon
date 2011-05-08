@@ -11,9 +11,9 @@
 
 namespace Typhoon\Primitive;
 
-use PHPUnit_Framework_TestCase;
+use Typhoon\Test\TestCase;
 
-class IntegerTest extends PHPUnit_Framework_TestCase
+class IntegerTest extends TestCase
 {
   /**
    * @covers Typhoon\Primitive\Integer::type

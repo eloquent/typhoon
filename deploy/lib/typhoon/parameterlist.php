@@ -13,73 +13,19 @@ namespace Typhoon;
 
 use ArrayAccess;
 use ArrayIterator;
+use Countable;
 use IteratorAggregate;
-use Typhoon\Assertion\Type as TypeAssertion;
 use Typhoon\Exception\NotImplemented;
-use Typhoon\ParameterList\Exception\MissingArgument;
 use Typhoon\ParameterList\Exception\UndefinedParameter;
 use Typhoon\ParameterList\Exception\UnexpectedArgument;
 use Typhoon\Primitive\Boolean;
 use Typhoon\Primitive\Integer;
 use Typhoon\Primitive\Null;
 use Typhoon\Primitive\String;
-use Typhoon\Type\Exception\UnexpectedType;
-use Typhoon\Type\Integer as IntegerType;
 use Typhoon\Type\Object as ObjectType;
 
-class ParameterList implements ArrayAccess, IteratorAggregate
+class ParameterList implements ArrayAccess, Countable, IteratorAggregate
 {
-  /**
-   * @param array
-   */
-  public function assert(array $arguments)
-  {
-    $index = -1;
-
-    foreach ($arguments as $index => $value)
-    {
-      $indexPrimitive = new Integer($index);
-      $parameter = null;
-
-      if (isset($this->parameters[$index]))
-      {
-        $parameter = $this->parameters[$index];
-      }
-      elseif ($this->variableLength)
-      {
-        $parameter = $this->parameters[count($this->parameters) - 1];
-      }
-
-      if ($parameter)
-      {
-        $assertion = $this->typeAssertion($parameter->type(), $value);
-
-        try
-        {
-          $assertion->assert($value);
-        }
-        catch (UnexpectedType $e)
-        {
-          throw new UnexpectedArgument($value, $indexPrimitive, $parameter, $e);
-        }
-
-        continue;
-      }
-
-      throw new UnexpectedArgument($value, $indexPrimitive);
-    }
-
-    $index ++;
-
-    if (count($this->parameters) <= $index) return;
-
-    $parameter = $this->parameters[$index];
-
-    if ($parameter->optional()) return;
-
-    throw new MissingArgument(new Integer($index), $parameter);
-  }
-
   /**
    * @param Boolean $variableLength
    */
@@ -156,14 +102,11 @@ class ParameterList implements ArrayAccess, IteratorAggregate
   }
 
   /**
-   * @param Type $type
-   * @param mixed $value
-   *
-   * @return TypeAssertion
+   * @return integer
    */
-  protected function typeAssertion(Type $type, $value)
+  public function count()
   {
-    return new TypeAssertion($type, $value);
+    return count($this->parameters);
   }
 
   /**

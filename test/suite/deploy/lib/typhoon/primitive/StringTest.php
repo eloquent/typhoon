@@ -11,9 +11,9 @@
 
 namespace Typhoon\Primitive;
 
-use PHPUnit_Framework_TestCase;
+use Typhoon\Test\TestCase;
 
-class StringTest extends PHPUnit_Framework_TestCase
+class StringTest extends TestCase
 {
   /**
    * @covers Typhoon\Primitive\String::type

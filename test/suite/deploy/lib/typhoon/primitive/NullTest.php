@@ -11,9 +11,9 @@
 
 namespace Typhoon\Primitive;
 
-use PHPUnit_Framework_TestCase;
+use Typhoon\Test\TestCase;
 
-class NullTest extends PHPUnit_Framework_TestCase
+class NullTest extends TestCase
 {
   /**
    * @covers Typhoon\Primitive\Null::type

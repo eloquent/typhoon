@@ -11,15 +11,17 @@
 
 namespace Typhoon;
 
-use PHPUnit_Framework_TestCase;
 use Typhoon\Primitive\Boolean;
 use Typhoon\Primitive\String;
+use Typhoon\Test\TestCase;
 use Typhoon\Type\Mixed as MixedType;
 
-class ParameterTest extends PHPUnit_Framework_TestCase
+class ParameterTest extends TestCase
 {
   protected function setUp()
   {
+    parent::setUp();
+    
     $this->_parameter = new Parameter;
     $this->_type = $this->getMockForAbstractClass(__NAMESPACE__.'\Type');
   }

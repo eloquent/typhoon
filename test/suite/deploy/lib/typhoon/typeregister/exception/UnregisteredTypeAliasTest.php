@@ -34,6 +34,8 @@ class UnregisteredTypeAliasTest extends ExceptionTestCase
 
   protected function setUp()
   {
+    parent::setUp();
+    
     $this->_alias = new String('foo');
   }
 

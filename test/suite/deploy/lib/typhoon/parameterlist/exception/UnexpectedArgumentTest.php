@@ -36,6 +36,8 @@ class UnexpectedArgumentTest extends ExceptionTestCase
 
   protected function setUp()
   {
+    parent::setUp();
+    
     $this->_value = 'foo';
     $this->_index = new Integer(0);
     $this->_parameter = new Parameter;

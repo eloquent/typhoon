@@ -35,6 +35,8 @@ class UnregisteredTypeTest extends ExceptionTestCase
 
   protected function setUp()
   {
+    parent::setUp();
+    
     $this->_typeName = new String('foo');
   }
 

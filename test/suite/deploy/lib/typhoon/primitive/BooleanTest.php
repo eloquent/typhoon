@@ -11,9 +11,9 @@
 
 namespace Typhoon\Primitive;
 
-use PHPUnit_Framework_TestCase;
+use Typhoon\Test\TestCase;
 
-class BooleanTest extends PHPUnit_Framework_TestCase
+class BooleanTest extends TestCase
 {
   /**
    * @covers Typhoon\Primitive\Boolean::type

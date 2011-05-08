@@ -34,6 +34,8 @@ class UndefinedParameterTest extends ExceptionTestCase
 
   protected function setUp()
   {
+    parent::setUp();
+    
     $this->_index = new Integer(0);
   }
 

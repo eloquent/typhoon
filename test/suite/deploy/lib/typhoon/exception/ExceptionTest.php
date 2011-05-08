@@ -34,6 +34,8 @@ class ExceptionTest extends ExceptionTestCase
 
   protected function setUp()
   {
+    parent::setUp();
+
     $this->_message = new String('foo');
   }
   

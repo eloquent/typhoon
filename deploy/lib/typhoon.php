@@ -9,8 +9,9 @@
  * file that was distributed with this source code.
  */
 
+use Typhoon\Assertion\Type as TypeAssertion;
 use Typhoon\Primitive\String;
-use Typhoon\Renderer\Type;
+use Typhoon\Renderer\Type as TypeRenderer;
 use Typhoon\Renderer\Type\Typhax;
 use Typhoon\TypeRegistry;
 
@@ -21,10 +22,25 @@ class Typhoon
    */
   public static function instance()
   {
-    static $instance;
-    if (!$instance) $instance = new self;
+    if (!self::$instance) self::$instance = new self;
 
-    return $instance;
+    return self::$instance;
+  }
+
+  /**
+   * @param Typhoon $instance
+   */
+  public static function install(self $instance)
+  {
+    self::$instance = $instance;
+  }
+
+  /**
+   * @return TypeAssertion
+   */
+  public function typeAssertion()
+  {
+    return new TypeAssertion;
   }
 
   /**
@@ -46,15 +62,15 @@ class Typhoon
   }
 
   /**
-   * @param Type $typeRenderer
+   * @param TypeRenderer $typeRenderer
    */
-  public function setTypeRenderer(Type $typeRenderer)
+  public function setTypeRenderer(TypeRenderer $typeRenderer)
   {
     $this->typeRenderer = $typeRenderer;
   }
 
   /**
-   * @return Type
+   * @return TypeRenderer
    */
   public function typeRenderer()
   {
@@ -62,6 +78,11 @@ class Typhoon
 
     return $this->typeRenderer;
   }
+
+  /**
+   * @var Tyhpoon
+   */
+  private static $instance;
 
   /**
    * @var TypeRegistry

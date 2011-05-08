@@ -34,6 +34,8 @@ class NotImplementedTest extends ExceptionTestCase
 
   protected function setUp()
   {
+    parent::setUp();
+    
     $this->_feature = new String('foo');
   }
 

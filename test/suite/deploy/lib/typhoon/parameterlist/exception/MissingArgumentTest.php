@@ -36,6 +36,8 @@ class MissingArgumentTest extends ExceptionTestCase
 
   protected function setUp()
   {
+    parent::setUp();
+    
     $this->_index = new Integer(0);
     $this->_parameter = new Parameter;
     $this->_expectedTypeName = (string)$this->_parameter->type();

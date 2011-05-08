@@ -11,6 +11,7 @@
 
 namespace Typhoon;
 
+use Typhoon;
 use Typhoon\Assertion\Type as TypeAssertion;
 use Typhoon\ParameterList\Exception\UnexpectedArgument;
 use Typhoon\Primitive\Integer;
@@ -23,7 +24,9 @@ abstract class Primitive
    */
   final public function __construct($value)
   {
-    $assertion = $this->typeAssertion($this->type(), $value);
+    $assertion = $this->typeAssertion();
+    $assertion->setType($this->type());
+    $assertion->setValue($value);
     
     try
     {
@@ -57,14 +60,11 @@ abstract class Primitive
   }
 
   /**
-   * @param Type $type
-   * @param mixed $value
-   *
    * @return TypeAssertion
    */
-  protected function typeAssertion(Type $type, $value)
+  public function typeAssertion()
   {
-    return new TypeAssertion($type, $value);
+    return Typhoon::instance()->typeAssertion();
   }
 
   /**

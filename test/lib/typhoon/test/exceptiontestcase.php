@@ -11,11 +11,10 @@
 
 namespace Typhoon\Test;
 
-use PHPUnit_Framework_TestCase;
 use ReflectionClass;
 use Typhoon\Exception\Exception;
 
-abstract class ExceptionTestCase extends PHPUnit_Framework_TestCase
+abstract class ExceptionTestCase extends TestCase
 {
   /**
    * @return Exception

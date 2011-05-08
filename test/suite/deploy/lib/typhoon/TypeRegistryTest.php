@@ -11,11 +11,11 @@
 
 namespace Typhoon;
 
-use PHPUnit_Framework_TestCase;
+use Typhoon\Test\TestCase;
 use Typhoon\TypeRegistry\Exception\UnregisteredType;
 use Typhoon\TypeRegistry\Exception\UnregisteredTypeAlias;
 
-class TypeRegistryTest extends PHPUnit_Framework_TestCase
+class TypeRegistryTest extends TestCase
 {
   /**
    * @return array
@@ -46,8 +46,10 @@ class TypeRegistryTest extends PHPUnit_Framework_TestCase
     );
   }
 
-  public function setUp()
+  protected function setUp()
   {
+    parent::setUp();
+    
     $this->_registry = new TypeRegistry;
     $this->_typeName = 'foo';
   }
