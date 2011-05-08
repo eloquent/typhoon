@@ -106,7 +106,7 @@ class TypeTest extends PHPUnit_Framework_TestCase
     $this->_typeRenderer->setTypeRegistry(new TypeRegistry);
 
     $type = $this->getMockForAbstractClass(__NAMESPACE__.'\Type');
-    $rendered = get_class($type);
+    $rendered = 'unregistered type ('.get_class($type).')';
 
     $this->assertEquals($rendered, (string)$type);
   }

@@ -56,7 +56,7 @@ abstract class Type
     }
     catch (UnregisteredType $e)
     {
-      return get_class($this);
+      return 'unregistered type ('.get_class($this).')';
     }
   }
 
