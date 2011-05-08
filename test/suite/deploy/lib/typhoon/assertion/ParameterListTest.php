@@ -79,7 +79,7 @@ class ParameterListTest extends TestCase
     $parameterList[] = $parameter_0;
     $parameterList[] = $parameter_1;
 
-    $assertion = $this->getMock('Typhoon\Assertion\ParameterList', array('typeAssertion'));
+    $assertion = $this->getMock(__NAMESPACE__.'\ParameterList', array('typeAssertion'));
     $assertion
       ->expects($this->exactly(2))
       ->method('typeAssertion')
@@ -185,7 +185,7 @@ class ParameterListTest extends TestCase
 
     $this->_assertion->setArguments(array(null));
 
-    $this->setExpectedException('Typhoon\ParameterList\Exception\UnexpectedArgument', 'at index 0');
+    $this->setExpectedException(__NAMESPACE__.'\Exception\UnexpectedArgument', 'at index 0');
     $this->_assertion->assert();
   }
 
@@ -197,7 +197,7 @@ class ParameterListTest extends TestCase
     $this->_assertion->setParameterList($this->_parameterList);
     $this->_parameterList[] = new Parameter;
 
-    $this->setExpectedException('Typhoon\ParameterList\Exception\MissingArgument', 'at index 0');
+    $this->setExpectedException(__NAMESPACE__.'\Exception\MissingArgument', 'at index 0');
     $this->_assertion->assert();
   }
 
@@ -211,7 +211,7 @@ class ParameterListTest extends TestCase
     $this->_parameterList[] = new Parameter;
     $this->_assertion->setArguments(array(null));
 
-    $this->setExpectedException('Typhoon\ParameterList\Exception\MissingArgument', 'at index 1');
+    $this->setExpectedException(__NAMESPACE__.'\Exception\MissingArgument', 'at index 1');
     $this->_assertion->assert();
   }
 
@@ -222,7 +222,7 @@ class ParameterListTest extends TestCase
   {
     $this->_assertion->setArguments(array(null));
 
-    $this->setExpectedException('Typhoon\ParameterList\Exception\UnexpectedArgument', 'at index 0');
+    $this->setExpectedException(__NAMESPACE__.'\Exception\UnexpectedArgument', 'at index 0');
     $this->_assertion->assert();
   }
 
@@ -236,7 +236,7 @@ class ParameterListTest extends TestCase
 
     $this->_assertion->setArguments(array(null, null));
 
-    $this->setExpectedException('Typhoon\ParameterList\Exception\UnexpectedArgument', 'at index 1');
+    $this->setExpectedException(__NAMESPACE__.'\Exception\UnexpectedArgument', 'at index 1');
     $this->_assertion->assert();
   }
 
@@ -283,7 +283,7 @@ class ParameterListTest extends TestCase
    */
   public function testSetArgumentsFailure()
   {
-    $this->setExpectedException('Typhoon\ParameterList\Exception\UnexpectedArgument', "expected 'integer'");
+    $this->setExpectedException(__NAMESPACE__.'\Exception\UnexpectedArgument', "expected 'integer'");
     $this->_assertion->setArguments(array('foo' => 'foo'));
   }
 

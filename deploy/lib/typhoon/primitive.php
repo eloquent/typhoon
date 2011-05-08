@@ -12,10 +12,10 @@
 namespace Typhoon;
 
 use Typhoon;
+use Typhoon\Assertion\Exception\UnexpectedArgument;
+use Typhoon\Assertion\Exception\UnexpectedType;
 use Typhoon\Assertion\Type as TypeAssertion;
-use Typhoon\ParameterList\Exception\UnexpectedArgument;
 use Typhoon\Primitive\Integer;
-use Typhoon\Type\Exception\UnexpectedType;
 
 abstract class Primitive
 {

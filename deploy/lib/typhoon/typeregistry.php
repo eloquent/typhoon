@@ -12,8 +12,8 @@
 namespace Typhoon;
 
 use ArrayAccess;
+use Typhoon\Assertion\Exception\UnexpectedArgument;
 use Typhoon\Exception\NotImplemented;
-use Typhoon\ParameterList\Exception\UnexpectedArgument;
 use Typhoon\Primitive\Integer;
 use Typhoon\Primitive\String;
 use Typhoon\Type\Object as ObjectType;

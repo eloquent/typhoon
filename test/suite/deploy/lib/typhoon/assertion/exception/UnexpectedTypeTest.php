@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Type\Exception;
+namespace Typhoon\Assertion\Exception;
 
 use Typhoon;
 use Typhoon\Primitive\String;
@@ -42,7 +42,7 @@ class UnexpectedTypeTest extends ExceptionTestCase
   }
 
   /**
-   * @covers Typhoon\Type\Exception\UnexpectedType::__construct
+   * @covers Typhoon\Assertion\Exception\UnexpectedType::__construct
    */
   public function testConstructor()
   {

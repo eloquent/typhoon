@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\ParameterList\Exception;
+namespace Typhoon\Assertion\Exception;
 
 use Typhoon\Parameter;
 use Typhoon\Primitive\Integer;
@@ -44,7 +44,7 @@ class MissingArgumentTest extends ExceptionTestCase
   }
 
   /**
-   * @covers Typhoon\ParameterList\Exception\MissingArgument::__construct
+   * @covers Typhoon\Assertion\Exception\MissingArgument::__construct
    */
   public function testConstructor()
   {

@@ -13,11 +13,11 @@ namespace Typhoon\Assertion;
 
 use Typhoon;
 use Typhoon\Assertion;
+use Typhoon\Assertion\Exception\MissingArgument;
+use Typhoon\Assertion\Exception\UnexpectedArgument;
+use Typhoon\Assertion\Exception\UnexpectedType;
 use Typhoon\ParameterList as ParameterListObject;
-use Typhoon\ParameterList\Exception\MissingArgument;
-use Typhoon\ParameterList\Exception\UnexpectedArgument;
 use Typhoon\Primitive\Integer;
-use Typhoon\Type\Exception\UnexpectedType;
 
 class ParameterList implements Assertion
 {

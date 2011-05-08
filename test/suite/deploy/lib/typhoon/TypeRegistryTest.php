@@ -194,7 +194,7 @@ class TypeRegistryTest extends TestCase
    */
   public function testUnexpectedArgumentFailure($method, array $arguments)
   {
-    $this->setExpectedException(__NAMESPACE__.'\ParameterList\Exception\UnexpectedArgument');
+    $this->setExpectedException(__NAMESPACE__.'\Assertion\Exception\UnexpectedArgument');
     call_user_func_array(array($this->_registry, $method), $arguments);
   }
 

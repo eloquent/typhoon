@@ -64,7 +64,7 @@ class TypeTest extends TestCase
     $assertion->setType($type);
     $assertion->setValue($value);
 
-    $this->setExpectedException('Typhoon\Type\Exception\UnexpectedType');
+    $this->setExpectedException(__NAMESPACE__.'\Exception\UnexpectedType');
     $assertion->assert();
   }
   

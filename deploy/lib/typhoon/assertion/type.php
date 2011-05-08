@@ -12,9 +12,9 @@
 namespace Typhoon\Assertion;
 
 use Typhoon\Assertion;
+use Typhoon\Assertion\Exception\UnexpectedType;
 use Typhoon\Primitive\String;
 use Typhoon\Type as TypeObject;
-use Typhoon\Type\Exception\UnexpectedType;
 use Typhoon\Type\Mixed;
 
 class Type implements Assertion

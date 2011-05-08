@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Type\Exception;
+namespace Typhoon\Assertion\Exception;
 
 use Typhoon\Exception\Exception as TyphoonException;
 

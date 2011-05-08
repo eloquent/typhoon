@@ -9,38 +9,44 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\ParameterList\Exception;
+namespace Typhoon\Assertion\Exception;
 
 use Exception as NativeException;
 use Typhoon\Parameter;
 use Typhoon\Primitive\Integer;
 use Typhoon\Primitive\String;
 
-class MissingArgument extends Exception
+class UnexpectedArgument extends Exception
 {
   /**
+   * @param mixed $value
    * @param Integer $index
    * @param Parameter $parameter
    * @param NativeException $previous
    */
-  public function __construct(Integer $index, Parameter $parameter, NativeException $previous = null)
+  public function __construct($value, Integer $index, Parameter $parameter = null, NativeException $previous = null)
   {
     $message =
-      "Missing argument at index "
+      "Unexpected argument at index "
       .$index
     ;
 
-    if ($parameter->name()) $message .=
-      " ("
-      .$parameter->name()
-      .")"
-     ;
+    if ($parameter)
+    {
+      if ($parameter->name()) $message .=
+        " ("
+        .$parameter->name()
+        .")"
+       ;
 
-    $message .=
-      " - expected '"
-      .$parameter->type()
-      ."'."
-    ;
+      $message .=
+        " - expected '"
+        .$parameter->type()
+        ."'"
+      ;
+    }
+
+    $message .= ".";
 
     parent::__construct(new String($message), $previous);
   }

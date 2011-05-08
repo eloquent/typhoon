@@ -62,7 +62,7 @@ class ObjectTest extends TypeTestCase
    */
   public function testConstructor()
   {
-    $this->setExpectedException('Typhoon\ParameterList\Exception\UnexpectedArgument');
+    $this->setExpectedException('Typhoon\Assertion\Exception\UnexpectedArgument');
     new Object(1);
   }
 

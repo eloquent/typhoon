@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\ParameterList\Exception;
+namespace Typhoon\Assertion\Exception;
 
 use Typhoon\Parameter;
 use Typhoon\Primitive\Integer;
@@ -45,7 +45,7 @@ class UnexpectedArgumentTest extends ExceptionTestCase
   }
 
   /**
-   * @covers Typhoon\ParameterList\Exception\UnexpectedArgument::__construct
+   * @covers Typhoon\Assertion\Exception\UnexpectedArgument::__construct
    */
   public function testConstructor()
   {

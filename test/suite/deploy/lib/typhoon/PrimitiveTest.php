@@ -12,11 +12,11 @@
 namespace Typhoon;
 
 use Typhoon;
+use Typhoon\Assertion\Exception\UnexpectedType;
 use Typhoon\Assertion\Type as TypeAssertion;
 use Typhoon\Primitive\String;
 use Typhoon\Test\TestCase;
 use Typhoon\Type;
-use Typhoon\Type\Exception\UnexpectedType;
 
 class PrimitiveTest extends TestCase
 {
@@ -111,7 +111,7 @@ class PrimitiveTest extends TestCase
       ->will($this->returnValue($type))
     ;
 
-    $this->setExpectedException(__NAMESPACE__.'\ParameterList\Exception\UnexpectedArgument');
+    $this->setExpectedException(__NAMESPACE__.'\Assertion\Exception\UnexpectedArgument');
     $primitive->__construct($value);
   }
 
