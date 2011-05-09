@@ -11,7 +11,6 @@
 
 namespace Typhoon;
 
-use stdClass;
 use Typhoon;
 use Typhoon\Renderer\Type as TypeRenderer;
 use Typhoon\Test\TestCase;

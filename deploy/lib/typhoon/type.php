@@ -12,10 +12,7 @@
 namespace Typhoon;
 
 use Typhoon;
-use Typhoon\Assertion\Exception\UnexpectedType;
-use Typhoon\Primitive\String as StringPrimitive;
 use Typhoon\Renderer\Type as TypeRenderer;
-use Typhoon\Renderer\Type\Typhax;
 use Typhoon\TypeRegistry\Exception\UnregisteredType;
 
 abstract class Type

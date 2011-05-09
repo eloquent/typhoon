@@ -11,7 +11,6 @@
 
 namespace Typhoon;
 
-use ArrayIterator;
 use Typhoon\Primitive\Boolean;
 use Typhoon\Test\TestCase;
 

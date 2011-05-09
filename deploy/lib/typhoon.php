@@ -10,7 +10,6 @@
  */
 
 use Typhoon\Assertion\Type as TypeAssertion;
-use Typhoon\Primitive\String;
 use Typhoon\Renderer\Type as TypeRenderer;
 use Typhoon\Renderer\Type\Typhax;
 use Typhoon\TypeRegistry;

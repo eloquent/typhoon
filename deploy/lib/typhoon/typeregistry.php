@@ -12,11 +12,9 @@
 namespace Typhoon;
 
 use ArrayAccess;
-use Typhoon\Assertion\Exception\UnexpectedArgument;
 use Typhoon\Exception\NotImplemented;
 use Typhoon\Primitive\Integer;
 use Typhoon\Primitive\String;
-use Typhoon\Type\Object as ObjectType;
 use Typhoon\TypeRegistry\Exception\UnregisteredType;
 use Typhoon\TypeRegistry\Exception\UnregisteredTypeAlias;
 

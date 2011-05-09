@@ -13,7 +13,6 @@ namespace Typhoon\TypeRegistry\Exception;
 
 use Typhoon\Primitive\String;
 use Typhoon\Test\ExceptionTestCase;
-use Typhoon\Type;
 
 class UnregisteredTypeTest extends ExceptionTestCase
 {

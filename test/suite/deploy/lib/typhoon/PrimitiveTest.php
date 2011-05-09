@@ -13,7 +13,6 @@ namespace Typhoon;
 
 use Typhoon;
 use Typhoon\Assertion\Exception\UnexpectedType;
-use Typhoon\Assertion\Type as TypeAssertion;
 use Typhoon\Primitive\String;
 use Typhoon\Test\TestCase;
 use Typhoon\Type;

@@ -13,7 +13,6 @@ namespace Typhoon\TypeRegistry\Exception;
 
 use Exception as NativeException;
 use Typhoon\Primitive\String;
-use Typhoon\Type;
 
 class UnregisteredType extends Exception
 {

@@ -13,8 +13,6 @@ namespace Typhoon\Assertion\Exception;
 
 use Exception as NativeException;
 use Typhoon\Primitive\String as StringPrimitive;
-use Typhoon\Renderer\Type\Typhax;
-use Typhoon\Type;
 
 final class UnexpectedType extends Exception
 {
