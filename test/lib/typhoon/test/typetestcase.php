@@ -11,9 +11,6 @@
 
 namespace Typhoon\Test;
 
-use ReflectionClass;
-use Typhoon;
-
 abstract class TypeTestCase extends TestCase
 {
   /**
