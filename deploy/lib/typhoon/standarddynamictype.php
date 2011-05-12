@@ -58,7 +58,12 @@ abstract class StandardDynamicType implements DynamicType
   {
     $this->assertAttribute($attribute);
 
-    return isset($this->attributes[$attribute]) ? $this->attributes[$attribute] : $default;
+    if (isset($this->attributes[$attribute]))
+    {
+      return $this->attributes[$attribute];
+    }
+
+    return $default;
   }
 
   /**

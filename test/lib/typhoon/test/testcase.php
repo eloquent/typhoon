@@ -18,6 +18,7 @@ class TestCase extends PHPUnit_Framework_TestCase
 {
   protected function setUp()
   {
-    Typhoon::install(new Typhoon);
+    $typhoon = new Typhoon;
+    $typhoon->install();
   }
 }

@@ -31,11 +31,14 @@ class MissingArgument extends Exception
       .$index
     ;
 
-    if ($parameter->name()) $message .=
-      " ("
-      .$parameter->name()
-      .")"
-     ;
+    if ($parameter->name())
+    {
+      $message .=
+        " ("
+        .$parameter->name()
+        .")"
+      ;
+    }
 
     $message .=
       " - expected '"

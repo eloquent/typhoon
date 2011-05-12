@@ -42,8 +42,15 @@ class TypeRegistry implements ArrayAccess
    */
   public function alias($type)
   {
-    if (is_object($type)) $type = get_class($type);
-    if (!isset($this->aliases[$type])) throw new UnregisteredType(new String($type));
+    if (is_object($type))
+    {
+      $type = get_class($type);
+    }
+
+    if (!isset($this->aliases[$type]))
+    {
+      throw new UnregisteredType(new String($type));
+    }
 
     return $this->aliases[$type];
   }
@@ -80,7 +87,10 @@ class TypeRegistry implements ArrayAccess
    */
   public function offsetGet($alias)
   {
-    if (!$this->offsetExists($alias)) throw new UnregisteredTypeAlias(new String($alias));
+    if (!$this->offsetExists($alias))
+    {
+      throw new UnregisteredTypeAlias(new String($alias));
+    }
 
     return $this->types[mb_strtolower($alias)];
   }
@@ -99,7 +109,10 @@ class TypeRegistry implements ArrayAccess
 
     foreach ($this->types as $alias => $type)
     {
-      if (isset($this->aliases[$type])) continue;
+      if (isset($this->aliases[$type]))
+      {
+        continue;
+      }
 
       $this->aliases[$type] = $alias;
     }

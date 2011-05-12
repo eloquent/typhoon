@@ -30,7 +30,10 @@ abstract class Type
    */
   public function typeRegistry()
   {
-    if (!$this->typeRegistry) $this->typeRegistry = Typhoon::instance()->typeRegistry();
+    if (!$this->typeRegistry)
+    {
+      $this->typeRegistry = Typhoon::instance()->typeRegistry();
+    }
 
     return $this->typeRegistry;
   }

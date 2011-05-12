@@ -105,6 +105,7 @@ class TypeRegistryTest extends TestCase
 
   /**
    * @covers Typhoon\TypeRegistry::alias
+   * @covers Typhoon\TypeRegistry::indexAliases
    */
   public function testAlias()
   {

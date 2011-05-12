@@ -21,17 +21,22 @@ class Typhoon
    */
   public static function instance()
   {
-    if (!self::$instance) self::$instance = new self;
+    if (!self::$instance)
+    {
+      self::$instance = new self;
+    }
 
     return self::$instance;
   }
 
-  /**
-   * @param Typhoon $instance
-   */
-  public static function install(self $instance)
+  public static function uninstall()
   {
-    self::$instance = $instance;
+    self::$instance = null;
+  }
+
+  public function install()
+  {
+    self::$instance = $this;
   }
 
   /**
@@ -55,7 +60,10 @@ class Typhoon
    */
   public function typeRegistry()
   {
-    if (!$this->typeRegistry) $this->typeRegistry = new TypeRegistry;
+    if (!$this->typeRegistry)
+    {
+      $this->typeRegistry = new TypeRegistry;
+    }
 
     return $this->typeRegistry;
   }
@@ -73,7 +81,10 @@ class Typhoon
    */
   public function typeRenderer()
   {
-    if (!$this->typeRenderer) $this->typeRenderer = new Typhax;
+    if (!$this->typeRenderer)
+    {
+      $this->typeRenderer = new Typhax;
+    }
 
     return $this->typeRenderer;
   }

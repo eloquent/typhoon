@@ -26,7 +26,11 @@ class Typhax extends TypeRenderer
   public function render(Type $type)
   {
     $rendered = $this->renderAlias($type);
-    if ($type instanceof DynamicType) $rendered .= $this->renderAttributes($type);
+
+    if ($type instanceof DynamicType)
+    {
+      $rendered .= $this->renderAttributes($type);
+    }
 
     return $rendered;
   }
@@ -54,7 +58,10 @@ class Typhax extends TypeRenderer
    */
   protected function renderAttributes(DynamicType $type)
   {
-    if (!$attributes = $type->typhoonAttributes()) return '';
+    if (!$attributes = $type->typhoonAttributes())
+    {
+      return '';
+    }
 
     $rendered = '';
 

@@ -17,8 +17,6 @@ class TyphoonTest extends TestCase
 {
   protected function setUp()
   {
-    parent::setUp();
-    
     $this->_typhoon = new Typhoon;
     $this->_typeRegistry = new TypeRegistry;
     $this->_typeRenderer = $this->getMockForAbstractClass('Typhoon\Renderer\Type');
@@ -26,17 +24,20 @@ class TyphoonTest extends TestCase
 
   /**
    * @covers Typhoon::instance
+   * @covers Typhoon::uninstall
    * @covers Typhoon::install
    */
   public function testInstanceAndInstall()
   {
+    Typhoon::uninstall();
+
     $instance = Typhoon::instance();
 
     $this->assertInstanceOf('Typhoon', $instance);
     $this->assertSame($instance, Typhoon::instance());
 
     $instance = new Typhoon;
-    Typhoon::install($instance);
+    $instance->install();
 
     $this->assertSame($instance, Typhoon::instance());
   }

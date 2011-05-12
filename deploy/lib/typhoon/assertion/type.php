@@ -27,7 +27,10 @@ class Type implements Assertion
 
   public function assert()
   {
-    if ($this->type->check($this->value)) return;
+    if ($this->type->check($this->value))
+    {
+      return;
+    }
 
     throw new UnexpectedType(
       $this->value,

@@ -67,11 +67,17 @@ class ParameterList implements Assertion
 
     $index ++;
 
-    if (count($this->parameterList) <= $index) return;
+    if (count($this->parameterList) <= $index)
+    {
+      return;
+    }
 
     $parameter = $this->parameterList[$index];
 
-    if ($parameter->optional()) return;
+    if ($parameter->optional())
+    {
+      return;
+    }
 
     throw new MissingArgument(new Integer($index), $parameter);
   }
@@ -105,7 +111,10 @@ class ParameterList implements Assertion
    */
   public function setArguments(array $arguments)
   {
-    foreach ($arguments as $index => $argument) new Integer($index);
+    foreach ($arguments as $index => $argument)
+    {
+      new Integer($index);
+    }
     
     $this->arguments = $arguments;
   }

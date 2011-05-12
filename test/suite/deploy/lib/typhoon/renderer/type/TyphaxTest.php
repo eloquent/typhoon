@@ -73,6 +73,31 @@ class TyphaxTest extends TestCase
   /**
    * @covers Typhoon\Renderer\Type\Typhax::render
    * @covers Typhoon\Renderer\Type\Typhax::renderAlias
+   * @covers Typhoon\Renderer\Type\Typhax::renderAttributes
+   */
+  public function testRenderDynamicTypeNoAttributes()
+  {
+    $alias = 'foo';
+    $attributes = array();
+
+    $type = $this->getMock('Typhoon\DynamicType');
+    $type
+      ->expects($this->once())
+      ->method('typhoonAttributes')
+      ->will($this->returnValue($attributes))
+    ;
+
+    $this->_typeRegistry[$alias] = get_class($type);
+    $this->_renderer->setTypeRegistry($this->_typeRegistry);
+
+    $expected = 'foo';
+
+    $this->assertEquals($expected, $this->_renderer->render($type));
+  }
+
+  /**
+   * @covers Typhoon\Renderer\Type\Typhax::render
+   * @covers Typhoon\Renderer\Type\Typhax::renderAlias
    */
   public function testRenderUnregistered()
   {

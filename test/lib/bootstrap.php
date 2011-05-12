@@ -11,7 +11,10 @@
 
 error_reporting(E_ALL | E_STRICT | E_DEPRECATED);
 
-define('TYPHOON_TEST_COVERAGE_DIR', dirname(__DIR__).DIRECTORY_SEPARATOR.'coverage');
+if (!defined('TYPHOON_TEST_COVERAGE_DIR'))
+{
+  define('TYPHOON_TEST_COVERAGE_DIR', dirname(__DIR__).DIRECTORY_SEPARATOR.'coverage');
+}
 
 // spl_autoload default implementation SHOULD do this itself, but it does not work for me
 spl_autoload_register(function($name)

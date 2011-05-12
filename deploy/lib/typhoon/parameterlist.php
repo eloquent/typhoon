@@ -83,7 +83,10 @@ class ParameterList implements ArrayAccess, Countable, IteratorAggregate
   {
     new Integer($index);
 
-    if (isset($this[$index])) return $this->parameters[$index];
+    if (isset($this[$index]))
+    {
+      return $this->parameters[$index];
+    }
 
     throw new UndefinedParameter(new Integer($index));
   }

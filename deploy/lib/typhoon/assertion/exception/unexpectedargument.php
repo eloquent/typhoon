@@ -34,11 +34,14 @@ class UnexpectedArgument extends Exception
 
     if ($parameter)
     {
-      if ($parameter->name()) $message .=
-        " ("
-        .$parameter->name()
-        .")"
-       ;
+      if ($parameter->name())
+      {
+        $message .=
+          " ("
+          .$parameter->name()
+          .")"
+        ;
+      }
 
       $message .=
         " - expected '"
