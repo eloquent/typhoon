@@ -40,7 +40,7 @@ class PrimitiveTest extends TestCase
    */
   public function testPrimitive()
   {
-    $type = $this->getMockForAbstractClass(__NAMESPACE__.'\Type');
+    $type = $this->getMock(__NAMESPACE__.'\Type');
     $value = 'foo';
 
     $typeAssertion = $this->getMock(
@@ -85,7 +85,7 @@ class PrimitiveTest extends TestCase
    */
   public function testPrimitiveFailure()
   {
-    $type = $this->getMockForAbstractClass(__NAMESPACE__.'\Type');
+    $type = $this->getMock(__NAMESPACE__.'\Type');
     $value = 'foo';
 
     $typeAssertion = $this->getMock(

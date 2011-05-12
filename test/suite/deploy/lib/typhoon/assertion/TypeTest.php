@@ -31,7 +31,7 @@ class TypeTest extends TestCase
   public function testAssertion()
   {
     $value = 'foo';
-    $type = $this->getMockForAbstractClass('Typhoon\Type');
+    $type = $this->getMock('Typhoon\Type');
     $type
       ->expects($this->once())
       ->method('check')
@@ -52,7 +52,7 @@ class TypeTest extends TestCase
   public function testAssertionFailure()
   {
     $value = 'foo';
-    $type = $this->getMockForAbstractClass('Typhoon\Type');
+    $type = $this->getMock('Typhoon\Type');
     $type
       ->expects($this->once())
       ->method('check')
@@ -76,7 +76,7 @@ class TypeTest extends TestCase
   {
     $this->assertEquals(new Mixed, $this->_assertion->type());
 
-    $type = $this->getMockForAbstractClass('Typhoon\Type');
+    $type = $this->getMock('Typhoon\Type');
     $this->_assertion->setType($type);
 
     $this->assertSame($type, $this->_assertion->type());

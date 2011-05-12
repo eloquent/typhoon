@@ -21,7 +21,7 @@ class ObjectTest extends TypeTestCase
    */
   public function typeValues()
   {
-    $class = 'stdClass';
+    $attributes = array('class' => 'stdClass');
 
     return array(
       // object of any class
@@ -36,16 +36,16 @@ class ObjectTest extends TypeTestCase
       array(false, $this->resourceFixture()),  // #8: resource
 
       // object of a specific class
-      array(true,  new stdClass,             array($class)),  // #9: object of correct class
-      array(false, new Object,               array($class)),  // #10: object of incorrect class
-      array(false, null,                     array($class)),  // #11: null
-      array(false, true,                     array($class)),  // #12: boolean
-      array(false, 'string',                 array($class)),  // #13: string
-      array(false, 1,                        array($class)),  // #14: integer
-      array(false, .1,                       array($class)),  // #15: float
-      array(false, array(),                  array($class)),  // #16: array
-      array(false, function(){},             array($class)),  // #17: closure
-      array(false, $this->resourceFixture(), array($class)),  // #18: resource
+      array(true,  new stdClass,             $attributes),  // #9: object of correct class
+      array(false, new Object,               $attributes),  // #10: object of incorrect class
+      array(false, null,                     $attributes),  // #11: null
+      array(false, true,                     $attributes),  // #12: boolean
+      array(false, 'string',                 $attributes),  // #13: string
+      array(false, 1,                        $attributes),  // #14: integer
+      array(false, .1,                       $attributes),  // #15: float
+      array(false, array(),                  $attributes),  // #16: array
+      array(false, function(){},             $attributes),  // #17: closure
+      array(false, $this->resourceFixture(), $attributes),  // #18: resource
     );
   }
 
@@ -58,21 +58,33 @@ class ObjectTest extends TypeTestCase
   }
 
   /**
-   * @covers Typhoon\Type\Object::construct
+   * @covers Typhoon\Type\Object::setTyphoonAttribute
+   * @covers Typhoon\Type\Object::attributeSupported
    */
-  public function testConstructor()
+  public function testSetTyphoonAttribute()
   {
+    $type = $this->typeFixture();
+    $type->setTyphoonAttribute('class', 'foo');
+
+    $this->assertEquals('foo', $type->attribute('class'));
+  }
+
+  /**
+   * @covers Typhoon\Type\Object::setTyphoonAttribute
+   */
+  public function testSetTyphoonAttributeFailure()
+  {
+    $type = $this->typeFixture();
     $this->setExpectedException('Typhoon\Assertion\Exception\UnexpectedArgument');
-    new Object(1);
+    $type->setTyphoonAttribute('class', 1);
   }
 
   // methods below must be manually overridden to implement @covers
   
   /**
-   * @covers Typhoon\Type\Object::construct
    * @covers Typhoon\Type\Object::check
    * @dataProvider typeValues
    * @group typhoon_types
    */
-  public function testCheck($expected, $value, $arguments = null) { parent::testCheck($expected, $value, $arguments); }
+  public function testCheck($expected, $value, $attributes = null) { parent::testCheck($expected, $value, $attributes); }
 }

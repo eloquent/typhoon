@@ -11,6 +11,7 @@
 
 namespace Typhoon\Assertion;
 
+use Typhoon;
 use Typhoon\Assertion;
 use Typhoon\Assertion\Exception\UnexpectedType;
 use Typhoon\Primitive\String;
@@ -28,7 +29,10 @@ class Type implements Assertion
   {
     if ($this->type->check($this->value)) return;
 
-    throw new UnexpectedType($this->value, new String((string)$this->type));
+    throw new UnexpectedType(
+      $this->value,
+      new String((string)Typhoon::instance()->typeRenderer()->render($this->type))
+    );
   }
 
   /**

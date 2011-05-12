@@ -23,7 +23,7 @@ class ParameterTest extends TestCase
     parent::setUp();
     
     $this->_parameter = new Parameter;
-    $this->_type = $this->getMockForAbstractClass(__NAMESPACE__.'\Type');
+    $this->_type = $this->getMock(__NAMESPACE__.'\Type');
   }
 
   /**

@@ -52,5 +52,5 @@ class IntegerTest extends TypeTestCase
    * @dataProvider typeValues
    * @group typhoon_types
    */
-  public function testCheck($expected, $value, $arguments = null) { parent::testCheck($expected, $value, $arguments); }
+  public function testCheck($expected, $value, $attributes = null) { parent::testCheck($expected, $value, $attributes); }
 }

@@ -16,7 +16,7 @@ define('TYPHOON_TEST_COVERAGE_DIR', dirname(__DIR__).DIRECTORY_SEPARATOR.'covera
 // spl_autoload default implementation SHOULD do this itself, but it does not work for me
 spl_autoload_register(function($name)
 {
-  @include str_replace('\\', DIRECTORY_SEPARATOR, strtolower($name)).'.php';
+  include str_replace('\\', DIRECTORY_SEPARATOR, strtolower($name)).'.php';
 });
 
 // clean coverage reports

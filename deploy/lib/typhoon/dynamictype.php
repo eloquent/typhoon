@@ -9,19 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Type;
+namespace Typhoon;
 
-use Typhoon\Type;
-
-class Null implements Type
+interface DynamicType extends Type
 {
   /**
-   * @param mixed value
-   *
-   * @return boolean
+   * @param string $attribute
+   * @param mixed $value
    */
-  public function check($value)
-  {
-    return null === $value;
-  }
+  public function setTyphoonAttribute($attribute, $value);
+
+  /**
+   * @return array
+   */
+  public function typhoonAttributes();
 }

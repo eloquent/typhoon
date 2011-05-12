@@ -12,6 +12,7 @@
 namespace Typhoon\Assertion\Exception;
 
 use Exception as NativeException;
+use Typhoon;
 use Typhoon\Parameter;
 use Typhoon\Primitive\Integer;
 use Typhoon\Primitive\String;
@@ -38,7 +39,7 @@ class MissingArgument extends Exception
 
     $message .=
       " - expected '"
-      .$parameter->type()
+      .Typhoon::instance()->typeRenderer()->render($parameter->type())
       ."'."
     ;
 

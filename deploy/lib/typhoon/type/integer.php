@@ -13,7 +13,7 @@ namespace Typhoon\Type;
 
 use Typhoon\Type;
 
-class Integer extends Type
+class Integer implements Type
 {
   /**
    * @param mixed value

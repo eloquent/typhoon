@@ -108,8 +108,8 @@ class TypeRegistryTest extends TestCase
    */
   public function testAlias()
   {
-    $type_1 = $this->getMockForAbstractClass('Typhoon\Type', array(), 'TypeMock1');
-    $type_2 = $this->getMockForAbstractClass('Typhoon\Type', array(), 'TypeMock2');
+    $type_1 = $this->getMock(__NAMESPACE__.'\Type', array(), array(), uniqid('Mock_'));
+    $type_2 = $this->getMock(__NAMESPACE__.'\Type', array(), array(), uniqid('Mock_'));
     $typeName_1 = get_class($type_1);
     $typeName_2 = get_class($type_2);
     $alias_1 = 'foo';

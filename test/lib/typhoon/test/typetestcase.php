@@ -19,15 +19,19 @@ abstract class TypeTestCase extends TestCase
   /**
    * @return Type
    */
-  protected function typeFixture(array $arguments = null)
+  protected function typeFixture(array $attributes = null)
   {
+    if (null === $attributes) $attributes = array();
+
     $class = $this->typeClass();
+    $type = new $class;
 
-    if (null === $arguments) return new $class;
+    foreach ($attributes as $key => $value)
+    {
+      $type->setTyphoonAttribute($key, $value);
+    }
 
-    $reflector = new ReflectionClass($class);
-
-    return $reflector->newInstanceArgs($arguments);
+    return $type;
   }
 
   /**
@@ -49,11 +53,9 @@ abstract class TypeTestCase extends TestCase
    * @dataProvider typeValues
    * @group typhoon_types
    */
-  public function testCheck($expected, $value, $arguments = null)
+  public function testCheck($expected, $value, $attributes = null)
   {
-    if (null === $arguments) $arguments = array();
-
-    $this->assertEquals($expected, $this->typeFixture($arguments)->check($value));
+    $this->assertEquals($expected, $this->typeFixture($attributes)->check($value));
   }
 
   /**

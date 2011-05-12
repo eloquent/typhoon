@@ -11,21 +11,11 @@
 
 namespace Typhoon\Type;
 
-use Typhoon\Primitive\String as StringPrimitive;
-use Typhoon\Type;
+use Typhoon\Primitive\String;
+use Typhoon\StandardDynamicType;
 
-class Object extends Type
+class Object extends StandardDynamicType
 {
-  /**
-   * @param string $class
-   */
-  public function construct($class = null)
-  {
-    if (null !== $class) new StringPrimitive($class);
-    
-    $this->class = $class;
-  }
-
   /**
    * @param mixed value
    *
@@ -33,16 +23,32 @@ class Object extends Type
    */
   public function check($value)
   {
-    if ($this->class)
+    if ($class = $this->attribute('class'))
     {
-      return $value instanceof $this->class;
+      return $value instanceof $class;
     }
 
     return is_object($value);
   }
 
   /**
-   * @var string
+   * @param string $attribute
+   * @param mixed $value
    */
-  protected $class;
+  public function setTyphoonAttribute($attribute, $value)
+  {
+    new String($value);
+    
+    parent::setTyphoonAttribute($attribute, $value);
+  }
+
+  /**
+   * @param string $attribute
+   *
+   * @return boolean
+   */
+  protected function attributeSupported($attribute)
+  {
+    return 'class' == $attribute;
+  }
 }

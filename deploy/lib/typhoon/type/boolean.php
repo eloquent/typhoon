@@ -13,7 +13,7 @@ namespace Typhoon\Type;
 
 use Typhoon\Type;
 
-class Boolean extends Type
+class Boolean implements Type
 {
   /**
    * @param mixed value

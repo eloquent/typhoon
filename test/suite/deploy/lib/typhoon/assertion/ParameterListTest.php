@@ -36,8 +36,8 @@ class ParameterListTest extends TestCase
     $argument_1 = 'bar';
     $arguments = array($argument_0, $argument_1);
 
-    $type_0 = $this->getMockForAbstractClass('Typhoon\Type', array(), uniqid('Mock_testAssertUseTypeAssertion_'));
-    $type_1 = $this->getMockForAbstractClass('Typhoon\Type', array(), uniqid('Mock_testAssertUseTypeAssertion_'));
+    $type_0 = $this->getMock('Typhoon\Type', array(), array(), uniqid('Mock_'));
+    $type_1 = $this->getMock('Typhoon\Type', array(), array(), uniqid('Mock_'));
 
     $assertion_0 = $this->getMock(__NAMESPACE__.'\Type', array('assert', 'setType', 'setValue'));
     $assertion_0
@@ -172,7 +172,7 @@ class ParameterListTest extends TestCase
   {
     $this->_assertion->setParameterList($this->_parameterList);
 
-    $type = $this->getMockForAbstractClass('Typhoon\Type');
+    $type = $this->getMock('Typhoon\Type');
     $type
       ->expects($this->once())
       ->method('check')

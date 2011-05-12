@@ -13,7 +13,7 @@ namespace Typhoon\Type;
 
 use Typhoon\Type;
 
-class String extends Type
+class String implements Type
 {
   /**
    * @param mixed value

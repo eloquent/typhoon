@@ -9,19 +9,8 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Type;
+namespace Typhoon\Type\Exception;
 
-use Typhoon\Type;
+use Typhoon\Exception\Exception as TyphoonException;
 
-class Null implements Type
-{
-  /**
-   * @param mixed value
-   *
-   * @return boolean
-   */
-  public function check($value)
-  {
-    return null === $value;
-  }
-}
+abstract class Exception extends TyphoonException {}

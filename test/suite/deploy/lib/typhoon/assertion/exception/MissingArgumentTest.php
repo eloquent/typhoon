@@ -40,7 +40,7 @@ class MissingArgumentTest extends ExceptionTestCase
     
     $this->_index = new Integer(0);
     $this->_parameter = new Parameter;
-    $this->_expectedTypeName = (string)$this->_parameter->type();
+    $this->_expectedTypeName = 'mixed';
   }
 
   /**

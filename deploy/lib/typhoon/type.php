@@ -11,76 +11,12 @@
 
 namespace Typhoon;
 
-use Typhoon;
-use Typhoon\Renderer\Type as TypeRenderer;
-use Typhoon\TypeRegistry\Exception\UnregisteredType;
-
-abstract class Type
+interface Type
 {
-  final public function __construct()
-  {
-    $this->arguments = func_get_args();
-
-    call_user_func_array(array($this, 'construct'), $this->arguments);
-  }
-
-  public function construct() {}
-
-  /**
-   * @return array
-   */
-  final public function arguments()
-  {
-    return $this->arguments;
-  }
-
-  /**
-   * @return string
-   */
-  public function __toString()
-  {
-    try
-    {
-      return $this->renderer()->render($this);
-    }
-    catch (UnregisteredType $e)
-    {
-      return 'unregistered type ('.get_class($this).')';
-    }
-  }
-
-  /**
-   * @param TypeRenderer $renderer
-   */
-  public function setRenderer(TypeRenderer $renderer)
-  {
-    $this->renderer = $renderer;
-  }
-
-  /**
-   * @return TypeRenderer
-   */
-  public function renderer()
-  {
-    if (!$this->renderer) $this->renderer = Typhoon::instance()->typeRenderer();
-
-    return $this->renderer;
-  }
-
   /**
    * @param mixed value
-   * 
+   *
    * @return boolean
    */
-  abstract public function check($value);
-
-  /**
-   * @var array
-   */
-  private $arguments;
-
-  /**
-   * @var TypeRenderer
-   */
-  protected $renderer;
+  public function check($value);
 }

@@ -11,8 +11,10 @@
 
 namespace Typhoon\Renderer\Type;
 
+use Typhoon\DynamicType;
 use Typhoon\Renderer\Type as TypeRenderer;
 use Typhoon\Type as Type;
+use Typhoon\TypeRegistry\Exception\UnregisteredType;
 
 class Typhax extends TypeRenderer
 {
@@ -23,10 +25,10 @@ class Typhax extends TypeRenderer
    */
   public function render(Type $type)
   {
-    return
-      $this->renderAlias($type)
-      .$this->renderArguments($type)
-    ;
+    $rendered = $this->renderAlias($type);
+    if ($type instanceof DynamicType) $rendered .= $this->renderAttributes($type);
+
+    return $rendered;
   }
 
   /**
@@ -36,39 +38,45 @@ class Typhax extends TypeRenderer
    */
   protected function renderAlias(Type $type)
   {
-    return $this->typeRegistry()->alias($type);
+    try
+    {
+      return $this->typeRegistry()->alias($type);
+    }
+    catch (UnregisteredType $e) {}
+    
+    return 'unregistered_type<'.get_class($type).'>';
   }
 
   /**
-   * @param Type $type
+   * @param DynamicType $type
    *
    * @return string
    */
-  protected function renderArguments(Type $type)
+  protected function renderAttributes(DynamicType $type)
   {
-    if (!$type->arguments()) return '';
+    if (!$attributes = $type->typhoonAttributes()) return '';
 
-    $rendered = '(';
+    $rendered = '';
 
-    foreach ($type->arguments() as $index => $argument)
+    foreach ($attributes as $key => $value)
     {
-      if ($index > 0) $rendered .= ', ';
-
-      $rendered .= $this->renderArgument($argument);
+      $rendered .= $rendered ? ', ' : '(';
+      $rendered .= $this->renderAttribute($key, $value);
     }
 
-    $rendered .= ')';
+    $rendered .= $rendered ? ')' : '';
 
     return $rendered;
   }
 
   /**
-   * @param mixed $argument
+   * @param string $key
+   * @param mixed $value
    *
    * @return string
    */
-  protected function renderArgument($argument)
+  protected function renderAttribute($key, $value)
   {
-    return var_export($argument, true);
+    return $key.'='.var_export($value, true);
   }
 }
