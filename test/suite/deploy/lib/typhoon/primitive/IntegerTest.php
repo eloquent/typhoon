@@ -17,11 +17,11 @@ class IntegerTest extends TestCase
 {
   /**
    * @covers Typhoon\Primitive\Integer::type
-   * @group typhoon_scalars
+   * @group typhoon_primitives
    */
   public function testType()
   {
-    $scalar = new Integer(1);
-    $this->assertInstanceOf('Typhoon\Type\Integer', $scalar->type());
+    $primitive = new Integer(1);
+    $this->assertInstanceOf('Typhoon\Type\Integer', $primitive->type());
   }
 }

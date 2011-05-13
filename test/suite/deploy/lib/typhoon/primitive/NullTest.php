@@ -17,11 +17,11 @@ class NullTest extends TestCase
 {
   /**
    * @covers Typhoon\Primitive\Null::type
-   * @group typhoon_scalars
+   * @group typhoon_primitives
    */
   public function testType()
   {
-    $scalar = new Null(null);
-    $this->assertInstanceOf('Typhoon\Type\Null', $scalar->type());
+    $primitive = new Null(null);
+    $this->assertInstanceOf('Typhoon\Type\Null', $primitive->type());
   }
 }

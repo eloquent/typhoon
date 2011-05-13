@@ -11,17 +11,16 @@
 
 namespace Typhoon\Primitive;
 
-use Typhoon\Test\TestCase;
+use Typhoon\Primitive;
+use Typhoon\Type\Callback as CallbackType;
 
-class StringTest extends TestCase
+final class Callback extends Primitive
 {
   /**
-   * @covers Typhoon\Primitive\String::type
-   * @group typhoon_primitives
+   * @return CallbackType
    */
-  public function testType()
+  final public function type()
   {
-    $primitive = new String('');
-    $this->assertInstanceOf('Typhoon\Type\String', $primitive->type());
+    return new CallbackType;
   }
 }

@@ -2,6 +2,7 @@
 
 namespace Typhoon\Type;
 
+use Typhoon\Primitive\Callback as CallbackPrimitive;
 use Typhoon\Type;
 
 class CallbackWrapper implements Type
@@ -23,11 +24,11 @@ class CallbackWrapper implements Type
   }
 
   /**
-   * @param callback $callback
+   * @param CallbackPrimitive $callback
    */
-  public function setCallback($callback)
+  public function setCallback(CallbackPrimitive $callback)
   {
-    $this->callback = $callback;
+    $this->callback = $callback->value();
   }
 
   /**

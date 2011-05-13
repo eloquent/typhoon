@@ -17,11 +17,11 @@ class BooleanTest extends TestCase
 {
   /**
    * @covers Typhoon\Primitive\Boolean::type
-   * @group typhoon_scalars
+   * @group typhoon_primitives
    */
   public function testType()
   {
-    $scalar = new Boolean(true);
-    $this->assertInstanceOf('Typhoon\Type\Boolean', $scalar->type());
+    $primitive = new Boolean(true);
+    $this->assertInstanceOf('Typhoon\Type\Boolean', $primitive->type());
   }
 }

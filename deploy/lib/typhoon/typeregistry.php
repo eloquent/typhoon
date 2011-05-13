@@ -28,11 +28,16 @@ class TypeRegistry implements ArrayAccess
   public function registerDefaults()
   {
     $this['boolean'] = __NAMESPACE__.'\Type\Boolean';
+    $this['callback'] = __NAMESPACE__.'\Type\Callback';
     $this['integer'] = __NAMESPACE__.'\Type\Integer';
     $this['mixed'] = __NAMESPACE__.'\Type\Mixed';
     $this['null'] = __NAMESPACE__.'\Type\Null';
     $this['object'] = __NAMESPACE__.'\Type\Object';
     $this['string'] = __NAMESPACE__.'\Type\String';
+
+    $this['bool'] = __NAMESPACE__.'\Type\Boolean';
+    $this['callable'] = __NAMESPACE__.'\Type\Callback';
+    $this['int'] = __NAMESPACE__.'\Type\Integer';
   }
 
   /**

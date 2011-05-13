@@ -11,6 +11,7 @@
 
 namespace Typhoon\Type;
 
+use Typhoon\Primitive\Callback as CallbackPrimitive;
 use Typhoon\Test\TestCase;
 
 class CallbackWrapperTest extends TestCase
@@ -23,11 +24,12 @@ class CallbackWrapperTest extends TestCase
     $called = false;
     $arguments = null;
     $type = new CallbackWrapper;
-    $type->setCallback(function() use(&$called, &$arguments)
+    $callback = new CallbackPrimitive(function() use(&$called, &$arguments)
     {
       $called = true;
       $arguments = func_get_args();
     });
+    $type->setCallback($callback);
     $type->setArguments(array('bar', 'baz'));
     
     $this->assertFalse($called);
@@ -50,7 +52,8 @@ class CallbackWrapperTest extends TestCase
     $this->assertEquals(function() { return true; }, $type->callback());
 
     $callback = function($value) { return false; };
-    $type->setCallback($callback);
+    $callbackPrimitive = new CallbackPrimitive($callback);
+    $type->setCallback($callbackPrimitive);
 
     $this->assertSame($callback, $type->callback());
   }
