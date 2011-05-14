@@ -12,6 +12,7 @@
 namespace Typhoon\Renderer\Type;
 
 use Typhoon\DynamicType;
+use Typhoon\Primitive\String;
 use Typhoon\Renderer\Type as TypeRenderer;
 use Typhoon\Type as Type;
 use Typhoon\TypeRegistry\Exception\UnregisteredType;
@@ -84,6 +85,8 @@ class Typhax extends TypeRenderer
    */
   protected function renderAttribute($key, $value)
   {
+    new String($key);
+    
     return $key.'='.var_export($value, true);
   }
 }

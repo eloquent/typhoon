@@ -107,6 +107,22 @@ class TyphaxTest extends TestCase
   }
 
   /**
+   * @covers Typhoon\Renderer\Type\Typhax::renderAttribute
+   */
+  public function testRenderAttributesFailure()
+  {
+    $type = $this->getMock('Typhoon\DynamicType');
+    $type
+      ->expects($this->once())
+      ->method('typhoonAttributes')
+      ->will($this->returnValue(array('foo')))
+    ;
+
+    $this->setExpectedException('Typhoon\Assertion\Exception\UnexpectedArgument');
+    $this->_renderer->render($type);
+  }
+
+  /**
    * @var Typhax
    */
   protected $_renderer;
