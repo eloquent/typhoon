@@ -15,7 +15,7 @@ use Typhoon;
 use Typhoon\Primitive\String;
 use Typhoon\Type\Exception\UnsupportedAttribute;
 
-abstract class StandardDynamicType implements DynamicType
+abstract class BaseDynamicType implements DynamicType
 {
   /**
    * @param string $attribute

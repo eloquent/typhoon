@@ -12,9 +12,9 @@
 namespace Typhoon\Type;
 
 use Typhoon\Primitive\String;
-use Typhoon\StandardDynamicType;
+use Typhoon\BaseDynamicType;
 
-class Object extends StandardDynamicType
+class Object extends BaseDynamicType
 {
   /**
    * @param mixed value

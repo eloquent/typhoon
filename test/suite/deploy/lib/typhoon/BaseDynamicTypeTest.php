@@ -13,21 +13,21 @@ namespace Typhoon;
 
 use Typhoon\Test\TestCase;
 
-class StandardDynamicTypeTest extends TestCase
+class BaseDynamicTypeTest extends TestCase
 {
   protected function setUp()
   {
     parent::setUp();
     
-    $this->_type = $this->getMockForAbstractClass(__NAMESPACE__.'\StandardDynamicType');
+    $this->_type = $this->getMockForAbstractClass(__NAMESPACE__.'\BaseDynamicType');
   }
 
   /**
-   * @covers Typhoon\StandardDynamicType::setTyphoonAttribute
-   * @covers Typhoon\StandardDynamicType::typhoonAttributes
-   * @covers Typhoon\StandardDynamicType::hasAttribute
-   * @covers Typhoon\StandardDynamicType::attribute
-   * @covers Typhoon\StandardDynamicType::assertAttribute
+   * @covers Typhoon\BaseDynamicType::setTyphoonAttribute
+   * @covers Typhoon\BaseDynamicType::typhoonAttributes
+   * @covers Typhoon\BaseDynamicType::hasAttribute
+   * @covers Typhoon\BaseDynamicType::attribute
+   * @covers Typhoon\BaseDynamicType::assertAttribute
    */
   public function testAttributes()
   {
@@ -62,8 +62,8 @@ class StandardDynamicTypeTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\StandardDynamicType::setTyphoonAttribute
-   * @covers Typhoon\StandardDynamicType::assertAttribute
+   * @covers Typhoon\BaseDynamicType::setTyphoonAttribute
+   * @covers Typhoon\BaseDynamicType::assertAttribute
    */
   public function testSetTyphoonAttributeFailureUnsupported()
   {
@@ -72,8 +72,8 @@ class StandardDynamicTypeTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\StandardDynamicType::setTyphoonAttribute
-   * @covers Typhoon\StandardDynamicType::assertAttribute
+   * @covers Typhoon\BaseDynamicType::setTyphoonAttribute
+   * @covers Typhoon\BaseDynamicType::assertAttribute
    */
   public function testSetTyphoonAttributeFailureKeyType()
   {
@@ -82,8 +82,8 @@ class StandardDynamicTypeTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\StandardDynamicType::hasAttribute
-   * @covers Typhoon\StandardDynamicType::assertAttribute
+   * @covers Typhoon\BaseDynamicType::hasAttribute
+   * @covers Typhoon\BaseDynamicType::assertAttribute
    */
   public function testHasAttributeFailureUnsupported()
   {
@@ -92,8 +92,8 @@ class StandardDynamicTypeTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\StandardDynamicType::hasAttribute
-   * @covers Typhoon\StandardDynamicType::assertAttribute
+   * @covers Typhoon\BaseDynamicType::hasAttribute
+   * @covers Typhoon\BaseDynamicType::assertAttribute
    */
   public function testHasAttributeFailureType()
   {
@@ -102,8 +102,8 @@ class StandardDynamicTypeTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\StandardDynamicType::attribute
-   * @covers Typhoon\StandardDynamicType::assertAttribute
+   * @covers Typhoon\BaseDynamicType::attribute
+   * @covers Typhoon\BaseDynamicType::assertAttribute
    */
   public function testAttributeFailureUnsupported()
   {
@@ -112,8 +112,8 @@ class StandardDynamicTypeTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\StandardDynamicType::attribute
-   * @covers Typhoon\StandardDynamicType::assertAttribute
+   * @covers Typhoon\BaseDynamicType::attribute
+   * @covers Typhoon\BaseDynamicType::assertAttribute
    */
   public function testAttributeFailureType()
   {
@@ -122,7 +122,7 @@ class StandardDynamicTypeTest extends TestCase
   }
 
   /**
-   * @var StandardDynamicType
+   * @var BaseDynamicType
    */
   protected $_type;
 }
