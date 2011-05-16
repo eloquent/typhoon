@@ -17,9 +17,9 @@ use Typhoon\Test\TestCase;
 class CallbackWrapperTest extends TestCase
 {
   /**
-   * @covers Typhoon\Type\CallbackWrapper::check
+   * @covers Typhoon\Type\CallbackWrapper::typhoonCheck
    */
-  public function testCheck()
+  public function testTyphoonCheck()
   {
     $called = false;
     $arguments = null;
@@ -35,7 +35,7 @@ class CallbackWrapperTest extends TestCase
     $this->assertFalse($called);
     $this->assertNull($arguments);
 
-    $type->check('foo');
+    $type->typhoonCheck('foo');
 
     $this->assertTrue($called);
     $this->assertEquals(array('foo', 'bar', 'baz'), $arguments);

@@ -175,7 +175,7 @@ class ParameterListTest extends TestCase
     $type = $this->getMock('Typhoon\Type');
     $type
       ->expects($this->once())
-      ->method('check')
+      ->method('typhoonCheck')
       ->will($this->returnValue(false))
     ;
 

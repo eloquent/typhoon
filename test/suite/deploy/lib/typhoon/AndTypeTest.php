@@ -24,75 +24,75 @@ class AndTypeTest extends TestCase
 
   /**
    * @covers Typhoon\BaseCompositeType::addTyphoonType
-   * @covers Typhoon\AndType::check
+   * @covers Typhoon\AndType::typhoonCheck
    */
   public function testAddCheckBothValid()
   {
     $value = 'foo';
     $this->_typeA
       ->expects($this->once())
-      ->method('check')
+      ->method('typhoonCheck')
       ->with($this->equalTo($value))
       ->will($this->returnValue(true))
     ;
     $this->_typeB
       ->expects($this->once())
-      ->method('check')
+      ->method('typhoonCheck')
       ->with($this->equalTo($value))
       ->will($this->returnValue(true))
     ;
     $this->_andType->addTyphoonType($this->_typeA);
     $this->_andType->addTyphoonType($this->_typeB);
 
-    $this->assertTrue($this->_andType->check($value));
+    $this->assertTrue($this->_andType->typhoonCheck($value));
   }
 
   /**
    * @covers Typhoon\BaseCompositeType::addTyphoonType
-   * @covers Typhoon\AndType::check
+   * @covers Typhoon\AndType::typhoonCheck
    */
   public function testAddCheckFirstValid()
   {
     $value = 'foo';
     $this->_typeA
       ->expects($this->once())
-      ->method('check')
+      ->method('typhoonCheck')
       ->with($this->equalTo($value))
       ->will($this->returnValue(true))
     ;
     $this->_typeB
       ->expects($this->once())
-      ->method('check')
+      ->method('typhoonCheck')
       ->with($this->equalTo($value))
       ->will($this->returnValue(false))
     ;
     $this->_andType->addTyphoonType($this->_typeA);
     $this->_andType->addTyphoonType($this->_typeB);
 
-    $this->assertFalse($this->_andType->check($value));
+    $this->assertFalse($this->_andType->typhoonCheck($value));
   }
 
   /**
    * @covers Typhoon\BaseCompositeType::addTyphoonType
-   * @covers Typhoon\AndType::check
+   * @covers Typhoon\AndType::typhoonCheck
    */
   public function testAddCheckNeitherValid()
   {
     $value = 'foo';
     $this->_typeA
       ->expects($this->once())
-      ->method('check')
+      ->method('typhoonCheck')
       ->with($this->equalTo($value))
       ->will($this->returnValue(false))
     ;
     $this->_typeB
       ->expects($this->never())
-      ->method('check')
+      ->method('typhoonCheck')
     ;
     $this->_andType->addTyphoonType($this->_typeA);
     $this->_andType->addTyphoonType($this->_typeB);
 
-    $this->assertFalse($this->_andType->check($value));
+    $this->assertFalse($this->_andType->typhoonCheck($value));
   }
 
   public function testImplementsType()

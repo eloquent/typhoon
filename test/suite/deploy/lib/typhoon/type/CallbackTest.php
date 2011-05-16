@@ -50,9 +50,9 @@ class CallbackTest extends TypeTestCase
   // methods below must be manually overridden to implement @covers
 
   /**
-   * @covers Typhoon\Type\Callback::check
+   * @covers Typhoon\Type\Callback::typhoonCheck
    * @dataProvider typeValues
    * @group typhoon_types
    */
-  public function testCheck($expected, $value, $attributes = null) { parent::testCheck($expected, $value, $attributes); }
+  public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
 }

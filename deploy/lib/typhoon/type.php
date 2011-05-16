@@ -18,5 +18,5 @@ interface Type
    *
    * @return boolean
    */
-  public function check($value);
+  public function typhoonCheck($value);
 }

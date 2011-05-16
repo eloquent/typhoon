@@ -20,7 +20,7 @@ class Null implements Type
    *
    * @return boolean
    */
-  public function check($value)
+  public function typhoonCheck($value)
   {
     return null === $value;
   }

@@ -82,9 +82,9 @@ class ObjectTest extends TypeTestCase
   // methods below must be manually overridden to implement @covers
   
   /**
-   * @covers Typhoon\Type\Object::check
+   * @covers Typhoon\Type\Object::typhoonCheck
    * @dataProvider typeValues
    * @group typhoon_types
    */
-  public function testCheck($expected, $value, $attributes = null) { parent::testCheck($expected, $value, $attributes); }
+  public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
 }

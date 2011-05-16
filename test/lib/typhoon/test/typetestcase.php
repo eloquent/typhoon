@@ -50,9 +50,9 @@ abstract class TypeTestCase extends TestCase
    * @dataProvider typeValues
    * @group typhoon_types
    */
-  public function testCheck($expected, $value, $attributes = null)
+  public function testTyphoonCheck($expected, $value, $attributes = null)
   {
-    $this->assertEquals($expected, $this->typeFixture($attributes)->check($value));
+    $this->assertEquals($expected, $this->typeFixture($attributes)->typhoonCheck($value));
   }
 
   /**

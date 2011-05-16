@@ -18,11 +18,11 @@ class OrType extends BaseCompositeType
    *
    * @return boolean
    */
-  public function check($value)
+  public function typhoonCheck($value)
   {
     foreach ($this->types as $type)
     {
-      if ($type->check($value))
+      if ($type->typhoonCheck($value))
       {
         return true;
       }

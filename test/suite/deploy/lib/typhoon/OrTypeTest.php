@@ -24,75 +24,75 @@ class OrTypeTest extends TestCase
 
   /**
    * @covers Typhoon\BaseCompositeType::addTyphoonType
-   * @covers Typhoon\OrType::check
+   * @covers Typhoon\OrType::typhoonCheck
    */
   public function testAddCheckFirstValid()
   {
     $value = 'foo';
     $this->_typeA
       ->expects($this->once())
-      ->method('check')
+      ->method('typhoonCheck')
       ->with($this->equalTo($value))
       ->will($this->returnValue(true))
     ;
     $this->_typeB
       ->expects($this->never())
-      ->method('check')
+      ->method('typhoonCheck')
     ;
     $this->_orType->addTyphoonType($this->_typeA);
     $this->_orType->addTyphoonType($this->_typeB);
 
-    $this->assertTrue($this->_orType->check($value));
+    $this->assertTrue($this->_orType->typhoonCheck($value));
   }
 
   /**
    * @covers Typhoon\BaseCompositeType::addTyphoonType
-   * @covers Typhoon\OrType::check
+   * @covers Typhoon\OrType::typhoonCheck
    */
   public function testAddCheckSecondValid()
   {
     $value = 'foo';
     $this->_typeA
       ->expects($this->once())
-      ->method('check')
+      ->method('typhoonCheck')
       ->with($this->equalTo($value))
       ->will($this->returnValue(false))
     ;
     $this->_typeB
       ->expects($this->once())
-      ->method('check')
+      ->method('typhoonCheck')
       ->with($this->equalTo($value))
       ->will($this->returnValue(true))
     ;
     $this->_orType->addTyphoonType($this->_typeA);
     $this->_orType->addTyphoonType($this->_typeB);
 
-    $this->assertTrue($this->_orType->check($value));
+    $this->assertTrue($this->_orType->typhoonCheck($value));
   }
 
   /**
    * @covers Typhoon\BaseCompositeType::addTyphoonType
-   * @covers Typhoon\OrType::check
+   * @covers Typhoon\OrType::typhoonCheck
    */
   public function testAddCheckNeitherValid()
   {
     $value = 'foo';
     $this->_typeA
       ->expects($this->once())
-      ->method('check')
+      ->method('typhoonCheck')
       ->with($this->equalTo($value))
       ->will($this->returnValue(false))
     ;
     $this->_typeB
       ->expects($this->once())
-      ->method('check')
+      ->method('typhoonCheck')
       ->with($this->equalTo($value))
       ->will($this->returnValue(false))
     ;
     $this->_orType->addTyphoonType($this->_typeA);
     $this->_orType->addTyphoonType($this->_typeB);
 
-    $this->assertFalse($this->_orType->check($value));
+    $this->assertFalse($this->_orType->typhoonCheck($value));
   }
 
   public function testImplementsType()

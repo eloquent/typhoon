@@ -12,7 +12,7 @@ class CallbackWrapper implements Type
    *
    * @return boolean
    */
-  public function check($value)
+  public function typhoonCheck($value)
   {
     return call_user_func_array(
       $this->callback(),

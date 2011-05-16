@@ -27,7 +27,7 @@ class Type implements Assertion
 
   public function assert()
   {
-    if ($this->type->check($this->value))
+    if ($this->type->typhoonCheck($this->value))
     {
       return;
     }

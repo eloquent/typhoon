@@ -21,7 +21,7 @@ class Object extends StandardDynamicType
    *
    * @return boolean
    */
-  public function check($value)
+  public function typhoonCheck($value)
   {
     if ($class = $this->attribute('class'))
     {

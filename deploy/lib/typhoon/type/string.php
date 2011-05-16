@@ -20,7 +20,7 @@ class String implements Type
    * 
    * @return boolean
    */
-  public function check($value)
+  public function typhoonCheck($value)
   {
     return is_string($value);
   }

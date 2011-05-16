@@ -34,7 +34,7 @@ class TypeTest extends TestCase
     $type = $this->getMock('Typhoon\Type');
     $type
       ->expects($this->once())
-      ->method('check')
+      ->method('typhoonCheck')
       ->with($this->equalTo($value))
       ->will($this->returnValue(true))
     ;
@@ -55,7 +55,7 @@ class TypeTest extends TestCase
     $type = $this->getMock('Typhoon\Type');
     $type
       ->expects($this->once())
-      ->method('check')
+      ->method('typhoonCheck')
       ->with($this->equalTo($value))
       ->will($this->returnValue(false))
     ;
