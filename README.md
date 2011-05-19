@@ -8,3 +8,4 @@
 ### Simple, flexible type-checking for PHP
 
 Latest revision test suite results: http://ci.ezzatron.com/sismo.php/typhoon
+Latest revision test suite coverage: http://ci.ezzatron.com/coverage/typhoon/
