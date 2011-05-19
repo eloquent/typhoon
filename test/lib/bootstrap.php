@@ -42,9 +42,6 @@ foreach(glob(TYPHOON_TEST_REPORT_DIR.DIRECTORY_SEPARATOR.'*') as $report)
   typhoon_test_delete_recursive($report);
 }
 
-// create coverage dir
-mkdir(TYPHOON_TEST_REPORT_DIR.DIRECTORY_SEPARATOR.'coverage');
-
 function typhoon_test_delete_recursive($path)
 {
   if (is_dir($path))
