@@ -6,3 +6,5 @@
         /____/_/
 
 ### Simple, flexible type-checking for PHP
+
+Latest revision test suite results: http://ci.ezzatron.com/sismo.php/typhoon
