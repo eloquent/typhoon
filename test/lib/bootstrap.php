@@ -26,6 +26,14 @@ spl_autoload_register(function($name)
 typhoon_test_delete_recursive(TYPHOON_TEST_COVERAGE_DIR.DIRECTORY_SEPARATOR.'report');
 typhoon_test_delete_recursive(TYPHOON_TEST_COVERAGE_DIR.DIRECTORY_SEPARATOR.'coverage.xml');
 
+// include Phake for improved mocking support
+if (!defined('TYPHOON_PHAKE_SRC_DIR'))
+{
+  define('TYPHOON_PHAKE_SRC_DIR', __DIR__.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'phake'.DIRECTORY_SEPARATOR.'src');
+}
+set_include_path(TYPHOON_PHAKE_SRC_DIR.PATH_SEPARATOR.  get_include_path());
+require_once TYPHOON_PHAKE_SRC_DIR.DIRECTORY_SEPARATOR.'Phake.php';
+
 function typhoon_test_delete_recursive($path)
 {
   if (is_dir($path))
