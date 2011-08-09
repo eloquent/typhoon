@@ -17,6 +17,10 @@
   convertNoticesToExceptions="true"
   convertWarningsToExceptions="true"
 >
+  <php>
+    <includePath>.;../lib;../../deploy/lib</includePath>
+  </php>
+
   <testsuites>
     <testsuite>
       <directory>../suite</directory>
