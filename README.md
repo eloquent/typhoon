@@ -4,5 +4,7 @@
      / / / /_/ / /_/ / / / / /_/ / /_/ / / / /
     /_/  \___ / ____/_/ /_/\____/\____/_/ /_/ 
         /____/_/
-
 ### Simple, flexible type-checking for PHP
+
+#### Latest revision test suite results
+http://ci.ezzatron.com/job/Typhoon/lastBuild/
