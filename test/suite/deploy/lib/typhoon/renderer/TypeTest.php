@@ -11,6 +11,7 @@
 
 namespace Typhoon\Renderer;
 
+use Phake;
 use Typhoon;
 use Typhoon\Test\TestCase;
 use Typhoon\TypeRegistry;
@@ -21,7 +22,7 @@ class TypeTest extends TestCase
   {
     parent::setUp();
     
-    $this->_renderer = $this->getMockForAbstractClass('Typhoon\Renderer\Type');
+    $this->_renderer = Phake::partialMock(__NAMESPACE__.'\Type');
     $this->_typeRegistry = new TypeRegistry;
   }
 

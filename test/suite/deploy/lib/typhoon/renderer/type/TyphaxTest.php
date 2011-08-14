@@ -11,6 +11,7 @@
 
 namespace Typhoon\Renderer\Type;
 
+use Phake;
 use Typhoon\Test\TestCase;
 use Typhoon\Type as TypeObject;
 use Typhoon\TypeRegistry;
@@ -22,7 +23,7 @@ class TyphaxTest extends TestCase
     parent::setUp();
     
     $this->_renderer = new Typhax;
-    $this->_type = $this->getMock('Typhoon\Type');
+    $this->_type = Phake::partialMock('Typhoon\Type');
     $this->_typeRegistry = new TypeRegistry;
   }
 
@@ -55,12 +56,8 @@ class TyphaxTest extends TestCase
       'doom' => .1,
     );
 
-    $type = $this->getMock('Typhoon\DynamicType');
-    $type
-      ->expects($this->once())
-      ->method('typhoonAttributes')
-      ->will($this->returnValue($attributes))
-    ;
+    $type = Phake::partialMock('Typhoon\DynamicType');
+    Phake::when($type)->typhoonAttributes()->thenReturn($attributes);
 
     $this->_typeRegistry[$alias] = get_class($type);
     $this->_renderer->setTypeRegistry($this->_typeRegistry);
@@ -80,12 +77,8 @@ class TyphaxTest extends TestCase
     $alias = 'foo';
     $attributes = array();
 
-    $type = $this->getMock('Typhoon\DynamicType');
-    $type
-      ->expects($this->once())
-      ->method('typhoonAttributes')
-      ->will($this->returnValue($attributes))
-    ;
+    $type = Phake::partialMock('Typhoon\DynamicType');
+    Phake::when($type)->typhoonAttributes()->thenReturn($attributes);
 
     $this->_typeRegistry[$alias] = get_class($type);
     $this->_renderer->setTypeRegistry($this->_typeRegistry);
@@ -111,12 +104,8 @@ class TyphaxTest extends TestCase
    */
   public function testRenderAttributesFailure()
   {
-    $type = $this->getMock('Typhoon\DynamicType');
-    $type
-      ->expects($this->once())
-      ->method('typhoonAttributes')
-      ->will($this->returnValue(array('foo')))
-    ;
+    $type = Phake::partialMock('Typhoon\DynamicType');
+    Phake::when($type)->typhoonAttributes()->thenReturn(array('foo'));
 
     $this->setExpectedException('Typhoon\Assertion\Exception\UnexpectedArgument');
     $this->_renderer->render($type);
