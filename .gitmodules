@@ -1,3 +1,0 @@
-[submodule "test\\lib\\vendor\\phake"]
-	path = test\\lib\\vendor\\phake
-	url = https://github.com/mlively/Phake.git
