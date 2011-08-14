@@ -11,6 +11,7 @@
 
 namespace Typhoon\Assertion;
 
+use Phake;
 use Typhoon;
 use Typhoon\Parameter;
 use Typhoon\ParameterList as ParameterListObject;
@@ -36,39 +37,11 @@ class ParameterListTest extends TestCase
     $argument_1 = 'bar';
     $arguments = array($argument_0, $argument_1);
 
-    $type_0 = $this->getMock('Typhoon\Type', array(), array(), uniqid('Mock_'));
-    $type_1 = $this->getMock('Typhoon\Type', array(), array(), uniqid('Mock_'));
+    $type_0 = Phake::mock('Typhoon\Type');
+    $type_1 = Phake::mock('Typhoon\Type');
 
-    $assertion_0 = $this->getMock(__NAMESPACE__.'\Type', array('assert', 'setType', 'setValue'));
-    $assertion_0
-      ->expects($this->once())
-      ->method('setType')
-      ->with($this->equalTo($type_0))
-    ;
-    $assertion_0
-      ->expects($this->once())
-      ->method('setValue')
-      ->with($this->equalTo($argument_0))
-    ;
-    $assertion_0
-      ->expects($this->once())
-      ->method('assert')
-    ;
-    $assertion_1 = $this->getMock(__NAMESPACE__.'\Type', array('assert', 'setType', 'setValue'));
-    $assertion_1
-      ->expects($this->once())
-      ->method('setType')
-      ->with($this->equalTo($type_1))
-    ;
-    $assertion_1
-      ->expects($this->once())
-      ->method('setValue')
-      ->with($this->equalTo($argument_1))
-    ;
-    $assertion_1
-      ->expects($this->once())
-      ->method('assert')
-    ;
+    $assertion_0 = Phake::mock(__NAMESPACE__.'\Type');
+    $assertion_1 = Phake::mock(__NAMESPACE__.'\Type');
 
     $parameter_0 = new Parameter;
     $parameter_0->setType($type_0);
@@ -79,16 +52,28 @@ class ParameterListTest extends TestCase
     $parameterList[] = $parameter_0;
     $parameterList[] = $parameter_1;
 
-    $assertion = $this->getMock(__NAMESPACE__.'\ParameterList', array('typeAssertion'));
-    $assertion
-      ->expects($this->exactly(2))
-      ->method('typeAssertion')
-      ->will($this->onConsecutiveCalls($assertion_0, $assertion_1));
+    $assertion = Phake::partialMock(__NAMESPACE__.'\ParameterList');
+    Phake::when($assertion)->typeAssertion()
+      ->thenReturn($assertion_0)
+      ->thenReturn($assertion_1)
     ;
+
     $assertion->setParameterList($parameterList);
     $assertion->setArguments($arguments);
 
     $assertion->assert();
+
+    Phake::inOrder(
+      Phake::verify($assertion_0)->setType($this->identicalTo($type_0))
+      , Phake::verify($assertion_0)->setValue($this->identicalTo($argument_0))
+      , Phake::verify($assertion_0)->assert()
+    );
+
+    Phake::inOrder(
+      Phake::verify($assertion_1)->setType($this->identicalTo($type_1))
+      , Phake::verify($assertion_1)->setValue($this->identicalTo($argument_1))
+      , Phake::verify($assertion_1)->assert()
+    );
 
     $this->assertTrue(true);
   }
@@ -172,12 +157,8 @@ class ParameterListTest extends TestCase
   {
     $this->_assertion->setParameterList($this->_parameterList);
 
-    $type = $this->getMock('Typhoon\Type');
-    $type
-      ->expects($this->once())
-      ->method('typhoonCheck')
-      ->will($this->returnValue(false))
-    ;
+    $type = Phake::mock('Typhoon\Type');
+    Phake::when($type)->typhoonCheck()->thenReturn(false);
 
     $parameter = new Parameter;
     $parameter->setType($type);

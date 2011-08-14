@@ -36,7 +36,7 @@ class OrTypeTest extends TestCase
 
     $this->assertTrue($this->_orType->typhoonCheck($value));
     Phake::verify($this->_typeA)->typhoonCheck($value);
-    Phake::verify($this->_typeB, Phake::never())->typhoonCheck($this->anything());
+    Phake::verify($this->_typeB, Phake::never())->typhoonCheck(Phake::anyParameters());
   }
 
   /**

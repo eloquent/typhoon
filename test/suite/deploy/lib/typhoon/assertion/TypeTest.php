@@ -11,6 +11,7 @@
 
 namespace Typhoon\Assertion;
 
+use Phake;
 use stdClass;
 use Typhoon\Test\TestCase;
 use Typhoon\Type\Mixed;
@@ -31,18 +32,17 @@ class TypeTest extends TestCase
   public function testAssertion()
   {
     $value = 'foo';
-    $type = $this->getMock('Typhoon\Type');
-    $type
-      ->expects($this->once())
-      ->method('typhoonCheck')
-      ->with($this->equalTo($value))
-      ->will($this->returnValue(true))
-    ;
+    $type = Phake::mock('Typhoon\Type');
+    Phake::when($type)->typhoonCheck($value)->thenReturn(true);
 
     $assertion = new Type;
     $assertion->setType($type);
     $assertion->setValue($value);
     $assertion->assert();
+
+    Phake::verify($type)->typhoonCheck($value);
+
+    $this->assertTrue(true);
   }
 
   /**
@@ -52,20 +52,25 @@ class TypeTest extends TestCase
   public function testAssertionFailure()
   {
     $value = 'foo';
-    $type = $this->getMock('Typhoon\Type');
-    $type
-      ->expects($this->once())
-      ->method('typhoonCheck')
-      ->with($this->equalTo($value))
-      ->will($this->returnValue(false))
-    ;
+    $type = Phake::mock('Typhoon\Type');
+    Phake::when($type)->typhoonCheck($value)->thenReturn(false);
 
     $assertion = new Type;
     $assertion->setType($type);
     $assertion->setValue($value);
 
     $this->setExpectedException(__NAMESPACE__.'\Exception\UnexpectedType');
-    $assertion->assert();
+
+    $e = null;
+    try
+    {
+      $assertion->assert();
+    }
+    catch (Exception $e) {}
+
+    Phake::verify($type)->typhoonCheck($value);
+
+    if ($e) throw $e;
   }
   
   /**
@@ -76,7 +81,7 @@ class TypeTest extends TestCase
   {
     $this->assertEquals(new Mixed, $this->_assertion->type());
 
-    $type = $this->getMock('Typhoon\Type');
+    $type = Phake::mock('Typhoon\Type');
     $this->_assertion->setType($type);
 
     $this->assertSame($type, $this->_assertion->type());

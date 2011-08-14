@@ -70,7 +70,7 @@ class AndTypeTest extends TestCase
 
     $this->assertFalse($this->_andType->typhoonCheck($value));
     Phake::verify($this->_typeA)->typhoonCheck($value);
-    Phake::verify($this->_typeB, Phake::never())->typhoonCheck($this->anything());
+    Phake::verify($this->_typeB, Phake::never())->typhoonCheck(Phake::anyParameters());
   }
 
   public function testImplementsType()
