@@ -11,6 +11,7 @@
 
 namespace Typhoon;
 
+use Phake;
 use Typhoon\Test\TestCase;
 
 class BaseDynamicTypeTest extends TestCase
@@ -19,7 +20,8 @@ class BaseDynamicTypeTest extends TestCase
   {
     parent::setUp();
     
-    $this->_type = $this->getMockForAbstractClass(__NAMESPACE__.'\BaseDynamicType');
+    $this->_type = Phake::partialMock(__NAMESPACE__.'\BaseDynamicType');
+    Phake::when($this->_type)->attributeSupported($this->anything())->thenReturn(false);
   }
 
   /**
@@ -31,11 +33,7 @@ class BaseDynamicTypeTest extends TestCase
    */
   public function testAttributes()
   {
-    $this->_type
-      ->expects($this->any())
-      ->method('attributeSupported')
-      ->will($this->returnValue(true))
-    ;
+    Phake::when($this->_type)->attributeSupported($this->anything())->thenReturn(true);
 
     $this->assertEquals(array(), $this->_type->typhoonAttributes());
     $this->assertFalse($this->_type->hasAttribute('foo'));

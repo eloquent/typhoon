@@ -11,6 +11,7 @@
 
 namespace Typhoon;
 
+use Phake;
 use Typhoon\Test\TestCase;
 use Typhoon\TypeRegistry\Exception\UnregisteredType;
 use Typhoon\TypeRegistry\Exception\UnregisteredTypeAlias;
@@ -109,8 +110,9 @@ class TypeRegistryTest extends TestCase
    */
   public function testAlias()
   {
-    $type_1 = $this->getMock(__NAMESPACE__.'\Type', array(), array(), uniqid('Mock_'));
-    $type_2 = $this->getMock(__NAMESPACE__.'\Type', array(), array(), uniqid('Mock_'));
+    $type_1 = Phake::mock(__NAMESPACE__.'\Type');
+    $type_2 = Phake::mock(__NAMESPACE__.'\Type');
+
     $typeName_1 = get_class($type_1);
     $typeName_2 = get_class($type_2);
     $alias_1 = 'foo';

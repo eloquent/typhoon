@@ -11,6 +11,7 @@
 
 namespace Typhoon;
 
+use Phake;
 use Typhoon;
 use Typhoon\Assertion\Exception\UnexpectedType;
 use Typhoon\Primitive\String;
@@ -40,27 +41,9 @@ class PrimitiveTest extends TestCase
    */
   public function testPrimitive()
   {
-    $type = $this->getMock(__NAMESPACE__.'\Type');
     $value = 'foo';
-
-    $typeAssertion = $this->getMock(
-      __NAMESPACE__.'\Assertion\Type',
-      array('setType', 'setValue', 'assert')
-    );
-    $typeAssertion
-      ->expects($this->once())
-      ->method('setType')
-      ->with($this->equalTo($type))
-    ;
-    $typeAssertion
-      ->expects($this->once())
-      ->method('setValue')
-      ->with($this->equalTo($value))
-    ;
-    $typeAssertion
-      ->expects($this->once())
-      ->method('assert')
-    ;
+    $type = Phake::mock(__NAMESPACE__.'\Type');
+    $typeAssertion = Phake::mock(__NAMESPACE__.'\Assertion\Type');
 
     $primitive = $this->primitiveFixture();
     $primitive
@@ -78,6 +61,12 @@ class PrimitiveTest extends TestCase
 
     $this->assertEquals($value, $primitive->value());
     $this->assertEquals((string)$value, (string)$primitive);
+
+    Phake::inOrder(
+      Phake::verify($typeAssertion)->setType($this->identicalTo($type))
+      , Phake::verify($typeAssertion)->setValue($value)
+      , Phake::verify($typeAssertion)->assert()
+    );
   }
 
   /**
@@ -85,18 +74,11 @@ class PrimitiveTest extends TestCase
    */
   public function testPrimitiveFailure()
   {
-    $type = $this->getMock(__NAMESPACE__.'\Type');
     $value = 'foo';
+    $type = Phake::mock(__NAMESPACE__.'\Type');
+    $typeAssertion = Phake::mock(__NAMESPACE__.'\Assertion\Type');
 
-    $typeAssertion = $this->getMock(
-      __NAMESPACE__.'\Assertion\Type',
-      array('setType', 'setValue', 'assert')
-    );
-    $typeAssertion
-      ->expects($this->once())
-      ->method('assert')
-      ->will($this->throwException(new UnexpectedType($value, new String('typeName'))))
-    ;
+    Phake::when($typeAssertion)->assert()->thenThrow(new UnexpectedType($value, new String('typeName')));
 
     $primitive = $this->primitiveFixture();
     $primitive

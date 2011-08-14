@@ -11,6 +11,7 @@
 
 namespace Typhoon;
 
+use Phake;
 use Typhoon\Primitive\Boolean;
 use Typhoon\Primitive\String;
 use Typhoon\Test\TestCase;
@@ -23,7 +24,7 @@ class ParameterTest extends TestCase
     parent::setUp();
     
     $this->_parameter = new Parameter;
-    $this->_type = $this->getMock(__NAMESPACE__.'\Type');
+    $this->_type = Phake::mock(__NAMESPACE__.'\Type');
   }
 
   /**

@@ -19,7 +19,7 @@ class TyphoonTest extends TestCase
   {
     $this->_typhoon = new Typhoon;
     $this->_typeRegistry = new TypeRegistry;
-    $this->_typeRenderer = $this->getMockForAbstractClass('Typhoon\Renderer\Type');
+    $this->_typeRenderer = Phake::mock('Typhoon\Renderer\Type');
   }
 
   /**
@@ -80,7 +80,6 @@ class TyphoonTest extends TestCase
    * @var Typhoon
    */
   protected $_typhoon;
-
 
   /**
    * @var TypeRegistry
