@@ -11,6 +11,7 @@
 
 namespace Typhoon;
 
+use Phake;
 use Typhoon\Test\TestCase;
 
 class AndTypeTest extends TestCase
@@ -18,8 +19,8 @@ class AndTypeTest extends TestCase
   protected function setUp()
   {
     $this->_andType = new AndType;
-    $this->_typeA = $this->getMock(__NAMESPACE__.'\Type');
-    $this->_typeB = $this->getMock(__NAMESPACE__.'\Type');
+    $this->_typeA = Phake::mock(__NAMESPACE__.'\Type');
+    $this->_typeB = Phake::mock(__NAMESPACE__.'\Type');
   }
 
   /**
@@ -29,22 +30,14 @@ class AndTypeTest extends TestCase
   public function testAddCheckBothValid()
   {
     $value = 'foo';
-    $this->_typeA
-      ->expects($this->once())
-      ->method('typhoonCheck')
-      ->with($this->equalTo($value))
-      ->will($this->returnValue(true))
-    ;
-    $this->_typeB
-      ->expects($this->once())
-      ->method('typhoonCheck')
-      ->with($this->equalTo($value))
-      ->will($this->returnValue(true))
-    ;
+    Phake::when($this->_typeA)->typhoonCheck($value)->thenReturn(true);
+    Phake::when($this->_typeB)->typhoonCheck($value)->thenReturn(true);
     $this->_andType->addTyphoonType($this->_typeA);
     $this->_andType->addTyphoonType($this->_typeB);
 
     $this->assertTrue($this->_andType->typhoonCheck($value));
+    Phake::verify($this->_typeA)->typhoonCheck($value);
+    Phake::verify($this->_typeB)->typhoonCheck($value);
   }
 
   /**
@@ -54,22 +47,14 @@ class AndTypeTest extends TestCase
   public function testAddCheckFirstValid()
   {
     $value = 'foo';
-    $this->_typeA
-      ->expects($this->once())
-      ->method('typhoonCheck')
-      ->with($this->equalTo($value))
-      ->will($this->returnValue(true))
-    ;
-    $this->_typeB
-      ->expects($this->once())
-      ->method('typhoonCheck')
-      ->with($this->equalTo($value))
-      ->will($this->returnValue(false))
-    ;
+    Phake::when($this->_typeA)->typhoonCheck($value)->thenReturn(true);
+    Phake::when($this->_typeB)->typhoonCheck($value)->thenReturn(false);
     $this->_andType->addTyphoonType($this->_typeA);
     $this->_andType->addTyphoonType($this->_typeB);
 
     $this->assertFalse($this->_andType->typhoonCheck($value));
+    Phake::verify($this->_typeA)->typhoonCheck($value);
+    Phake::verify($this->_typeB)->typhoonCheck($value);
   }
 
   /**
@@ -79,20 +64,13 @@ class AndTypeTest extends TestCase
   public function testAddCheckNeitherValid()
   {
     $value = 'foo';
-    $this->_typeA
-      ->expects($this->once())
-      ->method('typhoonCheck')
-      ->with($this->equalTo($value))
-      ->will($this->returnValue(false))
-    ;
-    $this->_typeB
-      ->expects($this->never())
-      ->method('typhoonCheck')
-    ;
+    Phake::when($this->_typeA)->typhoonCheck($value)->thenReturn(false);
     $this->_andType->addTyphoonType($this->_typeA);
     $this->_andType->addTyphoonType($this->_typeB);
 
     $this->assertFalse($this->_andType->typhoonCheck($value));
+    Phake::verify($this->_typeA)->typhoonCheck($value);
+    Phake::verify($this->_typeB, Phake::never())->typhoonCheck($this->anything());
   }
 
   public function testImplementsType()

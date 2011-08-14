@@ -33,8 +33,21 @@ if (!defined('TYPHOON_INCLUDE_PATH_SET'))
 // spl_autoload default implementation SHOULD do this itself, but it does not work for me
 spl_autoload_register(function($name)
 {
-  include str_replace('\\', DIRECTORY_SEPARATOR, strtolower($name)).'.php';
+  $file = str_replace('\\', DIRECTORY_SEPARATOR, strtolower($name)).'.php';
+
+  if (file_exists($file))
+  {
+    include $file;
+  }
+  else
+  {
+    @include $file;
+  }
 });
+
+// include Phake for improved mocking support
+require_once 'Phake.php';
+Phake::never();
 
 // clean reports
 foreach(glob(TYPHOON_TEST_REPORT_DIR.DIRECTORY_SEPARATOR.'*') as $report)

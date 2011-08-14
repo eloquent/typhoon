@@ -11,6 +11,7 @@
 
 namespace Typhoon;
 
+use Phake;
 use Typhoon\Test\TestCase;
 
 class OrTypeTest extends TestCase
@@ -18,8 +19,8 @@ class OrTypeTest extends TestCase
   protected function setUp()
   {
     $this->_orType = new OrType;
-    $this->_typeA = $this->getMock(__NAMESPACE__.'\Type');
-    $this->_typeB = $this->getMock(__NAMESPACE__.'\Type');
+    $this->_typeA = Phake::mock(__NAMESPACE__.'\Type');
+    $this->_typeB = Phake::mock(__NAMESPACE__.'\Type');
   }
 
   /**
@@ -29,20 +30,13 @@ class OrTypeTest extends TestCase
   public function testAddCheckFirstValid()
   {
     $value = 'foo';
-    $this->_typeA
-      ->expects($this->once())
-      ->method('typhoonCheck')
-      ->with($this->equalTo($value))
-      ->will($this->returnValue(true))
-    ;
-    $this->_typeB
-      ->expects($this->never())
-      ->method('typhoonCheck')
-    ;
+    Phake::when($this->_typeA)->typhoonCheck($value)->thenReturn(true);
     $this->_orType->addTyphoonType($this->_typeA);
     $this->_orType->addTyphoonType($this->_typeB);
 
     $this->assertTrue($this->_orType->typhoonCheck($value));
+    Phake::verify($this->_typeA)->typhoonCheck($value);
+    Phake::verify($this->_typeB, Phake::never())->typhoonCheck($this->anything());
   }
 
   /**
@@ -52,22 +46,14 @@ class OrTypeTest extends TestCase
   public function testAddCheckSecondValid()
   {
     $value = 'foo';
-    $this->_typeA
-      ->expects($this->once())
-      ->method('typhoonCheck')
-      ->with($this->equalTo($value))
-      ->will($this->returnValue(false))
-    ;
-    $this->_typeB
-      ->expects($this->once())
-      ->method('typhoonCheck')
-      ->with($this->equalTo($value))
-      ->will($this->returnValue(true))
-    ;
+    Phake::when($this->_typeA)->typhoonCheck($value)->thenReturn(false);
+    Phake::when($this->_typeB)->typhoonCheck($value)->thenReturn(true);
     $this->_orType->addTyphoonType($this->_typeA);
     $this->_orType->addTyphoonType($this->_typeB);
 
     $this->assertTrue($this->_orType->typhoonCheck($value));
+    Phake::verify($this->_typeA)->typhoonCheck($value);
+    Phake::verify($this->_typeB)->typhoonCheck($value);
   }
 
   /**
@@ -77,22 +63,14 @@ class OrTypeTest extends TestCase
   public function testAddCheckNeitherValid()
   {
     $value = 'foo';
-    $this->_typeA
-      ->expects($this->once())
-      ->method('typhoonCheck')
-      ->with($this->equalTo($value))
-      ->will($this->returnValue(false))
-    ;
-    $this->_typeB
-      ->expects($this->once())
-      ->method('typhoonCheck')
-      ->with($this->equalTo($value))
-      ->will($this->returnValue(false))
-    ;
+    Phake::when($this->_typeA)->typhoonCheck($value)->thenReturn(false);
+    Phake::when($this->_typeB)->typhoonCheck($value)->thenReturn(false);
     $this->_orType->addTyphoonType($this->_typeA);
     $this->_orType->addTyphoonType($this->_typeB);
 
     $this->assertFalse($this->_orType->typhoonCheck($value));
+    Phake::verify($this->_typeA)->typhoonCheck($value);
+    Phake::verify($this->_typeB)->typhoonCheck($value);
   }
 
   public function testImplementsType()
