@@ -60,13 +60,11 @@ class TypeRegistryTest extends TestCase
    */
   public function testConstructor()
   {
-    $registry = $this->getMock('Typhoon\TypeRegistry', array('registerDefaults'), array(), '', false);
-    $registry
-      ->expects($this->once())
-      ->method('registerDefaults')
-    ;
-
-    $registry->__construct();
+    $registry = Phake::partialMock('Typhoon\TypeRegistry');
+    
+    Phake::verify($registry)->registerDefaults();
+  
+    $this->assertTrue(true);
   }
 
   /**
@@ -75,7 +73,7 @@ class TypeRegistryTest extends TestCase
    */
   public function testRegisterDefaults($alias, $type)
   {
-    $registry = $this->getMock('Typhoon\TypeRegistry', array('__construct'), array(), '', false);
+    $registry = Phake::mock('Typhoon\TypeRegistry', Phake::ifUnstubbed()->thenCallParent());
 
     $caught = false;
     try

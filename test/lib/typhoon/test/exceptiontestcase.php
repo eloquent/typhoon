@@ -28,7 +28,9 @@ abstract class ExceptionTestCase extends TestCase
 
     if ($reflector->isAbstract())
     {
-      return $this->getMockForAbstractClass($this->exceptionClass(), $arguments);
+      array_unshift($arguments, $this->exceptionClass());
+
+      return call_user_func_array('Phake::partialMock', $arguments);
     }
 
     return $reflector->newInstanceArgs($arguments);
