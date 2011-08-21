@@ -23,7 +23,7 @@ class Object extends BaseDynamicType
    */
   public function typhoonCheck($value)
   {
-    if ($class = $this->attribute('class'))
+    if ($class = $this->attribute(self::ATTRIBUTE_CLASS))
     {
       return $value instanceof $class;
     }
@@ -49,6 +49,8 @@ class Object extends BaseDynamicType
    */
   protected function attributeSupported($attribute)
   {
-    return 'class' == $attribute;
+    return self::ATTRIBUTE_CLASS == $attribute;
   }
+
+  const ATTRIBUTE_CLASS = 'class';
 }
