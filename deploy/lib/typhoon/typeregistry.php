@@ -76,21 +76,21 @@ class TypeRegistry implements ArrayAccess
 
   /**
    * @param string $alias
-   * @param Type $type
+   * @param string $class
    */
-  public function offsetSet($alias, $type)
+  public function offsetSet($alias, $class)
   {
     new String($alias);
-    new String($type);
+    new String($class);
 
-    $this->types[mb_strtolower($alias)] = $type;
+    $this->types[mb_strtolower($alias)] = (string)$class;
     $this->indexAliases();
   }
 
   /**
    * @param string $alias
    *
-   * @return Type
+   * @return string
    */
   public function offsetGet($alias)
   {
@@ -114,14 +114,14 @@ class TypeRegistry implements ArrayAccess
   {
     $this->aliases = array();
 
-    foreach ($this->types as $alias => $type)
+    foreach ($this->types as $alias => $class)
     {
-      if (isset($this->aliases[$type]))
+      if (isset($this->aliases[$class]))
       {
         continue;
       }
 
-      $this->aliases[$type] = $alias;
+      $this->aliases[$class] = $alias;
     }
   }
 
