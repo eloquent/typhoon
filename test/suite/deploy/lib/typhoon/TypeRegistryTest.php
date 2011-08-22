@@ -24,12 +24,14 @@ class TypeRegistryTest extends TestCase
   public function defaultTypes()
   {
     return array(
+      array('array', 'Typhoon\Type\ArrayType'),
       array('boolean', 'Typhoon\Type\Boolean'),
       array('integer', 'Typhoon\Type\Integer'),
       array('mixed', 'Typhoon\Type\Mixed'),
       array('null', 'Typhoon\Type\Null'),
       array('object', 'Typhoon\Type\Object'),
       array('string', 'Typhoon\Type\String'),
+      array('traversable', 'Typhoon\Type\Traversable'),
     );
   }
 

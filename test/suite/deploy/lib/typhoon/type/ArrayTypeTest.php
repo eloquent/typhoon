@@ -14,7 +14,7 @@ namespace Typhoon\Type;
 use stdClass;
 use Typhoon\Test\TypeTestCase;
 
-class ArrayTest extends TypeTestCase
+class ArrayTypeTest extends TypeTestCase
 {
   /**
    * @return array

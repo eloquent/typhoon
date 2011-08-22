@@ -27,13 +27,15 @@ class TypeRegistry implements ArrayAccess
 
   public function registerDefaults()
   {
-    $this['boolean'] = __NAMESPACE__.'\Type\Boolean';
-    $this['callback'] = __NAMESPACE__.'\Type\Callback';
-    $this['integer'] = __NAMESPACE__.'\Type\Integer';
-    $this['mixed'] = __NAMESPACE__.'\Type\Mixed';
-    $this['null'] = __NAMESPACE__.'\Type\Null';
-    $this['object'] = __NAMESPACE__.'\Type\Object';
-    $this['string'] = __NAMESPACE__.'\Type\String';
+    $this[self::TYPE_ARRAY] = __NAMESPACE__.'\Type\ArrayType';
+    $this[self::TYPE_BOOLEAN] = __NAMESPACE__.'\Type\Boolean';
+    $this[self::TYPE_CALLBACK] = __NAMESPACE__.'\Type\Callback';
+    $this[self::TYPE_INTEGER] = __NAMESPACE__.'\Type\Integer';
+    $this[self::TYPE_MIXED] = __NAMESPACE__.'\Type\Mixed';
+    $this[self::TYPE_NULL] = __NAMESPACE__.'\Type\Null';
+    $this[self::TYPE_OBJECT] = __NAMESPACE__.'\Type\Object';
+    $this[self::TYPE_STRING] = __NAMESPACE__.'\Type\String';
+    $this[self::TYPE_TRAVERSABLE] = __NAMESPACE__.'\Type\Traversable';
 
     $this['bool'] = __NAMESPACE__.'\Type\Boolean';
     $this['callable'] = __NAMESPACE__.'\Type\Callback';
@@ -41,7 +43,7 @@ class TypeRegistry implements ArrayAccess
   }
 
   /**
-   * @param Type|NULL $type
+   * @param Type|string $type
    *
    * @return string
    */
@@ -122,6 +124,16 @@ class TypeRegistry implements ArrayAccess
       $this->aliases[$type] = $alias;
     }
   }
+
+  const TYPE_ARRAY = 'array';
+  const TYPE_BOOLEAN = 'boolean';
+  const TYPE_CALLBACK = 'callback';
+  const TYPE_INTEGER = 'integer';
+  const TYPE_MIXED = 'mixed';
+  const TYPE_NULL = 'null';
+  const TYPE_OBJECT = 'object';
+  const TYPE_STRING = 'string';
+  const TYPE_TRAVERSABLE = 'traversable';
 
   /**
    * @var array
