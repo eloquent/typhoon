@@ -11,7 +11,7 @@
 
 namespace Typhoon\Type;
 
-use Typhoon\Primitive\String;
+use Typhoon\Primitive\String as StringPrimitive;
 use Typhoon\BaseDynamicType;
 
 class Object extends BaseDynamicType
@@ -37,7 +37,7 @@ class Object extends BaseDynamicType
    */
   public function setTyphoonAttribute($attribute, $value)
   {
-    new String($value);
+    new StringPrimitive($value);
     
     parent::setTyphoonAttribute($attribute, $value);
   }
