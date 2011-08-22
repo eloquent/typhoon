@@ -49,6 +49,7 @@ class TraversableTest extends TypeTestCase
   }
 
   /**
+   * @covers Typhoon\Type\Traversable::__construct
    * @covers Typhoon\Type\Traversable::primaryType
    */
   public function testPrimaryType()
@@ -62,13 +63,12 @@ class TraversableTest extends TypeTestCase
     $type = $this->typeFixture();
 
     $reflector = new ReflectionObject($type);
-    $method = $reflector->getMethod('primaryType');
-    $method->setAccessible(true);
+    $property = $reflector->getProperty('primaryType');
+    $property->setAccessible(true);
 
-    $actual = $method->invoke($type);
+    $actual = $property->getValue($type);
 
     $this->assertEquals($expected, $actual);
-    $this->assertSame($actual, $method->invoke($type));
   }
 
   // methods below must be manually overridden to implement @covers

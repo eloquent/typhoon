@@ -18,6 +18,11 @@ use Typhoon\Type\Object;
 
 class Traversable extends BaseTraversableType
 {
+  public function __construct()
+  {
+    $this->primaryType = $this->primaryType();
+  }
+
   /**
    * @param mixed value
    *
@@ -33,19 +38,14 @@ class Traversable extends BaseTraversableType
    */
   protected function primaryType()
   {
-    if (null !== $this->primaryType)
-    {
-      return $this->primaryType;
-    }
-
     $traversableObject = new Object;
     $traversableObject->setTyphoonAttribute(Object::ATTRIBUTE_CLASS, 'Traversable');
 
-    $this->primaryType = new OrType;
-    $this->primaryType->addTyphoonType(new ArrayType);
-    $this->primaryType->addTyphoonType($traversableObject);
+    $primaryType = new OrType;
+    $primaryType->addTyphoonType(new ArrayType);
+    $primaryType->addTyphoonType($traversableObject);
 
-    return $this->primaryType;
+    return $primaryType;
   }
 
   /**
