@@ -83,7 +83,7 @@ class TypeRegistry implements ArrayAccess
     new String($alias);
     new String($class);
 
-    $this->types[mb_strtolower($alias)] = (string)$class;
+    $this->types[mb_strtolower($alias)] = $class;
     $this->indexAliases();
   }
 
