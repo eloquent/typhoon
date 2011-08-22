@@ -12,6 +12,7 @@
 use Typhoon\Assertion\Type as TypeAssertion;
 use Typhoon\Renderer\Type as TypeRenderer;
 use Typhoon\Renderer\Type\Typhax;
+use Typhoon\TypeInspector;
 use Typhoon\TypeRegistry;
 
 class Typhoon
@@ -45,6 +46,27 @@ class Typhoon
   public function typeAssertion()
   {
     return new TypeAssertion;
+  }
+
+  /**
+   * @param TypeInspector $typeInspector
+   */
+  public function setTypeInspector(TypeInspector $typeInspector)
+  {
+    $this->typeInspector = $typeInspector;
+  }
+
+  /**
+   * @return TypeInspector
+   */
+  public function typeInspector()
+  {
+    if (!$this->typeInspector)
+    {
+      $this->typeInspector = new TypeInspector;
+    }
+
+    return $this->typeInspector;
   }
 
   /**
@@ -93,6 +115,11 @@ class Typhoon
    * @var Tyhpoon
    */
   private static $instance;
+
+  /**
+   * @var TypeInspector
+   */
+  protected $typeInspector;
 
   /**
    * @var TypeRegistry

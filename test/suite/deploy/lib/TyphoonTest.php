@@ -11,6 +11,7 @@
 
 use Typhoon\Renderer\Type as TypeRenderer;
 use Typhoon\Test\TestCase;
+use Typhoon\TypeInspector;
 use Typhoon\TypeRegistry;
 
 class TyphoonTest extends TestCase
@@ -18,6 +19,7 @@ class TyphoonTest extends TestCase
   protected function setUp()
   {
     $this->_typhoon = new Typhoon;
+    $this->_typeInspector = new TypeInspector;
     $this->_typeRegistry = new TypeRegistry;
     $this->_typeRenderer = Phake::mock('Typhoon\Renderer\Type');
   }
@@ -51,6 +53,19 @@ class TyphoonTest extends TestCase
   }
 
   /**
+   * @covers Typhoon::setTypeInspector
+   * @covers Typhoon::typeInspector
+   */
+  public function testTypeInspector()
+  {
+    $this->assertInstanceOf('Typhoon\TypeInspector', $this->_typhoon->typeInspector());
+
+    $this->_typhoon->setTypeInspector($this->_typeInspector);
+
+    $this->assertSame($this->_typeInspector, $this->_typhoon->typeInspector());
+  }
+
+  /**
    * @covers Typhoon::setTypeRegistry
    * @covers Typhoon::typeRegistry
    */
@@ -80,6 +95,11 @@ class TyphoonTest extends TestCase
    * @var Typhoon
    */
   protected $_typhoon;
+
+  /**
+   * @var TypeInspector
+   */
+  protected $_typeInspector;
 
   /**
    * @var TypeRegistry
