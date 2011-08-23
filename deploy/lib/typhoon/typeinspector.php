@@ -19,6 +19,7 @@ use Typhoon\Type\Mixed;
 use Typhoon\Type\Null;
 use Typhoon\Type\Object;
 use Typhoon\Type\String;
+use Typhoon\Type\Resource;
 use Typhoon\Type\Traversable;
 
 class TypeInspector
@@ -36,6 +37,7 @@ class TypeInspector
       new Integer,
       new Float,
       new String,
+      new Resource,
     );
 
     foreach ($scalars as $scalar)

@@ -35,6 +35,7 @@ class TypeRegistry implements ArrayAccess
     $this[self::TYPE_MIXED] = __NAMESPACE__.'\Type\Mixed';
     $this[self::TYPE_NULL] = __NAMESPACE__.'\Type\Null';
     $this[self::TYPE_OBJECT] = __NAMESPACE__.'\Type\Object';
+    $this[self::TYPE_RESOURCE] = __NAMESPACE__.'\Type\Resource';
     $this[self::TYPE_STRING] = __NAMESPACE__.'\Type\String';
     $this[self::TYPE_TRAVERSABLE] = __NAMESPACE__.'\Type\Traversable';
 
@@ -137,6 +138,7 @@ class TypeRegistry implements ArrayAccess
   const TYPE_MIXED = 'mixed';
   const TYPE_NULL = 'null';
   const TYPE_OBJECT = 'object';
+  const TYPE_RESOURCE = 'resource';
   const TYPE_STRING = 'string';
   const TYPE_TRAVERSABLE = 'traversable';
 

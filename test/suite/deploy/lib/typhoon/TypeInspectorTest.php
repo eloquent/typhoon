@@ -23,6 +23,7 @@ use Typhoon\Type\Mixed;
 use Typhoon\Type\Null;
 use Typhoon\Type\Object;
 use Typhoon\Type\String;
+use Typhoon\Type\Resource;
 use Typhoon\Type\Traversable;
 
 class TypeInspectorTest extends TestCase
@@ -41,23 +42,28 @@ class TypeInspectorTest extends TestCase
       array('foo',    new String),     // #5: String
     );
 
-    // #6: Array
+    // #6: Resource
+    $value = stream_context_create();
+    $expected = new Resource;
+    $data[] = array($value, $expected);
+
+    // #7: Array
     $value = array();
     $expected = new ArrayType;
     $data[] = array($value, $expected);
 
-    // #7: Traversable
+    // #8: Traversable
     $value = Phake::mock('Iterator');
     $expected = new Traversable;
     $data[] = array($value, $expected);
 
-    // #8: Object (stdClass)
+    // #9: Object (stdClass)
     $value = new stdClass;
     $expected = new Object;
     $expected->setTyphoonAttribute(Object::ATTRIBUTE_CLASS, 'stdClass');
     $data[] = array($value, $expected);
 
-    // #9: Object (Typhoon)
+    // #10: Object (Typhoon)
     $value = Typhoon::instance();
     $expected = new Object;
     $expected->setTyphoonAttribute(Object::ATTRIBUTE_CLASS, 'Typhoon');

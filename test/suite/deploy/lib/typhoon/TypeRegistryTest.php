@@ -32,6 +32,7 @@ class TypeRegistryTest extends TestCase
       array('mixed', 'Typhoon\Type\Mixed'),
       array('null', 'Typhoon\Type\Null'),
       array('object', 'Typhoon\Type\Object'),
+      array('resource', 'Typhoon\Type\Resource'),
       array('string', 'Typhoon\Type\String'),
       array('traversable', 'Typhoon\Type\Traversable'),
 

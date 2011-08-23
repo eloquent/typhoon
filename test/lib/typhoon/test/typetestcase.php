@@ -36,14 +36,24 @@ abstract class TypeTestCase extends TestCase
    */
   protected function resourceFixture()
   {
-    if (!$this->_resource) $this->_resource = fopen(__FILE__, 'rb');
+    if (!$this->_resource) $this->_resource = stream_context_create();
 
     return $this->_resource;
   }
 
+  /**
+   * @return resource
+   */
+  protected function streamFixture()
+  {
+    if (!$this->_stream) $this->_stream = fopen(__FILE__, 'rb');
+
+    return $this->_stream;
+  }
+
   protected function tearDown()
   {
-    if ($this->_resource) fclose($this->_resource);
+    if ($this->_stream) fclose($this->_stream);
   }
 
   /**
@@ -69,4 +79,9 @@ abstract class TypeTestCase extends TestCase
    * @var resource
    */
   private $_resource;
+
+  /**
+   * @var resource
+   */
+  private $_stream;
 }
