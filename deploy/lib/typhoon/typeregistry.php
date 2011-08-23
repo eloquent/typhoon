@@ -30,6 +30,7 @@ class TypeRegistry implements ArrayAccess
     $this[self::TYPE_ARRAY] = __NAMESPACE__.'\Type\ArrayType';
     $this[self::TYPE_BOOLEAN] = __NAMESPACE__.'\Type\Boolean';
     $this[self::TYPE_CALLBACK] = __NAMESPACE__.'\Type\Callback';
+    $this[self::TYPE_FLOAT] = __NAMESPACE__.'\Type\Float';
     $this[self::TYPE_INTEGER] = __NAMESPACE__.'\Type\Integer';
     $this[self::TYPE_MIXED] = __NAMESPACE__.'\Type\Mixed';
     $this[self::TYPE_NULL] = __NAMESPACE__.'\Type\Null';
@@ -37,9 +38,12 @@ class TypeRegistry implements ArrayAccess
     $this[self::TYPE_STRING] = __NAMESPACE__.'\Type\String';
     $this[self::TYPE_TRAVERSABLE] = __NAMESPACE__.'\Type\Traversable';
 
-    $this['bool'] = __NAMESPACE__.'\Type\Boolean';
-    $this['callable'] = __NAMESPACE__.'\Type\Callback';
-    $this['int'] = __NAMESPACE__.'\Type\Integer';
+    $this[self::ALIAS_BOOL] = __NAMESPACE__.'\Type\Boolean';
+    $this[self::ALIAS_CALLABLE] = __NAMESPACE__.'\Type\Callback';
+    $this[self::ALIAS_DOUBLE] = __NAMESPACE__.'\Type\Float';
+    $this[self::ALIAS_INT] = __NAMESPACE__.'\Type\Integer';
+    $this[self::ALIAS_LONG] = __NAMESPACE__.'\Type\Integer';
+    $this[self::ALIAS_REAL] = __NAMESPACE__.'\Type\Float';
   }
 
   /**
@@ -128,12 +132,20 @@ class TypeRegistry implements ArrayAccess
   const TYPE_ARRAY = 'array';
   const TYPE_BOOLEAN = 'boolean';
   const TYPE_CALLBACK = 'callback';
+  const TYPE_FLOAT = 'float';
   const TYPE_INTEGER = 'integer';
   const TYPE_MIXED = 'mixed';
   const TYPE_NULL = 'null';
   const TYPE_OBJECT = 'object';
   const TYPE_STRING = 'string';
   const TYPE_TRAVERSABLE = 'traversable';
+
+  const ALIAS_BOOL = 'bool';
+  const ALIAS_CALLABLE = 'callable';
+  const ALIAS_DOUBLE = 'double';
+  const ALIAS_INT = 'int';
+  const ALIAS_LONG = 'long';
+  const ALIAS_REAL = 'real';
 
   /**
    * @var array

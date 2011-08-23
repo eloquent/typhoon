@@ -26,12 +26,21 @@ class TypeRegistryTest extends TestCase
     return array(
       array('array', 'Typhoon\Type\ArrayType'),
       array('boolean', 'Typhoon\Type\Boolean'),
+      array('callback', 'Typhoon\Type\Callback'),
+      array('float', 'Typhoon\Type\Float'),
       array('integer', 'Typhoon\Type\Integer'),
       array('mixed', 'Typhoon\Type\Mixed'),
       array('null', 'Typhoon\Type\Null'),
       array('object', 'Typhoon\Type\Object'),
       array('string', 'Typhoon\Type\String'),
       array('traversable', 'Typhoon\Type\Traversable'),
+
+      array('bool', 'Typhoon\Type\Boolean', true),
+      array('callable', 'Typhoon\Type\Callback', true),
+      array('double', 'Typhoon\Type\Float', true),
+      array('int', 'Typhoon\Type\Integer', true),
+      array('long', 'Typhoon\Type\Integer', true),
+      array('real', 'Typhoon\Type\Float', true),
     );
   }
 
@@ -73,8 +82,13 @@ class TypeRegistryTest extends TestCase
    * @covers Typhoon\TypeRegistry::registerDefaults
    * @dataProvider defaultTypes
    */
-  public function testRegisterDefaults($alias, $type)
+  public function testRegisterDefaults($alias, $type, $is_alias = null)
   {
+    if (null === $is_alias)
+    {
+      $is_alias = false;
+    }
+
     $registry = Phake::mock('Typhoon\TypeRegistry', Phake::ifUnstubbed()->thenCallParent());
 
     $caught = false;
@@ -100,8 +114,13 @@ class TypeRegistryTest extends TestCase
     $this->assertTrue($caught);
 
     $registry->registerDefaults();
-    $registry->alias($type);
-    $registry[$alias];
+
+    if (!$is_alias)
+    {
+      $this->assertEquals($alias, $registry->alias($type));
+    }
+
+    $this->assertEquals($type, $registry[$alias]);
   }
 
   /**

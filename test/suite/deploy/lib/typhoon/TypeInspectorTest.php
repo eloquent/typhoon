@@ -17,6 +17,7 @@ use Typhoon;
 use Typhoon\Test\TestCase;
 use Typhoon\Type\ArrayType;
 use Typhoon\Type\Boolean;
+use Typhoon\Type\Float;
 use Typhoon\Type\Integer;
 use Typhoon\Type\Mixed;
 use Typhoon\Type\Null;
@@ -26,11 +27,6 @@ use Typhoon\Type\Traversable;
 
 class TypeInspectorTest extends TestCase
 {
-  protected function setUp()
-  {
-    $this->_typeInspector = new TypeInspector;
-  }
-
   /**
    * @return array
    */
@@ -41,32 +37,38 @@ class TypeInspectorTest extends TestCase
       array(true,     new Boolean),    // #1: Boolean
       array(false,    new Boolean),    // #2: Boolean
       array(1,        new Integer),    // #3: Integer
-      array('foo',    new String),     // #4: String
+      array(.1,       new Float),      // #4: Integer
+      array('foo',    new String),     // #5: String
     );
 
-    // #5: Array
+    // #6: Array
     $value = array();
     $expected = new ArrayType;
     $data[] = array($value, $expected);
 
-    // #6: Traversable
+    // #7: Traversable
     $value = Phake::mock('Iterator');
     $expected = new Traversable;
     $data[] = array($value, $expected);
 
-    // #7: Object (stdClass)
+    // #8: Object (stdClass)
     $value = new stdClass;
     $expected = new Object;
     $expected->setTyphoonAttribute(Object::ATTRIBUTE_CLASS, 'stdClass');
     $data[] = array($value, $expected);
 
-    // #8: Object (Typhoon)
+    // #9: Object (Typhoon)
     $value = Typhoon::instance();
     $expected = new Object;
     $expected->setTyphoonAttribute(Object::ATTRIBUTE_CLASS, 'Typhoon');
     $data[] = array($value, $expected);
 
     return $data;
+  }
+
+  protected function setUp()
+  {
+    $this->_typeInspector = new TypeInspector;
   }
 
   /**

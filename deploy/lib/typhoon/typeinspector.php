@@ -13,6 +13,7 @@ namespace Typhoon;
 
 use Typhoon\Type\ArrayType;
 use Typhoon\Type\Boolean;
+use Typhoon\Type\Float;
 use Typhoon\Type\Integer;
 use Typhoon\Type\Mixed;
 use Typhoon\Type\Null;
@@ -33,6 +34,7 @@ class TypeInspector
       new Null,
       new Boolean,
       new Integer,
+      new Float,
       new String,
     );
 
