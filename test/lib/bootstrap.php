@@ -35,13 +35,14 @@ spl_autoload_register(function($name)
 {
   $file = str_replace('\\', DIRECTORY_SEPARATOR, strtolower($name)).'.php';
 
-  if (file_exists($file))
+  foreach (explode(PATH_SEPARATOR, get_include_path()) as $path)
   {
-    include $file;
-  }
-  else
-  {
-    @include $file;
+    if (file_exists($path.DIRECTORY_SEPARATOR.$file))
+    {
+      include $path.DIRECTORY_SEPARATOR.$file;
+
+      break;
+    }
   }
 });
 
