@@ -2,7 +2,9 @@
 
 namespace Typhoon;
 
+use Phake;
 use Typhoon\Test\TestCase;
+use Typhoon\Type\Null as NullType;
 
 class CollectionTest extends TestCase
 {
@@ -62,6 +64,27 @@ class CollectionTest extends TestCase
   {
     $this->setExpectedException('Typhoon\Collection\Exception\UndefinedKey');
     $this->_collection->$method('foo');
+  }
+
+  /**
+   * @covers Typhoon\Collection
+   */
+  public function testInvalidKeyTypeFailure()
+  {
+    $this->setExpectedException('Typhoon\Assertion\Exception\UnexpectedType');
+    $this->_collection[.1] = 'foo';
+  }
+
+  /**
+   * @covers Typhoon\Collection
+   */
+  public function testInvalidValueTypeFailure()
+  {
+    $collection = Phake::partialMock(__NAMESPACE__.'\Collection');
+    Phake::when($collection)->valueType()->thenReturn(new NullType);
+
+    $this->setExpectedException('Typhoon\Assertion\Exception\UnexpectedType');
+    $collection['foo'] = 'bar';
   }
 
   public function testSpl()
