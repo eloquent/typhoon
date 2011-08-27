@@ -47,7 +47,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
   public function offsetSet($key, $value)
   {
     $this->assertKeySet($key);
-    $this->assertValue($value);
+    $this->assertValue($key, $value);
 
     if (null === $key)
     {
@@ -170,9 +170,10 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
   }
 
   /**
+   * @param mixed $key
    * @param mixed $value
    */
-  protected function assertValue($value)
+  protected function assertValue($key, $value)
   {
     $assertion = $this->typeAssertion();
     $assertion->setType($this->valueType());
