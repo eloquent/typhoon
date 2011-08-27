@@ -25,9 +25,11 @@ class AttributeSignature extends Collection
   }
 
   /**
+   * @param mixed $key
+   *
    * @return Type
    */
-  protected function valueType()
+  protected function valueType($key)
   {
     $type = new ObjectType;
     $type->setTyphoonAttribute(ObjectType::ATTRIBUTE_CLASS, 'Typhoon\Type');

@@ -90,7 +90,7 @@ class CollectionTest extends TestCase
   public function testInvalidValueTypeFailure()
   {
     $collection = Phake::partialMock(__NAMESPACE__.'\Collection');
-    Phake::when($collection)->valueType()->thenReturn(new NullType);
+    Phake::when($collection)->valueType('foo')->thenReturn(new NullType);
 
     $this->setExpectedException('Typhoon\Assertion\Exception\UnexpectedType');
     $collection['foo'] = 'bar';

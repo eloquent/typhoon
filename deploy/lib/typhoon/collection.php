@@ -30,7 +30,7 @@ use Typhoon\Type\String as StringType;
 class Collection implements ArrayAccess, Countable, IteratorAggregate
 {
   /**
-   * @param key $key
+   * @param integer|string $key
    * @return boolean
    */
   public function offsetExists($key)
@@ -41,7 +41,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
   }
 
   /**
-   * @param key $key
+   * @param integer|string $key
    * @param mixed $value
    */
   public function offsetSet($key, $value)
@@ -60,7 +60,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
   }
 
   /**
-   * @param key $key
+   * @param integer|string $key
    *
    * @return Parameter
    */
@@ -77,7 +77,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
   }
 
   /**
-   * @param key $key
+   * @param integer|string $key
    */
   public function offsetUnset($key)
   {
@@ -120,9 +120,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
   }
 
   /**
+   * @param mixed $key
+   *
    * @return Type
    */
-  protected function valueType()
+  protected function valueType($key)
   {
     return new MixedType;
   }
@@ -176,7 +178,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
   protected function assertValue($key, $value)
   {
     $assertion = $this->typeAssertion();
-    $assertion->setType($this->valueType());
+    $assertion->setType($this->valueType($key));
     $assertion->setValue($value);
 
     $assertion->assert();
