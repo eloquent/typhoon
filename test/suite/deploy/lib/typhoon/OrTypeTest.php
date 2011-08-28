@@ -73,6 +73,9 @@ class OrTypeTest extends TestCase
     Phake::verify($this->_typeB)->typhoonCheck($value);
   }
 
+  /**
+   * @covers Typhoon\OrType
+   */
   public function testImplementsType()
   {
     $this->assertInstanceOf(__NAMESPACE__.'\CompositeType', $this->_orType);

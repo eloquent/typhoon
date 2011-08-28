@@ -55,7 +55,7 @@ class TraversableTest extends TypeTestCase
   public function testPrimaryType()
   {
     $traversableObject = new Object;
-    $traversableObject->setTyphoonAttribute(Object::ATTRIBUTE_CLASS, 'Traversable');
+    $traversableObject->typhoonAttributes()->set(Object::ATTRIBUTE_CLASS, 'Traversable');
     $expected = new OrType;
     $expected->addTyphoonType(new ArrayType);
     $expected->addTyphoonType($traversableObject);

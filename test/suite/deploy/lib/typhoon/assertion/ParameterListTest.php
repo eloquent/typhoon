@@ -268,6 +268,9 @@ class ParameterListTest extends TestCase
     $this->_assertion->setArguments(array('foo' => 'foo'));
   }
 
+  /**
+   * @covers Typhoon\Assertion\ParameterList
+   */
   public function testImplementsAssertion()
   {
     $this->assertInstanceOf('Typhoon\Assertion', new ParameterList);

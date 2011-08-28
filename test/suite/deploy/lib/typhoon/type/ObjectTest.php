@@ -11,8 +11,11 @@
 
 namespace Typhoon\Type;
 
+use ReflectionClass;
 use stdClass;
+use Typhoon\AttributeSignature;
 use Typhoon\Test\TypeTestCase;
+use Typhoon\Type\String as StringType;
 
 class ObjectTest extends TypeTestCase
 {
@@ -58,25 +61,43 @@ class ObjectTest extends TypeTestCase
   }
 
   /**
-   * @covers Typhoon\Type\Object::setTyphoonAttribute
-   * @covers Typhoon\Type\Object::attributeSupported
+   * @covers Typhoon\Type\Object::attributeSignature
+   */
+  public function testAttributeSignature()
+  {
+    $reflector = new ReflectionClass(__NAMESPACE__.'\Object');
+    $property = $reflector->getProperty('attributeSignature');
+    $property->setAccessible(true);
+    $property->setValue(null, null);
+
+    $expected = new AttributeSignature;
+    $expected['class'] = new StringType;
+
+    $actual = Object::attributeSignature();
+
+    $this->assertEquals($expected, $actual);
+    $this->assertSame($actual, Object::attributeSignature());
+  }
+
+  /**
+   * @covers Typhoon\Type\Object
    */
   public function testSetTyphoonAttribute()
   {
     $type = $this->typeFixture();
-    $type->setTyphoonAttribute('class', 'foo');
+    $type->typhoonAttributes()->set('class', 'foo');
 
-    $this->assertEquals('foo', $type->attribute('class'));
+    $this->assertEquals('foo', $type->typhoonAttributes()->get('class'));
   }
 
   /**
-   * @covers Typhoon\Type\Object::setTyphoonAttribute
+   * @covers Typhoon\Type\Object
    */
   public function testSetTyphoonAttributeFailure()
   {
     $type = $this->typeFixture();
-    $this->setExpectedException('Typhoon\Assertion\Exception\UnexpectedArgument');
-    $type->setTyphoonAttribute('class', 1);
+    $this->setExpectedException('Typhoon\Assertion\Exception\UnexpectedType');
+    $type->typhoonAttributes()->set('class', 1);
   }
 
   // methods below must be manually overridden to implement @covers

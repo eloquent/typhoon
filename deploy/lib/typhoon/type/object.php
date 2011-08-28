@@ -11,11 +11,26 @@
 
 namespace Typhoon\Type;
 
-use Typhoon\Primitive\String as StringPrimitive;
+use Typhoon\AttributeSignature;
 use Typhoon\BaseDynamicType;
+use Typhoon\Type\String as StringType;
 
 class Object extends BaseDynamicType
 {
+  /**
+   * @return AttributeSignature
+   */
+  static public function attributeSignature()
+  {
+    if (!self::$attributeSignature)
+    {
+      self::$attributeSignature = new AttributeSignature;
+      self::$attributeSignature[self::ATTRIBUTE_CLASS] = new StringType;
+    }
+
+    return self::$attributeSignature;
+  }
+
   /**
    * @param mixed value
    *
@@ -23,7 +38,7 @@ class Object extends BaseDynamicType
    */
   public function typhoonCheck($value)
   {
-    if ($class = $this->attribute(self::ATTRIBUTE_CLASS))
+    if ($class = $this->typhoonAttributes()->get(self::ATTRIBUTE_CLASS, null))
     {
       return $value instanceof $class;
     }
@@ -32,25 +47,9 @@ class Object extends BaseDynamicType
   }
 
   /**
-   * @param string $attribute
-   * @param mixed $value
+   * @var AttributeSignature
    */
-  public function setTyphoonAttribute($attribute, $value)
-  {
-    new StringPrimitive($value);
-    
-    parent::setTyphoonAttribute($attribute, $value);
-  }
-
-  /**
-   * @param string $attribute
-   *
-   * @return boolean
-   */
-  protected function attributeSupported($attribute)
-  {
-    return self::ATTRIBUTE_CLASS == $attribute;
-  }
+  static protected $attributeSignature;
 
   const ATTRIBUTE_CLASS = 'class';
 }

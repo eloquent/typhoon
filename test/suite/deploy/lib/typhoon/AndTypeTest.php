@@ -73,6 +73,9 @@ class AndTypeTest extends TestCase
     Phake::verify($this->_typeB, Phake::never())->typhoonCheck(Phake::anyParameters());
   }
 
+  /**
+   * @covers Typhoon\AndType
+   */
   public function testImplementsType()
   {
     $this->assertInstanceOf(__NAMESPACE__.'\CompositeType', $this->_andType);

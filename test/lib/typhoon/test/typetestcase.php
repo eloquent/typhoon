@@ -25,7 +25,7 @@ abstract class TypeTestCase extends TestCase
 
     foreach ($attributes as $key => $value)
     {
-      $type->setTyphoonAttribute($key, $value);
+      $type->typhoonAttributes()->set($key, $value);
     }
 
     return $type;

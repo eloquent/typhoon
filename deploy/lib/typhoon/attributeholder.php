@@ -11,4 +11,10 @@
 
 namespace Typhoon;
 
-interface DynamicType extends Type, AttributeHolder {}
+interface AttributeHolder
+{
+  /**
+   * @return Attributes
+   */
+  public function typhoonAttributes();
+}

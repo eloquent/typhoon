@@ -63,7 +63,7 @@ class TypeInspector
     $object = new Object;
     if ($object->typhoonCheck($value))
     {
-      $object->setTyphoonAttribute(Object::ATTRIBUTE_CLASS, get_class($value));
+      $object->typhoonAttributes()->set(Object::ATTRIBUTE_CLASS, get_class($value));
 
       return $object;
     }

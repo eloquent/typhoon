@@ -39,7 +39,7 @@ class Traversable extends BaseTraversableType
   protected function primaryType()
   {
     $traversableObject = new Object;
-    $traversableObject->setTyphoonAttribute(Object::ATTRIBUTE_CLASS, 'Traversable');
+    $traversableObject->typhoonAttributes()->set(Object::ATTRIBUTE_CLASS, 'Traversable');
 
     $primaryType = new OrType;
     $primaryType->addTyphoonType(new ArrayType);

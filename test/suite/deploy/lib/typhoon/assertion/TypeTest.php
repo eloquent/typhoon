@@ -101,6 +101,9 @@ class TypeTest extends TestCase
     $this->assertSame($value, $this->_assertion->value());
   }
 
+  /**
+   * @covers Typhoon\Assertion\Type
+   */
   public function testImplementsAssertion()
   {
     $this->assertInstanceOf('Typhoon\Assertion', new Type);

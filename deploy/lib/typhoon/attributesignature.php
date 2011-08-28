@@ -11,8 +11,8 @@
 
 namespace Typhoon;
 
-use Typhoon\Type\Object as ObjectType;
 use Typhoon\Type\String as StringType;
+use Typhoon\Type\TyphoonType;
 
 class AttributeSignature extends Collection
 {
@@ -31,10 +31,7 @@ class AttributeSignature extends Collection
    */
   protected function valueType($key)
   {
-    $type = new ObjectType;
-    $type->setTyphoonAttribute(ObjectType::ATTRIBUTE_CLASS, 'Typhoon\Type');
-
-    return $type;
+    return new TyphoonType;
   }
 
   /**

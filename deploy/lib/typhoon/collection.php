@@ -31,9 +31,10 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 {
   /**
    * @param integer|string $key
+   *
    * @return boolean
    */
-  public function offsetExists($key)
+  public function exists($key)
   {
     $this->assertKeyGet($key);
 
@@ -44,7 +45,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
    * @param integer|string $key
    * @param mixed $value
    */
-  public function offsetSet($key, $value)
+  public function set($key, $value)
   {
     $this->assertKeySet($key);
     $this->assertValue($key, $value);
@@ -61,16 +62,22 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 
   /**
    * @param integer|string $key
+   * @param mixed $default
    *
    * @return Parameter
    */
-  public function offsetGet($key)
+  public function get($key, $default = null)
   {
     $this->assertKeyGet($key);
 
     if (!array_key_exists($key, $this->values))
     {
-      throw new UndefinedKey(new String((string)$key));
+      if (1 == func_num_args())
+      {
+        throw new UndefinedKey(new String((string)$key));
+      }
+
+      return $default;
     }
 
     return $this->values[$key];
@@ -79,7 +86,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
   /**
    * @param integer|string $key
    */
-  public function offsetUnset($key)
+  public function remove($key)
   {
     $this->assertKeyGet($key);
 
@@ -89,6 +96,43 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     }
 
     unset($this->values[$key]);
+  }
+
+  /**
+   * @param integer|string $key
+   *
+   * @return boolean
+   */
+  public function offsetExists($key)
+  {
+    return $this->exists($key);
+  }
+
+  /**
+   * @param integer|string $key
+   * @param mixed $value
+   */
+  public function offsetSet($key, $value)
+  {
+    $this->set($key, $value);
+  }
+
+  /**
+   * @param integer|string $key
+   *
+   * @return Parameter
+   */
+  public function offsetGet($key)
+  {
+    return $this->get($key);
+  }
+
+  /**
+   * @param integer|string $key
+   */
+  public function offsetUnset($key)
+  {
+    $this->remove($key);
   }
 
   /**

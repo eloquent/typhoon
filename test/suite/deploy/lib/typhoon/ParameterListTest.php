@@ -134,6 +134,9 @@ class ParameterListTest extends TestCase
     $this->assertEquals(2, $iterations);
   }
 
+  /**
+   * @covers Typhoon\ParameterList
+   */
   public function testTraversable()
   {
     $this->assertInstanceOf('Traversable', $this->_parameterList);
@@ -155,6 +158,9 @@ class ParameterListTest extends TestCase
     $this->assertEquals(2, count($this->_parameterList));
   }
 
+  /**
+   * @covers Typhoon\ParameterList
+   */
   public function testCountable()
   {
     $this->assertInstanceOf('Countable', $this->_parameterList);

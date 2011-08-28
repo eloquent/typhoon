@@ -23,6 +23,8 @@ class CollectionTest extends TestCase
   public function undefinedKeyTriggers()
   {
     return array(
+      array('get'),
+      array('remove'),
       array('offsetGet'),
       array('offsetUnset'),
     );
@@ -39,28 +41,39 @@ class CollectionTest extends TestCase
   public function testCollection()
   {
     $this->assertEquals(array(), iterator_to_array($this->_collection, true));
+    $this->assertFalse($this->_collection->exists('foo'));
     $this->assertFalse(isset($this->_collection['foo']));
     $this->assertEquals(0, count($this->_collection));
 
-    $this->_collection['foo'] = 'bar';
+    $this->_collection->set('foo', 'bar');
     $this->_collection['baz'] = 'qux';
     $this->_collection[] = 'doom';
 
     $this->assertEquals(array(0 => 'doom', 'foo' => 'bar', 'baz' => 'qux'), iterator_to_array($this->_collection, true));
+    $this->assertTrue($this->_collection->exists('foo'));
     $this->assertTrue(isset($this->_collection['foo']));
+    $this->assertTrue($this->_collection->exists('baz'));
     $this->assertTrue(isset($this->_collection['baz']));
+    $this->assertTrue($this->_collection->exists(0));
     $this->assertTrue(isset($this->_collection[0]));
+    $this->assertFalse($this->_collection->exists('bar'));
     $this->assertFalse(isset($this->_collection['bar']));
+    $this->assertEquals('bar', $this->_collection->get('foo'));
     $this->assertEquals('bar', $this->_collection['foo']);
+    $this->assertEquals('qux', $this->_collection->get('baz'));
     $this->assertEquals('qux', $this->_collection['baz']);
+    $this->assertEquals('doom', $this->_collection->get(0));
     $this->assertEquals('doom', $this->_collection[0]);
+    $this->assertNull($this->_collection->get('bar', null));
+    $this->assertEquals('splat', $this->_collection->get('bar', 'splat'));
     $this->assertEquals(3, count($this->_collection));
 
-    unset($this->_collection['foo']);
+    $this->_collection->remove('foo');
     unset($this->_collection['baz']);
     unset($this->_collection[0]);
 
     $this->assertEquals(array(), iterator_to_array($this->_collection, true));
+    $this->assertFalse($this->_collection->exists('foo'));
     $this->assertFalse(isset($this->_collection['foo']));
     $this->assertEquals(0, count($this->_collection));
   }
@@ -96,7 +109,10 @@ class CollectionTest extends TestCase
     $collection['foo'] = 'bar';
   }
 
-  public function testSpl()
+  /**
+   * @covers Typhoon\Collection
+   */
+  public function testImplements()
   {
     $this->assertInstanceOf('ArrayAccess', $this->_collection);
     $this->assertInstanceOf('Countable', $this->_collection);

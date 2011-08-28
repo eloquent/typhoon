@@ -63,7 +63,7 @@ class ParameterList implements ArrayAccess, Countable, IteratorAggregate
     if (!$parameter instanceof Parameter)
     {
       $parameterType = new ObjectType;
-      $parameterType->setTyphoonAttribute('class', __NAMESPACE__.'\Parameter');
+      $parameterType->typhoonAttributes()->set(ObjectType::ATTRIBUTE_CLASS, __NAMESPACE__.'\Parameter');
 
       $parameterParameter = new Parameter;
       $parameterParameter->setType($parameterType);
