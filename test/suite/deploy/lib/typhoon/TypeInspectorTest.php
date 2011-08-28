@@ -55,6 +55,7 @@ class TypeInspectorTest extends TestCase
     // #8: Traversable
     $value = Phake::mock('Iterator');
     $expected = new Traversable;
+    $expected->typhoonAttributes();
     $data[] = array($value, $expected);
 
     // #9: Object (stdClass)

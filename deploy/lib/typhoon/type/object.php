@@ -46,10 +46,10 @@ class Object extends BaseDynamicType
     return is_object($value);
   }
 
+  const ATTRIBUTE_CLASS = 'class';
+
   /**
    * @var AttributeSignature
    */
   static protected $attributeSignature;
-
-  const ATTRIBUTE_CLASS = 'class';
 }

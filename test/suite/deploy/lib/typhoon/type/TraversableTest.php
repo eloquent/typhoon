@@ -12,10 +12,13 @@
 namespace Typhoon\Type;
 
 use Phake;
+use ReflectionClass;
 use ReflectionObject;
 use stdClass;
+use Typhoon\AttributeSignature;
 use Typhoon\OrType;
 use Typhoon\Test\TypeTestCase;
+use Typhoon\Type\String as StringType;
 
 class TraversableTest extends TypeTestCase
 {
@@ -49,7 +52,46 @@ class TraversableTest extends TypeTestCase
   }
 
   /**
-   * @covers Typhoon\Type\Traversable::__construct
+   * @covers Typhoon\Type\Traversable::attributeSignature
+   */
+  public function testAttributeSignature()
+  {
+    $reflector = new ReflectionClass($this->typeClass());
+    $property = $reflector->getProperty('attributeSignature');
+    $property->setAccessible(true);
+    $property->setValue(null, null);
+
+    $expected = new AttributeSignature;
+    $expected['class'] = new StringType;
+
+    $actual = Traversable::attributeSignature();
+
+    $this->assertEquals($expected, $actual);
+    $this->assertSame($actual, Traversable::attributeSignature());
+  }
+
+  /**
+   * @covers Typhoon\Type\Traversable::typhoonAttributes
+   */
+  public function testSetTyphoonAttribute()
+  {
+    $type = $this->typeFixture();
+    $type->typhoonAttributes()->set('class', 'foo');
+
+    $this->assertEquals('foo', $type->typhoonAttributes()->get('class'));
+  }
+
+  /**
+   * @covers Typhoon\Type\Traversable::typhoonAttributes
+   */
+  public function testSetTyphoonAttributeFailure()
+  {
+    $type = $this->typeFixture();
+    $this->setExpectedException('Typhoon\Assertion\Exception\UnexpectedType');
+    $type->typhoonAttributes()->set('class', 1);
+  }
+
+  /**
    * @covers Typhoon\Type\Traversable::primaryType
    */
   public function testPrimaryType()
@@ -63,10 +105,30 @@ class TraversableTest extends TypeTestCase
     $type = $this->typeFixture();
 
     $reflector = new ReflectionObject($type);
-    $property = $reflector->getProperty('primaryType');
-    $property->setAccessible(true);
+    $method = $reflector->getMethod('primaryType');
+    $method->setAccessible(true);
 
-    $actual = $property->getValue($type);
+    $actual = $method->invoke($type);
+
+    $this->assertEquals($expected, $actual);
+  }
+
+  /**
+   * @covers Typhoon\Type\Traversable::primaryType
+   */
+  public function testPrimaryTypeWithInstanceOf()
+  {
+    $expected = new Object;
+    $expected->typhoonAttributes()->set(Object::ATTRIBUTE_CLASS, 'Foo');
+
+    $type = $this->typeFixture();
+    $type->typhoonAttributes()->set(Traversable::ATTRIBUTE_CLASS, 'Foo');
+
+    $reflector = new ReflectionObject($type);
+    $method = $reflector->getMethod('primaryType');
+    $method->setAccessible(true);
+
+    $actual = $method->invoke($type);
 
     $this->assertEquals($expected, $actual);
   }

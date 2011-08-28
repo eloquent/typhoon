@@ -11,16 +11,43 @@
 
 namespace Typhoon\Type;
 
+use Typhoon\Attributes;
+use Typhoon\AttributeSignature;
 use Typhoon\BaseTraversableType;
+use Typhoon\DynamicType;
 use Typhoon\OrType;
 use Typhoon\Type\ArrayType;
 use Typhoon\Type\Object;
+use Typhoon\Type\String as StringType;
 
-class Traversable extends BaseTraversableType
+class Traversable extends BaseTraversableType implements DynamicType
 {
-  public function __construct()
+  /**
+   * @return AttributeSignature
+   */
+  static public function attributeSignature()
   {
-    $this->primaryType = $this->primaryType();
+    if (!self::$attributeSignature)
+    {
+      self::$attributeSignature = new AttributeSignature;
+      self::$attributeSignature[self::ATTRIBUTE_CLASS] = new StringType;
+    }
+
+    return self::$attributeSignature;
+  }
+
+  /**
+   * @return Attributes
+   */
+  public function typhoonAttributes()
+  {
+    if (!$this->attributes)
+    {
+      $this->attributes = new Attributes;
+      $this->attributes->setSignature(static::attributeSignature());
+    }
+
+    return $this->attributes;
   }
 
   /**
@@ -39,6 +66,14 @@ class Traversable extends BaseTraversableType
   protected function primaryType()
   {
     $traversableObject = new Object;
+
+    if ($class = $this->typhoonAttributes()->get(self::ATTRIBUTE_CLASS, null))
+    {
+      $traversableObject->typhoonAttributes()->set(Object::ATTRIBUTE_CLASS, $class);
+
+      return $traversableObject;
+    }
+
     $traversableObject->typhoonAttributes()->set(Object::ATTRIBUTE_CLASS, 'Traversable');
 
     $primaryType = new OrType;
@@ -47,9 +82,16 @@ class Traversable extends BaseTraversableType
 
     return $primaryType;
   }
+  
+  const ATTRIBUTE_CLASS = 'class';
 
   /**
-   * @var Type
+   * @var AttributeSignature
    */
-  protected $primaryType;
+  static protected $attributeSignature;
+
+  /**
+   * @var Attributes
+   */
+  protected $attributes;
 }

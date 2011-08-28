@@ -65,7 +65,7 @@ class ObjectTest extends TypeTestCase
    */
   public function testAttributeSignature()
   {
-    $reflector = new ReflectionClass(__NAMESPACE__.'\Object');
+    $reflector = new ReflectionClass($this->typeClass());
     $property = $reflector->getProperty('attributeSignature');
     $property->setAccessible(true);
     $property->setValue(null, null);
@@ -80,7 +80,7 @@ class ObjectTest extends TypeTestCase
   }
 
   /**
-   * @covers Typhoon\Type\Object
+   * @covers Typhoon\Type\Object::typhoonAttributes
    */
   public function testSetTyphoonAttribute()
   {
@@ -91,7 +91,7 @@ class ObjectTest extends TypeTestCase
   }
 
   /**
-   * @covers Typhoon\Type\Object
+   * @covers Typhoon\Type\Object::typhoonAttributes
    */
   public function testSetTyphoonAttributeFailure()
   {
