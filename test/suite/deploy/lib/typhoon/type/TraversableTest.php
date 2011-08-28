@@ -15,6 +15,7 @@ use Phake;
 use ReflectionClass;
 use ReflectionObject;
 use stdClass;
+use Typhoon\AndType;
 use Typhoon\AttributeSignature;
 use Typhoon\OrType;
 use Typhoon\Test\TypeTestCase;
@@ -27,19 +28,29 @@ class TraversableTest extends TypeTestCase
    */
   public function typeValues()
   {
+    $iterator = Phake::mock('Iterator');
+    $iteratorAggregate = Phake::mock('IteratorAggregate');
+    $attributesIterator = array(Traversable::ATTRIBUTE_INSTANCE_OF => get_class($iterator));
+    $attributesNonTraversable = array(Traversable::ATTRIBUTE_INSTANCE_OF => 'stdClass');
+
     return array(
       array(false, null),                             // #0: null
-      array(false,  true),                            // #1: boolean
+      array(false, true),                             // #1: boolean
       array(false, 'string'),                         // #2: string
       array(false, 1),                                // #3: integer
       array(false, .1),                               // #4: float
-      array(true, array()),                           // #5: array
+      array(true,  array()),                          // #5: array
       array(false, new stdClass),                     // #6: object
       array(false, function(){}),                     // #7: closure
       array(false, $this->resourceFixture()),         // #8: resource
 
-      array(true, Phake::mock('Iterator')),           // #9: iterator
-      array(true, Phake::mock('IteratorAggregate')),  // #9: iterator aggregate
+      array(true,  $iterator),                         // #9: iterator
+      array(true,  $iteratorAggregate),                // #10: iterator aggregate
+
+      array(true,  $iterator, $attributesIterator),            // #11: specific class traversable
+      array(false, $iteratorAggregate, $attributesIterator),   // #12: failure for specific class traversable
+
+      array(false, new stdClass, $attributesNonTraversable),   // #13: failure when class match but not traversable
     );
   }
 
@@ -62,7 +73,7 @@ class TraversableTest extends TypeTestCase
     $property->setValue(null, null);
 
     $expected = new AttributeSignature;
-    $expected['class'] = new StringType;
+    $expected[Traversable::ATTRIBUTE_INSTANCE_OF] = new StringType;
 
     $actual = Traversable::attributeSignature();
 
@@ -76,9 +87,9 @@ class TraversableTest extends TypeTestCase
   public function testSetTyphoonAttribute()
   {
     $type = $this->typeFixture();
-    $type->typhoonAttributes()->set('class', 'foo');
+    $type->typhoonAttributes()->set(Traversable::ATTRIBUTE_INSTANCE_OF, 'foo');
 
-    $this->assertEquals('foo', $type->typhoonAttributes()->get('class'));
+    $this->assertEquals('foo', $type->typhoonAttributes()->get(Traversable::ATTRIBUTE_INSTANCE_OF));
   }
 
   /**
@@ -88,7 +99,7 @@ class TraversableTest extends TypeTestCase
   {
     $type = $this->typeFixture();
     $this->setExpectedException('Typhoon\Assertion\Exception\UnexpectedType');
-    $type->typhoonAttributes()->set('class', 1);
+    $type->typhoonAttributes()->set(Traversable::ATTRIBUTE_INSTANCE_OF, 1);
   }
 
   /**
@@ -97,7 +108,7 @@ class TraversableTest extends TypeTestCase
   public function testPrimaryType()
   {
     $traversableObject = new Object;
-    $traversableObject->typhoonAttributes()->set(Object::ATTRIBUTE_CLASS, 'Traversable');
+    $traversableObject->typhoonAttributes()->set(Object::ATTRIBUTE_INSTANCE_OF, 'Traversable');
     $expected = new OrType;
     $expected->addTyphoonType(new ArrayType);
     $expected->addTyphoonType($traversableObject);
@@ -118,11 +129,16 @@ class TraversableTest extends TypeTestCase
    */
   public function testPrimaryTypeWithInstanceOf()
   {
-    $expected = new Object;
-    $expected->typhoonAttributes()->set(Object::ATTRIBUTE_CLASS, 'Foo');
+    $specificObject = new Object;
+    $specificObject->typhoonAttributes()->set(Object::ATTRIBUTE_INSTANCE_OF, 'Foo');
+    $traversableObject = new Object;
+    $traversableObject->typhoonAttributes()->set(Object::ATTRIBUTE_INSTANCE_OF, 'Traversable');
+    $expected = new AndType;
+    $expected->addTyphoonType($specificObject);
+    $expected->addTyphoonType($traversableObject);
 
     $type = $this->typeFixture();
-    $type->typhoonAttributes()->set(Traversable::ATTRIBUTE_CLASS, 'Foo');
+    $type->typhoonAttributes()->set(Traversable::ATTRIBUTE_INSTANCE_OF, 'Foo');
 
     $reflector = new ReflectionObject($type);
     $method = $reflector->getMethod('primaryType');

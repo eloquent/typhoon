@@ -25,7 +25,7 @@ class Object extends BaseDynamicType
     if (!self::$attributeSignature)
     {
       self::$attributeSignature = new AttributeSignature;
-      self::$attributeSignature[self::ATTRIBUTE_CLASS] = new StringType;
+      self::$attributeSignature[self::ATTRIBUTE_INSTANCE_OF] = new StringType;
     }
 
     return self::$attributeSignature;
@@ -38,7 +38,7 @@ class Object extends BaseDynamicType
    */
   public function typhoonCheck($value)
   {
-    if ($class = $this->typhoonAttributes()->get(self::ATTRIBUTE_CLASS, null))
+    if ($class = $this->typhoonAttributes()->get(self::ATTRIBUTE_INSTANCE_OF, null))
     {
       return $value instanceof $class;
     }
@@ -46,7 +46,7 @@ class Object extends BaseDynamicType
     return is_object($value);
   }
 
-  const ATTRIBUTE_CLASS = 'class';
+  const ATTRIBUTE_INSTANCE_OF = 'instanceOf';
 
   /**
    * @var AttributeSignature

@@ -61,13 +61,13 @@ class TypeInspectorTest extends TestCase
     // #9: Object (stdClass)
     $value = new stdClass;
     $expected = new Object;
-    $expected->typhoonAttributes()->set(Object::ATTRIBUTE_CLASS, 'stdClass');
+    $expected->typhoonAttributes()->set(Object::ATTRIBUTE_INSTANCE_OF, 'stdClass');
     $data[] = array($value, $expected);
 
     // #10: Object (Typhoon)
     $value = Typhoon::instance();
     $expected = new Object;
-    $expected->typhoonAttributes()->set(Object::ATTRIBUTE_CLASS, 'Typhoon');
+    $expected->typhoonAttributes()->set(Object::ATTRIBUTE_INSTANCE_OF, 'Typhoon');
     $data[] = array($value, $expected);
 
     return $data;

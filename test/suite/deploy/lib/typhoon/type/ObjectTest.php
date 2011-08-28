@@ -24,7 +24,7 @@ class ObjectTest extends TypeTestCase
    */
   public function typeValues()
   {
-    $attributes = array('class' => 'stdClass');
+    $attributes = array(Object::ATTRIBUTE_INSTANCE_OF => 'stdClass');
 
     return array(
       // object of any class
@@ -71,7 +71,7 @@ class ObjectTest extends TypeTestCase
     $property->setValue(null, null);
 
     $expected = new AttributeSignature;
-    $expected['class'] = new StringType;
+    $expected[Object::ATTRIBUTE_INSTANCE_OF] = new StringType;
 
     $actual = Object::attributeSignature();
 
@@ -85,9 +85,9 @@ class ObjectTest extends TypeTestCase
   public function testSetTyphoonAttribute()
   {
     $type = $this->typeFixture();
-    $type->typhoonAttributes()->set('class', 'foo');
+    $type->typhoonAttributes()->set(Object::ATTRIBUTE_INSTANCE_OF, 'foo');
 
-    $this->assertEquals('foo', $type->typhoonAttributes()->get('class'));
+    $this->assertEquals('foo', $type->typhoonAttributes()->get(Object::ATTRIBUTE_INSTANCE_OF));
   }
 
   /**
@@ -97,7 +97,7 @@ class ObjectTest extends TypeTestCase
   {
     $type = $this->typeFixture();
     $this->setExpectedException('Typhoon\Assertion\Exception\UnexpectedType');
-    $type->typhoonAttributes()->set('class', 1);
+    $type->typhoonAttributes()->set(Object::ATTRIBUTE_INSTANCE_OF, 1);
   }
 
   // methods below must be manually overridden to implement @covers
