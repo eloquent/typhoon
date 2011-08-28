@@ -38,6 +38,7 @@ class PrimitiveTest extends TestCase
    * @covers Typhoon\Primitive::__construct
    * @covers Typhoon\Primitive::value
    * @covers Typhoon\Primitive::__toString
+   * @covers Typhoon\Primitive::typeAssertion
    */
   public function testPrimitive()
   {
@@ -110,6 +111,10 @@ class PrimitiveTest extends TestCase
     );
     $expected = get_class(Typhoon::instance()->typeAssertion());
 
-    $this->assertInstanceOf($expected, $primitive->typeAssertion());
+    $reflector = new \ReflectionObject($primitive);
+    $method = $reflector->getMethod('typeAssertion');
+    $method->setAccessible(true);
+
+    $this->assertInstanceOf($expected, $method->invoke($primitive));
   }
 }
