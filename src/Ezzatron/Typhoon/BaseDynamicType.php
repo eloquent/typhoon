@@ -9,9 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon;
-
-use Typhoon;
+namespace Ezzatron\Typhoon;
 
 abstract class BaseDynamicType implements DynamicType
 {

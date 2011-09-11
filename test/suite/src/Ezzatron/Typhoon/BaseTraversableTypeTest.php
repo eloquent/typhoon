@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon;
+namespace Ezzatron\Typhoon;
 
 use Phake;
-use Typhoon\Test\TestCase;
+use Ezzatron\Typhoon\Test\TestCase;
 
 class BaseTraversableTypeTest extends TestCase
 {
@@ -24,8 +24,8 @@ class BaseTraversableTypeTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\BaseTraversableType::setTyphoonSubType
-   * @covers Typhoon\BaseTraversableType::typhoonSubType
+   * @covers Ezzatron\Typhoon\BaseTraversableType::setTyphoonSubType
+   * @covers Ezzatron\Typhoon\BaseTraversableType::typhoonSubType
    */
   public function testTyphoonSubType()
   {
@@ -38,8 +38,8 @@ class BaseTraversableTypeTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\BaseTraversableType::setTyphoonKeyType
-   * @covers Typhoon\BaseTraversableType::typhoonKeyType
+   * @covers Ezzatron\Typhoon\BaseTraversableType::setTyphoonKeyType
+   * @covers Ezzatron\Typhoon\BaseTraversableType::typhoonKeyType
    */
   public function testTyphoonKeyType()
   {
@@ -158,7 +158,7 @@ class BaseTraversableTypeTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\BaseTraversableType::typhoonCheck
+   * @covers Ezzatron\Typhoon\BaseTraversableType::typhoonCheck
    * @dataProvider typhoonCheckData
    */
   public function testTyphoonCheck($value, $expected, $primaryResult, array $subResults, array $keyResults)

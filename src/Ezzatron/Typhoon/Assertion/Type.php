@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Assertion;
+namespace Ezzatron\Typhoon\Assertion;
 
-use Typhoon;
-use Typhoon\Assertion;
-use Typhoon\Assertion\Exception\UnexpectedType;
-use Typhoon\Primitive\String;
-use Typhoon\Type as TypeObject;
-use Typhoon\Type\Mixed;
+use Ezzatron\Typhoon\Typhoon;
+use Ezzatron\Typhoon\Assertion;
+use Ezzatron\Typhoon\Assertion\Exception\UnexpectedType;
+use Ezzatron\Typhoon\Primitive\String;
+use Ezzatron\Typhoon\Type as TypeObject;
+use Ezzatron\Typhoon\Type\Mixed;
 
 class Type implements Assertion
 {

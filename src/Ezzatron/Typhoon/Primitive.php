@@ -9,13 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon;
+namespace Ezzatron\Typhoon;
 
-use Typhoon;
-use Typhoon\Assertion\Exception\UnexpectedArgument;
-use Typhoon\Assertion\Exception\UnexpectedType;
-use Typhoon\Assertion\Type as TypeAssertion;
-use Typhoon\Primitive\Integer;
+use Ezzatron\Typhoon\Assertion\Exception\UnexpectedArgument;
+use Ezzatron\Typhoon\Assertion\Exception\UnexpectedType;
+use Ezzatron\Typhoon\Assertion\Type as TypeAssertion;
+use Ezzatron\Typhoon\Primitive\Integer;
 
 abstract class Primitive
 {

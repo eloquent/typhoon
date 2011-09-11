@@ -9,19 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Primitive;
+namespace Ezzatron\Typhoon\Primitive;
 
-use Typhoon\Test\TestCase;
+use Ezzatron\Typhoon\Test\TestCase;
 
 class CallbackTest extends TestCase
 {
   /**
-   * @covers Typhoon\Primitive\Callback::type
+   * @covers Ezzatron\Typhoon\Primitive\Callback::type
    * @group typhoon_primitives
    */
   public function testType()
   {
     $primitive = new Callback(array($this, 'testType'));
-    $this->assertInstanceOf('Typhoon\Type\Callback', $primitive->type());
+    $this->assertInstanceOf('Ezzatron\Typhoon\Type\Callback', $primitive->type());
   }
 }

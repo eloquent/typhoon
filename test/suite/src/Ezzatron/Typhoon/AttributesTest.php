@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon;
+namespace Ezzatron\Typhoon;
 
 use Phake;
-use Typhoon\Test\TestCase;
-use Typhoon\Type\String as StringType;
+use Ezzatron\Typhoon\Test\TestCase;
+use Ezzatron\Typhoon\Type\String as StringType;
 
 class AttributesTest extends TestCase
 {
@@ -40,14 +40,14 @@ class AttributesTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\Attributes::setSignature
-   * @covers Typhoon\Attributes::signature
+   * @covers Ezzatron\Typhoon\Attributes::setSignature
+   * @covers Ezzatron\Typhoon\Attributes::signature
    */
   public function testSignature()
   {
     $attributes = new Attributes;
 
-    $this->assertInstanceOf('Typhoon\AttributeSignature', $attributes->signature());
+    $this->assertInstanceOf('Ezzatron\Typhoon\AttributeSignature', $attributes->signature());
 
     $attributes->setSignature($this->_signature);
 
@@ -55,7 +55,7 @@ class AttributesTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\Attributes
+   * @covers Ezzatron\Typhoon\Attributes
    */
   public function testAttributes()
   {
@@ -65,7 +65,7 @@ class AttributesTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\Attributes
+   * @covers Ezzatron\Typhoon\Attributes
    * @dataProvider undefinedAttributeData
    */
   public function testUndefinedAttribute($method)
@@ -73,7 +73,7 @@ class AttributesTest extends TestCase
     $arguments = func_get_args();
     array_shift($arguments);
 
-    $this->setExpectedException('Typhoon\Attributes\Exception\UnsupportedAttribute');
+    $this->setExpectedException('Ezzatron\Typhoon\Attributes\Exception\UnsupportedAttribute');
     call_user_func_array(array($this->_attributes, $method), $arguments);
   }
 

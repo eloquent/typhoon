@@ -9,19 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Primitive;
+namespace Ezzatron\Typhoon\Primitive;
 
-use Typhoon\Test\TestCase;
+use Ezzatron\Typhoon\Test\TestCase;
 
 class StringTest extends TestCase
 {
   /**
-   * @covers Typhoon\Primitive\String::type
+   * @covers Ezzatron\Typhoon\Primitive\String::type
    * @group typhoon_primitives
    */
   public function testType()
   {
     $primitive = new String('');
-    $this->assertInstanceOf('Typhoon\Type\String', $primitive->type());
+    $this->assertInstanceOf('Ezzatron\Typhoon\Type\String', $primitive->type());
   }
 }

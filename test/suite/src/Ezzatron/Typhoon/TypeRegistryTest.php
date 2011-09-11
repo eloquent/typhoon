@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon;
+namespace Ezzatron\Typhoon;
 
 use Phake;
-use Typhoon\Test\TestCase;
-use Typhoon\TypeRegistry\Exception\UnregisteredType;
-use Typhoon\TypeRegistry\Exception\UnregisteredTypeAlias;
+use Ezzatron\Typhoon\Test\TestCase;
+use Ezzatron\Typhoon\TypeRegistry\Exception\UnregisteredType;
+use Ezzatron\Typhoon\TypeRegistry\Exception\UnregisteredTypeAlias;
 
 class TypeRegistryTest extends TestCase
 {
@@ -24,24 +24,24 @@ class TypeRegistryTest extends TestCase
   public function defaultTypes()
   {
     return array(
-      array('array', 'Typhoon\Type\ArrayType'),
-      array('boolean', 'Typhoon\Type\Boolean'),
-      array('callback', 'Typhoon\Type\Callback'),
-      array('float', 'Typhoon\Type\Float'),
-      array('integer', 'Typhoon\Type\Integer'),
-      array('mixed', 'Typhoon\Type\Mixed'),
-      array('null', 'Typhoon\Type\Null'),
-      array('object', 'Typhoon\Type\Object'),
-      array('resource', 'Typhoon\Type\Resource'),
-      array('string', 'Typhoon\Type\String'),
-      array('traversable', 'Typhoon\Type\Traversable'),
+      array('array', 'Ezzatron\Typhoon\Type\ArrayType'),
+      array('boolean', 'Ezzatron\Typhoon\Type\Boolean'),
+      array('callback', 'Ezzatron\Typhoon\Type\Callback'),
+      array('float', 'Ezzatron\Typhoon\Type\Float'),
+      array('integer', 'Ezzatron\Typhoon\Type\Integer'),
+      array('mixed', 'Ezzatron\Typhoon\Type\Mixed'),
+      array('null', 'Ezzatron\Typhoon\Type\Null'),
+      array('object', 'Ezzatron\Typhoon\Type\Object'),
+      array('resource', 'Ezzatron\Typhoon\Type\Resource'),
+      array('string', 'Ezzatron\Typhoon\Type\String'),
+      array('traversable', 'Ezzatron\Typhoon\Type\Traversable'),
 
-      array('bool', 'Typhoon\Type\Boolean', true),
-      array('callable', 'Typhoon\Type\Callback', true),
-      array('double', 'Typhoon\Type\Float', true),
-      array('int', 'Typhoon\Type\Integer', true),
-      array('long', 'Typhoon\Type\Integer', true),
-      array('real', 'Typhoon\Type\Float', true),
+      array('bool', 'Ezzatron\Typhoon\Type\Boolean', true),
+      array('callable', 'Ezzatron\Typhoon\Type\Callback', true),
+      array('double', 'Ezzatron\Typhoon\Type\Float', true),
+      array('int', 'Ezzatron\Typhoon\Type\Integer', true),
+      array('long', 'Ezzatron\Typhoon\Type\Integer', true),
+      array('real', 'Ezzatron\Typhoon\Type\Float', true),
     );
   }
 
@@ -68,11 +68,11 @@ class TypeRegistryTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\TypeRegistry::__construct
+   * @covers Ezzatron\Typhoon\TypeRegistry::__construct
    */
   public function testConstructor()
   {
-    $registry = Phake::partialMock('Typhoon\TypeRegistry');
+    $registry = Phake::partialMock('Ezzatron\Typhoon\TypeRegistry');
     
     Phake::verify($registry)->registerDefaults();
   
@@ -80,7 +80,7 @@ class TypeRegistryTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\TypeRegistry::registerDefaults
+   * @covers Ezzatron\Typhoon\TypeRegistry::registerDefaults
    * @dataProvider defaultTypes
    */
   public function testRegisterDefaults($alias, $type, $is_alias = null)
@@ -90,7 +90,7 @@ class TypeRegistryTest extends TestCase
       $is_alias = false;
     }
 
-    $registry = Phake::mock('Typhoon\TypeRegistry', Phake::ifUnstubbed()->thenCallParent());
+    $registry = Phake::mock('Ezzatron\Typhoon\TypeRegistry', Phake::ifUnstubbed()->thenCallParent());
 
     $caught = false;
     try
@@ -125,8 +125,8 @@ class TypeRegistryTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\TypeRegistry::alias
-   * @covers Typhoon\TypeRegistry::indexAliases
+   * @covers Ezzatron\Typhoon\TypeRegistry::alias
+   * @covers Ezzatron\Typhoon\TypeRegistry::indexAliases
    */
   public function testAlias()
   {
@@ -157,7 +157,7 @@ class TypeRegistryTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\TypeRegistry::alias
+   * @covers Ezzatron\Typhoon\TypeRegistry::alias
    */
   public function testAliasFailure()
   {
@@ -166,9 +166,9 @@ class TypeRegistryTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\TypeRegistry::offsetExists
-   * @covers Typhoon\TypeRegistry::offsetSet
-   * @covers Typhoon\TypeRegistry::offsetGet
+   * @covers Ezzatron\Typhoon\TypeRegistry::offsetExists
+   * @covers Ezzatron\Typhoon\TypeRegistry::offsetSet
+   * @covers Ezzatron\Typhoon\TypeRegistry::offsetGet
    */
   public function testArrayAccess()
   {
@@ -192,7 +192,7 @@ class TypeRegistryTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\TypeRegistry::offsetGet
+   * @covers Ezzatron\Typhoon\TypeRegistry::offsetGet
    */
   public function testOffsetGetFailure()
   {
@@ -201,7 +201,7 @@ class TypeRegistryTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\TypeRegistry::offsetUnset
+   * @covers Ezzatron\Typhoon\TypeRegistry::offsetUnset
    */
   public function testOffsetUnsetFailure()
   {
@@ -210,9 +210,9 @@ class TypeRegistryTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\TypeRegistry::offsetExists
-   * @covers Typhoon\TypeRegistry::offsetSet
-   * @covers Typhoon\TypeRegistry::offsetGet
+   * @covers Ezzatron\Typhoon\TypeRegistry::offsetExists
+   * @covers Ezzatron\Typhoon\TypeRegistry::offsetSet
+   * @covers Ezzatron\Typhoon\TypeRegistry::offsetGet
    * @dataProvider unexpectedArgumentData
    */
   public function testUnexpectedArgumentFailure($method, array $arguments)

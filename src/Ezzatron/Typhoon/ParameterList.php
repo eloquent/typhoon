@@ -9,20 +9,20 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon;
+namespace Ezzatron\Typhoon;
 
 use ArrayAccess;
 use ArrayIterator;
 use Countable;
 use IteratorAggregate;
-use Typhoon\Assertion\Exception\UnexpectedArgument;
-use Typhoon\Exception\NotImplemented;
-use Typhoon\ParameterList\Exception\UndefinedParameter;
-use Typhoon\Primitive\Boolean;
-use Typhoon\Primitive\Integer;
-use Typhoon\Primitive\Null;
-use Typhoon\Primitive\String;
-use Typhoon\Type\Object as ObjectType;
+use Ezzatron\Typhoon\Assertion\Exception\UnexpectedArgument;
+use Ezzatron\Typhoon\Exception\NotImplemented;
+use Ezzatron\Typhoon\ParameterList\Exception\UndefinedParameter;
+use Ezzatron\Typhoon\Primitive\Boolean;
+use Ezzatron\Typhoon\Primitive\Integer;
+use Ezzatron\Typhoon\Primitive\Null;
+use Ezzatron\Typhoon\Primitive\String;
+use Ezzatron\Typhoon\Type\Object as ObjectType;
 
 class ParameterList implements ArrayAccess, Countable, IteratorAggregate
 {

@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon;
+namespace Ezzatron\Typhoon;
 
 use Phake;
-use Typhoon\Test\TestCase;
+use Ezzatron\Typhoon\Test\TestCase;
 
 class AndTypeTest extends TestCase
 {
@@ -24,8 +24,8 @@ class AndTypeTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\BaseCompositeType::addTyphoonType
-   * @covers Typhoon\AndType::typhoonCheck
+   * @covers Ezzatron\Typhoon\BaseCompositeType::addTyphoonType
+   * @covers Ezzatron\Typhoon\AndType::typhoonCheck
    */
   public function testAddCheckBothValid()
   {
@@ -41,8 +41,8 @@ class AndTypeTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\BaseCompositeType::addTyphoonType
-   * @covers Typhoon\AndType::typhoonCheck
+   * @covers Ezzatron\Typhoon\BaseCompositeType::addTyphoonType
+   * @covers Ezzatron\Typhoon\AndType::typhoonCheck
    */
   public function testAddCheckFirstValid()
   {
@@ -58,8 +58,8 @@ class AndTypeTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\BaseCompositeType::addTyphoonType
-   * @covers Typhoon\AndType::typhoonCheck
+   * @covers Ezzatron\Typhoon\BaseCompositeType::addTyphoonType
+   * @covers Ezzatron\Typhoon\AndType::typhoonCheck
    */
   public function testAddCheckNeitherValid()
   {
@@ -74,7 +74,7 @@ class AndTypeTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\AndType
+   * @covers Ezzatron\Typhoon\AndType
    */
   public function testImplementsType()
   {

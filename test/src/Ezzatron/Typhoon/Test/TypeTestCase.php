@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Test;
+namespace Ezzatron\Typhoon\Test;
 
 abstract class TypeTestCase extends TestCase
 {

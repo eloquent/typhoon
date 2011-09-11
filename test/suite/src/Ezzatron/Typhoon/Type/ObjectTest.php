@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Type;
+namespace Ezzatron\Typhoon\Type;
 
 use ReflectionClass;
 use stdClass;
-use Typhoon\AttributeSignature;
-use Typhoon\Test\TypeTestCase;
-use Typhoon\Type\String as StringType;
+use Ezzatron\Typhoon\AttributeSignature;
+use Ezzatron\Typhoon\Test\TypeTestCase;
+use Ezzatron\Typhoon\Type\String as StringType;
 
 class ObjectTest extends TypeTestCase
 {
@@ -61,7 +61,7 @@ class ObjectTest extends TypeTestCase
   }
 
   /**
-   * @covers Typhoon\Type\Object::attributeSignature
+   * @covers Ezzatron\Typhoon\Type\Object::attributeSignature
    */
   public function testAttributeSignature()
   {
@@ -80,7 +80,7 @@ class ObjectTest extends TypeTestCase
   }
 
   /**
-   * @covers Typhoon\Type\Object::typhoonAttributes
+   * @covers Ezzatron\Typhoon\Type\Object::typhoonAttributes
    */
   public function testSetTyphoonAttribute()
   {
@@ -91,19 +91,19 @@ class ObjectTest extends TypeTestCase
   }
 
   /**
-   * @covers Typhoon\Type\Object::typhoonAttributes
+   * @covers Ezzatron\Typhoon\Type\Object::typhoonAttributes
    */
   public function testSetTyphoonAttributeFailure()
   {
     $type = $this->typeFixture();
-    $this->setExpectedException('Typhoon\Assertion\Exception\UnexpectedType');
+    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnexpectedType');
     $type->typhoonAttributes()->set(Object::ATTRIBUTE_INSTANCE_OF, 1);
   }
 
   // methods below must be manually overridden to implement @covers
   
   /**
-   * @covers Typhoon\Type\Object::typhoonCheck
+   * @covers Ezzatron\Typhoon\Type\Object::typhoonCheck
    * @dataProvider typeValues
    * @group typhoon_types
    */

@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Primitive;
+namespace Ezzatron\Typhoon\Primitive;
 
-use Typhoon\Primitive;
-use Typhoon\Type\Null as NullType;
+use Ezzatron\Typhoon\Primitive;
+use Ezzatron\Typhoon\Type\Null as NullType;
 
 final class Null extends Primitive
 {

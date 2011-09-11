@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon;
+namespace Ezzatron\Typhoon;
 
-use Typhoon\Primitive\Boolean;
-use Typhoon\Primitive\String;
-use Typhoon\Type\Mixed as MixedType;
+use Ezzatron\Typhoon\Primitive\Boolean;
+use Ezzatron\Typhoon\Primitive\String;
+use Ezzatron\Typhoon\Type\Mixed as MixedType;
 
 class Parameter
 {

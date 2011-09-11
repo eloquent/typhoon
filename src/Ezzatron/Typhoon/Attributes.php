@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon;
+namespace Ezzatron\Typhoon;
 
-use Typhoon\Attributes\Exception\UnsupportedAttribute;
-use Typhoon\Primitive\String;
-use Typhoon\Type\String as StringType;
+use Ezzatron\Typhoon\Attributes\Exception\UnsupportedAttribute;
+use Ezzatron\Typhoon\Primitive\String;
+use Ezzatron\Typhoon\Type\String as StringType;
 
 class Attributes extends Collection
 {

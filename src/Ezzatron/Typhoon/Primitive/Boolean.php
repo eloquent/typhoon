@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Primitive;
+namespace Ezzatron\Typhoon\Primitive;
 
-use Typhoon\Primitive;
-use Typhoon\Type\Boolean as BooleanType;
+use Ezzatron\Typhoon\Primitive;
+use Ezzatron\Typhoon\Type\Boolean as BooleanType;
 
 final class Boolean extends Primitive
 {

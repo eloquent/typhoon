@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Type;
+namespace Ezzatron\Typhoon\Type;
 
 use Phake;
 use stdClass;
-use Typhoon\Test\TypeTestCase;
+use Ezzatron\Typhoon\Test\TypeTestCase;
 
 class TyphoonTypeTest extends TypeTestCase
 {
@@ -33,7 +33,7 @@ class TyphoonTypeTest extends TypeTestCase
       array(false, function(){}),                // #7: closure
       array(false, $this->resourceFixture()),    // #8: resource
 
-      array(true,  Phake::mock('Typhoon\Type'))  // #9: typhoon type
+      array(true,  Phake::mock('Ezzatron\Typhoon\Type'))  // #9: typhoon type
     );
   }
 
@@ -48,7 +48,7 @@ class TyphoonTypeTest extends TypeTestCase
   // methods below must be manually overridden to implement @covers
 
   /**
-   * @covers Typhoon\Type\TyphoonType::typhoonCheck
+   * @covers Ezzatron\Typhoon\Type\TyphoonType::typhoonCheck
    * @dataProvider typeValues
    * @group typhoon_types
    */

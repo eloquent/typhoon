@@ -10,12 +10,13 @@
 -->
 
 <phpunit
-  bootstrap="../lib/bootstrap.php"
+  bootstrap="../src/bootstrap.php"
   strict="true"
   forceCoversAnnotation="true"
   convertErrorsToExceptions="true"
   convertNoticesToExceptions="true"
   convertWarningsToExceptions="true"
+  verbose="true"
 >
   <testsuites>
     <testsuite>
@@ -66,7 +67,7 @@
   
   <filter>
     <whitelist>
-      <directory>../../deploy</directory>
+      <directory>../../src</directory>
     </whitelist>
   </filter>
 </phpunit>

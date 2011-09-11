@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Type;
+namespace Ezzatron\Typhoon\Type;
 
-use Typhoon\BaseTraversableType;
+use Ezzatron\Typhoon\BaseTraversableType;
 
 class ArrayType extends BaseTraversableType
 {

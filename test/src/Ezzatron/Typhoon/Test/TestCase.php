@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Test;
+namespace Ezzatron\Typhoon\Test;
 
 use PHPUnit_Framework_TestCase;
-use Typhoon;
+use Ezzatron\Typhoon\Typhoon;
 
 class TestCase extends PHPUnit_Framework_TestCase
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Typhoon\Type;
+namespace Ezzatron\Typhoon\Type;
 
-use Typhoon\Primitive\Callback as CallbackPrimitive;
-use Typhoon\Type;
+use Ezzatron\Typhoon\Primitive\Callback as CallbackPrimitive;
+use Ezzatron\Typhoon\Type;
 
 class CallbackWrapper implements Type
 {

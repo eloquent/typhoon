@@ -9,11 +9,13 @@
  * file that was distributed with this source code.
  */
 
-use Typhoon\Assertion\Type as TypeAssertion;
-use Typhoon\Renderer\Type as TypeRenderer;
-use Typhoon\Renderer\Type\Typhax;
-use Typhoon\TypeInspector;
-use Typhoon\TypeRegistry;
+namespace Ezzatron\Typhoon;
+
+use Ezzatron\Typhoon\Assertion\Type as TypeAssertion;
+use Ezzatron\Typhoon\Renderer\Type as TypeRenderer;
+use Ezzatron\Typhoon\Renderer\Type\Typhax;
+use Ezzatron\Typhoon\TypeInspector;
+use Ezzatron\Typhoon\TypeRegistry;
 
 class Typhoon
 {

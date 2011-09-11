@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Assertion\Exception;
+namespace Ezzatron\Typhoon\Assertion\Exception;
 
-use Typhoon;
-use Typhoon\Primitive\String;
-use Typhoon\Test\ExceptionTestCase;
+use Ezzatron\Typhoon\Typhoon;
+use Ezzatron\Typhoon\Primitive\String;
+use Ezzatron\Typhoon\Test\ExceptionTestCase;
 
 class UnexpectedTypeTest extends ExceptionTestCase
 {
@@ -42,7 +42,7 @@ class UnexpectedTypeTest extends ExceptionTestCase
   }
 
   /**
-   * @covers Typhoon\Assertion\Exception\UnexpectedType::__construct
+   * @covers Ezzatron\Typhoon\Assertion\Exception\UnexpectedType::__construct
    */
   public function testConstructor()
   {

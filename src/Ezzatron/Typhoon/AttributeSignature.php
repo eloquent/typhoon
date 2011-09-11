@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon;
+namespace Ezzatron\Typhoon;
 
-use Typhoon\Type\String as StringType;
-use Typhoon\Type\TyphoonType;
+use Ezzatron\Typhoon\Type\String as StringType;
+use Ezzatron\Typhoon\Type\TyphoonType;
 
 class AttributeSignature extends Collection
 {

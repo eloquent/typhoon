@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Type;
+namespace Ezzatron\Typhoon\Type;
 
-use Typhoon\AttributeSignature;
-use Typhoon\BaseDynamicType;
-use Typhoon\Type\String as StringType;
+use Ezzatron\Typhoon\AttributeSignature;
+use Ezzatron\Typhoon\BaseDynamicType;
+use Ezzatron\Typhoon\Type\String as StringType;
 
 class Object extends BaseDynamicType
 {

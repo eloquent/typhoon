@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\ParameterList\Exception;
+namespace Ezzatron\Typhoon\ParameterList\Exception;
 
-use Typhoon\Primitive\Integer;
-use Typhoon\Test\ExceptionTestCase;
+use Ezzatron\Typhoon\Primitive\Integer;
+use Ezzatron\Typhoon\Test\ExceptionTestCase;
 
 class UndefinedParameterTest extends ExceptionTestCase
 {
@@ -40,7 +40,7 @@ class UndefinedParameterTest extends ExceptionTestCase
   }
 
   /**
-   * @covers Typhoon\ParameterList\Exception\UndefinedParameter::__construct
+   * @covers Ezzatron\Typhoon\ParameterList\Exception\UndefinedParameter::__construct
    */
   public function testConstructor()
   {

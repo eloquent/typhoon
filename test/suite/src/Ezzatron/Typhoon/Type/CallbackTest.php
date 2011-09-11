@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Type;
+namespace Ezzatron\Typhoon\Type;
 
 use stdClass;
-use Typhoon\Test\TypeTestCase;
+use Ezzatron\Typhoon\Test\TypeTestCase;
 
 class CallbackTest extends TypeTestCase
 {
@@ -32,10 +32,10 @@ class CallbackTest extends TypeTestCase
       array(true,  function(){}),                  // #7: closure
       array(false, $this->resourceFixture()),      // #8: resource
 
-      array(true,  'strtolower'),                  // #9: function name
-      array(true,  array($this, 'typeValues')),    // #10: method name
-      array(true,  array('Typhoon', 'instance')),  // #10: static method name
-      array(true,  'Typhoon::instance'),           // #11: static method name
+      array(true,  'strtolower'),                                   // #9: function name
+      array(true,  array($this, 'typeValues')),                     // #10: method name
+      array(true,  array('Ezzatron\Typhoon\Typhoon', 'instance')),  // #10: static method name
+      array(true,  'Ezzatron\Typhoon\Typhoon::instance'),           // #11: static method name
     );
   }
 
@@ -50,7 +50,7 @@ class CallbackTest extends TypeTestCase
   // methods below must be manually overridden to implement @covers
 
   /**
-   * @covers Typhoon\Type\Callback::typhoonCheck
+   * @covers Ezzatron\Typhoon\Type\Callback::typhoonCheck
    * @dataProvider typeValues
    * @group typhoon_types
    */

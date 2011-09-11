@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Renderer;
+namespace Ezzatron\Typhoon\Renderer;
 
 use Phake;
-use Typhoon;
-use Typhoon\Test\TestCase;
-use Typhoon\TypeRegistry;
+use Ezzatron\Typhoon\Typhoon;
+use Ezzatron\Typhoon\Test\TestCase;
+use Ezzatron\Typhoon\TypeRegistry;
 
 class TypeTest extends TestCase
 {
@@ -27,8 +27,8 @@ class TypeTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\Renderer\Type::setTypeRegistry
-   * @covers Typhoon\Renderer\Type::typeRegistry
+   * @covers Ezzatron\Typhoon\Renderer\Type::setTypeRegistry
+   * @covers Ezzatron\Typhoon\Renderer\Type::typeRegistry
    */
   public function testTypeRegistry()
   {

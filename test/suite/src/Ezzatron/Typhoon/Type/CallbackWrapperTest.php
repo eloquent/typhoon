@@ -9,15 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Type;
+namespace Ezzatron\Typhoon\Type;
 
-use Typhoon\Primitive\Callback as CallbackPrimitive;
-use Typhoon\Test\TestCase;
+use Ezzatron\Typhoon\Primitive\Callback as CallbackPrimitive;
+use Ezzatron\Typhoon\Test\TestCase;
 
 class CallbackWrapperTest extends TestCase
 {
   /**
-   * @covers Typhoon\Type\CallbackWrapper::typhoonCheck
+   * @covers Ezzatron\Typhoon\Type\CallbackWrapper::typhoonCheck
    */
   public function testTyphoonCheck()
   {
@@ -42,8 +42,8 @@ class CallbackWrapperTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\Type\CallbackWrapper::setCallback
-   * @covers Typhoon\Type\CallbackWrapper::callback
+   * @covers Ezzatron\Typhoon\Type\CallbackWrapper::setCallback
+   * @covers Ezzatron\Typhoon\Type\CallbackWrapper::callback
    */
   public function testCallback()
   {
@@ -59,8 +59,8 @@ class CallbackWrapperTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\Type\CallbackWrapper::setArguments
-   * @covers Typhoon\Type\CallbackWrapper::arguments
+   * @covers Ezzatron\Typhoon\Type\CallbackWrapper::setArguments
+   * @covers Ezzatron\Typhoon\Type\CallbackWrapper::arguments
    */
   public function testArguments()
   {

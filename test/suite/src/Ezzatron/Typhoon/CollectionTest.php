@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon;
+namespace Ezzatron\Typhoon;
 
 use Phake;
-use Typhoon\Test\TestCase;
-use Typhoon\Type\Null as NullType;
+use Ezzatron\Typhoon\Test\TestCase;
+use Ezzatron\Typhoon\Type\Null as NullType;
 
 class CollectionTest extends TestCase
 {
@@ -36,7 +36,7 @@ class CollectionTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\Collection
+   * @covers Ezzatron\Typhoon\Collection
    */
   public function testCollection()
   {
@@ -79,38 +79,38 @@ class CollectionTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\Collection
+   * @covers Ezzatron\Typhoon\Collection
    * @dataProvider undefinedKeyTriggers
    */
   public function testUndefinedKeyFailure($method)
   {
-    $this->setExpectedException('Typhoon\Collection\Exception\UndefinedKey');
+    $this->setExpectedException('Ezzatron\Typhoon\Collection\Exception\UndefinedKey');
     $this->_collection->$method('foo');
   }
 
   /**
-   * @covers Typhoon\Collection
+   * @covers Ezzatron\Typhoon\Collection
    */
   public function testInvalidKeyTypeFailure()
   {
-    $this->setExpectedException('Typhoon\Assertion\Exception\UnexpectedType');
+    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnexpectedType');
     $this->_collection[.1] = 'foo';
   }
 
   /**
-   * @covers Typhoon\Collection
+   * @covers Ezzatron\Typhoon\Collection
    */
   public function testInvalidValueTypeFailure()
   {
     $collection = Phake::partialMock(__NAMESPACE__.'\Collection');
     Phake::when($collection)->valueType('foo')->thenReturn(new NullType);
 
-    $this->setExpectedException('Typhoon\Assertion\Exception\UnexpectedType');
+    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnexpectedType');
     $collection['foo'] = 'bar';
   }
 
   /**
-   * @covers Typhoon\Collection
+   * @covers Ezzatron\Typhoon\Collection
    */
   public function testImplements()
   {

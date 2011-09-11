@@ -9,22 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon;
+namespace Ezzatron\Typhoon;
 
 use Phake;
 use stdClass;
-use Typhoon;
-use Typhoon\Test\TestCase;
-use Typhoon\Type\ArrayType;
-use Typhoon\Type\Boolean;
-use Typhoon\Type\Float;
-use Typhoon\Type\Integer;
-use Typhoon\Type\Mixed;
-use Typhoon\Type\Null;
-use Typhoon\Type\Object;
-use Typhoon\Type\String;
-use Typhoon\Type\Resource;
-use Typhoon\Type\Traversable;
+use Ezzatron\Typhoon\Test\TestCase;
+use Ezzatron\Typhoon\Type\ArrayType;
+use Ezzatron\Typhoon\Type\Boolean;
+use Ezzatron\Typhoon\Type\Float;
+use Ezzatron\Typhoon\Type\Integer;
+use Ezzatron\Typhoon\Type\Mixed;
+use Ezzatron\Typhoon\Type\Null;
+use Ezzatron\Typhoon\Type\Object;
+use Ezzatron\Typhoon\Type\String;
+use Ezzatron\Typhoon\Type\Resource;
+use Ezzatron\Typhoon\Type\Traversable;
 
 class TypeInspectorTest extends TestCase
 {
@@ -67,7 +66,7 @@ class TypeInspectorTest extends TestCase
     // #10: Object (Typhoon)
     $value = Typhoon::instance();
     $expected = new Object;
-    $expected->typhoonAttributes()->set(Object::ATTRIBUTE_INSTANCE_OF, 'Typhoon');
+    $expected->typhoonAttributes()->set(Object::ATTRIBUTE_INSTANCE_OF, 'Ezzatron\Typhoon\Typhoon');
     $data[] = array($value, $expected);
 
     return $data;
@@ -79,7 +78,7 @@ class TypeInspectorTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\TypeInspector::typeOf
+   * @covers Ezzatron\Typhoon\TypeInspector::typeOf
    * @dataProvider typeOfData
    */
   public function testTypeOf($value, $expected)

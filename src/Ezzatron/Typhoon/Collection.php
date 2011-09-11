@@ -9,23 +9,22 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon;
+namespace Ezzatron\Typhoon;
 
 use ArrayAccess;
 use ArrayIterator;
 use Countable;
 use IteratorAggregate;
-use Typhoon;
-use Typhoon\Assertion\Type as TypeAssertion;
-use Typhoon\Collection\Exception\UndefinedKey;
-use Typhoon\OrType;
-use Typhoon\Primitive\Boolean;
-use Typhoon\Primitive\String;
-use Typhoon\Type\Boolean as BooleanType;
-use Typhoon\Type\Integer as IntegerType;
-use Typhoon\Type\Mixed as MixedType;
-use Typhoon\Type\Null as NullType;
-use Typhoon\Type\String as StringType;
+use Ezzatron\Typhoon\Assertion\Type as TypeAssertion;
+use Ezzatron\Typhoon\Collection\Exception\UndefinedKey;
+use Ezzatron\Typhoon\OrType;
+use Ezzatron\Typhoon\Primitive\Boolean;
+use Ezzatron\Typhoon\Primitive\String;
+use Ezzatron\Typhoon\Type\Boolean as BooleanType;
+use Ezzatron\Typhoon\Type\Integer as IntegerType;
+use Ezzatron\Typhoon\Type\Mixed as MixedType;
+use Ezzatron\Typhoon\Type\Null as NullType;
+use Ezzatron\Typhoon\Type\String as StringType;
 
 class Collection implements ArrayAccess, Countable, IteratorAggregate
 {

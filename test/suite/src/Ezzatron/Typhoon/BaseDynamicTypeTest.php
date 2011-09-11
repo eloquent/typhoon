@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon;
+namespace Ezzatron\Typhoon;
 
 use Phake;
-use Typhoon\Test\TestCase;
+use Ezzatron\Typhoon\Test\TestCase;
 
 class BaseDynamicTypeTest extends TestCase
 {
@@ -24,7 +24,7 @@ class BaseDynamicTypeTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\BaseDynamicType::attributeSignature
+   * @covers Ezzatron\Typhoon\BaseDynamicType::attributeSignature
    */
   public function testAttributeSignature()
   {
@@ -32,7 +32,7 @@ class BaseDynamicTypeTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\BaseDynamicType::typhoonAttributes
+   * @covers Ezzatron\Typhoon\BaseDynamicType::typhoonAttributes
    */
   public function testTyphoonAttributes()
   {

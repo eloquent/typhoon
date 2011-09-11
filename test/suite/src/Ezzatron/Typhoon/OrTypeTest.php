@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon;
+namespace Ezzatron\Typhoon;
 
 use Phake;
-use Typhoon\Test\TestCase;
+use Ezzatron\Typhoon\Test\TestCase;
 
 class OrTypeTest extends TestCase
 {
@@ -24,8 +24,8 @@ class OrTypeTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\BaseCompositeType::addTyphoonType
-   * @covers Typhoon\OrType::typhoonCheck
+   * @covers Ezzatron\Typhoon\BaseCompositeType::addTyphoonType
+   * @covers Ezzatron\Typhoon\OrType::typhoonCheck
    */
   public function testAddCheckFirstValid()
   {
@@ -40,8 +40,8 @@ class OrTypeTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\BaseCompositeType::addTyphoonType
-   * @covers Typhoon\OrType::typhoonCheck
+   * @covers Ezzatron\Typhoon\BaseCompositeType::addTyphoonType
+   * @covers Ezzatron\Typhoon\OrType::typhoonCheck
    */
   public function testAddCheckSecondValid()
   {
@@ -57,8 +57,8 @@ class OrTypeTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\BaseCompositeType::addTyphoonType
-   * @covers Typhoon\OrType::typhoonCheck
+   * @covers Ezzatron\Typhoon\BaseCompositeType::addTyphoonType
+   * @covers Ezzatron\Typhoon\OrType::typhoonCheck
    */
   public function testAddCheckNeitherValid()
   {
@@ -74,7 +74,7 @@ class OrTypeTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\OrType
+   * @covers Ezzatron\Typhoon\OrType
    */
   public function testImplementsType()
   {

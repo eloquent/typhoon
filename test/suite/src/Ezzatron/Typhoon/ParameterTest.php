@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon;
+namespace Ezzatron\Typhoon;
 
 use Phake;
-use Typhoon\Primitive\Boolean;
-use Typhoon\Primitive\String;
-use Typhoon\Test\TestCase;
-use Typhoon\Type\Mixed as MixedType;
+use Ezzatron\Typhoon\Primitive\Boolean;
+use Ezzatron\Typhoon\Primitive\String;
+use Ezzatron\Typhoon\Test\TestCase;
+use Ezzatron\Typhoon\Type\Mixed as MixedType;
 
 class ParameterTest extends TestCase
 {
@@ -28,9 +28,9 @@ class ParameterTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\Parameter::__construct
-   * @covers Typhoon\Parameter::setType
-   * @covers Typhoon\Parameter::type
+   * @covers Ezzatron\Typhoon\Parameter::__construct
+   * @covers Ezzatron\Typhoon\Parameter::setType
+   * @covers Ezzatron\Typhoon\Parameter::type
    */
   public function testType()
   {
@@ -42,8 +42,8 @@ class ParameterTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\Parameter::setOptional
-   * @covers Typhoon\Parameter::optional
+   * @covers Ezzatron\Typhoon\Parameter::setOptional
+   * @covers Ezzatron\Typhoon\Parameter::optional
    */
   public function testOptional()
   {
@@ -55,8 +55,8 @@ class ParameterTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\Parameter::setName
-   * @covers Typhoon\Parameter::name
+   * @covers Ezzatron\Typhoon\Parameter::setName
+   * @covers Ezzatron\Typhoon\Parameter::name
    */
   public function testName()
   {
@@ -69,8 +69,8 @@ class ParameterTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\Parameter::setDescription
-   * @covers Typhoon\Parameter::description
+   * @covers Ezzatron\Typhoon\Parameter::setDescription
+   * @covers Ezzatron\Typhoon\Parameter::description
    */
   public function testDescription()
   {

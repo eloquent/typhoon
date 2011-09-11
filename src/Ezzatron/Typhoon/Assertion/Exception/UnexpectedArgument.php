@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Assertion\Exception;
+namespace Ezzatron\Typhoon\Assertion\Exception;
 
 use Exception as NativeException;
-use Typhoon;
-use Typhoon\Parameter;
-use Typhoon\Primitive\Integer;
-use Typhoon\Primitive\String;
+use Ezzatron\Typhoon\Typhoon;
+use Ezzatron\Typhoon\Parameter;
+use Ezzatron\Typhoon\Primitive\Integer;
+use Ezzatron\Typhoon\Primitive\String;
 
 class UnexpectedArgument extends Exception
 {

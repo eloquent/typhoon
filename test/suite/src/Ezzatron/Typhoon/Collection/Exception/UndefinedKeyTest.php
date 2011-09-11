@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Collection\Exception;
+namespace Ezzatron\Typhoon\Collection\Exception;
 
-use Typhoon\Primitive\String;
-use Typhoon\Test\ExceptionTestCase;
+use Ezzatron\Typhoon\Primitive\String;
+use Ezzatron\Typhoon\Test\ExceptionTestCase;
 
 class UndefinedKeyTest extends ExceptionTestCase
 {
@@ -40,7 +40,7 @@ class UndefinedKeyTest extends ExceptionTestCase
   }
 
   /**
-   * @covers Typhoon\Collection\Exception\UndefinedKey::__construct
+   * @covers Ezzatron\Typhoon\Collection\Exception\UndefinedKey::__construct
    */
   public function testConstructor()
   {

@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon;
+namespace Ezzatron\Typhoon;
 
 use ArrayAccess;
-use Typhoon\Exception\NotImplemented;
-use Typhoon\Primitive\Integer;
-use Typhoon\Primitive\String;
-use Typhoon\TypeRegistry\Exception\UnregisteredType;
-use Typhoon\TypeRegistry\Exception\UnregisteredTypeAlias;
+use Ezzatron\Typhoon\Exception\NotImplemented;
+use Ezzatron\Typhoon\Primitive\Integer;
+use Ezzatron\Typhoon\Primitive\String;
+use Ezzatron\Typhoon\TypeRegistry\Exception\UnregisteredType;
+use Ezzatron\Typhoon\TypeRegistry\Exception\UnregisteredTypeAlias;
 
 class TypeRegistry implements ArrayAccess
 {

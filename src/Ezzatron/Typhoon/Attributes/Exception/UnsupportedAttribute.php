@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Attributes\Exception;
+namespace Ezzatron\Typhoon\Attributes\Exception;
 
 use Exception as NativeException;
-use Typhoon\Primitive\String;
+use Ezzatron\Typhoon\Primitive\String;
 
 class UnsupportedAttribute extends Exception
 {

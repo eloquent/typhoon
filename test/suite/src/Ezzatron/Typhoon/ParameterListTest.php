@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon;
+namespace Ezzatron\Typhoon;
 
-use Typhoon\Primitive\Boolean;
-use Typhoon\Test\TestCase;
+use Ezzatron\Typhoon\Primitive\Boolean;
+use Ezzatron\Typhoon\Test\TestCase;
 
 class ParameterListTest extends TestCase
 {
@@ -38,8 +38,8 @@ class ParameterListTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\ParameterList::setVariableLength
-   * @covers Typhoon\ParameterList::variableLength
+   * @covers Ezzatron\Typhoon\ParameterList::setVariableLength
+   * @covers Ezzatron\Typhoon\ParameterList::variableLength
    */
   public function testVariableLength()
   {
@@ -51,9 +51,9 @@ class ParameterListTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\ParameterList::offsetExists
-   * @covers Typhoon\ParameterList::offsetSet
-   * @covers Typhoon\ParameterList::offsetGet
+   * @covers Ezzatron\Typhoon\ParameterList::offsetExists
+   * @covers Ezzatron\Typhoon\ParameterList::offsetSet
+   * @covers Ezzatron\Typhoon\ParameterList::offsetGet
    */
   public function testArrayAccess()
   {
@@ -73,7 +73,7 @@ class ParameterListTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\ParameterList::offsetGet
+   * @covers Ezzatron\Typhoon\ParameterList::offsetGet
    */
   public function testOffsetGetFailure()
   {
@@ -82,7 +82,7 @@ class ParameterListTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\ParameterList::offsetUnset
+   * @covers Ezzatron\Typhoon\ParameterList::offsetUnset
    */
   public function testOffsetUnsetFailure()
   {
@@ -91,9 +91,9 @@ class ParameterListTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\ParameterList::offsetExists
-   * @covers Typhoon\ParameterList::offsetSet
-   * @covers Typhoon\ParameterList::offsetGet
+   * @covers Ezzatron\Typhoon\ParameterList::offsetExists
+   * @covers Ezzatron\Typhoon\ParameterList::offsetSet
+   * @covers Ezzatron\Typhoon\ParameterList::offsetGet
    * @dataProvider unexpectedArgumentData
    */
   public function testUnexpectedArgumentFailure($method, array $arguments)
@@ -103,8 +103,8 @@ class ParameterListTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\ParameterList::offsetSet
-   * @covers Typhoon\ParameterList::getIterator
+   * @covers Ezzatron\Typhoon\ParameterList::offsetSet
+   * @covers Ezzatron\Typhoon\ParameterList::getIterator
    */
   public function testOffsetSetAndGetIterator()
   {
@@ -135,7 +135,7 @@ class ParameterListTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\ParameterList
+   * @covers Ezzatron\Typhoon\ParameterList
    */
   public function testTraversable()
   {
@@ -143,7 +143,7 @@ class ParameterListTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\ParameterList::count
+   * @covers Ezzatron\Typhoon\ParameterList::count
    */
   public function testCount()
   {
@@ -159,7 +159,7 @@ class ParameterListTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\ParameterList
+   * @covers Ezzatron\Typhoon\ParameterList
    */
   public function testCountable()
   {

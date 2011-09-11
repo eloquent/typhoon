@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Test;
+namespace Ezzatron\Typhoon\Test;
 
 use ReflectionClass;
-use Typhoon\Exception\Exception;
+use Ezzatron\Typhoon\Exception\Exception;
 
 abstract class ExceptionTestCase extends TestCase
 {

@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Primitive;
+namespace Ezzatron\Typhoon\Primitive;
 
-use Typhoon\Primitive;
-use Typhoon\Type\Integer as IntegerType;
+use Ezzatron\Typhoon\Primitive;
+use Ezzatron\Typhoon\Type\Integer as IntegerType;
 
 final class Integer extends Primitive
 {

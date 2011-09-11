@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon;
+namespace Ezzatron\Typhoon;
 
 use Phake;
-use Typhoon\Test\TestCase;
+use Ezzatron\Typhoon\Test\TestCase;
 
 class AttributeSignatureTest extends TestCase
 {
@@ -43,7 +43,7 @@ class AttributeSignatureTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\AttributeSignature
+   * @covers Ezzatron\Typhoon\AttributeSignature
    */
   public function testSignature()
   {
@@ -54,7 +54,7 @@ class AttributeSignatureTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\AttributeSignature
+   * @covers Ezzatron\Typhoon\AttributeSignature
    * @dataProvider typeFailureData
    */
   public function testTypeFailures($method)
@@ -62,7 +62,7 @@ class AttributeSignatureTest extends TestCase
     $arguments = func_get_args();
     array_shift($arguments);
 
-    $this->setExpectedException('Typhoon\Assertion\Exception\UnexpectedType');
+    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnexpectedType');
     call_user_func_array(array($this->_signature, $method), $arguments);
   }
   

@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\TypeRegistry\Exception;
+namespace Ezzatron\Typhoon\TypeRegistry\Exception;
 
 use Exception as NativeException;
-use Typhoon\Primitive\String;
+use Ezzatron\Typhoon\Primitive\String;
 
 class UnregisteredType extends Exception
 {

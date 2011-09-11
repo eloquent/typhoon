@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Renderer;
+namespace Ezzatron\Typhoon\Renderer;
 
-use Typhoon;
-use Typhoon\Type as TypeObject;
-use Typhoon\TypeRegistry;
+use Ezzatron\Typhoon\Typhoon;
+use Ezzatron\Typhoon\Type as TypeObject;
+use Ezzatron\Typhoon\TypeRegistry;
 
 abstract class Type
 {

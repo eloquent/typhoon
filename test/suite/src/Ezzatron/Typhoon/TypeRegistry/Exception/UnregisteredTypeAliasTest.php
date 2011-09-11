@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\TypeRegistry\Exception;
+namespace Ezzatron\Typhoon\TypeRegistry\Exception;
 
-use Typhoon\Primitive\String;
-use Typhoon\Test\ExceptionTestCase;
+use Ezzatron\Typhoon\Primitive\String;
+use Ezzatron\Typhoon\Test\ExceptionTestCase;
 
 class UnregisteredTypeAliasTest extends ExceptionTestCase
 {
@@ -40,7 +40,7 @@ class UnregisteredTypeAliasTest extends ExceptionTestCase
   }
 
   /**
-   * @covers Typhoon\TypeRegistry\Exception\UnregisteredTypeAlias::__construct
+   * @covers Ezzatron\Typhoon\TypeRegistry\Exception\UnregisteredTypeAlias::__construct
    */
   public function testConstructor()
   {

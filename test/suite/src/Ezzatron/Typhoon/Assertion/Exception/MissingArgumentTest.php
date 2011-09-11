@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Assertion\Exception;
+namespace Ezzatron\Typhoon\Assertion\Exception;
 
-use Typhoon\Parameter;
-use Typhoon\Primitive\Integer;
-use Typhoon\Primitive\String;
-use Typhoon\Test\ExceptionTestCase;
+use Ezzatron\Typhoon\Parameter;
+use Ezzatron\Typhoon\Primitive\Integer;
+use Ezzatron\Typhoon\Primitive\String;
+use Ezzatron\Typhoon\Test\ExceptionTestCase;
 
 class MissingArgumentTest extends ExceptionTestCase
 {
@@ -44,7 +44,7 @@ class MissingArgumentTest extends ExceptionTestCase
   }
 
   /**
-   * @covers Typhoon\Assertion\Exception\MissingArgument::__construct
+   * @covers Ezzatron\Typhoon\Assertion\Exception\MissingArgument::__construct
    */
   public function testConstructor()
   {

@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Renderer\Type;
+namespace Ezzatron\Typhoon\Renderer\Type;
 
-use Typhoon\DynamicType;
-use Typhoon\Primitive\String;
-use Typhoon\Renderer\Type as TypeRenderer;
-use Typhoon\Type as Type;
-use Typhoon\TypeRegistry\Exception\UnregisteredType;
+use Ezzatron\Typhoon\DynamicType;
+use Ezzatron\Typhoon\Primitive\String;
+use Ezzatron\Typhoon\Renderer\Type as TypeRenderer;
+use Ezzatron\Typhoon\Type as Type;
+use Ezzatron\Typhoon\TypeRegistry\Exception\UnregisteredType;
 
 class Typhax extends TypeRenderer
 {

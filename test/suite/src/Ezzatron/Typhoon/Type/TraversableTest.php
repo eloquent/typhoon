@@ -9,17 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Type;
+namespace Ezzatron\Typhoon\Type;
 
 use Phake;
 use ReflectionClass;
 use ReflectionObject;
 use stdClass;
-use Typhoon\AndType;
-use Typhoon\AttributeSignature;
-use Typhoon\OrType;
-use Typhoon\Test\TypeTestCase;
-use Typhoon\Type\String as StringType;
+use Ezzatron\Typhoon\AndType;
+use Ezzatron\Typhoon\AttributeSignature;
+use Ezzatron\Typhoon\OrType;
+use Ezzatron\Typhoon\Test\TypeTestCase;
+use Ezzatron\Typhoon\Type\String as StringType;
 
 class TraversableTest extends TypeTestCase
 {
@@ -63,7 +63,7 @@ class TraversableTest extends TypeTestCase
   }
 
   /**
-   * @covers Typhoon\Type\Traversable::attributeSignature
+   * @covers Ezzatron\Typhoon\Type\Traversable::attributeSignature
    */
   public function testAttributeSignature()
   {
@@ -82,7 +82,7 @@ class TraversableTest extends TypeTestCase
   }
 
   /**
-   * @covers Typhoon\Type\Traversable::typhoonAttributes
+   * @covers Ezzatron\Typhoon\Type\Traversable::typhoonAttributes
    */
   public function testSetTyphoonAttribute()
   {
@@ -93,17 +93,17 @@ class TraversableTest extends TypeTestCase
   }
 
   /**
-   * @covers Typhoon\Type\Traversable::typhoonAttributes
+   * @covers Ezzatron\Typhoon\Type\Traversable::typhoonAttributes
    */
   public function testSetTyphoonAttributeFailure()
   {
     $type = $this->typeFixture();
-    $this->setExpectedException('Typhoon\Assertion\Exception\UnexpectedType');
+    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnexpectedType');
     $type->typhoonAttributes()->set(Traversable::ATTRIBUTE_INSTANCE_OF, 1);
   }
 
   /**
-   * @covers Typhoon\Type\Traversable::primaryType
+   * @covers Ezzatron\Typhoon\Type\Traversable::primaryType
    */
   public function testPrimaryType()
   {
@@ -125,7 +125,7 @@ class TraversableTest extends TypeTestCase
   }
 
   /**
-   * @covers Typhoon\Type\Traversable::primaryType
+   * @covers Ezzatron\Typhoon\Type\Traversable::primaryType
    */
   public function testPrimaryTypeWithInstanceOf()
   {
@@ -152,7 +152,7 @@ class TraversableTest extends TypeTestCase
   // methods below must be manually overridden to implement @covers
 
   /**
-   * @covers Typhoon\Type\Traversable::checkPrimary
+   * @covers Ezzatron\Typhoon\Type\Traversable::checkPrimary
    * @dataProvider typeValues
    * @group typhoon_types
    */

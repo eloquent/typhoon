@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Type;
+namespace Ezzatron\Typhoon\Type;
 
 use stdClass;
-use Typhoon\Test\TypeTestCase;
+use Ezzatron\Typhoon\Test\TypeTestCase;
 
 class BooleanTest extends TypeTestCase
 {
@@ -45,7 +45,7 @@ class BooleanTest extends TypeTestCase
   // methods below must be manually overridden to implement @covers
 
   /**
-   * @covers Typhoon\Type\Boolean::typhoonCheck
+   * @covers Ezzatron\Typhoon\Type\Boolean::typhoonCheck
    * @dataProvider typeValues
    * @group typhoon_types
    */

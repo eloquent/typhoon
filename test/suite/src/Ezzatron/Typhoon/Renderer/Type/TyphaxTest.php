@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Renderer\Type;
+namespace Ezzatron\Typhoon\Renderer\Type;
 
 use Phake;
-use Typhoon\Test\TestCase;
-use Typhoon\Type as TypeObject;
-use Typhoon\TypeRegistry;
+use Ezzatron\Typhoon\Test\TestCase;
+use Ezzatron\Typhoon\Type as TypeObject;
+use Ezzatron\Typhoon\TypeRegistry;
 
 class TyphaxTest extends TestCase
 {
@@ -23,13 +23,13 @@ class TyphaxTest extends TestCase
     parent::setUp();
     
     $this->_renderer = new Typhax;
-    $this->_type = Phake::partialMock('Typhoon\Type');
+    $this->_type = Phake::partialMock('Ezzatron\Typhoon\Type');
     $this->_typeRegistry = new TypeRegistry;
   }
 
   /**
-   * @covers Typhoon\Renderer\Type\Typhax::render
-   * @covers Typhoon\Renderer\Type\Typhax::renderAlias
+   * @covers Ezzatron\Typhoon\Renderer\Type\Typhax::render
+   * @covers Ezzatron\Typhoon\Renderer\Type\Typhax::renderAlias
    */
   public function testRenderSimpleType()
   {
@@ -42,10 +42,10 @@ class TyphaxTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\Renderer\Type\Typhax::render
-   * @covers Typhoon\Renderer\Type\Typhax::renderAlias
-   * @covers Typhoon\Renderer\Type\Typhax::renderAttributes
-   * @covers Typhoon\Renderer\Type\Typhax::renderAttribute
+   * @covers Ezzatron\Typhoon\Renderer\Type\Typhax::render
+   * @covers Ezzatron\Typhoon\Renderer\Type\Typhax::renderAlias
+   * @covers Ezzatron\Typhoon\Renderer\Type\Typhax::renderAttributes
+   * @covers Ezzatron\Typhoon\Renderer\Type\Typhax::renderAttribute
    */
   public function testRenderDynamicType()
   {
@@ -56,7 +56,7 @@ class TyphaxTest extends TestCase
       'doom' => .1,
     );
 
-    $type = Phake::partialMock('Typhoon\DynamicType');
+    $type = Phake::partialMock('Ezzatron\Typhoon\DynamicType');
     Phake::when($type)->typhoonAttributes()->thenReturn($attributes);
 
     $this->_typeRegistry[$alias] = get_class($type);
@@ -68,16 +68,16 @@ class TyphaxTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\Renderer\Type\Typhax::render
-   * @covers Typhoon\Renderer\Type\Typhax::renderAlias
-   * @covers Typhoon\Renderer\Type\Typhax::renderAttributes
+   * @covers Ezzatron\Typhoon\Renderer\Type\Typhax::render
+   * @covers Ezzatron\Typhoon\Renderer\Type\Typhax::renderAlias
+   * @covers Ezzatron\Typhoon\Renderer\Type\Typhax::renderAttributes
    */
   public function testRenderDynamicTypeNoAttributes()
   {
     $alias = 'foo';
     $attributes = array();
 
-    $type = Phake::partialMock('Typhoon\DynamicType');
+    $type = Phake::partialMock('Ezzatron\Typhoon\DynamicType');
     Phake::when($type)->typhoonAttributes()->thenReturn($attributes);
 
     $this->_typeRegistry[$alias] = get_class($type);
@@ -89,8 +89,8 @@ class TyphaxTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\Renderer\Type\Typhax::render
-   * @covers Typhoon\Renderer\Type\Typhax::renderAlias
+   * @covers Ezzatron\Typhoon\Renderer\Type\Typhax::render
+   * @covers Ezzatron\Typhoon\Renderer\Type\Typhax::renderAlias
    */
   public function testRenderUnregistered()
   {
@@ -100,14 +100,14 @@ class TyphaxTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\Renderer\Type\Typhax::renderAttribute
+   * @covers Ezzatron\Typhoon\Renderer\Type\Typhax::renderAttribute
    */
   public function testRenderAttributesFailure()
   {
-    $type = Phake::partialMock('Typhoon\DynamicType');
+    $type = Phake::partialMock('Ezzatron\Typhoon\DynamicType');
     Phake::when($type)->typhoonAttributes()->thenReturn(array('foo'));
 
-    $this->setExpectedException('Typhoon\Assertion\Exception\UnexpectedArgument');
+    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnexpectedArgument');
     $this->_renderer->render($type);
   }
 

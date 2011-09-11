@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Assertion;
+namespace Ezzatron\Typhoon\Assertion;
 
 use Phake;
 use stdClass;
-use Typhoon\Test\TestCase;
-use Typhoon\Type\Mixed;
+use Ezzatron\Typhoon\Test\TestCase;
+use Ezzatron\Typhoon\Type\Mixed;
 
 class TypeTest extends TestCase
 {
@@ -26,13 +26,13 @@ class TypeTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\Assertion\Type::__construct
-   * @covers Typhoon\Assertion\Type::assert
+   * @covers Ezzatron\Typhoon\Assertion\Type::__construct
+   * @covers Ezzatron\Typhoon\Assertion\Type::assert
    */
   public function testAssertion()
   {
     $value = 'foo';
-    $type = Phake::mock('Typhoon\Type');
+    $type = Phake::mock('Ezzatron\Typhoon\Type');
     Phake::when($type)->typhoonCheck($value)->thenReturn(true);
 
     $assertion = new Type;
@@ -46,13 +46,13 @@ class TypeTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\Assertion\Type::__construct
-   * @covers Typhoon\Assertion\Type::assert
+   * @covers Ezzatron\Typhoon\Assertion\Type::__construct
+   * @covers Ezzatron\Typhoon\Assertion\Type::assert
    */
   public function testAssertionFailure()
   {
     $value = 'foo';
-    $type = Phake::mock('Typhoon\Type');
+    $type = Phake::mock('Ezzatron\Typhoon\Type');
     Phake::when($type)->typhoonCheck($value)->thenReturn(false);
 
     $assertion = new Type;
@@ -74,22 +74,22 @@ class TypeTest extends TestCase
   }
   
   /**
-   * @covers Typhoon\Assertion\Type::setType
-   * @covers Typhoon\Assertion\Type::type
+   * @covers Ezzatron\Typhoon\Assertion\Type::setType
+   * @covers Ezzatron\Typhoon\Assertion\Type::type
    */
   public function testType()
   {
     $this->assertEquals(new Mixed, $this->_assertion->type());
 
-    $type = Phake::mock('Typhoon\Type');
+    $type = Phake::mock('Ezzatron\Typhoon\Type');
     $this->_assertion->setType($type);
 
     $this->assertSame($type, $this->_assertion->type());
   }
 
   /**
-   * @covers Typhoon\Assertion\Type::setValue
-   * @covers Typhoon\Assertion\Type::value
+   * @covers Ezzatron\Typhoon\Assertion\Type::setValue
+   * @covers Ezzatron\Typhoon\Assertion\Type::value
    */
   public function testValue()
   {
@@ -102,11 +102,11 @@ class TypeTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\Assertion\Type
+   * @covers Ezzatron\Typhoon\Assertion\Type
    */
   public function testImplementsAssertion()
   {
-    $this->assertInstanceOf('Typhoon\Assertion', new Type);
+    $this->assertInstanceOf('Ezzatron\Typhoon\Assertion', new Type);
   }
 
   /**

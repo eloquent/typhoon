@@ -9,18 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon;
+namespace Ezzatron\Typhoon;
 
-use Typhoon\Type\ArrayType;
-use Typhoon\Type\Boolean;
-use Typhoon\Type\Float;
-use Typhoon\Type\Integer;
-use Typhoon\Type\Mixed;
-use Typhoon\Type\Null;
-use Typhoon\Type\Object;
-use Typhoon\Type\String;
-use Typhoon\Type\Resource;
-use Typhoon\Type\Traversable;
+use Ezzatron\Typhoon\Type\ArrayType;
+use Ezzatron\Typhoon\Type\Boolean;
+use Ezzatron\Typhoon\Type\Float;
+use Ezzatron\Typhoon\Type\Integer;
+use Ezzatron\Typhoon\Type\Mixed;
+use Ezzatron\Typhoon\Type\Null;
+use Ezzatron\Typhoon\Type\Object;
+use Ezzatron\Typhoon\Type\String;
+use Ezzatron\Typhoon\Type\Resource;
+use Ezzatron\Typhoon\Type\Traversable;
 
 class TypeInspector
 {

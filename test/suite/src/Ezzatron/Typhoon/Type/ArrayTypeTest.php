@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Type;
+namespace Ezzatron\Typhoon\Type;
 
 use stdClass;
-use Typhoon\Test\TypeTestCase;
+use Ezzatron\Typhoon\Test\TypeTestCase;
 
 class ArrayTypeTest extends TypeTestCase
 {
@@ -45,7 +45,7 @@ class ArrayTypeTest extends TypeTestCase
   // methods below must be manually overridden to implement @covers
 
   /**
-   * @covers Typhoon\Type\ArrayType::checkPrimary
+   * @covers Ezzatron\Typhoon\Type\ArrayType::checkPrimary
    * @dataProvider typeValues
    * @group typhoon_types
    */

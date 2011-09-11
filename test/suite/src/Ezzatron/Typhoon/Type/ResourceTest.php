@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Type;
+namespace Ezzatron\Typhoon\Type;
 
 use stdClass;
-use Typhoon\Test\TypeTestCase;
+use Ezzatron\Typhoon\Test\TypeTestCase;
 
 class ResourceTest extends TypeTestCase
 {
@@ -46,7 +46,7 @@ class ResourceTest extends TypeTestCase
   // methods below must be manually overridden to implement @covers
 
   /**
-   * @covers Typhoon\Type\Resource::typhoonCheck
+   * @covers Ezzatron\Typhoon\Type\Resource::typhoonCheck
    * @dataProvider typeValues
    * @group typhoon_types
    */

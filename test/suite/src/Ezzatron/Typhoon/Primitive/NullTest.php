@@ -9,19 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Primitive;
+namespace Ezzatron\Typhoon\Primitive;
 
-use Typhoon\Test\TestCase;
+use Ezzatron\Typhoon\Test\TestCase;
 
 class NullTest extends TestCase
 {
   /**
-   * @covers Typhoon\Primitive\Null::type
+   * @covers Ezzatron\Typhoon\Primitive\Null::type
    * @group typhoon_primitives
    */
   public function testType()
   {
     $primitive = new Null(null);
-    $this->assertInstanceOf('Typhoon\Type\Null', $primitive->type());
+    $this->assertInstanceOf('Ezzatron\Typhoon\Type\Null', $primitive->type());
   }
 }

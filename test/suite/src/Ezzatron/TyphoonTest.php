@@ -9,10 +9,11 @@
  * file that was distributed with this source code.
  */
 
-use Typhoon\Renderer\Type as TypeRenderer;
-use Typhoon\Test\TestCase;
-use Typhoon\TypeInspector;
-use Typhoon\TypeRegistry;
+use Ezzatron\Typhoon\Renderer\Type as TypeRenderer;
+use Ezzatron\Typhoon\Test\TestCase;
+use Ezzatron\Typhoon\TypeInspector;
+use Ezzatron\Typhoon\TypeRegistry;
+use Ezzatron\Typhoon\Typhoon;
 
 class TyphoonTest extends TestCase
 {
@@ -21,13 +22,13 @@ class TyphoonTest extends TestCase
     $this->_typhoon = new Typhoon;
     $this->_typeInspector = new TypeInspector;
     $this->_typeRegistry = new TypeRegistry;
-    $this->_typeRenderer = Phake::mock('Typhoon\Renderer\Type');
+    $this->_typeRenderer = Phake::mock('Ezzatron\Typhoon\Renderer\Type');
   }
 
   /**
-   * @covers Typhoon::instance
-   * @covers Typhoon::uninstall
-   * @covers Typhoon::install
+   * @covers Ezzatron\Typhoon\Typhoon::instance
+   * @covers Ezzatron\Typhoon\Typhoon::uninstall
+   * @covers Ezzatron\Typhoon\Typhoon::install
    */
   public function testInstanceAndInstall()
   {
@@ -35,7 +36,7 @@ class TyphoonTest extends TestCase
 
     $instance = Typhoon::instance();
 
-    $this->assertInstanceOf('Typhoon', $instance);
+    $this->assertInstanceOf('Ezzatron\Typhoon\Typhoon', $instance);
     $this->assertSame($instance, Typhoon::instance());
 
     $instance = new Typhoon;
@@ -45,20 +46,20 @@ class TyphoonTest extends TestCase
   }
 
   /**
-   * @covers Typhoon::typeAssertion
+   * @covers Ezzatron\Typhoon\Typhoon::typeAssertion
    */
   public function testTypeAssertion()
   {
-    $this->assertInstanceOf('Typhoon\Assertion\Type', $this->_typhoon->typeAssertion());
+    $this->assertInstanceOf('Ezzatron\Typhoon\Assertion\Type', $this->_typhoon->typeAssertion());
   }
 
   /**
-   * @covers Typhoon::setTypeInspector
-   * @covers Typhoon::typeInspector
+   * @covers Ezzatron\Typhoon\Typhoon::setTypeInspector
+   * @covers Ezzatron\Typhoon\Typhoon::typeInspector
    */
   public function testTypeInspector()
   {
-    $this->assertInstanceOf('Typhoon\TypeInspector', $this->_typhoon->typeInspector());
+    $this->assertInstanceOf('Ezzatron\Typhoon\TypeInspector', $this->_typhoon->typeInspector());
 
     $this->_typhoon->setTypeInspector($this->_typeInspector);
 
@@ -66,12 +67,12 @@ class TyphoonTest extends TestCase
   }
 
   /**
-   * @covers Typhoon::setTypeRegistry
-   * @covers Typhoon::typeRegistry
+   * @covers Ezzatron\Typhoon\Typhoon::setTypeRegistry
+   * @covers Ezzatron\Typhoon\Typhoon::typeRegistry
    */
   public function testTypeRegistry()
   {
-    $this->assertInstanceOf('Typhoon\TypeRegistry', $this->_typhoon->typeRegistry());
+    $this->assertInstanceOf('Ezzatron\Typhoon\TypeRegistry', $this->_typhoon->typeRegistry());
 
     $this->_typhoon->setTypeRegistry($this->_typeRegistry);
 
@@ -79,12 +80,12 @@ class TyphoonTest extends TestCase
   }
 
   /**
-   * @covers Typhoon::setTypeRenderer
-   * @covers Typhoon::typeRenderer
+   * @covers Ezzatron\Typhoon\Typhoon::setTypeRenderer
+   * @covers Ezzatron\Typhoon\Typhoon::typeRenderer
    */
   public function testTypeRenderer()
   {
-    $this->assertInstanceOf('Typhoon\Renderer\Type\Typhax', $this->_typhoon->typeRenderer());
+    $this->assertInstanceOf('Ezzatron\Typhoon\Renderer\Type\Typhax', $this->_typhoon->typeRenderer());
 
     $this->_typhoon->setTypeRenderer($this->_typeRenderer);
 

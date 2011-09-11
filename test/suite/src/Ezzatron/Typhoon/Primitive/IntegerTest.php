@@ -9,19 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Primitive;
+namespace Ezzatron\Typhoon\Primitive;
 
-use Typhoon\Test\TestCase;
+use Ezzatron\Typhoon\Test\TestCase;
 
 class IntegerTest extends TestCase
 {
   /**
-   * @covers Typhoon\Primitive\Integer::type
+   * @covers Ezzatron\Typhoon\Primitive\Integer::type
    * @group typhoon_primitives
    */
   public function testType()
   {
     $primitive = new Integer(1);
-    $this->assertInstanceOf('Typhoon\Type\Integer', $primitive->type());
+    $this->assertInstanceOf('Ezzatron\Typhoon\Type\Integer', $primitive->type());
   }
 }

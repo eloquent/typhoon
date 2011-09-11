@@ -12,42 +12,20 @@
 error_reporting(E_ALL | E_STRICT | E_DEPRECATED);
 
 if (!defined('TYPHOON_ROOT_DIR')) define('TYPHOON_ROOT_DIR', dirname(dirname(__DIR__)));
-if (!defined('TYPHOON_DEPLOY_DIR')) define('TYPHOON_DEPLOY_DIR', TYPHOON_ROOT_DIR.DIRECTORY_SEPARATOR.'deploy');
-if (!defined('TYPHOON_LIB_DIR')) define('TYPHOON_LIB_DIR', TYPHOON_DEPLOY_DIR.DIRECTORY_SEPARATOR.'lib');
+if (!defined('TYPHOON_SRC_DIR')) define('TYPHOON_SRC_DIR', TYPHOON_ROOT_DIR.DIRECTORY_SEPARATOR.'src');
 if (!defined('TYPHOON_TEST_DIR')) define('TYPHOON_TEST_DIR', TYPHOON_ROOT_DIR.DIRECTORY_SEPARATOR.'test');
-if (!defined('TYPHOON_TEST_LIB_DIR')) define('TYPHOON_TEST_LIB_DIR', TYPHOON_TEST_DIR.DIRECTORY_SEPARATOR.'lib');
+if (!defined('TYPHOON_TEST_SRC_DIR')) define('TYPHOON_TEST_SRC_DIR', TYPHOON_TEST_DIR.DIRECTORY_SEPARATOR.'src');
 if (!defined('TYPHOON_TEST_SUITE_DIR')) define('TYPHOON_TEST_SUITE_DIR', TYPHOON_TEST_DIR.DIRECTORY_SEPARATOR.'suite');
 if (!defined('TYPHOON_TEST_REPORT_DIR')) define('TYPHOON_TEST_REPORT_DIR', TYPHOON_TEST_DIR.DIRECTORY_SEPARATOR.'report');
 
-if (!defined('TYPHOON_INCLUDE_PATH_SET'))
-{
-  define('TYPHOON_INCLUDE_PATH_SET', true);
-
-  set_include_path(
-    get_include_path()
-    .PATH_SEPARATOR.TYPHOON_LIB_DIR
-    .PATH_SEPARATOR.TYPHOON_TEST_LIB_DIR
-  );
-}
-
-// spl_autoload default implementation SHOULD do this itself, but it does not work for me
-spl_autoload_register(function($name)
-{
-  $file = str_replace('\\', DIRECTORY_SEPARATOR, strtolower($name)).'.php';
-
-  foreach (explode(PATH_SEPARATOR, get_include_path()) as $path)
-  {
-    if (file_exists($path.DIRECTORY_SEPARATOR.$file))
-    {
-      include $path.DIRECTORY_SEPARATOR.$file;
-
-      break;
-    }
-  }
-});
-
 // include Phake for improved mocking support
-require_once 'Phake.php';
+require 'Phake.php';
+
+// include Typhoon
+require TYPHOON_SRC_DIR.DIRECTORY_SEPARATOR.'include.php';
+
+// include test fixtures
+require TYPHOON_TEST_SRC_DIR.DIRECTORY_SEPARATOR.'include.php';
 
 // clean reports
 foreach(glob(TYPHOON_TEST_REPORT_DIR.DIRECTORY_SEPARATOR.'*') as $report)

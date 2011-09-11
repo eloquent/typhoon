@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Assertion;
+namespace Ezzatron\Typhoon\Assertion;
 
 use Phake;
-use Typhoon;
-use Typhoon\Parameter;
-use Typhoon\ParameterList as ParameterListObject;
-use Typhoon\Primitive\Boolean;
-use Typhoon\Test\TestCase;
+use Ezzatron\Typhoon\Typhoon;
+use Ezzatron\Typhoon\Parameter;
+use Ezzatron\Typhoon\ParameterList as ParameterListObject;
+use Ezzatron\Typhoon\Primitive\Boolean;
+use Ezzatron\Typhoon\Test\TestCase;
 
 class ParameterListTest extends TestCase
 {
@@ -29,7 +29,7 @@ class ParameterListTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\Assertion\ParameterList::assert
+   * @covers Ezzatron\Typhoon\Assertion\ParameterList::assert
    */
   public function testAssertUseTypeAssertion()
   {
@@ -37,8 +37,8 @@ class ParameterListTest extends TestCase
     $argument_1 = 'bar';
     $arguments = array($argument_0, $argument_1);
 
-    $type_0 = Phake::mock('Typhoon\Type');
-    $type_1 = Phake::mock('Typhoon\Type');
+    $type_0 = Phake::mock('Ezzatron\Typhoon\Type');
+    $type_1 = Phake::mock('Ezzatron\Typhoon\Type');
 
     $assertion_0 = Phake::mock(__NAMESPACE__.'\Type');
     $assertion_1 = Phake::mock(__NAMESPACE__.'\Type');
@@ -79,7 +79,7 @@ class ParameterListTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\Assertion\ParameterList::assert
+   * @covers Ezzatron\Typhoon\Assertion\ParameterList::assert
    */
   public function testAssertFixedLength()
   {
@@ -106,7 +106,7 @@ class ParameterListTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\Assertion\ParameterList::assert
+   * @covers Ezzatron\Typhoon\Assertion\ParameterList::assert
    */
   public function testAssertOptional()
   {
@@ -131,7 +131,7 @@ class ParameterListTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\Assertion\ParameterList::assert
+   * @covers Ezzatron\Typhoon\Assertion\ParameterList::assert
    */
   public function testAssertVariableLength()
   {
@@ -151,13 +151,13 @@ class ParameterListTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\Assertion\ParameterList::assert
+   * @covers Ezzatron\Typhoon\Assertion\ParameterList::assert
    */
   public function testAssertFailureType()
   {
     $this->_assertion->setParameterList($this->_parameterList);
 
-    $type = Phake::mock('Typhoon\Type');
+    $type = Phake::mock('Ezzatron\Typhoon\Type');
     Phake::when($type)->typhoonCheck()->thenReturn(false);
 
     $parameter = new Parameter;
@@ -171,7 +171,7 @@ class ParameterListTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\Assertion\ParameterList::assert
+   * @covers Ezzatron\Typhoon\Assertion\ParameterList::assert
    */
   public function testAssertFailureNoArguments()
   {
@@ -183,7 +183,7 @@ class ParameterListTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\Assertion\ParameterList::assert
+   * @covers Ezzatron\Typhoon\Assertion\ParameterList::assert
    */
   public function testAssertFailureNotEnoughArguments()
   {
@@ -197,7 +197,7 @@ class ParameterListTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\Assertion\ParameterList::assert
+   * @covers Ezzatron\Typhoon\Assertion\ParameterList::assert
    */
   public function testAssertFailureTooManyArguments()
   {
@@ -208,7 +208,7 @@ class ParameterListTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\Assertion\ParameterList::assert
+   * @covers Ezzatron\Typhoon\Assertion\ParameterList::assert
    */
   public function testAssertFailureTooManyArgumentsNonEmpty()
   {
@@ -222,7 +222,7 @@ class ParameterListTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\Assertion\ParameterList::typeAssertion
+   * @covers Ezzatron\Typhoon\Assertion\ParameterList::typeAssertion
    */
   public function testTypeAssertion()
   {
@@ -232,8 +232,8 @@ class ParameterListTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\Assertion\ParameterList::setParameterList
-   * @covers Typhoon\Assertion\ParameterList::parameterList
+   * @covers Ezzatron\Typhoon\Assertion\ParameterList::setParameterList
+   * @covers Ezzatron\Typhoon\Assertion\ParameterList::parameterList
    */
   public function testParameterList()
   {
@@ -246,8 +246,8 @@ class ParameterListTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\Assertion\ParameterList::setArguments
-   * @covers Typhoon\Assertion\ParameterList::arguments
+   * @covers Ezzatron\Typhoon\Assertion\ParameterList::setArguments
+   * @covers Ezzatron\Typhoon\Assertion\ParameterList::arguments
    */
   public function testArguments()
   {
@@ -260,7 +260,7 @@ class ParameterListTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\Assertion\ParameterList::setArguments
+   * @covers Ezzatron\Typhoon\Assertion\ParameterList::setArguments
    */
   public function testSetArgumentsFailure()
   {
@@ -269,11 +269,11 @@ class ParameterListTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\Assertion\ParameterList
+   * @covers Ezzatron\Typhoon\Assertion\ParameterList
    */
   public function testImplementsAssertion()
   {
-    $this->assertInstanceOf('Typhoon\Assertion', new ParameterList);
+    $this->assertInstanceOf('Ezzatron\Typhoon\Assertion', new ParameterList);
   }
 
   /**

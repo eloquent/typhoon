@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Type;
+namespace Ezzatron\Typhoon\Type;
 
-use Typhoon\Type;
+use Ezzatron\Typhoon\Type;
 
 class Boolean implements Type
 {

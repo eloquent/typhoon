@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Assertion\Exception;
+namespace Ezzatron\Typhoon\Assertion\Exception;
 
 use Exception as NativeException;
-use Typhoon\Primitive\String as StringPrimitive;
+use Ezzatron\Typhoon\Primitive\String as StringPrimitive;
 
 final class UnexpectedType extends Exception
 {

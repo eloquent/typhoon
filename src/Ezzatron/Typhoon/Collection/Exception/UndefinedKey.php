@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Collection\Exception;
+namespace Ezzatron\Typhoon\Collection\Exception;
 
 use Exception as NativeException;
-use Typhoon\Primitive\String;
+use Ezzatron\Typhoon\Primitive\String;
 
 class UndefinedKey extends Exception
 {

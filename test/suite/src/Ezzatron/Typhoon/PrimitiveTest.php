@@ -9,14 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon;
+namespace Ezzatron\Typhoon;
 
 use Phake;
-use Typhoon;
-use Typhoon\Assertion\Exception\UnexpectedType;
-use Typhoon\Primitive\String;
-use Typhoon\Test\TestCase;
-use Typhoon\Type;
+use Ezzatron\Typhoon\Assertion\Exception\UnexpectedType;
+use Ezzatron\Typhoon\Primitive\String;
+use Ezzatron\Typhoon\Test\TestCase;
+use Ezzatron\Typhoon\Type;
 
 class PrimitiveTest extends TestCase
 {
@@ -35,10 +34,10 @@ class PrimitiveTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\Primitive::__construct
-   * @covers Typhoon\Primitive::value
-   * @covers Typhoon\Primitive::__toString
-   * @covers Typhoon\Primitive::typeAssertion
+   * @covers Ezzatron\Typhoon\Primitive::__construct
+   * @covers Ezzatron\Typhoon\Primitive::value
+   * @covers Ezzatron\Typhoon\Primitive::__toString
+   * @covers Ezzatron\Typhoon\Primitive::typeAssertion
    */
   public function testPrimitive()
   {
@@ -71,7 +70,7 @@ class PrimitiveTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\Primitive::__construct
+   * @covers Ezzatron\Typhoon\Primitive::__construct
    */
   public function testPrimitiveFailure()
   {
@@ -98,7 +97,7 @@ class PrimitiveTest extends TestCase
   }
 
   /**
-   * @covers Typhoon\Primitive::typeAssertion
+   * @covers Ezzatron\Typhoon\Primitive::typeAssertion
    */
   public function testTypeAssertion()
   {

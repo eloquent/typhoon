@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon;
+namespace Ezzatron\Typhoon;
 
 abstract class BaseCompositeType implements CompositeType
 {

@@ -9,17 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Type;
+namespace Ezzatron\Typhoon\Type;
 
-use Typhoon\AndType;
-use Typhoon\Attributes;
-use Typhoon\AttributeSignature;
-use Typhoon\BaseTraversableType;
-use Typhoon\DynamicType;
-use Typhoon\OrType;
-use Typhoon\Type\ArrayType;
-use Typhoon\Type\Object;
-use Typhoon\Type\String as StringType;
+use Ezzatron\Typhoon\AndType;
+use Ezzatron\Typhoon\Attributes;
+use Ezzatron\Typhoon\AttributeSignature;
+use Ezzatron\Typhoon\BaseTraversableType;
+use Ezzatron\Typhoon\DynamicType;
+use Ezzatron\Typhoon\OrType;
+use Ezzatron\Typhoon\Type\ArrayType;
+use Ezzatron\Typhoon\Type\Object;
+use Ezzatron\Typhoon\Type\String as StringType;
 
 class Traversable extends BaseTraversableType implements DynamicType
 {

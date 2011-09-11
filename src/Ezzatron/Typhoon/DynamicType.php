@@ -9,6 +9,6 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon;
+namespace Ezzatron\Typhoon;
 
 interface DynamicType extends Type, AttributeHolder {}

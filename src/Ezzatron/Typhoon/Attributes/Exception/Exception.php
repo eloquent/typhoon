@@ -9,8 +9,8 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Attributes\Exception;
+namespace Ezzatron\Typhoon\Attributes\Exception;
 
-use Typhoon\Exception\Exception as TyphoonException;
+use Ezzatron\Typhoon\Exception\Exception as TyphoonException;
 
 abstract class Exception extends TyphoonException {}

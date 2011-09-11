@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\ParameterList\Exception;
+namespace Ezzatron\Typhoon\ParameterList\Exception;
 
 use Exception as NativeException;
-use Typhoon\Primitive\Integer;
-use Typhoon\Primitive\String;
+use Ezzatron\Typhoon\Primitive\Integer;
+use Ezzatron\Typhoon\Primitive\String;
 
 class UndefinedParameter extends Exception
 {

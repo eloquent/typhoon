@@ -9,15 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Assertion;
+namespace Ezzatron\Typhoon\Assertion;
 
-use Typhoon;
-use Typhoon\Assertion;
-use Typhoon\Assertion\Exception\MissingArgument;
-use Typhoon\Assertion\Exception\UnexpectedArgument;
-use Typhoon\Assertion\Exception\UnexpectedType;
-use Typhoon\ParameterList as ParameterListObject;
-use Typhoon\Primitive\Integer;
+use Ezzatron\Typhoon\Typhoon;
+use Ezzatron\Typhoon\Assertion;
+use Ezzatron\Typhoon\Assertion\Exception\MissingArgument;
+use Ezzatron\Typhoon\Assertion\Exception\UnexpectedArgument;
+use Ezzatron\Typhoon\Assertion\Exception\UnexpectedType;
+use Ezzatron\Typhoon\ParameterList as ParameterListObject;
+use Ezzatron\Typhoon\Primitive\Integer;
 
 class ParameterList implements Assertion
 {

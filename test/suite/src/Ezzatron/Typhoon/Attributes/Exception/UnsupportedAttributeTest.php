@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Attributes\Exception;
+namespace Ezzatron\Typhoon\Attributes\Exception;
 
-use Typhoon\Primitive\String;
-use Typhoon\Test\ExceptionTestCase;
+use Ezzatron\Typhoon\Primitive\String;
+use Ezzatron\Typhoon\Test\ExceptionTestCase;
 
 class UnsupportedAttributeTest extends ExceptionTestCase
 {
@@ -41,7 +41,7 @@ class UnsupportedAttributeTest extends ExceptionTestCase
   }
 
   /**
-   * @covers Typhoon\Attributes\Exception\UnsupportedAttribute::__construct
+   * @covers Ezzatron\Typhoon\Attributes\Exception\UnsupportedAttribute::__construct
    */
   public function testConstructor()
   {

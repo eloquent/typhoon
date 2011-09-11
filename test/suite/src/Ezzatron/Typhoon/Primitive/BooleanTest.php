@@ -9,19 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Primitive;
+namespace Ezzatron\Typhoon\Primitive;
 
-use Typhoon\Test\TestCase;
+use Ezzatron\Typhoon\Test\TestCase;
 
 class BooleanTest extends TestCase
 {
   /**
-   * @covers Typhoon\Primitive\Boolean::type
+   * @covers Ezzatron\Typhoon\Primitive\Boolean::type
    * @group typhoon_primitives
    */
   public function testType()
   {
     $primitive = new Boolean(true);
-    $this->assertInstanceOf('Typhoon\Type\Boolean', $primitive->type());
+    $this->assertInstanceOf('Ezzatron\Typhoon\Type\Boolean', $primitive->type());
   }
 }

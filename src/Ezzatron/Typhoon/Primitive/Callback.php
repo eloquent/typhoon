@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Primitive;
+namespace Ezzatron\Typhoon\Primitive;
 
-use Typhoon\Primitive;
-use Typhoon\Type\Callback as CallbackType;
+use Ezzatron\Typhoon\Primitive;
+use Ezzatron\Typhoon\Type\Callback as CallbackType;
 
 final class Callback extends Primitive
 {

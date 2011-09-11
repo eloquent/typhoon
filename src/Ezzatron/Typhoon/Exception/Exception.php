@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon\Exception;
+namespace Ezzatron\Typhoon\Exception;
 
 use Exception as NativeException;
-use Typhoon\Primitive\String;
+use Ezzatron\Typhoon\Primitive\String;
 
 abstract class Exception extends NativeException
 {
