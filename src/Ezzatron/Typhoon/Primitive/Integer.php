@@ -11,8 +11,7 @@
 
 namespace Ezzatron\Typhoon\Primitive;
 
-use Ezzatron\Typhoon\Primitive;
-use Ezzatron\Typhoon\Type\Integer as IntegerType;
+use Ezzatron\Typhoon\Type\IntegerType;
 
 final class Integer extends Primitive
 {

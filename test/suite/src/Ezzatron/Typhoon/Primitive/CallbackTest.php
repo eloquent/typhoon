@@ -11,9 +11,7 @@
 
 namespace Ezzatron\Typhoon\Primitive;
 
-use Ezzatron\Typhoon\Test\TestCase;
-
-class CallbackTest extends TestCase
+class CallbackTest extends \Ezzatron\Typhoon\Test\TestCase
 {
   /**
    * @covers Ezzatron\Typhoon\Primitive\Callback::type
@@ -22,6 +20,6 @@ class CallbackTest extends TestCase
   public function testType()
   {
     $primitive = new Callback(array($this, 'testType'));
-    $this->assertInstanceOf('Ezzatron\Typhoon\Type\Callback', $primitive->type());
+    $this->assertInstanceOf('Ezzatron\Typhoon\Type\CallbackType', $primitive->type());
   }
 }

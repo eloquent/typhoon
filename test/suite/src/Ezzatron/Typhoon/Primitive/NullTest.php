@@ -11,9 +11,7 @@
 
 namespace Ezzatron\Typhoon\Primitive;
 
-use Ezzatron\Typhoon\Test\TestCase;
-
-class NullTest extends TestCase
+class NullTest extends \Ezzatron\Typhoon\Test\TestCase
 {
   /**
    * @covers Ezzatron\Typhoon\Primitive\Null::type
@@ -22,6 +20,6 @@ class NullTest extends TestCase
   public function testType()
   {
     $primitive = new Null(null);
-    $this->assertInstanceOf('Ezzatron\Typhoon\Type\Null', $primitive->type());
+    $this->assertInstanceOf('Ezzatron\Typhoon\Type\NullType', $primitive->type());
   }
 }

@@ -12,9 +12,8 @@
 namespace Ezzatron\Typhoon\Type;
 
 use stdClass;
-use Ezzatron\Typhoon\Test\TypeTestCase;
 
-class ArrayTypeTest extends TypeTestCase
+class ArrayTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
 {
   /**
    * @return array

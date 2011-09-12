@@ -11,9 +11,7 @@
 
 namespace Ezzatron\Typhoon\Primitive;
 
-use Ezzatron\Typhoon\Test\TestCase;
-
-class IntegerTest extends TestCase
+class IntegerTest extends \Ezzatron\Typhoon\Test\TestCase
 {
   /**
    * @covers Ezzatron\Typhoon\Primitive\Integer::type
@@ -22,6 +20,6 @@ class IntegerTest extends TestCase
   public function testType()
   {
     $primitive = new Integer(1);
-    $this->assertInstanceOf('Ezzatron\Typhoon\Type\Integer', $primitive->type());
+    $this->assertInstanceOf('Ezzatron\Typhoon\Type\IntegerType', $primitive->type());
   }
 }

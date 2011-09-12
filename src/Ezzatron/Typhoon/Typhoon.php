@@ -11,11 +11,11 @@
 
 namespace Ezzatron\Typhoon;
 
-use Ezzatron\Typhoon\Assertion\Type as TypeAssertion;
-use Ezzatron\Typhoon\Renderer\Type as TypeRenderer;
-use Ezzatron\Typhoon\Renderer\Type\Typhax;
-use Ezzatron\Typhoon\TypeInspector;
-use Ezzatron\Typhoon\TypeRegistry;
+use Ezzatron\Typhoon\Assertion\TypeAssertion;
+use Ezzatron\Typhoon\Type\Inspector\TypeInspector;
+use Ezzatron\Typhoon\Type\Registry\TypeRegistry;
+use Ezzatron\Typhoon\Type\Renderer\TypeRenderer;
+use Ezzatron\Typhoon\Type\Renderer\TyphaxTypeRenderer;
 
 class Typhoon
 {
@@ -107,7 +107,7 @@ class Typhoon
   {
     if (!$this->typeRenderer)
     {
-      $this->typeRenderer = new Typhax;
+      $this->typeRenderer = new TyphaxTypeRenderer;
     }
 
     return $this->typeRenderer;

@@ -11,9 +11,7 @@
 
 namespace Ezzatron\Typhoon\Primitive;
 
-use Ezzatron\Typhoon\Test\TestCase;
-
-class StringTest extends TestCase
+class StringTest extends \Ezzatron\Typhoon\Test\TestCase
 {
   /**
    * @covers Ezzatron\Typhoon\Primitive\String::type
@@ -22,6 +20,6 @@ class StringTest extends TestCase
   public function testType()
   {
     $primitive = new String('');
-    $this->assertInstanceOf('Ezzatron\Typhoon\Type\String', $primitive->type());
+    $this->assertInstanceOf('Ezzatron\Typhoon\Type\StringType', $primitive->type());
   }
 }

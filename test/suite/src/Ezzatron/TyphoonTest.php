@@ -11,8 +11,8 @@
 
 use Ezzatron\Typhoon\Renderer\Type as TypeRenderer;
 use Ezzatron\Typhoon\Test\TestCase;
-use Ezzatron\Typhoon\TypeInspector;
-use Ezzatron\Typhoon\TypeRegistry;
+use Ezzatron\Typhoon\Type\Inspector\TypeInspector;
+use Ezzatron\Typhoon\Type\Registry\TypeRegistry;
 use Ezzatron\Typhoon\Typhoon;
 
 class TyphoonTest extends TestCase
@@ -22,7 +22,7 @@ class TyphoonTest extends TestCase
     $this->_typhoon = new Typhoon;
     $this->_typeInspector = new TypeInspector;
     $this->_typeRegistry = new TypeRegistry;
-    $this->_typeRenderer = Phake::mock('Ezzatron\Typhoon\Renderer\Type');
+    $this->_typeRenderer = Phake::mock('Ezzatron\Typhoon\Type\Renderer\TypeRenderer');
   }
 
   /**
@@ -50,7 +50,7 @@ class TyphoonTest extends TestCase
    */
   public function testTypeAssertion()
   {
-    $this->assertInstanceOf('Ezzatron\Typhoon\Assertion\Type', $this->_typhoon->typeAssertion());
+    $this->assertInstanceOf('Ezzatron\Typhoon\Assertion\TypeAssertion', $this->_typhoon->typeAssertion());
   }
 
   /**
@@ -59,7 +59,7 @@ class TyphoonTest extends TestCase
    */
   public function testTypeInspector()
   {
-    $this->assertInstanceOf('Ezzatron\Typhoon\TypeInspector', $this->_typhoon->typeInspector());
+    $this->assertInstanceOf('Ezzatron\Typhoon\Type\Inspector\TypeInspector', $this->_typhoon->typeInspector());
 
     $this->_typhoon->setTypeInspector($this->_typeInspector);
 
@@ -72,7 +72,7 @@ class TyphoonTest extends TestCase
    */
   public function testTypeRegistry()
   {
-    $this->assertInstanceOf('Ezzatron\Typhoon\TypeRegistry', $this->_typhoon->typeRegistry());
+    $this->assertInstanceOf('Ezzatron\Typhoon\Type\Registry\TypeRegistry', $this->_typhoon->typeRegistry());
 
     $this->_typhoon->setTypeRegistry($this->_typeRegistry);
 
@@ -85,7 +85,7 @@ class TyphoonTest extends TestCase
    */
   public function testTypeRenderer()
   {
-    $this->assertInstanceOf('Ezzatron\Typhoon\Renderer\Type\Typhax', $this->_typhoon->typeRenderer());
+    $this->assertInstanceOf('Ezzatron\Typhoon\Type\Renderer\TyphaxTypeRenderer', $this->_typhoon->typeRenderer());
 
     $this->_typhoon->setTypeRenderer($this->_typeRenderer);
 

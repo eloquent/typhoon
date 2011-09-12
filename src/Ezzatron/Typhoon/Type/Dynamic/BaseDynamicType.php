@@ -1,0 +1,45 @@
+<?php
+
+/*
+ * This file is part of the Typhoon package.
+ *
+ * Copyright © 2011 Erin Millard
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Ezzatron\Typhoon\Type\Dynamic;
+
+use Ezzatron\Typhoon\Attribute\Attributes;
+use Ezzatron\Typhoon\Attribute\AttributeSignature;
+
+abstract class BaseDynamicType implements DynamicType
+{
+  /**
+   * @return AttributeSignature
+   */
+  static public function attributeSignature()
+  {
+    return new AttributeSignature;
+  }
+
+  /**
+   * @return Attributes
+   */
+  public function typhoonAttributes()
+  {
+    if (!$this->attributes)
+    {
+      $this->attributes = new Attributes;
+      $this->attributes->setSignature(static::attributeSignature());
+    }
+
+    return $this->attributes;
+  }
+
+  /**
+   * @var Attributes
+   */
+  protected $attributes;
+}

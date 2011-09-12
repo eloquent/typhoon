@@ -11,8 +11,7 @@
 
 namespace Ezzatron\Typhoon\Primitive;
 
-use Ezzatron\Typhoon\Primitive;
-use Ezzatron\Typhoon\Type\Null as NullType;
+use Ezzatron\Typhoon\Type\NullType;
 
 final class Null extends Primitive
 {

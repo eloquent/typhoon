@@ -11,16 +11,15 @@
 
 namespace Ezzatron\Typhoon\Exception;
 
-use Exception as NativeException;
 use Ezzatron\Typhoon\Primitive\String;
 
-abstract class Exception extends NativeException
+abstract class Exception extends \Exception
 {
   /**
    * @param String $message
-   * @param NativeException $previous
+   * @param \Exception $previous
    */
-  public function __construct(String $message, NativeException $previous = null)
+  public function __construct(String $message, \Exception $previous = null)
   {
     parent::__construct((string)$message, 0, $previous);
   }

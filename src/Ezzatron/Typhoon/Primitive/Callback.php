@@ -11,8 +11,7 @@
 
 namespace Ezzatron\Typhoon\Primitive;
 
-use Ezzatron\Typhoon\Primitive;
-use Ezzatron\Typhoon\Type\Callback as CallbackType;
+use Ezzatron\Typhoon\Type\CallbackType;
 
 final class Callback extends Primitive
 {

@@ -11,8 +11,7 @@
 
 namespace Ezzatron\Typhoon\Primitive;
 
-use Ezzatron\Typhoon\Primitive;
-use Ezzatron\Typhoon\Type\String as StringType;
+use Ezzatron\Typhoon\Type\StringType;
 
 final class String extends Primitive
 {

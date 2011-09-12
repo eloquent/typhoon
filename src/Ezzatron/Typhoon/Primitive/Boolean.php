@@ -11,8 +11,7 @@
 
 namespace Ezzatron\Typhoon\Primitive;
 
-use Ezzatron\Typhoon\Primitive;
-use Ezzatron\Typhoon\Type\Boolean as BooleanType;
+use Ezzatron\Typhoon\Type\BooleanType;
 
 final class Boolean extends Primitive
 {

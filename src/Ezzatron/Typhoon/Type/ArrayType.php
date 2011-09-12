@@ -11,9 +11,7 @@
 
 namespace Ezzatron\Typhoon\Type;
 
-use Ezzatron\Typhoon\BaseTraversableType;
-
-class ArrayType extends BaseTraversableType
+class ArrayType extends Traversable\BaseTraversableType
 {
   /**
    * @param mixed value

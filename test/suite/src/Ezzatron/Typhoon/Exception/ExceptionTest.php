@@ -12,9 +12,8 @@
 namespace Ezzatron\Typhoon\Exception;
 
 use Ezzatron\Typhoon\Primitive\String;
-use Ezzatron\Typhoon\Test\ExceptionTestCase;
 
-class ExceptionTest extends ExceptionTestCase
+class ExceptionTest extends \Ezzatron\Typhoon\Test\ExceptionTestCase
 {
   /**
    * @return string

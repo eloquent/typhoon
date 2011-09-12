@@ -11,6 +11,4 @@
 
 namespace Ezzatron\Typhoon\Assertion\Exception;
 
-use Ezzatron\Typhoon\Exception\Exception as TyphoonException;
-
-abstract class Exception extends TyphoonException {}
+abstract class Exception extends \Ezzatron\Typhoon\Exception\Exception {}

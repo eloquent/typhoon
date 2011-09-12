@@ -11,9 +11,7 @@
 
 namespace Ezzatron\Typhoon\Primitive;
 
-use Ezzatron\Typhoon\Test\TestCase;
-
-class BooleanTest extends TestCase
+class BooleanTest extends \Ezzatron\Typhoon\Test\TestCase
 {
   /**
    * @covers Ezzatron\Typhoon\Primitive\Boolean::type
@@ -22,6 +20,6 @@ class BooleanTest extends TestCase
   public function testType()
   {
     $primitive = new Boolean(true);
-    $this->assertInstanceOf('Ezzatron\Typhoon\Type\Boolean', $primitive->type());
+    $this->assertInstanceOf('Ezzatron\Typhoon\Type\BooleanType', $primitive->type());
   }
 }

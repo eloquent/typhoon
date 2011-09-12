@@ -11,10 +11,9 @@
 
 namespace Ezzatron\Typhoon\Test;
 
-use PHPUnit_Framework_TestCase;
 use Ezzatron\Typhoon\Typhoon;
 
-class TestCase extends PHPUnit_Framework_TestCase
+class TestCase extends \PHPUnit_Framework_TestCase
 {
   protected function setUp()
   {
