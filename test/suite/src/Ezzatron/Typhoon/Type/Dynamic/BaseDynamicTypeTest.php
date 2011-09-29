@@ -39,7 +39,7 @@ class BaseDynamicTypeTest extends \Ezzatron\Typhoon\Test\TestCase
     $this->assertEquals($expected, $this->_type->typhoonAttributes());
 
 
-    $this->_type = $this->getMockForAbstractClass(__NAMESPACE__.'\BaseDynamicType');
+    $this->_type = $this->getMockForAbstractClass(__NAMESPACE__.'\BaseDynamicType', array(new Attributes));
 
     $expectedSignature = new AttributeSignature;
     $expectedSignature->setHolder(get_class($this->_type));
@@ -66,6 +66,9 @@ class BaseDynamicTypeTest extends \Ezzatron\Typhoon\Test\TestCase
     $actual = $this->_type->typhoonAttributes()->signature();
     
     $this->assertEquals($expected, $actual);
+
+    $this->_type = $this->getMockForAbstractClass(__NAMESPACE__.'\BaseDynamicType');
+
     $this->assertEquals($actual, $this->_type->typhoonAttributes()->signature());
   }
 
