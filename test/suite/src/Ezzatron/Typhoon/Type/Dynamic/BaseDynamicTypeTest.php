@@ -11,7 +11,6 @@
 
 namespace Ezzatron\Typhoon\Type\Dynamic;
 
-use Phake;
 use ReflectionClass;
 use Ezzatron\Typhoon\Attribute\Attributes;
 use Ezzatron\Typhoon\Attribute\AttributeSignature;
@@ -22,7 +21,7 @@ class BaseDynamicTypeTest extends \Ezzatron\Typhoon\Test\TestCase
   {
     parent::setUp();
     
-    $this->_type = Phake::partialMock(__NAMESPACE__.'\BaseDynamicType');
+    $this->_type = $this->getMockForAbstractClass(__NAMESPACE__.'\BaseDynamicType');
   }
 
   /**
@@ -40,7 +39,7 @@ class BaseDynamicTypeTest extends \Ezzatron\Typhoon\Test\TestCase
     $this->assertEquals($expected, $this->_type->typhoonAttributes());
 
 
-    $this->_type = Phake::partialMock(__NAMESPACE__.'\BaseDynamicType', new Attributes);
+    $this->_type = $this->getMockForAbstractClass(__NAMESPACE__.'\BaseDynamicType');
 
     $expectedSignature = new AttributeSignature;
     $expectedSignature->setHolder(get_class($this->_type));
