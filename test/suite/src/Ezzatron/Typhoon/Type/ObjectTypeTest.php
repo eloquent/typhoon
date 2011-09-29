@@ -11,8 +11,8 @@
 
 namespace Ezzatron\Typhoon\Type;
 
-use ReflectionClass;
 use stdClass;
+use Ezzatron\Typhoon\Attribute\Attributes;
 use Ezzatron\Typhoon\Attribute\AttributeSignature;
 use Ezzatron\Typhoon\Type\StringType;
 
@@ -23,7 +23,7 @@ class ObjectTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
    */
   public function typeValues()
   {
-    $attributes = array(ObjectType::ATTRIBUTE_INSTANCE_OF => 'stdClass');
+    $attributes = new Attributes(array(ObjectType::ATTRIBUTE_INSTANCE_OF => 'stdClass'));
 
     return array(
       // object of any class
@@ -60,22 +60,22 @@ class ObjectTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
   }
 
   /**
-   * @covers Ezzatron\Typhoon\Type\ObjectType::attributeSignature
+   * @covers Ezzatron\Typhoon\Type\ObjectType::configureAttributeSignature
    */
-  public function testAttributeSignature()
+  public function testConfigureAttributeSignature()
   {
-    $reflector = new ReflectionClass($this->typeClass());
-    $property = $reflector->getProperty('attributeSignature');
-    $property->setAccessible(true);
-    $property->setValue(null, null);
-
     $expected = new AttributeSignature;
+    $expected->setHolder($this->typeClass());
     $expected[ObjectType::ATTRIBUTE_INSTANCE_OF] = new StringType;
 
-    $actual = ObjectType::attributeSignature();
+    $object = new ObjectType;
+    $actual = $object->typhoonAttributes()->signature();
 
     $this->assertEquals($expected, $actual);
-    $this->assertSame($actual, ObjectType::attributeSignature());
+
+    $object = new ObjectType;
+
+    $this->assertEquals($actual, $object->typhoonAttributes()->signature());
   }
 
   /**
@@ -106,5 +106,5 @@ class ObjectTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
    * @dataProvider typeValues
    * @group typhoon_types
    */
-  public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
+  public function testTyphoonCheck($expected, $value, Attributes $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
 }

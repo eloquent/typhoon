@@ -19,18 +19,19 @@ use Ezzatron\Typhoon\Type\StringType;
 
 class TraversableType extends Traversable\BaseTraversableType implements Dynamic\DynamicType
 {
-  /**
-   * @return AttributeSignature
-   */
-  static public function attributeSignature()
+  public function __construct(Attributes $attributes = null)
   {
-    if (!self::$attributeSignature)
+    if (null === $attributes)
     {
-      self::$attributeSignature = new AttributeSignature;
-      self::$attributeSignature[self::ATTRIBUTE_INSTANCE_OF] = new StringType;
+      $attributes = new Attributes;
     }
-
-    return self::$attributeSignature;
+    else
+    {
+      $attributes = clone $attributes;
+    }
+    
+    $attributes->setSignature(static::attributeSignature($this));
+    $this->attributes = $attributes;
   }
 
   /**
@@ -38,15 +39,41 @@ class TraversableType extends Traversable\BaseTraversableType implements Dynamic
    */
   public function typhoonAttributes()
   {
-    if (!$this->attributes)
-    {
-      $this->attributes = new Attributes;
-      $this->attributes->setSignature(static::attributeSignature());
-    }
-
     return $this->attributes;
   }
 
+  /**
+   * @param TraversableType $type
+   *
+   * @return AttributeSignature
+   */
+  static protected function attributeSignature(TraversableType $type)
+  {
+    $class = get_called_class();
+
+    if (!array_key_exists($class, self::$attributeSignatures))
+    {
+      $attributeSignature = new AttributeSignature;
+      $attributeSignature->setHolder($class);
+      static::configureAttributeSignature($attributeSignature, $type);
+
+      self::$attributeSignatures[$class] = $attributeSignature;
+    }
+
+    return self::$attributeSignatures[$class];
+  }
+
+  /**
+   * @param AttributeSignature $attributeSignature
+   * @param TraversableType $type
+   *
+   * @return AttributeSignature
+   */
+  static protected function configureAttributeSignature(AttributeSignature $attributeSignature, TraversableType $type)
+  {
+    $attributeSignature[self::ATTRIBUTE_INSTANCE_OF] = new StringType;
+  }
+  
   /**
    * @param mixed value
    *
@@ -87,9 +114,9 @@ class TraversableType extends Traversable\BaseTraversableType implements Dynamic
   const ATTRIBUTE_INSTANCE_OF = 'instanceOf';
 
   /**
-   * @var AttributeSignature
+   * @var array
    */
-  static protected $attributeSignature;
+  static protected $attributeSignatures = array();
 
   /**
    * @var Attributes

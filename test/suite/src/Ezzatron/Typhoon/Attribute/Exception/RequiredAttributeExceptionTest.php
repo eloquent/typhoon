@@ -13,14 +13,14 @@ namespace Ezzatron\Typhoon\Attribute\Exception;
 
 use Ezzatron\Typhoon\Primitive\String;
 
-class UnsupportedAttributeExceptionTest extends \Ezzatron\Typhoon\Test\ExceptionTestCase
+class RequiredAttributeExceptionTest extends \Ezzatron\Typhoon\Test\ExceptionTestCase
 {
   /**
    * @return string
    */
   protected function exceptionClass()
   {
-    return __NAMESPACE__.'\UnsupportedAttributeException';
+    return __NAMESPACE__.'\RequiredAttributeException';
   }
 
   /**
@@ -40,16 +40,16 @@ class UnsupportedAttributeExceptionTest extends \Ezzatron\Typhoon\Test\Exception
   }
 
   /**
-   * @covers Ezzatron\Typhoon\Attribute\Exception\UnsupportedAttributeException::__construct
+   * @covers Ezzatron\Typhoon\Attribute\Exception\RequiredAttributeException::__construct
    */
   public function testConstructor()
   {
     $this->assertEquals(
-      "The attribute '".$this->_attribute."' is not supported by '".$this->_holder."'."
+      "The attribute '".$this->_attribute."' is required by '".$this->_holder."'."
       , $this->exceptionFixture()->getMessage()
     );
     $this->assertEquals(
-      "The attribute '".$this->_attribute."' is not supported."
+      "The attribute '".$this->_attribute."' is required."
       , $this->exceptionFixture(array($this->_attribute))->getMessage()
     );
 

@@ -75,6 +75,11 @@ class CollectionTest extends \Ezzatron\Typhoon\Test\TestCase
     $this->assertFalse($this->_collection->exists('foo'));
     $this->assertFalse(isset($this->_collection['foo']));
     $this->assertEquals(0, count($this->_collection));
+
+    $array = array(0 => 'doom', 'foo' => 'bar', 'baz' => 'qux');
+    $this->_collection = new Collection($array);
+
+    $this->assertEquals(array(0 => 'doom', 'foo' => 'bar', 'baz' => 'qux'), iterator_to_array($this->_collection, true));
   }
 
   /**

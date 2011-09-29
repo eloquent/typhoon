@@ -16,12 +16,19 @@ use Ezzatron\Typhoon\Attribute\AttributeSignature;
 
 abstract class BaseDynamicType implements DynamicType
 {
-  /**
-   * @return AttributeSignature
-   */
-  static public function attributeSignature()
+  public function __construct(Attributes $attributes = null)
   {
-    return new AttributeSignature;
+    if (null === $attributes)
+    {
+      $attributes = new Attributes;
+    }
+    else
+    {
+      $attributes = clone $attributes;
+    }
+
+    $attributes->setSignature(static::attributeSignature($this));
+    $this->attributes = $attributes;
   }
 
   /**
@@ -29,14 +36,42 @@ abstract class BaseDynamicType implements DynamicType
    */
   public function typhoonAttributes()
   {
-    if (!$this->attributes)
-    {
-      $this->attributes = new Attributes;
-      $this->attributes->setSignature(static::attributeSignature());
-    }
-
     return $this->attributes;
   }
+
+  /**
+   * @param BaseDynamicType $type
+   *
+   * @return AttributeSignature
+   */
+  static protected function attributeSignature(BaseDynamicType $type)
+  {
+    $class = get_called_class();
+
+    if (!array_key_exists($class, self::$attributeSignatures))
+    {
+      $attributeSignature = new AttributeSignature;
+      $attributeSignature->setHolder($class);
+      static::configureAttributeSignature($attributeSignature, $type);
+
+      self::$attributeSignatures[$class] = $attributeSignature;
+    }
+
+    return self::$attributeSignatures[$class];
+  }
+
+  /**
+   * @param AttributeSignature $attributeSignature
+   * @param BaseDynamicType $type
+   *
+   * @return AttributeSignature
+   */
+  static protected function configureAttributeSignature(AttributeSignature $attributeSignature, BaseDynamicType $type) {}
+
+  /**
+   * @var array
+   */
+  static protected $attributeSignatures = array();
 
   /**
    * @var Attributes

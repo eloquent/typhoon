@@ -19,38 +19,106 @@ class AttributesTest extends \Ezzatron\Typhoon\Test\TestCase
   /**
    * @return array
    */
-  public function undefinedAttributeData()
+  public function unsupportedAttributeData()
   {
     return array(
-      array('offsetExists', 'bar'),
-      array('offsetGet', 'bar'),
-      array('offsetSet', 'bar', 'baz'),
-      array('offsetUnset', 'bar'),
+      array('offsetExists', 'baz'),
+      array('offsetGet', 'baz'),
+      array('offsetSet', 'baz', 'splat'),
+      array('offsetUnset', 'baz'),
     );
   }
 
   protected function setUp()
   {
     $this->_signature = new AttributeSignature;
-    $this->_signature['foo'] = new StringType;
+    $this->_signature->setHolder('holder');
+    $this->_signature->set('foo', new StringType, true);
+    $this->_signature->set('bar', new StringType);
 
     $this->_attributes = new Attributes;
+    $this->_attributes['foo'] = 'baz';
+  }
+
+  /**
+   * @covers Ezzatron\Typhoon\Attribute\Attributes::setSignature
+   * @covers Ezzatron\Typhoon\Attribute\Attributes::signature
+   * @covers Ezzatron\Typhoon\Attribute\Attributes::assert
+   */
+  public function testSignature()
+  {
+    $this->assertNull($this->_attributes->signature());
+
+    $this->_attributes->setSignature($this->_signature);
+
+    $this->assertEquals($this->_signature, $this->_attributes->signature());
+  }
+
+  /**
+   * @covers Ezzatron\Typhoon\Attribute\Attributes::setSignature
+   * @covers Ezzatron\Typhoon\Attribute\Attributes::signature
+   * @covers Ezzatron\Typhoon\Attribute\Attributes::assert
+   */
+  public function testSignatureFailureType()
+  {
+    $this->_attributes->set('foo', null);
+
+    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnexpectedTypeException');
     $this->_attributes->setSignature($this->_signature);
   }
 
   /**
    * @covers Ezzatron\Typhoon\Attribute\Attributes::setSignature
    * @covers Ezzatron\Typhoon\Attribute\Attributes::signature
+   * @covers Ezzatron\Typhoon\Attribute\Attributes::assert
    */
-  public function testSignature()
+  public function testSignatureFailureRequired()
   {
-    $attributes = new Attributes;
+    $this->_attributes->remove('foo');
 
-    $this->assertInstanceOf(__NAMESPACE__.'\AttributeSignature', $attributes->signature());
+    $this->setExpectedException(__NAMESPACE__ . '\Exception\RequiredAttributeException');
+    $this->_attributes->setSignature($this->_signature);
+  }
 
-    $attributes->setSignature($this->_signature);
+  /**
+   * @covers Ezzatron\Typhoon\Attribute\Attributes::remove
+   */
+  public function testRemove()
+  {
+    $this->_attributes['foo'] = 'baz';
+    $this->_attributes['bar'] = 'qux';
 
-    $this->assertSame($this->_signature, $attributes->signature());
+    $this->assertTrue($this->_attributes->exists('foo'));
+    $this->assertTrue($this->_attributes->exists('bar'));
+    
+    $this->_attributes->remove('foo');
+    $this->_attributes->remove('bar');
+
+    $this->assertFalse($this->_attributes->exists('foo'));
+    $this->assertFalse($this->_attributes->exists('bar'));
+
+    $this->_attributes['foo'] = 'baz';
+    $this->_attributes['bar'] = 'qux';
+    $this->_attributes->setSignature($this->_signature);
+
+    $this->assertTrue($this->_attributes->exists('foo'));
+    $this->assertTrue($this->_attributes->exists('bar'));
+
+    $this->_attributes->remove('bar');
+
+    $this->assertFalse($this->_attributes->exists('bar'));
+  }
+
+  /**
+   * @covers Ezzatron\Typhoon\Attribute\Attributes::remove
+   */
+  public function testRemoveFailureRequired()
+  {
+    $this->_attributes['foo'] = 'baz';
+    $this->_attributes->setSignature($this->_signature);
+
+    $this->setExpectedException(__NAMESPACE__ . '\Exception\RequiredAttributeException');
+    $this->_attributes->remove('foo');
   }
 
   /**
@@ -61,16 +129,23 @@ class AttributesTest extends \Ezzatron\Typhoon\Test\TestCase
     $this->_attributes['foo'] = 'bar';
 
     $this->assertEquals('bar', $this->_attributes['foo']);
+
+    $this->_attributes->setSignature($this->_signature);
+    $this->_attributes['foo'] = 'baz';
+
+    $this->assertEquals('baz', $this->_attributes['foo']);
   }
 
   /**
    * @covers Ezzatron\Typhoon\Attribute\Attributes
-   * @dataProvider undefinedAttributeData
+   * @dataProvider unsupportedAttributeData
    */
-  public function testUndefinedAttribute($method)
+  public function testUnsupportedAttribute($method)
   {
     $arguments = func_get_args();
     array_shift($arguments);
+
+    $this->_attributes->setSignature($this->_signature);
 
     $this->setExpectedException(__NAMESPACE__.'\Exception\UnsupportedAttributeException');
     call_user_func_array(array($this->_attributes, $method), $arguments);

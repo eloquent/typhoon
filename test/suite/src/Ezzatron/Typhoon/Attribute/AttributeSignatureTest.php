@@ -42,14 +42,38 @@ class AttributeSignatureTest extends \Ezzatron\Typhoon\Test\TestCase
   }
 
   /**
+   * @covers Ezzatron\Typhoon\Attribute\AttributeSignature::setHolder
+   * @covers Ezzatron\Typhoon\Attribute\AttributeSignature::holder
+   */
+  public function testHolder()
+  {
+    $this->assertNull($this->_signature->holder());
+
+    $this->_signature->setHolder('foo');
+
+    $this->assertEquals('foo', $this->_signature->holder());
+  }
+
+  /**
    * @covers Ezzatron\Typhoon\Attribute\AttributeSignature
    */
   public function testSignature()
   {
     $type = Phake::mock('Ezzatron\Typhoon\Type\Type');
-    $this->_signature['foo'] = $type;
+    $this->_signature->set('foo', $type);
 
-    $this->assertEquals($type, $this->_signature['foo']);
+    $this->assertSame($type, $this->_signature['foo']);
+    $this->assertFalse($this->_signature->isRequired('foo'));
+
+    $type = Phake::mock('Ezzatron\Typhoon\Type\Type');
+    $this->_signature->set('foo', $type, true);
+
+    $this->assertSame($type, $this->_signature['foo']);
+    $this->assertTrue($this->_signature->isRequired('foo'));
+
+    $this->_signature->remove('foo');
+
+    $this->assertFalse($this->_signature->keyExists('foo'));
   }
 
   /**

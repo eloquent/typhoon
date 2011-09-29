@@ -16,20 +16,6 @@ use Ezzatron\Typhoon\Attribute\AttributeSignature;
 class ObjectType extends Dynamic\BaseDynamicType
 {
   /**
-   * @return AttributeSignature
-   */
-  static public function attributeSignature()
-  {
-    if (!self::$attributeSignature)
-    {
-      self::$attributeSignature = new AttributeSignature;
-      self::$attributeSignature[self::ATTRIBUTE_INSTANCE_OF] = new StringType;
-    }
-
-    return self::$attributeSignature;
-  }
-
-  /**
    * @param mixed value
    *
    * @return boolean
@@ -44,10 +30,16 @@ class ObjectType extends Dynamic\BaseDynamicType
     return is_object($value);
   }
 
-  const ATTRIBUTE_INSTANCE_OF = 'instanceOf';
-
   /**
-   * @var AttributeSignature
+   * @param AttributeSignature $attributeSignature
+   * @param BaseDynamicType $type
+   *
+   * @return AttributeSignature
    */
-  static protected $attributeSignature;
+  static protected function configureAttributeSignature(AttributeSignature $attributeSignature, Dynamic\BaseDynamicType $type)
+  {
+    $attributeSignature[self::ATTRIBUTE_INSTANCE_OF] = new StringType;
+  }
+
+  const ATTRIBUTE_INSTANCE_OF = 'instanceOf';
 }

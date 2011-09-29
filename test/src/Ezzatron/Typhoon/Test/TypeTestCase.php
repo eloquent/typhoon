@@ -11,24 +11,19 @@
 
 namespace Ezzatron\Typhoon\Test;
 
+use Ezzatron\Typhoon\Attribute\Attributes;
+use ReflectionClass;
+
 abstract class TypeTestCase extends TestCase
 {
   /**
    * @return Type
    */
-  protected function typeFixture(array $attributes = null)
+  protected function typeFixture(Attributes $attributes = null)
   {
-    if (null === $attributes) $attributes = array();
-
     $class = $this->typeClass();
-    $type = new $class;
 
-    foreach ($attributes as $key => $value)
-    {
-      $type->typhoonAttributes()->set($key, $value);
-    }
-
-    return $type;
+    return new $class($attributes);
   }
 
   /**
@@ -51,6 +46,14 @@ abstract class TypeTestCase extends TestCase
     return $this->_stream;
   }
 
+  protected function setUp()
+  {
+    $reflector = new ReflectionClass('Ezzatron\Typhoon\Type\Dynamic\BaseDynamicType');
+    $property = $reflector->getProperty('attributeSignatures');
+    $property->setAccessible(true);
+    $property->setValue(null, array());
+  }
+
   protected function tearDown()
   {
     if ($this->_stream) fclose($this->_stream);
@@ -60,7 +63,7 @@ abstract class TypeTestCase extends TestCase
    * @dataProvider typeValues
    * @group typhoon_types
    */
-  public function testTyphoonCheck($expected, $value, $attributes = null)
+  public function testTyphoonCheck($expected, $value, Attributes $attributes = null)
   {
     $this->assertEquals($expected, $this->typeFixture($attributes)->typhoonCheck($value));
   }

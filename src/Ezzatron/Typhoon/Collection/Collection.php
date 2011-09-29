@@ -28,6 +28,19 @@ use Ezzatron\Typhoon\Typhoon;
 
 class Collection implements ArrayAccess, Countable, IteratorAggregate
 {
+  public function __construct(array $values = null)
+  {
+    if (null === $values)
+    {
+      $values = array();
+    }
+
+    foreach ($values as $key => $value)
+    {
+      $this->set($key, $value);
+    }
+  }
+
   /**
    * @param integer|string $key
    *
@@ -38,6 +51,18 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
     $this->assertKeyGet($key);
 
     return isset($this->values[$key]);
+  }
+
+  /**
+   * @param integer|string $key
+   *
+   * @return boolean
+   */
+  public function keyExists($key)
+  {
+    $this->assertKeyGet($key);
+
+    return array_key_exists($key, $this->values);
   }
 
   /**
@@ -67,15 +92,13 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
    */
   public function get($key, $default = null)
   {
-    $this->assertKeyGet($key);
-
-    if (!array_key_exists($key, $this->values))
+    if (1 == func_num_args())
     {
-      if (1 == func_num_args())
-      {
-        throw new Exception\UndefinedKeyException(new String((string)$key));
-      }
+      $this->assertKeyExists($key);
+    }
 
+    if (!$this->keyExists($key))
+    {
       return $default;
     }
 
@@ -212,6 +235,17 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
   protected function assertKeyGet($key)
   {
     $this->assertKey($key, false);
+  }
+
+  /**
+   * @param mixed $key
+   */
+  protected function assertKeyExists($key)
+  {
+    if (!$this->keyExists($key))
+    {
+      throw new Exception\UndefinedKeyException(new String((string)$key));
+    }
   }
 
   /**

@@ -13,6 +13,7 @@ namespace Ezzatron\Typhoon\Type;
 
 use Phake;
 use stdClass;
+use Ezzatron\Typhoon\Attribute\Attributes;
 
 class TypeTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
 {
@@ -51,5 +52,5 @@ class TypeTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
    * @dataProvider typeValues
    * @group typhoon_types
    */
-  public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
+  public function testTyphoonCheck($expected, $value, Attributes $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
 }

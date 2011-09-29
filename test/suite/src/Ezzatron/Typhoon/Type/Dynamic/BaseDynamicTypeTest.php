@@ -12,6 +12,7 @@
 namespace Ezzatron\Typhoon\Type\Dynamic;
 
 use Phake;
+use ReflectionClass;
 use Ezzatron\Typhoon\Attribute\Attributes;
 use Ezzatron\Typhoon\Attribute\AttributeSignature;
 
@@ -25,23 +26,48 @@ class BaseDynamicTypeTest extends \Ezzatron\Typhoon\Test\TestCase
   }
 
   /**
-   * @covers Ezzatron\Typhoon\Type\Dynamic\BaseDynamicType::attributeSignature
+   * @covers Ezzatron\Typhoon\Type\Dynamic\BaseDynamicType::__construct
+   * @covers Ezzatron\Typhoon\Type\Dynamic\BaseDynamicType::typhoonAttributes
    */
-  public function testAttributeSignature()
+  public function testConstruct()
   {
-    $this->assertEquals(new AttributeSignature, BaseDynamicType::attributeSignature());
+    $expectedSignature = new AttributeSignature;
+    $expectedSignature->setHolder(get_class($this->_type));
+
+    $expected = new Attributes;
+    $expected->setSignature($expectedSignature);
+
+    $this->assertEquals($expected, $this->_type->typhoonAttributes());
+
+
+    $this->_type = Phake::partialMock(__NAMESPACE__.'\BaseDynamicType', new Attributes);
+
+    $expectedSignature = new AttributeSignature;
+    $expectedSignature->setHolder(get_class($this->_type));
+
+    $expected = new Attributes;
+    $expected->setSignature($expectedSignature);
+
+    $this->assertEquals($expected, $this->_type->typhoonAttributes());
   }
 
   /**
-   * @covers Ezzatron\Typhoon\Type\Dynamic\BaseDynamicType::typhoonAttributes
+   * @covers Ezzatron\Typhoon\Type\Dynamic\BaseDynamicType::attributeSignature
+   * @covers Ezzatron\Typhoon\Type\Dynamic\BaseDynamicType::configureAttributeSignature
    */
-  public function testTyphoonAttributes()
+  public function testAttributeSignature()
   {
-    $expected = new Attributes;
-    $expected->setSignature(new AttributeSignature);
+    $reflector = new ReflectionClass(__NAMESPACE__.'\BaseDynamicType');
+    $property = $reflector->getProperty('attributeSignatures');
+    $property->setAccessible(true);
+    $property->setValue(null, array());
 
-    $type = $this->getMockForAbstractClass(__NAMESPACE__.'\BaseDynamicType');
-    $this->assertEquals($expected, $type->typhoonAttributes());
+    $expected = new AttributeSignature;
+    $expected->setHolder(get_class($this->_type));
+    $actual = $this->_type->typhoonAttributes()->signature();
+    
+    $this->assertEquals($expected, $actual);
+    $this->assertEquals($actual, $this->_type->typhoonAttributes()->signature());
   }
 
   /**

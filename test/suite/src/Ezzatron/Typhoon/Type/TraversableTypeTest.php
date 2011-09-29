@@ -15,6 +15,7 @@ use Phake;
 use ReflectionClass;
 use ReflectionObject;
 use stdClass;
+use Ezzatron\Typhoon\Attribute\Attributes;
 use Ezzatron\Typhoon\Attribute\AttributeSignature;
 use Ezzatron\Typhoon\Type\Composite\AndType;
 use Ezzatron\Typhoon\Type\Composite\OrType;
@@ -29,8 +30,8 @@ class TraversableTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
   {
     $iterator = Phake::mock('Iterator');
     $iteratorAggregate = Phake::mock('IteratorAggregate');
-    $attributesIterator = array(TraversableType::ATTRIBUTE_INSTANCE_OF => get_class($iterator));
-    $attributesNonTraversable = array(TraversableType::ATTRIBUTE_INSTANCE_OF => 'stdClass');
+    $attributesIterator = new Attributes(array(TraversableType::ATTRIBUTE_INSTANCE_OF => get_class($iterator)));
+    $attributesNonTraversable = new Attributes(array(TraversableType::ATTRIBUTE_INSTANCE_OF => 'stdClass'));
 
     return array(
       array(false, null),                             // #0: null
@@ -62,22 +63,58 @@ class TraversableTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
   }
 
   /**
+   * @covers Ezzatron\Typhoon\Type\TraversableType::__construct
+   * @covers Ezzatron\Typhoon\Type\TraversableType::typhoonAttributes
+   */
+  public function testConstruct()
+  {
+    $type = $this->typeFixture();
+
+    $expectedSignature = new AttributeSignature;
+    $expectedSignature->setHolder(get_class($type));
+    $expectedSignature[TraversableType::ATTRIBUTE_INSTANCE_OF] = new StringType;
+
+    $expected = new Attributes;
+    $expected->setSignature($expectedSignature);
+
+    $this->assertEquals($expected, $type->typhoonAttributes());
+
+
+    $type = $this->typeFixture(new Attributes);
+
+    $expectedSignature = new AttributeSignature;
+    $expectedSignature->setHolder(get_class($type));
+    $expectedSignature[TraversableType::ATTRIBUTE_INSTANCE_OF] = new StringType;
+
+    $expected = new Attributes;
+    $expected->setSignature($expectedSignature);
+
+    $this->assertEquals($expected, $type->typhoonAttributes());
+  }
+
+  /**
    * @covers Ezzatron\Typhoon\Type\TraversableType::attributeSignature
+   * @covers Ezzatron\Typhoon\Type\TraversableType::configureAttributeSignature
    */
   public function testAttributeSignature()
   {
-    $reflector = new ReflectionClass($this->typeClass());
-    $property = $reflector->getProperty('attributeSignature');
+    $reflector = new ReflectionClass(__NAMESPACE__.'\TraversableType');
+    $property = $reflector->getProperty('attributeSignatures');
     $property->setAccessible(true);
-    $property->setValue(null, null);
+    $property->setValue(null, array());
 
     $expected = new AttributeSignature;
+    $expected->setHolder($this->typeClass());
     $expected[TraversableType::ATTRIBUTE_INSTANCE_OF] = new StringType;
 
-    $actual = TraversableType::attributeSignature();
+    $object = new TraversableType;
+    $actual = $object->typhoonAttributes()->signature();
 
     $this->assertEquals($expected, $actual);
-    $this->assertSame($actual, TraversableType::attributeSignature());
+
+    $object = new TraversableType;
+
+    $this->assertEquals($actual, $object->typhoonAttributes()->signature());
   }
 
   /**
@@ -155,5 +192,5 @@ class TraversableTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
    * @dataProvider typeValues
    * @group typhoon_types
    */
-  public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
+  public function testTyphoonCheck($expected, $value, Attributes $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
 }

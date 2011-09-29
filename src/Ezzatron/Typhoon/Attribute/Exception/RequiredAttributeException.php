@@ -13,7 +13,7 @@ namespace Ezzatron\Typhoon\Attribute\Exception;
 
 use Ezzatron\Typhoon\Primitive\String;
 
-class UnsupportedAttributeException extends Exception
+class RequiredAttributeException extends Exception
 {
   /**
    * @param String $attribute
@@ -22,7 +22,7 @@ class UnsupportedAttributeException extends Exception
    */
   public function __construct(String $attribute, String $holder = null, \Exception $previous = null)
   {
-    $message = "The attribute '".$attribute."' is not supported";
+    $message = "The attribute '".$attribute."' is required";
     if (null === $holder)
     {
       $message .= '.';

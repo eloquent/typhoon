@@ -12,11 +12,71 @@
 namespace Ezzatron\Typhoon\Attribute;
 
 use Ezzatron\Typhoon\Collection\Collection;
+use Ezzatron\Typhoon\Primitive\Boolean;
+use Ezzatron\Typhoon\Primitive\String;
+use Ezzatron\Typhoon\Type\BooleanType;
 use Ezzatron\Typhoon\Type\StringType;
 use Ezzatron\Typhoon\Type\TypeType;
 
 class AttributeSignature extends Collection
 {
+  /**
+   * @param string $holder
+   */
+  public function setHolder($holder)
+  {
+    new String($holder);
+
+    $this->holder = $holder;
+  }
+
+  /**
+   * @return string
+   */
+  public function holder() {
+    return $this->holder;
+  }
+  
+  /**
+   * @param integer|string $key
+   * @param mixed $value
+   * @param boolean $required
+   */
+  public function set($key, $value, $required = null)
+  {
+    if (null === $required)
+    {
+      $required = false;
+    }
+    new Boolean($required);
+    
+    $this->required[$key] = $required;
+
+    parent::set($key, $value);
+  }
+
+  /**
+   * @param integer|string $key
+   */
+  public function remove($key)
+  {
+    parent::remove($key);
+
+    unset($this->required[$key]);
+  }
+
+  /**
+   * @param type $key
+   *
+   * @return boolean
+   */
+  public function isRequired($key)
+  {
+    $this->assertKeyExists($key);
+    
+    return $this->required[$key];
+  }
+
   /**
    * @return Type
    */
@@ -42,4 +102,14 @@ class AttributeSignature extends Collection
   {
     return false;
   }
+
+  /**
+   * @var array
+   */
+  protected $required = array();
+
+  /**
+   * @var string
+   */
+  protected $holder;
 }

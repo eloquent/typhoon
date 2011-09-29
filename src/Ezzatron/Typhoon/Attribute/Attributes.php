@@ -23,6 +23,7 @@ class Attributes extends Collection
   public function setSignature(AttributeSignature $signature)
   {
     $this->signature = $signature;
+    $this->assert();
   }
 
   /**
@@ -32,10 +33,34 @@ class Attributes extends Collection
   {
     if (!$this->signature)
     {
-      $this->signature = new AttributeSignature;
+      return null;
+    }
+    
+    return clone $this->signature;
+  }
+
+  /**
+   * @param integer|string $key
+   */
+  public function remove($key)
+  {
+    $this->assertKeyGet($key);
+    
+    if ($this->signature && $this->signature->isRequired($key))
+    {
+        $holder = $this->signature->holder();
+        if (null !== $holder)
+        {
+          $holder = new String($holder);
+        }
+
+        throw new Exception\RequiredAttributeException(
+          new String($key)
+          , $holder
+        );
     }
 
-    return $this->signature;
+    parent::remove($key);
   }
 
   /**
@@ -53,6 +78,11 @@ class Attributes extends Collection
    */
   protected function valueType($key)
   {
+    if (!$this->signature)
+    {
+      return parent::valueType($key);
+    }
+
     return $this->signature[$key];
   }
   
@@ -63,13 +93,50 @@ class Attributes extends Collection
   protected function assertKey($key, $allowNull)
   {
     parent::assertKey($key, $allowNull);
-    
-    if (!isset($this->signature[$key]))
+
+    if (!$this->signature)
     {
+      return;
+    }
+
+    if (!$this->signature->keyExists($key))
+    {
+      $holder = $this->signature->holder();
+      if (null !== $holder)
+      {
+        $holder = new String($holder);
+      }
+
       throw new Exception\UnsupportedAttributeException(
-        new String(get_class($this))
-        , new String($key)
+        new String($key)
+        , $holder
       );
+    }
+  }
+
+  protected function assert()
+  {
+    foreach ($this->signature as $key => $type)
+    {
+      if ($this->signature->isRequired($key) && !$this->keyExists($key))
+      {
+        $holder = $this->signature->holder();
+        if (null !== $holder)
+        {
+          $holder = new String($holder);
+        }
+
+        throw new Exception\RequiredAttributeException(
+          new String($key)
+          , $holder
+        );
+      }
+    }
+
+    foreach ($this->values as $key => $value)
+    {
+      $this->assertKeyGet($key);
+      $this->assertValue($key, $value);
     }
   }
 
