@@ -11,6 +11,7 @@
 
 namespace Ezzatron\Typhoon\Type\Registry;
 
+use Ezzatron\Typhoon\Attribute\Attributes;
 use Ezzatron\Typhoon\Type\ArrayType;
 use Ezzatron\Typhoon\Type\BooleanType;
 use Ezzatron\Typhoon\Type\CallbackType;
@@ -165,6 +166,12 @@ class TypeRegistryTest extends \Ezzatron\Typhoon\Test\TestCase
 
     $this->assertEquals($alias_2, $this->_registry->alias($typeName_1));
     $this->assertEquals($alias_2, $this->_registry->alias($type_1));
+
+    $type = new ObjectType(new Attributes(array(
+      ObjectType::ATTRIBUTE_INSTANCE_OF => 'foo',
+    )));
+
+    $this->assertEquals(TypeRegistry::TYPE_OBJECT, $this->_registry->alias($type));
   }
 
   /**
