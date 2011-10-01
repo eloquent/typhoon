@@ -86,6 +86,14 @@ class AttributeSignature extends Collection
   }
 
   /**
+   * @return boolean
+   */
+  protected function allowEmptyKeyForSet()
+  {
+    return false;
+  }
+
+  /**
    * @param mixed $key
    *
    * @return Type
@@ -96,20 +104,12 @@ class AttributeSignature extends Collection
   }
 
   /**
-   * @return boolean
+   * @var string
    */
-  protected function allowEmptyKey()
-  {
-    return false;
-  }
+  protected $holder;
 
   /**
    * @var array
    */
   protected $required = array();
-
-  /**
-   * @var string
-   */
-  protected $holder;
 }

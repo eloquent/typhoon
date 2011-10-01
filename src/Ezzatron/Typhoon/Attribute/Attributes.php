@@ -14,6 +14,7 @@ namespace Ezzatron\Typhoon\Attribute;
 use Ezzatron\Typhoon\Collection\Collection;
 use Ezzatron\Typhoon\Primitive\String;
 use Ezzatron\Typhoon\Type\StringType;
+use Ezzatron\Typhoon\Type\Type;
 
 class Attributes extends Collection
 {
@@ -44,7 +45,7 @@ class Attributes extends Collection
    */
   public function remove($key)
   {
-    $this->assertKeyGet($key);
+    $this->assertKeyExists($key);
     
     if ($this->signature && $this->signature->isRequired($key))
     {
@@ -72,6 +73,14 @@ class Attributes extends Collection
   }
 
   /**
+   * @return boolean
+   */
+  protected function allowEmptyKeyForSet()
+  {
+    return false;
+  }
+
+  /**
    * @param mixed $key
    *
    * @return Type
@@ -87,12 +96,12 @@ class Attributes extends Collection
   }
   
   /**
+   * @param Type $type
    * @param mixed $key
-   * @param boolean $allowNull
    */
-  protected function assertKey($key, $allowNull)
+  protected function assertKey(Type $type, $key)
   {
-    parent::assertKey($key, $allowNull);
+    parent::assertKey($type, $key);
 
     if (!$this->signature)
     {
@@ -135,17 +144,9 @@ class Attributes extends Collection
 
     foreach ($this->values as $key => $value)
     {
-      $this->assertKeyGet($key);
+      $this->assertKeyForGet($key);
       $this->assertValue($key, $value);
     }
-  }
-
-  /**
-   * @return boolean
-   */
-  protected function allowEmptyKey()
-  {
-    return false;
   }
 
   /**

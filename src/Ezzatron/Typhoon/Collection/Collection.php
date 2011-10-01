@@ -17,13 +17,12 @@ use Countable;
 use IteratorAggregate;
 use Ezzatron\Typhoon\Assertion\TypeAssertion;
 use Ezzatron\Typhoon\Type\Composite\OrType;
-use Ezzatron\Typhoon\Primitive\Boolean;
 use Ezzatron\Typhoon\Primitive\String;
-use Ezzatron\Typhoon\Type\BooleanType;
 use Ezzatron\Typhoon\Type\IntegerType;
 use Ezzatron\Typhoon\Type\MixedType;
 use Ezzatron\Typhoon\Type\NullType;
 use Ezzatron\Typhoon\Type\StringType;
+use Ezzatron\Typhoon\Type\Type;
 use Ezzatron\Typhoon\Typhoon;
 
 class Collection implements ArrayAccess, Countable, IteratorAggregate
@@ -48,7 +47,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
    */
   public function exists($key)
   {
-    $this->assertKeyGet($key);
+    $this->assertKeyForGet($key);
 
     return isset($this->values[$key]);
   }
@@ -60,7 +59,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
    */
   public function keyExists($key)
   {
-    $this->assertKeyGet($key);
+    $this->assertKeyForGet($key);
 
     return array_key_exists($key, $this->values);
   }
@@ -71,7 +70,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
    */
   public function set($key, $value)
   {
-    $this->assertKeySet($key);
+    $this->assertKeyForSet($key);
     $this->assertValue($key, $value);
 
     if (null === $key)
@@ -110,12 +109,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
    */
   public function remove($key)
   {
-    $this->assertKeyGet($key);
-
-    if (!array_key_exists($key, $this->values))
-    {
-      throw new Exception\UndefinedKeyException(new String((string)$key));
-    }
+    $this->assertKeyExists($key);
 
     unset($this->values[$key]);
   }
@@ -154,7 +148,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
    */
   public function offsetUnset($key)
   {
-    $this->remove($key);
+    try
+    {
+      $this->remove($key);
+    }
+    catch (Exception\UndefinedKeyException $e) {}
   }
 
   /**
@@ -186,6 +184,38 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
   }
 
   /**
+   * @return Type
+   */
+  protected function keyGetType()
+  {
+    return $this->keyType();
+  }
+
+  /**
+   * @return Type
+   */
+  protected function keySetType()
+  {
+    if (!$this->allowEmptyKeyForSet()) {
+      return $this->keyType();
+    }
+
+    $type = new OrType;
+    $type->addTyphoonType($this->keyType());
+    $type->addTyphoonType(new NullType);
+
+    return $type;
+  }
+
+  /**
+   * @return boolean
+   */
+  protected function allowEmptyKeyForSet()
+  {
+    return true;
+  }
+
+  /**
    * @param mixed $key
    *
    * @return Type
@@ -193,48 +223,6 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
   protected function valueType($key)
   {
     return new MixedType;
-  }
-
-  /**
-   * @param mixed $key
-   * @param boolean $allowNull
-   */
-  protected function assertKey($key, $allowNull)
-  {
-    new Boolean($allowNull);
-
-    if ($allowNull)
-    {
-      $type = new OrType;
-      $type->addTyphoonType($this->keyType());
-      $type->addTyphoonType(new NullType);
-    }
-    else
-    {
-      $type = $this->keyType();
-    }
-
-    $assertion = $this->typeAssertion();
-    $assertion->setType($type);
-    $assertion->setValue($key);
-
-    $assertion->assert();
-  }
-
-  /**
-   * @param mixed $key
-   */
-  protected function assertKeySet($key)
-  {
-    $this->assertKey($key, $this->allowEmptyKey());
-  }
-
-  /**
-   * @param mixed $key
-   */
-  protected function assertKeyGet($key)
-  {
-    $this->assertKey($key, false);
   }
 
   /**
@@ -250,23 +238,49 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 
   /**
    * @param mixed $key
+   */
+  protected function assertKeyForSet($key)
+  {
+    $this->assertKey($this->keySetType(), $key);
+  }
+
+  /**
+   * @param mixed $key
+   */
+  protected function assertKeyForGet($key)
+  {
+    $this->assertKey($this->keyGetType(), $key);
+  }
+
+  /**
+   * @param Type $type
+   * @param mixed $key
+   */
+  protected function assertKey(Type $type, $key)
+  {
+    $this->assertType($type, $key);
+  }
+
+  /**
+   * @param mixed $key
    * @param mixed $value
    */
   protected function assertValue($key, $value)
   {
-    $assertion = $this->typeAssertion();
-    $assertion->setType($this->valueType($key));
-    $assertion->setValue($value);
-
-    $assertion->assert();
+    $this->assertType($this->valueType($key), $value);
   }
 
   /**
-   * @return boolean
+   * @param Type $type
+   * @param mixed $value
    */
-  protected function allowEmptyKey()
+  protected function assertType(Type $type, $value)
   {
-    return true;
+    $assertion = $this->typeAssertion();
+    $assertion->setType($type);
+    $assertion->setValue($value);
+
+    $assertion->assert();
   }
 
   /**

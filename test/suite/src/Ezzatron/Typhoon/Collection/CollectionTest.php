@@ -25,7 +25,6 @@ class CollectionTest extends \Ezzatron\Typhoon\Test\TestCase
       array('get'),
       array('remove'),
       array('offsetGet'),
-      array('offsetUnset'),
     );
   }
 
@@ -80,6 +79,18 @@ class CollectionTest extends \Ezzatron\Typhoon\Test\TestCase
     $this->_collection = new Collection($array);
 
     $this->assertEquals(array(0 => 'doom', 'foo' => 'bar', 'baz' => 'qux'), iterator_to_array($this->_collection, true));
+  }
+
+  /**
+   * @covers Ezzatron\Typhoon\Collection\Collection::keySetType
+   */
+  public function testKeySetType()
+  {
+    $this->_collection = Phake::partialMock(__NAMESPACE__.'\Collection');
+    Phake::when($this->_collection)->allowEmptyKeyForSet()->thenReturn(false);
+
+    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnexpectedTypeException');
+    $this->_collection[] = 'foo';
   }
 
   /**

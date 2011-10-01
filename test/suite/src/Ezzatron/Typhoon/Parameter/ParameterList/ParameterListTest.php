@@ -12,14 +12,13 @@
 namespace Ezzatron\Typhoon\Parameter\ParameterList;
 
 use Ezzatron\Typhoon\Parameter\Parameter;
-use Ezzatron\Typhoon\Primitive\Boolean;
 
 class ParameterListTest extends \Ezzatron\Typhoon\Test\TestCase
 {
   /**
    * @return array
    */
-  public function unexpectedArgumentData()
+  public function unexpectedTypeData()
   {
     return array(
       array('offsetExists', array('foo')),              // #0: non-integer index
@@ -45,125 +44,48 @@ class ParameterListTest extends \Ezzatron\Typhoon\Test\TestCase
   {
     $this->assertFalse($this->_parameterList->variableLength());
 
-    $this->_parameterList->setVariableLength(new Boolean(true));
+    $this->_parameterList->setVariableLength(true);
 
     $this->assertTrue($this->_parameterList->variableLength());
   }
 
   /**
-   * @covers Ezzatron\Typhoon\Parameter\ParameterList\ParameterList::offsetExists
-   * @covers Ezzatron\Typhoon\Parameter\ParameterList\ParameterList::offsetSet
-   * @covers Ezzatron\Typhoon\Parameter\ParameterList\ParameterList::offsetGet
+   * @covers Ezzatron\Typhoon\Parameter\ParameterList\ParameterList::assertKeyExists
    */
-  public function testArrayAccess()
+  public function testAssertKeyExists()
   {
-    $this->assertInstanceOf('ArrayAccess', $this->_parameterList);
-
-    $this->assertFalse(isset($this->_parameterList[0]));
-
     $this->_parameterList[] = $this->_parameter;
-
-    $this->assertTrue(isset($this->_parameterList[0]));
     $this->assertSame($this->_parameter, $this->_parameterList[0]);
-
-    $this->_parameterList[] = $this->_parameter;
-
-    $this->assertTrue(isset($this->_parameterList[1]));
-    $this->assertSame($this->_parameter, $this->_parameterList[1]);
   }
 
   /**
-   * @covers Ezzatron\Typhoon\Parameter\ParameterList\ParameterList::offsetGet
+   * @covers Ezzatron\Typhoon\Parameter\ParameterList\ParameterList::assertKeyExists
    */
-  public function testOffsetGetFailure()
+  public function testAssertKeyExistsFailure()
   {
     $this->setExpectedException(__NAMESPACE__.'\Exception\UndefinedParameterException');
     $this->_parameterList[0];
   }
 
   /**
-   * @covers Ezzatron\Typhoon\Parameter\ParameterList\ParameterList::offsetUnset
+   * @covers Ezzatron\Typhoon\Parameter\ParameterList\ParameterList::remove
    */
-  public function testOffsetUnsetFailure()
+  public function testRemoveFailure()
   {
     $this->setExpectedException('Ezzatron\Typhoon\Exception\NotImplementedException');
-    unset($this->_parameterList[0]);
+    $this->_parameterList->remove(0);
   }
 
   /**
-   * @covers Ezzatron\Typhoon\Parameter\ParameterList\ParameterList::offsetExists
-   * @covers Ezzatron\Typhoon\Parameter\ParameterList\ParameterList::offsetSet
-   * @covers Ezzatron\Typhoon\Parameter\ParameterList\ParameterList::offsetGet
-   * @dataProvider unexpectedArgumentData
+   * @covers Ezzatron\Typhoon\Parameter\ParameterList\ParameterList::keyType
+   * @covers Ezzatron\Typhoon\Parameter\ParameterList\ParameterList::keySetType
+   * @covers Ezzatron\Typhoon\Parameter\ParameterList\ParameterList::valueType
+   * @dataProvider unexpectedTypeData
    */
-  public function testUnexpectedArgumentFailure($method, array $arguments)
+  public function testUnexpectedTypeFailure($method, array $arguments)
   {
-    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnexpectedArgumentException');
+    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnexpectedTypeException');
     call_user_func_array(array($this->_parameterList, $method), $arguments);
-  }
-
-  /**
-   * @covers Ezzatron\Typhoon\Parameter\ParameterList\ParameterList::offsetSet
-   * @covers Ezzatron\Typhoon\Parameter\ParameterList\ParameterList::getIterator
-   */
-  public function testOffsetSetAndGetIterator()
-  {
-    $this->assertInstanceOf('Iterator', $this->_parameterList->getIterator());
-
-    $expected = array();
-    $this->assertEquals($expected, iterator_to_array($this->_parameterList->getIterator()));
-
-    $this->_parameterList[] = $this->_parameter;
-
-    $expected[] = $this->_parameter;
-    $this->assertEquals($expected, iterator_to_array($this->_parameterList->getIterator()));
-
-    $this->_parameterList[] = $this->_parameter;
-
-    $expected[] = $this->_parameter;
-    $this->assertEquals($expected, iterator_to_array($this->_parameterList->getIterator()));
-
-    $iterations = 0;
-    foreach ($this->_parameterList->getIterator() as $parameter)
-    {
-      $this->assertSame($this->_parameter, $parameter);
-
-      $iterations++;
-    }
-
-    $this->assertEquals(2, $iterations);
-  }
-
-  /**
-   * @covers Ezzatron\Typhoon\Parameter\ParameterList\ParameterList
-   */
-  public function testTraversable()
-  {
-    $this->assertInstanceOf('Traversable', $this->_parameterList);
-  }
-
-  /**
-   * @covers Ezzatron\Typhoon\Parameter\ParameterList\ParameterList::count
-   */
-  public function testCount()
-  {
-    $this->assertEquals(0, count($this->_parameterList));
-
-    $this->_parameterList[] = $this->_parameter;
-
-    $this->assertEquals(1, count($this->_parameterList));
-
-    $this->_parameterList[] = $this->_parameter;
-
-    $this->assertEquals(2, count($this->_parameterList));
-  }
-
-  /**
-   * @covers Ezzatron\Typhoon\Parameter\ParameterList\ParameterList
-   */
-  public function testCountable()
-  {
-    $this->assertInstanceOf('Countable', $this->_parameterList);
   }
 
   /**

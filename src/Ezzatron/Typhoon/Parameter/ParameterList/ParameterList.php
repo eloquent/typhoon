@@ -11,27 +11,26 @@
 
 namespace Ezzatron\Typhoon\Parameter\ParameterList;
 
-use ArrayAccess;
-use ArrayIterator;
-use Countable;
-use IteratorAggregate;
-use Ezzatron\Typhoon\Assertion\Exception\UnexpectedArgumentException;
+use Ezzatron\Typhoon\Collection\Collection;
+use Ezzatron\Typhoon\Collection\Exception\UndefinedKeyException;
 use Ezzatron\Typhoon\Exception\NotImplementedException;
-use Ezzatron\Typhoon\Parameter\Parameter;
 use Ezzatron\Typhoon\Primitive\Boolean;
 use Ezzatron\Typhoon\Primitive\Integer;
-use Ezzatron\Typhoon\Primitive\Null;
 use Ezzatron\Typhoon\Primitive\String;
-use Ezzatron\Typhoon\Type\ObjectType;
+use Ezzatron\Typhoon\Type\IntegerType;
+use Ezzatron\Typhoon\Type\NullType;
+use Ezzatron\Typhoon\Type\ParameterType;
 
-class ParameterList implements ArrayAccess, Countable, IteratorAggregate
+class ParameterList extends Collection
 {
   /**
-   * @param Boolean $variableLength
+   * @param boolean $variableLength
    */
-  public function setVariableLength(Boolean $variableLength)
+  public function setVariableLength($variableLength)
   {
-    $this->variableLength = $variableLength->value();
+    new Boolean($variableLength);
+
+    $this->variableLength = $variableLength;
   }
 
   /**
@@ -43,82 +42,53 @@ class ParameterList implements ArrayAccess, Countable, IteratorAggregate
   }
 
   /**
-   * @return boolean
+   * @param integer|string $key
    */
-  public function offsetExists($index)
+  public function remove($key)
   {
-    new Integer($index);
-
-    return isset($this->parameters[$index]);
+    throw new NotImplementedException(new String('Remove'));
   }
 
   /**
-   * @param integer $index
-   * @param Parameter $parameter
+   * @return Type
    */
-  public function offsetSet($index, $parameter)
+  protected function keyType()
   {
-    new Null($index);
-
-    if (!$parameter instanceof Parameter)
-    {
-      $parameterType = new ObjectType;
-      $parameterType->typhoonAttributes()->set(ObjectType::ATTRIBUTE_INSTANCE_OF, 'Ezzatron\Typhoon\Parameter\Parameter');
-
-      $parameterParameter = new Parameter;
-      $parameterParameter->setType($parameterType);
-
-      throw new UnexpectedArgumentException($parameter, new Integer(1), $parameterParameter);
-    }
-
-    $this->parameters[] = $parameter;
+    return new IntegerType;
   }
 
   /**
-   * @param integer $index
+   * @return Type
+   */
+  protected function keySetType()
+  {
+    return new NullType;
+  }
+
+  /**
+   * @param mixed $key
    *
-   * @return Parameter
+   * @return Type
    */
-  public function offsetGet($index)
+  protected function valueType($key)
   {
-    new Integer($index);
+    return new ParameterType;
+  }
 
-    if (isset($this[$index]))
+  /**
+   * @param mixed $key
+   */
+  protected function assertKeyExists($key)
+  {
+    try
     {
-      return $this->parameters[$index];
+      parent::assertKeyExists($key);
     }
-
-    throw new Exception\UndefinedParameterException(new Integer($index));
+    catch (UndefinedKeyException $e)
+    {
+      throw new Exception\UndefinedParameterException(new Integer($key), $e);
+    }
   }
-
-  /**
-   * @param integer $index
-   */
-  public function offsetUnset($index)
-  {
-    throw new NotImplementedException(new String('Unset'));
-  }
-
-  /**
-   * @return ArrayIterator
-   */
-  public function getIterator()
-  {
-    return new ArrayIterator($this->parameters);
-  }
-
-  /**
-   * @return integer
-   */
-  public function count()
-  {
-    return count($this->parameters);
-  }
-
-  /**
-   * @var array
-   */
-  protected $parameters = array();
 
   /**
    * @var boolean
