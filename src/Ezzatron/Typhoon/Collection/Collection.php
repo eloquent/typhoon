@@ -48,6 +48,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
   public function exists($key)
   {
     $this->assertKeyForGet($key);
+    $this->normaliseKey($key);
 
     return isset($this->values[$key]);
   }
@@ -60,6 +61,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
   public function keyExists($key)
   {
     $this->assertKeyForGet($key);
+    $this->normaliseKey($key);
 
     return array_key_exists($key, $this->values);
   }
@@ -71,6 +73,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
   public function set($key, $value)
   {
     $this->assertKeyForSet($key);
+    $this->normaliseKey($key);
     $this->assertValue($key, $value);
 
     if (null === $key)
@@ -101,6 +104,8 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
       return $default;
     }
 
+    $this->normaliseKey($key);
+
     return $this->values[$key];
   }
 
@@ -110,6 +115,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
   public function remove($key)
   {
     $this->assertKeyExists($key);
+    $this->normaliseKey($key);
 
     unset($this->values[$key]);
   }
@@ -282,6 +288,11 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 
     $assertion->assert();
   }
+
+  /**
+   * @param mixed $key
+   */
+  protected function normaliseKey(&$key) {}
 
   /**
    * @return TypeAssertion

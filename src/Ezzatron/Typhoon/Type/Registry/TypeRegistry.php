@@ -11,12 +11,24 @@
 
 namespace Ezzatron\Typhoon\Type\Registry;
 
-use ArrayAccess;
-use Ezzatron\Typhoon\Exception\NotImplementedException;
-use Ezzatron\Typhoon\Primitive\Integer;
+use Ezzatron\Typhoon\Collection\Collection;
+use Ezzatron\Typhoon\Collection\Exception\UndefinedKeyException;
 use Ezzatron\Typhoon\Primitive\String;
+use Ezzatron\Typhoon\Type\ArrayType;
+use Ezzatron\Typhoon\Type\BooleanType;
+use Ezzatron\Typhoon\Type\CallbackType;
+use Ezzatron\Typhoon\Type\FloatType;
+use Ezzatron\Typhoon\Type\IntegerType;
+use Ezzatron\Typhoon\Type\MixedType;
+use Ezzatron\Typhoon\Type\NullType;
+use Ezzatron\Typhoon\Type\ObjectType;
+use Ezzatron\Typhoon\Type\ResourceType;
+use Ezzatron\Typhoon\Type\StringType;
+use Ezzatron\Typhoon\Type\TraversableType;
+use Ezzatron\Typhoon\Type\Type;
+use Ezzatron\Typhoon\Type\TypeType;
 
-class TypeRegistry implements ArrayAccess
+class TypeRegistry extends Collection
 {
   public function __construct()
   {
@@ -25,24 +37,24 @@ class TypeRegistry implements ArrayAccess
 
   public function registerDefaults()
   {
-    $this[self::TYPE_ARRAY] = 'Ezzatron\Typhoon\Type\ArrayType';
-    $this[self::TYPE_BOOLEAN] = 'Ezzatron\Typhoon\Type\BooleanType';
-    $this[self::TYPE_CALLBACK] = 'Ezzatron\Typhoon\Type\CallbackType';
-    $this[self::TYPE_FLOAT] = 'Ezzatron\Typhoon\Type\FloatType';
-    $this[self::TYPE_INTEGER] = 'Ezzatron\Typhoon\Type\IntegerType';
-    $this[self::TYPE_MIXED] = 'Ezzatron\Typhoon\Type\MixedType';
-    $this[self::TYPE_NULL] = 'Ezzatron\Typhoon\Type\NullType';
-    $this[self::TYPE_OBJECT] = 'Ezzatron\Typhoon\Type\ObjectType';
-    $this[self::TYPE_RESOURCE] = 'Ezzatron\Typhoon\Type\ResourceType';
-    $this[self::TYPE_STRING] = 'Ezzatron\Typhoon\Type\StringType';
-    $this[self::TYPE_TRAVERSABLE] = 'Ezzatron\Typhoon\Type\TraversableType';
+    $this[self::TYPE_ARRAY] = new ArrayType;;
+    $this[self::TYPE_BOOLEAN] = new BooleanType;
+    $this[self::TYPE_CALLBACK] = new CallbackType;
+    $this[self::TYPE_FLOAT] = new FloatType;
+    $this[self::TYPE_INTEGER] = new IntegerType;
+    $this[self::TYPE_MIXED] = new MixedType;
+    $this[self::TYPE_NULL] = new NullType;
+    $this[self::TYPE_OBJECT] = new ObjectType;
+    $this[self::TYPE_RESOURCE] = new ResourceType;
+    $this[self::TYPE_STRING] = new StringType;
+    $this[self::TYPE_TRAVERSABLE] = new TraversableType;
 
-    $this[self::ALIAS_BOOL] = 'Ezzatron\Typhoon\Type\BooleanType';
-    $this[self::ALIAS_CALLABLE] = 'Ezzatron\Typhoon\Type\CallbackType';
-    $this[self::ALIAS_DOUBLE] = 'Ezzatron\Typhoon\Type\FloatType';
-    $this[self::ALIAS_INT] = 'Ezzatron\Typhoon\Type\IntegerType';
-    $this[self::ALIAS_LONG] = 'Ezzatron\Typhoon\Type\IntegerType';
-    $this[self::ALIAS_REAL] = 'Ezzatron\Typhoon\Type\FloatType';
+    $this[self::ALIAS_BOOL] = $this[self::TYPE_BOOLEAN];
+    $this[self::ALIAS_CALLABLE] = $this[self::TYPE_CALLBACK];
+    $this[self::ALIAS_DOUBLE] = $this[self::TYPE_FLOAT];
+    $this[self::ALIAS_INT] = $this[self::TYPE_INTEGER];
+    $this[self::ALIAS_LONG] = $this[self::TYPE_INTEGER];
+    $this[self::ALIAS_REAL] = $this[self::TYPE_FLOAT];
   }
 
   /**
@@ -57,75 +69,127 @@ class TypeRegistry implements ArrayAccess
       $type = get_class($type);
     }
 
-    if (!isset($this->aliases[$type]))
+    $aliases = $this->aliases();
+
+    if (!array_key_exists($type, $aliases))
     {
       throw new Exception\UnregisteredTypeException(new String($type));
     }
 
-    return $this->aliases[$type];
+    return $aliases[$type];
   }
 
   /**
-   * @param string $alias
+   * @param integer|string $key
+   * @param mixed $value
+   */
+  public function set($key, $value)
+  {
+    $this->aliases = NULL;
+
+    parent::set($key, $value);
+  }
+
+  /**
+   * @param integer|string $key
+   * @param mixed $default
    *
+   * @return mixed
+   */
+  public function get($key, $default = null)
+  {
+    $type = call_user_func_array(array('parent', 'get'), func_get_args());
+
+    if ($type instanceof Type)
+    {
+      return clone $type;
+    }
+    
+    return $type;
+  }
+
+  /**
+   * @param integer|string $key
+   */
+  public function remove($key)
+  {
+    $this->aliases = NULL;
+
+    parent::remove($key);
+  }
+
+  /**
+   * @return Type
+   */
+  protected function keyType()
+  {
+    return new StringType;
+  }
+
+  /**
    * @return boolean
    */
-  public function offsetExists($alias)
+  protected function allowEmptyKeyForSet()
   {
-    new String($alias);
-
-    return isset($this->types[mb_strtolower($alias)]);
+    return false;
   }
 
   /**
-   * @param string $alias
-   * @param string $class
-   */
-  public function offsetSet($alias, $class)
-  {
-    new String($alias);
-    new String($class);
-
-    $this->types[mb_strtolower($alias)] = $class;
-    $this->indexAliases();
-  }
-
-  /**
-   * @param string $alias
+   * @param mixed $key
    *
-   * @return string
+   * @return Type
    */
-  public function offsetGet($alias)
+  protected function valueType($key)
   {
-    if (!$this->offsetExists($alias))
-    {
-      throw new Exception\UnregisteredTypeAliasException(new String($alias));
-    }
-
-    return $this->types[mb_strtolower($alias)];
+    return new TypeType;
   }
 
   /**
-   * @param string $alias
+   * @param mixed $key
    */
-  public function offsetUnset($alias)
+  protected function assertKeyExists($key)
   {
-    throw new NotImplementedException(new String('Unset'));
+    try
+    {
+      parent::assertKeyExists($key);
+    }
+    catch (UndefinedKeyException $e)
+    {
+      throw new Exception\UnregisteredTypeAliasException(new String($key), $e);
+    }
   }
 
-  protected function indexAliases()
+  /**
+   * @param mixed $key
+   */
+  protected function normaliseKey(&$key)
   {
-    $this->aliases = array();
+    $key = mb_strtolower($key);
+  }
 
-    foreach ($this->types as $alias => $class)
+  /**
+   * @return array
+   */
+  protected function aliases()
+  {
+    if (null === $this->aliases)
     {
-      if (isset($this->aliases[$class]))
-      {
-        continue;
-      }
+      $this->aliases = array();
 
-      $this->aliases[$class] = $alias;
+      foreach ($this->values as $alias => $type)
+      {
+        $class = get_class($type);
+
+        if (isset($this->aliases[$class]))
+        {
+          continue;
+        }
+
+        $this->aliases[$class] = $alias;
+      }
     }
+
+    return $this->aliases;
   }
 
   const TYPE_ARRAY = 'array';
@@ -146,14 +210,9 @@ class TypeRegistry implements ArrayAccess
   const ALIAS_INT = 'int';
   const ALIAS_LONG = 'long';
   const ALIAS_REAL = 'real';
-
+  
   /**
    * @var array
    */
-  protected $types = array();
-
-  /**
-   * @var array
-   */
-  protected $aliases = array();
+  protected $aliases;
 }

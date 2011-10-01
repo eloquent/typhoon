@@ -33,7 +33,7 @@ class TyphaxTypeRendererTest extends \Ezzatron\Typhoon\Test\TestCase
   {
     $alias = 'foo';
 
-    $this->_typeRegistry[$alias] = get_class($this->_type);
+    $this->_typeRegistry[$alias] = $this->_type;
     $this->_renderer->setTypeRegistry($this->_typeRegistry);
 
     $this->assertEquals($alias, $this->_renderer->render($this->_type));
@@ -57,7 +57,7 @@ class TyphaxTypeRendererTest extends \Ezzatron\Typhoon\Test\TestCase
     $type = Phake::partialMock('Ezzatron\Typhoon\Type\Dynamic\DynamicType');
     Phake::when($type)->typhoonAttributes()->thenReturn($attributes);
 
-    $this->_typeRegistry[$alias] = get_class($type);
+    $this->_typeRegistry[$alias] = $type;
     $this->_renderer->setTypeRegistry($this->_typeRegistry);
 
     $expected = "foo(bar='baz', qux=1, doom=0.1)";
@@ -78,7 +78,7 @@ class TyphaxTypeRendererTest extends \Ezzatron\Typhoon\Test\TestCase
     $type = Phake::partialMock('Ezzatron\Typhoon\Type\Dynamic\DynamicType');
     Phake::when($type)->typhoonAttributes()->thenReturn($attributes);
 
-    $this->_typeRegistry[$alias] = get_class($type);
+    $this->_typeRegistry[$alias] = $type;
     $this->_renderer->setTypeRegistry($this->_typeRegistry);
 
     $expected = 'foo';

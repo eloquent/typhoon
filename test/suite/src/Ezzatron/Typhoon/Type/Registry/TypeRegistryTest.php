@@ -11,6 +11,19 @@
 
 namespace Ezzatron\Typhoon\Type\Registry;
 
+use Ezzatron\Typhoon\Type\ArrayType;
+use Ezzatron\Typhoon\Type\BooleanType;
+use Ezzatron\Typhoon\Type\CallbackType;
+use Ezzatron\Typhoon\Type\FloatType;
+use Ezzatron\Typhoon\Type\IntegerType;
+use Ezzatron\Typhoon\Type\MixedType;
+use Ezzatron\Typhoon\Type\NullType;
+use Ezzatron\Typhoon\Type\ObjectType;
+use Ezzatron\Typhoon\Type\ResourceType;
+use Ezzatron\Typhoon\Type\StringType;
+use Ezzatron\Typhoon\Type\TraversableType;
+use Ezzatron\Typhoon\Type\Type;
+use Ezzatron\Typhoon\Type\TypeType;
 use Phake;
 
 class TypeRegistryTest extends \Ezzatron\Typhoon\Test\TestCase
@@ -21,24 +34,24 @@ class TypeRegistryTest extends \Ezzatron\Typhoon\Test\TestCase
   public function defaultTypes()
   {
     return array(
-      array('array', 'Ezzatron\Typhoon\Type\ArrayType'),
-      array('boolean', 'Ezzatron\Typhoon\Type\BooleanType'),
-      array('callback', 'Ezzatron\Typhoon\Type\CallbackType'),
-      array('float', 'Ezzatron\Typhoon\Type\FloatType'),
-      array('integer', 'Ezzatron\Typhoon\Type\IntegerType'),
-      array('mixed', 'Ezzatron\Typhoon\Type\MixedType'),
-      array('null', 'Ezzatron\Typhoon\Type\NullType'),
-      array('object', 'Ezzatron\Typhoon\Type\ObjectType'),
-      array('resource', 'Ezzatron\Typhoon\Type\ResourceType'),
-      array('string', 'Ezzatron\Typhoon\Type\StringType'),
-      array('traversable', 'Ezzatron\Typhoon\Type\TraversableType'),
+      array('array', new ArrayType),
+      array('boolean', new BooleanType),
+      array('callback', new CallbackType),
+      array('float', new FloatType),
+      array('integer', new IntegerType),
+      array('mixed', new MixedType),
+      array('null', new NullType),
+      array('object', new ObjectType),
+      array('resource', new ResourceType),
+      array('string', new StringType),
+      array('traversable', new TraversableType),
 
-      array('bool', 'Ezzatron\Typhoon\Type\BooleanType', true),
-      array('callable', 'Ezzatron\Typhoon\Type\CallbackType', true),
-      array('double', 'Ezzatron\Typhoon\Type\FloatType', true),
-      array('int', 'Ezzatron\Typhoon\Type\IntegerType', true),
-      array('long', 'Ezzatron\Typhoon\Type\IntegerType', true),
-      array('real', 'Ezzatron\Typhoon\Type\FloatType', true),
+      array('bool', new BooleanType, true),
+      array('callable', new CallbackType, true),
+      array('double', new FloatType, true),
+      array('int', new IntegerType, true),
+      array('long', new IntegerType, true),
+      array('real', new FloatType, true),
     );
   }
 
@@ -61,7 +74,8 @@ class TypeRegistryTest extends \Ezzatron\Typhoon\Test\TestCase
     parent::setUp();
     
     $this->_registry = new TypeRegistry;
-    $this->_typeName = 'foo';
+    $this->_type = Phake::mock('Ezzatron\Typhoon\Type\Type');
+    $this->_typeName = get_class($this->_type);
   }
 
   /**
@@ -80,7 +94,7 @@ class TypeRegistryTest extends \Ezzatron\Typhoon\Test\TestCase
    * @covers Ezzatron\Typhoon\Type\Registry\TypeRegistry::registerDefaults
    * @dataProvider defaultTypes
    */
-  public function testRegisterDefaults($alias, $type, $is_alias = null)
+  public function testRegisterDefaults($alias, Type $type, $is_alias = null)
   {
     if (null === $is_alias)
     {
@@ -123,7 +137,7 @@ class TypeRegistryTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Type\Registry\TypeRegistry::alias
-   * @covers Ezzatron\Typhoon\Type\Registry\TypeRegistry::indexAliases
+   * @covers Ezzatron\Typhoon\Type\Registry\TypeRegistry::aliases
    */
   public function testAlias()
   {
@@ -134,17 +148,17 @@ class TypeRegistryTest extends \Ezzatron\Typhoon\Test\TestCase
     $typeName_2 = get_class($type_2);
     $alias_1 = 'foo';
     $alias_2 = 'bar';
-    $this->_registry[$alias_1] = $typeName_1;
+    $this->_registry[$alias_1] = $type_1;
 
     $this->assertEquals($alias_1, $this->_registry->alias($typeName_1));
     $this->assertEquals($alias_1, $this->_registry->alias($type_1));
 
-    $this->_registry[$alias_2] = $typeName_1;
+    $this->_registry[$alias_2] = $type_1;
 
     $this->assertEquals($alias_1, $this->_registry->alias($typeName_1));
     $this->assertEquals($alias_1, $this->_registry->alias($type_1));
 
-    $this->_registry[$alias_1] = $typeName_2;
+    $this->_registry[$alias_1] = $type_2;
 
     $this->assertEquals($alias_1, $this->_registry->alias($typeName_2));
     $this->assertEquals($alias_1, $this->_registry->alias($type_2));
@@ -163,33 +177,38 @@ class TypeRegistryTest extends \Ezzatron\Typhoon\Test\TestCase
   }
 
   /**
-   * @covers Ezzatron\Typhoon\Type\Registry\TypeRegistry::offsetExists
-   * @covers Ezzatron\Typhoon\Type\Registry\TypeRegistry::offsetSet
-   * @covers Ezzatron\Typhoon\Type\Registry\TypeRegistry::offsetGet
+   * @covers Ezzatron\Typhoon\Type\Registry\TypeRegistry::set
+   * @covers Ezzatron\Typhoon\Type\Registry\TypeRegistry::get
+   * @covers Ezzatron\Typhoon\Type\Registry\TypeRegistry::remove
+   * @covers Ezzatron\Typhoon\Type\Registry\TypeRegistry::normaliseKey
    */
-  public function testArrayAccess()
+  public function testRegistry()
   {
     $this->assertInstanceOf('ArrayAccess', $this->_registry);
 
     $this->assertFalse(isset($this->_registry['foo']));
+    $this->assertNull($this->_registry->get('foo', NULL));
 
-    $this->_registry['Foo'] = $this->_typeName;
+    $this->_registry['Foo'] = $this->_type;
 
     $this->assertTrue(isset($this->_registry['foo']));
-    $this->assertEquals($this->_typeName, $this->_registry['foo']);
+    $this->assertEquals($this->_type, $this->_registry['foo']);
+    $this->assertNotSame($this->_type, $this->_registry['foo']);
 
-    $this->_registry['bar'] = $this->_typeName;
+    $this->_registry['bar'] = $this->_type;
 
     $this->assertTrue(isset($this->_registry['BAR']));
-    $this->assertEquals($this->_typeName, $this->_registry['BAR']);
+    $this->assertTrue(isset($this->_registry['bar']));
+    $this->assertEquals($this->_type, $this->_registry['BAR']);
+    $this->assertEquals($this->_type, $this->_registry['bar']);
 
-    $this->_registry['bar'] = 'bar';
+    unset($this->_registry['FOO']);
 
-    $this->assertEquals('bar', $this->_registry['bar']);
+    $this->assertFalse(isset($this->_registry['foo']));
   }
 
   /**
-   * @covers Ezzatron\Typhoon\Type\Registry\TypeRegistry::offsetGet
+   * @covers Ezzatron\Typhoon\Type\Registry\TypeRegistry::assertKeyExists
    */
   public function testOffsetGetFailure()
   {
@@ -198,23 +217,14 @@ class TypeRegistryTest extends \Ezzatron\Typhoon\Test\TestCase
   }
 
   /**
-   * @covers Ezzatron\Typhoon\Type\Registry\TypeRegistry::offsetUnset
-   */
-  public function testOffsetUnsetFailure()
-  {
-    $this->setExpectedException('Ezzatron\Typhoon\Exception\NotImplementedException');
-    unset($this->_registry[0]);
-  }
-
-  /**
-   * @covers Ezzatron\Typhoon\Type\Registry\TypeRegistry::offsetExists
-   * @covers Ezzatron\Typhoon\Type\Registry\TypeRegistry::offsetSet
-   * @covers Ezzatron\Typhoon\Type\Registry\TypeRegistry::offsetGet
+   * @covers Ezzatron\Typhoon\Type\Registry\TypeRegistry::keyType
+   * @covers Ezzatron\Typhoon\Type\Registry\TypeRegistry::allowEmptyKeyForSet
+   * @covers Ezzatron\Typhoon\Type\Registry\TypeRegistry::valueType
    * @dataProvider unexpectedArgumentData
    */
   public function testUnexpectedArgumentFailure($method, array $arguments)
   {
-    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnexpectedArgumentException');
+    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnexpectedTypeException');
     call_user_func_array(array($this->_registry, $method), $arguments);
   }
 
@@ -222,6 +232,11 @@ class TypeRegistryTest extends \Ezzatron\Typhoon\Test\TestCase
    * @var TypeRegistry
    */
   protected $_registry;
+
+  /**
+   * @var Type
+   */
+  protected $_type;
 
   /**
    * @var string
