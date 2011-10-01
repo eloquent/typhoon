@@ -11,7 +11,7 @@
 
 namespace Ezzatron\Typhoon\Type;
 
-class StringType implements Type
+class StringType extends BaseType
 {
   /**
    * @param mixed value

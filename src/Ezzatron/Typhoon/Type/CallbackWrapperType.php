@@ -4,7 +4,7 @@ namespace Ezzatron\Typhoon\Type;
 
 use Ezzatron\Typhoon\Primitive\Callback as CallbackPrimitive;
 
-class CallbackWrapperType implements Type
+class CallbackWrapperType extends BaseType
 {
   /**
    * @param mixed value

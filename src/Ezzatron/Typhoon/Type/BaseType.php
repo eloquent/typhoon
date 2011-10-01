@@ -11,15 +11,15 @@
 
 namespace Ezzatron\Typhoon\Type;
 
-class TypeType extends BaseType
+abstract class BaseType implements Type
 {
   /**
-   * @param mixed value
+   * @param Type $type
    *
    * @return boolean
    */
-  public function typhoonCheck($value)
+  public function equalsTyphoonType(Type $type)
   {
-    return $value instanceof Type;
+    return $this == $type;
   }
 }

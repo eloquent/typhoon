@@ -11,9 +11,10 @@
 
 namespace Ezzatron\Typhoon\Type\Composite;
 
+use Ezzatron\Typhoon\Type\BaseType;
 use Ezzatron\Typhoon\Type\Type;
 
-abstract class BaseCompositeType implements CompositeType
+abstract class BaseCompositeType extends BaseType implements CompositeType
 {
   /**
    * @param Type $type

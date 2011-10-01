@@ -11,7 +11,7 @@
 
 namespace Ezzatron\Typhoon\Type;
 
-class CallbackType implements Type
+class CallbackType extends BaseType
 {
   /**
    * @param mixed value

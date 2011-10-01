@@ -11,9 +11,10 @@
 
 namespace Ezzatron\Typhoon\Type\Traversable;
 
+use Ezzatron\Typhoon\Type\BaseType;
 use Ezzatron\Typhoon\Type\Type;
 
-abstract class BaseTraversableType implements TraversableType
+abstract class BaseTraversableType extends BaseType implements TraversableType
 {
   /**
    * @param Type $subType

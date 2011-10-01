@@ -11,7 +11,7 @@
 
 namespace Ezzatron\Typhoon\Type;
 
-class IntegerType implements Type
+class IntegerType extends BaseType
 {
   /**
    * @param mixed value

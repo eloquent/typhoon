@@ -11,7 +11,7 @@
 
 namespace Ezzatron\Typhoon\Type;
 
-class MixedType implements Type
+class MixedType extends BaseType
 {
   /**
    * @param mixed value

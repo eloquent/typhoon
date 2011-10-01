@@ -13,8 +13,9 @@ namespace Ezzatron\Typhoon\Type\Dynamic;
 
 use Ezzatron\Typhoon\Attribute\Attributes;
 use Ezzatron\Typhoon\Attribute\AttributeSignature;
+use Ezzatron\Typhoon\Type\BaseType;
 
-abstract class BaseDynamicType implements DynamicType
+abstract class BaseDynamicType extends BaseType implements DynamicType
 {
   public function __construct(Attributes $attributes = null)
   {

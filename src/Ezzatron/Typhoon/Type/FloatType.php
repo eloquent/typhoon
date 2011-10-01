@@ -11,7 +11,7 @@
 
 namespace Ezzatron\Typhoon\Type;
 
-class FloatType implements Type
+class FloatType extends BaseType
 {
   /**
    * @param mixed value

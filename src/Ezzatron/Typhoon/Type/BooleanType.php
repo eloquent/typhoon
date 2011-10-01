@@ -11,7 +11,7 @@
 
 namespace Ezzatron\Typhoon\Type;
 
-class BooleanType implements Type
+class BooleanType extends BaseType
 {
   /**
    * @param mixed value

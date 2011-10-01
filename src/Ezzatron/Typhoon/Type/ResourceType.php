@@ -11,7 +11,7 @@
 
 namespace Ezzatron\Typhoon\Type;
 
-class ResourceType implements Type
+class ResourceType extends BaseType
 {
   /**
    * @param mixed value

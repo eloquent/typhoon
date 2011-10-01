@@ -11,7 +11,7 @@
 
 namespace Ezzatron\Typhoon\Type;
 
-class NullType implements Type
+class NullType extends BaseType
 {
   /**
    * @param mixed value
