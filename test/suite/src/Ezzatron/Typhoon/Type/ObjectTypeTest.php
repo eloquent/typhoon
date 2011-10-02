@@ -66,7 +66,7 @@ class ObjectTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
   public function testConfigureAttributeSignature()
   {
     $expected = new AttributeSignature;
-    $expected->setHolder(new String($this->typeClass()));
+    $expected->setHolderName(new String($this->typeClass()));
     $expected[ObjectType::ATTRIBUTE_INSTANCE_OF] = new StringType;
 
     $object = new ObjectType;
@@ -96,7 +96,7 @@ class ObjectTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
   public function testSetTyphoonAttributeFailure()
   {
     $type = $this->typeFixture();
-    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnexpectedArgumentException');
+    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnexpectedAttributeException');
     $type->typhoonAttributes()->set(ObjectType::ATTRIBUTE_INSTANCE_OF, 1);
   }
 

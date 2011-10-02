@@ -16,26 +16,26 @@ use Ezzatron\Typhoon\Parameter\Parameter;
 use Ezzatron\Typhoon\Primitive\Integer;
 use Ezzatron\Typhoon\Primitive\String;
 
-class MissingArgumentException extends Exception
+class MissingAttributeException extends Exception
 {
   /**
-   * @param Integer $index
+   * @param String $attributeName
    * @param String $expectedTypeName
-   * @param String $parameterName
+   * @param String $holderName
    * @param \Exception $previous
    */
-  public function __construct(Integer $index, String $expectedTypeName, String $parameterName = null, \Exception $previous = null)
+  public function __construct(String $attributeName, String $expectedTypeName, String $holderName = null, \Exception $previous = null)
   {
-    $this->index = $index->value();
+    $this->attributeName = $attributeName->value();
     $this->expectedTypeName = $expectedTypeName->value();
 
-    $message = "Missing argument at index ".$this->index;
+    $message = "Missing required attribute '".$this->attributeName."'";
 
-    if ($parameterName)
+    if ($holderName)
     {
-      $this->parameterName = $parameterName->value();
-
-      $message .= " (".$this->parameterName.")";
+      $this->holderName = $holderName->value();
+      
+      $message .= " for '".$this->holderName."'";
     }
 
     $message .= " - expected '".$this->expectedTypeName."'.";
@@ -44,11 +44,11 @@ class MissingArgumentException extends Exception
   }
 
   /**
-   * @return integer
+   * @return string
    */
-  public function index()
+  public function attributeName()
   {
-    return $this->index;
+    return $this->attributeName;
   }
 
   /**
@@ -62,15 +62,15 @@ class MissingArgumentException extends Exception
   /**
    * @return string
    */
-  public function parameterName()
+  public function holderName()
   {
-    return $this->parameterName;
+    return $this->holderName;
   }
 
   /**
-   * @var integer
+   * @var string
    */
-  protected $index;
+  protected $attributeName;
 
   /**
    * @var string
@@ -80,5 +80,5 @@ class MissingArgumentException extends Exception
   /**
    * @var string
    */
-  protected $parameterName;
+  protected $holderName;
 }

@@ -34,7 +34,7 @@ class AttributesTest extends \Ezzatron\Typhoon\Test\TestCase
   protected function setUp()
   {
     $this->_signature = new AttributeSignature;
-    $this->_signature->setHolder(new String('holder'));
+    $this->_signature->setHolderName(new String('holder'));
     $this->_signature->set('foo', new StringType, new Boolean(true));
     $this->_signature->set('bar', new StringType);
 
@@ -60,12 +60,13 @@ class AttributesTest extends \Ezzatron\Typhoon\Test\TestCase
    * @covers Ezzatron\Typhoon\Attribute\Attributes::setSignature
    * @covers Ezzatron\Typhoon\Attribute\Attributes::signature
    * @covers Ezzatron\Typhoon\Attribute\Attributes::assert
+   * @covers Ezzatron\Typhoon\Attribute\Attributes::assertValue
    */
   public function testSignatureFailureType()
   {
     $this->_attributes->set('foo', null);
 
-    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnexpectedArgumentException');
+    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnexpectedAttributeException');
     $this->_attributes->setSignature($this->_signature);
   }
 
@@ -78,7 +79,7 @@ class AttributesTest extends \Ezzatron\Typhoon\Test\TestCase
   {
     $this->_attributes->remove('foo');
 
-    $this->setExpectedException(__NAMESPACE__ . '\Exception\RequiredAttributeException');
+    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\MissingAttributeException');
     $this->_attributes->setSignature($this->_signature);
   }
 
@@ -119,7 +120,7 @@ class AttributesTest extends \Ezzatron\Typhoon\Test\TestCase
     $this->_attributes['foo'] = 'baz';
     $this->_attributes->setSignature($this->_signature);
 
-    $this->setExpectedException(__NAMESPACE__ . '\Exception\RequiredAttributeException');
+    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\MissingAttributeException');
     $this->_attributes->remove('foo');
   }
 
@@ -149,7 +150,7 @@ class AttributesTest extends \Ezzatron\Typhoon\Test\TestCase
 
     $this->_attributes->setSignature($this->_signature);
 
-    $this->setExpectedException(__NAMESPACE__.'\Exception\UnsupportedAttributeException');
+    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnsupportedAttributeException');
     call_user_func_array(array($this->_attributes, $method), $arguments);
   }
 

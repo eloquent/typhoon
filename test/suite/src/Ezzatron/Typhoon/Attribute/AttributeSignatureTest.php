@@ -44,16 +44,16 @@ class AttributeSignatureTest extends \Ezzatron\Typhoon\Test\TestCase
   }
 
   /**
-   * @covers Ezzatron\Typhoon\Attribute\AttributeSignature::setHolder
-   * @covers Ezzatron\Typhoon\Attribute\AttributeSignature::holder
+   * @covers Ezzatron\Typhoon\Attribute\AttributeSignature::setHolderName
+   * @covers Ezzatron\Typhoon\Attribute\AttributeSignature::holderName
    */
-  public function testHolder()
+  public function testHolderName()
   {
-    $this->assertNull($this->_signature->holder());
+    $this->assertNull($this->_signature->holderName());
 
-    $this->_signature->setHolder(new String('foo'));
+    $this->_signature->setHolderName(new String('foo'));
 
-    $this->assertEquals('foo', $this->_signature->holder());
+    $this->assertEquals('foo', $this->_signature->holderName());
   }
 
   /**

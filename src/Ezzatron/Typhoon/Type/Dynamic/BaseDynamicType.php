@@ -53,7 +53,7 @@ abstract class BaseDynamicType extends BaseType implements DynamicType
     if (!array_key_exists($class, self::$attributeSignatures))
     {
       $attributeSignature = new AttributeSignature;
-      $attributeSignature->setHolder(new String($class));
+      $attributeSignature->setHolderName(new String($class));
       static::configureAttributeSignature($attributeSignature, $type);
 
       self::$attributeSignatures[$class] = $attributeSignature;

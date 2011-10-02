@@ -72,7 +72,7 @@ class TraversableTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
     $type = $this->typeFixture();
 
     $expectedSignature = new AttributeSignature;
-    $expectedSignature->setHolder(new String(get_class($type)));
+    $expectedSignature->setHolderName(new String(get_class($type)));
     $expectedSignature[TraversableType::ATTRIBUTE_INSTANCE_OF] = new StringType;
 
     $expected = new Attributes;
@@ -84,7 +84,7 @@ class TraversableTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
     $type = $this->typeFixture(new Attributes);
 
     $expectedSignature = new AttributeSignature;
-    $expectedSignature->setHolder(new String(get_class($type)));
+    $expectedSignature->setHolderName(new String(get_class($type)));
     $expectedSignature[TraversableType::ATTRIBUTE_INSTANCE_OF] = new StringType;
 
     $expected = new Attributes;
@@ -105,7 +105,7 @@ class TraversableTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
     $property->setValue(null, array());
 
     $expected = new AttributeSignature;
-    $expected->setHolder(new String($this->typeClass()));
+    $expected->setHolderName(new String($this->typeClass()));
     $expected[TraversableType::ATTRIBUTE_INSTANCE_OF] = new StringType;
 
     $object = new TraversableType;
@@ -135,7 +135,7 @@ class TraversableTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
   public function testSetTyphoonAttributeFailure()
   {
     $type = $this->typeFixture();
-    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnexpectedArgumentException');
+    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnexpectedAttributeException');
     $type->typhoonAttributes()->set(TraversableType::ATTRIBUTE_INSTANCE_OF, 1);
   }
 

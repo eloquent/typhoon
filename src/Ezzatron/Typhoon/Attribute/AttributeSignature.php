@@ -21,18 +21,18 @@ use Ezzatron\Typhoon\Type\TypeType;
 class AttributeSignature extends Collection
 {
   /**
-   * @param String $holder
+   * @param String $holderName
    */
-  public function setHolder(String $holder)
+  public function setHolderName(String $holderName)
   {
-    $this->holder = $holder->value();
+    $this->holderName = $holderName->value();
   }
 
   /**
    * @return string
    */
-  public function holder() {
-    return $this->holder;
+  public function holderName() {
+    return $this->holderName;
   }
   
   /**
@@ -107,7 +107,7 @@ class AttributeSignature extends Collection
   /**
    * @var string
    */
-  protected $holder;
+  protected $holderName;
 
   /**
    * @var array

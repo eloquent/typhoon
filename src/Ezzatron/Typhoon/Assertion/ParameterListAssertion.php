@@ -73,7 +73,20 @@ class ParameterListAssertion implements Assertion
       return;
     }
 
-    throw new Exception\MissingArgumentException(new Integer($index), $parameter);
+    $expectedTypeName = Typhoon::instance()->typeRenderer()->render(
+      $parameter->type()
+    );
+
+    if ($parameterName = $parameter->name())
+    {
+      $parameterName = new String($parameterName);
+    }
+
+    throw new Exception\MissingArgumentException(
+      new Integer($index)
+      , new String((string)$expectedTypeName)
+      , $parameterName
+    );
   }
 
   /**

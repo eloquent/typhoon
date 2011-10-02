@@ -11,7 +11,6 @@
 
 namespace Ezzatron\Typhoon\Assertion\Exception;
 
-use Ezzatron\Typhoon\Parameter\Parameter;
 use Ezzatron\Typhoon\Primitive\Integer;
 use Ezzatron\Typhoon\Primitive\String;
 
@@ -30,7 +29,7 @@ class MissingArgumentExceptionTest extends \Ezzatron\Typhoon\Test\ExceptionTestC
    */
   protected function defaultArguments()
   {
-    return array($this->_index, $this->_parameter);
+    return array($this->_index, $this->_expectedTypeName, $this->_parameterName);
   }
 
   protected function setUp()
@@ -38,15 +37,30 @@ class MissingArgumentExceptionTest extends \Ezzatron\Typhoon\Test\ExceptionTestC
     parent::setUp();
     
     $this->_index = new Integer(0);
-    $this->_parameter = new Parameter;
-    $this->_expectedTypeName = 'mixed';
+    $this->_expectedTypeName = new String('foo');
+    $this->_parameterName = new String('bar');
   }
 
   /**
-   * @covers Ezzatron\Typhoon\Assertion\Exception\MissingArgumentException::__construct
+   * @covers Ezzatron\Typhoon\Assertion\Exception\MissingArgumentException
    */
   public function testConstructor()
   {
+    $exception = $this->exceptionFixture();
+    $expected =
+      "Missing argument at index "
+      .$this->_index
+      ." (".$this->_parameterName.")"
+      ." - expected '"
+      .$this->_expectedTypeName
+      ."'."
+    ;
+
+    $this->assertEquals($expected, $exception->getMessage());
+    $this->assertEquals(0, $exception->index());
+    $this->assertEquals('foo', $exception->expectedTypeName());
+    $this->assertEquals('bar', $exception->parameterName());
+
     $expected =
       "Missing argument at index "
       .$this->_index
@@ -55,22 +69,7 @@ class MissingArgumentExceptionTest extends \Ezzatron\Typhoon\Test\ExceptionTestC
       ."'."
     ;
 
-    $this->assertEquals($expected, $this->exceptionFixture()->getMessage());
-
-    $parameterName = new String('foo');
-    $expected =
-      "Missing argument at index "
-      .$this->_index
-      ." (".$parameterName.")"
-      ." - expected '"
-      .$this->_expectedTypeName
-      ."'."
-    ;
-
-    $parameter = new Parameter;
-    $parameter->setName($parameterName);
-
-    $this->assertEquals($expected, $this->exceptionFixture(array($this->_index, $parameter))->getMessage());
+    $this->assertEquals($expected, $this->exceptionFixture(array($this->_index, $this->_expectedTypeName))->getMessage());
 
     parent::testConstructor();
   }
@@ -81,12 +80,12 @@ class MissingArgumentExceptionTest extends \Ezzatron\Typhoon\Test\ExceptionTestC
   protected $_index;
 
   /**
-   * @var Parameter
-   */
-  protected $_parameter;
-
-  /**
-   * @var string
+   * @var String
    */
   protected $_expectedTypeName;
+
+  /**
+   * @var String
+   */
+  protected $_parameterName;
 }

@@ -11,11 +11,16 @@
 
 namespace Ezzatron\Typhoon\Attribute;
 
+use Ezzatron\Typhoon\Assertion\Exception\MissingAttributeException;
+use Ezzatron\Typhoon\Assertion\Exception\UnexpectedArgumentException;
+use Ezzatron\Typhoon\Assertion\Exception\UnexpectedAttributeException;
+use Ezzatron\Typhoon\Assertion\Exception\UnsupportedAttributeException;
 use Ezzatron\Typhoon\Collection\Collection;
 use Ezzatron\Typhoon\Primitive\Integer;
 use Ezzatron\Typhoon\Primitive\String;
 use Ezzatron\Typhoon\Type\StringType;
 use Ezzatron\Typhoon\Type\Type;
+use Ezzatron\Typhoon\Typhoon;
 
 class Attributes extends Collection
 {
@@ -50,16 +55,20 @@ class Attributes extends Collection
     
     if ($this->signature && $this->signature->isRequired($key))
     {
-        $holder = $this->signature->holder();
-        if (null !== $holder)
-        {
-          $holder = new String($holder);
-        }
+      if ($holderName = $this->signature->holderName())
+      {
+        $holderName = new String($holderName);
+      }
 
-        throw new Exception\RequiredAttributeException(
-          new String($key)
-          , $holder
-        );
+      $expectedTypeName = Typhoon::instance()->typeRenderer()->render(
+        $this->valueType($key)
+      );
+
+      throw new MissingAttributeException(
+        new String($key)
+        , new String((string)$expectedTypeName)
+        , $holderName
+      );
     }
 
     parent::remove($key);
@@ -113,15 +122,14 @@ class Attributes extends Collection
 
     if (!$this->signature->keyExists($key))
     {
-      $holder = $this->signature->holder();
-      if (null !== $holder)
+      if ($holderName = $this->signature->holderName())
       {
-        $holder = new String($holder);
+        $holderName = new String($holderName);
       }
-
-      throw new Exception\UnsupportedAttributeException(
+      
+      throw new UnsupportedAttributeException(
         new String($key)
-        , $holder
+        , $holderName
       );
     }
   }
@@ -132,15 +140,19 @@ class Attributes extends Collection
     {
       if ($this->signature->isRequired($key) && !$this->keyExists($key))
       {
-        $holder = $this->signature->holder();
-        if (null !== $holder)
+        if ($holderName = $this->signature->holderName())
         {
-          $holder = new String($holder);
+          $holderName = new String($holderName);
         }
 
-        throw new Exception\RequiredAttributeException(
+        $expectedTypeName = Typhoon::instance()->typeRenderer()->render(
+          $this->valueType($key)
+        );
+
+        throw new MissingAttributeException(
           new String($key)
-          , $holder
+          , new String((string)$expectedTypeName)
+          , $holderName
         );
       }
     }
@@ -149,6 +161,35 @@ class Attributes extends Collection
     {
       $this->assertKeyForGet($key);
       $this->assertValue($key, $value);
+    }
+  }
+
+  /**
+   * @param mixed $key
+   * @param mixed $value
+   * @param Integer $index
+   * @param String $parameterName
+   */
+  protected function assertValue($key, $value, Integer $index = null, String $parameterName = null)
+  {
+    try
+    {
+      parent::assertValue($key, $value, $index, $parameterName);
+    }
+    catch (UnexpectedArgumentException $e)
+    {
+      if ($holderName = $this->signature->holderName())
+      {
+        $holderName = new String($holderName);
+      }
+
+      throw new UnexpectedAttributeException(
+        new String($e->typeName())
+        , new String($key)
+        , new String($e->expectedTypeName())
+        , $holderName
+        , $e
+      );
     }
   }
 
