@@ -66,7 +66,7 @@ abstract class Primitive
    */
   protected function typeAssertion()
   {
-    return Typhoon::instance()->typeAssertion();
+    return new TypeAssertion;
   }
 
   /**

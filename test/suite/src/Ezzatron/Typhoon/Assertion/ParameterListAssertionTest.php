@@ -11,12 +11,14 @@
 
 namespace Ezzatron\Typhoon\Assertion;
 
-use Phake;
 use Ezzatron\Typhoon\Typhoon;
 use Ezzatron\Typhoon\Parameter\Parameter;
 use Ezzatron\Typhoon\Parameter\ParameterList\ParameterList;
-use Ezzatron\Typhoon\Primitive\String;
 use Ezzatron\Typhoon\Primitive\Boolean;
+use Ezzatron\Typhoon\Primitive\Integer;
+use Ezzatron\Typhoon\Primitive\String;
+use Phake;
+use ReflectionObject;
 
 class ParameterListAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
 {
@@ -33,29 +35,24 @@ class ParameterListAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
   /**
    * @covers Ezzatron\Typhoon\Assertion\ParameterListAssertion::assert
    */
-  public function testAssertUseTypeAssertion()
+  public function testAssertUseParameterAssertion()
   {
     $argument_0 = 'foo';
     $argument_1 = 'bar';
     $arguments = array($argument_0, $argument_1);
 
-    $type_0 = Phake::mock('Ezzatron\Typhoon\Type\Type');
-    $type_1 = Phake::mock('Ezzatron\Typhoon\Type\Type');
+    $parameter_0 = Phake::mock('Ezzatron\Typhoon\Parameter\Parameter');
+    $parameter_1 = Phake::mock('Ezzatron\Typhoon\Parameter\Parameter');
 
-    $assertion_0 = Phake::mock(__NAMESPACE__.'\TypeAssertion');
-    $assertion_1 = Phake::mock(__NAMESPACE__.'\TypeAssertion');
-
-    $parameter_0 = clone $this->_parameter;
-    $parameter_0->setType($type_0);
-    $parameter_1 = clone $this->_parameter;
-    $parameter_1->setType($type_1);
+    $assertion_0 = Phake::mock(__NAMESPACE__.'\ParameterAssertion');
+    $assertion_1 = Phake::mock(__NAMESPACE__.'\ParameterAssertion');
 
     $parameterList = new ParameterList;
     $parameterList[] = $parameter_0;
     $parameterList[] = $parameter_1;
 
     $assertion = Phake::partialMock(__NAMESPACE__.'\ParameterListAssertion');
-    Phake::when($assertion)->typeAssertion()
+    Phake::when($assertion)->parameterAssertion(Phake::anyParameters())
       ->thenReturn($assertion_0)
       ->thenReturn($assertion_1)
     ;
@@ -66,14 +63,9 @@ class ParameterListAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
     $assertion->assert();
 
     Phake::inOrder(
-      Phake::verify($assertion_0)->setType($this->identicalTo($type_0))
-      , Phake::verify($assertion_0)->setValue($this->identicalTo($argument_0))
+      Phake::verify($assertion)->parameterAssertion($this->identicalTo($parameter_0), $argument_0, new Integer(0))
       , Phake::verify($assertion_0)->assert()
-    );
-
-    Phake::inOrder(
-      Phake::verify($assertion_1)->setType($this->identicalTo($type_1))
-      , Phake::verify($assertion_1)->setValue($this->identicalTo($argument_1))
+      , Phake::verify($assertion)->parameterAssertion($this->identicalTo($parameter_1), $argument_1, new Integer(1))
       , Phake::verify($assertion_1)->assert()
     );
 
@@ -224,13 +216,22 @@ class ParameterListAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
   }
 
   /**
-   * @covers Ezzatron\Typhoon\Assertion\ParameterListAssertion::typeAssertion
+   * @covers Ezzatron\Typhoon\Assertion\ParameterListAssertion::parameterAssertion
    */
-  public function testTypeAssertion()
+  public function testParameterAssertion()
   {
-    $expected = get_class(Typhoon::instance()->typeAssertion());
+    $assertion = new ParameterListAssertion;
 
-    $this->assertInstanceOf($expected, $this->_assertion->typeAssertion());
+    $expected = new ParameterAssertion;
+    $expected->setParameter($this->_parameter);
+    $expected->setValue('foo');
+    $expected->setIndex(new Integer(666));
+
+    $reflector = new ReflectionObject($assertion);
+    $method = $reflector->getMethod('parameterAssertion');
+    $method->setAccessible(true);
+
+    $this->assertEquals($expected, $method->invokeArgs($assertion, array($this->_parameter, 'foo', new Integer(666))));
   }
 
   /**

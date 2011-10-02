@@ -11,7 +11,6 @@
 
 namespace Ezzatron\Typhoon;
 
-use Ezzatron\Typhoon\Assertion\TypeAssertion;
 use Ezzatron\Typhoon\Type\Inspector\TypeInspector;
 use Ezzatron\Typhoon\Type\Registry\TypeRegistry;
 use Ezzatron\Typhoon\Type\Renderer\TypeRenderer;
@@ -40,14 +39,6 @@ class Typhoon
   public function install()
   {
     self::$instance = $this;
-  }
-
-  /**
-   * @return TypeAssertion
-   */
-  public function typeAssertion()
-  {
-    return new TypeAssertion;
   }
 
   /**

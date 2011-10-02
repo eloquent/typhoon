@@ -15,10 +15,11 @@ use ArrayAccess;
 use ArrayIterator;
 use Countable;
 use IteratorAggregate;
-use Ezzatron\Typhoon\Assertion\TypeAssertion;
+use Ezzatron\Typhoon\Assertion\ParameterAssertion;
 use Ezzatron\Typhoon\Assertion\Exception\UnexpectedArgumentException;
 use Ezzatron\Typhoon\Assertion\Exception\UnexpectedTypeException;
 use Ezzatron\Typhoon\Type\Composite\OrType;
+use Ezzatron\Typhoon\Parameter\Parameter;
 use Ezzatron\Typhoon\Primitive\Integer;
 use Ezzatron\Typhoon\Primitive\String;
 use Ezzatron\Typhoon\Type\IntegerType;
@@ -282,7 +283,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
       $parameterName = new String('key');
     }
 
-    $this->assertType($type, $key, $index, $parameterName);
+    $this->assertParameter($type, $key, $index, $parameterName);
   }
 
   /**
@@ -302,33 +303,21 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
       $parameterName = new String('value');
     }
 
-    $this->assertType($this->valueType($key), $value, $index, $parameterName);
+    $this->assertParameter($this->valueType($key), $value, $index, $parameterName);
   }
 
   /**
    * @param Type $type
    * @param mixed $value
    */
-  protected function assertType(Type $type, $value, Integer $index, String $parameterName)
+  protected function assertParameter(Type $type, $value, Integer $index, String $name)
   {
-    $assertion = $this->typeAssertion();
-    $assertion->setType($type);
-    $assertion->setValue($value);
+    $parameter = new Parameter;
+    $parameter->setType($type);
+    $parameter->setName($name);
 
-    try
-    {
-      $assertion->assert();
-    }
-    catch (UnexpectedTypeException $e)
-    {
-      throw new UnexpectedArgumentException(
-        new String($e->typeName())
-        , $index
-        , new String($e->expectedTypeName())
-        , $parameterName
-        , $e
-      );
-    }
+    $assertion = $this->parameterAssertion($parameter, $value, $index);
+    $assertion->assert();
   }
 
   /**
@@ -337,11 +326,20 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
   protected function normaliseKey(&$key) {}
 
   /**
-   * @return TypeAssertion
+   * @param Parameter $parameter
+   * @param mixed $value
+   * @param Integer $index
+   * 
+   * @return ParameterAssertion
    */
-  protected function typeAssertion()
+  protected function parameterAssertion(Parameter $parameter, $value, Integer $index)
   {
-    return Typhoon::instance()->typeAssertion();
+    $assertion = new ParameterAssertion;
+    $assertion->setParameter($parameter);
+    $assertion->setValue($value);
+    $assertion->setIndex($index);
+
+    return $assertion;
   }
 
   /**

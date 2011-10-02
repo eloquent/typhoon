@@ -13,6 +13,7 @@ namespace Ezzatron\Typhoon\Primitive;
 
 use Phake;
 use Ezzatron\Typhoon\Assertion\Exception\UnexpectedTypeException;
+use Ezzatron\Typhoon\Assertion\TypeAssertion;
 use Ezzatron\Typhoon\Type;
 use Ezzatron\Typhoon\Typhoon;
 
@@ -106,12 +107,12 @@ class PrimitiveTest extends \Ezzatron\Typhoon\Test\TestCase
       '',
       false
     );
-    $expected = get_class(Typhoon::instance()->typeAssertion());
+    $expected = new TypeAssertion;
 
     $reflector = new \ReflectionObject($primitive);
     $method = $reflector->getMethod('typeAssertion');
     $method->setAccessible(true);
 
-    $this->assertInstanceOf($expected, $method->invoke($primitive));
+    $this->assertEquals($expected, $method->invoke($primitive));
   }
 }

@@ -46,14 +46,6 @@ class TyphoonTest extends TestCase
   }
 
   /**
-   * @covers Ezzatron\Typhoon\Typhoon::typeAssertion
-   */
-  public function testTypeAssertion()
-  {
-    $this->assertInstanceOf('Ezzatron\Typhoon\Assertion\TypeAssertion', $this->_typhoon->typeAssertion());
-  }
-
-  /**
    * @covers Ezzatron\Typhoon\Typhoon::setTypeInspector
    * @covers Ezzatron\Typhoon\Typhoon::typeInspector
    */

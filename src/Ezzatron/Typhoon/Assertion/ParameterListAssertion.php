@@ -12,6 +12,7 @@
 namespace Ezzatron\Typhoon\Assertion;
 
 use Ezzatron\Typhoon\Typhoon;
+use Ezzatron\Typhoon\Parameter\Parameter;
 use Ezzatron\Typhoon\Parameter\ParameterList\ParameterList;
 use Ezzatron\Typhoon\Primitive\Integer;
 use Ezzatron\Typhoon\Primitive\String;
@@ -42,29 +43,8 @@ class ParameterListAssertion implements Assertion
 
       if ($parameter)
       {
-        $assertion = $this->typeAssertion();
-        $assertion->setType($parameter->type());
-        $assertion->setValue($value);
-
-        try
-        {
-          $assertion->assert();
-        }
-        catch (Exception\UnexpectedTypeException $e)
-        {
-          if ($parameterName = $parameter->name())
-          {
-            $parameterName = new String($parameterName);
-          }
-
-          throw new Exception\UnexpectedArgumentException(
-            new String($e->typeName())
-            , new Integer($index)
-            , new String($e->expectedTypeName())
-            , $parameterName
-            , $e
-          );
-        }
+        $assertion = $this->parameterAssertion($parameter, $value, new Integer($index));
+        $assertion->assert();
 
         continue;
       }
@@ -94,14 +74,6 @@ class ParameterListAssertion implements Assertion
     }
 
     throw new Exception\MissingArgumentException(new Integer($index), $parameter);
-  }
-
-  /**
-   * @return Type
-   */
-  public function typeAssertion()
-  {
-    return Typhoon::instance()->typeAssertion();
   }
 
   /**
@@ -139,6 +111,19 @@ class ParameterListAssertion implements Assertion
   public function arguments()
   {
     return $this->arguments;
+  }
+
+  /**
+   * @return ParameterAssertion
+   */
+  protected function parameterAssertion(Parameter $parameter, $value, Integer $index)
+  {
+    $assertion = new ParameterAssertion;
+    $assertion->setParameter($parameter);
+    $assertion->setValue($value);
+    $assertion->setIndex($index);
+
+    return $assertion;
   }
 
   /**
