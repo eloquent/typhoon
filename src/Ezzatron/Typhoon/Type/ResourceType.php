@@ -11,7 +11,9 @@
 
 namespace Ezzatron\Typhoon\Type;
 
-class ResourceType extends BaseType
+use Ezzatron\Typhoon\Attribute\AttributeSignature;
+
+class ResourceType extends Dynamic\BaseDynamicType
 {
   /**
    * @param mixed value
@@ -20,6 +22,32 @@ class ResourceType extends BaseType
    */
   public function typhoonCheck($value)
   {
-    return is_resource($value);
+    if (!is_resource($value))
+    {
+      return false;
+    }
+
+    if ($type = $this->typhoonAttributes()->get(self::ATTRIBUTE_TYPE, null))
+    {
+      return get_resource_type($value) == $type;
+    }
+
+    return true;
   }
+
+  /**
+   * @param AttributeSignature $attributeSignature
+   * @param BaseDynamicType $type
+   *
+   * @return AttributeSignature
+   */
+  static protected function configureAttributeSignature(AttributeSignature $attributeSignature, Dynamic\BaseDynamicType $type)
+  {
+    $attributeSignature[self::ATTRIBUTE_TYPE] = new StringType;
+  }
+
+  const ATTRIBUTE_TYPE = 'type';
+
+  const TYPE_STREAM = 'stream';
+  const TYPE_UNKNOWN = 'Unknown';
 }

@@ -23,8 +23,9 @@ class StringTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
    */
   public function typeValues()
   {
-    $utf8Attributes = new Attributes;
-    $utf8Attributes->set(StringType::ATTRIBUTE_ENCODING, 'UTF-8');
+    $utf8Attributes = new Attributes(array(
+      StringType::ATTRIBUTE_ENCODING => 'UTF-8',
+    ));
 
     return array(
       array(false, null),                      // #0: null

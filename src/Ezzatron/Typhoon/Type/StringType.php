@@ -11,10 +11,18 @@
 
 namespace Ezzatron\Typhoon\Type;
 
+use Ezzatron\Typhoon\Attribute\Attributes;
 use Ezzatron\Typhoon\Attribute\AttributeSignature;
 
 class StringType extends Dynamic\BaseDynamicType
 {
+  public function __construct(Attributes $attributes = null)
+  {
+    parent::__construct($attributes);
+
+    $this->simpleStringType = new SimpleStringType;
+  }
+
   /**
    * @param mixed value
    *
@@ -22,7 +30,7 @@ class StringType extends Dynamic\BaseDynamicType
    */
   public function typhoonCheck($value)
   {
-    if (!is_string($value))
+    if (!$this->simpleStringType->typhoonCheck($value))
     {
       return false;
     }
@@ -47,4 +55,9 @@ class StringType extends Dynamic\BaseDynamicType
   }
 
   const ATTRIBUTE_ENCODING = 'encoding';
+
+  /**
+   * @var SimpleStringType
+   */
+  protected $simpleStringType;
 }

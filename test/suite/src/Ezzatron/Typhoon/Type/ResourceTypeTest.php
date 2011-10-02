@@ -13,6 +13,8 @@ namespace Ezzatron\Typhoon\Type;
 
 use stdClass;
 use Ezzatron\Typhoon\Attribute\Attributes;
+use Ezzatron\Typhoon\Attribute\AttributeSignature;
+use Ezzatron\Typhoon\Primitive\String;
 
 class ResourceTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
 {
@@ -21,8 +23,12 @@ class ResourceTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
    */
   public function typeValues()
   {
+    $streamAttributes = new Attributes(array(
+      ResourceType::ATTRIBUTE_TYPE => 'stream',
+    ));
+
     return array(
-      array(false,  null),                     // #0: null
+      array(false, null),                      // #0: null
       array(false, true),                      // #1: boolean
       array(false, 'string'),                  // #2: string
       array(false, 1),                         // #3: integer
@@ -30,8 +36,11 @@ class ResourceTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
       array(false, array()),                   // #5: array
       array(false, new stdClass),              // #6: object
       array(false, function(){}),              // #7: closure
-      array(true, $this->resourceFixture()),   // #8: resource
-      array(true, $this->streamFixture()),     // #9: stream
+      array(true,  $this->resourceFixture()),  // #8: resource
+      array(true,  $this->streamFixture()),    // #9: stream
+
+      array(false, $this->resourceFixture(), $streamAttributes),  // #10: resource of type stream failure
+      array(true,  $this->streamFixture(),   $streamAttributes),  // #11: resource of type stream success
     );
   }
 
@@ -41,6 +50,25 @@ class ResourceTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
   protected function typeClass()
   {
     return __NAMESPACE__.'\ResourceType';
+  }
+
+  /**
+   * @covers Ezzatron\Typhoon\Type\ResourceType::configureAttributeSignature
+   */
+  public function testConfigureAttributeSignature()
+  {
+    $expected = new AttributeSignature;
+    $expected->setHolderName(new String($this->typeClass()));
+    $expected[ResourceType::ATTRIBUTE_TYPE] = new StringType;
+
+    $type = new ResourceType;
+    $actual = $type->typhoonAttributes()->signature();
+
+    $this->assertEquals($expected, $actual);
+
+    $type = new ResourceType;
+
+    $this->assertEquals($actual, $type->typhoonAttributes()->signature());
   }
 
   // methods below must be manually overridden to implement @covers
