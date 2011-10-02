@@ -11,25 +11,28 @@
 
 namespace Ezzatron\Typhoon\Type;
 
-use Ezzatron\Typhoon\Primitive\Callback;
+use Ezzatron\Typhoon\Attribute\Attributes;
 
 class CallbackWrapperTypeTest extends \Ezzatron\Typhoon\Test\TestCase
 {
   /**
-   * @covers Ezzatron\Typhoon\Type\CallbackWrapperType::typhoonCheck
+   * @covers Ezzatron\Typhoon\Type\CallbackWrapperType
    */
-  public function testTyphoonCheck()
+  public function testCallbackWrapperType()
   {
     $called = false;
     $arguments = null;
-    $type = new CallbackWrapperType;
-    $callback = new Callback(function() use(&$called, &$arguments)
+    
+    $callback = function() use(&$called, &$arguments)
     {
       $called = true;
       $arguments = func_get_args();
-    });
-    $type->setCallback($callback);
-    $type->setArguments(array('bar', 'baz'));
+    };
+    $attributes = new Attributes(array(
+      CallbackWrapperType::ATTRIBUTE_CALLBACK => $callback,
+      CallbackWrapperType::ATTRIBUTE_ARGUMENTS => array('bar', 'baz'),
+    ));
+    $type = new CallbackWrapperType($attributes);
     
     $this->assertFalse($called);
     $this->assertNull($arguments);
@@ -38,38 +41,5 @@ class CallbackWrapperTypeTest extends \Ezzatron\Typhoon\Test\TestCase
 
     $this->assertTrue($called);
     $this->assertEquals(array('foo', 'bar', 'baz'), $arguments);
-  }
-
-  /**
-   * @covers Ezzatron\Typhoon\Type\CallbackWrapperType::setCallback
-   * @covers Ezzatron\Typhoon\Type\CallbackWrapperType::callback
-   */
-  public function testCallback()
-  {
-    $type = new CallbackWrapperType;
-
-    $this->assertEquals(function() { return true; }, $type->callback());
-
-    $callback = function($value) { return false; };
-    $callbackPrimitive = new Callback($callback);
-    $type->setCallback($callbackPrimitive);
-
-    $this->assertSame($callback, $type->callback());
-  }
-
-  /**
-   * @covers Ezzatron\Typhoon\Type\CallbackWrapperType::setArguments
-   * @covers Ezzatron\Typhoon\Type\CallbackWrapperType::arguments
-   */
-  public function testArguments()
-  {
-    $type = new CallbackWrapperType;
-
-    $this->assertEquals(array(), $type->arguments());
-
-    $arguments = array('foo', 'bar');
-    $type->setArguments($arguments);
-
-    $this->assertSame($arguments, $type->arguments());
   }
 }

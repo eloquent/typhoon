@@ -84,6 +84,6 @@ class TyphaxTypeRenderer extends TypeRenderer
    */
   protected function renderAttribute(String $key, $value)
   {
-    return $key.'='.var_export($value, true);
+    return $key->value().'='.var_export($value, true);
   }
 }

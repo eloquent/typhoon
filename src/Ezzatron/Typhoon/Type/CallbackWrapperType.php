@@ -2,9 +2,10 @@
 
 namespace Ezzatron\Typhoon\Type;
 
-use Ezzatron\Typhoon\Primitive\Callback as CallbackPrimitive;
+use Ezzatron\Typhoon\Attribute\AttributeSignature;
+use Ezzatron\Typhoon\Primitive\Boolean;
 
-class CallbackWrapperType extends BaseType
+class CallbackWrapperType extends Dynamic\BaseDynamicType
 {
   /**
    * @param mixed value
@@ -13,59 +14,29 @@ class CallbackWrapperType extends BaseType
    */
   public function typhoonCheck($value)
   {
+    $arguments = array_merge(
+      array($value)
+      , $this->attributes->get(self::ATTRIBUTE_ARGUMENTS, array())
+    );
+
     return call_user_func_array(
-      $this->callback(),
-      array_merge(
-        array($value),
-        $this->arguments()
-      )
+      $this->attributes->get(self::ATTRIBUTE_CALLBACK)
+      , $arguments
     );
   }
 
   /**
-   * @param CallbackPrimitive $callback
+   * @param AttributeSignature $attributeSignature
+   * @param BaseDynamicType $type
+   *
+   * @return AttributeSignature
    */
-  public function setCallback(CallbackPrimitive $callback)
+  static protected function configureAttributeSignature(AttributeSignature $attributeSignature, Dynamic\BaseDynamicType $type)
   {
-    $this->callback = $callback->value();
+    $attributeSignature->set(self::ATTRIBUTE_CALLBACK, new CallbackType, new Boolean(true));
+    $attributeSignature->set(self::ATTRIBUTE_ARGUMENTS, new ArrayType);
   }
 
-  /**
-   * @return callback
-   */
-  public function callback()
-  {
-    if (!$this->callback)
-    {
-      $this->callback = function() { return true; };
-    }
-
-    return $this->callback;
-  }
-
-  /**
-   * @param array $arguments
-   */
-  public function setArguments(array $arguments)
-  {
-    $this->arguments = $arguments;
-  }
-
-  /**
-   * @return array
-   */
-  public function arguments()
-  {
-    return $this->arguments;
-  }
-
-  /**
-   * @var callback
-   */
-  protected $callback;
-
-  /**
-   * @var array
-   */
-  protected $arguments = array();
+  const ATTRIBUTE_CALLBACK = 'callback';
+  const ATTRIBUTE_ARGUMENTS = 'arguments';
 }
