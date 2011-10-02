@@ -14,9 +14,6 @@ namespace Ezzatron\Typhoon\Type;
 use Ezzatron\Typhoon\Attribute\Attributes;
 use Ezzatron\Typhoon\Attribute\AttributeSignature;
 use Ezzatron\Typhoon\Primitive\String;
-use Ezzatron\Typhoon\Type\ArrayType;
-use Ezzatron\Typhoon\Type\ObjectType;
-use Ezzatron\Typhoon\Type\StringType;
 
 class TraversableType extends Traversable\BaseTraversableType implements Dynamic\DynamicType
 {
@@ -54,11 +51,9 @@ class TraversableType extends Traversable\BaseTraversableType implements Dynamic
 
     if (!array_key_exists($class, self::$attributeSignatures))
     {
-      $attributeSignature = new AttributeSignature;
-      $attributeSignature->setHolderName(new String($class));
-      static::configureAttributeSignature($attributeSignature, $type);
-
-      self::$attributeSignatures[$class] = $attributeSignature;
+      self::$attributeSignatures[$class] = new AttributeSignature;
+      self::$attributeSignatures[$class]->setHolderName(new String($class));
+      static::configureAttributeSignature(self::$attributeSignatures[$class], $type);
     }
 
     return self::$attributeSignatures[$class];

@@ -23,6 +23,7 @@ use Ezzatron\Typhoon\Type\MixedType;
 use Ezzatron\Typhoon\Type\NullType;
 use Ezzatron\Typhoon\Type\ObjectType;
 use Ezzatron\Typhoon\Type\ResourceType;
+use Ezzatron\Typhoon\Type\SimpleStringType;
 use Ezzatron\Typhoon\Type\StringType;
 use Ezzatron\Typhoon\Type\TraversableType;
 use Ezzatron\Typhoon\Type\Type;
@@ -123,7 +124,7 @@ class TypeRegistry extends Collection
    */
   protected function keyType()
   {
-    return new StringType;
+    return new SimpleStringType;
   }
 
   /**

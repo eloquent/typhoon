@@ -11,15 +11,40 @@
 
 namespace Ezzatron\Typhoon\Type;
 
-class StringType extends BaseType
+use Ezzatron\Typhoon\Attribute\AttributeSignature;
+
+class StringType extends Dynamic\BaseDynamicType
 {
   /**
    * @param mixed value
-   * 
+   *
    * @return boolean
    */
   public function typhoonCheck($value)
   {
-    return is_string($value);
+    if (!is_string($value))
+    {
+      return false;
+    }
+
+    if ($encoding = $this->typhoonAttributes()->get(self::ATTRIBUTE_ENCODING, null))
+    {
+      return mb_check_encoding($value, $encoding);
+    }
+
+    return true;
   }
+
+  /**
+   * @param AttributeSignature $attributeSignature
+   * @param BaseDynamicType $type
+   *
+   * @return AttributeSignature
+   */
+  static protected function configureAttributeSignature(AttributeSignature $attributeSignature, Dynamic\BaseDynamicType $type)
+  {
+    $attributeSignature[self::ATTRIBUTE_ENCODING] = new StringType;
+  }
+
+  const ATTRIBUTE_ENCODING = 'encoding';
 }

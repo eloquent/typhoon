@@ -9,17 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Ezzatron\Typhoon\Primitive;
+namespace Ezzatron\Typhoon\Type;
 
-use Ezzatron\Typhoon\Type\SimpleStringType;
-
-final class String extends Primitive
+class SimpleStringType extends BaseType
 {
   /**
-   * @return SimpleStringType
+   * @param mixed value
+   *
+   * @return boolean
    */
-  final public function type()
+  public function typhoonCheck($value)
   {
-    return new SimpleStringType;
+    return is_string($value);
   }
 }

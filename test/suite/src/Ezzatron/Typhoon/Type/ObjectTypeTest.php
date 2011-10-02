@@ -69,35 +69,14 @@ class ObjectTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
     $expected->setHolderName(new String($this->typeClass()));
     $expected[ObjectType::ATTRIBUTE_INSTANCE_OF] = new StringType;
 
-    $object = new ObjectType;
-    $actual = $object->typhoonAttributes()->signature();
+    $type = new ObjectType;
+    $actual = $type->typhoonAttributes()->signature();
 
     $this->assertEquals($expected, $actual);
 
-    $object = new ObjectType;
+    $type = new ObjectType;
 
-    $this->assertEquals($actual, $object->typhoonAttributes()->signature());
-  }
-
-  /**
-   * @covers Ezzatron\Typhoon\Type\ObjectType::typhoonAttributes
-   */
-  public function testSetTyphoonAttribute()
-  {
-    $type = $this->typeFixture();
-    $type->typhoonAttributes()->set(ObjectType::ATTRIBUTE_INSTANCE_OF, 'foo');
-
-    $this->assertEquals('foo', $type->typhoonAttributes()->get(ObjectType::ATTRIBUTE_INSTANCE_OF));
-  }
-
-  /**
-   * @covers Ezzatron\Typhoon\Type\ObjectType::typhoonAttributes
-   */
-  public function testSetTyphoonAttributeFailure()
-  {
-    $type = $this->typeFixture();
-    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnexpectedAttributeException');
-    $type->typhoonAttributes()->set(ObjectType::ATTRIBUTE_INSTANCE_OF, 1);
+    $this->assertEquals($actual, $type->typhoonAttributes()->signature());
   }
 
   // methods below must be manually overridden to implement @covers
