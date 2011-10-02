@@ -73,6 +73,7 @@ class StringTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
   // methods below must be manually overridden to implement @covers
 
   /**
+   * @covers Ezzatron\Typhoon\Type\StringType::__construct
    * @covers Ezzatron\Typhoon\Type\StringType::typhoonCheck
    * @dataProvider typeValues
    * @group typhoon_types
