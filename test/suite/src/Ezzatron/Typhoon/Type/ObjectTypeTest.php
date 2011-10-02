@@ -14,6 +14,7 @@ namespace Ezzatron\Typhoon\Type;
 use stdClass;
 use Ezzatron\Typhoon\Attribute\Attributes;
 use Ezzatron\Typhoon\Attribute\AttributeSignature;
+use Ezzatron\Typhoon\Primitive\String;
 use Ezzatron\Typhoon\Type\StringType;
 
 class ObjectTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
@@ -65,7 +66,7 @@ class ObjectTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
   public function testConfigureAttributeSignature()
   {
     $expected = new AttributeSignature;
-    $expected->setHolder($this->typeClass());
+    $expected->setHolder(new String($this->typeClass()));
     $expected[ObjectType::ATTRIBUTE_INSTANCE_OF] = new StringType;
 
     $object = new ObjectType;

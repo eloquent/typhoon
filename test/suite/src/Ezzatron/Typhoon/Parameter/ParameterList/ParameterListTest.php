@@ -12,6 +12,7 @@
 namespace Ezzatron\Typhoon\Parameter\ParameterList;
 
 use Ezzatron\Typhoon\Parameter\Parameter;
+use Ezzatron\Typhoon\Primitive\Boolean;
 
 class ParameterListTest extends \Ezzatron\Typhoon\Test\TestCase
 {
@@ -44,7 +45,7 @@ class ParameterListTest extends \Ezzatron\Typhoon\Test\TestCase
   {
     $this->assertFalse($this->_parameterList->variableLength());
 
-    $this->_parameterList->setVariableLength(true);
+    $this->_parameterList->setVariableLength(new Boolean(true));
 
     $this->assertTrue($this->_parameterList->variableLength());
   }

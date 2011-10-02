@@ -17,6 +17,7 @@ use ReflectionObject;
 use stdClass;
 use Ezzatron\Typhoon\Attribute\Attributes;
 use Ezzatron\Typhoon\Attribute\AttributeSignature;
+use Ezzatron\Typhoon\Primitive\String;
 use Ezzatron\Typhoon\Type\Composite\AndType;
 use Ezzatron\Typhoon\Type\Composite\OrType;
 use Ezzatron\Typhoon\Type\StringType;
@@ -71,7 +72,7 @@ class TraversableTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
     $type = $this->typeFixture();
 
     $expectedSignature = new AttributeSignature;
-    $expectedSignature->setHolder(get_class($type));
+    $expectedSignature->setHolder(new String(get_class($type)));
     $expectedSignature[TraversableType::ATTRIBUTE_INSTANCE_OF] = new StringType;
 
     $expected = new Attributes;
@@ -83,7 +84,7 @@ class TraversableTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
     $type = $this->typeFixture(new Attributes);
 
     $expectedSignature = new AttributeSignature;
-    $expectedSignature->setHolder(get_class($type));
+    $expectedSignature->setHolder(new String(get_class($type)));
     $expectedSignature[TraversableType::ATTRIBUTE_INSTANCE_OF] = new StringType;
 
     $expected = new Attributes;
@@ -104,7 +105,7 @@ class TraversableTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
     $property->setValue(null, array());
 
     $expected = new AttributeSignature;
-    $expected->setHolder($this->typeClass());
+    $expected->setHolder(new String($this->typeClass()));
     $expected[TraversableType::ATTRIBUTE_INSTANCE_OF] = new StringType;
 
     $object = new TraversableType;

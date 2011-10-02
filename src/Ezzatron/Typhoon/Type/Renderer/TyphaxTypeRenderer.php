@@ -68,7 +68,7 @@ class TyphaxTypeRenderer extends TypeRenderer
     foreach ($attributes as $key => $value)
     {
       $rendered .= $rendered ? ', ' : '(';
-      $rendered .= $this->renderAttribute($key, $value);
+      $rendered .= $this->renderAttribute(new String($key), $value);
     }
 
     $rendered .= $rendered ? ')' : '';
@@ -77,15 +77,13 @@ class TyphaxTypeRenderer extends TypeRenderer
   }
 
   /**
-   * @param string $key
+   * @param String $key
    * @param mixed $value
    *
    * @return string
    */
-  protected function renderAttribute($key, $value)
+  protected function renderAttribute(String $key, $value)
   {
-    new String($key);
-    
     return $key.'='.var_export($value, true);
   }
 }

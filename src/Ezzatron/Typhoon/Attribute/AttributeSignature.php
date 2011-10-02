@@ -21,13 +21,11 @@ use Ezzatron\Typhoon\Type\TypeType;
 class AttributeSignature extends Collection
 {
   /**
-   * @param string $holder
+   * @param String $holder
    */
-  public function setHolder($holder)
+  public function setHolder(String $holder)
   {
-    new String($holder);
-
-    $this->holder = $holder;
+    $this->holder = $holder->value();
   }
 
   /**
@@ -40,15 +38,18 @@ class AttributeSignature extends Collection
   /**
    * @param integer|string $key
    * @param mixed $value
-   * @param boolean $required
+   * @param Boolean $required
    */
-  public function set($key, $value, $required = null)
+  public function set($key, $value, Boolean $required = null)
   {
     if (null === $required)
     {
       $required = false;
     }
-    new Boolean($required);
+    else
+    {
+      $required = $required->value();
+    }
     
     $this->required[$key] = $required;
 

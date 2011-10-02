@@ -136,7 +136,7 @@ class ParameterListAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
   {
     $value = 'foo';
     $arguments = array();
-    $this->_parameterList->setVariableLength(true);
+    $this->_parameterList->setVariableLength(new Boolean(true));
     $this->_assertion->setParameterList($this->_parameterList);
 
     $arguments[] = $value;

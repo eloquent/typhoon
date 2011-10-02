@@ -12,6 +12,8 @@
 namespace Ezzatron\Typhoon\Attribute;
 
 use Phake;
+use Ezzatron\Typhoon\Primitive\Boolean;
+use Ezzatron\Typhoon\Primitive\String;
 use Ezzatron\Typhoon\Type\StringType;
 
 class AttributesTest extends \Ezzatron\Typhoon\Test\TestCase
@@ -32,8 +34,8 @@ class AttributesTest extends \Ezzatron\Typhoon\Test\TestCase
   protected function setUp()
   {
     $this->_signature = new AttributeSignature;
-    $this->_signature->setHolder('holder');
-    $this->_signature->set('foo', new StringType, true);
+    $this->_signature->setHolder(new String('holder'));
+    $this->_signature->set('foo', new StringType, new Boolean(true));
     $this->_signature->set('bar', new StringType);
 
     $this->_attributes = new Attributes;

@@ -13,6 +13,7 @@ namespace Ezzatron\Typhoon\Type\Dynamic;
 
 use Ezzatron\Typhoon\Attribute\Attributes;
 use Ezzatron\Typhoon\Attribute\AttributeSignature;
+use Ezzatron\Typhoon\Primitive\String;
 use Ezzatron\Typhoon\Type\BaseType;
 
 abstract class BaseDynamicType extends BaseType implements DynamicType
@@ -52,7 +53,7 @@ abstract class BaseDynamicType extends BaseType implements DynamicType
     if (!array_key_exists($class, self::$attributeSignatures))
     {
       $attributeSignature = new AttributeSignature;
-      $attributeSignature->setHolder($class);
+      $attributeSignature->setHolder(new String($class));
       static::configureAttributeSignature($attributeSignature, $type);
 
       self::$attributeSignatures[$class] = $attributeSignature;

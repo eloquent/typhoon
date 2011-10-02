@@ -24,13 +24,11 @@ use Ezzatron\Typhoon\Type\ParameterType;
 class ParameterList extends Collection
 {
   /**
-   * @param boolean $variableLength
+   * @param Boolean $variableLength
    */
-  public function setVariableLength($variableLength)
+  public function setVariableLength(Boolean $variableLength)
   {
-    new Boolean($variableLength);
-
-    $this->variableLength = $variableLength;
+    $this->variableLength = $variableLength->value();
   }
 
   /**

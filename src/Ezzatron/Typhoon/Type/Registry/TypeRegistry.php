@@ -58,7 +58,7 @@ class TypeRegistry extends Collection
   }
 
   /**
-   * @param Type|string $type
+   * @param object|string $type
    *
    * @return string
    */

@@ -11,6 +11,8 @@
 
 namespace Ezzatron\Typhoon\Attribute;
 
+use Ezzatron\Typhoon\Primitive\Boolean;
+use Ezzatron\Typhoon\Primitive\String;
 use Phake;
 
 class AttributeSignatureTest extends \Ezzatron\Typhoon\Test\TestCase
@@ -49,7 +51,7 @@ class AttributeSignatureTest extends \Ezzatron\Typhoon\Test\TestCase
   {
     $this->assertNull($this->_signature->holder());
 
-    $this->_signature->setHolder('foo');
+    $this->_signature->setHolder(new String('foo'));
 
     $this->assertEquals('foo', $this->_signature->holder());
   }
@@ -66,7 +68,7 @@ class AttributeSignatureTest extends \Ezzatron\Typhoon\Test\TestCase
     $this->assertFalse($this->_signature->isRequired('foo'));
 
     $type = Phake::mock('Ezzatron\Typhoon\Type\Type');
-    $this->_signature->set('foo', $type, true);
+    $this->_signature->set('foo', $type, new Boolean(true));
 
     $this->assertSame($type, $this->_signature['foo']);
     $this->assertTrue($this->_signature->isRequired('foo'));
