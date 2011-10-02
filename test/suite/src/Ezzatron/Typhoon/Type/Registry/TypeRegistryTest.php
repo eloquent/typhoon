@@ -231,7 +231,7 @@ class TypeRegistryTest extends \Ezzatron\Typhoon\Test\TestCase
    */
   public function testUnexpectedArgumentFailure($method, array $arguments)
   {
-    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnexpectedTypeException');
+    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnexpectedArgumentException');
     call_user_func_array(array($this->_registry, $method), $arguments);
   }
 

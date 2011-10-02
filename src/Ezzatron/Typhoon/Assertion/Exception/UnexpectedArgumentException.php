@@ -19,38 +19,86 @@ use Ezzatron\Typhoon\Primitive\String;
 class UnexpectedArgumentException extends Exception
 {
   /**
-   * @param mixed $value
+   * @param String $typeName
    * @param Integer $index
-   * @param Parameter $parameter
+   * @param String $expectedTypeName
+   * @param String $parameterName
    * @param \Exception $previous
    */
-  public function __construct($value, Integer $index, Parameter $parameter = null, \Exception $previous = null)
+  public function __construct(String $typeName, Integer $index, String $expectedTypeName = null, String $parameterName = null, \Exception $previous = null)
   {
-    $message =
-      "Unexpected argument at index "
-      .$index
-    ;
+    $this->typeName = $typeName->value();
+    $this->index = $index->value();
 
-    if ($parameter)
+    $message = "Unexpected argument of type '".$this->typeName."' at index ".$this->index;
+
+    if ($parameterName)
     {
-      if ($parameter->name())
-      {
-        $message .=
-          " ("
-          .$parameter->name()
-          .")"
-        ;
-      }
+      $this->parameterName = $parameterName->value();
 
-      $message .=
-        " - expected '"
-        .Typhoon::instance()->typeRenderer()->render($parameter->type())
-        ."'"
-      ;
+      $message .= " (".$this->parameterName.")";
+    }
+    if ($expectedTypeName)
+    {
+      $this->expectedTypeName = $expectedTypeName->value();
+
+      $message .= " - expected '".$this->expectedTypeName."'";
     }
 
     $message .= ".";
 
     parent::__construct(new String($message), $previous);
   }
+
+  /**
+   * @return string
+   */
+  public function typeName()
+  {
+    return $this->typeName;
+  }
+
+  /**
+   * @return integer
+   */
+  public function index()
+  {
+    return $this->index;
+  }
+
+  /**
+   * @return string
+   */
+  public function expectedTypeName()
+  {
+    return $this->expectedTypeName;
+  }
+
+  /**
+   * @return string
+   */
+  public function parameterName()
+  {
+    return $this->parameterName;
+  }
+
+  /**
+   * @var string
+   */
+  protected $typeName;
+
+  /**
+   * @var integer
+   */
+  protected $index;
+
+  /**
+   * @var string
+   */
+  protected $expectedTypeName;
+
+  /**
+   * @var string
+   */
+  protected $parameterName;
 }

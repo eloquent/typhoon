@@ -89,7 +89,7 @@ class CollectionTest extends \Ezzatron\Typhoon\Test\TestCase
     $this->_collection = Phake::partialMock(__NAMESPACE__.'\Collection');
     Phake::when($this->_collection)->allowEmptyKeyForSet()->thenReturn(false);
 
-    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnexpectedTypeException');
+    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnexpectedArgumentException');
     $this->_collection[] = 'foo';
   }
 
@@ -108,7 +108,7 @@ class CollectionTest extends \Ezzatron\Typhoon\Test\TestCase
    */
   public function testInvalidKeyTypeFailure()
   {
-    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnexpectedTypeException');
+    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnexpectedArgumentException');
     $this->_collection[.1] = 'foo';
   }
 
@@ -120,7 +120,7 @@ class CollectionTest extends \Ezzatron\Typhoon\Test\TestCase
     $collection = Phake::partialMock(__NAMESPACE__.'\Collection');
     Phake::when($collection)->valueType('foo')->thenReturn(new NullType);
 
-    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnexpectedTypeException');
+    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnexpectedArgumentException');
     $collection['foo'] = 'bar';
   }
 

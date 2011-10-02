@@ -28,34 +28,46 @@ class UnexpectedTypeExceptionTest extends \Ezzatron\Typhoon\Test\ExceptionTestCa
    */
   protected function defaultArguments()
   {
-    return array($this->_value, $this->_expectedTypeName);
+    return array($this->_typeName, $this->_expectedTypeName);
   }
 
   protected function setUp()
   {
     parent::setUp();
     
-    $this->_value = 'foo';
-    $this->_expectedTypeName = new String('foo');
+    $this->_typeName = new String('foo');
+    $this->_expectedTypeName = new String('bar');
   }
 
   /**
-   * @covers Ezzatron\Typhoon\Assertion\Exception\UnexpectedTypeException::__construct
+   * @covers Ezzatron\Typhoon\Assertion\Exception\UnexpectedTypeException
    */
   public function testConstructor()
   {
-    $this->assertEquals("Unexpected type - expected '".$this->_expectedTypeName."'.", $this->exceptionFixture()->getMessage());
+    $exception = $this->exceptionFixture();
+
+    $expected =
+      "Unexpected value of type '"
+      .$this->_typeName
+      ."' - expected '"
+      .$this->_expectedTypeName
+      ."'."
+    ;
+
+    $this->assertEquals($expected, $exception->getMessage());
+    $this->assertEquals($this->_typeName->value(), $exception->typeName());
+    $this->assertEquals($this->_expectedTypeName->value(), $exception->expectedTypeName());
 
     parent::testConstructor();
   }
 
   /**
-   * @var mixed
+   * @var String
    */
-  protected $_value;
+  protected $_typeName;
 
   /**
-   * @var string
+   * @var String
    */
   protected $_expectedTypeName;
 }

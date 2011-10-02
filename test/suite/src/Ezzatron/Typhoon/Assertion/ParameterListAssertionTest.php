@@ -15,6 +15,7 @@ use Phake;
 use Ezzatron\Typhoon\Typhoon;
 use Ezzatron\Typhoon\Parameter\Parameter;
 use Ezzatron\Typhoon\Parameter\ParameterList\ParameterList;
+use Ezzatron\Typhoon\Primitive\String;
 use Ezzatron\Typhoon\Primitive\Boolean;
 
 class ParameterListAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
@@ -25,6 +26,8 @@ class ParameterListAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
     
     $this->_assertion = new ParameterListAssertion;
     $this->_parameterList = new ParameterList;
+    $this->_parameter = new Parameter;
+    $this->_parameter->setName(new String('parameter'));
   }
 
   /**
@@ -42,9 +45,9 @@ class ParameterListAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
     $assertion_0 = Phake::mock(__NAMESPACE__.'\TypeAssertion');
     $assertion_1 = Phake::mock(__NAMESPACE__.'\TypeAssertion');
 
-    $parameter_0 = new Parameter;
+    $parameter_0 = clone $this->_parameter;
     $parameter_0->setType($type_0);
-    $parameter_1 = new Parameter;
+    $parameter_1 = clone $this->_parameter;
     $parameter_1->setType($type_1);
 
     $parameterList = new ParameterList;
@@ -91,13 +94,13 @@ class ParameterListAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
 
     $arguments[] = $value;
     $this->_assertion->setArguments($arguments);
-    $this->_parameterList[] = new Parameter;
+    $this->_parameterList[] = $this->_parameter;
 
     $this->_assertion->assert($arguments);
 
     $arguments[] = $value;
     $this->_assertion->setArguments($arguments);
-    $this->_parameterList[] = new Parameter;
+    $this->_parameterList[] = $this->_parameter;
 
     $this->_assertion->assert($arguments);
     
@@ -111,13 +114,13 @@ class ParameterListAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
   {
     $value = 'foo';
     $arguments = array();
-    $optionalParameter = new Parameter;
+    $optionalParameter = $this->_parameter;
     $optionalParameter->setOptional(new Boolean(true));
     $this->_assertion->setParameterList($this->_parameterList);
 
     $arguments[] = $value;
     $this->_assertion->setArguments($arguments);
-    $this->_parameterList[] = new Parameter;
+    $this->_parameterList[] = $this->_parameter;
     $this->_parameterList[] = $optionalParameter;
 
     $this->_assertion->assert();
@@ -142,7 +145,7 @@ class ParameterListAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
     $arguments[] = $value;
     $arguments[] = $value;
     $this->_assertion->setArguments($arguments);
-    $this->_parameterList[] = new Parameter;
+    $this->_parameterList[] = $this->_parameter;
 
     $this->_assertion->assert();
 
@@ -159,7 +162,7 @@ class ParameterListAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
     $type = Phake::mock('Ezzatron\Typhoon\Type\Type');
     Phake::when($type)->typhoonCheck()->thenReturn(false);
 
-    $parameter = new Parameter;
+    $parameter = clone $this->_parameter;
     $parameter->setType($type);
     $this->_parameterList[] = $parameter;
 
@@ -175,7 +178,7 @@ class ParameterListAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
   public function testAssertFailureNoArguments()
   {
     $this->_assertion->setParameterList($this->_parameterList);
-    $this->_parameterList[] = new Parameter;
+    $this->_parameterList[] = $this->_parameter;
 
     $this->setExpectedException(__NAMESPACE__.'\Exception\MissingArgumentException', 'at index 0');
     $this->_assertion->assert();
@@ -187,8 +190,8 @@ class ParameterListAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
   public function testAssertFailureNotEnoughArguments()
   {
     $this->_assertion->setParameterList($this->_parameterList);
-    $this->_parameterList[] = new Parameter;
-    $this->_parameterList[] = new Parameter;
+    $this->_parameterList[] = $this->_parameter;
+    $this->_parameterList[] = $this->_parameter;
     $this->_assertion->setArguments(array(null));
 
     $this->setExpectedException(__NAMESPACE__.'\Exception\MissingArgumentException', 'at index 1');
@@ -212,7 +215,7 @@ class ParameterListAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
   public function testAssertFailureTooManyArgumentsNonEmpty()
   {
     $this->_assertion->setParameterList($this->_parameterList);
-    $this->_parameterList[] = new Parameter;
+    $this->_parameterList[] = $this->_parameter;
 
     $this->_assertion->setArguments(array(null, null));
 
@@ -284,4 +287,9 @@ class ParameterListAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
    * @var ParameterList
    */
   protected $_parameterList;
+
+  /**
+   * @var Parameter
+   */
+  protected $_parameter;
 }

@@ -65,7 +65,7 @@ class AttributesTest extends \Ezzatron\Typhoon\Test\TestCase
   {
     $this->_attributes->set('foo', null);
 
-    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnexpectedTypeException');
+    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnexpectedArgumentException');
     $this->_attributes->setSignature($this->_signature);
   }
 

@@ -73,11 +73,10 @@ class PrimitiveTest extends \Ezzatron\Typhoon\Test\TestCase
    */
   public function testPrimitiveFailure()
   {
-    $value = 'foo';
     $type = Phake::mock('Ezzatron\Typhoon\Type\Type');
     $typeAssertion = Phake::mock('Ezzatron\Typhoon\Assertion\TypeAssertion');
 
-    Phake::when($typeAssertion)->assert()->thenThrow(new UnexpectedTypeException($value, new String('typeName')));
+    Phake::when($typeAssertion)->assert()->thenThrow(new UnexpectedTypeException(new String('typeName'), new String('expectedTypeName')));
 
     $primitive = $this->primitiveFixture();
     $primitive
@@ -86,13 +85,13 @@ class PrimitiveTest extends \Ezzatron\Typhoon\Test\TestCase
       ->will($this->returnValue($typeAssertion))
     ;
     $primitive
-      ->expects($this->exactly(2))
+      ->expects($this->once())
       ->method('type')
       ->will($this->returnValue($type))
     ;
 
     $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnexpectedArgumentException');
-    $primitive->__construct($value);
+    $primitive->__construct('foo');
   }
 
   /**

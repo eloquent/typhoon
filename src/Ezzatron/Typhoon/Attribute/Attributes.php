@@ -12,6 +12,7 @@
 namespace Ezzatron\Typhoon\Attribute;
 
 use Ezzatron\Typhoon\Collection\Collection;
+use Ezzatron\Typhoon\Primitive\Integer;
 use Ezzatron\Typhoon\Primitive\String;
 use Ezzatron\Typhoon\Type\StringType;
 use Ezzatron\Typhoon\Type\Type;
@@ -98,10 +99,12 @@ class Attributes extends Collection
   /**
    * @param Type $type
    * @param mixed $key
+   * @param Integer $index
+   * @param String $parameterName
    */
-  protected function assertKey(Type $type, $key)
+  protected function assertKey(Type $type, $key, Integer $index = null, String $parameterName = null)
   {
-    parent::assertKey($type, $key);
+    parent::assertKey($type, $key, $index, $parameterName);
 
     if (!$this->signature)
     {

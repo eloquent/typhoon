@@ -14,6 +14,7 @@ namespace Ezzatron\Typhoon\Assertion;
 use Ezzatron\Typhoon\Typhoon;
 use Ezzatron\Typhoon\Parameter\ParameterList\ParameterList;
 use Ezzatron\Typhoon\Primitive\Integer;
+use Ezzatron\Typhoon\Primitive\String;
 
 class ParameterListAssertion implements Assertion
 {
@@ -28,7 +29,6 @@ class ParameterListAssertion implements Assertion
 
     foreach ($this->arguments as $index => $value)
     {
-      $indexPrimitive = new Integer($index);
       $parameter = null;
 
       if (isset($this->parameterList[$index]))
@@ -52,13 +52,31 @@ class ParameterListAssertion implements Assertion
         }
         catch (Exception\UnexpectedTypeException $e)
         {
-          throw new Exception\UnexpectedArgumentException($value, $indexPrimitive, $parameter, $e);
+          if ($parameterName = $parameter->name())
+          {
+            $parameterName = new String($parameterName);
+          }
+
+          throw new Exception\UnexpectedArgumentException(
+            new String($e->typeName())
+            , new Integer($index)
+            , new String($e->expectedTypeName())
+            , $parameterName
+            , $e
+          );
         }
 
         continue;
       }
 
-      throw new Exception\UnexpectedArgumentException($value, $indexPrimitive);
+      $typeName = Typhoon::instance()->typeRenderer()->render(
+        Typhoon::instance()->typeInspector()->typeOf($value)
+      );
+
+      throw new Exception\UnexpectedArgumentException(
+        new String((string)$typeName)
+        , new Integer($index)
+      );
     }
 
     $index ++;

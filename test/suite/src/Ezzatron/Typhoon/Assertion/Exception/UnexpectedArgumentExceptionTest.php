@@ -11,7 +11,6 @@
 
 namespace Ezzatron\Typhoon\Assertion\Exception;
 
-use Ezzatron\Typhoon\Parameter\Parameter;
 use Ezzatron\Typhoon\Primitive\Integer;
 use Ezzatron\Typhoon\Primitive\String;
 
@@ -30,64 +29,73 @@ class UnexpectedArgumentExceptionTest extends \Ezzatron\Typhoon\Test\ExceptionTe
    */
   protected function defaultArguments()
   {
-    return array($this->_value, $this->_index, $this->_parameter);
+    return array($this->_typeName, $this->_index, $this->_expectedTypeName, $this->_parameterName);
   }
 
   protected function setUp()
   {
     parent::setUp();
     
-    $this->_value = 'foo';
+    $this->_typeName = new String('foo');
     $this->_index = new Integer(0);
-    $this->_parameter = new Parameter;
-    $this->_expectedTypeName = 'mixed';
+    $this->_expectedTypeName = new String('bar');
+    $this->_parameterName = new String('baz');
   }
 
   /**
-   * @covers Ezzatron\Typhoon\Assertion\Exception\UnexpectedArgumentException::__construct
+   * @covers Ezzatron\Typhoon\Assertion\Exception\UnexpectedArgumentException
    */
   public function testConstructor()
   {
+    $exception = $this->exceptionFixture();
     $expected =
-      "Unexpected argument at index "
+      "Unexpected argument of type '"
+      .$this->_typeName
+      ."' at index "
+      .$this->_index
+      ." ("
+      .$this->_parameterName
+      .")"
+      ." - expected '"
+      .$this->_expectedTypeName
+      ."'."
+    ;
+
+    $this->assertEquals($expected, $exception->getMessage());
+    $this->assertEquals($this->_typeName->value(), $exception->typeName());
+    $this->assertEquals($this->_index->value(), $exception->index());
+    $this->assertEquals($this->_expectedTypeName->value(), $exception->expectedTypeName());
+    $this->assertEquals($this->_parameterName->value(), $exception->parameterName());
+
+    $expected =
+      "Unexpected argument of type '"
+      .$this->_typeName
+      ."' at index "
       .$this->_index
       ." - expected '"
       .$this->_expectedTypeName
       ."'."
     ;
 
-    $this->assertEquals($expected, $this->exceptionFixture()->getMessage());
-
-    $parameterName = new String('foo');
-    $expected =
-      "Unexpected argument at index "
-      .$this->_index
-      ." (".$parameterName.")"
-      ." - expected '"
-      .$this->_expectedTypeName
-      ."'."
-    ;
-
-    $parameter = new Parameter;
-    $parameter->setName($parameterName);
-
-    $this->assertEquals($expected, $this->exceptionFixture(array($this->_value, $this->_index, $parameter))->getMessage());
+    $this->assertEquals($expected, $this->exceptionFixture(array($this->_typeName, $this->_index, $this->_expectedTypeName))->getMessage());
 
     $expected =
-      "Unexpected argument at index "
+      "Unexpected argument of type '"
+      .$this->_typeName
+      ."' at index "
       .$this->_index
       ."."
     ;
 
-    $this->assertEquals($expected, $this->exceptionFixture(array($this->_value, $this->_index))->getMessage());
+    $this->assertEquals($expected, $this->exceptionFixture(array($this->_typeName, $this->_index))->getMessage());
 
     parent::testConstructor();
   }
 
   /**
-   * @var mixed
+   * @var String
    */
-  protected $_value;
+  protected $_typeName;
 
   /**
    * @var Integer
@@ -95,12 +103,12 @@ class UnexpectedArgumentExceptionTest extends \Ezzatron\Typhoon\Test\ExceptionTe
   protected $_index;
 
   /**
-   * @var Parameter
-   */
-  protected $_parameter;
-
-  /**
-   * @var string
+   * @var String
    */
   protected $_expectedTypeName;
+
+  /**
+   * @var String
+   */
+  protected $_parameterName;
 }

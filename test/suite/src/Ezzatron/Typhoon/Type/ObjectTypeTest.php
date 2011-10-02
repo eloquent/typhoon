@@ -96,7 +96,7 @@ class ObjectTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
   public function testSetTyphoonAttributeFailure()
   {
     $type = $this->typeFixture();
-    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnexpectedTypeException');
+    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnexpectedArgumentException');
     $type->typhoonAttributes()->set(ObjectType::ATTRIBUTE_INSTANCE_OF, 1);
   }
 

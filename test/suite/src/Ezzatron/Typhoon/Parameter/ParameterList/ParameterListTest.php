@@ -83,9 +83,9 @@ class ParameterListTest extends \Ezzatron\Typhoon\Test\TestCase
    * @covers Ezzatron\Typhoon\Parameter\ParameterList\ParameterList::valueType
    * @dataProvider unexpectedTypeData
    */
-  public function testUnexpectedTypeFailure($method, array $arguments)
+  public function testUnexpectedArgumentFailure($method, array $arguments)
   {
-    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnexpectedTypeException');
+    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnexpectedArgumentException');
     call_user_func_array(array($this->_parameterList, $method), $arguments);
   }
 

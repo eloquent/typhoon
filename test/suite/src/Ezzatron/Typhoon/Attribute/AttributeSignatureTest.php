@@ -87,7 +87,7 @@ class AttributeSignatureTest extends \Ezzatron\Typhoon\Test\TestCase
     $arguments = func_get_args();
     array_shift($arguments);
 
-    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnexpectedTypeException');
+    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnexpectedArgumentException');
     call_user_func_array(array($this->_signature, $method), $arguments);
   }
   

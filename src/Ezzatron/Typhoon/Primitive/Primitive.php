@@ -14,7 +14,6 @@ namespace Ezzatron\Typhoon\Primitive;
 use Ezzatron\Typhoon\Assertion\Exception\UnexpectedArgumentException;
 use Ezzatron\Typhoon\Assertion\Exception\UnexpectedTypeException;
 use Ezzatron\Typhoon\Assertion\TypeAssertion;
-use Ezzatron\Typhoon\Parameter\Parameter;
 use Ezzatron\Typhoon\Typhoon;
 
 abstract class Primitive
@@ -34,10 +33,13 @@ abstract class Primitive
     }
     catch (UnexpectedTypeException $e)
     {
-      $parameter = new Parameter;
-      $parameter->setType($this->type());
-
-      throw new UnexpectedArgumentException($value, new Integer(0), $parameter, $e);
+      throw new UnexpectedArgumentException(
+        new String($e->typeName())
+        , new Integer(0)
+        , new String($e->expectedTypeName())
+        , new String('value')
+        , $e
+      );
     }
 
     $this->value = $value;

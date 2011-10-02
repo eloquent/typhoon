@@ -16,7 +16,10 @@ use ArrayIterator;
 use Countable;
 use IteratorAggregate;
 use Ezzatron\Typhoon\Assertion\TypeAssertion;
+use Ezzatron\Typhoon\Assertion\Exception\UnexpectedArgumentException;
+use Ezzatron\Typhoon\Assertion\Exception\UnexpectedTypeException;
 use Ezzatron\Typhoon\Type\Composite\OrType;
+use Ezzatron\Typhoon\Primitive\Integer;
 use Ezzatron\Typhoon\Primitive\String;
 use Ezzatron\Typhoon\Type\IntegerType;
 use Ezzatron\Typhoon\Type\MixedType;
@@ -244,49 +247,88 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
 
   /**
    * @param mixed $key
+   * @param Integer $index
+   * @param String $parameterName
    */
-  protected function assertKeyForSet($key)
+  protected function assertKeyForSet($key, Integer $index = null, String $parameterName = null)
   {
-    $this->assertKey($this->keySetType(), $key);
+    $this->assertKey($this->keySetType(), $key, $index, $parameterName);
   }
 
   /**
    * @param mixed $key
+   * @param Integer $index
+   * @param String $parameterName
    */
-  protected function assertKeyForGet($key)
+  protected function assertKeyForGet($key, Integer $index = null, String $parameterName = null)
   {
-    $this->assertKey($this->keyGetType(), $key);
+    $this->assertKey($this->keyGetType(), $key, $index, $parameterName);
   }
 
   /**
    * @param Type $type
    * @param mixed $key
+   * @param Integer $index
+   * @param String $parameterName
    */
-  protected function assertKey(Type $type, $key)
+  protected function assertKey(Type $type, $key, Integer $index = null, String $parameterName = null)
   {
-    $this->assertType($type, $key);
+    if (null === $index)
+    {
+      $index = new Integer(0);
+    }
+    if (null === $parameterName)
+    {
+      $parameterName = new String('key');
+    }
+
+    $this->assertType($type, $key, $index, $parameterName);
   }
 
   /**
    * @param mixed $key
    * @param mixed $value
+   * @param Integer $index
+   * @param String $parameterName
    */
-  protected function assertValue($key, $value)
+  protected function assertValue($key, $value, Integer $index = null, String $parameterName = null)
   {
-    $this->assertType($this->valueType($key), $value);
+    if (null === $index)
+    {
+      $index = new Integer(1);
+    }
+    if (null === $parameterName)
+    {
+      $parameterName = new String('value');
+    }
+
+    $this->assertType($this->valueType($key), $value, $index, $parameterName);
   }
 
   /**
    * @param Type $type
    * @param mixed $value
    */
-  protected function assertType(Type $type, $value)
+  protected function assertType(Type $type, $value, Integer $index, String $parameterName)
   {
     $assertion = $this->typeAssertion();
     $assertion->setType($type);
     $assertion->setValue($value);
 
-    $assertion->assert();
+    try
+    {
+      $assertion->assert();
+    }
+    catch (UnexpectedTypeException $e)
+    {
+      throw new UnexpectedArgumentException(
+        new String($e->typeName())
+        , $index
+        , new String($e->expectedTypeName())
+        , $parameterName
+        , $e
+      );
+    }
   }
 
   /**

@@ -30,9 +30,16 @@ class TypeAssertion implements Assertion
       return;
     }
 
+    $typeName = Typhoon::instance()->typeRenderer()->render(
+      Typhoon::instance()->typeInspector()->typeOf($this->value)
+    );
+    $expectedTypeName = Typhoon::instance()->typeRenderer()->render(
+      $this->type
+    );
+
     throw new Exception\UnexpectedTypeException(
-      $this->value,
-      new String((string)Typhoon::instance()->typeRenderer()->render($this->type))
+      new String((string)$typeName),
+      new String((string)$expectedTypeName)
     );
   }
 
