@@ -20,6 +20,7 @@ use Ezzatron\Typhoon\Type\IntegerType;
 use Ezzatron\Typhoon\Type\KeyType;
 use Ezzatron\Typhoon\Type\MixedType;
 use Ezzatron\Typhoon\Type\NullType;
+use Ezzatron\Typhoon\Type\NumericType;
 use Ezzatron\Typhoon\Type\ObjectType;
 use Ezzatron\Typhoon\Type\ResourceType;
 use Ezzatron\Typhoon\Type\StringType;
@@ -52,6 +53,7 @@ class TypeRegistryTest extends \Ezzatron\Typhoon\Test\TestCase
       array('bool', new BooleanType, true),
       array('callable', new CallbackType, true),
       array('double', new FloatType, true),
+      array('floatable', new NumericType, true),
       array('int', new IntegerType, true),
       array('keyable', new KeyType, true),
       array('long', new IntegerType, true),

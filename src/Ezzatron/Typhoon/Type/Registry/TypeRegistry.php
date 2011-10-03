@@ -22,6 +22,7 @@ use Ezzatron\Typhoon\Type\IntegerType;
 use Ezzatron\Typhoon\Type\KeyType;
 use Ezzatron\Typhoon\Type\MixedType;
 use Ezzatron\Typhoon\Type\NullType;
+use Ezzatron\Typhoon\Type\NumericType;
 use Ezzatron\Typhoon\Type\ObjectType;
 use Ezzatron\Typhoon\Type\ResourceType;
 use Ezzatron\Typhoon\Type\SimpleStringType;
@@ -47,6 +48,7 @@ class TypeRegistry extends Collection
     $this[self::TYPE_KEY] = new KeyType;
     $this[self::TYPE_MIXED] = new MixedType;
     $this[self::TYPE_NULL] = new NullType;
+    $this[self::TYPE_NUMERIC] = new NumericType;
     $this[self::TYPE_OBJECT] = new ObjectType;
     $this[self::TYPE_RESOURCE] = new ResourceType;
     $this[self::TYPE_STRING] = new StringType;
@@ -55,6 +57,7 @@ class TypeRegistry extends Collection
     $this[self::ALIAS_BOOL] = $this[self::TYPE_BOOLEAN];
     $this[self::ALIAS_CALLABLE] = $this[self::TYPE_CALLBACK];
     $this[self::ALIAS_DOUBLE] = $this[self::TYPE_FLOAT];
+    $this[self::ALIAS_FLOATABLE] = $this[self::TYPE_NUMERIC];
     $this[self::ALIAS_INT] = $this[self::TYPE_INTEGER];
     $this[self::ALIAS_KEYABLE] = $this[self::TYPE_KEY];
     $this[self::ALIAS_LONG] = $this[self::TYPE_INTEGER];
@@ -204,6 +207,7 @@ class TypeRegistry extends Collection
   const TYPE_KEY = 'key';
   const TYPE_MIXED = 'mixed';
   const TYPE_NULL = 'null';
+  const TYPE_NUMERIC = 'numeric';
   const TYPE_OBJECT = 'object';
   const TYPE_RESOURCE = 'resource';
   const TYPE_STRING = 'string';
@@ -212,6 +216,7 @@ class TypeRegistry extends Collection
   const ALIAS_BOOL = 'bool';
   const ALIAS_CALLABLE = 'callable';
   const ALIAS_DOUBLE = 'double';
+  const ALIAS_FLOATABLE = 'floatable';
   const ALIAS_INT = 'int';
   const ALIAS_KEYABLE = 'keyable';
   const ALIAS_LONG = 'long';
