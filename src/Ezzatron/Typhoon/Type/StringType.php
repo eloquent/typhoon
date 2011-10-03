@@ -20,7 +20,7 @@ class StringType extends Dynamic\BaseDynamicType
   {
     parent::__construct($attributes);
 
-    $this->simpleStringType = new SimpleStringType;
+    $this->innerType = new SimpleStringType;
   }
 
   /**
@@ -30,7 +30,7 @@ class StringType extends Dynamic\BaseDynamicType
    */
   public function typhoonCheck($value)
   {
-    if (!$this->simpleStringType->typhoonCheck($value))
+    if (!$this->innerType->typhoonCheck($value))
     {
       return false;
     }
@@ -59,5 +59,5 @@ class StringType extends Dynamic\BaseDynamicType
   /**
    * @var SimpleStringType
    */
-  protected $simpleStringType;
+  protected $innerType;
 }

@@ -20,7 +20,7 @@ class StreamType extends Dynamic\BaseDynamicType
   {
     parent::__construct($attributes);
 
-    $this->resourceType = new ResourceType(new Attributes(array(
+    $this->innerType = new ResourceType(new Attributes(array(
       ResourceType::ATTRIBUTE_TYPE => ResourceType::TYPE_STREAM,
     )));
   }
@@ -32,7 +32,7 @@ class StreamType extends Dynamic\BaseDynamicType
    */
   public function typhoonCheck($value)
   {
-    if (!$this->resourceType->typhoonCheck($value))
+    if (!$this->innerType->typhoonCheck($value))
     {
       return false;
     }
@@ -99,5 +99,5 @@ class StreamType extends Dynamic\BaseDynamicType
   /**
    * @var ResourceType
    */
-  protected $resourceType;
+  protected $innerType;
 }
