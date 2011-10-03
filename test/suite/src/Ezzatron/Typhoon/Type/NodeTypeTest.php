@@ -11,22 +11,27 @@
 
 namespace Ezzatron\Typhoon\Type;
 
-use stdClass;
 use Ezzatron\Typhoon\Attribute\Attributes;
 use Ezzatron\Typhoon\Attribute\AttributeSignature;
 use Ezzatron\Typhoon\Primitive\String;
+use Phake;
+use stdClass;
+use ReflectionObject;
 
-class ResourceTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
+class NodeTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
 {
   /**
    * @return array
    */
   public function typeValues()
   {
-    $streamAttributes = new Attributes(array(
-      ResourceType::ATTRIBUTE_TYPE => 'stream',
+    $fileAttributes = new Attributes(array(
+      NodeType::ATTRIBUTE_TYPE => NodeType::TYPE_FILE,
     ));
-
+    $directoryAttributes = new Attributes(array(
+      NodeType::ATTRIBUTE_TYPE => NodeType::TYPE_DIRECTORY,
+    ));
+    
     return array(
       array(false, null),                      // #0: null
       array(false, true),                      // #1: boolean
@@ -36,15 +41,15 @@ class ResourceTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
       array(false, array()),                   // #5: array
       array(false, new stdClass),              // #6: object
       array(false, function(){}),              // #7: closure
-      array(true,  $this->resourceFixture()),  // #8: resource
-      array(true,  $this->streamFixture()),    // #9: stream
+      array(false, $this->resourceFixture()),  // #8: resource
+      array(false, $this->streamFixture()),    // #9: stream
       array(true,  $this->fileFixture()),      // #10: file
       array(true,  $this->directoryFixture()), // #11: directory
-
-      array(false, $this->resourceFixture(),   $streamAttributes),  // #10: resource of type stream failure
-      array(true,  $this->streamFixture(),     $streamAttributes),  // #11: resource of type stream success
-      array(true,  $this->fileFixture(),       $streamAttributes),  // #11: resource of type stream success (file)
-      array(true,  $this->directoryFixture(),  $streamAttributes),  // #11: resource of type stream success (directory)
+        
+      array(true,  $this->fileFixture(), $fileAttributes),            // #12: node of type file success
+      array(false, $this->directoryFixture(), $fileAttributes),       // #13: node of type file failure
+      array(false, $this->fileFixture(), $directoryAttributes),       // #14: node of type directory failure
+      array(true,  $this->directoryFixture(), $directoryAttributes),  // #15: node of type directory success
     );
   }
 
@@ -53,24 +58,24 @@ class ResourceTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
    */
   protected function typeClass()
   {
-    return __NAMESPACE__.'\ResourceType';
+    return __NAMESPACE__.'\NodeType';
   }
 
   /**
-   * @covers Ezzatron\Typhoon\Type\ResourceType::configureAttributeSignature
+   * @covers Ezzatron\Typhoon\Type\NodeType::configureAttributeSignature
    */
   public function testConfigureAttributeSignature()
   {
     $expected = new AttributeSignature;
     $expected->setHolderName(new String($this->typeClass()));
-    $expected[ResourceType::ATTRIBUTE_TYPE] = new StringType;
+    $expected[NodeType::ATTRIBUTE_TYPE] = new StringType;
 
-    $type = new ResourceType;
+    $type = new NodeType;
     $actual = $type->typhoonAttributes()->signature();
 
     $this->assertEquals($expected, $actual);
 
-    $type = new ResourceType;
+    $type = new NodeType;
 
     $this->assertEquals($actual, $type->typhoonAttributes()->signature());
   }
@@ -78,7 +83,8 @@ class ResourceTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
   // methods below must be manually overridden to implement @covers
 
   /**
-   * @covers Ezzatron\Typhoon\Type\ResourceType::typhoonCheck
+   * @covers Ezzatron\Typhoon\Type\NodeType::__construct
+   * @covers Ezzatron\Typhoon\Type\NodeType::typhoonCheck
    * @dataProvider typeValues
    * @group typhoon_types
    */

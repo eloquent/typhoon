@@ -117,6 +117,14 @@ class StreamType extends Dynamic\BaseDynamicType
   const META_DATA_TYPE = 'stream_type';
   const META_DATA_WRAPPER = 'wrapper_type';
 
+  const TYPE_DIR = 'dir';
+  const TYPE_STDIO = 'STDIO';
+  const TYPE_TCP_SOCKET = 'tcp_socket';
+  const TYPE_TCP_SOCKET_SSL = 'tcp_socket/ssl';
+  
+  const WRAPPER_PLAINFILE = 'plainfile';
+  const WRAPPER_HTTP = 'http';
+
   /**
    * @var ResourceType
    */

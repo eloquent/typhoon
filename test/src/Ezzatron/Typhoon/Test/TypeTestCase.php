@@ -14,6 +14,7 @@ namespace Ezzatron\Typhoon\Test;
 use Ezzatron\Typhoon\Attribute\Attributes;
 use Ezzatron\Typhoon\Test\Fixture\Stringable;
 use ReflectionClass;
+use vfsStream;
 
 abstract class TypeTestCase extends TestCase
 {
@@ -47,10 +48,41 @@ abstract class TypeTestCase extends TestCase
   {
     if (!$this->_stream)
     {
-      $this->_stream = fopen(__FILE__, 'rb');
+      vfsStream::setup('root');
+      
+      $streamUrl = vfsStream::url('root/streamFixture');
+      file_put_contents($streamUrl, '');
+      
+      $this->_stream = fopen($streamUrl, 'rb');
     }
 
     return $this->_stream;
+  }
+
+  /**
+   * @return resource
+   */
+  protected function fileFixture()
+  {
+    if (!$this->_file)
+    {
+      $this->_file = fopen(__FILE__, 'rb');
+    }
+
+    return $this->_file;
+  }
+
+  /**
+   * @return resource
+   */
+  protected function directoryFixture()
+  {
+    if (!$this->_directory)
+    {
+      $this->_directory = opendir(__DIR__);
+    }
+
+    return $this->_directory;
   }
 
   /**
@@ -76,6 +108,14 @@ abstract class TypeTestCase extends TestCase
     if ($this->_stream)
     {
       fclose($this->_stream);
+    }
+    if ($this->_file)
+    {
+      fclose($this->_file);
+    }
+    if ($this->_directory)
+    {
+      fclose($this->_directory);
     }
   }
 
@@ -107,4 +147,14 @@ abstract class TypeTestCase extends TestCase
    * @var resource
    */
   private $_stream;
+
+  /**
+   * @var resource
+   */
+  private $_file;
+
+  /**
+   * @var resource
+   */
+  private $_directory;
 }
