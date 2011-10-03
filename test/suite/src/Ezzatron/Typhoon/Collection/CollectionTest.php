@@ -42,6 +42,7 @@ class CollectionTest extends \Ezzatron\Typhoon\Test\TestCase
     $this->assertFalse($this->_collection->exists('foo'));
     $this->assertFalse(isset($this->_collection['foo']));
     $this->assertEquals(0, count($this->_collection));
+    $this->assertTrue($this->_collection->isEmpty());
 
     $this->_collection->set('foo', 'bar');
     $this->_collection['baz'] = 'qux';
@@ -65,6 +66,7 @@ class CollectionTest extends \Ezzatron\Typhoon\Test\TestCase
     $this->assertNull($this->_collection->get('bar', null));
     $this->assertEquals('splat', $this->_collection->get('bar', 'splat'));
     $this->assertEquals(3, count($this->_collection));
+    $this->assertFalse($this->_collection->isEmpty());
 
     $this->_collection->remove('foo');
     unset($this->_collection['baz']);
@@ -74,6 +76,7 @@ class CollectionTest extends \Ezzatron\Typhoon\Test\TestCase
     $this->assertFalse($this->_collection->exists('foo'));
     $this->assertFalse(isset($this->_collection['foo']));
     $this->assertEquals(0, count($this->_collection));
+    $this->assertTrue($this->_collection->isEmpty());
 
     $array = array(0 => 'doom', 'foo' => 'bar', 'baz' => 'qux');
     $this->_collection = new Collection($array);

@@ -12,6 +12,7 @@
 namespace Ezzatron\Typhoon\Test;
 
 use Ezzatron\Typhoon\Attribute\Attributes;
+use Ezzatron\Typhoon\Test\Fixture\Stringable;
 use ReflectionClass;
 
 abstract class TypeTestCase extends TestCase
@@ -31,7 +32,10 @@ abstract class TypeTestCase extends TestCase
    */
   protected function resourceFixture()
   {
-    if (!$this->_resource) $this->_resource = stream_context_create();
+    if (!$this->_resource)
+    {
+      $this->_resource = stream_context_create();
+    }
 
     return $this->_resource;
   }
@@ -41,9 +45,22 @@ abstract class TypeTestCase extends TestCase
    */
   protected function streamFixture()
   {
-    if (!$this->_stream) $this->_stream = fopen(__FILE__, 'rb');
+    if (!$this->_stream)
+    {
+      $this->_stream = fopen(__FILE__, 'rb');
+    }
 
     return $this->_stream;
+  }
+
+  /**
+   * @param string $string
+   * 
+   * @return Stringable
+   */
+  protected function stringableFixture($string = null)
+  {
+    return new Stringable($string);
   }
 
   protected function setUp()
@@ -56,7 +73,10 @@ abstract class TypeTestCase extends TestCase
 
   protected function tearDown()
   {
-    if ($this->_stream) fclose($this->_stream);
+    if ($this->_stream)
+    {
+      fclose($this->_stream);
+    }
   }
 
   /**

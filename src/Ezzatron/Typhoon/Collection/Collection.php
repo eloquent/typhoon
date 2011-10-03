@@ -180,6 +180,14 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
   {
     return count($this->values);
   }
+  
+  /**
+   * @return boolean
+   */
+  public function isEmpty()
+  {
+    return $this->count() < 1;
+  }
 
   /**
    * @return Type
