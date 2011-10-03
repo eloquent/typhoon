@@ -36,6 +36,15 @@ class StreamType extends Dynamic\BaseDynamicType
     {
       return false;
     }
+    
+    $local = $this->typhoonAttributes()->get(self::ATTRIBUTE_LOCAL, null);
+    if (null !== $local)
+    {
+      if ($this->isLocal($value) != $local)
+      {
+        return false;
+      }
+    }
 
     $mode = $this->typhoonAttributes()->get(self::ATTRIBUTE_MODE, null);
     $type = $this->typhoonAttributes()->get(self::ATTRIBUTE_TYPE, null);
@@ -68,6 +77,16 @@ class StreamType extends Dynamic\BaseDynamicType
   /**
    * @param stream $stream
    * 
+   * @return boolean
+   */
+  protected function isLocal($stream)
+  {
+    return stream_is_local($stream);
+  }
+
+  /**
+   * @param stream $stream
+   * 
    * @return array
    */
   protected function getMetaData($stream)
@@ -83,11 +102,13 @@ class StreamType extends Dynamic\BaseDynamicType
    */
   static protected function configureAttributeSignature(AttributeSignature $attributeSignature, Dynamic\BaseDynamicType $type)
   {
+    $attributeSignature[self::ATTRIBUTE_LOCAL] = new BooleanType;
     $attributeSignature[self::ATTRIBUTE_MODE] = new StringType;
     $attributeSignature[self::ATTRIBUTE_TYPE] = new StringType;
     $attributeSignature[self::ATTRIBUTE_WRAPPER] = new StringType;
   }
 
+  const ATTRIBUTE_LOCAL = 'local';
   const ATTRIBUTE_MODE = 'mode';
   const ATTRIBUTE_TYPE = 'type';
   const ATTRIBUTE_WRAPPER = 'wrapper';

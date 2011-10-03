@@ -25,10 +25,6 @@ class StreamTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
    */
   public function typeValues()
   {
-//    $streamAttributes = new Attributes(array(
-//      ResourceType::ATTRIBUTE_TYPE => 'stream',
-//    ));
-
     return array(
       array(false, null),                      // #0: null
       array(false, true),                      // #1: boolean
@@ -57,6 +53,54 @@ class StreamTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
   public function testTyphoonCheckWithAttributes()
   {
     $stream = $this->streamFixture();
+
+    $type = $this->getMock($this->typeClass(), array('isLocal'), array(new Attributes(array(
+      StreamType::ATTRIBUTE_LOCAL => true,
+    ))));
+    $type
+      ->expects($this->once())
+      ->method('isLocal')
+      ->with($stream)
+      ->will($this->returnValue(true))
+    ;
+    
+    $this->assertTrue($type->typhoonCheck($stream));
+
+    $type = $this->getMock($this->typeClass(), array('isLocal'), array(new Attributes(array(
+      StreamType::ATTRIBUTE_LOCAL => false,
+    ))));
+    $type
+      ->expects($this->once())
+      ->method('isLocal')
+      ->with($stream)
+      ->will($this->returnValue(false))
+    ;
+    
+    $this->assertTrue($type->typhoonCheck($stream));
+
+    $type = $this->getMock($this->typeClass(), array('isLocal'), array(new Attributes(array(
+      StreamType::ATTRIBUTE_LOCAL => true,
+    ))));
+    $type
+      ->expects($this->once())
+      ->method('isLocal')
+      ->with($stream)
+      ->will($this->returnValue(false))
+    ;
+    
+    $this->assertFalse($type->typhoonCheck($stream));
+
+    $type = $this->getMock($this->typeClass(), array('isLocal'), array(new Attributes(array(
+      StreamType::ATTRIBUTE_LOCAL => false,
+    ))));
+    $type
+      ->expects($this->once())
+      ->method('isLocal')
+      ->with($stream)
+      ->will($this->returnValue(true))
+    ;
+    
+    $this->assertFalse($type->typhoonCheck($stream));
 
     $type = $this->getMock($this->typeClass(), array('getMetaData'), array(new Attributes(array(
       StreamType::ATTRIBUTE_MODE => 'mode',
@@ -157,12 +201,27 @@ class StreamTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
   }
 
   /**
+   * @covers Ezzatron\Typhoon\Type\StreamType::isLocal
+   */
+  public function testIsLocal()
+  {
+    $type = $this->typeFixture();
+
+    $reflector = new ReflectionObject($type);
+    $method = $reflector->getMethod('isLocal');
+    $method->setAccessible(true);
+
+    $this->assertType('boolean', $method->invokeArgs($type, array($this->streamFixture())));
+  }
+
+  /**
    * @covers Ezzatron\Typhoon\Type\StreamType::configureAttributeSignature
    */
   public function testConfigureAttributeSignature()
   {
     $expected = new AttributeSignature;
     $expected->setHolderName(new String($this->typeClass()));
+    $expected[StreamType::ATTRIBUTE_LOCAL] = new BooleanType;
     $expected[StreamType::ATTRIBUTE_MODE] = new StringType;
     $expected[StreamType::ATTRIBUTE_TYPE] = new StringType;
     $expected[StreamType::ATTRIBUTE_WRAPPER] = new StringType;
