@@ -17,6 +17,7 @@ use Ezzatron\Typhoon\Type\BooleanType;
 use Ezzatron\Typhoon\Type\CallbackType;
 use Ezzatron\Typhoon\Type\FloatType;
 use Ezzatron\Typhoon\Type\IntegerType;
+use Ezzatron\Typhoon\Type\KeyType;
 use Ezzatron\Typhoon\Type\MixedType;
 use Ezzatron\Typhoon\Type\NullType;
 use Ezzatron\Typhoon\Type\ObjectType;
@@ -40,6 +41,7 @@ class TypeRegistryTest extends \Ezzatron\Typhoon\Test\TestCase
       array('callback', new CallbackType),
       array('float', new FloatType),
       array('integer', new IntegerType),
+      array('key', new KeyType),
       array('mixed', new MixedType),
       array('null', new NullType),
       array('object', new ObjectType),
@@ -51,6 +53,7 @@ class TypeRegistryTest extends \Ezzatron\Typhoon\Test\TestCase
       array('callable', new CallbackType, true),
       array('double', new FloatType, true),
       array('int', new IntegerType, true),
+      array('keyable', new KeyType, true),
       array('long', new IntegerType, true),
       array('real', new FloatType, true),
     );
