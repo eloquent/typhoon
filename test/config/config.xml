@@ -38,10 +38,10 @@
       highlight="true"
     />
 
-    <log
+    <!--<log
       type="json"
       target="../report/logfile.json"
-    />
+    />-->
 
     <log
       type="tap"

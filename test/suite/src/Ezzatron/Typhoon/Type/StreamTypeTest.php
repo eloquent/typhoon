@@ -213,7 +213,7 @@ class StreamTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
     $method = $reflector->getMethod('isLocal');
     $method->setAccessible(true);
 
-    $this->assertType('boolean', $method->invokeArgs($type, array($this->streamFixture())));
+    $this->assertInternalType('boolean', $method->invokeArgs($type, array($this->streamFixture())));
   }
 
   /**
