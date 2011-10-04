@@ -12,3 +12,4 @@ http://ci.ezzatron.com/typhoon
 
 #### Latest revision test suite coverage
 http://ci.ezzatron.com/report/typhoon/coverage/
+
