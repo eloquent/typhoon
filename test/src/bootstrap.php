@@ -21,9 +21,6 @@ if (!defined('TYPHOON_TEST_REPORT_DIR')) define('TYPHOON_TEST_REPORT_DIR', TYPHO
 // include Phake for improved mocking support
 require 'Phake.php';
 
-// include vfsStream for filesystem-independent stream testing
-require 'vfsStream/vfsStream.php';
-
 // include Typhoon
 require TYPHOON_SRC_DIR.DIRECTORY_SEPARATOR.'include.php';
 

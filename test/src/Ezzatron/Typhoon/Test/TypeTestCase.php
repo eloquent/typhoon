@@ -14,7 +14,6 @@ namespace Ezzatron\Typhoon\Test;
 use Ezzatron\Typhoon\Attribute\Attributes;
 use Ezzatron\Typhoon\Test\Fixture\Stringable;
 use ReflectionClass;
-use vfsStream;
 
 abstract class TypeTestCase extends TestCase
 {
@@ -48,12 +47,7 @@ abstract class TypeTestCase extends TestCase
   {
     if (!$this->_stream)
     {
-      vfsStream::setup('root');
-      
-      $streamUrl = vfsStream::url('root/streamFixture');
-      file_put_contents($streamUrl, '');
-      
-      $this->_stream = fopen($streamUrl, 'rb');
+      $this->_stream = fopen('php://memory', 'wb');
     }
 
     return $this->_stream;
