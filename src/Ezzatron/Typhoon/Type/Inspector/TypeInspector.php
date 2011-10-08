@@ -13,11 +13,14 @@ namespace Ezzatron\Typhoon\Type\Inspector;
 
 use Ezzatron\Typhoon\Type\ArrayType;
 use Ezzatron\Typhoon\Type\BooleanType;
+use Ezzatron\Typhoon\Type\DirectoryType;
+use Ezzatron\Typhoon\Type\FileType;
 use Ezzatron\Typhoon\Type\FloatType;
 use Ezzatron\Typhoon\Type\IntegerType;
 use Ezzatron\Typhoon\Type\MixedType;
 use Ezzatron\Typhoon\Type\NullType;
 use Ezzatron\Typhoon\Type\ObjectType;
+use Ezzatron\Typhoon\Type\StreamType;
 use Ezzatron\Typhoon\Type\StringType;
 use Ezzatron\Typhoon\Type\ResourceType;
 use Ezzatron\Typhoon\Type\TraversableType;
@@ -37,6 +40,9 @@ class TypeInspector
       new IntegerType,
       new FloatType,
       new StringType,
+      new FileType,
+      new DirectoryType,
+      new StreamType,
       new ResourceType,
     );
 
@@ -57,6 +63,8 @@ class TypeInspector
     $traversable = new TraversableType;
     if ($traversable->typhoonCheck($value))
     {
+      $traversable->typhoonAttributes()->set(ObjectType::ATTRIBUTE_INSTANCE_OF, get_class($value));
+
       return $traversable;
     }
 

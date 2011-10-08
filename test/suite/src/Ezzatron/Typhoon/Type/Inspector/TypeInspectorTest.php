@@ -15,11 +15,14 @@ use Phake;
 use stdClass;
 use Ezzatron\Typhoon\Type\ArrayType;
 use Ezzatron\Typhoon\Type\BooleanType;
+use Ezzatron\Typhoon\Type\DirectoryType;
+use Ezzatron\Typhoon\Type\FileType;
 use Ezzatron\Typhoon\Type\FloatType;
 use Ezzatron\Typhoon\Type\IntegerType;
 use Ezzatron\Typhoon\Type\MixedType;
 use Ezzatron\Typhoon\Type\NullType;
 use Ezzatron\Typhoon\Type\ObjectType;
+use Ezzatron\Typhoon\Type\StreamType;
 use Ezzatron\Typhoon\Type\StringType;
 use Ezzatron\Typhoon\Type\ResourceType;
 use Ezzatron\Typhoon\Type\TraversableType;
@@ -37,36 +40,51 @@ class TypeInspectorTest extends \Ezzatron\Typhoon\Test\TestCase
       array(true,     new BooleanType),    // #1: Boolean
       array(false,    new BooleanType),    // #2: Boolean
       array(1,        new IntegerType),    // #3: Integer
-      array(.1,       new FloatType),      // #4: Integer
+      array(.1,       new FloatType),      // #4: Float
       array('foo',    new StringType),     // #5: String
     );
 
-    // #6: Resource
-    $value = stream_context_create();
+    // #6: File
+    $value = $this->fileFixture();
+    $expected = new FileType;
+    $data[] = array($value, $expected);
+
+    // #7: Directory
+    $value = $this->directoryFixture();
+    $expected = new DirectoryType;
+    $data[] = array($value, $expected);
+
+    // #8: Stream
+    $value = $this->streamFixture();
+    $expected = new StreamType;
+    $data[] = array($value, $expected);
+
+    // #9: Resource
+    $value = $this->resourceFixture();
     $expected = new ResourceType;
     $data[] = array($value, $expected);
 
-    // #7: Array
+    // #10: Array
     $value = array();
     $expected = new ArrayType;
     $data[] = array($value, $expected);
 
-    // #8: Traversable
+    // #11: Traversable
     $value = Phake::mock('Iterator');
     $expected = new TraversableType;
-    $expected->typhoonAttributes();
+    $expected->typhoonAttributes()->set(TraversableType::ATTRIBUTE_INSTANCE_OF, get_class($value));
     $data[] = array($value, $expected);
 
-    // #9: Object (stdClass)
+    // #12: Object (stdClass)
     $value = new stdClass;
     $expected = new ObjectType;
-    $expected->typhoonAttributes()->set(ObjectType::ATTRIBUTE_INSTANCE_OF, 'stdClass');
+    $expected->typhoonAttributes()->set(ObjectType::ATTRIBUTE_INSTANCE_OF, get_class($value));
     $data[] = array($value, $expected);
 
-    // #10: Object (Typhoon)
+    // #13: Object (Typhoon)
     $value = Typhoon::instance();
     $expected = new ObjectType;
-    $expected->typhoonAttributes()->set(ObjectType::ATTRIBUTE_INSTANCE_OF, 'Ezzatron\Typhoon\Typhoon');
+    $expected->typhoonAttributes()->set(ObjectType::ATTRIBUTE_INSTANCE_OF, get_class($value));
     $data[] = array($value, $expected);
 
     return $data;
