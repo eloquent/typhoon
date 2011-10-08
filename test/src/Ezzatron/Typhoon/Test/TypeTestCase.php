@@ -12,6 +12,7 @@
 namespace Ezzatron\Typhoon\Test;
 
 use Ezzatron\Typhoon\Attribute\Attributes;
+use Ezzatron\Typhoon\Test\Fixture\Callable;
 use Ezzatron\Typhoon\Test\Fixture\Stringable;
 use ReflectionClass;
 
@@ -87,6 +88,16 @@ abstract class TypeTestCase extends TestCase
   protected function stringableFixture($string = null)
   {
     return new Stringable($string);
+  }
+
+  /**
+   * @param mixed $return
+   *
+   * @return Callable
+   */
+  protected function callableFixture($return = null)
+  {
+    return new Callable($return);
   }
 
   protected function setUp()

@@ -36,6 +36,7 @@ class CallbackTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
       array(true,  array($this, 'typeValues')),                     // #10: method name
       array(true,  array('Ezzatron\Typhoon\Typhoon', 'instance')),  // #10: static method name
       array(true,  'Ezzatron\Typhoon\Typhoon::instance'),           // #11: static method name
+      array(true,  $this->callableFixture()),                       // #12: object with __invoke method
     );
   }
 
