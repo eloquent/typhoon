@@ -15,6 +15,8 @@ use Phake;
 use Ezzatron\Typhoon\Attribute\Attributes;
 use Ezzatron\Typhoon\Type\Registry\TypeRegistry;
 use Ezzatron\Typhoon\Type\MixedType;
+use Ezzatron\Typhoon\Type\ObjectType;
+use Ezzatron\Typhoon\Type\TraversableType;
 use Ezzatron\Typhoon\Type\Type;
 
 class TyphaxTypeRendererTest extends \Ezzatron\Typhoon\Test\TestCase
@@ -113,6 +115,40 @@ class TyphaxTypeRendererTest extends \Ezzatron\Typhoon\Test\TestCase
     $expected = "foo(bar='baz',qux=1,doom=0.1)<".$expectedKey.','.$expectedSub.'>';
     $data[] = array($type, $alias, $expected);
 
+    // #8: Object type
+    $type = new ObjectType;
+    $alias = 'foo';
+    $expected = 'foo';
+    $data[] = array($type, $alias, $expected);
+
+    // #9: Traversable type
+    $type = new TraversableType;
+    $alias = 'foo';
+    $expected = 'foo';
+    $data[] = array($type, $alias, $expected);
+
+    // #10: Object type of particular class
+    $type = new ObjectType(new Attributes(array(
+      ObjectType::ATTRIBUTE_INSTANCE_OF => 'bar',
+    )));
+    $alias = 'foo';
+    $expected = 'bar';
+    $data[] = array($type, $alias, $expected);
+
+    // #11: Traversable type of particular class
+    $keyType = Phake::mock('Ezzatron\Typhoon\Type\Type');
+    $subType = Phake::mock('Ezzatron\Typhoon\Type\Type');
+    $type = new TraversableType(new Attributes(array(
+      TraversableType::ATTRIBUTE_INSTANCE_OF => 'bar',
+    )));
+    $type->setTyphoonKeyType($keyType);
+    $type->setTyphoonSubType($subType);
+    $alias = 'foo';
+    $expectedKey = $renderer->render($keyType);
+    $expectedSub = $renderer->render($subType);
+    $expected = "bar<".$expectedKey.','.$expectedSub.'>';
+    $data[] = array($type, $alias, $expected);
+
     return $data;
   }
 
@@ -121,7 +157,12 @@ class TyphaxTypeRendererTest extends \Ezzatron\Typhoon\Test\TestCase
     parent::setUp();
     
     $this->_renderer = new TyphaxTypeRenderer;
+
     $this->_typeRegistry = new TypeRegistry;
+    foreach ($this->_typeRegistry as $alias => $type)
+    {
+      unset($this->_typeRegistry[$alias]);
+    }
   }
 
   /**

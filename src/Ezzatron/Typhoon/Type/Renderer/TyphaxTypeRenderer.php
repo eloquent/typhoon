@@ -15,8 +15,10 @@ use Ezzatron\Typhoon\Attribute\Attributes;
 use Ezzatron\Typhoon\Primitive\String;
 use Ezzatron\Typhoon\Type\Dynamic\DynamicType;
 use Ezzatron\Typhoon\Type\Registry\Exception\UnregisteredTypeException;
-use Ezzatron\Typhoon\Type\Traversable\TraversableType;
+use Ezzatron\Typhoon\Type\Traversable\TraversableType as TraversableTypeInterface;
 use Ezzatron\Typhoon\Type\MixedType;
+use Ezzatron\Typhoon\Type\ObjectType;
+use Ezzatron\Typhoon\Type\TraversableType;
 use Ezzatron\Typhoon\Type\Type;
 
 class TyphaxTypeRenderer extends TypeRenderer
@@ -28,13 +30,31 @@ class TyphaxTypeRenderer extends TypeRenderer
    */
   public function render(Type $type)
   {
-    $rendered = $this->renderAlias($type);
+    $class = null;
 
-    if ($type instanceof DynamicType)
+    if ($type instanceof ObjectType)
+    {
+      $class = $type->typhoonAttributes()->get(ObjectType::ATTRIBUTE_INSTANCE_OF, null);
+    }
+    if ($type instanceof TraversableType)
+    {
+      $class = $type->typhoonAttributes()->get(TraversableType::ATTRIBUTE_INSTANCE_OF, null);
+    }
+
+    if ($class)
+    {
+      $rendered = $class;
+    }
+    else
+    {
+      $rendered = $this->renderAlias($type);
+    }
+
+    if (!$class && $type instanceof DynamicType)
     {
       $rendered .= $this->renderAttributes($type->typhoonAttributes());
     }
-    if ($type instanceof TraversableType)
+    if ($type instanceof TraversableTypeInterface)
     {
       $rendered .= $this->renderTraversable($type->typhoonKeyType(), $type->typhoonSubType());
     }
