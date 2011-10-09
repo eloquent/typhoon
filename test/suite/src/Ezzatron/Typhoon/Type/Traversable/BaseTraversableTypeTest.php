@@ -24,6 +24,7 @@ class BaseTraversableTypeTest extends \Ezzatron\Typhoon\Test\TestCase
   }
 
   /**
+   * @covers Ezzatron\Typhoon\Type\Traversable\BaseTraversableType::__construct
    * @covers Ezzatron\Typhoon\Type\Traversable\BaseTraversableType::setTyphoonSubType
    * @covers Ezzatron\Typhoon\Type\Traversable\BaseTraversableType::typhoonSubType
    */
@@ -38,6 +39,7 @@ class BaseTraversableTypeTest extends \Ezzatron\Typhoon\Test\TestCase
   }
 
   /**
+   * @covers Ezzatron\Typhoon\Type\Traversable\BaseTraversableType::__construct
    * @covers Ezzatron\Typhoon\Type\Traversable\BaseTraversableType::setTyphoonKeyType
    * @covers Ezzatron\Typhoon\Type\Traversable\BaseTraversableType::typhoonKeyType
    */
