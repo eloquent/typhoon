@@ -13,8 +13,10 @@ namespace Ezzatron\Typhoon\Type\Inspector;
 
 use Phake;
 use stdClass;
+use Ezzatron\Typhoon\Primitive\Integer;
 use Ezzatron\Typhoon\Type\ArrayType;
 use Ezzatron\Typhoon\Type\BooleanType;
+use Ezzatron\Typhoon\Type\Composite\OrType;
 use Ezzatron\Typhoon\Type\DirectoryType;
 use Ezzatron\Typhoon\Type\FileType;
 use Ezzatron\Typhoon\Type\FloatType;
@@ -87,6 +89,84 @@ class TypeInspectorTest extends \Ezzatron\Typhoon\Test\TestCase
     $expected->typhoonAttributes()->set(ObjectType::ATTRIBUTE_INSTANCE_OF, get_class($value));
     $data[] = array($value, $expected);
 
+    // #14: Array with sub-values and 0-depth checking
+    $value = array(
+      'foo',
+      'bar' => true,
+    );
+    $expected = new ArrayType;
+    $data[] = array($value, $expected, new Integer(0));
+
+    return $data;
+  }
+
+  /**
+   * @return array
+   */
+  public function typeOfTraversableData()
+  {
+    $data = array();
+    
+    // #0: Single integer key and string sub-value
+    $values = array(
+      'foo',
+    );
+    $expectedKeyType = new IntegerType;
+    $expectedSubType = new StringType;
+    $data[] = array($values, $expectedKeyType, $expectedSubType, new Integer(1));
+
+    // #1: Multiple integer keys and string sub-values
+    $values = array(
+      'foo',
+      'bar',
+    );
+    $expectedKeyType = new IntegerType;
+    $expectedSubType = new StringType;
+    $data[] = array($values, $expectedKeyType, $expectedSubType, new Integer(1));
+
+    // #2: Mixed keys and sub-values
+    $values = array(
+      'foo',
+      'bar' => true,
+    );
+    $expectedKeyType = new OrType;
+    $expectedKeyType->addTyphoonType(new IntegerType);
+    $expectedKeyType->addTyphoonType(new StringType);
+    $expectedSubType = new OrType;
+    $expectedSubType->addTyphoonType(new StringType);
+    $expectedSubType->addTyphoonType(new BooleanType);
+    $data[] = array($values, $expectedKeyType, $expectedSubType, new Integer(1));
+
+    // #3: Recursive sub-value checking, 1-depth
+    $values = array(
+      'foo' => array(
+        'bar',
+        'baz' => true,
+      ),
+    );
+    $expectedKeyType = new StringType;
+    $expectedSubType = new ArrayType;
+    $data[] = array($values, $expectedKeyType, $expectedSubType, new Integer(1));
+
+    // #4: Recursive sub-value checking, 2-depth
+    $values = array(
+      'foo' => array(
+        'bar',
+        'baz' => true,
+      ),
+    );
+    $expectedKeyType = new StringType;
+    $expectedSubKeyType = new OrType;
+    $expectedSubKeyType->addTyphoonType(new IntegerType);
+    $expectedSubKeyType->addTyphoonType(new StringType);
+    $expectedSubSubType = new OrType;
+    $expectedSubSubType->addTyphoonType(new StringType);
+    $expectedSubSubType->addTyphoonType(new BooleanType);
+    $expectedSubType = new ArrayType;
+    $expectedSubType->setTyphoonKeyType($expectedSubKeyType);
+    $expectedSubType->setTyphoonSubType($expectedSubSubType);
+    $data[] = array($values, $expectedKeyType, $expectedSubType, new Integer(2));
+
     return $data;
   }
 
@@ -96,12 +176,33 @@ class TypeInspectorTest extends \Ezzatron\Typhoon\Test\TestCase
   }
 
   /**
-   * @covers Ezzatron\Typhoon\Type\Inspector\TypeInspector::typeOf
+   * @covers Ezzatron\Typhoon\Type\Inspector\TypeInspector
    * @dataProvider typeOfData
    */
-  public function testTypeOf($value, $expected)
+  public function testTypeOf($value, $expected, Integer $depth = null)
   {
-    $this->assertEquals($expected, $this->_typeInspector->typeOf($value));
+    $this->assertEquals($expected, $this->_typeInspector->typeOf($value, $depth));
+  }
+
+  /**
+   * @covers Ezzatron\Typhoon\Type\Inspector\TypeInspector
+   * @dataProvider typeOfTraversableData
+   */
+  public function testTypeOfTraversable(array $values, $expectedKeyType, $expectedSubType, Integer $depth = null)
+  {
+    $expected = new ArrayType;
+    $expected->setTyphoonKeyType($expectedKeyType);
+    $expected->setTyphoonSubType($expectedSubType);
+
+    $this->assertEquals($expected, $this->_typeInspector->typeOf($values, $depth));
+    
+    $traversable = $this->traversableFixture($values);
+    $expected = new TraversableType;
+    $expected->typhoonAttributes()->set(TraversableType::ATTRIBUTE_INSTANCE_OF, get_class($traversable));
+    $expected->setTyphoonKeyType($expectedKeyType);
+    $expected->setTyphoonSubType($expectedSubType);
+    
+    $this->assertEquals($expected, $this->_typeInspector->typeOf($traversable, $depth));
   }
 
   /**

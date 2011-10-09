@@ -13,6 +13,7 @@ namespace Ezzatron\Typhoon\Test;
 
 use Ezzatron\Typhoon\Test\Fixture\Callable;
 use Ezzatron\Typhoon\Test\Fixture\Stringable;
+use Ezzatron\Typhoon\Test\Fixture\Traversable;
 use Ezzatron\Typhoon\Typhoon;
 
 class TestCase extends \PHPUnit_Framework_TestCase
@@ -92,6 +93,16 @@ class TestCase extends \PHPUnit_Framework_TestCase
   }
 
   /**
+   * @param mixed $return
+   *
+   * @return Callable
+   */
+  protected function callableFixture($return = null)
+  {
+    return new Callable($return);
+  }
+
+  /**
    * @param string $string
    *
    * @return Stringable
@@ -102,13 +113,13 @@ class TestCase extends \PHPUnit_Framework_TestCase
   }
 
   /**
-   * @param mixed $return
+   * @param array $values
    *
-   * @return Callable
+   * @return Traversable
    */
-  protected function callableFixture($return = null)
+  protected function traversableFixture(array $values = null)
   {
-    return new Callable($return);
+    return new Traversable($values);
   }
 
   /**
