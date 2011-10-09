@@ -11,9 +11,12 @@
 
 namespace Ezzatron\Typhoon\Type\Renderer;
 
+use Ezzatron\Typhoon\Attribute\Attributes;
 use Ezzatron\Typhoon\Primitive\String;
 use Ezzatron\Typhoon\Type\Dynamic\DynamicType;
 use Ezzatron\Typhoon\Type\Registry\Exception\UnregisteredTypeException;
+use Ezzatron\Typhoon\Type\Traversable\TraversableType;
+use Ezzatron\Typhoon\Type\MixedType;
 use Ezzatron\Typhoon\Type\Type;
 
 class TyphaxTypeRenderer extends TypeRenderer
@@ -29,7 +32,11 @@ class TyphaxTypeRenderer extends TypeRenderer
 
     if ($type instanceof DynamicType)
     {
-      $rendered .= $this->renderAttributes($type);
+      $rendered .= $this->renderAttributes($type->typhoonAttributes());
+    }
+    if ($type instanceof TraversableType)
+    {
+      $rendered .= $this->renderTraversable($type->typhoonKeyType(), $type->typhoonSubType());
     }
 
     return $rendered;
@@ -47,31 +54,41 @@ class TyphaxTypeRenderer extends TypeRenderer
       return $this->typeRegistry()->alias($type);
     }
     catch (UnregisteredTypeException $e) {}
+
+    $attributes = new Attributes(array(
+      self::UNREGISTERED_ATTRIBUTE_INSTANCE_OF => get_class($type),
+    ));
     
-    return 'unregistered_type<'.get_class($type).'>';
+    return self::UNREGISTERED.$this->renderAttributes($attributes);
   }
 
   /**
-   * @param DynamicType $type
+   * @param Attributes $attributes
    *
    * @return string
    */
-  protected function renderAttributes(DynamicType $type)
+  protected function renderAttributes(Attributes $attributes)
   {
-    if (!$attributes = $type->typhoonAttributes())
-    {
-      return '';
-    }
-
     $rendered = '';
 
     foreach ($attributes as $key => $value)
     {
-      $rendered .= $rendered ? ', ' : '(';
+      if ($rendered)
+      {
+        $rendered .= self::TOKEN_ATTRIBUTE_SEPARATOR;
+      }
+      else
+      {
+        $rendered .= self::TOKEN_ATTRIBUTES_START;
+      }
+
       $rendered .= $this->renderAttribute(new String($key), $value);
     }
 
-    $rendered .= $rendered ? ')' : '';
+    if ($rendered)
+    {
+      $rendered .= self::TOKEN_ATTRIBUTES_END;
+    }
 
     return $rendered;
   }
@@ -84,6 +101,69 @@ class TyphaxTypeRenderer extends TypeRenderer
    */
   protected function renderAttribute(String $key, $value)
   {
-    return $key->value().'='.var_export($value, true);
+    return
+      $this->renderAttributeKey($key)
+      .self::TOKEN_ATTRIBUTE_EQUALS
+      .$this->renderAttributeValue($value)
+    ;
   }
+
+  /**
+   * @param String $key
+   *
+   * @return string
+   */
+  protected function renderAttributeKey(String $key)
+  {
+    return $key->value();
+  }
+
+  /**
+   * @param mixed $value
+   *
+   * @return string
+   */
+  protected function renderAttributeValue($value)
+  {
+    return var_export($value, true);
+  }
+
+  /**
+   * @param Type $keyType
+   * @param Type $subType
+   *
+   * @return string
+   */
+  protected function renderTraversable(Type $keyType, Type $subType)
+  {
+    if ($keyType instanceof MixedType && $subType instanceof MixedType)
+    {
+      return '';
+    }
+
+    $rendered = self::TOKEN_TRAVERSABLE_START;
+
+    if (!$keyType instanceof MixedType)
+    {
+      $rendered .= $this->render($keyType).self::TOKEN_TRAVERSABLE_SEPARATOR;
+    }
+
+    $rendered .= $this->render($subType);
+    $rendered .= self::TOKEN_TRAVERSABLE_END;
+
+    return $rendered;
+  }
+
+  const TOKEN_ATTRIBUTES_START = '(';
+  const TOKEN_ATTRIBUTES_END = ')';
+
+  const TOKEN_ATTRIBUTE_EQUALS = '=';
+  const TOKEN_ATTRIBUTE_SEPARATOR = ',';
+  
+  const TOKEN_TRAVERSABLE_START = '<';
+  const TOKEN_TRAVERSABLE_SEPARATOR = ',';
+  const TOKEN_TRAVERSABLE_END = '>';
+
+  const UNREGISTERED = 'unregistered';
+  const UNREGISTERED_ATTRIBUTE_INSTANCE_OF = 'instanceOf';
 }

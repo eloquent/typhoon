@@ -12,6 +12,7 @@
 namespace Ezzatron\Typhoon\Type\Traversable;
 
 use Phake;
+use Ezzatron\Typhoon\Type\MixedType;
 
 class BaseTraversableTypeTest extends \Ezzatron\Typhoon\Test\TestCase
 {
@@ -28,7 +29,7 @@ class BaseTraversableTypeTest extends \Ezzatron\Typhoon\Test\TestCase
    */
   public function testTyphoonSubType()
   {
-    $this->assertNull($this->_type->typhoonSubType());
+    $this->assertEquals(new MixedType, $this->_type->typhoonSubType());
 
     $type = Phake::mock('Ezzatron\Typhoon\Type\Type');
     $this->_type->setTyphoonSubType($type);
@@ -42,7 +43,7 @@ class BaseTraversableTypeTest extends \Ezzatron\Typhoon\Test\TestCase
    */
   public function testTyphoonKeyType()
   {
-    $this->assertNull($this->_type->typhoonKeyType());
+    $this->assertEquals(new MixedType, $this->_type->typhoonKeyType());
 
     $type = Phake::mock('Ezzatron\Typhoon\Type\Type');
     $this->_type->setTyphoonKeyType($type);

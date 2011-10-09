@@ -12,14 +12,21 @@
 namespace Ezzatron\Typhoon\Type\Traversable;
 
 use Ezzatron\Typhoon\Type\BaseType;
+use Ezzatron\Typhoon\Type\MixedType;
 use Ezzatron\Typhoon\Type\Type;
 
 abstract class BaseTraversableType extends BaseType implements TraversableType
 {
+  public function __construct()
+  {
+    $this->subType = new MixedType;
+    $this->keyType = new MixedType;
+  }
+
   /**
    * @param Type $subType
    */
-  public function setTyphoonSubType(Type $subType = null)
+  public function setTyphoonSubType(Type $subType)
   {
     $this->subType = $subType;
   }
@@ -35,7 +42,7 @@ abstract class BaseTraversableType extends BaseType implements TraversableType
   /**
    * @param Type $keyType
    */
-  public function setTyphoonKeyType(Type $keyType = null)
+  public function setTyphoonKeyType(Type $keyType)
   {
     $this->keyType = $keyType;
   }
@@ -63,7 +70,7 @@ abstract class BaseTraversableType extends BaseType implements TraversableType
     $subType = $this->typhoonSubType();
     $keyType = $this->typhoonKeyType();
 
-    if (!$subType && !$keyType)
+    if ($subType instanceof MixedType && $keyType instanceof MixedType)
     {
       return true;
     }

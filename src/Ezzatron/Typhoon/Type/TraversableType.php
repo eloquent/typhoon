@@ -30,6 +30,8 @@ class TraversableType extends Traversable\BaseTraversableType implements Dynamic
     
     $attributes->setSignature(static::attributeSignature($this));
     $this->attributes = $attributes;
+
+    parent::__construct();
   }
 
   /**
