@@ -20,9 +20,17 @@ class CallbackWrapperType extends Dynamic\BaseDynamicType
     );
 
     return call_user_func_array(
-      $this->attributes->get(self::ATTRIBUTE_CALLBACK)
+      $this->attributes->get(self::ATTRIBUTE_CALLBACK, array($this, 'defaultCallback'))
       , $arguments
     );
+  }
+
+  /**
+   * @return boolean
+   */
+  protected function defaultCallback()
+  {
+    return false;
   }
 
   /**
@@ -33,7 +41,7 @@ class CallbackWrapperType extends Dynamic\BaseDynamicType
    */
   static protected function configureAttributeSignature(AttributeSignature $attributeSignature, Dynamic\BaseDynamicType $type)
   {
-    $attributeSignature->set(self::ATTRIBUTE_CALLBACK, new CallbackType, new Boolean(true));
+    $attributeSignature->set(self::ATTRIBUTE_CALLBACK, new CallbackType);
     $attributeSignature->set(self::ATTRIBUTE_ARGUMENTS, new ArrayType);
   }
 

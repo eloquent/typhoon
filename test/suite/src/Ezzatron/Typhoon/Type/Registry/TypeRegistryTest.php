@@ -15,17 +15,29 @@ use Ezzatron\Typhoon\Attribute\Attributes;
 use Ezzatron\Typhoon\Type\ArrayType;
 use Ezzatron\Typhoon\Type\BooleanType;
 use Ezzatron\Typhoon\Type\CallbackType;
+use Ezzatron\Typhoon\Type\CallbackWrapperType;
+use Ezzatron\Typhoon\Type\DirectoryType;
+use Ezzatron\Typhoon\Type\FileType;
 use Ezzatron\Typhoon\Type\FloatType;
 use Ezzatron\Typhoon\Type\IntegerType;
+use Ezzatron\Typhoon\Type\IntegerableType;
 use Ezzatron\Typhoon\Type\KeyType;
 use Ezzatron\Typhoon\Type\MixedType;
+use Ezzatron\Typhoon\Type\NodeType;
 use Ezzatron\Typhoon\Type\NullType;
+use Ezzatron\Typhoon\Type\NumberType;
 use Ezzatron\Typhoon\Type\NumericType;
 use Ezzatron\Typhoon\Type\ObjectType;
+use Ezzatron\Typhoon\Type\ParameterType;
 use Ezzatron\Typhoon\Type\ResourceType;
+use Ezzatron\Typhoon\Type\ScalarType;
+use Ezzatron\Typhoon\Type\SimpleStringType;
+use Ezzatron\Typhoon\Type\StreamType;
+use Ezzatron\Typhoon\Type\StringableType;
 use Ezzatron\Typhoon\Type\StringType;
 use Ezzatron\Typhoon\Type\TraversableType;
 use Ezzatron\Typhoon\Type\Type;
+use Ezzatron\Typhoon\Type\TypeType;
 use Phake;
 
 class TypeRegistryTest extends \Ezzatron\Typhoon\Test\TestCase
@@ -39,15 +51,28 @@ class TypeRegistryTest extends \Ezzatron\Typhoon\Test\TestCase
       array('array', new ArrayType),
       array('boolean', new BooleanType),
       array('callback', new CallbackType),
+      array('callback_wrapper', new CallbackWrapperType),
+      array('directory', new DirectoryType),
+      array('file', new FileType),
       array('float', new FloatType),
       array('integer', new IntegerType),
+      array('integerable', new IntegerableType),
       array('key', new KeyType),
       array('mixed', new MixedType),
+      array('node', new NodeType),
       array('null', new NullType),
+      array('number', new NumberType),
+      array('numeric', new NumericType),
       array('object', new ObjectType),
       array('resource', new ResourceType),
+      array('scalar', new ScalarType),
+      array('stream', new StreamType),
       array('string', new StringType),
+      array('string_simple', new SimpleStringType),
+      array('stringable', new StringableType),
       array('traversable', new TraversableType),
+      array('typhoon_parameter', new ParameterType),
+      array('typhoon_type', new TypeType),
 
       array('bool', new BooleanType, true),
       array('callable', new CallbackType, true),
