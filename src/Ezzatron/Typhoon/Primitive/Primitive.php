@@ -14,7 +14,6 @@ namespace Ezzatron\Typhoon\Primitive;
 use Ezzatron\Typhoon\Assertion\Exception\UnexpectedArgumentException;
 use Ezzatron\Typhoon\Assertion\Exception\UnexpectedTypeException;
 use Ezzatron\Typhoon\Assertion\TypeAssertion;
-use Ezzatron\Typhoon\Typhoon;
 
 abstract class Primitive
 {

@@ -14,7 +14,6 @@ namespace Ezzatron\Typhoon\Attribute;
 use Ezzatron\Typhoon\Collection\Collection;
 use Ezzatron\Typhoon\Primitive\Boolean;
 use Ezzatron\Typhoon\Primitive\String;
-use Ezzatron\Typhoon\Type\BooleanType;
 use Ezzatron\Typhoon\Type\SimpleStringType;
 use Ezzatron\Typhoon\Type\TypeType;
 
@@ -31,7 +30,8 @@ class AttributeSignature extends Collection
   /**
    * @return string
    */
-  public function holderName() {
+  public function holderName()
+  {
     return $this->holderName;
   }
   

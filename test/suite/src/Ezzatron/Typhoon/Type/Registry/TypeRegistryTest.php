@@ -26,7 +26,6 @@ use Ezzatron\Typhoon\Type\ResourceType;
 use Ezzatron\Typhoon\Type\StringType;
 use Ezzatron\Typhoon\Type\TraversableType;
 use Ezzatron\Typhoon\Type\Type;
-use Ezzatron\Typhoon\Type\TypeType;
 use Phake;
 
 class TypeRegistryTest extends \Ezzatron\Typhoon\Test\TestCase

@@ -21,7 +21,6 @@ use Ezzatron\Typhoon\Type\DirectoryType;
 use Ezzatron\Typhoon\Type\FileType;
 use Ezzatron\Typhoon\Type\FloatType;
 use Ezzatron\Typhoon\Type\IntegerType;
-use Ezzatron\Typhoon\Type\MixedType;
 use Ezzatron\Typhoon\Type\NullType;
 use Ezzatron\Typhoon\Type\ObjectType;
 use Ezzatron\Typhoon\Type\StreamType;

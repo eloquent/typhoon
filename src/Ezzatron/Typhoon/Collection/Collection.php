@@ -16,8 +16,6 @@ use ArrayIterator;
 use Countable;
 use IteratorAggregate;
 use Ezzatron\Typhoon\Assertion\ParameterAssertion;
-use Ezzatron\Typhoon\Assertion\Exception\UnexpectedArgumentException;
-use Ezzatron\Typhoon\Assertion\Exception\UnexpectedTypeException;
 use Ezzatron\Typhoon\Type\Composite\OrType;
 use Ezzatron\Typhoon\Parameter\Parameter;
 use Ezzatron\Typhoon\Primitive\Integer;
@@ -27,7 +25,6 @@ use Ezzatron\Typhoon\Type\MixedType;
 use Ezzatron\Typhoon\Type\NullType;
 use Ezzatron\Typhoon\Type\SimpleStringType;
 use Ezzatron\Typhoon\Type\Type;
-use Ezzatron\Typhoon\Typhoon;
 
 class Collection implements ArrayAccess, Countable, IteratorAggregate
 {
@@ -214,7 +211,8 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
    */
   protected function keySetType()
   {
-    if (!$this->allowEmptyKeyForSet()) {
+    if (!$this->allowEmptyKeyForSet())
+    {
       return $this->keyType();
     }
 

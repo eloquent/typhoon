@@ -11,7 +11,6 @@
 
 namespace Ezzatron\Typhoon\Attribute;
 
-use Phake;
 use Ezzatron\Typhoon\Primitive\Boolean;
 use Ezzatron\Typhoon\Primitive\String;
 use Ezzatron\Typhoon\Type\StringType;

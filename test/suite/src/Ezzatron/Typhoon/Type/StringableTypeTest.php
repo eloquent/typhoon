@@ -62,7 +62,8 @@ class StringableTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
    * @covers Ezzatron\Typhoon\Type\StringableType::typhoonCheck
    * @dataProvider typeValues
    */
-  public function testStringConversion($expected, $value, Attributes $attributes = null) {
+  public function testStringConversion($expected, $value, Attributes $attributes = null)
+  {
     if ($expected)
     {
       (string)$value;

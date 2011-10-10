@@ -26,10 +26,12 @@ class Callable
    */
   public function __invoke()
   {
-    if (null === $this->return) {
+    if (null === $this->return)
+    {
       $return = __METHOD__.'(';
 
-      foreach (func_get_args() as $argument) {
+      foreach (func_get_args() as $argument)
+      {
         $return .= var_export($argument, true);
       }
 

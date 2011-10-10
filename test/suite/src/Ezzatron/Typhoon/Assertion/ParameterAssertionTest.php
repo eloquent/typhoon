@@ -13,7 +13,6 @@ namespace Ezzatron\Typhoon\Assertion;
 
 use Ezzatron\Typhoon\Typhoon;
 use Ezzatron\Typhoon\Parameter\Parameter;
-use Ezzatron\Typhoon\Parameter\ParameterList\ParameterList;
 use Ezzatron\Typhoon\Primitive\Integer;
 use Ezzatron\Typhoon\Primitive\String;
 use Phake;

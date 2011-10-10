@@ -11,7 +11,6 @@
 
 namespace Ezzatron\Typhoon\Assertion\Exception;
 
-use Ezzatron\Typhoon\Primitive\Integer;
 use Ezzatron\Typhoon\Primitive\String;
 
 class UnsupportedAttributeExceptionTest extends \Ezzatron\Typhoon\Test\ExceptionTestCase

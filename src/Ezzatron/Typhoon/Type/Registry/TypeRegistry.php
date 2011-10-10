@@ -40,7 +40,7 @@ class TypeRegistry extends Collection
 
   public function registerDefaults()
   {
-    $this[self::TYPE_ARRAY] = new ArrayType;;
+    $this[self::TYPE_ARRAY] = new ArrayType;
     $this[self::TYPE_BOOLEAN] = new BooleanType;
     $this[self::TYPE_CALLBACK] = new CallbackType;
     $this[self::TYPE_FLOAT] = new FloatType;

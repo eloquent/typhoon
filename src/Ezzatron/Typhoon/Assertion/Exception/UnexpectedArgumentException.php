@@ -11,8 +11,6 @@
 
 namespace Ezzatron\Typhoon\Assertion\Exception;
 
-use Ezzatron\Typhoon\Typhoon;
-use Ezzatron\Typhoon\Parameter\Parameter;
 use Ezzatron\Typhoon\Primitive\Integer;
 use Ezzatron\Typhoon\Primitive\String;
 
