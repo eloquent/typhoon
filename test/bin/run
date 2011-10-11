@@ -10,4 +10,4 @@
  * file that was distributed with this source code.
  */
 
-require __DIR__.'/phpunit.php';
+require __DIR__.DIRECTORY_SEPARATOR.'phpunit.php';
