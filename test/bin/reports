@@ -10,4 +10,6 @@
  * file that was distributed with this source code.
  */
 
+$configFile = 'config-reports.xml';
+
 require __DIR__.'/phpunit.php';
