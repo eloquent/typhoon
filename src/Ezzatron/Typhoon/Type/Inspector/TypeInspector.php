@@ -81,7 +81,7 @@ class TypeInspector
     $traversable = new TraversableType;
     if ($traversable->typhoonCheck($value))
     {
-      $traversable->typhoonAttributes()->set(ObjectType::ATTRIBUTE_INSTANCE_OF, get_class($value));
+      $traversable->typhoonAttributes()->set(TraversableType::ATTRIBUTE_INSTANCE_OF, get_class($value));
 
       if ($depth > 0)
       {
