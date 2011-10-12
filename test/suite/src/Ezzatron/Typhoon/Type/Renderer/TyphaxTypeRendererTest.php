@@ -128,9 +128,9 @@ class TyphaxTypeRendererTest extends \Ezzatron\Typhoon\Test\TestCase
     $data[] = array($type, $alias, $expected);
 
     // #10: Object type of particular class
-    $type = new ObjectType(new Attributes(array(
+    $type = new ObjectType(array(
       ObjectType::ATTRIBUTE_INSTANCE_OF => 'bar',
-    )));
+    ));
     $alias = 'foo';
     $expected = 'bar';
     $data[] = array($type, $alias, $expected);
@@ -138,9 +138,9 @@ class TyphaxTypeRendererTest extends \Ezzatron\Typhoon\Test\TestCase
     // #11: Traversable type of particular class
     $keyType = Phake::mock('Ezzatron\Typhoon\Type\Type');
     $subType = Phake::mock('Ezzatron\Typhoon\Type\Type');
-    $type = new TraversableType(new Attributes(array(
+    $type = new TraversableType(array(
       TraversableType::ATTRIBUTE_INSTANCE_OF => 'bar',
-    )));
+    ));
     $type->setTyphoonKeyType($keyType);
     $type->setTyphoonSubType($subType);
     $alias = 'foo';

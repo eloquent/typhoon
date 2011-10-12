@@ -12,7 +12,6 @@
 namespace Ezzatron\Typhoon\Type;
 
 use stdClass;
-use Ezzatron\Typhoon\Attribute\Attributes;
 use Ezzatron\Typhoon\Attribute\AttributeSignature;
 use Ezzatron\Typhoon\Primitive\String;
 use Ezzatron\Typhoon\Type\StringType;
@@ -24,7 +23,7 @@ class ObjectTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
    */
   public function typeValues()
   {
-    $attributes = new Attributes(array(ObjectType::ATTRIBUTE_INSTANCE_OF => 'stdClass'));
+    $attributes = array(ObjectType::ATTRIBUTE_INSTANCE_OF => 'stdClass');
 
     return array(
       // object of any class
@@ -86,5 +85,5 @@ class ObjectTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
    * @dataProvider typeValues
    * @group typhoon_types
    */
-  public function testTyphoonCheck($expected, $value, Attributes $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
+  public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
 }

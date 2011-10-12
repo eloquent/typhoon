@@ -11,15 +11,13 @@
 
 namespace Ezzatron\Typhoon\Type;
 
-use Ezzatron\Typhoon\Attribute\Attributes;
-
 class DirectoryType extends BaseType
 {
   public function __construct()
   {
-    $this->innerType = new NodeType(new Attributes(array(
+    $this->innerType = new NodeType(array(
       NodeType::ATTRIBUTE_TYPE => NodeType::TYPE_DIRECTORY,
-    )));
+    ));
   }
 
   /**

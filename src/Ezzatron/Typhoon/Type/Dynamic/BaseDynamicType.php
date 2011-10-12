@@ -18,17 +18,12 @@ use Ezzatron\Typhoon\Type\BaseType;
 
 abstract class BaseDynamicType extends BaseType implements DynamicType
 {
-  public function __construct(Attributes $attributes = null)
+  /**
+   * @param Attributes|array|null $attributes
+   */
+  public function __construct($attributes = null)
   {
-    if (null === $attributes)
-    {
-      $attributes = new Attributes;
-    }
-    else
-    {
-      $attributes = clone $attributes;
-    }
-
+    $attributes = Attributes::adapt($attributes);
     $attributes->setSignature(static::attributeSignature($this));
     $this->attributes = $attributes;
   }

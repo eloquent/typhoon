@@ -15,15 +15,42 @@ use Ezzatron\Typhoon\Assertion\Exception\MissingAttributeException;
 use Ezzatron\Typhoon\Assertion\Exception\UnexpectedArgumentException;
 use Ezzatron\Typhoon\Assertion\Exception\UnexpectedAttributeException;
 use Ezzatron\Typhoon\Assertion\Exception\UnsupportedAttributeException;
+use Ezzatron\Typhoon\Assertion\TypeAssertion;
 use Ezzatron\Typhoon\Collection\Collection;
 use Ezzatron\Typhoon\Primitive\Integer;
 use Ezzatron\Typhoon\Primitive\String;
+use Ezzatron\Typhoon\Type\ArrayType;
 use Ezzatron\Typhoon\Type\SimpleStringType;
 use Ezzatron\Typhoon\Type\Type;
 use Ezzatron\Typhoon\Typhoon;
 
 class Attributes extends Collection
 {
+  /**
+   * @param Attributes|array|null $attributes
+   *
+   * @return Attributes
+   */
+  static public function adapt($attributes)
+  {
+    if ($attributes instanceof self)
+    {
+      return clone $attributes;
+    }
+
+    if (null === $attributes)
+    {
+      return new static;
+    }
+
+    $assertion = new TypeAssertion;
+    $assertion->setType(new ArrayType);
+    $assertion->setValue($attributes);
+    $assertion->assert();
+
+    return new static($attributes);
+  }
+
   /**
    * @param AttributeSignature $signature
    */

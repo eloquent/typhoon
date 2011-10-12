@@ -16,13 +16,16 @@ use Ezzatron\Typhoon\Attribute\AttributeSignature;
 
 class StreamType extends Dynamic\BaseDynamicType
 {
-  public function __construct(Attributes $attributes = null)
+  /**
+   * @param Attributes|array|null $attributes
+   */
+  public function __construct($attributes = null)
   {
     parent::__construct($attributes);
 
-    $this->innerType = new ResourceType(new Attributes(array(
+    $this->innerType = new ResourceType(array(
       ResourceType::ATTRIBUTE_TYPE => ResourceType::TYPE_STREAM,
-    )));
+    ));
   }
 
   /**

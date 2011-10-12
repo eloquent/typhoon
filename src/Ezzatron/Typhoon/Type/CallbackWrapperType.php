@@ -3,7 +3,6 @@
 namespace Ezzatron\Typhoon\Type;
 
 use Ezzatron\Typhoon\Attribute\AttributeSignature;
-use Ezzatron\Typhoon\Primitive\Boolean;
 
 class CallbackWrapperType extends Dynamic\BaseDynamicType
 {

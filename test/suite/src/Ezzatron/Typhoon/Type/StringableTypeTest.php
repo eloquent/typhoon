@@ -12,7 +12,6 @@
 namespace Ezzatron\Typhoon\Type;
 
 use stdClass;
-use Ezzatron\Typhoon\Attribute\Attributes;
 use Ezzatron\Typhoon\Attribute\AttributeSignature;
 use Ezzatron\Typhoon\Primitive\String;
 
@@ -23,9 +22,9 @@ class StringableTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
    */
   public function typeValues()
   {
-    $utf8Attributes = new Attributes(array(
+    $utf8Attributes = array(
       StringableType::ATTRIBUTE_ENCODING => 'UTF-8',
-    ));
+    );
 
     return array(
       array(false, null),                      // #0: null
@@ -62,7 +61,7 @@ class StringableTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
    * @covers Ezzatron\Typhoon\Type\StringableType::typhoonCheck
    * @dataProvider typeValues
    */
-  public function testStringConversion($expected, $value, Attributes $attributes = null)
+  public function testStringConversion($expected, $value, $attributes = null)
   {
     if ($expected)
     {
@@ -99,5 +98,5 @@ class StringableTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
    * @dataProvider typeValues
    * @group typhoon_types
    */
-  public function testTyphoonCheck($expected, $value, Attributes $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
+  public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
 }

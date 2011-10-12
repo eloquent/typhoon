@@ -16,17 +16,16 @@ use Ezzatron\Typhoon\Attribute\AttributeSignature;
 
 class NodeType extends Dynamic\BaseDynamicType
 {
-  public function __construct(Attributes $attributes = null)
+  /**
+   * @param Attributes|array|null $attributes
+   */
+  public function __construct($attributes = null)
   {
-    if (null === $attributes)
-    {
-      $attributes = new Attributes;
-    }
-    
-    $streamAttributes = clone $attributes;
-    $streamAttributes[StreamType::ATTRIBUTE_WRAPPER] = StreamType::WRAPPER_PLAINFILE;
-    
+    $attributes = Attributes::adapt($attributes);
     parent::__construct($attributes);
+
+    $streamAttributes = $attributes->values();
+    $streamAttributes[StreamType::ATTRIBUTE_WRAPPER] = StreamType::WRAPPER_PLAINFILE;
 
     $this->innerType = new StreamType($streamAttributes);
   }

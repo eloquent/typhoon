@@ -12,7 +12,6 @@
 namespace Ezzatron\Typhoon\Type;
 
 use stdClass;
-use Ezzatron\Typhoon\Attribute\Attributes;
 use Ezzatron\Typhoon\Attribute\AttributeSignature;
 use Ezzatron\Typhoon\Primitive\String;
 use Ezzatron\Typhoon\Type\CallbackType;
@@ -37,14 +36,14 @@ class CallbackWrapperTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
       return $return;
     };
 
-    $attributesPass = new Attributes(array(
+    $attributesPass = array(
       CallbackWrapperType::ATTRIBUTE_CALLBACK => $callback,
       CallbackWrapperType::ATTRIBUTE_ARGUMENTS => array(true, true),
-    ));
-    $attributesFail = new Attributes(array(
+    );
+    $attributesFail = array(
       CallbackWrapperType::ATTRIBUTE_CALLBACK => $callback,
       CallbackWrapperType::ATTRIBUTE_ARGUMENTS => array(true, false),
-    ));
+    );
 
     return array(
       // object of any class
@@ -85,10 +84,10 @@ class CallbackWrapperTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
       $called = true;
       $arguments = func_get_args();
     };
-    $attributes = new Attributes(array(
+    $attributes = array(
       CallbackWrapperType::ATTRIBUTE_CALLBACK => $callback,
       CallbackWrapperType::ATTRIBUTE_ARGUMENTS => array('bar', 'baz'),
-    ));
+    );
     $type = new CallbackWrapperType($attributes);
 
     $this->assertFalse($called);
@@ -128,5 +127,5 @@ class CallbackWrapperTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
    * @dataProvider typeValues
    * @group typhoon_types
    */
-  public function testTyphoonCheck($expected, $value, Attributes $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
+  public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
 }

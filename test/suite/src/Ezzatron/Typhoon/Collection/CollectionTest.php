@@ -38,7 +38,7 @@ class CollectionTest extends \Ezzatron\Typhoon\Test\TestCase
    */
   public function testCollection()
   {
-    $this->assertEquals(array(), iterator_to_array($this->_collection, true));
+    $this->assertEquals(array(), $this->_collection->values());
     $this->assertFalse($this->_collection->exists('foo'));
     $this->assertFalse(isset($this->_collection['foo']));
     $this->assertEquals(0, count($this->_collection));
@@ -48,7 +48,7 @@ class CollectionTest extends \Ezzatron\Typhoon\Test\TestCase
     $this->_collection['baz'] = 'qux';
     $this->_collection[] = 'doom';
 
-    $this->assertEquals(array(0 => 'doom', 'foo' => 'bar', 'baz' => 'qux'), iterator_to_array($this->_collection, true));
+    $this->assertEquals(array(0 => 'doom', 'foo' => 'bar', 'baz' => 'qux'), $this->_collection->values());
     $this->assertTrue($this->_collection->exists('foo'));
     $this->assertTrue(isset($this->_collection['foo']));
     $this->assertTrue($this->_collection->exists('baz'));
@@ -72,7 +72,7 @@ class CollectionTest extends \Ezzatron\Typhoon\Test\TestCase
     unset($this->_collection['baz']);
     unset($this->_collection[0]);
 
-    $this->assertEquals(array(), iterator_to_array($this->_collection, true));
+    $this->assertEquals(array(), $this->_collection->values());
     $this->assertFalse($this->_collection->exists('foo'));
     $this->assertFalse(isset($this->_collection['foo']));
     $this->assertEquals(0, count($this->_collection));
@@ -81,7 +81,7 @@ class CollectionTest extends \Ezzatron\Typhoon\Test\TestCase
     $array = array(0 => 'doom', 'foo' => 'bar', 'baz' => 'qux');
     $this->_collection = new Collection($array);
 
-    $this->assertEquals(array(0 => 'doom', 'foo' => 'bar', 'baz' => 'qux'), iterator_to_array($this->_collection, true));
+    $this->assertEquals(array(0 => 'doom', 'foo' => 'bar', 'baz' => 'qux'), $this->_collection->values());
   }
 
   /**

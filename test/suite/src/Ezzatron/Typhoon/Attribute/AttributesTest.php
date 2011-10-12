@@ -42,6 +42,23 @@ class AttributesTest extends \Ezzatron\Typhoon\Test\TestCase
   }
 
   /**
+   * @covers Ezzatron\Typhoon\Attribute\Attributes::adapt
+   */
+  public function testAdapt()
+  {
+    $array = array(
+      'foo' => 'bar',
+      'baz' => 'qux',
+    );
+    $attributes = new Attributes($array);
+
+    $this->assertEquals($attributes, Attributes::adapt($attributes));
+    $this->assertNotSame($attributes, Attributes::adapt($attributes));
+    $this->assertEquals($attributes, Attributes::adapt($array));
+    $this->assertEquals(new Attributes, Attributes::adapt(null));
+  }
+
+  /**
    * @covers Ezzatron\Typhoon\Attribute\Attributes::setSignature
    * @covers Ezzatron\Typhoon\Attribute\Attributes::signature
    * @covers Ezzatron\Typhoon\Attribute\Attributes::assert

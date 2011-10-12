@@ -11,7 +11,6 @@
 
 namespace Ezzatron\Typhoon\Type;
 
-use Ezzatron\Typhoon\Attribute\Attributes;
 use stdClass;
 
 class FileTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
@@ -53,5 +52,5 @@ class FileTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
    * @dataProvider typeValues
    * @group typhoon_types
    */
-  public function testTyphoonCheck($expected, $value, Attributes $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
+  public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
 }

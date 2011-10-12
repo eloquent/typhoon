@@ -11,7 +11,6 @@
 
 namespace Ezzatron\Typhoon\Type;
 
-use Ezzatron\Typhoon\Attribute\Attributes;
 use Ezzatron\Typhoon\Attribute\AttributeSignature;
 use Ezzatron\Typhoon\Primitive\String;
 use stdClass;
@@ -23,12 +22,12 @@ class NodeTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
    */
   public function typeValues()
   {
-    $fileAttributes = new Attributes(array(
+    $fileAttributes = array(
       NodeType::ATTRIBUTE_TYPE => NodeType::TYPE_FILE,
-    ));
-    $directoryAttributes = new Attributes(array(
+    );
+    $directoryAttributes = array(
       NodeType::ATTRIBUTE_TYPE => NodeType::TYPE_DIRECTORY,
-    ));
+    );
     
     return array(
       array(false, null),                      // #0: null
@@ -86,5 +85,5 @@ class NodeTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
    * @dataProvider typeValues
    * @group typhoon_types
    */
-  public function testTyphoonCheck($expected, $value, Attributes $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
+  public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
 }

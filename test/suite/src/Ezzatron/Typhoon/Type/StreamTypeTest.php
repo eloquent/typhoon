@@ -11,7 +11,6 @@
 
 namespace Ezzatron\Typhoon\Type;
 
-use Ezzatron\Typhoon\Attribute\Attributes;
 use Ezzatron\Typhoon\Attribute\AttributeSignature;
 use Ezzatron\Typhoon\Primitive\String;
 use stdClass;
@@ -55,9 +54,9 @@ class StreamTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
   {
     $stream = $this->streamFixture();
 
-    $type = $this->getMock($this->typeClass(), array('isLocal'), array(new Attributes(array(
+    $type = $this->getMock($this->typeClass(), array('isLocal'), array(array(
       StreamType::ATTRIBUTE_LOCAL => true,
-    ))));
+    )));
     $type
       ->expects($this->once())
       ->method('isLocal')
@@ -67,9 +66,9 @@ class StreamTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
     
     $this->assertTrue($type->typhoonCheck($stream));
 
-    $type = $this->getMock($this->typeClass(), array('isLocal'), array(new Attributes(array(
+    $type = $this->getMock($this->typeClass(), array('isLocal'), array(array(
       StreamType::ATTRIBUTE_LOCAL => false,
-    ))));
+    )));
     $type
       ->expects($this->once())
       ->method('isLocal')
@@ -79,9 +78,9 @@ class StreamTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
     
     $this->assertTrue($type->typhoonCheck($stream));
 
-    $type = $this->getMock($this->typeClass(), array('isLocal'), array(new Attributes(array(
+    $type = $this->getMock($this->typeClass(), array('isLocal'), array(array(
       StreamType::ATTRIBUTE_LOCAL => true,
-    ))));
+    )));
     $type
       ->expects($this->once())
       ->method('isLocal')
@@ -91,9 +90,9 @@ class StreamTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
     
     $this->assertFalse($type->typhoonCheck($stream));
 
-    $type = $this->getMock($this->typeClass(), array('isLocal'), array(new Attributes(array(
+    $type = $this->getMock($this->typeClass(), array('isLocal'), array(array(
       StreamType::ATTRIBUTE_LOCAL => false,
-    ))));
+    )));
     $type
       ->expects($this->once())
       ->method('isLocal')
@@ -103,11 +102,11 @@ class StreamTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
     
     $this->assertFalse($type->typhoonCheck($stream));
 
-    $type = $this->getMock($this->typeClass(), array('getMetaData'), array(new Attributes(array(
+    $type = $this->getMock($this->typeClass(), array('getMetaData'), array(array(
       StreamType::ATTRIBUTE_MODE => 'mode',
       StreamType::ATTRIBUTE_TYPE => 'type',
       StreamType::ATTRIBUTE_WRAPPER => 'wrapper',
-    ))));
+    )));
     $type
       ->expects($this->once())
       ->method('getMetaData')
@@ -121,11 +120,11 @@ class StreamTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
 
     $this->assertTrue($type->typhoonCheck($stream));
 
-    $type = $this->getMock($this->typeClass(), array('getMetaData'), array(new Attributes(array(
+    $type = $this->getMock($this->typeClass(), array('getMetaData'), array(array(
       StreamType::ATTRIBUTE_MODE => 'foo',
       StreamType::ATTRIBUTE_TYPE => 'type',
       StreamType::ATTRIBUTE_WRAPPER => 'wrapper',
-    ))));
+    )));
     $type
       ->expects($this->once())
       ->method('getMetaData')
@@ -139,11 +138,11 @@ class StreamTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
 
     $this->assertFalse($type->typhoonCheck($stream));
 
-    $type = $this->getMock($this->typeClass(), array('getMetaData'), array(new Attributes(array(
+    $type = $this->getMock($this->typeClass(), array('getMetaData'), array(array(
       StreamType::ATTRIBUTE_MODE => 'mode',
       StreamType::ATTRIBUTE_TYPE => 'foo',
       StreamType::ATTRIBUTE_WRAPPER => 'wrapper',
-    ))));
+    )));
     $type
       ->expects($this->once())
       ->method('getMetaData')
@@ -157,11 +156,11 @@ class StreamTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
 
     $this->assertFalse($type->typhoonCheck($stream));
 
-    $type = $this->getMock($this->typeClass(), array('getMetaData'), array(new Attributes(array(
+    $type = $this->getMock($this->typeClass(), array('getMetaData'), array(array(
       StreamType::ATTRIBUTE_MODE => 'mode',
       StreamType::ATTRIBUTE_TYPE => 'type',
       StreamType::ATTRIBUTE_WRAPPER => 'foo',
-    ))));
+    )));
     $type
       ->expects($this->once())
       ->method('getMetaData')
@@ -245,5 +244,5 @@ class StreamTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
    * @dataProvider typeValues
    * @group typhoon_types
    */
-  public function testTyphoonCheck($expected, $value, Attributes $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
+  public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
 }

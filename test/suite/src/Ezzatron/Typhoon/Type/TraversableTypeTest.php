@@ -31,8 +31,8 @@ class TraversableTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
   {
     $iterator = Phake::mock('Iterator');
     $iteratorAggregate = Phake::mock('IteratorAggregate');
-    $attributesIterator = new Attributes(array(TraversableType::ATTRIBUTE_INSTANCE_OF => get_class($iterator)));
-    $attributesNonTraversable = new Attributes(array(TraversableType::ATTRIBUTE_INSTANCE_OF => 'stdClass'));
+    $attributesIterator = array(TraversableType::ATTRIBUTE_INSTANCE_OF => get_class($iterator));
+    $attributesNonTraversable = array(TraversableType::ATTRIBUTE_INSTANCE_OF => 'stdClass');
 
     return array(
       array(false, null),                             // #0: null
@@ -193,5 +193,5 @@ class TraversableTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
    * @dataProvider typeValues
    * @group typhoon_types
    */
-  public function testTyphoonCheck($expected, $value, Attributes $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
+  public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
 }

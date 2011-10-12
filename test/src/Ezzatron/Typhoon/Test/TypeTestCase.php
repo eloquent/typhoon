@@ -11,7 +11,6 @@
 
 namespace Ezzatron\Typhoon\Test;
 
-use Ezzatron\Typhoon\Attribute\Attributes;
 use ReflectionClass;
 
 abstract class TypeTestCase extends TestCase
@@ -19,7 +18,7 @@ abstract class TypeTestCase extends TestCase
   /**
    * @return Type
    */
-  protected function typeFixture(Attributes $attributes = null)
+  protected function typeFixture($attributes = null)
   {
     $class = $this->typeClass();
 
@@ -40,7 +39,7 @@ abstract class TypeTestCase extends TestCase
    * @dataProvider typeValues
    * @group typhoon_types
    */
-  public function testTyphoonCheck($expected, $value, Attributes $attributes = null)
+  public function testTyphoonCheck($expected, $value, $attributes = null)
   {
     $this->assertEquals($expected, $this->typeFixture($attributes)->typhoonCheck($value));
   }

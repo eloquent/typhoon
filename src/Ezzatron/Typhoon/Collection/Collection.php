@@ -42,6 +42,14 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
   }
 
   /**
+   * @return array
+   */
+  public function values()
+  {
+    return $this->values;
+  }
+
+  /**
    * @param integer|string $key
    *
    * @return boolean

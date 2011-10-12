@@ -16,7 +16,10 @@ use Ezzatron\Typhoon\Attribute\AttributeSignature;
 
 class StringType extends Dynamic\BaseDynamicType
 {
-  public function __construct(Attributes $attributes = null)
+  /**
+   * @param Attributes|array|null $attributes
+   */
+  public function __construct($attributes = null)
   {
     parent::__construct($attributes);
 
