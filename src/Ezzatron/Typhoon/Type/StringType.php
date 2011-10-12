@@ -11,7 +11,6 @@
 
 namespace Ezzatron\Typhoon\Type;
 
-use Ezzatron\Typhoon\Attribute\Attributes;
 use Ezzatron\Typhoon\Attribute\AttributeSignature;
 
 class StringType extends Dynamic\BaseDynamicType

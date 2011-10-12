@@ -59,6 +59,15 @@ class AttributesTest extends \Ezzatron\Typhoon\Test\TestCase
   }
 
   /**
+   * @covers Ezzatron\Typhoon\Attribute\Attributes::adapt
+   */
+  public function testAdaptFailure()
+  {
+    $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnexpectedArgumentException');
+    Attributes::adapt('foo');
+  }
+
+  /**
    * @covers Ezzatron\Typhoon\Attribute\Attributes::setSignature
    * @covers Ezzatron\Typhoon\Attribute\Attributes::signature
    * @covers Ezzatron\Typhoon\Attribute\Attributes::assert

@@ -15,8 +15,9 @@ use Ezzatron\Typhoon\Assertion\Exception\MissingAttributeException;
 use Ezzatron\Typhoon\Assertion\Exception\UnexpectedArgumentException;
 use Ezzatron\Typhoon\Assertion\Exception\UnexpectedAttributeException;
 use Ezzatron\Typhoon\Assertion\Exception\UnsupportedAttributeException;
-use Ezzatron\Typhoon\Assertion\TypeAssertion;
+use Ezzatron\Typhoon\Assertion\ParameterAssertion;
 use Ezzatron\Typhoon\Collection\Collection;
+use Ezzatron\Typhoon\Parameter\Parameter;
 use Ezzatron\Typhoon\Primitive\Integer;
 use Ezzatron\Typhoon\Primitive\String;
 use Ezzatron\Typhoon\Type\ArrayType;
@@ -42,9 +43,13 @@ class Attributes extends Collection
     {
       return new static;
     }
+    
+    $parameter = new Parameter;
+    $parameter->setName(new String('attributes'));
+    $parameter->setType(new ArrayType);
 
-    $assertion = new TypeAssertion;
-    $assertion->setType(new ArrayType);
+    $assertion = new ParameterAssertion;
+    $assertion->setParameter($parameter);
     $assertion->setValue($attributes);
     $assertion->assert();
 
