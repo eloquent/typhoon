@@ -12,6 +12,7 @@
 namespace Ezzatron\Typhoon\Type\Dynamic;
 
 use ReflectionClass;
+use ReflectionObject;
 use Ezzatron\Typhoon\Attribute\Attributes;
 use Ezzatron\Typhoon\Attribute\AttributeSignature;
 use Ezzatron\Typhoon\Primitive\String;
@@ -28,6 +29,7 @@ class BaseDynamicTypeTest extends \Ezzatron\Typhoon\Test\TestCase
   /**
    * @covers Ezzatron\Typhoon\Type\Dynamic\BaseDynamicType::__construct
    * @covers Ezzatron\Typhoon\Type\Dynamic\BaseDynamicType::typhoonAttributes
+   * @covers Ezzatron\Typhoon\Type\Dynamic\BaseDynamicType::hasAttributes
    */
   public function testConstruct()
   {
@@ -37,7 +39,12 @@ class BaseDynamicTypeTest extends \Ezzatron\Typhoon\Test\TestCase
     $expected = new Attributes;
     $expected->setSignature($expectedSignature);
 
+    $reflector = new ReflectionObject($this->_type);
+    $hasAttributesMethod = $reflector->getMethod('hasAttributes');
+    $hasAttributesMethod->setAccessible(true);
+
     $this->assertEquals($expected, $this->_type->typhoonAttributes());
+    $this->assertFalse($hasAttributesMethod->invoke($this->_type));
 
 
     $this->_type = $this->getMockForAbstractClass(__NAMESPACE__.'\BaseDynamicType', array(array()));
@@ -48,7 +55,21 @@ class BaseDynamicTypeTest extends \Ezzatron\Typhoon\Test\TestCase
     $expected = new Attributes;
     $expected->setSignature($expectedSignature);
 
+    $reflector = new ReflectionObject($this->_type);
+    $hasAttributesMethod = $reflector->getMethod('hasAttributes');
+    $hasAttributesMethod->setAccessible(true);
+
     $this->assertEquals($expected, $this->_type->typhoonAttributes());
+    $this->assertFalse($hasAttributesMethod->invoke($this->_type));
+
+
+    $this->_type = $this->getMockForAbstractClass(__NAMESPACE__.'\BaseDynamicType', array(array('foo' => 'bar')));
+
+    $reflector = new ReflectionObject($this->_type);
+    $hasAttributesMethod = $reflector->getMethod('hasAttributes');
+    $hasAttributesMethod->setAccessible(true);
+
+    $this->assertTrue($hasAttributesMethod->invoke($this->_type));
   }
 
   /**
