@@ -16,28 +16,21 @@ use Ezzatron\Typhoon\Attribute\AttributeSignature;
 class StringType extends Dynamic\BaseDynamicType
 {
   /**
-   * @param Attributes|array|null $attributes
-   */
-  public function __construct($attributes = null)
-  {
-    parent::__construct($attributes);
-
-    $this->innerType = new SimpleStringType;
-  }
-
-  /**
    * @param mixed value
    *
    * @return boolean
    */
   public function typhoonCheck($value)
   {
-    if (!$this->innerType->typhoonCheck($value))
+    if (!is_string($value))
     {
       return false;
     }
 
-    if ($encoding = $this->typhoonAttributes()->get(self::ATTRIBUTE_ENCODING, null))
+    if (
+      $this->hasAttributes()
+      && $encoding = $this->typhoonAttributes()->get(self::ATTRIBUTE_ENCODING, null)
+    )
     {
       return mb_check_encoding($value, $encoding);
     }
@@ -57,9 +50,4 @@ class StringType extends Dynamic\BaseDynamicType
   }
 
   const ATTRIBUTE_ENCODING = 'encoding';
-
-  /**
-   * @var SimpleStringType
-   */
-  protected $innerType;
 }

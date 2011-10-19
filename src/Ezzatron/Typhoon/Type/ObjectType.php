@@ -22,7 +22,10 @@ class ObjectType extends Dynamic\BaseDynamicType
    */
   public function typhoonCheck($value)
   {
-    if ($class = $this->typhoonAttributes()->get(self::ATTRIBUTE_INSTANCE_OF, null))
+    if (
+      $this->hasAttributes()
+      && $class = $this->typhoonAttributes()->get(self::ATTRIBUTE_INSTANCE_OF, null)
+    )
     {
       return $value instanceof $class;
     }

@@ -11,15 +11,15 @@
 
 namespace Ezzatron\Typhoon\Primitive;
 
-use Ezzatron\Typhoon\Type\SimpleStringType;
+use Ezzatron\Typhoon\Type\StringType;
 
 final class String extends Primitive
 {
   /**
-   * @return SimpleStringType
+   * @return StringType
    */
   final public function type()
   {
-    return new SimpleStringType;
+    return new StringType;
   }
 }

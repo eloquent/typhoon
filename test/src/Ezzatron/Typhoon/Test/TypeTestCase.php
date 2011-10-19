@@ -18,7 +18,7 @@ abstract class TypeTestCase extends TestCase
   /**
    * @return Type
    */
-  protected function typeFixture($attributes = null)
+  protected function typeFixture(array $attributes = null)
   {
     $class = $this->typeClass();
 

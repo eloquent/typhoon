@@ -18,13 +18,13 @@ use Ezzatron\Typhoon\Type\BaseType;
 
 abstract class BaseDynamicType extends BaseType implements DynamicType
 {
-  /**
-   * @param Attributes|array|null $attributes
-   */
-  public function __construct($attributes = null)
+  public function __construct(array $attributes = null)
   {
-    $attributes = Attributes::adapt($attributes);
-    $attributes->setSignature(static::attributeSignature($this));
+    if (null === $attributes)
+    {
+      $attributes = array();
+    }
+
     $this->attributes = $attributes;
   }
 
@@ -33,7 +33,18 @@ abstract class BaseDynamicType extends BaseType implements DynamicType
    */
   public function typhoonAttributes()
   {
-    return $this->attributes;
+    $attributes = Attributes::adapt($this->attributes);
+    $attributes->setSignature(static::attributeSignature($this));
+    
+    return $attributes;
+  }
+
+  /**
+   * @return boolean
+   */
+  protected function hasAttributes()
+  {
+    return count($this->attributes) > 0;
   }
 
   /**
@@ -69,7 +80,7 @@ abstract class BaseDynamicType extends BaseType implements DynamicType
   static protected $attributeSignatures = array();
 
   /**
-   * @var Attributes
+   * @var array
    */
   protected $attributes;
 }

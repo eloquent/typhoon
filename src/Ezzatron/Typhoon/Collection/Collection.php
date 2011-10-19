@@ -23,7 +23,7 @@ use Ezzatron\Typhoon\Primitive\String;
 use Ezzatron\Typhoon\Type\IntegerType;
 use Ezzatron\Typhoon\Type\MixedType;
 use Ezzatron\Typhoon\Type\NullType;
-use Ezzatron\Typhoon\Type\SimpleStringType;
+use Ezzatron\Typhoon\Type\StringType;
 use Ezzatron\Typhoon\Type\Type;
 
 class Collection implements ArrayAccess, Countable, IteratorAggregate
@@ -201,7 +201,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate
   {
     $keyType = new OrType;
     $keyType->addTyphoonType(new IntegerType);
-    $keyType->addTyphoonType(new SimpleStringType);
+    $keyType->addTyphoonType(new StringType);
 
     return $keyType;
   }

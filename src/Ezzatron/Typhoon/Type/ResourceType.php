@@ -27,7 +27,10 @@ class ResourceType extends Dynamic\BaseDynamicType
       return false;
     }
 
-    if ($type = $this->typhoonAttributes()->get(self::ATTRIBUTE_TYPE, null))
+    if (
+      $this->hasAttributes()
+      && $type = $this->typhoonAttributes()->get(self::ATTRIBUTE_TYPE, null)
+    )
     {
       return get_resource_type($value) == $type;
     }

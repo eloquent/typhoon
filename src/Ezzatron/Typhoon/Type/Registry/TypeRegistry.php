@@ -33,7 +33,6 @@ use Ezzatron\Typhoon\Type\ObjectType;
 use Ezzatron\Typhoon\Type\ParameterType;
 use Ezzatron\Typhoon\Type\ResourceType;
 use Ezzatron\Typhoon\Type\ScalarType;
-use Ezzatron\Typhoon\Type\SimpleStringType;
 use Ezzatron\Typhoon\Type\StreamType;
 use Ezzatron\Typhoon\Type\StringableType;
 use Ezzatron\Typhoon\Type\StringType;
@@ -71,7 +70,6 @@ class TypeRegistry extends Collection
     $this[self::TYPE_SCALAR] = new ScalarType;
     $this[self::TYPE_STREAM] = new StreamType;
     $this[self::TYPE_STRING] = new StringType;
-    $this[self::TYPE_STRING_SIMPLE] = new SimpleStringType;
     $this[self::TYPE_STRINGABLE] = new StringableType;
     $this[self::TYPE_TRAVERSABLE] = new TraversableType;
     $this[self::TYPE_TYPE] = new TypeType;
@@ -152,7 +150,7 @@ class TypeRegistry extends Collection
    */
   protected function keyType()
   {
-    return new SimpleStringType;
+    return new StringType;
   }
 
   /**
@@ -242,7 +240,6 @@ class TypeRegistry extends Collection
   const TYPE_SCALAR = 'scalar';
   const TYPE_STREAM = 'stream';
   const TYPE_STRING = 'string';
-  const TYPE_STRING_SIMPLE = 'string_simple';
   const TYPE_STRINGABLE = 'stringable';
   const TYPE_TRAVERSABLE = 'traversable';
   const TYPE_TYPE = 'typhoon_type';

@@ -81,7 +81,7 @@ class TraversableTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
     $this->assertEquals($expected, $type->typhoonAttributes());
 
 
-    $type = $this->typeFixture(new Attributes);
+    $type = $this->typeFixture(array());
 
     $expectedSignature = new AttributeSignature;
     $expectedSignature->setHolderName(new String(get_class($type)));
@@ -123,8 +123,9 @@ class TraversableTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
    */
   public function testSetTyphoonAttribute()
   {
-    $type = $this->typeFixture();
-    $type->typhoonAttributes()->set(TraversableType::ATTRIBUTE_INSTANCE_OF, 'foo');
+    $type = $this->typeFixture(array(
+      TraversableType::ATTRIBUTE_INSTANCE_OF => 'foo',
+    ));
 
     $this->assertEquals('foo', $type->typhoonAttributes()->get(TraversableType::ATTRIBUTE_INSTANCE_OF));
   }
@@ -134,9 +135,12 @@ class TraversableTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
    */
   public function testSetTyphoonAttributeFailure()
   {
-    $type = $this->typeFixture();
+    $type = $this->typeFixture(array(
+      TraversableType::ATTRIBUTE_INSTANCE_OF => 1,
+    ));
+
     $this->setExpectedException('Ezzatron\Typhoon\Assertion\Exception\UnexpectedAttributeException');
-    $type->typhoonAttributes()->set(TraversableType::ATTRIBUTE_INSTANCE_OF, 1);
+    $type->typhoonAttributes();
   }
 
   /**
@@ -144,8 +148,9 @@ class TraversableTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
    */
   public function testPrimaryType()
   {
-    $traversableObject = new ObjectType;
-    $traversableObject->typhoonAttributes()->set(ObjectType::ATTRIBUTE_INSTANCE_OF, 'Traversable');
+    $traversableObject = new ObjectType(array(
+      ObjectType::ATTRIBUTE_INSTANCE_OF => 'Traversable',
+    ));
     $expected = new OrType;
     $expected->addTyphoonType(new ArrayType);
     $expected->addTyphoonType($traversableObject);
@@ -166,16 +171,19 @@ class TraversableTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
    */
   public function testPrimaryTypeWithInstanceOf()
   {
-    $specificObject = new ObjectType;
-    $specificObject->typhoonAttributes()->set(ObjectType::ATTRIBUTE_INSTANCE_OF, 'Foo');
-    $traversableObject = new ObjectType;
-    $traversableObject->typhoonAttributes()->set(ObjectType::ATTRIBUTE_INSTANCE_OF, 'Traversable');
+    $specificObject = new ObjectType(array(
+      ObjectType::ATTRIBUTE_INSTANCE_OF => 'Foo',
+    ));
+    $traversableObject = new ObjectType(array(
+      ObjectType::ATTRIBUTE_INSTANCE_OF => 'Traversable',
+    ));
     $expected = new AndType;
     $expected->addTyphoonType($specificObject);
     $expected->addTyphoonType($traversableObject);
 
-    $type = $this->typeFixture();
-    $type->typhoonAttributes()->set(TraversableType::ATTRIBUTE_INSTANCE_OF, 'Foo');
+    $type = $this->typeFixture(array(
+      TraversableType::ATTRIBUTE_INSTANCE_OF => 'Foo',
+    ));
 
     $reflector = new ReflectionObject($type);
     $method = $reflector->getMethod('primaryType');
@@ -190,6 +198,7 @@ class TraversableTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
 
   /**
    * @covers Ezzatron\Typhoon\Type\TraversableType::checkPrimary
+   * @covers Ezzatron\Typhoon\Type\TraversableType::hasAttributes
    * @dataProvider typeValues
    * @group typhoon_types
    */

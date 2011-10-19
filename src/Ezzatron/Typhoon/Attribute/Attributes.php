@@ -21,7 +21,7 @@ use Ezzatron\Typhoon\Parameter\Parameter;
 use Ezzatron\Typhoon\Primitive\Integer;
 use Ezzatron\Typhoon\Primitive\String;
 use Ezzatron\Typhoon\Type\ArrayType;
-use Ezzatron\Typhoon\Type\SimpleStringType;
+use Ezzatron\Typhoon\Type\StringType;
 use Ezzatron\Typhoon\Type\Type;
 use Ezzatron\Typhoon\Typhoon;
 
@@ -111,7 +111,7 @@ class Attributes extends Collection
    */
   protected function keyType()
   {
-    return new SimpleStringType;
+    return new StringType;
   }
 
   /**

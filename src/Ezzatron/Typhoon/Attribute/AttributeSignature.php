@@ -14,7 +14,7 @@ namespace Ezzatron\Typhoon\Attribute;
 use Ezzatron\Typhoon\Collection\Collection;
 use Ezzatron\Typhoon\Primitive\Boolean;
 use Ezzatron\Typhoon\Primitive\String;
-use Ezzatron\Typhoon\Type\SimpleStringType;
+use Ezzatron\Typhoon\Type\StringType;
 use Ezzatron\Typhoon\Type\TypeType;
 
 class AttributeSignature extends Collection
@@ -83,7 +83,7 @@ class AttributeSignature extends Collection
    */
   protected function keyType()
   {
-    return new SimpleStringType;
+    return new StringType;
   }
 
   /**

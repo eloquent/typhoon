@@ -17,16 +17,16 @@ use Ezzatron\Typhoon\Primitive\String;
 
 class TraversableType extends Traversable\BaseTraversableType implements Dynamic\DynamicType
 {
-  /**
-   * @param Attributes|array|null $attributes
-   */
-  public function __construct($attributes = null)
+  public function __construct(array $attributes = null)
   {
-    $attributes = Attributes::adapt($attributes);
-    $attributes->setSignature(static::attributeSignature($this));
-    $this->attributes = $attributes;
-
     parent::__construct();
+
+    if (null === $attributes)
+    {
+      $attributes = array();
+    }
+
+    $this->attributes = $attributes;
   }
 
   /**
@@ -34,7 +34,18 @@ class TraversableType extends Traversable\BaseTraversableType implements Dynamic
    */
   public function typhoonAttributes()
   {
-    return $this->attributes;
+    $attributes = Attributes::adapt($this->attributes);
+    $attributes->setSignature(static::attributeSignature($this));
+
+    return $attributes;
+  }
+
+  /**
+   * @return boolean
+   */
+  protected function hasAttributes()
+  {
+    return count($this->attributes) > 0;
   }
 
   /**
@@ -82,24 +93,29 @@ class TraversableType extends Traversable\BaseTraversableType implements Dynamic
    */
   protected function primaryType()
   {
-    $traversableObject = new ObjectType;
-    $traversableObject->typhoonAttributes()->set(ObjectType::ATTRIBUTE_INSTANCE_OF, 'Traversable');
+    $traversableObject = new ObjectType(array(
+      ObjectType::ATTRIBUTE_INSTANCE_OF => 'Traversable',
+    ));
 
-    if ($class = $this->typhoonAttributes()->get(self::ATTRIBUTE_INSTANCE_OF, null))
+    if (
+      $this->hasAttributes()
+      && $class = $this->typhoonAttributes()->get(self::ATTRIBUTE_INSTANCE_OF, null)
+    )
     {
-      $specificClassObject = new ObjectType;
-      $specificClassObject->typhoonAttributes()->set(ObjectType::ATTRIBUTE_INSTANCE_OF, $class);
+      $specificClassObject = new ObjectType(array(
+        ObjectType::ATTRIBUTE_INSTANCE_OF => $class,
+      ));
 
       $primaryType = new Composite\AndType;
       $primaryType->addTyphoonType($specificClassObject);
       $primaryType->addTyphoonType($traversableObject);
+
+      return $primaryType;
     }
-    else
-    {
-      $primaryType = new Composite\OrType;
-      $primaryType->addTyphoonType(new ArrayType);
-      $primaryType->addTyphoonType($traversableObject);
-    }
+
+    $primaryType = new Composite\OrType;
+    $primaryType->addTyphoonType(new ArrayType);
+    $primaryType->addTyphoonType($traversableObject);
 
     return $primaryType;
   }
@@ -112,7 +128,7 @@ class TraversableType extends Traversable\BaseTraversableType implements Dynamic
   static protected $attributeSignatures = array();
 
   /**
-   * @var Attributes
+   * @var array
    */
   protected $attributes;
 }

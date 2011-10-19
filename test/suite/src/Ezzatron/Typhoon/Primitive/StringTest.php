@@ -20,6 +20,6 @@ class StringTest extends \Ezzatron\Typhoon\Test\TestCase
   public function testType()
   {
     $primitive = new String('');
-    $this->assertInstanceOf('Ezzatron\Typhoon\Type\SimpleStringType', $primitive->type());
+    $this->assertInstanceOf('Ezzatron\Typhoon\Type\StringType', $primitive->type());
   }
 }

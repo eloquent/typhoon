@@ -72,20 +72,23 @@ class TypeInspectorTest extends \Ezzatron\Typhoon\Test\TestCase
 
     // #11: Traversable
     $value = Phake::mock('Iterator');
-    $expected = new TraversableType;
-    $expected->typhoonAttributes()->set(TraversableType::ATTRIBUTE_INSTANCE_OF, get_class($value));
+    $expected = new TraversableType(array(
+      TraversableType::ATTRIBUTE_INSTANCE_OF => get_class($value),
+    ));
     $data[] = array($value, $expected);
 
     // #12: Object (stdClass)
     $value = new stdClass;
-    $expected = new ObjectType;
-    $expected->typhoonAttributes()->set(ObjectType::ATTRIBUTE_INSTANCE_OF, get_class($value));
+    $expected = new ObjectType(array(
+      ObjectType::ATTRIBUTE_INSTANCE_OF => get_class($value),
+    ));
     $data[] = array($value, $expected);
 
     // #13: Object (Typhoon)
     $value = Typhoon::instance();
-    $expected = new ObjectType;
-    $expected->typhoonAttributes()->set(ObjectType::ATTRIBUTE_INSTANCE_OF, get_class($value));
+    $expected = new ObjectType(array(
+      ObjectType::ATTRIBUTE_INSTANCE_OF => get_class($value),
+    ));
     $data[] = array($value, $expected);
 
     // #14: Array with sub-values and 0-depth checking
@@ -196,8 +199,9 @@ class TypeInspectorTest extends \Ezzatron\Typhoon\Test\TestCase
     $this->assertEquals($expected, $this->_typeInspector->typeOf($values, $depth));
     
     $traversable = $this->traversableFixture($values);
-    $expected = new TraversableType;
-    $expected->typhoonAttributes()->set(TraversableType::ATTRIBUTE_INSTANCE_OF, get_class($traversable));
+    $expected = new TraversableType(array(
+      TraversableType::ATTRIBUTE_INSTANCE_OF => get_class($traversable),
+    ));
     $expected->setTyphoonKeyType($expectedKeyType);
     $expected->setTyphoonSubType($expectedSubType);
     

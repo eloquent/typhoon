@@ -30,7 +30,6 @@ use Ezzatron\Typhoon\Type\ObjectType;
 use Ezzatron\Typhoon\Type\ParameterType;
 use Ezzatron\Typhoon\Type\ResourceType;
 use Ezzatron\Typhoon\Type\ScalarType;
-use Ezzatron\Typhoon\Type\SimpleStringType;
 use Ezzatron\Typhoon\Type\StreamType;
 use Ezzatron\Typhoon\Type\StringableType;
 use Ezzatron\Typhoon\Type\StringType;
@@ -67,7 +66,6 @@ class TypeRegistryTest extends \Ezzatron\Typhoon\Test\TestCase
       array('scalar', new ScalarType),
       array('stream', new StreamType),
       array('string', new StringType),
-      array('string_simple', new SimpleStringType),
       array('stringable', new StringableType),
       array('traversable', new TraversableType),
       array('typhoon_parameter', new ParameterType),

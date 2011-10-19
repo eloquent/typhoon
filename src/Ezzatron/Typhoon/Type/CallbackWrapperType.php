@@ -15,11 +15,11 @@ class CallbackWrapperType extends Dynamic\BaseDynamicType
   {
     $arguments = array_merge(
       array($value)
-      , $this->attributes->get(self::ATTRIBUTE_ARGUMENTS, array())
+      , $this->typhoonAttributes()->get(self::ATTRIBUTE_ARGUMENTS, array())
     );
 
     return call_user_func_array(
-      $this->attributes->get(self::ATTRIBUTE_CALLBACK, array($this, 'defaultCallback'))
+      $this->typhoonAttributes()->get(self::ATTRIBUTE_CALLBACK, array($this, 'defaultCallback'))
       , $arguments
     );
   }

@@ -16,10 +16,7 @@ use Ezzatron\Typhoon\Attribute\AttributeSignature;
 
 class StreamType extends Dynamic\BaseDynamicType
 {
-  /**
-   * @param Attributes|array|null $attributes
-   */
-  public function __construct($attributes = null)
+  public function __construct(array $attributes = null)
   {
     parent::__construct($attributes);
 
@@ -38,6 +35,11 @@ class StreamType extends Dynamic\BaseDynamicType
     if (!$this->innerType->typhoonCheck($value))
     {
       return false;
+    }
+
+    if (!$this->hasAttributes())
+    {
+      return true;
     }
     
     $local = $this->typhoonAttributes()->get(self::ATTRIBUTE_LOCAL, null);
