@@ -8,8 +8,8 @@
 ### Simple, flexible type-checking for PHP
 
 #### Latest revision test suite results
-http://ci.ezzatron.com/typhoon
+<http://ci.ezzatron.com/typhoon>
 
 #### Latest revision test suite coverage
-http://ci.ezzatron.com/report/typhoon/coverage/
+<http://ci.ezzatron.com/report/typhoon/coverage/>
 
