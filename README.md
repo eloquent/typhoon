@@ -1,15 +1,15 @@
-      ______            __                    
-     /_  __/_  ______  / /_  ____  ____  ____ 
-      / / / / / / __ \/ __ \/ __ \/ __ \/ __ \
-     / / / /_/ / /_/ / / / / /_/ / /_/ / / / /
-    /_/  \___ / ____/_/ /_/\____/\____/_/ /_/ 
-        /____/_/
+# Typhoon
 
-### Simple, flexible type-checking for PHP
+*Simple, flexible type-checking for PHP.*
 
-#### Latest revision test suite results
+## Code quality
+
+Typhoon strives to attain a high level of quality. A full test suite is
+available, and code coverage is closely monitored.
+
+### Latest revision test suite results
 <http://ci.ezzatron.com/typhoon>
 
-#### Latest revision test suite coverage
+### Latest revision test suite coverage
 <http://ci.ezzatron.com/report/typhoon/coverage/>
 
