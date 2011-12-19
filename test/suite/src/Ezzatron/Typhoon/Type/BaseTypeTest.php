@@ -11,6 +11,7 @@
 
 namespace Ezzatron\Typhoon\Type;
 
+use Ezzatron\Typhoon\Test\Fixture\ConcreteBaseType;
 use Phake;
 
 class BaseTypeTest extends \Ezzatron\Typhoon\Test\TestCase
@@ -20,24 +21,18 @@ class BaseTypeTest extends \Ezzatron\Typhoon\Test\TestCase
    */
   public function testEqualsTyphoonType()
   {
-    $left = Phake::partialMock(__NAMESPACE__.'\BaseType');
-    $right = clone $left;
+    $left = new ConcreteBaseType;
+    $right = new ConcreteBaseType;
 
     $this->assertTrue($left->equalsTyphoonType($left));
     $this->assertTrue($left->equalsTyphoonType($right));
     $this->assertTrue($right->equalsTyphoonType($right));
     $this->assertTrue($right->equalsTyphoonType($left));
 
-    $left = Phake::partialMock(__NAMESPACE__.'\BaseType');
+    $left = new ConcreteBaseType;
     $left->foo = 'bar';
-    $right = clone $left;
-    $right->bar = 'baz';
-
-    $this->assertFalse($left->equalsTyphoonType($right));
-    $this->assertFalse($right->equalsTyphoonType($left));
-
-    $left = Phake::partialMock(__NAMESPACE__.'\BaseType');
-    $right = Phake::partialMock(__NAMESPACE__.'\BaseType');
+    $right = new ConcreteBaseType;
+    $right->foo = 'baz';
 
     $this->assertFalse($left->equalsTyphoonType($right));
     $this->assertFalse($right->equalsTyphoonType($left));

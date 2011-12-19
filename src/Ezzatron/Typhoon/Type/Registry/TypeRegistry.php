@@ -207,7 +207,7 @@ class TypeRegistry extends Collection
       {
         $class = get_class($type);
 
-        if (isset($this->aliases[$class]))
+        if (array_key_exists($class, $this->aliases))
         {
           continue;
         }

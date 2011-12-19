@@ -16,6 +16,7 @@ require __DIR__.'/paths.php';
 
 // include Phake for improved mocking support
 require 'Phake.php';
+Phake::setClient(Phake::CLIENT_PHPUNIT);
 
 // include Typhoon
 require TYPHOON_SRC_DIR.DIRECTORY_SEPARATOR.'include.php';

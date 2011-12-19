@@ -11,6 +11,7 @@
 
 namespace Ezzatron\Typhoon\Type\Registry;
 
+use Ezzatron\Typhoon\Test\Fixture\ConcreteBaseType;
 use Ezzatron\Typhoon\Type\ArrayType;
 use Ezzatron\Typhoon\Type\BooleanType;
 use Ezzatron\Typhoon\Type\CallbackType;
@@ -169,13 +170,15 @@ class TypeRegistryTest extends \Ezzatron\Typhoon\Test\TestCase
   public function testAlias()
   {
     $type_1 = Phake::mock('Ezzatron\Typhoon\Type\Type');
-    $type_2 = Phake::mock('Ezzatron\Typhoon\Type\Type');
+    $type_2 = new ConcreteBaseType;
 
     $typeName_1 = get_class($type_1);
     $typeName_2 = get_class($type_2);
     $alias_1 = 'foo';
     $alias_2 = 'bar';
     $this->_registry[$alias_1] = $type_1;
+    
+    $this->assertNotEquals($typeName_1, $typeName_2);
 
     $this->assertEquals($alias_1, $this->_registry->alias($typeName_1));
     $this->assertEquals($alias_1, $this->_registry->alias($type_1));
