@@ -25,7 +25,7 @@ use Ezzatron\Typhoon\Type\IntegerType;
 use Ezzatron\Typhoon\Type\IntegerableType;
 use Ezzatron\Typhoon\Type\KeyType;
 use Ezzatron\Typhoon\Type\MixedType;
-use Ezzatron\Typhoon\Type\NodeType;
+use Ezzatron\Typhoon\Type\FilesystemNodeType;
 use Ezzatron\Typhoon\Type\NullType;
 use Ezzatron\Typhoon\Type\NumberType;
 use Ezzatron\Typhoon\Type\NumericType;
@@ -60,7 +60,7 @@ class TypeRegistry extends Collection
     $this[self::TYPE_INTEGERABLE] = new IntegerableType;
     $this[self::TYPE_KEY] = new KeyType;
     $this[self::TYPE_MIXED] = new MixedType;
-    $this[self::TYPE_NODE] = new NodeType;
+    $this[self::TYPE_FILESYSTEM_NODE] = new FilesystemNodeType;
     $this[self::TYPE_NULL] = new NullType;
     $this[self::TYPE_NUMBER] = new NumberType;
     $this[self::TYPE_NUMERIC] = new NumericType;
@@ -230,7 +230,7 @@ class TypeRegistry extends Collection
   const TYPE_INTEGERABLE = 'integerable';
   const TYPE_KEY = 'key';
   const TYPE_MIXED = 'mixed';
-  const TYPE_NODE = 'node';
+  const TYPE_FILESYSTEM_NODE = 'filesystem_node';
   const TYPE_NULL = 'null';
   const TYPE_NUMBER = 'number';
   const TYPE_NUMERIC = 'numeric';

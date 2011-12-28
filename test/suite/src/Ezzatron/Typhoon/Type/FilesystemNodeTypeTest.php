@@ -15,7 +15,7 @@ use Ezzatron\Typhoon\Attribute\AttributeSignature;
 use Ezzatron\Typhoon\Primitive\String;
 use stdClass;
 
-class NodeTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
+class FilesystemNodeTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
 {
   /**
    * @return array
@@ -23,10 +23,10 @@ class NodeTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
   public function typeValues()
   {
     $fileAttributes = array(
-      NodeType::ATTRIBUTE_TYPE => NodeType::TYPE_FILE,
+      FilesystemNodeType::ATTRIBUTE_TYPE => FilesystemNodeType::TYPE_FILE,
     );
     $directoryAttributes = array(
-      NodeType::ATTRIBUTE_TYPE => NodeType::TYPE_DIRECTORY,
+      FilesystemNodeType::ATTRIBUTE_TYPE => FilesystemNodeType::TYPE_DIRECTORY,
     );
     
     return array(
@@ -55,24 +55,24 @@ class NodeTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
    */
   protected function typeClass()
   {
-    return __NAMESPACE__.'\NodeType';
+    return __NAMESPACE__.'\FilesystemNodeType';
   }
 
   /**
-   * @covers Ezzatron\Typhoon\Type\NodeType::configureAttributeSignature
+   * @covers Ezzatron\Typhoon\Type\FilesystemNodeType::configureAttributeSignature
    */
   public function testConfigureAttributeSignature()
   {
     $expected = new AttributeSignature;
     $expected->setHolderName(new String($this->typeClass()));
-    $expected[NodeType::ATTRIBUTE_TYPE] = new StringType;
+    $expected[FilesystemNodeType::ATTRIBUTE_TYPE] = new StringType;
 
-    $type = new NodeType;
+    $type = new FilesystemNodeType;
     $actual = $type->typhoonAttributes()->signature();
 
     $this->assertEquals($expected, $actual);
 
-    $type = new NodeType;
+    $type = new FilesystemNodeType;
 
     $this->assertEquals($actual, $type->typhoonAttributes()->signature());
   }
@@ -80,8 +80,8 @@ class NodeTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
   // methods below must be manually overridden to implement @covers
 
   /**
-   * @covers Ezzatron\Typhoon\Type\NodeType::__construct
-   * @covers Ezzatron\Typhoon\Type\NodeType::typhoonCheck
+   * @covers Ezzatron\Typhoon\Type\FilesystemNodeType::__construct
+   * @covers Ezzatron\Typhoon\Type\FilesystemNodeType::typhoonCheck
    * @dataProvider typeValues
    * @group typhoon_types
    */

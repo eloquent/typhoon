@@ -15,8 +15,8 @@ class FileType extends BaseType
 {
   public function __construct()
   {
-    $this->innerType = new NodeType(array(
-      NodeType::ATTRIBUTE_TYPE => NodeType::TYPE_FILE,
+    $this->innerType = new FilesystemNodeType(array(
+      FilesystemNodeType::ATTRIBUTE_TYPE => FilesystemNodeType::TYPE_FILE,
     ));
   }
 
@@ -31,7 +31,7 @@ class FileType extends BaseType
   }
 
   /**
-   * @var NodeType
+   * @var FilesystemNodeType
    */
   protected $innerType;
 }

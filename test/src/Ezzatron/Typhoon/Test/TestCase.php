@@ -28,15 +28,18 @@ class TestCase extends \PHPUnit_Framework_TestCase
   {
     if ($this->_stream)
     {
-      fclose($this->_stream);
+      @fclose($this->_stream);
+      $this->_stream = null;
     }
     if ($this->_file)
     {
-      fclose($this->_file);
+      @fclose($this->_file);
+      $this->_file = null;
     }
     if ($this->_directory)
     {
-      fclose($this->_directory);
+      @fclose($this->_directory);
+      $this->_directory = null;
     }
   }
 
@@ -45,7 +48,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
    */
   protected function resourceFixture()
   {
-    if (!$this->_resource)
+    if (null === $this->_resource)
     {
       $this->_resource = stream_context_create();
     }
@@ -58,7 +61,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
    */
   protected function streamFixture()
   {
-    if (!$this->_stream)
+    if (null === $this->_stream)
     {
       $this->_stream = fopen('php://memory', 'wb');
     }
@@ -71,7 +74,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
    */
   protected function fileFixture()
   {
-    if (!$this->_file)
+    if (null === $this->_file)
     {
       $this->_file = fopen(__FILE__, 'rb');
     }
@@ -84,7 +87,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
    */
   protected function directoryFixture()
   {
-    if (!$this->_directory)
+    if (null === $this->_directory)
     {
       $this->_directory = opendir(__DIR__);
     }

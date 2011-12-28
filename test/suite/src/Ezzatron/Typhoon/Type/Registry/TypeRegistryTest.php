@@ -23,7 +23,7 @@ use Ezzatron\Typhoon\Type\IntegerType;
 use Ezzatron\Typhoon\Type\IntegerableType;
 use Ezzatron\Typhoon\Type\KeyType;
 use Ezzatron\Typhoon\Type\MixedType;
-use Ezzatron\Typhoon\Type\NodeType;
+use Ezzatron\Typhoon\Type\FilesystemNodeType;
 use Ezzatron\Typhoon\Type\NullType;
 use Ezzatron\Typhoon\Type\NumberType;
 use Ezzatron\Typhoon\Type\NumericType;
@@ -58,7 +58,7 @@ class TypeRegistryTest extends \Ezzatron\Typhoon\Test\TestCase
       array('integerable', new IntegerableType),
       array('key', new KeyType),
       array('mixed', new MixedType),
-      array('node', new NodeType),
+      array('filesystem_node', new FilesystemNodeType),
       array('null', new NullType),
       array('number', new NumberType),
       array('numeric', new NumericType),

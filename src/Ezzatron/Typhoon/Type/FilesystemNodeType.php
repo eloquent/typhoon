@@ -14,7 +14,7 @@ namespace Ezzatron\Typhoon\Type;
 use Ezzatron\Typhoon\Attribute\Attributes;
 use Ezzatron\Typhoon\Attribute\AttributeSignature;
 
-class NodeType extends Dynamic\BaseDynamicType
+class FilesystemNodeType extends Dynamic\BaseDynamicType
 {
   public function __construct(array $attributes = null)
   {
