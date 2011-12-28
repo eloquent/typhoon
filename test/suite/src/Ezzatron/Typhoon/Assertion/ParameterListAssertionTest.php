@@ -34,6 +34,8 @@ class ParameterListAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Assertion\ParameterListAssertion::assert
+   * @group assertion
+   * @group core
    */
   public function testAssertUseParameterAssertion()
   {
@@ -74,6 +76,8 @@ class ParameterListAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Assertion\ParameterListAssertion::assert
+   * @group assertion
+   * @group core
    */
   public function testAssertFixedLength()
   {
@@ -101,6 +105,8 @@ class ParameterListAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Assertion\ParameterListAssertion::assert
+   * @group assertion
+   * @group core
    */
   public function testAssertOptional()
   {
@@ -126,6 +132,8 @@ class ParameterListAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Assertion\ParameterListAssertion::assert
+   * @group assertion
+   * @group core
    */
   public function testAssertVariableLength()
   {
@@ -146,6 +154,8 @@ class ParameterListAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Assertion\ParameterListAssertion::assert
+   * @group assertion
+   * @group core
    */
   public function testAssertFailureType()
   {
@@ -166,6 +176,8 @@ class ParameterListAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Assertion\ParameterListAssertion::assert
+   * @group assertion
+   * @group core
    */
   public function testAssertFailureNoArguments()
   {
@@ -178,6 +190,8 @@ class ParameterListAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Assertion\ParameterListAssertion::assert
+   * @group assertion
+   * @group core
    */
   public function testAssertFailureNotEnoughArguments()
   {
@@ -192,6 +206,8 @@ class ParameterListAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Assertion\ParameterListAssertion::assert
+   * @group assertion
+   * @group core
    */
   public function testAssertFailureTooManyArguments()
   {
@@ -203,6 +219,8 @@ class ParameterListAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Assertion\ParameterListAssertion::assert
+   * @group assertion
+   * @group core
    */
   public function testAssertFailureTooManyArgumentsNonEmpty()
   {
@@ -217,6 +235,8 @@ class ParameterListAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Assertion\ParameterListAssertion::parameterAssertion
+   * @group assertion
+   * @group core
    */
   public function testParameterAssertion()
   {
@@ -237,6 +257,8 @@ class ParameterListAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
   /**
    * @covers Ezzatron\Typhoon\Assertion\ParameterListAssertion::setParameterList
    * @covers Ezzatron\Typhoon\Assertion\ParameterListAssertion::parameterList
+   * @group assertion
+   * @group core
    */
   public function testParameterList()
   {
@@ -251,6 +273,8 @@ class ParameterListAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
   /**
    * @covers Ezzatron\Typhoon\Assertion\ParameterListAssertion::setArguments
    * @covers Ezzatron\Typhoon\Assertion\ParameterListAssertion::arguments
+   * @group assertion
+   * @group core
    */
   public function testArguments()
   {
@@ -264,6 +288,8 @@ class ParameterListAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Assertion\ParameterListAssertion::setArguments
+   * @group assertion
+   * @group core
    */
   public function testSetArgumentsFailure()
   {
@@ -273,6 +299,8 @@ class ParameterListAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Assertion\ParameterListAssertion
+   * @group assertion
+   * @group core
    */
   public function testImplementsAssertion()
   {

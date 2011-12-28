@@ -168,6 +168,9 @@ class TyphaxTypeRendererTest extends \Ezzatron\Typhoon\Test\TestCase
   /**
    * @covers Ezzatron\Typhoon\Type\Renderer\TyphaxTypeRenderer
    * @dataProvider renderData
+   * @group type
+   * @group type-renderer
+   * @group core
    */
   public function testRender(Type $type, $alias, $expected)
   {

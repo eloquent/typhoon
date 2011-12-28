@@ -29,6 +29,7 @@ class TyphoonTest extends TestCase
    * @covers Ezzatron\Typhoon\Typhoon::instance
    * @covers Ezzatron\Typhoon\Typhoon::uninstall
    * @covers Ezzatron\Typhoon\Typhoon::install
+   * @group core
    */
   public function testInstanceAndInstall()
   {
@@ -48,6 +49,7 @@ class TyphoonTest extends TestCase
   /**
    * @covers Ezzatron\Typhoon\Typhoon::setTypeInspector
    * @covers Ezzatron\Typhoon\Typhoon::typeInspector
+   * @group core
    */
   public function testTypeInspector()
   {
@@ -61,6 +63,7 @@ class TyphoonTest extends TestCase
   /**
    * @covers Ezzatron\Typhoon\Typhoon::setTypeRegistry
    * @covers Ezzatron\Typhoon\Typhoon::typeRegistry
+   * @group core
    */
   public function testTypeRegistry()
   {
@@ -74,6 +77,7 @@ class TyphoonTest extends TestCase
   /**
    * @covers Ezzatron\Typhoon\Typhoon::setTypeRenderer
    * @covers Ezzatron\Typhoon\Typhoon::typeRenderer
+   * @group core
    */
   public function testTypeRenderer()
   {

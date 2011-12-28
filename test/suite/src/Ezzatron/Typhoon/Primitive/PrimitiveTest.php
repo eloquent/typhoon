@@ -38,6 +38,8 @@ class PrimitiveTest extends \Ezzatron\Typhoon\Test\TestCase
    * @covers Ezzatron\Typhoon\Primitive\Primitive::value
    * @covers Ezzatron\Typhoon\Primitive\Primitive::__toString
    * @covers Ezzatron\Typhoon\Primitive\Primitive::typeAssertion
+   * @group primitive
+   * @group core
    */
   public function testPrimitive()
   {
@@ -71,6 +73,8 @@ class PrimitiveTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Primitive\Primitive::__construct
+   * @group primitive
+   * @group core
    */
   public function testPrimitiveFailure()
   {
@@ -97,6 +101,8 @@ class PrimitiveTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Primitive\Primitive::typeAssertion
+   * @group primitive
+   * @group core
    */
   public function testTypeAssertion()
   {

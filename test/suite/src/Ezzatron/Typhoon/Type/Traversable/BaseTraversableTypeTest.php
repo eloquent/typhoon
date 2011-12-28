@@ -27,6 +27,9 @@ class BaseTraversableTypeTest extends \Ezzatron\Typhoon\Test\TestCase
    * @covers Ezzatron\Typhoon\Type\Traversable\BaseTraversableType::__construct
    * @covers Ezzatron\Typhoon\Type\Traversable\BaseTraversableType::setTyphoonSubType
    * @covers Ezzatron\Typhoon\Type\Traversable\BaseTraversableType::typhoonSubType
+   * @group type
+   * @group traversable-type
+   * @group core
    */
   public function testTyphoonSubType()
   {
@@ -42,6 +45,9 @@ class BaseTraversableTypeTest extends \Ezzatron\Typhoon\Test\TestCase
    * @covers Ezzatron\Typhoon\Type\Traversable\BaseTraversableType::__construct
    * @covers Ezzatron\Typhoon\Type\Traversable\BaseTraversableType::setTyphoonKeyType
    * @covers Ezzatron\Typhoon\Type\Traversable\BaseTraversableType::typhoonKeyType
+   * @group type
+   * @group traversable-type
+   * @group core
    */
   public function testTyphoonKeyType()
   {
@@ -162,6 +168,9 @@ class BaseTraversableTypeTest extends \Ezzatron\Typhoon\Test\TestCase
   /**
    * @covers Ezzatron\Typhoon\Type\Traversable\BaseTraversableType::typhoonCheck
    * @dataProvider typhoonCheckData
+   * @group type
+   * @group traversable-type
+   * @group core
    */
   public function testTyphoonCheck($value, $expected, $primaryResult, array $subResults, array $keyResults)
   {

@@ -60,6 +60,9 @@ class FilesystemNodeTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
 
   /**
    * @covers Ezzatron\Typhoon\Type\FilesystemNodeType::configureAttributeSignature
+   * @group types
+   * @group type
+   * @group dynamic-type
    */
   public function testConfigureAttributeSignature()
   {
@@ -83,7 +86,9 @@ class FilesystemNodeTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
    * @covers Ezzatron\Typhoon\Type\FilesystemNodeType::__construct
    * @covers Ezzatron\Typhoon\Type\FilesystemNodeType::typhoonCheck
    * @dataProvider typeValues
-   * @group typhoon_types
+   * @group types
+   * @group type
+   * @group dynamic-type
    */
   public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
 }

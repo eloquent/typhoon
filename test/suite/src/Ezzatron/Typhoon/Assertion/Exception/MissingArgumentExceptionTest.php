@@ -43,6 +43,9 @@ class MissingArgumentExceptionTest extends \Ezzatron\Typhoon\Test\ExceptionTestC
 
   /**
    * @covers Ezzatron\Typhoon\Assertion\Exception\MissingArgumentException
+   * @group exceptions
+   * @group assertion
+   * @group core
    */
   public function testConstructor()
   {

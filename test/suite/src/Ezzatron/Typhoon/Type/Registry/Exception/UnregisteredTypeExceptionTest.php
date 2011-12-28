@@ -40,6 +40,10 @@ class UnregisteredTypeExceptionTest extends \Ezzatron\Typhoon\Test\ExceptionTest
 
   /**
    * @covers Ezzatron\Typhoon\Type\Registry\Exception\UnregisteredTypeException::__construct
+   * @group exceptions
+   * @group type
+   * @group type-registry
+   * @group core
    */
   public function testConstructor()
   {

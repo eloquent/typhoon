@@ -35,6 +35,8 @@ class CollectionTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Collection\Collection
+   * @group collection
+   * @group core
    */
   public function testCollection()
   {
@@ -86,6 +88,8 @@ class CollectionTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Collection\Collection::keySetType
+   * @group collection
+   * @group core
    */
   public function testKeySetType()
   {
@@ -99,6 +103,8 @@ class CollectionTest extends \Ezzatron\Typhoon\Test\TestCase
   /**
    * @covers Ezzatron\Typhoon\Collection\Collection
    * @dataProvider undefinedKeyTriggers
+   * @group collection
+   * @group core
    */
   public function testUndefinedKeyFailure($method)
   {
@@ -108,6 +114,8 @@ class CollectionTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Collection\Collection
+   * @group collection
+   * @group core
    */
   public function testInvalidKeyTypeFailure()
   {
@@ -117,6 +125,8 @@ class CollectionTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Collection\Collection
+   * @group collection
+   * @group core
    */
   public function testInvalidValueTypeFailure()
   {
@@ -129,6 +139,8 @@ class CollectionTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Collection\Collection
+   * @group collection
+   * @group core
    */
   public function testImplements()
   {

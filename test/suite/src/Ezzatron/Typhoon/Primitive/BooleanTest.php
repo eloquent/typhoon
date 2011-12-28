@@ -15,7 +15,9 @@ class BooleanTest extends \Ezzatron\Typhoon\Test\TestCase
 {
   /**
    * @covers Ezzatron\Typhoon\Primitive\Boolean::type
-   * @group typhoon_primitives
+   * @group primitives
+   * @group primitive
+   * @group core
    */
   public function testType()
   {

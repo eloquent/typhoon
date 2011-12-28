@@ -42,6 +42,9 @@ class MissingAttributeExceptionTest extends \Ezzatron\Typhoon\Test\ExceptionTest
 
   /**
    * @covers Ezzatron\Typhoon\Assertion\Exception\MissingAttributeException
+   * @group exceptions
+   * @group assertion
+   * @group core
    */
   public function testConstructor()
   {

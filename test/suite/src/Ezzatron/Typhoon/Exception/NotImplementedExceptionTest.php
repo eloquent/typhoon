@@ -41,6 +41,8 @@ class NotImplementedExceptionTest extends ExceptionTestCase
 
   /**
    * @covers Ezzatron\Typhoon\Exception\NotImplementedException::__construct
+   * @group exceptions
+   * @group core
    */
   public function testConstructor()
   {

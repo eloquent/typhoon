@@ -66,6 +66,10 @@ class TraversableTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
   /**
    * @covers Ezzatron\Typhoon\Type\TraversableType::__construct
    * @covers Ezzatron\Typhoon\Type\TraversableType::typhoonAttributes
+   * @group types
+   * @group type
+   * @group dynamic-type
+   * @group traversable-type
    */
   public function testConstruct()
   {
@@ -96,6 +100,10 @@ class TraversableTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
   /**
    * @covers Ezzatron\Typhoon\Type\TraversableType::attributeSignature
    * @covers Ezzatron\Typhoon\Type\TraversableType::configureAttributeSignature
+   * @group types
+   * @group type
+   * @group dynamic-type
+   * @group traversable-type
    */
   public function testAttributeSignature()
   {
@@ -120,6 +128,10 @@ class TraversableTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
 
   /**
    * @covers Ezzatron\Typhoon\Type\TraversableType::typhoonAttributes
+   * @group types
+   * @group type
+   * @group dynamic-type
+   * @group traversable-type
    */
   public function testSetTyphoonAttribute()
   {
@@ -132,6 +144,10 @@ class TraversableTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
 
   /**
    * @covers Ezzatron\Typhoon\Type\TraversableType::typhoonAttributes
+   * @group types
+   * @group type
+   * @group dynamic-type
+   * @group traversable-type
    */
   public function testSetTyphoonAttributeFailure()
   {
@@ -145,6 +161,10 @@ class TraversableTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
 
   /**
    * @covers Ezzatron\Typhoon\Type\TraversableType::primaryType
+   * @group types
+   * @group type
+   * @group dynamic-type
+   * @group traversable-type
    */
   public function testPrimaryType()
   {
@@ -168,6 +188,10 @@ class TraversableTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
 
   /**
    * @covers Ezzatron\Typhoon\Type\TraversableType::primaryType
+   * @group types
+   * @group type
+   * @group dynamic-type
+   * @group traversable-type
    */
   public function testPrimaryTypeWithInstanceOf()
   {
@@ -200,7 +224,10 @@ class TraversableTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
    * @covers Ezzatron\Typhoon\Type\TraversableType::checkPrimary
    * @covers Ezzatron\Typhoon\Type\TraversableType::hasAttributes
    * @dataProvider typeValues
-   * @group typhoon_types
+   * @group types
+   * @group type
+   * @group dynamic-type
+   * @group traversable-type
    */
   public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
 }

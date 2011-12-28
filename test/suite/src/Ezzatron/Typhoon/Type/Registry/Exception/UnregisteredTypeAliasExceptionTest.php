@@ -40,6 +40,10 @@ class UnregisteredTypeAliasExceptionTest extends \Ezzatron\Typhoon\Test\Exceptio
 
   /**
    * @covers Ezzatron\Typhoon\Type\Registry\Exception\UnregisteredTypeAliasException::__construct
+   * @group exceptions
+   * @group type
+   * @group type-registry
+   * @group core
    */
   public function testConstructor()
   {

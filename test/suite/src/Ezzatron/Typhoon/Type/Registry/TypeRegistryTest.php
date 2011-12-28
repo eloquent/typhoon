@@ -108,6 +108,10 @@ class TypeRegistryTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Type\Registry\TypeRegistry::__construct
+   * @group collection
+   * @group type
+   * @group type-registry
+   * @group core
    */
   public function testConstructor()
   {
@@ -121,6 +125,10 @@ class TypeRegistryTest extends \Ezzatron\Typhoon\Test\TestCase
   /**
    * @covers Ezzatron\Typhoon\Type\Registry\TypeRegistry::registerDefaults
    * @dataProvider defaultTypes
+   * @group collection
+   * @group type
+   * @group type-registry
+   * @group core
    */
   public function testRegisterDefaults($alias, Type $type, $is_alias = null)
   {
@@ -166,6 +174,10 @@ class TypeRegistryTest extends \Ezzatron\Typhoon\Test\TestCase
   /**
    * @covers Ezzatron\Typhoon\Type\Registry\TypeRegistry::alias
    * @covers Ezzatron\Typhoon\Type\Registry\TypeRegistry::aliases
+   * @group collection
+   * @group type
+   * @group type-registry
+   * @group core
    */
   public function testAlias()
   {
@@ -205,6 +217,10 @@ class TypeRegistryTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Type\Registry\TypeRegistry::alias
+   * @group collection
+   * @group type
+   * @group type-registry
+   * @group core
    */
   public function testAliasFailure()
   {
@@ -217,6 +233,10 @@ class TypeRegistryTest extends \Ezzatron\Typhoon\Test\TestCase
    * @covers Ezzatron\Typhoon\Type\Registry\TypeRegistry::get
    * @covers Ezzatron\Typhoon\Type\Registry\TypeRegistry::remove
    * @covers Ezzatron\Typhoon\Type\Registry\TypeRegistry::normaliseKey
+   * @group collection
+   * @group type
+   * @group type-registry
+   * @group core
    */
   public function testRegistry()
   {
@@ -245,6 +265,10 @@ class TypeRegistryTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Type\Registry\TypeRegistry::assertKeyExists
+   * @group collection
+   * @group type
+   * @group type-registry
+   * @group core
    */
   public function testOffsetGetFailure()
   {
@@ -257,6 +281,10 @@ class TypeRegistryTest extends \Ezzatron\Typhoon\Test\TestCase
    * @covers Ezzatron\Typhoon\Type\Registry\TypeRegistry::allowEmptyKeyForSet
    * @covers Ezzatron\Typhoon\Type\Registry\TypeRegistry::valueType
    * @dataProvider unexpectedArgumentData
+   * @group collection
+   * @group type
+   * @group type-registry
+   * @group core
    */
   public function testUnexpectedArgumentFailure($method, array $arguments)
   {

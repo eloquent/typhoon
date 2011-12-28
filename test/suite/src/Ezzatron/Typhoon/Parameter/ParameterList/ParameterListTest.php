@@ -40,6 +40,9 @@ class ParameterListTest extends \Ezzatron\Typhoon\Test\TestCase
   /**
    * @covers Ezzatron\Typhoon\Parameter\ParameterList\ParameterList::setVariableLength
    * @covers Ezzatron\Typhoon\Parameter\ParameterList\ParameterList::variableLength
+   * @group parameter
+   * @group collection
+   * @group core
    */
   public function testVariableLength()
   {
@@ -52,6 +55,9 @@ class ParameterListTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Parameter\ParameterList\ParameterList::assertKeyExists
+   * @group parameter
+   * @group collection
+   * @group core
    */
   public function testAssertKeyExists()
   {
@@ -61,6 +67,9 @@ class ParameterListTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Parameter\ParameterList\ParameterList::assertKeyExists
+   * @group parameter
+   * @group collection
+   * @group core
    */
   public function testAssertKeyExistsFailure()
   {
@@ -70,6 +79,9 @@ class ParameterListTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Parameter\ParameterList\ParameterList::remove
+   * @group parameter
+   * @group collection
+   * @group core
    */
   public function testRemoveFailure()
   {
@@ -82,6 +94,9 @@ class ParameterListTest extends \Ezzatron\Typhoon\Test\TestCase
    * @covers Ezzatron\Typhoon\Parameter\ParameterList\ParameterList::keySetType
    * @covers Ezzatron\Typhoon\Parameter\ParameterList\ParameterList::valueType
    * @dataProvider unexpectedTypeData
+   * @group parameter
+   * @group collection
+   * @group core
    */
   public function testUnexpectedArgumentFailure($method, array $arguments)
   {

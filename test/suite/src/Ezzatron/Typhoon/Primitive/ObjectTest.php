@@ -15,7 +15,8 @@ class ObjectTest extends \Ezzatron\Typhoon\Test\TestCase
 {
   /**
    * @covers Ezzatron\Typhoon\Primitive\Object::type
-   * @group typhoon_primitives
+   * @group primitives
+   * @group primitive
    */
   public function testType()
   {

@@ -15,7 +15,8 @@ class ScalarTest extends \Ezzatron\Typhoon\Test\TestCase
 {
   /**
    * @covers Ezzatron\Typhoon\Primitive\Scalar::type
-   * @group typhoon_primitives
+   * @group primitives
+   * @group primitive
    */
   public function testType()
   {

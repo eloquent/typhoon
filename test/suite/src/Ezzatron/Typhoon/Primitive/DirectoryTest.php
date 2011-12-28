@@ -15,7 +15,8 @@ class DirectoryTest extends \Ezzatron\Typhoon\Test\TestCase
 {
   /**
    * @covers Ezzatron\Typhoon\Primitive\Directory::type
-   * @group typhoon_primitives
+   * @group primitives
+   * @group primitive
    */
   public function testType()
   {

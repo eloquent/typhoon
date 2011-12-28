@@ -49,6 +49,9 @@ class StreamTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
 
   /**
    * @covers Ezzatron\Typhoon\Type\StreamType::typhoonCheck
+   * @group types
+   * @group type
+   * @group dynamic-type
    */
   public function testTyphoonCheckWithAttributes()
   {
@@ -177,6 +180,9 @@ class StreamTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
 
   /**
    * @covers Ezzatron\Typhoon\Type\StreamType::getMetaData
+   * @group types
+   * @group type
+   * @group dynamic-type
    */
   public function testGetMetaData()
   {
@@ -202,6 +208,9 @@ class StreamTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
 
   /**
    * @covers Ezzatron\Typhoon\Type\StreamType::isLocal
+   * @group types
+   * @group type
+   * @group dynamic-type
    */
   public function testIsLocal()
   {
@@ -216,6 +225,9 @@ class StreamTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
 
   /**
    * @covers Ezzatron\Typhoon\Type\StreamType::configureAttributeSignature
+   * @group types
+   * @group type
+   * @group dynamic-type
    */
   public function testConfigureAttributeSignature()
   {
@@ -242,7 +254,9 @@ class StreamTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
    * @covers Ezzatron\Typhoon\Type\StreamType::__construct
    * @covers Ezzatron\Typhoon\Type\StreamType::typhoonCheck
    * @dataProvider typeValues
-   * @group typhoon_types
+   * @group types
+   * @group type
+   * @group dynamic-type
    */
   public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
 }

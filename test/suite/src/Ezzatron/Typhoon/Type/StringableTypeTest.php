@@ -60,6 +60,9 @@ class StringableTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
   /**
    * @covers Ezzatron\Typhoon\Type\StringableType::typhoonCheck
    * @dataProvider typeValues
+   * @group types
+   * @group type
+   * @group dynamic-type
    */
   public function testStringConversion($expected, $value, $attributes = null)
   {
@@ -73,6 +76,9 @@ class StringableTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
 
   /**
    * @covers Ezzatron\Typhoon\Type\StringableType::configureAttributeSignature
+   * @group types
+   * @group type
+   * @group dynamic-type
    */
   public function testConfigureAttributeSignature()
   {
@@ -96,7 +102,9 @@ class StringableTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
    * @covers Ezzatron\Typhoon\Type\StringableType::__construct
    * @covers Ezzatron\Typhoon\Type\StringableType::typhoonCheck
    * @dataProvider typeValues
-   * @group typhoon_types
+   * @group types
+   * @group type
+   * @group dynamic-type
    */
   public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
 }

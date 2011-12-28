@@ -46,7 +46,9 @@ class MixedTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
   /**
    * @covers Ezzatron\Typhoon\Type\MixedType::typhoonCheck
    * @dataProvider typeValues
-   * @group typhoon_types
+   * @group types
+   * @group type
+   * @group core
    */
   public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
 }

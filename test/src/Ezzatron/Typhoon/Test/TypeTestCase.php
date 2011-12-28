@@ -37,7 +37,7 @@ abstract class TypeTestCase extends TestCase
 
   /**
    * @dataProvider typeValues
-   * @group typhoon_types
+   * @group types
    */
   public function testTyphoonCheck($expected, $value, $attributes = null)
   {

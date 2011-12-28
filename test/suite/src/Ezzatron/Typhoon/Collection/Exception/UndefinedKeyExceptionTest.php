@@ -40,6 +40,9 @@ class UndefinedKeyExceptionTest extends \Ezzatron\Typhoon\Test\ExceptionTestCase
 
   /**
    * @covers Ezzatron\Typhoon\Collection\Exception\UndefinedKeyException::__construct
+   * @group exceptions
+   * @group collection
+   * @group core
    */
   public function testConstructor()
   {

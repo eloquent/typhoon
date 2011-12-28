@@ -61,6 +61,9 @@ class ObjectTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
 
   /**
    * @covers Ezzatron\Typhoon\Type\ObjectType::configureAttributeSignature
+   * @group types
+   * @group type
+   * @group dynamic-type
    */
   public function testConfigureAttributeSignature()
   {
@@ -83,7 +86,9 @@ class ObjectTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
   /**
    * @covers Ezzatron\Typhoon\Type\ObjectType::typhoonCheck
    * @dataProvider typeValues
-   * @group typhoon_types
+   * @group types
+   * @group type
+   * @group dynamic-type
    */
   public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
 }

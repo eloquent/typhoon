@@ -41,6 +41,9 @@ class UnexpectedTypeExceptionTest extends \Ezzatron\Typhoon\Test\ExceptionTestCa
 
   /**
    * @covers Ezzatron\Typhoon\Assertion\Exception\UnexpectedTypeException
+   * @group exceptions
+   * @group assertion
+   * @group core
    */
   public function testConstructor()
   {

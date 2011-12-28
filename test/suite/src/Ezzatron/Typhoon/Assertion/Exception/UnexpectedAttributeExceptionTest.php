@@ -43,6 +43,9 @@ class UnexpectedAttributeExceptionTest extends \Ezzatron\Typhoon\Test\ExceptionT
 
   /**
    * @covers Ezzatron\Typhoon\Assertion\Exception\UnexpectedAttributeException
+   * @group exceptions
+   * @group assertion
+   * @group core
    */
   public function testConstructor()
   {

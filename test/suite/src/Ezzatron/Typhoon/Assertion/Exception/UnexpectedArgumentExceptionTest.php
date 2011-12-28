@@ -44,6 +44,9 @@ class UnexpectedArgumentExceptionTest extends \Ezzatron\Typhoon\Test\ExceptionTe
 
   /**
    * @covers Ezzatron\Typhoon\Assertion\Exception\UnexpectedArgumentException
+   * @group exceptions
+   * @group assertion
+   * @group core
    */
   public function testConstructor()
   {

@@ -15,7 +15,8 @@ class KeyTest extends \Ezzatron\Typhoon\Test\TestCase
 {
   /**
    * @covers Ezzatron\Typhoon\Primitive\Key::type
-   * @group typhoon_primitives
+   * @group primitives
+   * @group primitive
    */
   public function testType()
   {

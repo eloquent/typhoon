@@ -30,6 +30,8 @@ class ParameterTest extends \Ezzatron\Typhoon\Test\TestCase
    * @covers Ezzatron\Typhoon\Parameter\Parameter::__construct
    * @covers Ezzatron\Typhoon\Parameter\Parameter::setType
    * @covers Ezzatron\Typhoon\Parameter\Parameter::type
+   * @group parameter
+   * @group core
    */
   public function testType()
   {
@@ -43,6 +45,8 @@ class ParameterTest extends \Ezzatron\Typhoon\Test\TestCase
   /**
    * @covers Ezzatron\Typhoon\Parameter\Parameter::setOptional
    * @covers Ezzatron\Typhoon\Parameter\Parameter::optional
+   * @group parameter
+   * @group core
    */
   public function testOptional()
   {
@@ -56,6 +60,8 @@ class ParameterTest extends \Ezzatron\Typhoon\Test\TestCase
   /**
    * @covers Ezzatron\Typhoon\Parameter\Parameter::setName
    * @covers Ezzatron\Typhoon\Parameter\Parameter::name
+   * @group parameter
+   * @group core
    */
   public function testName()
   {
@@ -70,6 +76,8 @@ class ParameterTest extends \Ezzatron\Typhoon\Test\TestCase
   /**
    * @covers Ezzatron\Typhoon\Parameter\Parameter::setDescription
    * @covers Ezzatron\Typhoon\Parameter\Parameter::description
+   * @group parameter
+   * @group core
    */
   public function testDescription()
   {

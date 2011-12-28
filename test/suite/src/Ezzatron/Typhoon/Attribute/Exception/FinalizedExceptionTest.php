@@ -40,6 +40,9 @@ class FinalizedExceptionTest extends \Ezzatron\Typhoon\Test\ExceptionTestCase
 
   /**
    * @covers Ezzatron\Typhoon\Attribute\Exception\FinalizedException::__construct
+   * @group exceptions
+   * @group attribute
+   * @group core
    */
   public function testConstructor()
   {

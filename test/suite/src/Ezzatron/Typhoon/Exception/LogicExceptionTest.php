@@ -40,6 +40,8 @@ class LogicExceptionTest extends \Ezzatron\Typhoon\Test\ExceptionTestCase
   
   /**
    * @covers Ezzatron\Typhoon\Exception\LogicException::__construct
+   * @group exceptions
+   * @group core
    */
   public function testConstructor()
   {

@@ -52,6 +52,10 @@ class StringTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
 
   /**
    * @covers Ezzatron\Typhoon\Type\StringType::configureAttributeSignature
+   * @group types
+   * @group type
+   * @group dynamic-type
+   * @group core
    */
   public function testConfigureAttributeSignature()
   {
@@ -75,7 +79,10 @@ class StringTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
    * @covers Ezzatron\Typhoon\Type\StringType::__construct
    * @covers Ezzatron\Typhoon\Type\StringType::typhoonCheck
    * @dataProvider typeValues
-   * @group typhoon_types
+   * @group types
+   * @group type
+   * @group dynamic-type
+   * @group core
    */
   public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
 }

@@ -25,6 +25,9 @@ class OrTypeTest extends \Ezzatron\Typhoon\Test\TestCase
   /**
    * @covers Ezzatron\Typhoon\Type\Composite\BaseCompositeType::addTyphoonType
    * @covers Ezzatron\Typhoon\Type\Composite\OrType::typhoonCheck
+   * @group type
+   * @group composite-type
+   * @group core
    */
   public function testAddCheckFirstValid()
   {
@@ -41,6 +44,9 @@ class OrTypeTest extends \Ezzatron\Typhoon\Test\TestCase
   /**
    * @covers Ezzatron\Typhoon\Type\Composite\BaseCompositeType::addTyphoonType
    * @covers Ezzatron\Typhoon\Type\Composite\OrType::typhoonCheck
+   * @group type
+   * @group composite-type
+   * @group core
    */
   public function testAddCheckSecondValid()
   {
@@ -58,6 +64,9 @@ class OrTypeTest extends \Ezzatron\Typhoon\Test\TestCase
   /**
    * @covers Ezzatron\Typhoon\Type\Composite\BaseCompositeType::addTyphoonType
    * @covers Ezzatron\Typhoon\Type\Composite\OrType::typhoonCheck
+   * @group type
+   * @group composite-type
+   * @group core
    */
   public function testAddCheckNeitherValid()
   {
@@ -74,6 +83,9 @@ class OrTypeTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Type\Composite\OrType
+   * @group type
+   * @group composite-type
+   * @group core
    */
   public function testImplementsType()
   {

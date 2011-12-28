@@ -73,6 +73,9 @@ class CallbackWrapperTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
 
   /**
    * @covers Ezzatron\Typhoon\Type\CallbackWrapperType
+   * @group types
+   * @group type
+   * @group dynamic-type
    */
   public function testCallbackWrapperType()
   {
@@ -101,6 +104,9 @@ class CallbackWrapperTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
 
   /**
    * @covers Ezzatron\Typhoon\Type\CallbackWrapperType::configureAttributeSignature
+   * @group types
+   * @group type
+   * @group dynamic-type
    */
   public function testConfigureAttributeSignature()
   {
@@ -125,7 +131,9 @@ class CallbackWrapperTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
    * @covers Ezzatron\Typhoon\Type\CallbackWrapperType::typhoonCheck
    * @covers Ezzatron\Typhoon\Type\CallbackWrapperType::defaultCallback
    * @dataProvider typeValues
-   * @group typhoon_types
+   * @group types
+   * @group type
+   * @group dynamic-type
    */
   public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
 }

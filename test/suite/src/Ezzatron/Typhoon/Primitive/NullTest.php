@@ -15,7 +15,8 @@ class NullTest extends \Ezzatron\Typhoon\Test\TestCase
 {
   /**
    * @covers Ezzatron\Typhoon\Primitive\Null::type
-   * @group typhoon_primitives
+   * @group primitives
+   * @group primitive
    */
   public function testType()
   {

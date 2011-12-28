@@ -15,7 +15,9 @@ class IntegerTest extends \Ezzatron\Typhoon\Test\TestCase
 {
   /**
    * @covers Ezzatron\Typhoon\Primitive\Integer::type
-   * @group typhoon_primitives
+   * @group primitives
+   * @group primitive
+   * @group core
    */
   public function testType()
   {

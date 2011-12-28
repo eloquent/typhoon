@@ -46,6 +46,9 @@ class AttributeSignatureTest extends \Ezzatron\Typhoon\Test\TestCase
   /**
    * @covers Ezzatron\Typhoon\Attribute\AttributeSignature::setHolderName
    * @covers Ezzatron\Typhoon\Attribute\AttributeSignature::holderName
+   * @group attribute
+   * @group collection
+   * @group core
    */
   public function testHolderName()
   {
@@ -58,6 +61,9 @@ class AttributeSignatureTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Attribute\AttributeSignature
+   * @group attribute
+   * @group collection
+   * @group core
    */
   public function testSignature()
   {
@@ -81,6 +87,9 @@ class AttributeSignatureTest extends \Ezzatron\Typhoon\Test\TestCase
   /**
    * @covers Ezzatron\Typhoon\Attribute\AttributeSignature
    * @dataProvider typeFailureData
+   * @group attribute
+   * @group collection
+   * @group core
    */
   public function testTypeFailure($method)
   {

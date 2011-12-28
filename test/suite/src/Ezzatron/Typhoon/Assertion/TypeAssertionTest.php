@@ -27,6 +27,8 @@ class TypeAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
   /**
    * @covers Ezzatron\Typhoon\Assertion\TypeAssertion::__construct
    * @covers Ezzatron\Typhoon\Assertion\TypeAssertion::assert
+   * @group assertion
+   * @group core
    */
   public function testAssertion()
   {
@@ -47,6 +49,8 @@ class TypeAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
   /**
    * @covers Ezzatron\Typhoon\Assertion\TypeAssertion::__construct
    * @covers Ezzatron\Typhoon\Assertion\TypeAssertion::assert
+   * @group assertion
+   * @group core
    */
   public function testAssertionFailure()
   {
@@ -75,6 +79,8 @@ class TypeAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
   /**
    * @covers Ezzatron\Typhoon\Assertion\TypeAssertion::setType
    * @covers Ezzatron\Typhoon\Assertion\TypeAssertion::type
+   * @group assertion
+   * @group core
    */
   public function testType()
   {
@@ -89,6 +95,8 @@ class TypeAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
   /**
    * @covers Ezzatron\Typhoon\Assertion\TypeAssertion::setValue
    * @covers Ezzatron\Typhoon\Assertion\TypeAssertion::value
+   * @group assertion
+   * @group core
    */
   public function testValue()
   {
@@ -102,6 +110,8 @@ class TypeAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Assertion\TypeAssertion
+   * @group assertion
+   * @group core
    */
   public function testImplementsAssertion()
   {

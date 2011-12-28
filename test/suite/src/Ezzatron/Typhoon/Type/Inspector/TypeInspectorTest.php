@@ -180,6 +180,9 @@ class TypeInspectorTest extends \Ezzatron\Typhoon\Test\TestCase
   /**
    * @covers Ezzatron\Typhoon\Type\Inspector\TypeInspector
    * @dataProvider typeOfData
+   * @group type
+   * @group type-inspector
+   * @group core
    */
   public function testTypeOf($value, $expected, Integer $depth = null)
   {
@@ -189,6 +192,9 @@ class TypeInspectorTest extends \Ezzatron\Typhoon\Test\TestCase
   /**
    * @covers Ezzatron\Typhoon\Type\Inspector\TypeInspector
    * @dataProvider typeOfTraversableData
+   * @group type
+   * @group type-inspector
+   * @group core
    */
   public function testTypeOfTraversable(array $values, $expectedKeyType, $expectedSubType, Integer $depth = null)
   {

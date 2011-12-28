@@ -41,6 +41,9 @@ class UnsupportedAttributeExceptionTest extends \Ezzatron\Typhoon\Test\Exception
 
   /**
    * @covers Ezzatron\Typhoon\Assertion\Exception\UnsupportedAttributeException
+   * @group exceptions
+   * @group assertion
+   * @group core
    */
   public function testConstructor()
   {

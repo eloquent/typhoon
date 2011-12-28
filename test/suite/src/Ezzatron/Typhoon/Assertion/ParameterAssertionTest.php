@@ -31,6 +31,8 @@ class ParameterAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Assertion\ParameterAssertion::assert
+   * @group assertion
+   * @group core
    */
   public function testAssertUseTypeAssertion()
   {
@@ -52,6 +54,8 @@ class ParameterAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Assertion\ParameterAssertion::assert
+   * @group assertion
+   * @group core
    */
   public function testAssertFailureType()
   {
@@ -72,6 +76,8 @@ class ParameterAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
   /**
    * @covers Ezzatron\Typhoon\Assertion\ParameterAssertion::setParameter
    * @covers Ezzatron\Typhoon\Assertion\ParameterAssertion::parameter
+   * @group assertion
+   * @group core
    */
   public function testParameter()
   {
@@ -85,6 +91,8 @@ class ParameterAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
   /**
    * @covers Ezzatron\Typhoon\Assertion\ParameterAssertion::setValue
    * @covers Ezzatron\Typhoon\Assertion\ParameterAssertion::value
+   * @group assertion
+   * @group core
    */
   public function testValue()
   {
@@ -99,6 +107,8 @@ class ParameterAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
   /**
    * @covers Ezzatron\Typhoon\Assertion\ParameterAssertion::setIndex
    * @covers Ezzatron\Typhoon\Assertion\ParameterAssertion::index
+   * @group assertion
+   * @group core
    */
   public function testIndex()
   {
@@ -111,6 +121,8 @@ class ParameterAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Assertion\ParameterAssertion::typeAssertion
+   * @group assertion
+   * @group core
    */
   public function testTypeAssertion()
   {
@@ -137,6 +149,8 @@ class ParameterAssertionTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Assertion\ParameterAssertion
+   * @group assertion
+   * @group core
    */
   public function testImplementsAssertion()
   {

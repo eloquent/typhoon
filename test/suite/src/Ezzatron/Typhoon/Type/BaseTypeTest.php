@@ -18,6 +18,8 @@ class BaseTypeTest extends \Ezzatron\Typhoon\Test\TestCase
 {
   /**
    * @covers Ezzatron\Typhoon\Type\BaseType::equalsTyphoonType
+   * @group type
+   * @group core
    */
   public function testEqualsTyphoonType()
   {

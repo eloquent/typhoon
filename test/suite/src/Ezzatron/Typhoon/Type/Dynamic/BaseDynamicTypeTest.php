@@ -30,6 +30,9 @@ class BaseDynamicTypeTest extends \Ezzatron\Typhoon\Test\TestCase
    * @covers Ezzatron\Typhoon\Type\Dynamic\BaseDynamicType::__construct
    * @covers Ezzatron\Typhoon\Type\Dynamic\BaseDynamicType::typhoonAttributes
    * @covers Ezzatron\Typhoon\Type\Dynamic\BaseDynamicType::hasAttributes
+   * @group type
+   * @group dynamic-type
+   * @group core
    */
   public function testConstruct()
   {
@@ -75,6 +78,9 @@ class BaseDynamicTypeTest extends \Ezzatron\Typhoon\Test\TestCase
   /**
    * @covers Ezzatron\Typhoon\Type\Dynamic\BaseDynamicType::attributeSignature
    * @covers Ezzatron\Typhoon\Type\Dynamic\BaseDynamicType::configureAttributeSignature
+   * @group type
+   * @group dynamic-type
+   * @group core
    */
   public function testAttributeSignature()
   {

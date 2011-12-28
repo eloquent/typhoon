@@ -40,6 +40,9 @@ class UndefinedParameterExceptionTest extends \Ezzatron\Typhoon\Test\ExceptionTe
 
   /**
    * @covers Ezzatron\Typhoon\Parameter\ParameterList\Exception\UndefinedParameterException::__construct
+   * @group exceptions
+   * @group parameter
+   * @group core
    */
   public function testConstructor()
   {

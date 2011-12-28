@@ -28,6 +28,9 @@ class TypeRendererTest extends \Ezzatron\Typhoon\Test\TestCase
   /**
    * @covers Ezzatron\Typhoon\Type\Renderer\TypeRenderer::setTypeRegistry
    * @covers Ezzatron\Typhoon\Type\Renderer\TypeRenderer::typeRegistry
+   * @group type
+   * @group type-renderer
+   * @group core
    */
   public function testTypeRegistry()
   {

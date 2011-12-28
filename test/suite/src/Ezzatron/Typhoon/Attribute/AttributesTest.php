@@ -43,6 +43,9 @@ class AttributesTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Attribute\Attributes::adapt
+   * @group attribute
+   * @group collection
+   * @group core
    */
   public function testAdapt()
   {
@@ -60,6 +63,9 @@ class AttributesTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Attribute\Attributes::adapt
+   * @group attribute
+   * @group collection
+   * @group core
    */
   public function testAdaptFailure()
   {
@@ -71,6 +77,9 @@ class AttributesTest extends \Ezzatron\Typhoon\Test\TestCase
    * @covers Ezzatron\Typhoon\Attribute\Attributes::setSignature
    * @covers Ezzatron\Typhoon\Attribute\Attributes::signature
    * @covers Ezzatron\Typhoon\Attribute\Attributes::assert
+   * @group attribute
+   * @group collection
+   * @group core
    */
   public function testSignature()
   {
@@ -86,6 +95,9 @@ class AttributesTest extends \Ezzatron\Typhoon\Test\TestCase
    * @covers Ezzatron\Typhoon\Attribute\Attributes::signature
    * @covers Ezzatron\Typhoon\Attribute\Attributes::assert
    * @covers Ezzatron\Typhoon\Attribute\Attributes::assertValue
+   * @group attribute
+   * @group collection
+   * @group core
    */
   public function testSignatureFailureType()
   {
@@ -99,6 +111,9 @@ class AttributesTest extends \Ezzatron\Typhoon\Test\TestCase
    * @covers Ezzatron\Typhoon\Attribute\Attributes::setSignature
    * @covers Ezzatron\Typhoon\Attribute\Attributes::signature
    * @covers Ezzatron\Typhoon\Attribute\Attributes::assert
+   * @group attribute
+   * @group collection
+   * @group core
    */
   public function testSignatureFailureRequired()
   {
@@ -112,6 +127,9 @@ class AttributesTest extends \Ezzatron\Typhoon\Test\TestCase
    * @covers Ezzatron\Typhoon\Attribute\Attributes::finalize
    * @covers Ezzatron\Typhoon\Attribute\Attributes::finalized
    * @covers Ezzatron\Typhoon\Attribute\Attributes::__clone
+   * @group attribute
+   * @group collection
+   * @group core
    */
   public function testFinalized()
   {
@@ -128,6 +146,9 @@ class AttributesTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Attribute\Attributes::set
+   * @group attribute
+   * @group collection
+   * @group core
    */
   public function testFinalizedFailureSet()
   {
@@ -139,6 +160,9 @@ class AttributesTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Attribute\Attributes::remove
+   * @group attribute
+   * @group collection
+   * @group core
    */
   public function testFinalizedFailureRemove()
   {
@@ -150,6 +174,9 @@ class AttributesTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Attribute\Attributes::remove
+   * @group attribute
+   * @group collection
+   * @group core
    */
   public function testRemove()
   {
@@ -179,6 +206,9 @@ class AttributesTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Attribute\Attributes::remove
+   * @group attribute
+   * @group collection
+   * @group core
    */
   public function testRemoveFailureRequired()
   {
@@ -191,6 +221,9 @@ class AttributesTest extends \Ezzatron\Typhoon\Test\TestCase
 
   /**
    * @covers Ezzatron\Typhoon\Attribute\Attributes
+   * @group attribute
+   * @group collection
+   * @group core
    */
   public function testAttributes()
   {
@@ -207,6 +240,9 @@ class AttributesTest extends \Ezzatron\Typhoon\Test\TestCase
   /**
    * @covers Ezzatron\Typhoon\Attribute\Attributes
    * @dataProvider unsupportedAttributeData
+   * @group attribute
+   * @group collection
+   * @group core
    */
   public function testUnsupportedAttribute($method)
   {
