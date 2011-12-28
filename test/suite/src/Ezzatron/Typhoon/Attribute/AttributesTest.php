@@ -109,6 +109,46 @@ class AttributesTest extends \Ezzatron\Typhoon\Test\TestCase
   }
 
   /**
+   * @covers Ezzatron\Typhoon\Attribute\Attributes::finalize
+   * @covers Ezzatron\Typhoon\Attribute\Attributes::finalized
+   * @covers Ezzatron\Typhoon\Attribute\Attributes::__clone
+   */
+  public function testFinalized()
+  {
+    $this->assertFalse($this->_attributes->finalized());
+
+    $this->_attributes->finalize();
+
+    $this->assertTrue($this->_attributes->finalized());
+
+    $this->_attributes = clone $this->_attributes;
+
+    $this->assertFalse($this->_attributes->finalized());
+  }
+
+  /**
+   * @covers Ezzatron\Typhoon\Attribute\Attributes::set
+   */
+  public function testFinalizedFailureSet()
+  {
+    $this->_attributes->finalize();
+
+    $this->setExpectedException('Ezzatron\Typhoon\Attribute\Exception\FinalizedException');
+    $this->_attributes->set('foo', 'bar');
+  }
+
+  /**
+   * @covers Ezzatron\Typhoon\Attribute\Attributes::remove
+   */
+  public function testFinalizedFailureRemove()
+  {
+    $this->_attributes->finalize();
+
+    $this->setExpectedException('Ezzatron\Typhoon\Attribute\Exception\FinalizedException');
+    $this->_attributes->remove('foo');
+  }
+
+  /**
    * @covers Ezzatron\Typhoon\Attribute\Attributes::remove
    */
   public function testRemove()

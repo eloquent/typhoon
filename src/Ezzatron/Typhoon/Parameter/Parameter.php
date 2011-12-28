@@ -40,7 +40,7 @@ class Parameter
   }
 
   /**
-   * @param Boolean $type
+   * @param Boolean $optional
    */
   public function setOptional(Boolean $optional)
   {

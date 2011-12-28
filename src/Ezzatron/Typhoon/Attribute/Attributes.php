@@ -66,7 +66,7 @@ class Attributes extends Collection
   }
 
   /**
-   * @return AttributeSignature
+   * @return AttributeSignature|null
    */
   public function signature()
   {
@@ -78,11 +78,47 @@ class Attributes extends Collection
     return clone $this->signature;
   }
 
+  public function finalize()
+  {
+    $this->finalized = true;
+  }
+
+  /**
+   * @return boolean
+   */
+  public function finalized()
+  {
+    return $this->finalized;
+  }
+  
+  /**
+   * @param integer|string $key
+   * @param mixed $value
+   */
+  public function set($key, $value)
+  {
+    if ($this->finalized)
+    {
+      throw new Exception\FinalizedException(
+        new String($key)
+      );
+    }
+
+    parent::set($key, $value);
+  }
+
   /**
    * @param integer|string $key
    */
   public function remove($key)
   {
+    if ($this->finalized)
+    {
+      throw new Exception\FinalizedException(
+        new String($key)
+      );
+    }
+
     $this->assertKeyExists($key);
     
     if ($this->signature && $this->signature->isRequired($key))
@@ -104,6 +140,11 @@ class Attributes extends Collection
     }
 
     parent::remove($key);
+  }
+
+  public function __clone()
+  {
+    $this->finalized = false;
   }
 
   /**
@@ -229,4 +270,9 @@ class Attributes extends Collection
    * @var AttributeSignature
    */
   protected $signature;
+
+  /**
+   * @var boolean
+   */
+  protected $finalized = false;
 }
