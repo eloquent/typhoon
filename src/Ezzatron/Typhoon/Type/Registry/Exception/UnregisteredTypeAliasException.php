@@ -11,9 +11,11 @@
 
 namespace Ezzatron\Typhoon\Type\Registry\Exception;
 
+use Ezzatron\Typhoon\Exception\LogicException;
+use Ezzatron\Typhoon\Exception\UndefinedKeyException;
 use Ezzatron\Typhoon\Primitive\String;
 
-class UnregisteredTypeAliasException extends Exception
+final class UnregisteredTypeAliasException extends LogicException implements UndefinedKeyException
 {
   /**
    * @param String $alias

@@ -11,9 +11,11 @@
 
 namespace Ezzatron\Typhoon\Collection\Exception;
 
+use Ezzatron\Typhoon\Exception\LogicException;
+use Ezzatron\Typhoon\Exception\UndefinedKeyException as UndefinedKeyExceptionInterface;
 use Ezzatron\Typhoon\Primitive\String;
 
-class UndefinedKeyException extends Exception
+final class UndefinedKeyException extends LogicException implements UndefinedKeyExceptionInterface
 {
   /**
    * @param String $key

@@ -13,16 +13,14 @@ namespace Ezzatron\Typhoon\Exception;
 
 use Ezzatron\Typhoon\Primitive\String;
 
-final class NotImplementedException extends LogicException
+abstract class LogicException extends \LogicException implements Exception
 {
   /**
-   * @param String $feature
+   * @param String $message
    * @param \Exception $previous
    */
-  public function __construct(String $feature, \Exception $previous = null)
+  public function __construct(String $message, \Exception $previous = null)
   {
-    $message = new String($feature.' is not implemented.');
-
-    parent::__construct($message, $previous);
+    parent::__construct((string)$message, 0, $previous);
   }
 }

@@ -13,14 +13,14 @@ namespace Ezzatron\Typhoon\Exception;
 
 use Ezzatron\Typhoon\Primitive\String;
 
-class ExceptionTest extends \Ezzatron\Typhoon\Test\ExceptionTestCase
+class LogicExceptionTest extends \Ezzatron\Typhoon\Test\ExceptionTestCase
 {
   /**
    * @return string
    */
   protected function exceptionClass()
   {
-    return __NAMESPACE__.'\Exception';
+    return __NAMESPACE__.'\LogicException';
   }
 
   /**
@@ -39,7 +39,7 @@ class ExceptionTest extends \Ezzatron\Typhoon\Test\ExceptionTestCase
   }
   
   /**
-   * @covers Ezzatron\Typhoon\Exception\Exception::__construct
+   * @covers Ezzatron\Typhoon\Exception\LogicException::__construct
    */
   public function testConstructor()
   {

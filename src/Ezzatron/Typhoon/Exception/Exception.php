@@ -11,16 +11,4 @@
 
 namespace Ezzatron\Typhoon\Exception;
 
-use Ezzatron\Typhoon\Primitive\String;
-
-abstract class Exception extends \Exception
-{
-  /**
-   * @param String $message
-   * @param \Exception $previous
-   */
-  public function __construct(String $message, \Exception $previous = null)
-  {
-    parent::__construct((string)$message, 0, $previous);
-  }
-}
+interface Exception {}

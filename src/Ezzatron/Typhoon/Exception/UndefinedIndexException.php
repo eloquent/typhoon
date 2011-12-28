@@ -9,6 +9,6 @@
  * file that was distributed with this source code.
  */
 
-namespace Ezzatron\Typhoon\Collection\Exception;
+namespace Ezzatron\Typhoon\Exception;
 
-abstract class Exception extends \Ezzatron\Typhoon\Exception\Exception {}
+interface UndefinedIndexException extends Exception {}

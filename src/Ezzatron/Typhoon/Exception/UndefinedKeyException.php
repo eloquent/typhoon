@@ -9,6 +9,6 @@
  * file that was distributed with this source code.
  */
 
-namespace Ezzatron\Typhoon\Assertion\Exception;
+namespace Ezzatron\Typhoon\Exception;
 
-abstract class Exception extends \Ezzatron\Typhoon\Exception\Exception {}
+interface UndefinedKeyException extends Exception {}

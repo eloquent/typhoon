@@ -11,9 +11,11 @@
 
 namespace Ezzatron\Typhoon\Assertion\Exception;
 
+use Ezzatron\Typhoon\Exception\LogicException;
+use Ezzatron\Typhoon\Exception\UnexpectedInputException;
 use Ezzatron\Typhoon\Primitive\String;
 
-class MissingAttributeException extends Exception
+final class MissingAttributeException extends LogicException implements UnexpectedInputException
 {
   /**
    * @param String $attributeName

@@ -11,9 +11,12 @@
 
 namespace Ezzatron\Typhoon\Assertion\Exception;
 
+use Ezzatron\Typhoon\Exception\LogicException;
+use Ezzatron\Typhoon\Exception\UndefinedKeyException;
+use Ezzatron\Typhoon\Exception\UnexpectedInputException;
 use Ezzatron\Typhoon\Primitive\String;
 
-class UnsupportedAttributeException extends Exception
+final class UnsupportedAttributeException extends LogicException implements UndefinedKeyException, UnexpectedInputException
 {
   /**
    * @param String $attributeName

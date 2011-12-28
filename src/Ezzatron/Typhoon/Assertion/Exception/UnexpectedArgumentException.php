@@ -11,10 +11,12 @@
 
 namespace Ezzatron\Typhoon\Assertion\Exception;
 
+use Ezzatron\Typhoon\Exception\LogicException;
+use Ezzatron\Typhoon\Exception\UnexpectedInputException;
 use Ezzatron\Typhoon\Primitive\Integer;
 use Ezzatron\Typhoon\Primitive\String;
 
-class UnexpectedArgumentException extends Exception
+final class UnexpectedArgumentException extends LogicException implements UnexpectedInputException
 {
   /**
    * @param String $typeName
