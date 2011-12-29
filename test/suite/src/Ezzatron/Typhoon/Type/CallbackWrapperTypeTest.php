@@ -14,8 +14,6 @@ namespace Ezzatron\Typhoon\Type;
 use stdClass;
 use Ezzatron\Typhoon\Attribute\AttributeSignature;
 use Ezzatron\Typhoon\Primitive\String;
-use Ezzatron\Typhoon\Type\CallbackType;
-use Ezzatron\Typhoon\Type\ArrayType;
 
 class CallbackWrapperTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
 {
@@ -46,7 +44,6 @@ class CallbackWrapperTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
     );
 
     return array(
-      // object of any class
       array(false, null),                      // #0: null
       array(false, true),                      // #1: boolean
       array(false, 'string'),                  // #2: string
@@ -57,7 +54,6 @@ class CallbackWrapperTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
       array(false, function(){}),              // #7: closure
       array(false, $this->resourceFixture()),  // #8: resource
 
-      // object of a specific class
       array(true,  null,  $attributesPass),  // #9: callback pass
       array(false, null,  $attributesFail),  // #10: callback fail
     );
@@ -116,13 +112,8 @@ class CallbackWrapperTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
     $expected[CallbackWrapperType::ATTRIBUTE_ARGUMENTS] = new ArrayType;
 
     $type = new CallbackWrapperType;
-    $actual = $type->typhoonAttributes()->signature();
 
-    $this->assertEquals($expected, $actual);
-
-    $type = new CallbackWrapperType;
-
-    $this->assertEquals($actual, $type->typhoonAttributes()->signature());
+    $this->assertEquals($expected, $type->typhoonAttributes()->signature());
   }
 
   // methods below must be manually overridden to implement @covers

@@ -41,7 +41,7 @@ abstract class TypeTestCase extends TestCase
    */
   public function testTyphoonCheck($expected, $value, $attributes = null)
   {
-    $this->assertEquals($expected, $this->typeFixture($attributes)->typhoonCheck($value));
+    $this->assertSame($expected, $this->typeFixture($attributes)->typhoonCheck($value));
   }
 
   /**

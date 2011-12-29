@@ -22,13 +22,15 @@ class CallbackWrapperType extends Dynamic\BaseDynamicType
    */
   public function typhoonCheck($value)
   {
+    $attributes = $this->typhoonAttributes();
+
     $arguments = array_merge(
       array($value)
-      , $this->typhoonAttributes()->get(self::ATTRIBUTE_ARGUMENTS, array())
+      , $attributes->get(self::ATTRIBUTE_ARGUMENTS, array())
     );
 
     return call_user_func_array(
-      $this->typhoonAttributes()->get(self::ATTRIBUTE_CALLBACK, array($this, 'defaultCallback'))
+      $attributes->get(self::ATTRIBUTE_CALLBACK, array($this, 'defaultCallback'))
       , $arguments
     );
   }
