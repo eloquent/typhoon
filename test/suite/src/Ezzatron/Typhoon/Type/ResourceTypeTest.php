@@ -23,7 +23,14 @@ class ResourceTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
   public function typeValues()
   {
     $streamAttributes = array(
-      ResourceType::ATTRIBUTE_TYPE => 'stream',
+      ResourceType::ATTRIBUTE_TYPE => ResourceType::TYPE_STREAM,
+    );
+
+    $streamOrSocketAttributes = array(
+      ResourceType::ATTRIBUTE_TYPE => array(
+        ResourceType::TYPE_STREAM,
+        ResourceType::TYPE_SOCKET,
+      ),
     );
 
     return array(
@@ -45,6 +52,10 @@ class ResourceTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
       array(true,  $this->streamFixture(),     $streamAttributes),  // #14: resource of type stream success
       array(true,  $this->fileFixture(),       $streamAttributes),  // #15: resource of type stream success (file)
       array(true,  $this->directoryFixture(),  $streamAttributes),  // #16: resource of type stream success (directory)
+
+      array(false, $this->resourceFixture(),   $streamOrSocketAttributes),  // #17: resource of type stream or socket failure
+      array(true,  $this->streamFixture(),     $streamOrSocketAttributes),  // #18: resource of type stream or socket success
+      array(true,  $this->socketFixture(),     $streamOrSocketAttributes),  // #19: resource of type stream or socket success
     );
   }
 
@@ -64,9 +75,15 @@ class ResourceTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
    */
   public function testConfigureAttributeSignature()
   {
+    $typeArrayType = new ArrayType;
+    $typeArrayType->setTyphoonSubType(new StringType);
+    $typeType = new Composite\OrType;
+    $typeType->addTyphoonType(new StringType);
+    $typeType->addTyphoonType($typeArrayType);
+
     $expected = new AttributeSignature;
     $expected->setHolderName(new String($this->typeClass()));
-    $expected[ResourceType::ATTRIBUTE_TYPE] = new StringType;
+    $expected[ResourceType::ATTRIBUTE_TYPE] = $typeType;
 
     $type = new ResourceType;
     $actual = $type->typhoonAttributes()->signature();

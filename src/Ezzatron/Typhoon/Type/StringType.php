@@ -46,7 +46,7 @@ class StringType extends Dynamic\BaseDynamicType
    */
   static protected function configureAttributeSignature(AttributeSignature $attributeSignature, Dynamic\BaseDynamicType $type)
   {
-    $attributeSignature[self::ATTRIBUTE_ENCODING] = new StringType;
+    $attributeSignature->set(self::ATTRIBUTE_ENCODING, new StringType);
   }
 
   const ATTRIBUTE_ENCODING = 'encoding';

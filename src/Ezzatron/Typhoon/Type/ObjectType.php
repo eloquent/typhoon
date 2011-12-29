@@ -41,7 +41,7 @@ class ObjectType extends Dynamic\BaseDynamicType
    */
   static protected function configureAttributeSignature(AttributeSignature $attributeSignature, Dynamic\BaseDynamicType $type)
   {
-    $attributeSignature[self::ATTRIBUTE_INSTANCE_OF] = new StringType;
+    $attributeSignature->set(self::ATTRIBUTE_INSTANCE_OF, new StringType);
   }
 
   const ATTRIBUTE_INSTANCE_OF = 'instanceOf';

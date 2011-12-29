@@ -29,10 +29,24 @@ class ResourceType extends Dynamic\BaseDynamicType
 
     if (
       $this->hasAttributes()
-      && $type = $this->typhoonAttributes()->get(self::ATTRIBUTE_TYPE, null)
+      && $types = $this->typhoonAttributes()->get(self::ATTRIBUTE_TYPE, array())
     )
     {
-      return get_resource_type($value) == $type;
+      $type = get_resource_type($value);
+
+      if (!is_array($types))
+      {
+        $types = array($types);
+      }
+      foreach ($types as $thisType)
+      {
+        if ($thisType == $type)
+        {
+          return true;
+        }
+      }
+
+      return false;
     }
 
     return true;
@@ -46,7 +60,12 @@ class ResourceType extends Dynamic\BaseDynamicType
    */
   static protected function configureAttributeSignature(AttributeSignature $attributeSignature, Dynamic\BaseDynamicType $type)
   {
-    $attributeSignature[self::ATTRIBUTE_TYPE] = new StringType;
+    $typeArrayType = new ArrayType;
+    $typeArrayType->setTyphoonSubType(new StringType);
+    $typeType = new Composite\OrType;
+    $typeType->addTyphoonType(new StringType);
+    $typeType->addTyphoonType($typeArrayType);
+    $attributeSignature->set(self::ATTRIBUTE_TYPE, $typeType);
   }
 
   const ATTRIBUTE_TYPE = 'type';

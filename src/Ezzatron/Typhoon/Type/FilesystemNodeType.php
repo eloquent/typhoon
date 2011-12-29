@@ -44,7 +44,7 @@ class FilesystemNodeType extends Dynamic\BaseDynamicType
    */
   static protected function configureAttributeSignature(AttributeSignature $attributeSignature, Dynamic\BaseDynamicType $type)
   {
-    $attributeSignature[self::ATTRIBUTE_TYPE] = new StringType;
+    $attributeSignature->set(self::ATTRIBUTE_TYPE, new StringType);
   }
 
   const ATTRIBUTE_TYPE = 'type';

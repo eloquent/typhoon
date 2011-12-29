@@ -23,6 +23,17 @@ class StreamTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
    */
   public function typeValues()
   {
+    $stdioAttributes = array(
+      StreamType::ATTRIBUTE_TYPE => StreamType::TYPE_STDIO,
+    );
+
+    $stdioOrDirAttributes = array(
+      StreamType::ATTRIBUTE_TYPE => array(
+        StreamType::TYPE_STDIO,
+        StreamType::TYPE_DIR,
+      ),
+    );
+
     return array(
       array(false, null),                      // #0: null
       array(false, true),                      // #1: boolean
@@ -37,6 +48,14 @@ class StreamTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
       array(true,  $this->streamFixture()),    // #10: stream
       array(true,  $this->fileFixture()),      // #11: file
       array(true,  $this->directoryFixture()), // #12: directory
+
+      array(false, $this->streamFixture(),    $stdioAttributes), // #13: stream of type STDIO failure
+      array(true,  $this->fileFixture(),      $stdioAttributes), // #14: stream of type STDIO success
+      array(false, $this->directoryFixture(), $stdioAttributes), // #15: stream of type STDIO failure
+
+      array(false, $this->streamFixture(),    $stdioOrDirAttributes), // #13: stream of type STDIO or dir failure
+      array(true,  $this->fileFixture(),      $stdioOrDirAttributes), // #14: stream of type STDIO or dir success
+      array(true,  $this->directoryFixture(), $stdioOrDirAttributes), // #15: stream of type STDIO or dir success
     );
   }
 
@@ -232,11 +251,17 @@ class StreamTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
    */
   public function testConfigureAttributeSignature()
   {
+    $typeArrayType = new ArrayType;
+    $typeArrayType->setTyphoonSubType(new StringType);
+    $typeType = new Composite\OrType;
+    $typeType->addTyphoonType(new StringType);
+    $typeType->addTyphoonType($typeArrayType);
+
     $expected = new AttributeSignature;
     $expected->setHolderName(new String($this->typeClass()));
     $expected[StreamType::ATTRIBUTE_LOCAL] = new BooleanType;
     $expected[StreamType::ATTRIBUTE_MODE] = new StringType;
-    $expected[StreamType::ATTRIBUTE_TYPE] = new StringType;
+    $expected[StreamType::ATTRIBUTE_TYPE] = $typeType;
     $expected[StreamType::ATTRIBUTE_WRAPPER] = new StringType;
 
     $type = new StreamType;

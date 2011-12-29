@@ -75,7 +75,7 @@ class TraversableType extends Traversable\BaseTraversableType implements Dynamic
    */
   static protected function configureAttributeSignature(AttributeSignature $attributeSignature, TraversableType $type)
   {
-    $attributeSignature[self::ATTRIBUTE_INSTANCE_OF] = new StringType;
+    $attributeSignature->set(self::ATTRIBUTE_INSTANCE_OF, new StringType);
   }
   
   /**

@@ -52,10 +52,10 @@ class StreamType extends Dynamic\BaseDynamicType
     }
 
     $mode = $this->typhoonAttributes()->get(self::ATTRIBUTE_MODE, null);
-    $type = $this->typhoonAttributes()->get(self::ATTRIBUTE_TYPE, null);
+    $types = $this->typhoonAttributes()->get(self::ATTRIBUTE_TYPE, array());
     $wrapper = $this->typhoonAttributes()->get(self::ATTRIBUTE_WRAPPER, null);
 
-    if ($mode || $type || $wrapper)
+    if ($mode || $types || $wrapper)
     {
       $metaData = $this->getMetaData($value);
 
@@ -64,9 +64,23 @@ class StreamType extends Dynamic\BaseDynamicType
       {
         $valid = $mode == $metaData[self::META_DATA_MODE];
       }
-      if ($valid && $type)
+      if ($valid && $types)
       {
-        $valid = $type == $metaData[self::META_DATA_TYPE];
+        $valid = false;
+
+        if (!is_array($types))
+        {
+          $types = array($types);
+        }
+        foreach ($types as $type)
+        {
+          if ($type == $metaData[self::META_DATA_TYPE])
+          {
+            $valid = true;
+            
+            break;
+          }
+        }
       }
       if ($valid && $wrapper)
       {
@@ -107,10 +121,17 @@ class StreamType extends Dynamic\BaseDynamicType
    */
   static protected function configureAttributeSignature(AttributeSignature $attributeSignature, Dynamic\BaseDynamicType $type)
   {
-    $attributeSignature[self::ATTRIBUTE_LOCAL] = new BooleanType;
-    $attributeSignature[self::ATTRIBUTE_MODE] = new StringType;
-    $attributeSignature[self::ATTRIBUTE_TYPE] = new StringType;
-    $attributeSignature[self::ATTRIBUTE_WRAPPER] = new StringType;
+    $attributeSignature->set(self::ATTRIBUTE_LOCAL, new BooleanType);
+    $attributeSignature->set(self::ATTRIBUTE_MODE, new StringType);
+
+    $typeArrayType = new ArrayType;
+    $typeArrayType->setTyphoonSubType(new StringType);
+    $typeType = new Composite\OrType;
+    $typeType->addTyphoonType(new StringType);
+    $typeType->addTyphoonType($typeArrayType);
+    $attributeSignature->set(self::ATTRIBUTE_TYPE, $typeType);
+    
+    $attributeSignature->set(self::ATTRIBUTE_WRAPPER, new StringType);
   }
 
   const ATTRIBUTE_LOCAL = 'local';
