@@ -51,6 +51,7 @@ class ResourceType extends Dynamic\BaseDynamicType
 
   const ATTRIBUTE_TYPE = 'type';
 
+  const TYPE_SOCKET = 'Socket';
   const TYPE_STREAM = 'stream';
   const TYPE_UNKNOWN = 'Unknown';
 }

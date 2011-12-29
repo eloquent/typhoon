@@ -26,6 +26,11 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
   protected function tearDown()
   {
+    if ($this->_socket)
+    {
+      @socket_close($this->_socket);
+      $this->_socket = null;
+    }
     if ($this->_stream)
     {
       @fclose($this->_stream);
@@ -54,6 +59,19 @@ class TestCase extends \PHPUnit_Framework_TestCase
     }
 
     return $this->_resource;
+  }
+
+  /**
+   * @return resource
+   */
+  protected function socketFixture()
+  {
+    if (null === $this->_socket)
+    {
+      $this->_socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+    }
+
+    return $this->_socket;
   }
 
   /**
@@ -129,6 +147,11 @@ class TestCase extends \PHPUnit_Framework_TestCase
    * @var resource
    */
   private $_resource;
+
+  /**
+   * @var resource
+   */
+  private $_socket;
 
   /**
    * @var resource

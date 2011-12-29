@@ -33,9 +33,10 @@ class StreamTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
       array(false, new stdClass),              // #6: object
       array(false, function(){}),              // #7: closure
       array(false, $this->resourceFixture()),  // #8: resource
-      array(true,  $this->streamFixture()),    // #9: stream
-      array(true,  $this->fileFixture()),      // #10: file
-      array(true,  $this->directoryFixture()), // #11: directory
+      array(false, $this->socketFixture()),    // #9: socket
+      array(true,  $this->streamFixture()),    // #10: stream
+      array(true,  $this->fileFixture()),      // #11: file
+      array(true,  $this->directoryFixture()), // #12: directory
     );
   }
 
