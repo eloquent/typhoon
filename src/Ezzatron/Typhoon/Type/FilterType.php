@@ -38,14 +38,14 @@ class FilterType extends Dynamic\BaseDynamicType
    */
   static protected function configureAttributeSignature(AttributeSignature $attributeSignature, Dynamic\BaseDynamicType $type)
   {
-    $attributeSignature->set(self::ATTRIBUTE_FILTER, new IntegerType);
+    $attributeSignature->set(self::ATTRIBUTE_FILTER, new IntegerType, new Boolean(true));
 
     $optionsArrayType = new ArrayType;
     $optionsArrayType->setTyphoonKeyType(new StringType);
     $optionsType = new Composite\OrType;
     $optionsType->addTyphoonType($optionsArrayType);
     $optionsType->addTyphoonType(new IntegerType);
-    $attributeSignature->set(self::ATTRIBUTE_OPTIONS, $optionsType, new Boolean(false));
+    $attributeSignature->set(self::ATTRIBUTE_OPTIONS, $optionsType);
   }
 
   const ATTRIBUTE_FILTER = 'filter';

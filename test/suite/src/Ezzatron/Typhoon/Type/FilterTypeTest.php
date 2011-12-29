@@ -69,10 +69,12 @@ class FilterTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
     $expected = new AttributeSignature;
     $expected->setHolderName(new String($this->typeClass()));
 
-    $expected->set(FilterType::ATTRIBUTE_FILTER, new IntegerType);
-    $expected->set(FilterType::ATTRIBUTE_OPTIONS, $optionsType, new Boolean(false));
+    $expected->set(FilterType::ATTRIBUTE_FILTER, new IntegerType, new Boolean(true));
+    $expected->set(FilterType::ATTRIBUTE_OPTIONS, $optionsType);
 
-    $type = new FilterType;
+    $type = new FilterType(array(
+      FilterType::ATTRIBUTE_FILTER => FILTER_VALIDATE_BOOLEAN,
+    ));
 
     $this->assertEquals($expected, $type->typhoonAttributes()->signature());
   }
