@@ -33,20 +33,12 @@ class ResourceType extends Dynamic\BaseDynamicType
     )
     {
       $type = get_resource_type($value);
-
       if (!is_array($types))
       {
         $types = array($types);
       }
-      foreach ($types as $thisType)
-      {
-        if ($thisType == $type)
-        {
-          return true;
-        }
-      }
 
-      return false;
+      return in_array($type, $types, true);
     }
 
     return true;
@@ -60,12 +52,13 @@ class ResourceType extends Dynamic\BaseDynamicType
    */
   static protected function configureAttributeSignature(AttributeSignature $attributeSignature, Dynamic\BaseDynamicType $type)
   {
-    $typeArrayType = new ArrayType;
-    $typeArrayType->setTyphoonSubType(new StringType);
-    $typeType = new Composite\OrType;
-    $typeType->addTyphoonType(new StringType);
-    $typeType->addTyphoonType($typeArrayType);
-    $attributeSignature->set(self::ATTRIBUTE_TYPE, $typeType);
+    $arrayOfStringType = new ArrayType;
+    $arrayOfStringType->setTyphoonSubType(new StringType);
+    $stringOrArrayOfStringType = new Composite\OrType;
+    $stringOrArrayOfStringType->addTyphoonType(new StringType);
+    $stringOrArrayOfStringType->addTyphoonType($arrayOfStringType);
+
+    $attributeSignature->set(self::ATTRIBUTE_TYPE, $stringOrArrayOfStringType);
   }
 
   const ATTRIBUTE_TYPE = 'type';

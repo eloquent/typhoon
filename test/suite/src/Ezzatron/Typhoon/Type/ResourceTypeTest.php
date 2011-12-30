@@ -75,24 +75,19 @@ class ResourceTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
    */
   public function testConfigureAttributeSignature()
   {
-    $typeArrayType = new ArrayType;
-    $typeArrayType->setTyphoonSubType(new StringType);
-    $typeType = new Composite\OrType;
-    $typeType->addTyphoonType(new StringType);
-    $typeType->addTyphoonType($typeArrayType);
+    $arrayOfStringType = new ArrayType;
+    $arrayOfStringType->setTyphoonSubType(new StringType);
+    $stringOrArrayOfStringType = new Composite\OrType;
+    $stringOrArrayOfStringType->addTyphoonType(new StringType);
+    $stringOrArrayOfStringType->addTyphoonType($arrayOfStringType);
 
     $expected = new AttributeSignature;
     $expected->setHolderName(new String($this->typeClass()));
-    $expected[ResourceType::ATTRIBUTE_TYPE] = $typeType;
-
-    $type = new ResourceType;
-    $actual = $type->typhoonAttributes()->signature();
-
-    $this->assertEquals($expected, $actual);
+    $expected->set(ResourceType::ATTRIBUTE_TYPE, $stringOrArrayOfStringType);
 
     $type = new ResourceType;
 
-    $this->assertEquals($actual, $type->typhoonAttributes()->signature());
+    $this->assertEquals($expected, $type->typhoonAttributes()->signature());
   }
 
   // methods below must be manually overridden to implement @covers

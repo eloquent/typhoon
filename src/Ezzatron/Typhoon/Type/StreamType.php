@@ -51,40 +51,41 @@ class StreamType extends Dynamic\BaseDynamicType
       }
     }
 
-    $mode = $this->typhoonAttributes()->get(self::ATTRIBUTE_MODE, null);
+    $modes = $this->typhoonAttributes()->get(self::ATTRIBUTE_MODE, null);
     $types = $this->typhoonAttributes()->get(self::ATTRIBUTE_TYPE, array());
-    $wrapper = $this->typhoonAttributes()->get(self::ATTRIBUTE_WRAPPER, null);
+    $wrappers = $this->typhoonAttributes()->get(self::ATTRIBUTE_WRAPPER, null);
 
-    if ($mode || $types || $wrapper)
+    if ($modes || $types || $wrappers)
     {
       $metaData = $this->getMetaData($value);
 
       $valid = true;
-      if ($mode)
+      if ($modes)
       {
-        $valid = $mode == $metaData[self::META_DATA_MODE];
+        if (!is_array($modes))
+        {
+          $modes = array($modes);
+        }
+
+        $valid = in_array($metaData[self::META_DATA_MODE], $modes, true);
       }
       if ($valid && $types)
       {
-        $valid = false;
-
         if (!is_array($types))
         {
           $types = array($types);
         }
-        foreach ($types as $type)
-        {
-          if ($type == $metaData[self::META_DATA_TYPE])
-          {
-            $valid = true;
-            
-            break;
-          }
-        }
+
+        $valid = in_array($metaData[self::META_DATA_TYPE], $types, true);
       }
-      if ($valid && $wrapper)
+      if ($valid && $wrappers)
       {
-        $valid = $wrapper == $metaData[self::META_DATA_WRAPPER];
+        if (!is_array($wrappers))
+        {
+          $wrappers = array($wrappers);
+        }
+
+        $valid = in_array($metaData[self::META_DATA_WRAPPER], $wrappers, true);
       }
 
       return $valid;
@@ -121,17 +122,16 @@ class StreamType extends Dynamic\BaseDynamicType
    */
   static protected function configureAttributeSignature(AttributeSignature $attributeSignature, Dynamic\BaseDynamicType $type)
   {
-    $attributeSignature->set(self::ATTRIBUTE_LOCAL, new BooleanType);
-    $attributeSignature->set(self::ATTRIBUTE_MODE, new StringType);
+    $arrayOfStringType = new ArrayType;
+    $arrayOfStringType->setTyphoonSubType(new StringType);
+    $stringOrArrayOfStringType = new Composite\OrType;
+    $stringOrArrayOfStringType->addTyphoonType(new StringType);
+    $stringOrArrayOfStringType->addTyphoonType($arrayOfStringType);
 
-    $typeArrayType = new ArrayType;
-    $typeArrayType->setTyphoonSubType(new StringType);
-    $typeType = new Composite\OrType;
-    $typeType->addTyphoonType(new StringType);
-    $typeType->addTyphoonType($typeArrayType);
-    $attributeSignature->set(self::ATTRIBUTE_TYPE, $typeType);
-    
-    $attributeSignature->set(self::ATTRIBUTE_WRAPPER, new StringType);
+    $attributeSignature->set(self::ATTRIBUTE_LOCAL, new BooleanType);
+    $attributeSignature->set(self::ATTRIBUTE_MODE, $stringOrArrayOfStringType);
+    $attributeSignature->set(self::ATTRIBUTE_TYPE, $stringOrArrayOfStringType);
+    $attributeSignature->set(self::ATTRIBUTE_WRAPPER, $stringOrArrayOfStringType);
   }
 
   const ATTRIBUTE_LOCAL = 'local';
