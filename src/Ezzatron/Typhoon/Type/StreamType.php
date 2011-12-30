@@ -51,9 +51,9 @@ class StreamType extends Dynamic\BaseDynamicType
       }
     }
 
-    $modes = $this->typhoonAttributes()->get(self::ATTRIBUTE_MODE, null);
+    $modes = $this->typhoonAttributes()->get(self::ATTRIBUTE_MODE, array());
     $types = $this->typhoonAttributes()->get(self::ATTRIBUTE_TYPE, array());
-    $wrappers = $this->typhoonAttributes()->get(self::ATTRIBUTE_WRAPPER, null);
+    $wrappers = $this->typhoonAttributes()->get(self::ATTRIBUTE_WRAPPER, array());
 
     if ($modes || $types || $wrappers)
     {

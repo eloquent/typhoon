@@ -65,7 +65,13 @@ class StringableType extends Dynamic\BaseDynamicType
    */
   static protected function configureAttributeSignature(AttributeSignature $attributeSignature, Dynamic\BaseDynamicType $type)
   {
-    $attributeSignature->set(self::ATTRIBUTE_ENCODING, new StringType);
+    $arrayOfStringType = new ArrayType;
+    $arrayOfStringType->setTyphoonSubType(new StringType);
+    $stringOrArrayOfStringType = new Composite\OrType;
+    $stringOrArrayOfStringType->addTyphoonType(new StringType);
+    $stringOrArrayOfStringType->addTyphoonType($arrayOfStringType);
+
+    $attributeSignature->set(self::ATTRIBUTE_ENCODING, $stringOrArrayOfStringType);
   }
 
   const ATTRIBUTE_ENCODING = 'encoding';

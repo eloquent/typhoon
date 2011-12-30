@@ -69,16 +69,11 @@ class ObjectTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
   {
     $expected = new AttributeSignature;
     $expected->setHolderName(new String($this->typeClass()));
-    $expected[ObjectType::ATTRIBUTE_INSTANCE_OF] = new StringType;
-
-    $type = new ObjectType;
-    $actual = $type->typhoonAttributes()->signature();
-
-    $this->assertEquals($expected, $actual);
+    $expected->set(ObjectType::ATTRIBUTE_INSTANCE_OF, new StringType);
 
     $type = new ObjectType;
 
-    $this->assertEquals($actual, $type->typhoonAttributes()->signature());
+    $this->assertEquals($expected, $type->typhoonAttributes()->signature());
   }
 
   // methods below must be manually overridden to implement @covers

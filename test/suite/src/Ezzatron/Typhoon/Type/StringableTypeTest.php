@@ -26,6 +26,13 @@ class StringableTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
       StringableType::ATTRIBUTE_ENCODING => 'UTF-8',
     );
 
+    $utf8OrUtf32Attributes = array(
+      StringableType::ATTRIBUTE_ENCODING => array(
+        'UTF-8',
+        'UTF-32',
+      ),
+    );
+
     return array(
       array(false, null),                      // #0: null
       array(true,  true),                      // #1: boolean
@@ -46,6 +53,13 @@ class StringableTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
       array(true,  $this->stringableFixture(chr(127)), $utf8Attributes),
       // #14: stringable object with specific encoding failure
       array(false, $this->stringableFixture(chr(128)), $utf8Attributes),
+
+      // #15: stringable object with one of two encodings success
+      array(true,  $this->stringableFixture(chr(127)), $utf8OrUtf32Attributes),
+      // #16: stringable object with one of two encodings success
+      array(true,  $this->stringableFixture(mb_convert_encoding(chr(127), 'UTF-32', 'UTF-8')), $utf8OrUtf32Attributes),
+      // #17: stringable object with one of two encodings failure
+      array(false, $this->stringableFixture(chr(128)), $utf8OrUtf32Attributes),
     );
   }
   
@@ -82,18 +96,19 @@ class StringableTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
    */
   public function testConfigureAttributeSignature()
   {
+    $arrayOfStringType = new ArrayType;
+    $arrayOfStringType->setTyphoonSubType(new StringType);
+    $stringOrArrayOfStringType = new Composite\OrType;
+    $stringOrArrayOfStringType->addTyphoonType(new StringType);
+    $stringOrArrayOfStringType->addTyphoonType($arrayOfStringType);
+
     $expected = new AttributeSignature;
     $expected->setHolderName(new String($this->typeClass()));
-    $expected[StringableType::ATTRIBUTE_ENCODING] = new StringType;
-
-    $type = new StringableType;
-    $actual = $type->typhoonAttributes()->signature();
-
-    $this->assertEquals($expected, $actual);
+    $expected->set(StringableType::ATTRIBUTE_ENCODING, $stringOrArrayOfStringType);
 
     $type = new StringableType;
 
-    $this->assertEquals($actual, $type->typhoonAttributes()->signature());
+    $this->assertEquals($expected, $type->typhoonAttributes()->signature());
   }
 
   // methods below must be manually overridden to implement @covers

@@ -68,16 +68,11 @@ class FilesystemNodeTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
   {
     $expected = new AttributeSignature;
     $expected->setHolderName(new String($this->typeClass()));
-    $expected[FilesystemNodeType::ATTRIBUTE_TYPE] = new StringType;
-
-    $type = new FilesystemNodeType;
-    $actual = $type->typhoonAttributes()->signature();
-
-    $this->assertEquals($expected, $actual);
+    $expected->set(FilesystemNodeType::ATTRIBUTE_TYPE, new StringType);
 
     $type = new FilesystemNodeType;
 
-    $this->assertEquals($actual, $type->typhoonAttributes()->signature());
+    $this->assertEquals($expected, $type->typhoonAttributes()->signature());
   }
 
   // methods below must be manually overridden to implement @covers

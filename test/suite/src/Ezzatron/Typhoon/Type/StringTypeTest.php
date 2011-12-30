@@ -26,6 +26,13 @@ class StringTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
       StringType::ATTRIBUTE_ENCODING => 'UTF-8',
     );
 
+    $utf8OrUtf32Attributes = array(
+      StringType::ATTRIBUTE_ENCODING => array(
+        'UTF-8',
+        'UTF-32',
+      ),
+    );
+
     return array(
       array(false, null),                      // #0: null
       array(false, true),                      // #1: boolean
@@ -39,6 +46,13 @@ class StringTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
 
       array(true,  chr(127), $utf8Attributes),  // #9: string with specific encoding success
       array(false, chr(128), $utf8Attributes),  // #10: string with specific encoding failure
+
+      // #11: string with one of two encodings success
+      array(true,  chr(127), $utf8OrUtf32Attributes),
+      // #12: string with one of two encodings success
+      array(true,  mb_convert_encoding(chr(127), 'UTF-32', 'UTF-8'), $utf8OrUtf32Attributes),
+      // #13: string with one of two encodings failure
+      array(false, chr(128), $utf8OrUtf32Attributes),
     );
   }
   
@@ -59,18 +73,19 @@ class StringTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
    */
   public function testConfigureAttributeSignature()
   {
+    $arrayOfStringType = new ArrayType;
+    $arrayOfStringType->setTyphoonSubType(new StringType);
+    $stringOrArrayOfStringType = new Composite\OrType;
+    $stringOrArrayOfStringType->addTyphoonType(new StringType);
+    $stringOrArrayOfStringType->addTyphoonType($arrayOfStringType);
+
     $expected = new AttributeSignature;
     $expected->setHolderName(new String($this->typeClass()));
-    $expected[StringType::ATTRIBUTE_ENCODING] = new StringType;
-
-    $type = new StringType;
-    $actual = $type->typhoonAttributes()->signature();
-
-    $this->assertEquals($expected, $actual);
+    $expected->set(StringType::ATTRIBUTE_ENCODING, $stringOrArrayOfStringType);
 
     $type = new StringType;
 
-    $this->assertEquals($actual, $type->typhoonAttributes()->signature());
+    $this->assertEquals($expected, $type->typhoonAttributes()->signature());
   }
 
   // methods below must be manually overridden to implement @covers

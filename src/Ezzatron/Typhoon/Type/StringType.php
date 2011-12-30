@@ -29,10 +29,22 @@ class StringType extends Dynamic\BaseDynamicType
 
     if (
       $this->hasAttributes()
-      && $encoding = $this->typhoonAttributes()->get(self::ATTRIBUTE_ENCODING, null)
+      && $encodings = $this->typhoonAttributes()->get(self::ATTRIBUTE_ENCODING, array())
     )
     {
-      return mb_check_encoding($value, $encoding);
+      if (!is_array($encodings))
+      {
+        $encodings = array($encodings);
+      }
+      foreach ($encodings as $encoding)
+      {
+        if (mb_check_encoding($value, $encoding))
+        {
+          return true;
+        }
+      }
+
+      return false;
     }
 
     return true;
@@ -46,7 +58,13 @@ class StringType extends Dynamic\BaseDynamicType
    */
   static protected function configureAttributeSignature(AttributeSignature $attributeSignature, Dynamic\BaseDynamicType $type)
   {
-    $attributeSignature->set(self::ATTRIBUTE_ENCODING, new StringType);
+    $arrayOfStringType = new ArrayType;
+    $arrayOfStringType->setTyphoonSubType(new StringType);
+    $stringOrArrayOfStringType = new Composite\OrType;
+    $stringOrArrayOfStringType->addTyphoonType(new StringType);
+    $stringOrArrayOfStringType->addTyphoonType($arrayOfStringType);
+    
+    $attributeSignature->set(self::ATTRIBUTE_ENCODING, $stringOrArrayOfStringType);
   }
 
   const ATTRIBUTE_ENCODING = 'encoding';
