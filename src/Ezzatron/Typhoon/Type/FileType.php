@@ -15,8 +15,8 @@ class FileType extends BaseType
 {
   public function __construct()
   {
-    $this->innerType = new FilesystemNodeType(array(
-      FilesystemNodeType::ATTRIBUTE_TYPE => FilesystemNodeType::TYPE_FILE,
+    $this->innerType = new StreamType(array(
+      StreamType::ATTRIBUTE_TYPE => StreamType::TYPE_STDIO,
     ));
   }
 
@@ -31,7 +31,7 @@ class FileType extends BaseType
   }
 
   /**
-   * @var FilesystemNodeType
+   * @var StreamType
    */
   protected $innerType;
 }
