@@ -11,6 +11,8 @@
 
 namespace Ezzatron\Typhoon\Type;
 
+use Ezzatron\Typhoon\Attribute\AttributeSignature;
+use Ezzatron\Typhoon\Primitive\String;
 use stdClass;
 
 class FileTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
@@ -20,6 +22,13 @@ class FileTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
    */
   public function typeValues()
   {
+    $localAttributes = array(
+      DirectoryType::ATTRIBUTE_LOCAL => true,
+    );
+    $remoteAttributes = array(
+      DirectoryType::ATTRIBUTE_LOCAL => false,
+    );
+
     return array(
       array(false, null),                      // #0: null
       array(false, true),                      // #1: boolean
@@ -33,6 +42,9 @@ class FileTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
       array(false, $this->streamFixture()),    // #9: stream
       array(true,  $this->fileFixture()),      // #10: file
       array(false, $this->directoryFixture()), // #11: directory
+
+      array(true,  $this->fileFixture(), $localAttributes),  // #12: local file success
+      array(false, $this->fileFixture(), $remoteAttributes), // #13: remote file failure
     );
   }
 
@@ -42,6 +54,33 @@ class FileTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
   protected function typeClass()
   {
     return __NAMESPACE__.'\FileType';
+  }
+
+  /**
+   * @covers Ezzatron\Typhoon\Type\FileType::configureAttributeSignature
+   * @group types
+   * @group type
+   * @group dynamic-type
+   */
+  public function testConfigureAttributeSignature()
+  {
+    $arrayOfStringType = new ArrayType;
+    $arrayOfStringType->setTyphoonSubType(new StringType);
+    $stringOrArrayOfStringType = new Composite\OrType;
+    $stringOrArrayOfStringType->addTyphoonType(new StringType);
+    $stringOrArrayOfStringType->addTyphoonType($arrayOfStringType);
+
+    $expected = new AttributeSignature;
+    $expected->setHolderName(new String($this->typeClass()));
+    $expected->set(FileType::ATTRIBUTE_LOCAL, new BooleanType);
+    $expected->set(FileType::ATTRIBUTE_MODE, $stringOrArrayOfStringType);
+    $expected->set(FileType::ATTRIBUTE_READ, new BooleanType);
+    $expected->set(FileType::ATTRIBUTE_WRAPPER, $stringOrArrayOfStringType);
+    $expected->set(FileType::ATTRIBUTE_WRITE, new BooleanType);
+
+    $type = new FileType;
+
+    $this->assertEquals($expected, $type->typhoonAttributes()->signature());
   }
 
   // methods below must be manually overridden to implement @covers
