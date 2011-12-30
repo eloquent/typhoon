@@ -9,13 +9,14 @@
  * file that was distributed with this source code.
  */
 
+namespace Ezzatron\Typhoon;
+
 use Ezzatron\Typhoon\Renderer\Type as TypeRenderer;
-use Ezzatron\Typhoon\Test\TestCase;
 use Ezzatron\Typhoon\Type\Inspector\TypeInspector;
 use Ezzatron\Typhoon\Type\Registry\TypeRegistry;
-use Ezzatron\Typhoon\Typhoon;
+use Phake;
 
-class TyphoonTest extends TestCase
+class TyphoonTest extends \Ezzatron\Typhoon\Test\TestCase
 {
   protected function setUp()
   {
