@@ -91,7 +91,16 @@ class StreamType extends Dynamic\BaseDynamicType
           $modes = array($modes);
         }
 
-        $valid = in_array($metaData[self::META_DATA_MODE], $modes, true);
+        $valid = false;
+        foreach ($modes as $pattern)
+        {
+          if ($this->modeMatches($pattern, $metaData[self::META_DATA_MODE]))
+          {
+            $valid = true;
+
+            break;
+          }
+        }
       }
       if ($valid && $types)
       {
@@ -136,6 +145,25 @@ class StreamType extends Dynamic\BaseDynamicType
   protected function getMetaData($stream)
   {
     return stream_get_meta_data($stream);
+  }
+
+  /**
+   * @param string $pattern
+   * @param string $mode
+   *
+   * @return boolean
+   */
+  protected function modeMatches($pattern, $mode)
+  {
+    foreach (str_split($pattern) as $patternCharacter)
+    {
+      if (false === strpos($mode, $patternCharacter))
+      {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   /**

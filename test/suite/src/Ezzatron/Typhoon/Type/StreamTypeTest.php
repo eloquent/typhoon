@@ -188,8 +188,8 @@ class StreamTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
     $value = $this->streamFixture();
     $attributes = array(
       StreamType::ATTRIBUTE_MODE => array(
-        'foo',
-        'mode',
+        'f',
+        'm',
       )
     );
     $isLocal = true;
@@ -201,8 +201,8 @@ class StreamTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
     $value = $this->streamFixture();
     $attributes = array(
       StreamType::ATTRIBUTE_MODE => array(
-        'foo',
-        'bar',
+        'f',
+        'mobe',
       )
     );
     $isLocal = true;
@@ -414,6 +414,51 @@ class StreamTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
     $metaData = $metaDataWrite;
     $data[] = array($expected, $value, $attributes, $isLocal, $metaData);
 
+    // #31: Writable stream in binary mode success
+    $expected = true;
+    $value = $this->streamFixture();
+    $attributes = array(
+      StreamType::ATTRIBUTE_WRITE => true,
+      StreamType::ATTRIBUTE_MODE => 'b',
+    );
+    $isLocal = true;
+    $metaData = array(
+      StreamType::META_DATA_MODE => 'wb',
+      StreamType::META_DATA_TYPE => 'type',
+      StreamType::META_DATA_WRAPPER => 'wrapper',
+    );
+    $data[] = array($expected, $value, $attributes, $isLocal, $metaData);
+
+    // #32: Writable stream in binary mode failure
+    $expected = false;
+    $value = $this->streamFixture();
+    $attributes = array(
+      StreamType::ATTRIBUTE_WRITE => true,
+      StreamType::ATTRIBUTE_MODE => 'b',
+    );
+    $isLocal = true;
+    $metaData = array(
+      StreamType::META_DATA_MODE => 'wt',
+      StreamType::META_DATA_TYPE => 'type',
+      StreamType::META_DATA_WRAPPER => 'wrapper',
+    );
+    $data[] = array($expected, $value, $attributes, $isLocal, $metaData);
+
+    // #33: Writable stream in binary mode failure
+    $expected = false;
+    $value = $this->streamFixture();
+    $attributes = array(
+      StreamType::ATTRIBUTE_WRITE => true,
+      StreamType::ATTRIBUTE_MODE => 'b',
+    );
+    $isLocal = true;
+    $metaData = array(
+      StreamType::META_DATA_MODE => 'w',
+      StreamType::META_DATA_TYPE => 'type',
+      StreamType::META_DATA_WRAPPER => 'wrapper',
+    );
+    $data[] = array($expected, $value, $attributes, $isLocal, $metaData);
+
     return $data;
   }
 
@@ -468,6 +513,46 @@ class StreamTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
     {
       $this->assertTrue(array_key_exists($expected, $actual));
     }
+  }
+
+  /**
+   * @return array
+   */
+  public function modeMatchesData()
+  {
+    return array(
+      array(true,  'r', 'r'),
+      array(true,  'rb', 'rb'),
+      array(true,  'rb', 'br'),
+      array(true,  'rb', 'r+b'),
+      array(true,  'rb', 'rb+'),
+      array(true,  'r+b', 'r+b'),
+      array(true,  'r+b', 'rb+'),
+
+      array(false, 'w', 'r'),
+      array(false, 'rb', 'r'),
+      array(false, 'rb', 'wb'),
+      array(false, 'rb', 'w+b'),
+      array(false, 'r+b', 'rb'),
+    );
+  }
+
+  /**
+   * @covers Ezzatron\Typhoon\Type\StreamType::modeMatches
+   * @dataProvider modeMatchesData
+   * @group types
+   * @group type
+   * @group dynamic-type
+   */
+  public function testModeMatches($expected, $pattern, $mode)
+  {
+    $type = $this->typeFixture();
+
+    $reflector = new ReflectionObject($type);
+    $method = $reflector->getMethod('modeMatches');
+    $method->setAccessible(true);
+
+    $this->assertSame($expected, $method->invoke($type, $pattern, $mode));
   }
   
   /**
