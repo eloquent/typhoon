@@ -53,6 +53,21 @@ class StreamTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
       StreamType::META_DATA_TYPE => 'type',
       StreamType::META_DATA_WRAPPER => 'wrapper',
     );
+    $metaDataRead = array(
+      StreamType::META_DATA_MODE => 'r',
+      StreamType::META_DATA_TYPE => 'type',
+      StreamType::META_DATA_WRAPPER => 'wrapper',
+    );
+    $metaDataWrite = array(
+      StreamType::META_DATA_MODE => 'w',
+      StreamType::META_DATA_TYPE => 'type',
+      StreamType::META_DATA_WRAPPER => 'wrapper',
+    );
+    $metaDataReadWrite = array(
+      StreamType::META_DATA_MODE => 'r+',
+      StreamType::META_DATA_TYPE => 'type',
+      StreamType::META_DATA_WRAPPER => 'wrapper',
+    );
 
     // #0: Local success
     $expected = true;
@@ -246,6 +261,159 @@ class StreamTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
     $metaData = $metaDataDefault;
     $data[] = array($expected, $value, $attributes, $isLocal, $metaData);
 
+    // #16: Read success with read mode
+    $expected = true;
+    $value = $this->streamFixture();
+    $attributes = array(
+      StreamType::ATTRIBUTE_READ => true,
+    );
+    $isLocal = true;
+    $metaData = $metaDataRead;
+    $data[] = array($expected, $value, $attributes, $isLocal, $metaData);
+
+    // #17: Read success with read/write mode
+    $expected = true;
+    $value = $this->streamFixture();
+    $attributes = array(
+      StreamType::ATTRIBUTE_READ => true,
+    );
+    $isLocal = true;
+    $metaData = $metaDataReadWrite;
+    $data[] = array($expected, $value, $attributes, $isLocal, $metaData);
+
+    // #18: Read failure with write mode
+    $expected = false;
+    $value = $this->streamFixture();
+    $attributes = array(
+      StreamType::ATTRIBUTE_READ => true,
+    );
+    $isLocal = true;
+    $metaData = $metaDataWrite;
+    $data[] = array($expected, $value, $attributes, $isLocal, $metaData);
+
+    // #19: Read failure with read mode
+    $expected = false;
+    $value = $this->streamFixture();
+    $attributes = array(
+      StreamType::ATTRIBUTE_READ => false,
+    );
+    $isLocal = true;
+    $metaData = $metaDataRead;
+    $data[] = array($expected, $value, $attributes, $isLocal, $metaData);
+
+    // #20: Read failure with read/write mode
+    $expected = false;
+    $value = $this->streamFixture();
+    $attributes = array(
+      StreamType::ATTRIBUTE_READ => false,
+    );
+    $isLocal = true;
+    $metaData = $metaDataReadWrite;
+    $data[] = array($expected, $value, $attributes, $isLocal, $metaData);
+
+    // #21: Read success with write mode
+    $expected = true;
+    $value = $this->streamFixture();
+    $attributes = array(
+      StreamType::ATTRIBUTE_READ => false,
+    );
+    $isLocal = true;
+    $metaData = $metaDataWrite;
+    $data[] = array($expected, $value, $attributes, $isLocal, $metaData);
+
+    // #22: Write success with write mode
+    $expected = true;
+    $value = $this->streamFixture();
+    $attributes = array(
+      StreamType::ATTRIBUTE_WRITE => true,
+    );
+    $isLocal = true;
+    $metaData = $metaDataWrite;
+    $data[] = array($expected, $value, $attributes, $isLocal, $metaData);
+
+    // #23: Write success with read/write mode
+    $expected = true;
+    $value = $this->streamFixture();
+    $attributes = array(
+      StreamType::ATTRIBUTE_WRITE => true,
+    );
+    $isLocal = true;
+    $metaData = $metaDataReadWrite;
+    $data[] = array($expected, $value, $attributes, $isLocal, $metaData);
+
+    // #24: Write failure with read mode
+    $expected = false;
+    $value = $this->streamFixture();
+    $attributes = array(
+      StreamType::ATTRIBUTE_WRITE => true,
+    );
+    $isLocal = true;
+    $metaData = $metaDataRead;
+    $data[] = array($expected, $value, $attributes, $isLocal, $metaData);
+
+    // #25: Write failure with write mode
+    $expected = false;
+    $value = $this->streamFixture();
+    $attributes = array(
+      StreamType::ATTRIBUTE_WRITE => false,
+    );
+    $isLocal = true;
+    $metaData = $metaDataWrite;
+    $data[] = array($expected, $value, $attributes, $isLocal, $metaData);
+
+    // #26: Write failure with read/write mode
+    $expected = false;
+    $value = $this->streamFixture();
+    $attributes = array(
+      StreamType::ATTRIBUTE_WRITE => false,
+    );
+    $isLocal = true;
+    $metaData = $metaDataReadWrite;
+    $data[] = array($expected, $value, $attributes, $isLocal, $metaData);
+
+    // #27: Write success with write mode
+    $expected = true;
+    $value = $this->streamFixture();
+    $attributes = array(
+      StreamType::ATTRIBUTE_WRITE => false,
+    );
+    $isLocal = true;
+    $metaData = $metaDataRead;
+    $data[] = array($expected, $value, $attributes, $isLocal, $metaData);
+
+    // #28: Read/write success with read/write mode
+    $expected = true;
+    $value = $this->streamFixture();
+    $attributes = array(
+      StreamType::ATTRIBUTE_READ => true,
+      StreamType::ATTRIBUTE_WRITE => true,
+    );
+    $isLocal = true;
+    $metaData = $metaDataReadWrite;
+    $data[] = array($expected, $value, $attributes, $isLocal, $metaData);
+
+    // #29: Read/write failure with read mode
+    $expected = false;
+    $value = $this->streamFixture();
+    $attributes = array(
+      StreamType::ATTRIBUTE_READ => true,
+      StreamType::ATTRIBUTE_WRITE => true,
+    );
+    $isLocal = true;
+    $metaData = $metaDataRead;
+    $data[] = array($expected, $value, $attributes, $isLocal, $metaData);
+
+    // #30: Read/write failure with write mode
+    $expected = false;
+    $value = $this->streamFixture();
+    $attributes = array(
+      StreamType::ATTRIBUTE_READ => true,
+      StreamType::ATTRIBUTE_WRITE => true,
+    );
+    $isLocal = true;
+    $metaData = $metaDataWrite;
+    $data[] = array($expected, $value, $attributes, $isLocal, $metaData);
+
     return $data;
   }
 
@@ -255,6 +423,23 @@ class StreamTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
   protected function typeClass()
   {
     return __NAMESPACE__.'\StreamType';
+  }
+
+  /**
+   * @covers Ezzatron\Typhoon\Type\StreamType::isLocal
+   * @group types
+   * @group type
+   * @group dynamic-type
+   */
+  public function testIsLocal()
+  {
+    $type = $this->typeFixture();
+
+    $reflector = new ReflectionObject($type);
+    $method = $reflector->getMethod('isLocal');
+    $method->setAccessible(true);
+
+    $this->assertInternalType('boolean', $method->invokeArgs($type, array($this->streamFixture())));
   }
 
   /**
@@ -284,22 +469,121 @@ class StreamTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
       $this->assertTrue(array_key_exists($expected, $actual));
     }
   }
+  
+  /**
+   * @return array
+   */
+  public function modeIsReadData()
+  {
+    return array(
+      array(true,  'r'),
+      array(true,  'r+'),
+      array(true,  'w+'),
+      array(true,  'a+'),
+      array(true,  'x+'),
+      array(true,  'c+'),
+      array(true,  'rb'),
+      array(true,  'r+b'),
+      array(true,  'w+b'),
+      array(true,  'a+b'),
+      array(true,  'x+b'),
+      array(true,  'c+b'),
+      array(true,  'rt'),
+      array(true,  'r+t'),
+      array(true,  'w+t'),
+      array(true,  'a+t'),
+      array(true,  'x+t'),
+      array(true,  'c+t'),
+
+      array(false, 'w'),
+      array(false, 'a'),
+      array(false, 'x'),
+      array(false, 'c'),
+      array(false, 'wb'),
+      array(false, 'ab'),
+      array(false, 'xb'),
+      array(false, 'cb'),
+      array(false, 'wt'),
+      array(false, 'at'),
+      array(false, 'xt'),
+      array(false, 'ct'),
+    );
+  }
 
   /**
-   * @covers Ezzatron\Typhoon\Type\StreamType::isLocal
+   * @covers Ezzatron\Typhoon\Type\StreamType::modeIsRead
+   * @dataProvider modeIsReadData
    * @group types
    * @group type
    * @group dynamic-type
    */
-  public function testIsLocal()
+  public function testModeIsRead($expected, $mode)
   {
     $type = $this->typeFixture();
 
     $reflector = new ReflectionObject($type);
-    $method = $reflector->getMethod('isLocal');
+    $method = $reflector->getMethod('modeIsRead');
     $method->setAccessible(true);
 
-    $this->assertInternalType('boolean', $method->invokeArgs($type, array($this->streamFixture())));
+    $this->assertSame($expected, $method->invoke($type, $mode));
+  }
+
+  /**
+   * @return array
+   */
+  public function modeIsWriteData()
+  {
+    return array(
+      array(true,  'w'),
+      array(true,  'a'),
+      array(true,  'x'),
+      array(true,  'c'),
+      array(true,  'r+'),
+      array(true,  'w+'),
+      array(true,  'a+'),
+      array(true,  'x+'),
+      array(true,  'c+'),
+      array(true,  'wb'),
+      array(true,  'ab'),
+      array(true,  'xb'),
+      array(true,  'cb'),
+      array(true,  'r+b'),
+      array(true,  'w+b'),
+      array(true,  'a+b'),
+      array(true,  'x+b'),
+      array(true,  'c+b'),
+      array(true,  'wt'),
+      array(true,  'at'),
+      array(true,  'xt'),
+      array(true,  'ct'),
+      array(true,  'r+t'),
+      array(true,  'w+t'),
+      array(true,  'a+t'),
+      array(true,  'x+t'),
+      array(true,  'c+t'),
+
+      array(false, 'r'),
+      array(false, 'rb'),
+      array(false, 'rt'),
+    );
+  }
+
+  /**
+   * @covers Ezzatron\Typhoon\Type\StreamType::modeIsWrite
+   * @dataProvider modeIsWriteData
+   * @group types
+   * @group type
+   * @group dynamic-type
+   */
+  public function testModeIsWrite($expected, $mode)
+  {
+    $type = $this->typeFixture();
+
+    $reflector = new ReflectionObject($type);
+    $method = $reflector->getMethod('modeIsWrite');
+    $method->setAccessible(true);
+
+    $this->assertSame($expected, $method->invoke($type, $mode));
   }
 
   /**
@@ -320,8 +604,10 @@ class StreamTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
     $expected->setHolderName(new String($this->typeClass()));
     $expected->set(StreamType::ATTRIBUTE_LOCAL, new BooleanType);
     $expected->set(StreamType::ATTRIBUTE_MODE, $stringOrArrayOfStringType);
+    $expected->set(StreamType::ATTRIBUTE_READ, new BooleanType);
     $expected->set(StreamType::ATTRIBUTE_TYPE, $stringOrArrayOfStringType);
     $expected->set(StreamType::ATTRIBUTE_WRAPPER, $stringOrArrayOfStringType);
+    $expected->set(StreamType::ATTRIBUTE_WRITE, new BooleanType);
 
     $type = new StreamType;
 
