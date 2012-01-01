@@ -23,3 +23,4 @@ class ConcreteBaseType extends \Ezzatron\Typhoon\Type\BaseType
     return true;
   }
 }
+

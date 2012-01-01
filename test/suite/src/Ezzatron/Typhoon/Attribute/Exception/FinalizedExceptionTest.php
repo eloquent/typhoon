@@ -56,3 +56,4 @@ class FinalizedExceptionTest extends \Ezzatron\Typhoon\Test\ExceptionTestCase
    */
   protected $_key;
 }
+
