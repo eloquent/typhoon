@@ -12,6 +12,7 @@
 namespace Ezzatron\Typhoon\Type;
 
 use Ezzatron\Typhoon\Attribute\AttributeSignature;
+use Ezzatron\Typhoon\Primitive\Boolean;
 
 class CallbackWrapperType extends Dynamic\BaseDynamicType
 {
@@ -30,17 +31,9 @@ class CallbackWrapperType extends Dynamic\BaseDynamicType
     );
 
     return call_user_func_array(
-      $attributes->get(self::ATTRIBUTE_CALLBACK, array($this, 'defaultCallback'))
+      $attributes->get(self::ATTRIBUTE_CALLBACK)
       , $arguments
     );
-  }
-
-  /**
-   * @return boolean
-   */
-  protected function defaultCallback()
-  {
-    return false;
   }
 
   /**
@@ -51,7 +44,7 @@ class CallbackWrapperType extends Dynamic\BaseDynamicType
    */
   static protected function configureAttributeSignature(AttributeSignature $attributeSignature, Dynamic\BaseDynamicType $type)
   {
-    $attributeSignature->set(self::ATTRIBUTE_CALLBACK, new CallbackType);
+    $attributeSignature->set(self::ATTRIBUTE_CALLBACK, new CallbackType, new Boolean(true));
     $attributeSignature->set(self::ATTRIBUTE_ARGUMENTS, new ArrayType);
   }
 

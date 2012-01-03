@@ -13,6 +13,7 @@ namespace Ezzatron\Typhoon\Type;
 
 use stdClass;
 use Ezzatron\Typhoon\Attribute\AttributeSignature;
+use Ezzatron\Typhoon\Primitive\Boolean;
 use Ezzatron\Typhoon\Primitive\String;
 
 class CallbackWrapperTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
@@ -44,16 +45,6 @@ class CallbackWrapperTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
     );
 
     return array(
-      array(false, null),                      // #0: null
-      array(false, true),                      // #1: boolean
-      array(false, 'string'),                  // #2: string
-      array(false, 1),                         // #3: integer
-      array(false, .1),                        // #4: float
-      array(false, array()),                   // #5: array
-      array(false, new stdClass),              // #6: object
-      array(false, function(){}),              // #7: closure
-      array(false, $this->resourceFixture()),  // #8: resource
-
       array(true,  null,  $attributesPass),  // #9: callback pass
       array(false, null,  $attributesFail),  // #10: callback fail
     );
@@ -108,10 +99,12 @@ class CallbackWrapperTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
   {
     $expected = new AttributeSignature;
     $expected->setHolderName(new String($this->typeClass()));
-    $expected[CallbackWrapperType::ATTRIBUTE_CALLBACK] = new CallbackType;
-    $expected[CallbackWrapperType::ATTRIBUTE_ARGUMENTS] = new ArrayType;
+    $expected->set(CallbackWrapperType::ATTRIBUTE_CALLBACK, new CallbackType, new Boolean(true));
+    $expected->set(CallbackWrapperType::ATTRIBUTE_ARGUMENTS, new ArrayType);
 
-    $type = new CallbackWrapperType;
+    $type = new CallbackWrapperType(array(
+      'callback' => 'is_int'
+    ));
 
     $this->assertEquals($expected, $type->typhoonAttributes()->signature());
   }
@@ -120,7 +113,6 @@ class CallbackWrapperTypeTest extends \Ezzatron\Typhoon\Test\TypeTestCase
 
   /**
    * @covers Ezzatron\Typhoon\Type\CallbackWrapperType::typhoonCheck
-   * @covers Ezzatron\Typhoon\Type\CallbackWrapperType::defaultCallback
    * @dataProvider typeValues
    * @group types
    * @group type
