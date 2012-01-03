@@ -22,6 +22,7 @@ use Ezzatron\Typhoon\Type\IntegerType;
 use Ezzatron\Typhoon\Type\MixedType;
 use Ezzatron\Typhoon\Type\NullType;
 use Ezzatron\Typhoon\Type\ObjectType;
+use Ezzatron\Typhoon\Type\SocketType;
 use Ezzatron\Typhoon\Type\StreamType;
 use Ezzatron\Typhoon\Type\StringType;
 use Ezzatron\Typhoon\Type\Traversable\TraversableType as TraversableTypeInterface;
@@ -55,6 +56,7 @@ class TypeInspector
       new StringType,
       new FileType,
       new DirectoryType,
+      new SocketType,
       new StreamType,
       new ResourceType,
     );

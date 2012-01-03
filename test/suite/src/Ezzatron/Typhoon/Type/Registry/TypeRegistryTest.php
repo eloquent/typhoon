@@ -17,6 +17,7 @@ use Ezzatron\Typhoon\Type\ArrayType;
 use Ezzatron\Typhoon\Type\BooleanType;
 use Ezzatron\Typhoon\Type\CallbackType;
 use Ezzatron\Typhoon\Type\CallbackWrapperType;
+use Ezzatron\Typhoon\Type\ClassType;
 use Ezzatron\Typhoon\Type\DirectoryType;
 use Ezzatron\Typhoon\Type\FileType;
 use Ezzatron\Typhoon\Type\FloatType;
@@ -53,6 +54,7 @@ class TypeRegistryTest extends \Ezzatron\Typhoon\Test\TestCase
       array('boolean', $namespace.'\BooleanType'),
       array('callback', $namespace.'\CallbackType'),
       array('callback_wrapper', $namespace.'\CallbackWrapperType'),
+      array('class', $namespace.'\ClassType'),
       array('directory', $namespace.'\DirectoryType'),
       array('file', $namespace.'\FileType'),
       array('float', $namespace.'\FloatType'),
@@ -66,6 +68,7 @@ class TypeRegistryTest extends \Ezzatron\Typhoon\Test\TestCase
       array('object', $namespace.'\ObjectType'),
       array('resource', $namespace.'\ResourceType'),
       array('scalar', $namespace.'\ScalarType'),
+      array('socket', $namespace.'\SocketType'),
       array('stream', $namespace.'\StreamType'),
       array('string', $namespace.'\StringType'),
       array('stringable', $namespace.'\StringableType'),

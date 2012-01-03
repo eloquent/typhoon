@@ -23,6 +23,7 @@ use Ezzatron\Typhoon\Type\FloatType;
 use Ezzatron\Typhoon\Type\IntegerType;
 use Ezzatron\Typhoon\Type\NullType;
 use Ezzatron\Typhoon\Type\ObjectType;
+use Ezzatron\Typhoon\Type\SocketType;
 use Ezzatron\Typhoon\Type\StreamType;
 use Ezzatron\Typhoon\Type\StringType;
 use Ezzatron\Typhoon\Type\ResourceType;
@@ -55,43 +56,48 @@ class TypeInspectorTest extends \Ezzatron\Typhoon\Test\TestCase
     $expected = new DirectoryType;
     $data[] = array($value, $expected);
 
-    // #8: Stream
+    // #8: Socket
+    $value = $this->socketFixture();
+    $expected = new SocketType;
+    $data[] = array($value, $expected);
+
+    // #9: Stream
     $value = $this->streamFixture();
     $expected = new StreamType;
     $data[] = array($value, $expected);
 
-    // #9: Resource
+    // #10: Resource
     $value = $this->resourceFixture();
     $expected = new ResourceType;
     $data[] = array($value, $expected);
 
-    // #10: Array
+    // #11: Array
     $value = array();
     $expected = new ArrayType;
     $data[] = array($value, $expected);
 
-    // #11: Traversable
+    // #12: Traversable
     $value = Phake::mock('Iterator');
     $expected = new TraversableType(array(
       TraversableType::ATTRIBUTE_INSTANCE_OF => get_class($value),
     ));
     $data[] = array($value, $expected);
 
-    // #12: Object (stdClass)
+    // #13: Object (stdClass)
     $value = new stdClass;
     $expected = new ObjectType(array(
       ObjectType::ATTRIBUTE_INSTANCE_OF => get_class($value),
     ));
     $data[] = array($value, $expected);
 
-    // #13: Object (Typhoon)
+    // #14: Object (Typhoon)
     $value = Typhoon::instance();
     $expected = new ObjectType(array(
       ObjectType::ATTRIBUTE_INSTANCE_OF => get_class($value),
     ));
     $data[] = array($value, $expected);
 
-    // #14: Array with sub-values and 0-depth checking
+    // #15: Array with sub-values and 0-depth checking
     $value = array(
       'foo',
       'bar' => true,

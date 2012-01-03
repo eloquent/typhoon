@@ -14,30 +14,8 @@ namespace Ezzatron\Typhoon\Type\Registry;
 use Ezzatron\Typhoon\Collection\Collection;
 use Ezzatron\Typhoon\Collection\Exception\UndefinedKeyException;
 use Ezzatron\Typhoon\Primitive\String;
-use Ezzatron\Typhoon\Type\ArrayType;
-use Ezzatron\Typhoon\Type\BooleanType;
-use Ezzatron\Typhoon\Type\CallbackType;
-use Ezzatron\Typhoon\Type\CallbackWrapperType;
-use Ezzatron\Typhoon\Type\DirectoryType;
-use Ezzatron\Typhoon\Type\FileType;
-use Ezzatron\Typhoon\Type\FloatType;
-use Ezzatron\Typhoon\Type\IntegerType;
-use Ezzatron\Typhoon\Type\IntegerableType;
-use Ezzatron\Typhoon\Type\KeyType;
-use Ezzatron\Typhoon\Type\MixedType;
-use Ezzatron\Typhoon\Type\NullType;
-use Ezzatron\Typhoon\Type\NumberType;
-use Ezzatron\Typhoon\Type\NumericType;
-use Ezzatron\Typhoon\Type\ObjectType;
-use Ezzatron\Typhoon\Type\ParameterType;
-use Ezzatron\Typhoon\Type\ResourceType;
-use Ezzatron\Typhoon\Type\ScalarType;
-use Ezzatron\Typhoon\Type\StreamType;
-use Ezzatron\Typhoon\Type\StringableType;
 use Ezzatron\Typhoon\Type\StringType;
-use Ezzatron\Typhoon\Type\TraversableType;
 use Ezzatron\Typhoon\Type\Type;
-use Ezzatron\Typhoon\Type\TypeType;
 
 class TypeRegistry extends Collection
 {
@@ -54,6 +32,7 @@ class TypeRegistry extends Collection
     $this->set(self::TYPE_BOOLEAN, $namespace.'\BooleanType');
     $this->set(self::TYPE_CALLBACK, $namespace.'\CallbackType');
     $this->set(self::TYPE_CALLBACK_WRAPPER, $namespace.'\CallbackWrapperType');
+    $this->set(self::TYPE_CLASS, $namespace.'\ClassType');
     $this->set(self::TYPE_DIRECTORY, $namespace.'\DirectoryType');
     $this->set(self::TYPE_FILE, $namespace.'\FileType');
     $this->set(self::TYPE_FILTER, $namespace.'\FilterType');
@@ -220,6 +199,7 @@ class TypeRegistry extends Collection
   const TYPE_BOOLEAN = 'boolean';
   const TYPE_CALLBACK = 'callback';
   const TYPE_CALLBACK_WRAPPER = 'callback_wrapper';
+  const TYPE_CLASS = 'class';
   const TYPE_DIRECTORY = 'directory';
   const TYPE_FILE = 'file';
   const TYPE_FILTER = 'filter';
