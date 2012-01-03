@@ -71,7 +71,7 @@ class TyphaxTypeRenderer extends TypeRenderer
   {
     try
     {
-      return $this->typeRegistry()->alias($type);
+      return $this->typeRegistry()->aliasByType($type);
     }
     catch (UnregisteredTypeException $e) {}
 

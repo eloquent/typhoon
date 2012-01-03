@@ -176,7 +176,7 @@ class TyphaxTypeRendererTest extends \Ezzatron\Typhoon\Test\TestCase
   {
     if (null !== $alias)
     {
-      $this->_typeRegistry[$alias] = $type;
+      $this->_typeRegistry[$alias] = get_class($type);
     }
     $this->_renderer->setTypeRegistry($this->_typeRegistry);
 

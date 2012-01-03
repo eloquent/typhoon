@@ -11,6 +11,7 @@
 
 namespace Ezzatron\Typhoon\Type\Registry;
 
+use Ezzatron\Typhoon\Primitive\String;
 use Ezzatron\Typhoon\Test\Fixture\ConcreteBaseType;
 use Ezzatron\Typhoon\Type\ArrayType;
 use Ezzatron\Typhoon\Type\BooleanType;
@@ -45,39 +46,41 @@ class TypeRegistryTest extends \Ezzatron\Typhoon\Test\TestCase
    */
   public function defaultTypes()
   {
+    $namespace = 'Ezzatron\Typhoon\Type';
+    
     return array(
-      array('array', new ArrayType),
-      array('boolean', new BooleanType),
-      array('callback', new CallbackType),
-      array('callback_wrapper', new CallbackWrapperType),
-      array('directory', new DirectoryType),
-      array('file', new FileType),
-      array('float', new FloatType),
-      array('integer', new IntegerType),
-      array('integerable', new IntegerableType),
-      array('key', new KeyType),
-      array('mixed', new MixedType),
-      array('null', new NullType),
-      array('number', new NumberType),
-      array('numeric', new NumericType),
-      array('object', new ObjectType),
-      array('resource', new ResourceType),
-      array('scalar', new ScalarType),
-      array('stream', new StreamType),
-      array('string', new StringType),
-      array('stringable', new StringableType),
-      array('traversable', new TraversableType),
-      array('typhoon_parameter', new ParameterType),
-      array('typhoon_type', new TypeType),
+      array('array', $namespace.'\ArrayType'),
+      array('boolean', $namespace.'\BooleanType'),
+      array('callback', $namespace.'\CallbackType'),
+      array('callback_wrapper', $namespace.'\CallbackWrapperType'),
+      array('directory', $namespace.'\DirectoryType'),
+      array('file', $namespace.'\FileType'),
+      array('float', $namespace.'\FloatType'),
+      array('integer', $namespace.'\IntegerType'),
+      array('integerable', $namespace.'\IntegerableType'),
+      array('key', $namespace.'\KeyType'),
+      array('mixed', $namespace.'\MixedType'),
+      array('null', $namespace.'\NullType'),
+      array('number', $namespace.'\NumberType'),
+      array('numeric', $namespace.'\NumericType'),
+      array('object', $namespace.'\ObjectType'),
+      array('resource', $namespace.'\ResourceType'),
+      array('scalar', $namespace.'\ScalarType'),
+      array('stream', $namespace.'\StreamType'),
+      array('string', $namespace.'\StringType'),
+      array('stringable', $namespace.'\StringableType'),
+      array('traversable', $namespace.'\TraversableType'),
+      array('typhoon_parameter', $namespace.'\ParameterType'),
+      array('typhoon_type', $namespace.'\TypeType'),
 
-      array('bool', new BooleanType, true),
-      array('callable', new CallbackType, true),
-      array('double', new FloatType, true),
-      array('floatable', new NumericType, true),
-      array('int', new IntegerType, true),
-      array('keyable', new KeyType, true),
-      array('long', new IntegerType, true),
-      array('real', new FloatType, true),
+      array('bool', $namespace.'\BooleanType', true),
+      array('callable', $namespace.'\CallbackType', true),
+      array('double', $namespace.'\FloatType', true),
+      array('floatable', $namespace.'\NumericType', true),
+      array('int', $namespace.'\IntegerType', true),
+      array('keyable', $namespace.'\KeyType', true),
+      array('long', $namespace.'\IntegerType', true),
+      array('real', $namespace.'\FloatType', true),
     );
   }
 
@@ -128,7 +131,7 @@ class TypeRegistryTest extends \Ezzatron\Typhoon\Test\TestCase
    * @group type-registry
    * @group core
    */
-  public function testRegisterDefaults($alias, Type $type, $is_alias = null)
+  public function testRegisterDefaults($alias, $class, $is_alias = null)
   {
     if (null === $is_alias)
     {
@@ -140,7 +143,7 @@ class TypeRegistryTest extends \Ezzatron\Typhoon\Test\TestCase
     $caught = false;
     try
     {
-      $registry->alias($type);
+      $registry->alias(new String($class));
     }
     catch (Exception\UnregisteredTypeException $e)
     {
@@ -163,14 +166,15 @@ class TypeRegistryTest extends \Ezzatron\Typhoon\Test\TestCase
 
     if (!$is_alias)
     {
-      $this->assertEquals($alias, $registry->alias($type));
+      $this->assertEquals($alias, $registry->alias(new String($class)));
     }
 
-    $this->assertEquals($type, $registry[$alias]);
+    $this->assertEquals($class, $registry[$alias]);
   }
 
   /**
    * @covers Ezzatron\Typhoon\Type\Registry\TypeRegistry::alias
+   * @covers Ezzatron\Typhoon\Type\Registry\TypeRegistry::aliasByType
    * @covers Ezzatron\Typhoon\Type\Registry\TypeRegistry::aliases
    * @group collection
    * @group type
@@ -186,31 +190,31 @@ class TypeRegistryTest extends \Ezzatron\Typhoon\Test\TestCase
     $typeName_2 = get_class($type_2);
     $alias_1 = 'foo';
     $alias_2 = 'bar';
-    $this->_registry[$alias_1] = $type_1;
+    $this->_registry[$alias_1] = $typeName_1;
     
     $this->assertNotEquals($typeName_1, $typeName_2);
 
-    $this->assertEquals($alias_1, $this->_registry->alias($typeName_1));
-    $this->assertEquals($alias_1, $this->_registry->alias($type_1));
+    $this->assertEquals($alias_1, $this->_registry->alias(new String($typeName_1)));
+    $this->assertEquals($alias_1, $this->_registry->aliasByType($type_1));
 
-    $this->_registry[$alias_2] = $type_1;
+    $this->_registry[$alias_2] = $typeName_1;
 
-    $this->assertEquals($alias_1, $this->_registry->alias($typeName_1));
-    $this->assertEquals($alias_1, $this->_registry->alias($type_1));
+    $this->assertEquals($alias_1, $this->_registry->alias(new String($typeName_1)));
+    $this->assertEquals($alias_1, $this->_registry->aliasByType($type_1));
 
-    $this->_registry[$alias_1] = $type_2;
+    $this->_registry[$alias_1] = $typeName_2;
 
-    $this->assertEquals($alias_1, $this->_registry->alias($typeName_2));
-    $this->assertEquals($alias_1, $this->_registry->alias($type_2));
+    $this->assertEquals($alias_1, $this->_registry->alias(new String($typeName_2)));
+    $this->assertEquals($alias_1, $this->_registry->aliasByType($type_2));
 
-    $this->assertEquals($alias_2, $this->_registry->alias($typeName_1));
-    $this->assertEquals($alias_2, $this->_registry->alias($type_1));
+    $this->assertEquals($alias_2, $this->_registry->alias(new String($typeName_1)));
+    $this->assertEquals($alias_2, $this->_registry->aliasByType($type_1));
 
     $type = new ObjectType(array(
       ObjectType::ATTRIBUTE_INSTANCE_OF => 'foo',
     ));
 
-    $this->assertEquals(TypeRegistry::TYPE_OBJECT, $this->_registry->alias($type));
+    $this->assertEquals(TypeRegistry::TYPE_OBJECT, $this->_registry->aliasByType($type));
   }
 
   /**
@@ -223,10 +227,11 @@ class TypeRegistryTest extends \Ezzatron\Typhoon\Test\TestCase
   public function testAliasFailure()
   {
     $this->setExpectedException(__NAMESPACE__.'\Exception\UnregisteredTypeException');
-    $this->_registry->alias($this->_typeName);
+    $this->_registry->alias(new String($this->_typeName));
   }
 
   /**
+   * @covers Ezzatron\Typhoon\Type\Registry\TypeRegistry::isRegistered
    * @covers Ezzatron\Typhoon\Type\Registry\TypeRegistry::set
    * @covers Ezzatron\Typhoon\Type\Registry\TypeRegistry::get
    * @covers Ezzatron\Typhoon\Type\Registry\TypeRegistry::remove
@@ -240,21 +245,22 @@ class TypeRegistryTest extends \Ezzatron\Typhoon\Test\TestCase
   {
     $this->assertInstanceOf('ArrayAccess', $this->_registry);
 
+    $this->assertFalse($this->_registry->isRegistered(new String($this->_typeName)));
     $this->assertFalse(isset($this->_registry['foo']));
     $this->assertNull($this->_registry->get('foo', NULL));
 
-    $this->_registry['Foo'] = $this->_type;
+    $this->_registry['Foo'] = $this->_typeName;
 
+    $this->assertTrue($this->_registry->isRegistered(new String($this->_typeName)));
     $this->assertTrue(isset($this->_registry['foo']));
-    $this->assertEquals($this->_type, $this->_registry['foo']);
-    $this->assertNotSame($this->_type, $this->_registry['foo']);
+    $this->assertEquals($this->_typeName, $this->_registry['foo']);
 
-    $this->_registry['bar'] = $this->_type;
+    $this->_registry['bar'] = $this->_typeName;
 
     $this->assertTrue(isset($this->_registry['BAR']));
     $this->assertTrue(isset($this->_registry['bar']));
-    $this->assertEquals($this->_type, $this->_registry['BAR']);
-    $this->assertEquals($this->_type, $this->_registry['bar']);
+    $this->assertEquals($this->_typeName, $this->_registry['BAR']);
+    $this->assertEquals($this->_typeName, $this->_registry['bar']);
 
     unset($this->_registry['FOO']);
 

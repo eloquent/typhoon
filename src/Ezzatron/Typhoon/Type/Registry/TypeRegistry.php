@@ -48,60 +48,79 @@ class TypeRegistry extends Collection
 
   public function registerDefaults()
   {
-    $this[self::TYPE_ARRAY] = new ArrayType;
-    $this[self::TYPE_BOOLEAN] = new BooleanType;
-    $this[self::TYPE_CALLBACK] = new CallbackType;
-    $this[self::TYPE_CALLBACK_WRAPPER] = new CallbackWrapperType;
-    $this[self::TYPE_DIRECTORY] = new DirectoryType;
-    $this[self::TYPE_FILE] = new FileType;
-    $this[self::TYPE_FLOAT] = new FloatType;
-    $this[self::TYPE_INTEGER] = new IntegerType;
-    $this[self::TYPE_INTEGERABLE] = new IntegerableType;
-    $this[self::TYPE_KEY] = new KeyType;
-    $this[self::TYPE_MIXED] = new MixedType;
-    $this[self::TYPE_NULL] = new NullType;
-    $this[self::TYPE_NUMBER] = new NumberType;
-    $this[self::TYPE_NUMERIC] = new NumericType;
-    $this[self::TYPE_OBJECT] = new ObjectType;
-    $this[self::TYPE_PARAMETER] = new ParameterType;
-    $this[self::TYPE_RESOURCE] = new ResourceType;
-    $this[self::TYPE_SCALAR] = new ScalarType;
-    $this[self::TYPE_STREAM] = new StreamType;
-    $this[self::TYPE_STRING] = new StringType;
-    $this[self::TYPE_STRINGABLE] = new StringableType;
-    $this[self::TYPE_TRAVERSABLE] = new TraversableType;
-    $this[self::TYPE_TYPE] = new TypeType;
+    $namespace = 'Ezzatron\Typhoon\Type';
 
-    $this[self::ALIAS_BOOL] = $this[self::TYPE_BOOLEAN];
-    $this[self::ALIAS_CALLABLE] = $this[self::TYPE_CALLBACK];
-    $this[self::ALIAS_DOUBLE] = $this[self::TYPE_FLOAT];
-    $this[self::ALIAS_FLOATABLE] = $this[self::TYPE_NUMERIC];
-    $this[self::ALIAS_INT] = $this[self::TYPE_INTEGER];
-    $this[self::ALIAS_KEYABLE] = $this[self::TYPE_KEY];
-    $this[self::ALIAS_LONG] = $this[self::TYPE_INTEGER];
-    $this[self::ALIAS_REAL] = $this[self::TYPE_FLOAT];
+    $this->set(self::TYPE_ARRAY, $namespace.'\ArrayType');
+    $this->set(self::TYPE_BOOLEAN, $namespace.'\BooleanType');
+    $this->set(self::TYPE_CALLBACK, $namespace.'\CallbackType');
+    $this->set(self::TYPE_CALLBACK_WRAPPER, $namespace.'\CallbackWrapperType');
+    $this->set(self::TYPE_DIRECTORY, $namespace.'\DirectoryType');
+    $this->set(self::TYPE_FILE, $namespace.'\FileType');
+    $this->set(self::TYPE_FILTER, $namespace.'\FilterType');
+    $this->set(self::TYPE_FLOAT, $namespace.'\FloatType');
+    $this->set(self::TYPE_INTEGER, $namespace.'\IntegerType');
+    $this->set(self::TYPE_INTEGERABLE, $namespace.'\IntegerableType');
+    $this->set(self::TYPE_KEY, $namespace.'\KeyType');
+    $this->set(self::TYPE_MIXED, $namespace.'\MixedType');
+    $this->set(self::TYPE_NULL, $namespace.'\NullType');
+    $this->set(self::TYPE_NUMBER, $namespace.'\NumberType');
+    $this->set(self::TYPE_NUMERIC, $namespace.'\NumericType');
+    $this->set(self::TYPE_OBJECT, $namespace.'\ObjectType');
+    $this->set(self::TYPE_PARAMETER, $namespace.'\ParameterType');
+    $this->set(self::TYPE_RESOURCE, $namespace.'\ResourceType');
+    $this->set(self::TYPE_SCALAR, $namespace.'\ScalarType');
+    $this->set(self::TYPE_SOCKET, $namespace.'\SocketType');
+    $this->set(self::TYPE_STREAM, $namespace.'\StreamType');
+    $this->set(self::TYPE_STRING, $namespace.'\StringType');
+    $this->set(self::TYPE_STRINGABLE, $namespace.'\StringableType');
+    $this->set(self::TYPE_TRAVERSABLE, $namespace.'\TraversableType');
+    $this->set(self::TYPE_TYPE, $namespace.'\TypeType');
+
+    $this->set(self::ALIAS_BOOL, $this->get(self::TYPE_BOOLEAN));
+    $this->set(self::ALIAS_CALLABLE, $this->get(self::TYPE_CALLBACK));
+    $this->set(self::ALIAS_DOUBLE, $this->get(self::TYPE_FLOAT));
+    $this->set(self::ALIAS_FLOATABLE, $this->get(self::TYPE_NUMERIC));
+    $this->set(self::ALIAS_INT, $this->get(self::TYPE_INTEGER));
+    $this->set(self::ALIAS_KEYABLE, $this->get(self::TYPE_KEY));
+    $this->set(self::ALIAS_LONG, $this->get(self::TYPE_INTEGER));
+    $this->set(self::ALIAS_REAL, $this->get(self::TYPE_FLOAT));
   }
 
   /**
-   * @param object|string $type
+   * @param String $class
+   *
+   * @return boolean
+   */
+  public function isRegistered(String $class)
+  {
+    return array_key_exists($class->value(), $this->aliases());
+  }
+
+  /**
+   * @param String $class
    *
    * @return string
    */
-  public function alias($type)
+  public function alias(String $class)
   {
-    if (is_object($type))
+    if (!$this->isRegistered($class))
     {
-      $type = get_class($type);
+      throw new Exception\UnregisteredTypeException($class);
     }
 
     $aliases = $this->aliases();
 
-    if (!array_key_exists($type, $aliases))
-    {
-      throw new Exception\UnregisteredTypeException(new String($type));
-    }
+    return $aliases[$class->value()];
+  }
 
-    return $aliases[$type];
+  /**
+   * @param Type $type
+   *
+   * @return string
+   */
+  public function aliasByType(Type $type)
+  {
+    return $this->alias(new String(get_class($type)));
   }
 
   /**
@@ -113,24 +132,6 @@ class TypeRegistry extends Collection
     $this->aliases = NULL;
 
     parent::set($key, $value);
-  }
-
-  /**
-   * @param integer|string $key
-   * @param mixed $default
-   *
-   * @return mixed
-   */
-  public function get($key, $default = null)
-  {
-    $type = call_user_func_array(array('parent', 'get'), func_get_args());
-
-    if ($type instanceof Type)
-    {
-      return clone $type;
-    }
-    
-    return $type;
   }
 
   /**
@@ -166,7 +167,7 @@ class TypeRegistry extends Collection
    */
   protected function valueType($key)
   {
-    return new TypeType;
+    return new StringType;
   }
 
   /**
@@ -201,10 +202,8 @@ class TypeRegistry extends Collection
     {
       $this->aliases = array();
 
-      foreach ($this->values as $alias => $type)
+      foreach ($this->values as $alias => $class)
       {
-        $class = get_class($type);
-
         if (array_key_exists($class, $this->aliases))
         {
           continue;
@@ -223,6 +222,7 @@ class TypeRegistry extends Collection
   const TYPE_CALLBACK_WRAPPER = 'callback_wrapper';
   const TYPE_DIRECTORY = 'directory';
   const TYPE_FILE = 'file';
+  const TYPE_FILTER = 'filter';
   const TYPE_FLOAT = 'float';
   const TYPE_INTEGER = 'integer';
   const TYPE_INTEGERABLE = 'integerable';
@@ -235,6 +235,7 @@ class TypeRegistry extends Collection
   const TYPE_PARAMETER = 'typhoon_parameter';
   const TYPE_RESOURCE = 'resource';
   const TYPE_SCALAR = 'scalar';
+  const TYPE_SOCKET = 'socket';
   const TYPE_STREAM = 'stream';
   const TYPE_STRING = 'string';
   const TYPE_STRINGABLE = 'stringable';
