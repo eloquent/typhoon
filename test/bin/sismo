@@ -13,25 +13,18 @@
 // path constants
 require dirname(__DIR__).DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'paths.php';
 
-// clean reports
-foreach(glob(TYPHOON_TEST_REPORT_DIR.DIRECTORY_SEPARATOR.'*') as $report)
+// get composer
+$composerPath = TYPHOON_TEST_BIN_DIR.DIRECTORY_SEPARATOR.'composer.phar';
+if (!file_exists($composerPath))
 {
-  typhoon_test_delete_recursive($report);
+   file_put_contents($composerPath, file_get_contents('http://getcomposer.org/composer.phar'));
 }
 
-$configFile = 'config-reports.xml';
+// install vendors
+$oldWorkingPath = getcwd();
+chdir(TYPHOON_ROOT_DIR);
+passthru('php '.escapeshellarg($composerPath).' install');
+chdir($oldWorkingPath);
 
-require __DIR__.DIRECTORY_SEPARATOR.'phpunit.php';
-
-function typhoon_test_delete_recursive($path)
-{
-  if (is_dir($path))
-  {
-    array_map('typhoon_test_delete_recursive', glob($path.DIRECTORY_SEPARATOR.'*'));
-    rmdir($path);
-  }
-  elseif (is_file($path))
-  {
-    unlink($path);
-  }
-}
+// run tests as normal
+passthru(TYPHOON_TEST_BIN_DIR.DIRECTORY_SEPARATOR.'reports');
