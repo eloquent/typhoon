@@ -11,7 +11,7 @@
 
 namespace Eloquent\Typhoon\Test;
 
-use Eloquent\Typhoon\Test\Fixture\Callable;
+use Eloquent\Typhoon\Test\Fixture\CallableObject;
 use Eloquent\Typhoon\Test\Fixture\Stringable;
 use Eloquent\Typhoon\Test\Fixture\Traversable;
 use Eloquent\Typhoon\Typhoon;
@@ -116,11 +116,11 @@ class TestCase extends \PHPUnit_Framework_TestCase
   /**
    * @param mixed $return
    *
-   * @return Callable
+   * @return CallableObject
    */
   protected function callableFixture($return = null)
   {
-    return new Callable($return);
+    return new CallableObject($return);
   }
 
   /**

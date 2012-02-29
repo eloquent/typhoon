@@ -11,7 +11,7 @@
 
 namespace Eloquent\Typhoon\Test\Fixture;
 
-class Callable
+class CallableObject
 {
   /**
    * @param mixed $return
