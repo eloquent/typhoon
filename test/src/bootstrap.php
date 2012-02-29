@@ -18,6 +18,9 @@ require __DIR__.'/paths.php';
 require 'Phake.php';
 Phake::setClient(Phake::CLIENT_PHPUNIT);
 
+// include Typhax
+require TYPHOON_VENDOR_DIR.DIRECTORY_SEPARATOR.'eloquent'.DIRECTORY_SEPARATOR.'typhax'.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'include.php';
+
 // include Typhoon
 require TYPHOON_SRC_DIR.DIRECTORY_SEPARATOR.'include.php';
 
