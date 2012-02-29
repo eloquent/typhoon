@@ -1,8 +1,8 @@
 {
     "name": "eloquent/typhoon",
     "type": "library",
-    "description": "A flexible PHP type hinting syntax.",
-    "keywords": ["type","hint","hinting","syntax","parser"],
+    "description": "Simple, flexible type-checking for PHP.",
+    "keywords": ["type","hint","hinting","check","checking"],
     "homepage": "https://github.com/eloquent/typhoon",
     "license": "MIT",
     "authors": [
