@@ -1,0 +1,11 @@
+{
+    "hash": "a53da2aa2964a455468ba5a2782e84cc",
+    "packages": [
+        {
+            "package": "eloquent/typhax",
+            "version": "dev-master",
+            "source-reference": "683cfa6c9dd1b737544fd64895580b64d3018fbb"
+        }
+    ],
+    "aliases": []
+}

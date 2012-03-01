@@ -18,11 +18,6 @@ require __DIR__.'/paths.php';
 require 'Phake.php';
 Phake::setClient(Phake::CLIENT_PHPUNIT);
 
-// include Typhax
-require TYPHOON_VENDOR_DIR.DIRECTORY_SEPARATOR.'eloquent'.DIRECTORY_SEPARATOR.'typhax'.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'include.php';
-
-// include Typhoon
-require TYPHOON_SRC_DIR.DIRECTORY_SEPARATOR.'include.php';
-
-// include test fixtures
-require TYPHOON_TEST_SRC_DIR.DIRECTORY_SEPARATOR.'include.php';
+// use Composer for autoloading
+$autoloader = require TYPHOON_VENDOR_DIR.DIRECTORY_SEPARATOR.'.composer'.DIRECTORY_SEPARATOR.'autoload.php';
+$autoloader->add('Eloquent', TYPHOON_TEST_SRC_DIR);

@@ -13,18 +13,5 @@
 // path constants
 require dirname(__DIR__).DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'paths.php';
 
-// get composer
-$composerPath = TYPHOON_TEST_BIN_DIR.DIRECTORY_SEPARATOR.'composer.phar';
-if (!file_exists($composerPath))
-{
-   file_put_contents($composerPath, file_get_contents('http://getcomposer.org/composer.phar'));
-}
-
-// install vendors
-$oldWorkingPath = getcwd();
-chdir(TYPHOON_ROOT_DIR);
-passthru('php '.escapeshellarg($composerPath).' install');
-chdir($oldWorkingPath);
-
-// run tests as normal
+passthru(TYPHOON_TEST_BIN_DIR.DIRECTORY_SEPARATOR.'install-vendors');
 passthru(TYPHOON_TEST_BIN_DIR.DIRECTORY_SEPARATOR.'reports');

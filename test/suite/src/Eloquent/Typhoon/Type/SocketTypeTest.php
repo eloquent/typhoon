@@ -23,7 +23,7 @@ class SocketTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    */
   public function typeValues()
   {
-    return array(
+    $typeValues = array(
       array(false, null),                      // #0: null
       array(false, true),                      // #1: boolean
       array(false, 'string'),                  // #2: string
@@ -33,11 +33,17 @@ class SocketTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
       array(false, new stdClass),              // #6: object
       array(false, function(){}),              // #7: closure
       array(false, $this->resourceFixture()),  // #8: resource
-      array(true,  $this->socketFixture()),    // #9: socket
-      array(false, $this->streamFixture()),    // #10: stream
-      array(false, $this->fileFixture()),      // #11: file
-      array(false, $this->directoryFixture()), // #12: directory
+      array(false, $this->streamFixture()),    // #9: stream
+      array(false, $this->fileFixture()),      // #10: file
+      array(false, $this->directoryFixture()), // #11: directory
     );
+    
+    if (extension_loaded('sockets'))
+    {
+      $typeValues[] = array(true, $this->socketFixture()); // #12: socket
+    }
+    
+    return $typeValues;
   }
 
   /**

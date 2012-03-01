@@ -56,54 +56,57 @@ class TypeInspectorTest extends \Eloquent\Typhoon\Test\TestCase
     $expected = new DirectoryType;
     $data[] = array($value, $expected);
 
-    // #8: Socket
-    $value = $this->socketFixture();
-    $expected = new SocketType;
-    $data[] = array($value, $expected);
-
-    // #9: Stream
+    // #8: Stream
     $value = $this->streamFixture();
     $expected = new StreamType;
     $data[] = array($value, $expected);
 
-    // #10: Resource
+    // #9: Resource
     $value = $this->resourceFixture();
     $expected = new ResourceType;
     $data[] = array($value, $expected);
 
-    // #11: Array
+    // #10: Array
     $value = array();
     $expected = new ArrayType;
     $data[] = array($value, $expected);
 
-    // #12: Traversable
+    // #11: Traversable
     $value = Phake::mock('Iterator');
     $expected = new TraversableType(array(
       TraversableType::ATTRIBUTE_INSTANCE_OF => get_class($value),
     ));
     $data[] = array($value, $expected);
 
-    // #13: Object (stdClass)
+    // #12: Object (stdClass)
     $value = new stdClass;
     $expected = new ObjectType(array(
       ObjectType::ATTRIBUTE_INSTANCE_OF => get_class($value),
     ));
     $data[] = array($value, $expected);
 
-    // #14: Object (Typhoon)
+    // #13: Object (Typhoon)
     $value = Typhoon::instance();
     $expected = new ObjectType(array(
       ObjectType::ATTRIBUTE_INSTANCE_OF => get_class($value),
     ));
     $data[] = array($value, $expected);
 
-    // #15: Array with sub-values and 0-depth checking
+    // #14: Array with sub-values and 0-depth checking
     $value = array(
       'foo',
       'bar' => true,
     );
     $expected = new ArrayType;
     $data[] = array($value, $expected, new Integer(0));
+    
+    if (extension_loaded('sockets'))
+    {
+      // #15: Socket
+      $value = $this->socketFixture();
+      $expected = new SocketType;
+      $data[] = array($value, $expected);
+    }
 
     return $data;
   }

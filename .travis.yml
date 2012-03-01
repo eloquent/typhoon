@@ -3,9 +3,7 @@ before_script:
   - pyrus channel-discover pear.digitalsandwich.com
   - pyrus install digitalsandwich/Phake
   - phpenv rehash
-  - wget http://getcomposer.org/composer.phar
-  - php composer.phar install
-script: test/bin/run
+script: test/bin/ci-run
 php:
   - 5.3
   - 5.4

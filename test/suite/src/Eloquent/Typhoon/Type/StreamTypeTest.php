@@ -24,7 +24,7 @@ class StreamTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    */
   public function typeValues()
   {
-    return array(
+    $typeValues = array(
       array(false, null),                      // #0: null
       array(false, true),                      // #1: boolean
       array(false, 'string'),                  // #2: string
@@ -34,11 +34,17 @@ class StreamTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
       array(false, new stdClass),              // #6: object
       array(false, function(){}),              // #7: closure
       array(false, $this->resourceFixture()),  // #8: resource
-      array(false, $this->socketFixture()),    // #9: socket
-      array(true,  $this->streamFixture()),    // #10: stream
-      array(true,  $this->fileFixture()),      // #11: file
-      array(true,  $this->directoryFixture()), // #12: directory
+      array(true,  $this->streamFixture()),    // #9: stream
+      array(true,  $this->fileFixture()),      // #10: file
+      array(true,  $this->directoryFixture()), // #11: directory
     );
+    
+    if (extension_loaded('sockets'))
+    {
+      $typeValues[] = array(false, $this->socketFixture()); // #12: socket
+    }
+    
+    return $typeValues;
   }
 
   /**

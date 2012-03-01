@@ -20,6 +20,11 @@ class SocketTest extends \Eloquent\Typhoon\Test\TestCase
    */
   public function testType()
   {
+    if (!extension_loaded('sockets'))
+    {
+      $this->markTestSkipped('Requires sockets extension.');
+    }
+    
     $primitive = new Socket($this->socketFixture());
     $this->assertInstanceOf('Eloquent\Typhoon\Type\SocketType', $primitive->type());
   }
