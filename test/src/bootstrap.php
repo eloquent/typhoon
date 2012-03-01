@@ -19,5 +19,5 @@ require 'Phake.php';
 Phake::setClient(Phake::CLIENT_PHPUNIT);
 
 // use Composer for autoloading
-$autoloader = require TYPHOON_VENDOR_DIR.DIRECTORY_SEPARATOR.'.composer'.DIRECTORY_SEPARATOR.'autoload.php';
-$autoloader->add('Eloquent', TYPHOON_TEST_SRC_DIR);
+$autoloader = require LQNT_VENDOR_DIR.DIRECTORY_SEPARATOR.'.composer'.DIRECTORY_SEPARATOR.'autoload.php';
+$autoloader->add('Eloquent', LQNT_TEST_SRC_DIR);

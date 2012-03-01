@@ -120,7 +120,7 @@ class Typhoon
   protected $typeRegistry;
 
   /**
-   * @var Typhax
+   * @var TyphaxTypeRenderer
    */
   protected $typeRenderer;
 }
