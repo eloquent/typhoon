@@ -41,6 +41,7 @@ class UnsupportedAttributeExceptionTest extends \Eloquent\Typhoon\Test\Exception
 
   /**
    * @covers Eloquent\Typhoon\Assertion\Exception\UnsupportedAttributeException
+   * @covers Eloquent\Typhoon\Exception\UndefinedKeyException
    * @group exceptions
    * @group assertion
    * @group core

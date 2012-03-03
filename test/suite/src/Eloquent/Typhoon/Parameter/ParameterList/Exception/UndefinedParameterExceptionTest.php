@@ -40,6 +40,7 @@ class UndefinedParameterExceptionTest extends \Eloquent\Typhoon\Test\ExceptionTe
 
   /**
    * @covers Eloquent\Typhoon\Parameter\ParameterList\Exception\UndefinedParameterException::__construct
+   * @covers Eloquent\Typhoon\Exception\UndefinedKeyException
    * @group exceptions
    * @group parameter
    * @group core

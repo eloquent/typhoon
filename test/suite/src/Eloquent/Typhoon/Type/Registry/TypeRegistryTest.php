@@ -13,31 +13,7 @@ namespace Eloquent\Typhoon\Type\Registry;
 
 use Eloquent\Typhoon\Primitive\String;
 use Eloquent\Typhoon\Test\Fixture\ConcreteBaseType;
-use Eloquent\Typhoon\Type\ArrayType;
-use Eloquent\Typhoon\Type\BooleanType;
-use Eloquent\Typhoon\Type\CallbackType;
-use Eloquent\Typhoon\Type\CallbackWrapperType;
-use Eloquent\Typhoon\Type\ClassType;
-use Eloquent\Typhoon\Type\DirectoryType;
-use Eloquent\Typhoon\Type\FileType;
-use Eloquent\Typhoon\Type\FloatType;
-use Eloquent\Typhoon\Type\IntegerType;
-use Eloquent\Typhoon\Type\IntegerableType;
-use Eloquent\Typhoon\Type\KeyType;
-use Eloquent\Typhoon\Type\MixedType;
-use Eloquent\Typhoon\Type\NullType;
-use Eloquent\Typhoon\Type\NumberType;
-use Eloquent\Typhoon\Type\NumericType;
 use Eloquent\Typhoon\Type\ObjectType;
-use Eloquent\Typhoon\Type\ParameterType;
-use Eloquent\Typhoon\Type\ResourceType;
-use Eloquent\Typhoon\Type\ScalarType;
-use Eloquent\Typhoon\Type\StreamType;
-use Eloquent\Typhoon\Type\StringableType;
-use Eloquent\Typhoon\Type\StringType;
-use Eloquent\Typhoon\Type\TraversableType;
-use Eloquent\Typhoon\Type\Type;
-use Eloquent\Typhoon\Type\TypeType;
 use Phake;
 
 class TypeRegistryTest extends \Eloquent\Typhoon\Test\TestCase
@@ -54,6 +30,7 @@ class TypeRegistryTest extends \Eloquent\Typhoon\Test\TestCase
       array('boolean', $namespace.'\BooleanType'),
       array('callback', $namespace.'\CallbackType'),
       array('callback_wrapper', $namespace.'\CallbackWrapperType'),
+      array('character', $namespace.'\CharacterType'),
       array('class', $namespace.'\ClassType'),
       array('directory', $namespace.'\DirectoryType'),
       array('file', $namespace.'\FileType'),

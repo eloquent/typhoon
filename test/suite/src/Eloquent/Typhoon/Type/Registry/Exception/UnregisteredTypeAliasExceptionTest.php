@@ -40,6 +40,7 @@ class UnregisteredTypeAliasExceptionTest extends \Eloquent\Typhoon\Test\Exceptio
 
   /**
    * @covers Eloquent\Typhoon\Type\Registry\Exception\UnregisteredTypeAliasException::__construct
+   * @covers Eloquent\Typhoon\Exception\UndefinedKeyException
    * @group exceptions
    * @group type
    * @group type-registry

@@ -40,6 +40,7 @@ class UndefinedKeyExceptionTest extends \Eloquent\Typhoon\Test\ExceptionTestCase
 
   /**
    * @covers Eloquent\Typhoon\Collection\Exception\UndefinedKeyException::__construct
+   * @covers Eloquent\Typhoon\Exception\UndefinedKeyException
    * @group exceptions
    * @group collection
    * @group core

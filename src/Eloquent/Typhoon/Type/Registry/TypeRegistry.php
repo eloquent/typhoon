@@ -32,6 +32,7 @@ class TypeRegistry extends Collection
     $this->set(self::TYPE_BOOLEAN, $namespace.'\BooleanType');
     $this->set(self::TYPE_CALLBACK, $namespace.'\CallbackType');
     $this->set(self::TYPE_CALLBACK_WRAPPER, $namespace.'\CallbackWrapperType');
+    $this->set(self::TYPE_CHARACTER, $namespace.'\CharacterType');
     $this->set(self::TYPE_CLASS, $namespace.'\ClassType');
     $this->set(self::TYPE_DIRECTORY, $namespace.'\DirectoryType');
     $this->set(self::TYPE_FILE, $namespace.'\FileType');
@@ -199,6 +200,7 @@ class TypeRegistry extends Collection
   const TYPE_BOOLEAN = 'boolean';
   const TYPE_CALLBACK = 'callback';
   const TYPE_CALLBACK_WRAPPER = 'callback_wrapper';
+  const TYPE_CHARACTER = 'character';
   const TYPE_CLASS = 'class';
   const TYPE_DIRECTORY = 'directory';
   const TYPE_FILE = 'file';

@@ -40,6 +40,7 @@ class UnregisteredTypeExceptionTest extends \Eloquent\Typhoon\Test\ExceptionTest
 
   /**
    * @covers Eloquent\Typhoon\Type\Registry\Exception\UnregisteredTypeException::__construct
+   * @covers Eloquent\Typhoon\Exception\UndefinedKeyException
    * @group exceptions
    * @group type
    * @group type-registry
