@@ -53,6 +53,7 @@ class CharacterTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
 
       array(true,  mb_convert_encoding(chr(127), 'UTF-32', 'UTF-8'), $utf8OrUtf32Attributes),   // #14: character with specific encoding success
       array(false, chr(128),                                         $utf8OrUtf32Attributes),   // #15: character with specific encoding failure
+      array(false, chr(127).chr(127),                                $utf8OrUtf32Attributes),   // #16: character with specific encoding length failure
     );
   }
 

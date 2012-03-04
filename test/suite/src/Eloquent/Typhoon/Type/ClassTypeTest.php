@@ -22,6 +22,10 @@ class ClassTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    */
   public function typeValues()
   {
+    $typeClassAttributes = array(
+      ClassType::ATTRIBUTE_INSTANCE_OF => __NAMESPACE__.'\Type',
+    );
+
     return array(
       array(false, null),                      // #0: null
       array(false, true),                      // #1: boolean
@@ -35,6 +39,9 @@ class ClassTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
 
       array(true,  __CLASS__),                   // #9: class name
       array(true,  __NAMESPACE__.'\ClassType'),  // #10: class name
+
+      array(true,  __NAMESPACE__.'\ClassType', $typeClassAttributes),  // #11: class name of specific inheritance success
+      array(false, __CLASS__,                  $typeClassAttributes),  // #12: class name of specific inheritance failure
     );
   }
 
@@ -87,6 +94,7 @@ class ClassTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
   {
     $expected = new AttributeSignature;
     $expected->setHolderName(new String($this->typeClass()));
+    $expected->set(ClassType::ATTRIBUTE_INSTANCE_OF, new StringType);
     $expected->set(ClassType::ATTRIBUTE_AUTOLOAD, new BooleanType);
 
     $type = new ClassType;

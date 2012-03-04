@@ -33,6 +33,7 @@ class TypeRegistryTest extends \Eloquent\Typhoon\Test\TestCase
       array('character', $namespace.'\CharacterType'),
       array('class', $namespace.'\ClassType'),
       array('directory', $namespace.'\DirectoryType'),
+      array('enumeration', $namespace.'\EnumerationType'),
       array('file', $namespace.'\FileType'),
       array('float', $namespace.'\FloatType'),
       array('integer', $namespace.'\IntegerType'),

@@ -34,10 +34,18 @@ class ClassType extends Dynamic\BaseDynamicType
       return false;
     }
 
-    return class_exists(
-      $value
-      , $this->typhoonAttributes()->get(self::ATTRIBUTE_AUTOLOAD, true)
-    );
+    $class = $this->typhoonAttributes()->get(self::ATTRIBUTE_INSTANCE_OF, null);
+    $autoload = $this->typhoonAttributes()->get(self::ATTRIBUTE_AUTOLOAD, true);
+
+    if (
+      $class
+      && $class !== $value
+      && !is_a($value, $class, $autoload)
+    ) {
+      return false;
+    }
+
+    return class_exists($value, $autoload);
   }
 
   /**
@@ -48,9 +56,11 @@ class ClassType extends Dynamic\BaseDynamicType
    */
   static protected function configureAttributeSignature(AttributeSignature $attributeSignature, Dynamic\BaseDynamicType $type)
   {
+    $attributeSignature->set(self::ATTRIBUTE_INSTANCE_OF, new StringType);
     $attributeSignature->set(self::ATTRIBUTE_AUTOLOAD, new BooleanType);
   }
 
+  const ATTRIBUTE_INSTANCE_OF = 'instanceOf';
   const ATTRIBUTE_AUTOLOAD = 'autoload';
 
   /**
