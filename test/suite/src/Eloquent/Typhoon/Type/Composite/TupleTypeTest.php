@@ -12,6 +12,7 @@
 namespace Eloquent\Typhoon\Type\Composite;
 
 use Phake;
+use ReflectionObject;
 
 class TupleTypeTest extends \Eloquent\Typhoon\Test\TestCase
 {
@@ -26,6 +27,7 @@ class TupleTypeTest extends \Eloquent\Typhoon\Test\TestCase
    * @covers Eloquent\Typhoon\Type\Composite\BaseCompositeType::addTyphoonType
    * @covers Eloquent\Typhoon\Type\Composite\TupleType::typhoonCheck
    * @group type
+   * @group sub-typed-type
    * @group composite-type
    * @group core
    */
@@ -48,6 +50,7 @@ class TupleTypeTest extends \Eloquent\Typhoon\Test\TestCase
    * @covers Eloquent\Typhoon\Type\Composite\BaseCompositeType::addTyphoonType
    * @covers Eloquent\Typhoon\Type\Composite\TupleType::typhoonCheck
    * @group type
+   * @group sub-typed-type
    * @group composite-type
    * @group core
    */
@@ -62,6 +65,7 @@ class TupleTypeTest extends \Eloquent\Typhoon\Test\TestCase
    * @covers Eloquent\Typhoon\Type\Composite\BaseCompositeType::addTyphoonType
    * @covers Eloquent\Typhoon\Type\Composite\TupleType::typhoonCheck
    * @group type
+   * @group sub-typed-type
    * @group composite-type
    * @group core
    */
@@ -76,6 +80,7 @@ class TupleTypeTest extends \Eloquent\Typhoon\Test\TestCase
    * @covers Eloquent\Typhoon\Type\Composite\BaseCompositeType::addTyphoonType
    * @covers Eloquent\Typhoon\Type\Composite\TupleType::typhoonCheck
    * @group type
+   * @group sub-typed-type
    * @group composite-type
    * @group core
    */
@@ -96,6 +101,7 @@ class TupleTypeTest extends \Eloquent\Typhoon\Test\TestCase
    * @covers Eloquent\Typhoon\Type\Composite\BaseCompositeType::addTyphoonType
    * @covers Eloquent\Typhoon\Type\Composite\TupleType::typhoonCheck
    * @group type
+   * @group sub-typed-type
    * @group composite-type
    * @group core
    */
@@ -118,6 +124,7 @@ class TupleTypeTest extends \Eloquent\Typhoon\Test\TestCase
    * @covers Eloquent\Typhoon\Type\Composite\BaseCompositeType::addTyphoonType
    * @covers Eloquent\Typhoon\Type\Composite\TupleType::typhoonCheck
    * @group type
+   * @group sub-typed-type
    * @group composite-type
    * @group core
    */
@@ -136,6 +143,7 @@ class TupleTypeTest extends \Eloquent\Typhoon\Test\TestCase
    * @covers Eloquent\Typhoon\Type\Composite\BaseCompositeType::addTyphoonType
    * @covers Eloquent\Typhoon\Type\Composite\TupleType::typhoonCheck
    * @group type
+   * @group sub-typed-type
    * @group composite-type
    * @group core
    */
@@ -154,6 +162,7 @@ class TupleTypeTest extends \Eloquent\Typhoon\Test\TestCase
    * @covers Eloquent\Typhoon\Type\Composite\BaseCompositeType::addTyphoonType
    * @covers Eloquent\Typhoon\Type\Composite\TupleType::typhoonCheck
    * @group type
+   * @group sub-typed-type
    * @group composite-type
    * @group core
    */
@@ -169,8 +178,30 @@ class TupleTypeTest extends \Eloquent\Typhoon\Test\TestCase
   }
 
   /**
+   * @covers Eloquent\Typhoon\Type\Composite\TupleType::setTyphoonSubTypes
+   * @group type
+   * @group sub-typed-type
+   * @group composite-type
+   * @group core
+   */
+  public function testSetTyphoonSubTypes()
+  {
+    $expected = array(
+      $this->_typeA,
+      $this->_typeB,
+    );
+    $this->_tupleType->setTyphoonSubTypes($expected);
+    $reflector = new ReflectionObject($this->_tupleType);
+    $property = $reflector->getProperty('types');
+    $property->setAccessible(true);
+
+    $this->assertEquals($expected, $property->getValue($this->_tupleType));
+  }
+
+  /**
    * @covers Eloquent\Typhoon\Type\Composite\TupleType
    * @group type
+   * @group sub-typed-type
    * @group composite-type
    * @group core
    */

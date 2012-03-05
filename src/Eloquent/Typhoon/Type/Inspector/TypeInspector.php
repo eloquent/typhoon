@@ -25,7 +25,7 @@ use Eloquent\Typhoon\Type\ObjectType;
 use Eloquent\Typhoon\Type\SocketType;
 use Eloquent\Typhoon\Type\StreamType;
 use Eloquent\Typhoon\Type\StringType;
-use Eloquent\Typhoon\Type\Traversable\TraversableType as TraversableTypeInterface;
+use Eloquent\Typhoon\Type\SubTyped\TraversableType as TraversableTypeInterface;
 use Eloquent\Typhoon\Type\ResourceType;
 use Eloquent\Typhoon\Type\TraversableType;
 

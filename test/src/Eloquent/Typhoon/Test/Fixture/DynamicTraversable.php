@@ -12,6 +12,6 @@
 namespace Eloquent\Typhoon\Test\Fixture;
 
 use Eloquent\Typhoon\Type\Dynamic\DynamicType;
-use Eloquent\Typhoon\Type\Traversable\TraversableType;
+use Eloquent\Typhoon\Type\SubTyped\TraversableType;
 
 interface DynamicTraversable extends DynamicType, TraversableType {}

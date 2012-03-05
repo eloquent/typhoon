@@ -12,12 +12,21 @@
 namespace Eloquent\Typhoon\Type\Composite;
 
 use Eloquent\Typhoon\Type\ArrayType;
+use Eloquent\Typhoon\Type\SubTyped\SubTypedType;
 
-class TupleType extends BaseCompositeType
+class TupleType extends BaseCompositeType implements SubTypedType
 {
   public function __construct()
   {
     $this->innerType = new ArrayType;
+  }
+
+  /**
+   * @param array $subTypes
+   */
+  public function setTyphoonSubTypes(array $subTypes)
+  {
+    $this->types = $subTypes;
   }
 
   /**

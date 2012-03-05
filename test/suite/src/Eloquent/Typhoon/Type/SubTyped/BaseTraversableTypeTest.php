@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Eloquent\Typhoon\Type\Traversable;
+namespace Eloquent\Typhoon\Type\SubTyped;
 
 use Phake;
 use Eloquent\Typhoon\Type\MixedType;
@@ -24,10 +24,11 @@ class BaseTraversableTypeTest extends \Eloquent\Typhoon\Test\TestCase
   }
 
   /**
-   * @covers Eloquent\Typhoon\Type\Traversable\BaseTraversableType::__construct
-   * @covers Eloquent\Typhoon\Type\Traversable\BaseTraversableType::setTyphoonSubType
-   * @covers Eloquent\Typhoon\Type\Traversable\BaseTraversableType::typhoonSubType
+   * @covers Eloquent\Typhoon\Type\SubTyped\BaseTraversableType::__construct
+   * @covers Eloquent\Typhoon\Type\SubTyped\BaseTraversableType::setTyphoonSubType
+   * @covers Eloquent\Typhoon\Type\SubTyped\BaseTraversableType::typhoonSubType
    * @group type
+   * @group sub-typed-type
    * @group traversable-type
    * @group core
    */
@@ -42,10 +43,11 @@ class BaseTraversableTypeTest extends \Eloquent\Typhoon\Test\TestCase
   }
 
   /**
-   * @covers Eloquent\Typhoon\Type\Traversable\BaseTraversableType::__construct
-   * @covers Eloquent\Typhoon\Type\Traversable\BaseTraversableType::setTyphoonKeyType
-   * @covers Eloquent\Typhoon\Type\Traversable\BaseTraversableType::typhoonKeyType
+   * @covers Eloquent\Typhoon\Type\SubTyped\BaseTraversableType::__construct
+   * @covers Eloquent\Typhoon\Type\SubTyped\BaseTraversableType::setTyphoonKeyType
+   * @covers Eloquent\Typhoon\Type\SubTyped\BaseTraversableType::typhoonKeyType
    * @group type
+   * @group sub-typed-type
    * @group traversable-type
    * @group core
    */
@@ -57,6 +59,57 @@ class BaseTraversableTypeTest extends \Eloquent\Typhoon\Test\TestCase
     $this->_type->setTyphoonKeyType($type);
 
     $this->assertSame($type, $this->_type->typhoonKeyType());
+  }
+
+  /**
+   * @covers Eloquent\Typhoon\Type\SubTyped\BaseTraversableType::setTyphoonSubTypes
+   * @group type
+   * @group sub-typed-type
+   * @group traversable-type
+   * @group core
+   */
+  public function testSetTyphoonSubTypesSubOnly()
+  {
+    $this->assertEquals(new MixedType, $this->_type->typhoonSubType());
+
+    $type = Phake::mock('Eloquent\Typhoon\Type\Type');
+    $this->_type->setTyphoonSubTypes(array($type));
+
+    $this->assertSame($type, $this->_type->typhoonSubType());
+  }
+
+  /**
+   * @covers Eloquent\Typhoon\Type\SubTyped\BaseTraversableType::setTyphoonSubTypes
+   * @group type
+   * @group sub-typed-type
+   * @group traversable-type
+   * @group core
+   */
+  public function testSetTyphoonSubTypesKeyAndSub()
+  {
+    $this->assertEquals(new MixedType, $this->_type->typhoonSubType());
+
+    $typeA = Phake::mock('Eloquent\Typhoon\Type\Type');
+    $typeB = Phake::mock('Eloquent\Typhoon\Type\Type');
+    $this->_type->setTyphoonSubTypes(array($typeA, $typeB));
+
+    $this->assertSame($typeA, $this->_type->typhoonKeyType());
+    $this->assertSame($typeB, $this->_type->typhoonSubType());
+  }
+
+  /**
+   * @covers Eloquent\Typhoon\Type\SubTyped\BaseTraversableType::setTyphoonSubTypes
+   * @group type
+   * @group sub-typed-type
+   * @group traversable-type
+   * @group core
+   */
+  public function testSetTyphoonSubTypesFailure()
+  {
+    $type = Phake::mock('Eloquent\Typhoon\Type\Type');
+
+    $this->setExpectedException('Eloquent\Typhoon\Type\SubTyped\Exception\UnexpectedSubTypeException');
+    $this->_type->setTyphoonSubTypes(array($type, $type, $type));
   }
 
   /**
@@ -166,9 +219,10 @@ class BaseTraversableTypeTest extends \Eloquent\Typhoon\Test\TestCase
   }
 
   /**
-   * @covers Eloquent\Typhoon\Type\Traversable\BaseTraversableType::typhoonCheck
+   * @covers Eloquent\Typhoon\Type\SubTyped\BaseTraversableType::typhoonCheck
    * @dataProvider typhoonCheckData
    * @group type
+   * @group sub-typed-type
    * @group traversable-type
    * @group core
    */

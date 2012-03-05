@@ -18,7 +18,7 @@ class EnumerationTest extends \Eloquent\Typhoon\Test\TestCase
   /**
    * @covers Eloquent\Typhoon\Enumeration\Enumeration::values
    * @covers Eloquent\Typhoon\Enumeration\Enumeration::_values
-   * @group Enumeration
+   * @group enumeration
    */
   public function testValues()
   {
@@ -33,7 +33,7 @@ class EnumerationTest extends \Eloquent\Typhoon\Test\TestCase
   
   /**
    * @covers Eloquent\Typhoon\Enumeration\Enumeration::values
-   * @group Enumeration
+   * @group enumeration
    */
   public function testValuesFailure()
   {

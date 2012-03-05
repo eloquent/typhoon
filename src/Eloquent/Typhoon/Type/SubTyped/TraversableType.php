@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Eloquent\Typhoon\Type\Traversable;
+namespace Eloquent\Typhoon\Type\SubTyped;
 
 use Eloquent\Typhoon\Type\Type;
 
-interface TraversableType extends Type
+interface TraversableType extends SubTypedType
 {
   /**
-   * @param Type $type
+   * @param Type $subType
    */
   public function setTyphoonSubType(Type $subType);
 
@@ -26,7 +26,7 @@ interface TraversableType extends Type
   public function typhoonSubType();
 
   /**
-   * @param Type $type
+   * @param Type $keyType
    */
   public function setTyphoonKeyType(Type $keyType);
 

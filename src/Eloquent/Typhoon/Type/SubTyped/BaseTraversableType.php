@@ -9,11 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Eloquent\Typhoon\Type\Traversable;
+namespace Eloquent\Typhoon\Type\SubTyped;
 
 use Eloquent\Typhoon\Type\BaseType;
 use Eloquent\Typhoon\Type\MixedType;
+use Eloquent\Typhoon\Type\SubTyped\Exception\UnexpectedSubTypeException;
 use Eloquent\Typhoon\Type\Type;
+use Eloquent\Typhoon\Primitive\Integer;
+use Eloquent\Typhoon\Primitive\String;
 
 abstract class BaseTraversableType extends BaseType implements TraversableType
 {
@@ -53,6 +56,29 @@ abstract class BaseTraversableType extends BaseType implements TraversableType
   public function typhoonKeyType()
   {
     return $this->keyType;
+  }
+
+  /**
+   * @param array $subTypes
+   */
+  public function setTyphoonSubTypes(array $subTypes)
+  {
+    $numSubTypes = count($subTypes);
+
+    if ($numSubTypes > 2)
+    {
+      throw new UnexpectedSubTypeException(new String(get_called_class()), new Integer(2));
+    }
+
+    if ($numSubTypes > 0)
+    {
+      $this->setTyphoonSubType(array_pop($subTypes));
+
+      if ($numSubTypes > 1)
+      {
+        $this->setTyphoonKeyType(array_pop($subTypes));
+      }
+    }
   }
 
   /**

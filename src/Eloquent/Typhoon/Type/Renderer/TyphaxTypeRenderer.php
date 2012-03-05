@@ -15,7 +15,7 @@ use Eloquent\Typhoon\Attribute\Attributes;
 use Eloquent\Typhoon\Primitive\String;
 use Eloquent\Typhoon\Type\Dynamic\DynamicType;
 use Eloquent\Typhoon\Type\Registry\Exception\UnregisteredTypeException;
-use Eloquent\Typhoon\Type\Traversable\TraversableType as TraversableTypeInterface;
+use Eloquent\Typhoon\Type\SubTyped\TraversableType as TraversableTypeInterface;
 use Eloquent\Typhoon\Type\MixedType;
 use Eloquent\Typhoon\Type\ObjectType;
 use Eloquent\Typhoon\Type\TraversableType;

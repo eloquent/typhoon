@@ -15,7 +15,7 @@ use Eloquent\Typhoon\Attribute\Attributes;
 use Eloquent\Typhoon\Attribute\AttributeSignature;
 use Eloquent\Typhoon\Primitive\String;
 
-class TraversableType extends Traversable\BaseTraversableType implements Dynamic\DynamicType
+class TraversableType extends SubTyped\BaseTraversableType implements Dynamic\DynamicType
 {
   public function __construct(array $attributes = null)
   {

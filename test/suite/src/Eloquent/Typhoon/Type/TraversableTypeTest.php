@@ -69,6 +69,7 @@ class TraversableTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    * @group types
    * @group type
    * @group dynamic-type
+   * @group sub-typed-type
    * @group traversable-type
    */
   public function testConstruct()
@@ -103,6 +104,7 @@ class TraversableTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    * @group types
    * @group type
    * @group dynamic-type
+   * @group sub-typed-type
    * @group traversable-type
    */
   public function testAttributeSignature()
@@ -131,6 +133,7 @@ class TraversableTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    * @group types
    * @group type
    * @group dynamic-type
+   * @group sub-typed-type
    * @group traversable-type
    */
   public function testSetTyphoonAttribute()
@@ -147,6 +150,7 @@ class TraversableTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    * @group types
    * @group type
    * @group dynamic-type
+   * @group sub-typed-type
    * @group traversable-type
    */
   public function testSetTyphoonAttributeFailure()
@@ -164,6 +168,7 @@ class TraversableTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    * @group types
    * @group type
    * @group dynamic-type
+   * @group sub-typed-type
    * @group traversable-type
    */
   public function testPrimaryType()
@@ -191,6 +196,7 @@ class TraversableTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    * @group types
    * @group type
    * @group dynamic-type
+   * @group sub-typed-type
    * @group traversable-type
    */
   public function testPrimaryTypeWithInstanceOf()
@@ -227,6 +233,7 @@ class TraversableTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    * @group types
    * @group type
    * @group dynamic-type
+   * @group sub-typed-type
    * @group traversable-type
    */
   public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }

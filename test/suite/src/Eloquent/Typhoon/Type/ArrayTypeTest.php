@@ -48,6 +48,7 @@ class ArrayTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    * @dataProvider typeValues
    * @group types
    * @group type
+   * @group sub-typed-type
    * @group traversable-type
    */
   public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }

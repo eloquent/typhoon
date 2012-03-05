@@ -65,7 +65,7 @@ class TyphaxTypeRendererTest extends \Eloquent\Typhoon\Test\TestCase
     $attributes = new Attributes;
     $keyType = new MixedType;
     $subType = new MixedType;
-    $type = Phake::mock('Eloquent\Typhoon\Type\Traversable\TraversableType');
+    $type = Phake::mock('Eloquent\Typhoon\Type\SubTyped\TraversableType');
     Phake::when($type)->typhoonKeyType()->thenReturn($keyType);
     Phake::when($type)->typhoonSubType()->thenReturn($subType);
     $alias = 'foo';
@@ -76,7 +76,7 @@ class TyphaxTypeRendererTest extends \Eloquent\Typhoon\Test\TestCase
     $attributes = new Attributes;
     $keyType = new MixedType;
     $subType = Phake::mock('Eloquent\Typhoon\Type\Type');
-    $type = Phake::mock('Eloquent\Typhoon\Type\Traversable\TraversableType');
+    $type = Phake::mock('Eloquent\Typhoon\Type\SubTyped\TraversableType');
     Phake::when($type)->typhoonKeyType()->thenReturn($keyType);
     Phake::when($type)->typhoonSubType()->thenReturn($subType);
     $alias = 'foo';
@@ -88,7 +88,7 @@ class TyphaxTypeRendererTest extends \Eloquent\Typhoon\Test\TestCase
     $attributes = new Attributes;
     $keyType = Phake::mock('Eloquent\Typhoon\Type\Type');
     $subType = Phake::mock('Eloquent\Typhoon\Type\Type');
-    $type = Phake::mock('Eloquent\Typhoon\Type\Traversable\TraversableType');
+    $type = Phake::mock('Eloquent\Typhoon\Type\SubTyped\TraversableType');
     Phake::when($type)->typhoonKeyType()->thenReturn($keyType);
     Phake::when($type)->typhoonSubType()->thenReturn($subType);
     $alias = 'foo';

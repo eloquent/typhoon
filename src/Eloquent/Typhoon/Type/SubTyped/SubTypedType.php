@@ -9,17 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Eloquent\Typhoon\Type;
+namespace Eloquent\Typhoon\Type\SubTyped;
 
-class ArrayType extends SubTyped\BaseTraversableType
+use Eloquent\Typhoon\Primitive\Integer;
+use Eloquent\Typhoon\Type\Type;
+
+interface SubTypedType extends Type
 {
   /**
-   * @param mixed value
-   *
-   * @return boolean
+   * @param array $subTypes
    */
-  protected function checkPrimary($value)
-  {
-    return is_array($value);
-  }
+  public function setTyphoonSubTypes(array $subTypes);
 }
