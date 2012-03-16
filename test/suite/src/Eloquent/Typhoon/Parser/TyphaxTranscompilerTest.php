@@ -24,7 +24,7 @@ use Eloquent\Typhoon\Type\TraversableType;
 use Eloquent\Typhoon\Type\Type;
 use Phake;
 
-class TyphaxParserTest extends \Eloquent\Typhoon\Test\TestCase
+class TyphaxTranscompilerTest extends \Eloquent\Typhoon\Test\TestCase
 {
   protected function setUp()
   {
@@ -91,13 +91,13 @@ class TyphaxParserTest extends \Eloquent\Typhoon\Test\TestCase
   }
 
   /**
-   * @covers Eloquent\Typhoon\Parser\TyphaxParser
+   * @covers Eloquent\Typhoon\Parser\TyphaxTranscompiler
    * @dataProvider parserData
    * @group parser
    */
   public function testParser(Type $expected, TyphaxNode $typhaxNode)
   {
-    $parser = new TyphaxParser($this->_typeRegistry);
+    $parser = new TyphaxTranscompiler($this->_typeRegistry);
 
     $this->assertEquals($expected, $parser->parse($typhaxNode));
   }
@@ -141,13 +141,13 @@ class TyphaxParserTest extends \Eloquent\Typhoon\Test\TestCase
   }
 
   /**
-   * @covers Eloquent\Typhoon\Parser\TyphaxParser
+   * @covers Eloquent\Typhoon\Parser\TyphaxTranscompiler
    * @dataProvider parserFailureData
    * @group parser
    */
   public function testParserFailure($expected, TyphaxNode $typhaxNode)
   {
-    $parser = new TyphaxParser($this->_typeRegistry);
+    $parser = new TyphaxTranscompiler($this->_typeRegistry);
 
     $this->setExpectedException($expected);
     $parser->parse($typhaxNode);

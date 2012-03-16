@@ -20,7 +20,7 @@ use Eloquent\Typhoon\Type\Registry\Exception\UnregisteredTypeAliasException;
 use Eloquent\Typhoon\Type\Registry\TypeRegistry;
 use Eloquent\Typhoon\Type\SubTyped\SubTypedType;
 
-class TyphaxParser
+class TyphaxTranscompiler
 {
   public function __construct(TypeRegistry $typeRegistry)
   {
