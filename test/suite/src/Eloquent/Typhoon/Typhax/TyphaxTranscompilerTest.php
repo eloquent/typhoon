@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Eloquent\Typhoon\Parser;
+namespace Eloquent\Typhoon\Typhax;
 
 use Eloquent\Typhax\AST\Composite as TyphaxComposite;
 use Eloquent\Typhax\AST\Node as TyphaxNode;
@@ -36,7 +36,7 @@ class TyphaxTranscompilerTest extends \Eloquent\Typhoon\Test\TestCase
   /**
    * @return array
    */
-  public function parserData()
+  public function transcompilerData()
   {
     $data = array();
     
@@ -91,21 +91,21 @@ class TyphaxTranscompilerTest extends \Eloquent\Typhoon\Test\TestCase
   }
 
   /**
-   * @covers Eloquent\Typhoon\Parser\TyphaxTranscompiler
-   * @dataProvider parserData
-   * @group parser
+   * @covers Eloquent\Typhoon\Typhax\TyphaxTranscompiler
+   * @dataProvider transcompilerData
+   * @group typhax
    */
-  public function testParser(Type $expected, TyphaxNode $typhaxNode)
+  public function testTyphax(Type $expected, TyphaxNode $typhaxNode)
   {
-    $parser = new TyphaxTranscompiler($this->_typeRegistry);
+    $transcompiler = new TyphaxTranscompiler($this->_typeRegistry);
 
-    $this->assertEquals($expected, $parser->parse($typhaxNode));
+    $this->assertEquals($expected, $transcompiler->parse($typhaxNode));
   }
 
   /**
    * @return array
    */
-  public function parserFailureData()
+  public function transcompilerFailureData()
   {
     $data = array();
 
@@ -141,16 +141,16 @@ class TyphaxTranscompilerTest extends \Eloquent\Typhoon\Test\TestCase
   }
 
   /**
-   * @covers Eloquent\Typhoon\Parser\TyphaxTranscompiler
-   * @dataProvider parserFailureData
-   * @group parser
+   * @covers Eloquent\Typhoon\Typhax\TyphaxTranscompiler
+   * @dataProvider transcompilerFailureData
+   * @group typhax
    */
-  public function testParserFailure($expected, TyphaxNode $typhaxNode)
+  public function testTyphaxFailure($expected, TyphaxNode $typhaxNode)
   {
-    $parser = new TyphaxTranscompiler($this->_typeRegistry);
+    $transcompiler = new TyphaxTranscompiler($this->_typeRegistry);
 
     $this->setExpectedException($expected);
-    $parser->parse($typhaxNode);
+    $transcompiler->parse($typhaxNode);
   }
 
   /**

@@ -43,6 +43,7 @@ class MissingArgumentExceptionTest extends \Eloquent\Typhoon\Test\ExceptionTestC
 
   /**
    * @covers Eloquent\Typhoon\Assertion\Exception\MissingArgumentException
+   * @covers Eloquent\Typhoon\Exception\UnexpectedInputException
    * @group exceptions
    * @group assertion
    * @group core

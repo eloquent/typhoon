@@ -43,6 +43,7 @@ class UnexpectedAttributeExceptionTest extends \Eloquent\Typhoon\Test\ExceptionT
 
   /**
    * @covers Eloquent\Typhoon\Assertion\Exception\UnexpectedAttributeException
+   * @covers Eloquent\Typhoon\Exception\UnexpectedInputException
    * @group exceptions
    * @group assertion
    * @group core

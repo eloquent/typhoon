@@ -44,6 +44,7 @@ class UnexpectedArgumentExceptionTest extends \Eloquent\Typhoon\Test\ExceptionTe
 
   /**
    * @covers Eloquent\Typhoon\Assertion\Exception\UnexpectedArgumentException
+   * @covers Eloquent\Typhoon\Exception\UnexpectedInputException
    * @group exceptions
    * @group assertion
    * @group core

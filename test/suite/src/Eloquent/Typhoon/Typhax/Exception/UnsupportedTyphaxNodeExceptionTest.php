@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Eloquent\Typhoon\Parser\Exception;
+namespace Eloquent\Typhoon\Typhax\Exception;
 
 use Eloquent\Typhoon\Primitive\String;
 use Eloquent\Typhoon\Test\ExceptionTestCase;
@@ -40,7 +40,7 @@ class UnsupportedTyphaxNodeExceptionTest extends ExceptionTestCase
   }
 
   /**
-   * @covers Eloquent\Typhoon\Parser\Exception\UnsupportedTyphaxNodeException::__construct
+   * @covers Eloquent\Typhoon\Typhax\Exception\UnsupportedTyphaxNodeException::__construct
    * @group exceptions
    * @group core
    */

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Eloquent\Typhoon\Parser;
+namespace Eloquent\Typhoon\Typhax;
 
 use Eloquent\Typhax\AST\Composite as TyphaxComposite;
 use Eloquent\Typhax\AST\Node as TyphaxNode;

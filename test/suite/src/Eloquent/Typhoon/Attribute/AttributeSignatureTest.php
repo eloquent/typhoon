@@ -17,29 +17,10 @@ use Phake;
 
 class AttributeSignatureTest extends \Eloquent\Typhoon\Test\TestCase
 {
-  /**
-   * @return array
-   */
-  public function typeFailureData()
-  {
-    $type = Phake::mock('Eloquent\Typhoon\Type\Type');
-
-    return array(
-      array('offsetSet', 'foo', 'bar'),
-      array('offsetSet', 'foo', 1),
-      array('offsetSet', 'foo', null),
-      array('offsetSet', 'foo', true),
-      array('offsetSet', 'foo', false),
-
-      array('offsetSet', 1, $type),
-      array('offsetSet', null, $type),
-      array('offsetSet', true, $type),
-      array('offsetSet', .1, $type),
-    );
-  }
-
   protected function setUp()
   {
+    parent::setUp();
+
     $this->_signature = new AttributeSignature;
   }
 
@@ -84,6 +65,27 @@ class AttributeSignatureTest extends \Eloquent\Typhoon\Test\TestCase
     $this->assertFalse($this->_signature->keyExists('foo'));
   }
 
+  /**
+   * @return array
+   */
+  public function typeFailureData()
+  {
+    $type = Phake::mock('Eloquent\Typhoon\Type\Type');
+
+    return array(
+      array('offsetSet', 'foo', 'bar'),
+      array('offsetSet', 'foo', 1),
+      array('offsetSet', 'foo', null),
+      array('offsetSet', 'foo', true),
+      array('offsetSet', 'foo', false),
+
+      array('offsetSet', 1, $type),
+      array('offsetSet', null, $type),
+      array('offsetSet', true, $type),
+      array('offsetSet', .1, $type),
+    );
+  }
+  
   /**
    * @covers Eloquent\Typhoon\Attribute\AttributeSignature
    * @dataProvider typeFailureData

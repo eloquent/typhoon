@@ -42,6 +42,7 @@ class MissingAttributeExceptionTest extends \Eloquent\Typhoon\Test\ExceptionTest
 
   /**
    * @covers Eloquent\Typhoon\Assertion\Exception\MissingAttributeException
+   * @covers Eloquent\Typhoon\Exception\UnexpectedInputException
    * @group exceptions
    * @group assertion
    * @group core

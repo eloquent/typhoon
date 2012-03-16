@@ -17,21 +17,10 @@ use Eloquent\Typhoon\Type\StringType;
 
 class AttributesTest extends \Eloquent\Typhoon\Test\TestCase
 {
-  /**
-   * @return array
-   */
-  public function unsupportedAttributeData()
-  {
-    return array(
-      array('offsetExists', 'baz'),
-      array('offsetGet', 'baz'),
-      array('offsetSet', 'baz', 'splat'),
-      array('offsetUnset', 'baz'),
-    );
-  }
-
   protected function setUp()
   {
+    parent::setUp();
+
     $this->_signature = new AttributeSignature;
     $this->_signature->setHolderName(new String('holder'));
     $this->_signature->set('foo', new StringType, new Boolean(true));
@@ -235,6 +224,19 @@ class AttributesTest extends \Eloquent\Typhoon\Test\TestCase
     $this->_attributes['foo'] = 'baz';
 
     $this->assertEquals('baz', $this->_attributes['foo']);
+  }
+  
+  /**
+   * @return array
+   */
+  public function unsupportedAttributeData()
+  {
+    return array(
+      array('offsetExists', 'baz'),
+      array('offsetGet', 'baz'),
+      array('offsetSet', 'baz', 'splat'),
+      array('offsetUnset', 'baz'),
+    );
   }
 
   /**

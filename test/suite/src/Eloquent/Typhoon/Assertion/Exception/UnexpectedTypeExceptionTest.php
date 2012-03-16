@@ -41,6 +41,7 @@ class UnexpectedTypeExceptionTest extends \Eloquent\Typhoon\Test\ExceptionTestCa
 
   /**
    * @covers Eloquent\Typhoon\Assertion\Exception\UnexpectedTypeException
+   * @covers Eloquent\Typhoon\Exception\UnexpectedInputException
    * @group exceptions
    * @group assertion
    * @group core
