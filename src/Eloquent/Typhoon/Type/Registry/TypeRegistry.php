@@ -35,7 +35,6 @@ class TypeRegistry extends Collection
     $this->set(self::TYPE_CHARACTER, $namespace.'\CharacterType');
     $this->set(self::TYPE_CLASS, $namespace.'\ClassType');
     $this->set(self::TYPE_DIRECTORY, $namespace.'\DirectoryType');
-    $this->set(self::TYPE_ENUMERATION, $namespace.'\EnumerationType');
     $this->set(self::TYPE_FILE, $namespace.'\FileType');
     $this->set(self::TYPE_FILTER, $namespace.'\FilterType');
     $this->set(self::TYPE_FLOAT, $namespace.'\FloatType');
@@ -204,7 +203,6 @@ class TypeRegistry extends Collection
   const TYPE_CHARACTER = 'character';
   const TYPE_CLASS = 'class';
   const TYPE_DIRECTORY = 'directory';
-  const TYPE_ENUMERATION = 'enumeration';
   const TYPE_FILE = 'file';
   const TYPE_FILTER = 'filter';
   const TYPE_FLOAT = 'float';
