@@ -19,6 +19,7 @@ use Eloquent\Typhoon\Type\Dynamic\DynamicType;
 use Eloquent\Typhoon\Type\Registry\Exception\UnregisteredTypeAliasException;
 use Eloquent\Typhoon\Type\Registry\TypeRegistry;
 use Eloquent\Typhoon\Type\SubTyped\SubTypedType;
+use ReflectionClass;
 
 class TyphaxTranscompiler
 {
@@ -92,8 +93,9 @@ class TyphaxTranscompiler
       throw new Exception\UnsupportedTyphaxNodeException(new String(get_class($typhaxType)), $e);
     }
 
-    $typeIsDynamic = is_a($typeClass, 'Eloquent\Typhoon\Type\Dynamic\DynamicType', true);
-    $typeIsSubTyped = is_a($typeClass, 'Eloquent\Typhoon\Type\SubTyped\SubTypedType', true);
+    $typeClassReflector = new ReflectionClass($typeClass);
+    $typeIsDynamic = $typeClassReflector->implementsInterface('Eloquent\Typhoon\Type\Dynamic\DynamicType');
+    $typeIsSubTyped = $typeClassReflector->implementsInterface('Eloquent\Typhoon\Type\SubTyped\SubTypedType');
 
     if (
       $typhaxType->attributes()
