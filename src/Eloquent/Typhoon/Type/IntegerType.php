@@ -22,4 +22,6 @@ class IntegerType extends BaseType
   {
     return is_integer($value);
   }
+
+  const ALIAS = 'integer';
 }

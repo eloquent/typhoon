@@ -22,4 +22,6 @@ class FloatType extends BaseType
   {
     return is_float($value);
   }
+
+  const ALIAS = 'float';
 }

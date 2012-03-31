@@ -51,15 +51,15 @@ class TypeRegistryTest extends \Eloquent\Typhoon\Test\TestCase
       array('string', $namespace.'\StringType'),
       array('stringable', $namespace.'\StringableType'),
       array('traversable', $namespace.'\TraversableType'),
-      array('typhoon_parameter', $namespace.'\ParameterType'),
-      array('typhoon_type', $namespace.'\TypeType'),
+      array('typhoon.parameter', $namespace.'\ParameterType'),
+      array('typhoon.type', $namespace.'\TypeType'),
 
       array('bool', $namespace.'\BooleanType', true),
       array('callable', $namespace.'\CallbackType', true),
       array('double', $namespace.'\FloatType', true),
       array('floatable', $namespace.'\NumericType', true),
       array('int', $namespace.'\IntegerType', true),
-      array('keyable', $namespace.'\KeyType', true),
+      array('keyable', $namespace.'\ScalarType', true),
       array('long', $namespace.'\IntegerType', true),
       array('real', $namespace.'\FloatType', true),
     );
@@ -195,7 +195,7 @@ class TypeRegistryTest extends \Eloquent\Typhoon\Test\TestCase
       ObjectType::ATTRIBUTE_INSTANCE_OF => 'foo',
     ));
 
-    $this->assertEquals(TypeRegistry::TYPE_OBJECT, $this->_registry->aliasByType($type));
+    $this->assertEquals(ObjectType::ALIAS, $this->_registry->aliasByType($type));
   }
 
   /**

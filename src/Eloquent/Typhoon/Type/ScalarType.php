@@ -22,4 +22,6 @@ class ScalarType extends BaseType
   {
     return is_scalar($value);
   }
+
+  const ALIAS = 'scalar';
 }

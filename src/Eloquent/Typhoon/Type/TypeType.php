@@ -22,4 +22,6 @@ class TypeType extends BaseType
   {
     return $value instanceof Type;
   }
+
+  const ALIAS = 'typhoon.type';
 }

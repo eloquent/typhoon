@@ -40,6 +40,10 @@ class TraversableType extends SubTyped\BaseTraversableType implements Dynamic\Dy
     return $attributes;
   }
 
+  const ALIAS = 'traversable';
+  
+  const ATTRIBUTE_INSTANCE_OF = 'instanceOf';
+
   /**
    * @return boolean
    */
@@ -125,8 +129,6 @@ class TraversableType extends SubTyped\BaseTraversableType implements Dynamic\Dy
 
     return $primaryType;
   }
-  
-  const ATTRIBUTE_INSTANCE_OF = 'instanceOf';
 
   /**
    * @var array

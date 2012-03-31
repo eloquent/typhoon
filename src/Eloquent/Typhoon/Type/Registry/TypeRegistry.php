@@ -14,8 +14,35 @@ namespace Eloquent\Typhoon\Type\Registry;
 use Eloquent\Typhoon\Collection\Collection;
 use Eloquent\Typhoon\Collection\Exception\UndefinedKeyException;
 use Eloquent\Typhoon\Primitive\String;
+use Eloquent\Typhoon\Type\ArrayType;
+use Eloquent\Typhoon\Type\BooleanType;
+use Eloquent\Typhoon\Type\CallbackType;
+use Eloquent\Typhoon\Type\CallbackWrapperType;
+use Eloquent\Typhoon\Type\CharacterType;
+use Eloquent\Typhoon\Type\ClassNameType;
+use Eloquent\Typhoon\Type\DirectoryType;
+use Eloquent\Typhoon\Type\FileType;
+use Eloquent\Typhoon\Type\FilterType;
+use Eloquent\Typhoon\Type\FloatType;
+use Eloquent\Typhoon\Type\IntegerType;
+use Eloquent\Typhoon\Type\IntegerableType;
+use Eloquent\Typhoon\Type\InterfaceNameType;
+use Eloquent\Typhoon\Type\KeyType;
+use Eloquent\Typhoon\Type\MixedType;
+use Eloquent\Typhoon\Type\NullType;
+use Eloquent\Typhoon\Type\NumberType;
+use Eloquent\Typhoon\Type\NumericType;
+use Eloquent\Typhoon\Type\ObjectType;
+use Eloquent\Typhoon\Type\ParameterType;
+use Eloquent\Typhoon\Type\ResourceType;
+use Eloquent\Typhoon\Type\ScalarType;
+use Eloquent\Typhoon\Type\SocketType;
+use Eloquent\Typhoon\Type\StreamType;
 use Eloquent\Typhoon\Type\StringType;
+use Eloquent\Typhoon\Type\StringableType;
+use Eloquent\Typhoon\Type\TraversableType;
 use Eloquent\Typhoon\Type\Type;
+use Eloquent\Typhoon\Type\TypeType;
 
 class TypeRegistry extends Collection
 {
@@ -28,43 +55,43 @@ class TypeRegistry extends Collection
   {
     $namespace = 'Eloquent\Typhoon\Type';
 
-    $this->set(self::TYPE_ARRAY, $namespace.'\ArrayType');
-    $this->set(self::TYPE_BOOLEAN, $namespace.'\BooleanType');
-    $this->set(self::TYPE_CALLBACK, $namespace.'\CallbackType');
-    $this->set(self::TYPE_CALLBACK_WRAPPER, $namespace.'\CallbackWrapperType');
-    $this->set(self::TYPE_CHARACTER, $namespace.'\CharacterType');
-    $this->set(self::TYPE_CLASS_NAME, $namespace.'\ClassNameType');
-    $this->set(self::TYPE_DIRECTORY, $namespace.'\DirectoryType');
-    $this->set(self::TYPE_FILE, $namespace.'\FileType');
-    $this->set(self::TYPE_FILTER, $namespace.'\FilterType');
-    $this->set(self::TYPE_FLOAT, $namespace.'\FloatType');
-    $this->set(self::TYPE_INTEGER, $namespace.'\IntegerType');
-    $this->set(self::TYPE_INTEGERABLE, $namespace.'\IntegerableType');
-    $this->set(self::TYPE_INTERFACE_NAME, $namespace.'\InterfaceNameType');
-    $this->set(self::TYPE_KEY, $namespace.'\KeyType');
-    $this->set(self::TYPE_MIXED, $namespace.'\MixedType');
-    $this->set(self::TYPE_NULL, $namespace.'\NullType');
-    $this->set(self::TYPE_NUMBER, $namespace.'\NumberType');
-    $this->set(self::TYPE_NUMERIC, $namespace.'\NumericType');
-    $this->set(self::TYPE_OBJECT, $namespace.'\ObjectType');
-    $this->set(self::TYPE_PARAMETER, $namespace.'\ParameterType');
-    $this->set(self::TYPE_RESOURCE, $namespace.'\ResourceType');
-    $this->set(self::TYPE_SCALAR, $namespace.'\ScalarType');
-    $this->set(self::TYPE_SOCKET, $namespace.'\SocketType');
-    $this->set(self::TYPE_STREAM, $namespace.'\StreamType');
-    $this->set(self::TYPE_STRING, $namespace.'\StringType');
-    $this->set(self::TYPE_STRINGABLE, $namespace.'\StringableType');
-    $this->set(self::TYPE_TRAVERSABLE, $namespace.'\TraversableType');
-    $this->set(self::TYPE_TYPE, $namespace.'\TypeType');
+    $this->set(ArrayType::ALIAS, $namespace.'\ArrayType');
+    $this->set(BooleanType::ALIAS, $namespace.'\BooleanType');
+    $this->set(CallbackType::ALIAS, $namespace.'\CallbackType');
+    $this->set(CallbackWrapperType::ALIAS, $namespace.'\CallbackWrapperType');
+    $this->set(CharacterType::ALIAS, $namespace.'\CharacterType');
+    $this->set(ClassNameType::ALIAS, $namespace.'\ClassNameType');
+    $this->set(DirectoryType::ALIAS, $namespace.'\DirectoryType');
+    $this->set(FileType::ALIAS, $namespace.'\FileType');
+    $this->set(FilterType::ALIAS, $namespace.'\FilterType');
+    $this->set(FloatType::ALIAS, $namespace.'\FloatType');
+    $this->set(IntegerType::ALIAS, $namespace.'\IntegerType');
+    $this->set(IntegerableType::ALIAS, $namespace.'\IntegerableType');
+    $this->set(InterfaceNameType::ALIAS, $namespace.'\InterfaceNameType');
+    $this->set(KeyType::ALIAS, $namespace.'\KeyType');
+    $this->set(MixedType::ALIAS, $namespace.'\MixedType');
+    $this->set(NullType::ALIAS, $namespace.'\NullType');
+    $this->set(NumberType::ALIAS, $namespace.'\NumberType');
+    $this->set(NumericType::ALIAS, $namespace.'\NumericType');
+    $this->set(ObjectType::ALIAS, $namespace.'\ObjectType');
+    $this->set(ParameterType::ALIAS, $namespace.'\ParameterType');
+    $this->set(ResourceType::ALIAS, $namespace.'\ResourceType');
+    $this->set(ScalarType::ALIAS, $namespace.'\ScalarType');
+    $this->set(SocketType::ALIAS, $namespace.'\SocketType');
+    $this->set(StreamType::ALIAS, $namespace.'\StreamType');
+    $this->set(StringType::ALIAS, $namespace.'\StringType');
+    $this->set(StringableType::ALIAS, $namespace.'\StringableType');
+    $this->set(TraversableType::ALIAS, $namespace.'\TraversableType');
+    $this->set(TypeType::ALIAS, $namespace.'\TypeType');
 
-    $this->set(self::ALIAS_BOOL, $this->get(self::TYPE_BOOLEAN));
-    $this->set(self::ALIAS_CALLABLE, $this->get(self::TYPE_CALLBACK));
-    $this->set(self::ALIAS_DOUBLE, $this->get(self::TYPE_FLOAT));
-    $this->set(self::ALIAS_FLOATABLE, $this->get(self::TYPE_NUMERIC));
-    $this->set(self::ALIAS_INT, $this->get(self::TYPE_INTEGER));
-    $this->set(self::ALIAS_KEYABLE, $this->get(self::TYPE_KEY));
-    $this->set(self::ALIAS_LONG, $this->get(self::TYPE_INTEGER));
-    $this->set(self::ALIAS_REAL, $this->get(self::TYPE_FLOAT));
+    $this->set(self::ALIAS_BOOL, $this->get(BooleanType::ALIAS));
+    $this->set(self::ALIAS_CALLABLE, $this->get(CallbackType::ALIAS));
+    $this->set(self::ALIAS_DOUBLE, $this->get(FloatType::ALIAS));
+    $this->set(self::ALIAS_FLOATABLE, $this->get(NumericType::ALIAS));
+    $this->set(self::ALIAS_INT, $this->get(IntegerType::ALIAS));
+    $this->set(self::ALIAS_KEYABLE, $this->get(ScalarType::ALIAS));
+    $this->set(self::ALIAS_LONG, $this->get(IntegerType::ALIAS));
+    $this->set(self::ALIAS_REAL, $this->get(FloatType::ALIAS));
   }
 
   /**
@@ -124,6 +151,15 @@ class TypeRegistry extends Collection
 
     parent::remove($key);
   }
+
+  const ALIAS_BOOL = 'bool';
+  const ALIAS_CALLABLE = 'callable';
+  const ALIAS_DOUBLE = 'double';
+  const ALIAS_FLOATABLE = 'floatable';
+  const ALIAS_INT = 'int';
+  const ALIAS_KEYABLE = 'keyable';
+  const ALIAS_LONG = 'long';
+  const ALIAS_REAL = 'real';
 
   /**
    * @return Type
@@ -196,44 +232,6 @@ class TypeRegistry extends Collection
 
     return $this->aliases;
   }
-
-  const TYPE_ARRAY = 'array';
-  const TYPE_BOOLEAN = 'boolean';
-  const TYPE_CALLBACK = 'callback';
-  const TYPE_CALLBACK_WRAPPER = 'callback_wrapper';
-  const TYPE_CHARACTER = 'character';
-  const TYPE_CLASS_NAME = 'class_name';
-  const TYPE_DIRECTORY = 'directory';
-  const TYPE_FILE = 'file';
-  const TYPE_FILTER = 'filter';
-  const TYPE_FLOAT = 'float';
-  const TYPE_INTEGER = 'integer';
-  const TYPE_INTEGERABLE = 'integerable';
-  const TYPE_INTERFACE_NAME = 'interface_name';
-  const TYPE_KEY = 'key';
-  const TYPE_MIXED = 'mixed';
-  const TYPE_NULL = 'null';
-  const TYPE_NUMBER = 'number';
-  const TYPE_NUMERIC = 'numeric';
-  const TYPE_OBJECT = 'object';
-  const TYPE_PARAMETER = 'typhoon_parameter';
-  const TYPE_RESOURCE = 'resource';
-  const TYPE_SCALAR = 'scalar';
-  const TYPE_SOCKET = 'socket';
-  const TYPE_STREAM = 'stream';
-  const TYPE_STRING = 'string';
-  const TYPE_STRINGABLE = 'stringable';
-  const TYPE_TRAVERSABLE = 'traversable';
-  const TYPE_TYPE = 'typhoon_type';
-
-  const ALIAS_BOOL = 'bool';
-  const ALIAS_CALLABLE = 'callable';
-  const ALIAS_DOUBLE = 'double';
-  const ALIAS_FLOATABLE = 'floatable';
-  const ALIAS_INT = 'int';
-  const ALIAS_KEYABLE = 'keyable';
-  const ALIAS_LONG = 'long';
-  const ALIAS_REAL = 'real';
   
   /**
    * @var array

@@ -22,4 +22,6 @@ class NumericType extends BaseType
   {
     return is_numeric($value);
   }
+
+  const ALIAS = 'numeric';
 }

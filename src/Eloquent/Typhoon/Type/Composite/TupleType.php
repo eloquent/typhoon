@@ -65,6 +65,8 @@ class TupleType extends BaseCompositeType implements SubTypedType
     return true;
   }
 
+  const ALIAS = 'tuple';
+
   /**
    * @var ArrayType
    */

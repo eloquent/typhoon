@@ -29,7 +29,9 @@ class KeyType extends BaseType
   {
     return $this->innerType->typhoonCheck($value);
   }
-  
+
+  const ALIAS = 'key';
+
   /**
    * @var Composite\OrType
    */

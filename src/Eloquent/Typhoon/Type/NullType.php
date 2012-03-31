@@ -22,4 +22,6 @@ class NullType extends BaseType
   {
     return null === $value;
   }
+
+  const ALIAS = 'null';
 }

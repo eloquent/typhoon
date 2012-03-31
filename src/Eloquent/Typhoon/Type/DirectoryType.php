@@ -35,6 +35,11 @@ class DirectoryType extends Dynamic\BaseDynamicType
     return $this->innerType->typhoonCheck($value);
   }
 
+  const ALIAS = 'directory';
+
+  const ATTRIBUTE_LOCAL = 'local';
+  const ATTRIBUTE_WRAPPER = 'wrapper';
+
   /**
    * @param AttributeSignature $attributeSignature
    * @param BaseDynamicType $type
@@ -52,9 +57,6 @@ class DirectoryType extends Dynamic\BaseDynamicType
     $attributeSignature->set(self::ATTRIBUTE_LOCAL, new BooleanType);
     $attributeSignature->set(self::ATTRIBUTE_WRAPPER, $stringOrArrayOfStringType);
   }
-
-  const ATTRIBUTE_LOCAL = 'local';
-  const ATTRIBUTE_WRAPPER = 'wrapper';
 
   /**
    * @var StreamType

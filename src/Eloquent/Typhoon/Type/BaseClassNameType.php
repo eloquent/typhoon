@@ -59,6 +59,8 @@ abstract class BaseClassNameType extends Dynamic\BaseDynamicType
     );
   }
 
+  const ATTRIBUTE_IMPLEMENTS = 'implements';
+
   /**
    * @param AttributeSignature $attributeSignature
    * @param BaseDynamicType $type
@@ -103,8 +105,6 @@ abstract class BaseClassNameType extends Dynamic\BaseDynamicType
 
     return true;
   }
-
-  const ATTRIBUTE_IMPLEMENTS = 'implements';
 
   /**
    * @var boolean

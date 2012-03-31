@@ -40,7 +40,7 @@ class StreamType extends Dynamic\BaseDynamicType
     {
       return true;
     }
-    
+
     $local = $this->typhoonAttributes()->get(self::ATTRIBUTE_LOCAL, null);
     if (null !== $local)
     {
@@ -126,9 +126,39 @@ class StreamType extends Dynamic\BaseDynamicType
     return true;
   }
 
+  const ALIAS = 'stream';
+
+  const ATTRIBUTE_LOCAL = 'local';
+  const ATTRIBUTE_MODE = 'mode';
+  const ATTRIBUTE_READ = 'read';
+  const ATTRIBUTE_TYPE = 'type';
+  const ATTRIBUTE_WRAPPER = 'wrapper';
+  const ATTRIBUTE_WRITE = 'write';
+
+  const META_DATA_MODE = 'mode';
+  const META_DATA_TYPE = 'stream_type';
+  const META_DATA_WRAPPER = 'wrapper_type';
+
+  const MODE_APPEND = 'a';
+  const MODE_BINARY = 'b';
+  const MODE_CREATE = 'c';
+  const MODE_NONEXISTANT = 'x';
+  const MODE_PLUS = '+';
+  const MODE_READ = 'r';
+  const MODE_TEXT = 't';
+  const MODE_WRITE = 'w';
+
+  const TYPE_DIR = 'dir';
+  const TYPE_STDIO = 'STDIO';
+  const TYPE_TCP_SOCKET = 'tcp_socket';
+  const TYPE_TCP_SOCKET_SSL = 'tcp_socket/ssl';
+
+  const WRAPPER_PLAINFILE = 'plainfile';
+  const WRAPPER_HTTP = 'http';
+
   /**
    * @param stream $stream
-   * 
+   *
    * @return boolean
    */
   protected function isLocal($stream)
@@ -138,7 +168,7 @@ class StreamType extends Dynamic\BaseDynamicType
 
   /**
    * @param stream $stream
-   * 
+   *
    * @return array
    */
   protected function getMetaData($stream)
@@ -219,34 +249,6 @@ class StreamType extends Dynamic\BaseDynamicType
     $attributeSignature->set(self::ATTRIBUTE_WRAPPER, $stringOrArrayOfStringType);
     $attributeSignature->set(self::ATTRIBUTE_WRITE, new BooleanType);
   }
-
-  const ATTRIBUTE_LOCAL = 'local';
-  const ATTRIBUTE_MODE = 'mode';
-  const ATTRIBUTE_READ = 'read';
-  const ATTRIBUTE_TYPE = 'type';
-  const ATTRIBUTE_WRAPPER = 'wrapper';
-  const ATTRIBUTE_WRITE = 'write';
-
-  const META_DATA_MODE = 'mode';
-  const META_DATA_TYPE = 'stream_type';
-  const META_DATA_WRAPPER = 'wrapper_type';
-
-  const MODE_APPEND = 'a';
-  const MODE_BINARY = 'b';
-  const MODE_CREATE = 'c';
-  const MODE_NONEXISTANT = 'x';
-  const MODE_PLUS = '+';
-  const MODE_READ = 'r';
-  const MODE_TEXT = 't';
-  const MODE_WRITE = 'w';
-
-  const TYPE_DIR = 'dir';
-  const TYPE_STDIO = 'STDIO';
-  const TYPE_TCP_SOCKET = 'tcp_socket';
-  const TYPE_TCP_SOCKET_SSL = 'tcp_socket/ssl';
-  
-  const WRAPPER_PLAINFILE = 'plainfile';
-  const WRAPPER_HTTP = 'http';
 
   /**
    * @var ResourceType

@@ -36,6 +36,11 @@ class CallbackWrapperType extends Dynamic\BaseDynamicType
     );
   }
 
+  const ALIAS = 'callback_wrapper';
+
+  const ATTRIBUTE_CALLBACK = 'callback';
+  const ATTRIBUTE_ARGUMENTS = 'arguments';
+
   /**
    * @param AttributeSignature $attributeSignature
    * @param BaseDynamicType $type
@@ -47,7 +52,4 @@ class CallbackWrapperType extends Dynamic\BaseDynamicType
     $attributeSignature->set(self::ATTRIBUTE_CALLBACK, new CallbackType, new Boolean(true));
     $attributeSignature->set(self::ATTRIBUTE_ARGUMENTS, new ArrayType);
   }
-
-  const ATTRIBUTE_CALLBACK = 'callback';
-  const ATTRIBUTE_ARGUMENTS = 'arguments';
 }

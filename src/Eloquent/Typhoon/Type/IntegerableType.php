@@ -33,7 +33,9 @@ class IntegerableType extends BaseType
     
     return $this->innerIntegerType->typhoonCheck($value + 0);
   }
-  
+
+  const ALIAS = 'integerable';
+
   /**
    * @var NumericType
    */

@@ -57,6 +57,10 @@ class CharacterType extends Dynamic\BaseDynamicType
     return 1 === mb_strlen($value);
   }
 
+  const ALIAS = 'character';
+
+  const ATTRIBUTE_ENCODING = 'encoding';
+
   /**
    * @param AttributeSignature $attributeSignature
    * @param BaseDynamicType $type
@@ -73,8 +77,6 @@ class CharacterType extends Dynamic\BaseDynamicType
 
     $attributeSignature->set(self::ATTRIBUTE_ENCODING, $stringOrArrayOfStringType);
   }
-
-  const ATTRIBUTE_ENCODING = 'encoding';
 
   /**
    * @var StringType

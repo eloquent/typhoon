@@ -22,4 +22,6 @@ class MixedType extends BaseType
   {
     return true;
   }
+
+  const ALIAS = 'mixed';
 }

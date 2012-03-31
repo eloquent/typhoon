@@ -19,4 +19,6 @@ class InterfaceNameType extends BaseClassNameType
   {
     parent::__construct(new Boolean(true), $attributes);
   }
+
+  const ALIAS = 'interface_name';
 }

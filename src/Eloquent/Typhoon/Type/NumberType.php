@@ -29,7 +29,9 @@ class NumberType extends BaseType
   {
     return $this->innerType->typhoonCheck($value);
   }
-  
+
+  const ALIAS = 'number';
+
   /**
    * @var Composite\OrType
    */

@@ -50,6 +50,10 @@ class StringType extends Dynamic\BaseDynamicType
     return true;
   }
 
+  const ALIAS = 'string';
+
+  const ATTRIBUTE_ENCODING = 'encoding';
+
   /**
    * @param AttributeSignature $attributeSignature
    * @param BaseDynamicType $type
@@ -66,6 +70,4 @@ class StringType extends Dynamic\BaseDynamicType
     
     $attributeSignature->set(self::ATTRIBUTE_ENCODING, $stringOrArrayOfStringType);
   }
-
-  const ATTRIBUTE_ENCODING = 'encoding';
 }

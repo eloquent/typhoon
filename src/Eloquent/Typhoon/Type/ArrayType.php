@@ -13,6 +13,8 @@ namespace Eloquent\Typhoon\Type;
 
 class ArrayType extends SubTyped\BaseTraversableType
 {
+  const ALIAS = 'array';
+
   /**
    * @param mixed value
    *

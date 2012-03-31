@@ -23,6 +23,11 @@ class ClassNameType extends BaseClassNameType
     parent::__construct(new Boolean(false), $attributes);
   }
 
+  const ALIAS = 'class_name';
+
+  const ATTRIBUTE_CLASS_OF = 'classOf';
+  const ATTRIBUTE_INSTANTIABLE = 'instantiable';
+
   /**
    * @param AttributeSignature $attributeSignature
    * @param BaseDynamicType $type
@@ -67,7 +72,4 @@ class ClassNameType extends BaseClassNameType
 
     return parent::checkClass($attributes, $class);
   }
-
-  const ATTRIBUTE_CLASS_OF = 'classOf';
-  const ATTRIBUTE_INSTANTIABLE = 'instantiable';
 }

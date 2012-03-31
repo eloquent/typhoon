@@ -30,6 +30,8 @@ class SocketType extends BaseType
     return $this->innerType->typhoonCheck($value);
   }
 
+  const ALIAS = 'socket';
+
   /**
    * @var ResourceType
    */

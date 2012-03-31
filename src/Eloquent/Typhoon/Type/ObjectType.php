@@ -45,6 +45,10 @@ class ObjectType extends Dynamic\BaseDynamicType
     return is_object($value);
   }
 
+  const ALIAS = 'object';
+
+  const ATTRIBUTE_INSTANCE_OF = 'instanceOf';
+
   /**
    * @param AttributeSignature $attributeSignature
    * @param BaseDynamicType $type
@@ -61,6 +65,4 @@ class ObjectType extends Dynamic\BaseDynamicType
     
     $attributeSignature->set(self::ATTRIBUTE_INSTANCE_OF, $stringOrArrayOfStringType);
   }
-
-  const ATTRIBUTE_INSTANCE_OF = 'instanceOf';
 }

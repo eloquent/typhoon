@@ -24,4 +24,6 @@ class ParameterType extends BaseType
   {
     return $value instanceof Parameter;
   }
+
+  const ALIAS = 'typhoon.parameter';
 }

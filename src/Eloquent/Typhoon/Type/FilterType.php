@@ -30,6 +30,11 @@ class FilterType extends Dynamic\BaseDynamicType
     return true && filter_var($value, $filter, $options);
   }
 
+  const ALIAS = 'filter';
+
+  const ATTRIBUTE_FILTER = 'filter';
+  const ATTRIBUTE_OPTIONS = 'options';
+
   /**
    * @param AttributeSignature $attributeSignature
    * @param BaseDynamicType $type
@@ -47,7 +52,4 @@ class FilterType extends Dynamic\BaseDynamicType
     $optionsType->addTyphoonType(new IntegerType);
     $attributeSignature->set(self::ATTRIBUTE_OPTIONS, $optionsType);
   }
-
-  const ATTRIBUTE_FILTER = 'filter';
-  const ATTRIBUTE_OPTIONS = 'options';
 }

@@ -57,6 +57,10 @@ class StringableType extends Dynamic\BaseDynamicType
     return $this->innerStringType->typhoonCheck((string)$value);
   }
 
+  const ALIAS = 'stringable';
+
+  const ATTRIBUTE_ENCODING = 'encoding';
+
   /**
    * @param AttributeSignature $attributeSignature
    * @param BaseDynamicType $type
@@ -73,8 +77,6 @@ class StringableType extends Dynamic\BaseDynamicType
 
     $attributeSignature->set(self::ATTRIBUTE_ENCODING, $stringOrArrayOfStringType);
   }
-
-  const ATTRIBUTE_ENCODING = 'encoding';
 
   /**
    * @var ScalarType

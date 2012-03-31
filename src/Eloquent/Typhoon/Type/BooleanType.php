@@ -22,4 +22,6 @@ class BooleanType extends BaseType
   {
     return is_bool($value);
   }
+
+  const ALIAS = 'boolean';
 }

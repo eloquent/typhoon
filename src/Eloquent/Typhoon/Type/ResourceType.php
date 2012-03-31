@@ -44,6 +44,14 @@ class ResourceType extends Dynamic\BaseDynamicType
     return true;
   }
 
+  const ALIAS = 'resource';
+
+  const ATTRIBUTE_TYPE = 'type';
+
+  const TYPE_SOCKET = 'Socket';
+  const TYPE_STREAM = 'stream';
+  const TYPE_UNKNOWN = 'Unknown';
+
   /**
    * @param AttributeSignature $attributeSignature
    * @param BaseDynamicType $type
@@ -60,10 +68,4 @@ class ResourceType extends Dynamic\BaseDynamicType
 
     $attributeSignature->set(self::ATTRIBUTE_TYPE, $stringOrArrayOfStringType);
   }
-
-  const ATTRIBUTE_TYPE = 'type';
-
-  const TYPE_SOCKET = 'Socket';
-  const TYPE_STREAM = 'stream';
-  const TYPE_UNKNOWN = 'Unknown';
 }

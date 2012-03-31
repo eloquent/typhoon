@@ -35,6 +35,14 @@ class FileType extends Dynamic\BaseDynamicType
     return $this->innerType->typhoonCheck($value);
   }
 
+  const ALIAS = 'file';
+
+  const ATTRIBUTE_LOCAL = 'local';
+  const ATTRIBUTE_MODE = 'mode';
+  const ATTRIBUTE_READ = 'read';
+  const ATTRIBUTE_WRAPPER = 'wrapper';
+  const ATTRIBUTE_WRITE = 'write';
+
   /**
    * @param AttributeSignature $attributeSignature
    * @param BaseDynamicType $type
@@ -55,12 +63,6 @@ class FileType extends Dynamic\BaseDynamicType
     $attributeSignature->set(self::ATTRIBUTE_WRAPPER, $stringOrArrayOfStringType);
     $attributeSignature->set(self::ATTRIBUTE_WRITE, new BooleanType);
   }
-
-  const ATTRIBUTE_LOCAL = 'local';
-  const ATTRIBUTE_MODE = 'mode';
-  const ATTRIBUTE_READ = 'read';
-  const ATTRIBUTE_WRAPPER = 'wrapper';
-  const ATTRIBUTE_WRITE = 'write';
 
   /**
    * @var StreamType

@@ -22,4 +22,6 @@ class CallbackType extends BaseType
   {
     return is_callable($value);
   }
+
+  const ALIAS = 'callback';
 }
