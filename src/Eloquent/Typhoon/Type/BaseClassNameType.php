@@ -17,11 +17,11 @@ use Eloquent\Typhoon\Primitive\Boolean;
 use ReflectionClass;
 use ReflectionException;
 
-abstract class BaseClassType extends Dynamic\BaseDynamicType
+abstract class BaseClassNameType extends Dynamic\BaseDynamicType
 {
   public function __construct(Boolean $interface, array $attributes = null)
   {
-  	parent::__construct($attributes);
+    parent::__construct($attributes);
 
     $this->interface = $interface->value();
     $this->innerType = new StringType;
@@ -54,8 +54,8 @@ abstract class BaseClassType extends Dynamic\BaseDynamicType
     }
 
     return $this->checkClass(
-    	$this->typhoonAttributes()
-    	, $class
+      $this->typhoonAttributes()
+      , $class
     );
   }
 
@@ -68,9 +68,9 @@ abstract class BaseClassType extends Dynamic\BaseDynamicType
   static protected function configureAttributeSignature(AttributeSignature $attributeSignature, Dynamic\BaseDynamicType $type)
   {
     $arrayOfInterfaceType = new ArrayType;
-    $arrayOfInterfaceType->setTyphoonSubType(new InterfaceType);
+    $arrayOfInterfaceType->setTyphoonSubType(new InterfaceNameType);
     $interfaceOrArrayOfInterfaceType = new Composite\OrType;
-    $interfaceOrArrayOfInterfaceType->addTyphoonType(new InterfaceType);
+    $interfaceOrArrayOfInterfaceType->addTyphoonType(new InterfaceNameType);
     $interfaceOrArrayOfInterfaceType->addTyphoonType($arrayOfInterfaceType);
 
     $attributeSignature->set(self::ATTRIBUTE_IMPLEMENTS, $interfaceOrArrayOfInterfaceType);

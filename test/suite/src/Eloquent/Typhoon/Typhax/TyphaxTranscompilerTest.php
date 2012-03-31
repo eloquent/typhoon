@@ -17,7 +17,7 @@ use Eloquent\Typhax\AST\Type as TyphaxType;
 use Eloquent\Typhoon\Type\Composite\AndType;
 use Eloquent\Typhoon\Type\Composite\OrType;
 use Eloquent\Typhoon\Type\Registry\TypeRegistry;
-use Eloquent\Typhoon\Type\ClassType;;
+use Eloquent\Typhoon\Type\ClassNameType;
 use Eloquent\Typhoon\Type\NullType;
 use Eloquent\Typhoon\Type\StringType;
 use Eloquent\Typhoon\Type\TraversableType;
@@ -46,13 +46,13 @@ class TyphaxTranscompilerTest extends \Eloquent\Typhoon\Test\TestCase
     $data[] = array($expected, $typhaxNode);
 
     // #1: type with attributes
-    $expected = new ClassType(array(
-      ClassType::ATTRIBUTE_CLASS_OF => 'foo',
-      ClassType::ATTRIBUTE_IMPLEMENTS => array('bar', 'baz'),
+    $expected = new ClassNameType(array(
+      ClassNameType::ATTRIBUTE_CLASS_OF => 'foo',
+      ClassNameType::ATTRIBUTE_IMPLEMENTS => array('bar', 'baz'),
     ));
-    $typhaxNode = new TyphaxType('class');
-    $typhaxNode->setAttribute(ClassType::ATTRIBUTE_CLASS_OF, 'foo');
-    $typhaxNode->setAttribute(ClassType::ATTRIBUTE_IMPLEMENTS, array('bar', 'baz'));
+    $typhaxNode = new TyphaxType('class_name');
+    $typhaxNode->setAttribute(ClassNameType::ATTRIBUTE_CLASS_OF, 'foo');
+    $typhaxNode->setAttribute(ClassNameType::ATTRIBUTE_IMPLEMENTS, array('bar', 'baz'));
     $data[] = array($expected, $typhaxNode);
 
     // #2: type with attributes and subtypes
@@ -61,30 +61,30 @@ class TyphaxTranscompilerTest extends \Eloquent\Typhoon\Test\TestCase
     ));
     $expected->setTyphoonSubTypes(array(
       new StringType,
-      new ClassType,
+      new ClassNameType,
     ));
     $typhaxNode = new TyphaxType('traversable');
     $typhaxNode->setAttribute(TraversableType::ATTRIBUTE_INSTANCE_OF, 'foo');
     $typhaxNode->addSubType(new TyphaxType('string'));
-    $typhaxNode->addSubType(new TyphaxType('class'));
+    $typhaxNode->addSubType(new TyphaxType('class_name'));
     $data[] = array($expected, $typhaxNode);
 
     // #3: or composite
     $expected = new OrType;
     $expected->addTyphoonType(new StringType);
-    $expected->addTyphoonType(new ClassType);
+    $expected->addTyphoonType(new ClassNameType);
     $typhaxNode = new TyphaxComposite('|');
     $typhaxNode->addType(new TyphaxType('string'));
-    $typhaxNode->addType(new TyphaxType('class'));
+    $typhaxNode->addType(new TyphaxType('class_name'));
     $data[] = array($expected, $typhaxNode);
 
     // #3: and composite
     $expected = new AndType;
     $expected->addTyphoonType(new StringType);
-    $expected->addTyphoonType(new ClassType);
+    $expected->addTyphoonType(new ClassNameType);
     $typhaxNode = new TyphaxComposite('&');
     $typhaxNode->addType(new TyphaxType('string'));
-    $typhaxNode->addType(new TyphaxType('class'));
+    $typhaxNode->addType(new TyphaxType('class_name'));
     $data[] = array($expected, $typhaxNode);
 
     return $data;

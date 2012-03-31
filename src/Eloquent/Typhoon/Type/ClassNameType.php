@@ -16,7 +16,7 @@ use Eloquent\Typhoon\Attribute\AttributeSignature;
 use Eloquent\Typhoon\Primitive\Boolean;
 use ReflectionClass;
 
-class ClassType extends BaseClassType
+class ClassNameType extends BaseClassNameType
 {
   public function __construct(array $attributes = null)
   {
@@ -32,7 +32,7 @@ class ClassType extends BaseClassType
   static protected function configureAttributeSignature(AttributeSignature $attributeSignature, Dynamic\BaseDynamicType $type)
   {
     $attributeSignature->set(self::ATTRIBUTE_INSTANTIABLE, new BooleanType);
-    $attributeSignature->set(self::ATTRIBUTE_CLASS_OF, new ClassType);
+    $attributeSignature->set(self::ATTRIBUTE_CLASS_OF, new ClassNameType);
 
     parent::configureAttributeSignature($attributeSignature, $type);
   }

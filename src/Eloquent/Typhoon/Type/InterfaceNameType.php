@@ -13,7 +13,7 @@ namespace Eloquent\Typhoon\Type;
 
 use Eloquent\Typhoon\Primitive\Boolean;
 
-class InterfaceType extends BaseClassType
+class InterfaceNameType extends BaseClassNameType
 {
   public function __construct(array $attributes = null)
   {

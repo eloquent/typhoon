@@ -15,7 +15,7 @@ use stdClass;
 use Eloquent\Typhoon\Attribute\AttributeSignature;
 use Eloquent\Typhoon\Primitive\String;
 
-class InterfaceTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
+class InterfaceNameTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
 {
   /**
    * @return array
@@ -23,11 +23,11 @@ class InterfaceTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
   public function typeValues()
   {
     $typeInterfaceAttributes = array(
-      InterfaceType::ATTRIBUTE_IMPLEMENTS => __NAMESPACE__.'\Type',
+      InterfaceNameType::ATTRIBUTE_IMPLEMENTS => __NAMESPACE__.'\Type',
     );
 
     $typeAndSubTypedTypeInterfaceAttributes = array(
-      InterfaceType::ATTRIBUTE_IMPLEMENTS => array(
+      InterfaceNameType::ATTRIBUTE_IMPLEMENTS => array(
         __NAMESPACE__.'\Type',
         __NAMESPACE__.'\SubTyped\SubTypedType',
       ),
@@ -44,10 +44,10 @@ class InterfaceTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
       array(false, function(){}),              // #7: closure
       array(false, $this->resourceFixture()),  // #8: resource
 
-      array(true,  'Iterator'),                      // #9: interface name
-      array(true,  __NAMESPACE__.'\Type'),           // #10: interface name
+      array(true,  'Iterator'),                          // #9: interface name
+      array(true,  __NAMESPACE__.'\Type'),               // #10: interface name
 
-      array(false, __NAMESPACE__.'\InterfaceType'),  // #11: class name
+      array(false, __NAMESPACE__.'\InterfaceNameType'),  // #11: class name
 
       array(true,  __NAMESPACE__.'\Dynamic\DynamicType', $typeInterfaceAttributes),  // #12: interface name of specific inheritance success
       array(true,  __NAMESPACE__.'\Type',                $typeInterfaceAttributes),  // #13: interface name of exact match success
@@ -64,11 +64,11 @@ class InterfaceTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    */
   protected function typeClass()
   {
-    return __NAMESPACE__.'\InterfaceType';
+    return __NAMESPACE__.'\InterfaceNameType';
   }
 
   /**
-   * @covers Eloquent\Typhoon\Type\InterfaceType
+   * @covers Eloquent\Typhoon\Type\InterfaceNameType
    * @covers Eloquent\Typhoon\Type\BaseClassType
    * @group class-types
    * @group types
@@ -78,16 +78,16 @@ class InterfaceTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
   public function testConfigureAttributeSignature()
   {
     $arrayOfInterfaceType = new ArrayType;
-    $arrayOfInterfaceType->setTyphoonSubType(new InterfaceType);
+    $arrayOfInterfaceType->setTyphoonSubType(new InterfaceNameType);
     $interfaceOrArrayOfInterfaceType = new Composite\OrType;
-    $interfaceOrArrayOfInterfaceType->addTyphoonType(new InterfaceType);
+    $interfaceOrArrayOfInterfaceType->addTyphoonType(new InterfaceNameType);
     $interfaceOrArrayOfInterfaceType->addTyphoonType($arrayOfInterfaceType);
 
     $expected = new AttributeSignature;
     $expected->setHolderName(new String($this->typeClass()));
-    $expected->set(InterfaceType::ATTRIBUTE_IMPLEMENTS, $interfaceOrArrayOfInterfaceType);
+    $expected->set(InterfaceNameType::ATTRIBUTE_IMPLEMENTS, $interfaceOrArrayOfInterfaceType);
 
-    $type = new InterfaceType;
+    $type = new InterfaceNameType;
 
     $this->assertEquals($expected, $type->typhoonAttributes()->signature());
   }
@@ -95,7 +95,7 @@ class InterfaceTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
   // methods below must be manually overridden to implement @covers
 
   /**
-   * @covers Eloquent\Typhoon\Type\InterfaceType
+   * @covers Eloquent\Typhoon\Type\InterfaceNameType
    * @covers Eloquent\Typhoon\Type\BaseClassType
    * @dataProvider typeValues
    * @group class-types
