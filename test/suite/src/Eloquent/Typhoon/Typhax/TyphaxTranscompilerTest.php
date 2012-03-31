@@ -47,12 +47,12 @@ class TyphaxTranscompilerTest extends \Eloquent\Typhoon\Test\TestCase
 
     // #1: type with attributes
     $expected = new ClassType(array(
-      ClassType::ATTRIBUTE_INSTANCE_OF => 'foo',
-      ClassType::ATTRIBUTE_AUTOLOAD => true,
+      ClassType::ATTRIBUTE_EXTENDS => 'foo',
+      ClassType::ATTRIBUTE_IMPLEMENTS => array('bar', 'baz'),
     ));
     $typhaxNode = new TyphaxType('class');
-    $typhaxNode->setAttribute(ClassType::ATTRIBUTE_INSTANCE_OF, 'foo');
-    $typhaxNode->setAttribute(ClassType::ATTRIBUTE_AUTOLOAD, true);
+    $typhaxNode->setAttribute(ClassType::ATTRIBUTE_EXTENDS, 'foo');
+    $typhaxNode->setAttribute(ClassType::ATTRIBUTE_IMPLEMENTS, array('bar', 'baz'));
     $data[] = array($expected, $typhaxNode);
 
     // #2: type with attributes and subtypes

@@ -11,41 +11,16 @@
 
 namespace Eloquent\Typhoon\Type;
 
+use Eloquent\Typhoon\Attribute\Attributes;
 use Eloquent\Typhoon\Attribute\AttributeSignature;
+use Eloquent\Typhoon\Primitive\Boolean;
+use ReflectionClass;
 
-class ClassType extends Dynamic\BaseDynamicType
+class ClassType extends BaseClassType
 {
   public function __construct(array $attributes = null)
   {
-    parent::__construct($attributes);
-
-    $this->innerType = new StringType;
-  }
-
-  /**
-   * @param mixed value
-   *
-   * @return boolean
-   */
-  public function typhoonCheck($value)
-  {
-    if (!$this->innerType->typhoonCheck($value))
-    {
-      return false;
-    }
-
-    $class = $this->typhoonAttributes()->get(self::ATTRIBUTE_INSTANCE_OF, null);
-    $autoload = $this->typhoonAttributes()->get(self::ATTRIBUTE_AUTOLOAD, true);
-
-    if (
-      $class
-      && $class !== $value
-      && !is_a($value, $class, $autoload)
-    ) {
-      return false;
-    }
-
-    return class_exists($value, $autoload);
+    parent::__construct(new Boolean(false), $attributes);
   }
 
   /**
@@ -56,15 +31,28 @@ class ClassType extends Dynamic\BaseDynamicType
    */
   static protected function configureAttributeSignature(AttributeSignature $attributeSignature, Dynamic\BaseDynamicType $type)
   {
-    $attributeSignature->set(self::ATTRIBUTE_INSTANCE_OF, new StringType);
-    $attributeSignature->set(self::ATTRIBUTE_AUTOLOAD, new BooleanType);
+    $attributeSignature->set(self::ATTRIBUTE_EXTENDS, new StringType);
+
+    parent::configureAttributeSignature($attributeSignature, $type);
   }
 
-  const ATTRIBUTE_INSTANCE_OF = 'instanceOf';
-  const ATTRIBUTE_AUTOLOAD = 'autoload';
-
   /**
-   * @var StringType
+   * @param Attributes $attributes
+   * @param ReflectionClass $class
+   *
+   * @return boolean
    */
-  protected $innerType;
+  protected function checkInheritance(Attributes $attributes, ReflectionClass $class)
+  {
+    if ($attributes->keyExists(self::ATTRIBUTE_EXTENDS))
+    {
+      return $class->isSubclassOf(
+        $attributes->get(self::ATTRIBUTE_EXTENDS)
+      );
+    }
+
+    return parent::checkInheritance($attributes, $class);
+  }
+
+  const ATTRIBUTE_EXTENDS = 'extends';
 }

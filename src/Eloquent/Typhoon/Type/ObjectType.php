@@ -24,7 +24,7 @@ class ObjectType extends Dynamic\BaseDynamicType
   {
     if (
       $this->hasAttributes()
-      && $classes = $this->typhoonAttributes()->get(self::ATTRIBUTE_INSTANCE_OF, null)
+      && $classes = $this->typhoonAttributes()->get(self::ATTRIBUTE_INSTANCE_OF, array())
     )
     {
       if (!is_array($classes))

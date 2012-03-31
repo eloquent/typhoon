@@ -105,7 +105,7 @@ class TraversableType extends SubTyped\BaseTraversableType implements Dynamic\Dy
 
     if (
       $this->hasAttributes()
-      && $class = $this->typhoonAttributes()->get(self::ATTRIBUTE_INSTANCE_OF, null)
+      && $class = $this->typhoonAttributes()->get(self::ATTRIBUTE_INSTANCE_OF, array())
     )
     {
       $specificClassObject = new ObjectType(array(

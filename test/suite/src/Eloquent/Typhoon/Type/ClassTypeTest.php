@@ -22,8 +22,19 @@ class ClassTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    */
   public function typeValues()
   {
+    $baseTypeClassAttributes = array(
+      ClassType::ATTRIBUTE_EXTENDS => __NAMESPACE__.'\BaseType',
+    );
+
     $typeClassAttributes = array(
-      ClassType::ATTRIBUTE_INSTANCE_OF => __NAMESPACE__.'\Type',
+      ClassType::ATTRIBUTE_IMPLEMENTS => __NAMESPACE__.'\Type',
+    );
+
+    $dynamicAndSubTypedTypeClassAttributes = array(
+      ClassType::ATTRIBUTE_IMPLEMENTS => array(
+        __NAMESPACE__.'\Dynamic\DynamicType',
+        __NAMESPACE__.'\SubTyped\SubTypedType',
+      ),
     );
 
     return array(
@@ -40,8 +51,17 @@ class ClassTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
       array(true,  __CLASS__),                   // #9: class name
       array(true,  __NAMESPACE__.'\ClassType'),  // #10: class name
 
-      array(true,  __NAMESPACE__.'\ClassType', $typeClassAttributes),  // #11: class name of specific inheritance success
-      array(false, __CLASS__,                  $typeClassAttributes),  // #12: class name of specific inheritance failure
+      array(false, __NAMESPACE__.'\Type'),       // #11: interface name
+
+      array(true,  __NAMESPACE__.'\ClassType', $baseTypeClassAttributes),  // #12: class name of specific class inheritance success
+      array(false, __CLASS__,                  $baseTypeClassAttributes),  // #13: class name of specific class inheritance failure
+
+      array(true,  __NAMESPACE__.'\ClassType', $typeClassAttributes),  // #14: class name of specific interface inheritance success
+      array(false, __CLASS__,                  $typeClassAttributes),  // #15: class name of specific interface inheritance failure
+
+      array(true,  __NAMESPACE__.'\TraversableType', $dynamicAndSubTypedTypeClassAttributes),  // #16: class name of two simultaneous interface inheritances success
+      array(false, __NAMESPACE__.'\StringType',      $dynamicAndSubTypedTypeClassAttributes),  // #17: class name of two simultaneous interface inheritances partial failure
+      array(false, 'stdClass',                       $dynamicAndSubTypedTypeClassAttributes),  // #18: class name of two simultaneous interface inheritances complete failure
     );
   }
 
@@ -54,48 +74,25 @@ class ClassTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
   }
 
   /**
-   * @covers Eloquent\Typhoon\Type\ClassType::typhoonCheck
-   * @group types
-   * @group type
-   * @group dynamic-type
-   */
-  public function testAutoload()
-  {
-    $autoloaded = array();
-    $autoload = function($name) use(&$autoloaded) {
-      $autoloaded[] = $name;
-    };
-    spl_autoload_register($autoload);
-
-    $classTypeDefault = $this->typeFixture();
-    $classTypeTrue = $this->typeFixture(array(
-      ClassType::ATTRIBUTE_AUTOLOAD => true,
-    ));
-    $classTypeFalse = $this->typeFixture(array(
-      ClassType::ATTRIBUTE_AUTOLOAD => false,
-    ));
-
-    $classTypeDefault->typhoonCheck($first = uniqid());
-    $classTypeTrue->typhoonCheck($second = uniqid());
-    $classTypeFalse->typhoonCheck($third = uniqid());
-
-    spl_autoload_register($autoload);
-
-    $this->assertSame(array($first, $second), $autoloaded);
-  }
-
-  /**
    * @covers Eloquent\Typhoon\Type\ClassType::configureAttributeSignature
+   * @covers Eloquent\Typhoon\Type\BaseClassType
+   * @group class-types
    * @group types
    * @group type
    * @group dynamic-type
    */
   public function testConfigureAttributeSignature()
   {
+    $arrayOfStringType = new ArrayType;
+    $arrayOfStringType->setTyphoonSubType(new StringType);
+    $stringOrArrayOfStringType = new Composite\OrType;
+    $stringOrArrayOfStringType->addTyphoonType(new StringType);
+    $stringOrArrayOfStringType->addTyphoonType($arrayOfStringType);
+
     $expected = new AttributeSignature;
     $expected->setHolderName(new String($this->typeClass()));
-    $expected->set(ClassType::ATTRIBUTE_INSTANCE_OF, new StringType);
-    $expected->set(ClassType::ATTRIBUTE_AUTOLOAD, new BooleanType);
+    $expected->set(ClassType::ATTRIBUTE_EXTENDS, new StringType);
+    $expected->set(ClassType::ATTRIBUTE_IMPLEMENTS, $stringOrArrayOfStringType);
 
     $type = new ClassType;
 
@@ -105,9 +102,10 @@ class ClassTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
   // methods below must be manually overridden to implement @covers
 
   /**
-   * @covers Eloquent\Typhoon\Type\ClassType::__construct
-   * @covers Eloquent\Typhoon\Type\ClassType::typhoonCheck
+   * @covers Eloquent\Typhoon\Type\ClassType
+   * @covers Eloquent\Typhoon\Type\BaseClassType
    * @dataProvider typeValues
+   * @group class-types
    * @group types
    * @group type
    * @group dynamic-type
