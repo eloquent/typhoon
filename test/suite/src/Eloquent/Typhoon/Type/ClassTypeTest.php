@@ -23,7 +23,7 @@ class ClassTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
   public function typeValues()
   {
     $baseTypeClassAttributes = array(
-      ClassType::ATTRIBUTE_EXTENDS => __NAMESPACE__.'\BaseType',
+      ClassType::ATTRIBUTE_CLASS_OF => __NAMESPACE__.'\BaseType',
     );
 
     $typeClassAttributes = array(
@@ -35,6 +35,11 @@ class ClassTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
         __NAMESPACE__.'\Dynamic\DynamicType',
         __NAMESPACE__.'\SubTyped\SubTypedType',
       ),
+    );
+
+    $instantiableTypeClassAttributes = array(
+      ClassType::ATTRIBUTE_IMPLEMENTS => __NAMESPACE__.'\Type',
+      ClassType::ATTRIBUTE_INSTANTIABLE => true,
     );
 
     return array(
@@ -53,15 +58,20 @@ class ClassTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
 
       array(false, __NAMESPACE__.'\Type'),       // #11: interface name
 
-      array(true,  __NAMESPACE__.'\ClassType', $baseTypeClassAttributes),  // #12: class name of specific class inheritance success
-      array(false, __CLASS__,                  $baseTypeClassAttributes),  // #13: class name of specific class inheritance failure
+      array(true,  __NAMESPACE__.'\ClassType',        $baseTypeClassAttributes),  // #12: class name of specific class inheritance success
+      array(true,  __NAMESPACE__.'\BaseType',         $baseTypeClassAttributes),  // #13: class name of exact match success - no leading slash
+      array(true,  '\\' . __NAMESPACE__.'\BaseType',  $baseTypeClassAttributes),  // #14: class name of exact match success - leading slash
+      array(false, __CLASS__,                         $baseTypeClassAttributes),  // #15: class name of specific class inheritance failure
 
-      array(true,  __NAMESPACE__.'\ClassType', $typeClassAttributes),  // #14: class name of specific interface inheritance success
-      array(false, __CLASS__,                  $typeClassAttributes),  // #15: class name of specific interface inheritance failure
+      array(true,  __NAMESPACE__.'\ClassType',        $typeClassAttributes),  // #16: class name of specific interface inheritance success
+      array(false, __CLASS__,                         $typeClassAttributes),  // #17: class name of specific interface inheritance failure
 
-      array(true,  __NAMESPACE__.'\TraversableType', $dynamicAndSubTypedTypeClassAttributes),  // #16: class name of two simultaneous interface inheritances success
-      array(false, __NAMESPACE__.'\StringType',      $dynamicAndSubTypedTypeClassAttributes),  // #17: class name of two simultaneous interface inheritances partial failure
-      array(false, 'stdClass',                       $dynamicAndSubTypedTypeClassAttributes),  // #18: class name of two simultaneous interface inheritances complete failure
+      array(true,  __NAMESPACE__.'\TraversableType',  $dynamicAndSubTypedTypeClassAttributes),  // #18: class name of two simultaneous interface inheritances success
+      array(false, __NAMESPACE__.'\StringType',       $dynamicAndSubTypedTypeClassAttributes),  // #19: class name of two simultaneous interface inheritances partial failure
+      array(false, 'stdClass',                        $dynamicAndSubTypedTypeClassAttributes),  // #20: class name of two simultaneous interface inheritances complete failure
+
+      array(true,  __NAMESPACE__.'\StringType',       $instantiableTypeClassAttributes),  // #21: instantiable type class success
+      array(false, __NAMESPACE__.'\BaseType',         $instantiableTypeClassAttributes),  // #22: instantiable type class failure
     );
   }
 
@@ -83,16 +93,17 @@ class ClassTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    */
   public function testConfigureAttributeSignature()
   {
-    $arrayOfStringType = new ArrayType;
-    $arrayOfStringType->setTyphoonSubType(new StringType);
-    $stringOrArrayOfStringType = new Composite\OrType;
-    $stringOrArrayOfStringType->addTyphoonType(new StringType);
-    $stringOrArrayOfStringType->addTyphoonType($arrayOfStringType);
+    $arrayOfInterfaceType = new ArrayType;
+    $arrayOfInterfaceType->setTyphoonSubType(new InterfaceType);
+    $interfaceOrArrayOfInterfaceType = new Composite\OrType;
+    $interfaceOrArrayOfInterfaceType->addTyphoonType(new InterfaceType);
+    $interfaceOrArrayOfInterfaceType->addTyphoonType($arrayOfInterfaceType);
 
     $expected = new AttributeSignature;
     $expected->setHolderName(new String($this->typeClass()));
-    $expected->set(ClassType::ATTRIBUTE_EXTENDS, new StringType);
-    $expected->set(ClassType::ATTRIBUTE_IMPLEMENTS, $stringOrArrayOfStringType);
+    $expected->set(ClassType::ATTRIBUTE_INSTANTIABLE, new BooleanType);
+    $expected->set(ClassType::ATTRIBUTE_CLASS_OF, new ClassType);
+    $expected->set(ClassType::ATTRIBUTE_IMPLEMENTS, $interfaceOrArrayOfInterfaceType);
 
     $type = new ClassType;
 

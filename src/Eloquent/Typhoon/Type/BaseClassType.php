@@ -53,7 +53,7 @@ abstract class BaseClassType extends Dynamic\BaseDynamicType
       return false;
     }
 
-    return $this->checkInheritance(
+    return $this->checkClass(
     	$this->typhoonAttributes()
     	, $class
     );
@@ -67,13 +67,13 @@ abstract class BaseClassType extends Dynamic\BaseDynamicType
    */
   static protected function configureAttributeSignature(AttributeSignature $attributeSignature, Dynamic\BaseDynamicType $type)
   {
-    $arrayOfStringType = new ArrayType;
-    $arrayOfStringType->setTyphoonSubType(new StringType);
-    $stringOrArrayOfStringType = new Composite\OrType;
-    $stringOrArrayOfStringType->addTyphoonType(new StringType);
-    $stringOrArrayOfStringType->addTyphoonType($arrayOfStringType);
+    $arrayOfInterfaceType = new ArrayType;
+    $arrayOfInterfaceType->setTyphoonSubType(new InterfaceType);
+    $interfaceOrArrayOfInterfaceType = new Composite\OrType;
+    $interfaceOrArrayOfInterfaceType->addTyphoonType(new InterfaceType);
+    $interfaceOrArrayOfInterfaceType->addTyphoonType($arrayOfInterfaceType);
 
-    $attributeSignature->set(self::ATTRIBUTE_IMPLEMENTS, $stringOrArrayOfStringType);
+    $attributeSignature->set(self::ATTRIBUTE_IMPLEMENTS, $interfaceOrArrayOfInterfaceType);
   }
 
   /**
@@ -82,7 +82,7 @@ abstract class BaseClassType extends Dynamic\BaseDynamicType
    *
    * @return boolean
    */
-  protected function checkInheritance(Attributes $attributes, ReflectionClass $class)
+  protected function checkClass(Attributes $attributes, ReflectionClass $class)
   {
     if ($attributes->keyExists(self::ATTRIBUTE_IMPLEMENTS))
     {

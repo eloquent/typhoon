@@ -31,7 +31,8 @@ class ClassType extends BaseClassType
    */
   static protected function configureAttributeSignature(AttributeSignature $attributeSignature, Dynamic\BaseDynamicType $type)
   {
-    $attributeSignature->set(self::ATTRIBUTE_EXTENDS, new StringType);
+    $attributeSignature->set(self::ATTRIBUTE_INSTANTIABLE, new BooleanType);
+    $attributeSignature->set(self::ATTRIBUTE_CLASS_OF, new ClassType);
 
     parent::configureAttributeSignature($attributeSignature, $type);
   }
@@ -42,17 +43,31 @@ class ClassType extends BaseClassType
    *
    * @return boolean
    */
-  protected function checkInheritance(Attributes $attributes, ReflectionClass $class)
+  protected function checkClass(Attributes $attributes, ReflectionClass $class)
   {
-    if ($attributes->keyExists(self::ATTRIBUTE_EXTENDS))
+    if ($attributes->keyExists(self::ATTRIBUTE_CLASS_OF))
     {
-      return $class->isSubclassOf(
-        $attributes->get(self::ATTRIBUTE_EXTENDS)
-      );
+      $classOf = new ReflectionClass($attributes->get(self::ATTRIBUTE_CLASS_OF));
+
+      if ($classOf->getName() === $class->getName())
+      {
+        return true;
+      }
+
+      return $class->isSubclassOf($classOf);
     }
 
-    return parent::checkInheritance($attributes, $class);
+    if ($attributes->keyExists(self::ATTRIBUTE_INSTANTIABLE))
+    {
+      if ($class->isInstantiable() !== $attributes->get(self::ATTRIBUTE_INSTANTIABLE))
+      {
+        return false;
+      }
+    }
+
+    return parent::checkClass($attributes, $class);
   }
 
-  const ATTRIBUTE_EXTENDS = 'extends';
+  const ATTRIBUTE_CLASS_OF = 'classOf';
+  const ATTRIBUTE_INSTANTIABLE = 'instantiable';
 }
