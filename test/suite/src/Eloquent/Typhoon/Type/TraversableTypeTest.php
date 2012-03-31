@@ -34,6 +34,11 @@ class TraversableTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
     $attributesIterator = array(TraversableType::ATTRIBUTE_INSTANCE_OF => get_class($iterator));
     $attributesNonTraversable = array(TraversableType::ATTRIBUTE_INSTANCE_OF => 'stdClass');
 
+    $attributesIteratorAndMockIterator = array(ObjectType::ATTRIBUTE_INSTANCE_OF => array(
+      'Iterator',
+      get_class($iterator),
+    ));
+
     return array(
       array(false, null),                             // #0: null
       array(false, true),                             // #1: boolean
@@ -48,10 +53,14 @@ class TraversableTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
       array(true,  $iterator),                         // #9: iterator
       array(true,  $iteratorAggregate),                // #10: iterator aggregate
 
-      array(true,  $iterator, $attributesIterator),            // #11: specific class traversable
-      array(false, $iteratorAggregate, $attributesIterator),   // #12: failure for specific class traversable
+      array(true,  $iterator,           $attributesIterator),  // #11: specific class traversable
+      array(false, $iteratorAggregate,  $attributesIterator),  // #12: failure for specific class traversable
 
-      array(false, new stdClass, $attributesNonTraversable),   // #13: failure when class match but not traversable
+      array(false, new stdClass,        $attributesNonTraversable),  // #13: failure when class match but not traversable
+
+      array(true,  $iterator,           $attributesIteratorAndMockIterator),  // #14: traversable of two simultaneous types success
+      array(false, new \ArrayIterator,  $attributesIteratorAndMockIterator),  // #15: traversable of two simultaneous types partial failure
+      array(false, $iteratorAggregate,  $attributesIteratorAndMockIterator),  // #16: traversable of two simultaneous types complete failure
     );
   }
 
@@ -74,11 +83,17 @@ class TraversableTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    */
   public function testConstruct()
   {
+    $arrayOfStringType = new ArrayType;
+    $arrayOfStringType->setTyphoonSubType(new StringType);
+    $stringOrArrayOfStringType = new Composite\OrType;
+    $stringOrArrayOfStringType->addTyphoonType(new StringType);
+    $stringOrArrayOfStringType->addTyphoonType($arrayOfStringType);
+
     $type = $this->typeFixture();
 
     $expectedSignature = new AttributeSignature;
     $expectedSignature->setHolderName(new String(get_class($type)));
-    $expectedSignature[TraversableType::ATTRIBUTE_INSTANCE_OF] = new StringType;
+    $expectedSignature[TraversableType::ATTRIBUTE_INSTANCE_OF] = $stringOrArrayOfStringType;
 
     $expected = new Attributes;
     $expected->setSignature($expectedSignature);
@@ -90,7 +105,7 @@ class TraversableTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
 
     $expectedSignature = new AttributeSignature;
     $expectedSignature->setHolderName(new String(get_class($type)));
-    $expectedSignature[TraversableType::ATTRIBUTE_INSTANCE_OF] = new StringType;
+    $expectedSignature[TraversableType::ATTRIBUTE_INSTANCE_OF] = $stringOrArrayOfStringType;
 
     $expected = new Attributes;
     $expected->setSignature($expectedSignature);
@@ -109,6 +124,12 @@ class TraversableTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    */
   public function testAttributeSignature()
   {
+    $arrayOfStringType = new ArrayType;
+    $arrayOfStringType->setTyphoonSubType(new StringType);
+    $stringOrArrayOfStringType = new Composite\OrType;
+    $stringOrArrayOfStringType->addTyphoonType(new StringType);
+    $stringOrArrayOfStringType->addTyphoonType($arrayOfStringType);
+
     $reflector = new ReflectionClass(__NAMESPACE__.'\TraversableType');
     $property = $reflector->getProperty('attributeSignatures');
     $property->setAccessible(true);
@@ -116,7 +137,7 @@ class TraversableTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
 
     $expected = new AttributeSignature;
     $expected->setHolderName(new String($this->typeClass()));
-    $expected[TraversableType::ATTRIBUTE_INSTANCE_OF] = new StringType;
+    $expected[TraversableType::ATTRIBUTE_INSTANCE_OF] = $stringOrArrayOfStringType;
 
     $object = new TraversableType;
     $actual = $object->typhoonAttributes()->signature();

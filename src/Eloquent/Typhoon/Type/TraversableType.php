@@ -75,7 +75,13 @@ class TraversableType extends SubTyped\BaseTraversableType implements Dynamic\Dy
    */
   static protected function configureAttributeSignature(AttributeSignature $attributeSignature, TraversableType $type)
   {
-    $attributeSignature->set(self::ATTRIBUTE_INSTANCE_OF, new StringType);
+    $arrayOfStringType = new ArrayType;
+    $arrayOfStringType->setTyphoonSubType(new StringType);
+    $stringOrArrayOfStringType = new Composite\OrType;
+    $stringOrArrayOfStringType->addTyphoonType(new StringType);
+    $stringOrArrayOfStringType->addTyphoonType($arrayOfStringType);
+    
+    $attributeSignature->set(self::ATTRIBUTE_INSTANCE_OF, $stringOrArrayOfStringType);
   }
   
   /**

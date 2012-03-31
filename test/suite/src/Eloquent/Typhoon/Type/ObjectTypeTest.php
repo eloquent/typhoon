@@ -23,7 +23,12 @@ class ObjectTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    */
   public function typeValues()
   {
-    $attributes = array(ObjectType::ATTRIBUTE_INSTANCE_OF => 'stdClass');
+    $stdClassAttributes = array(ObjectType::ATTRIBUTE_INSTANCE_OF => 'stdClass');
+
+    $dynamicAndSubTypedTypeAttributes = array(ObjectType::ATTRIBUTE_INSTANCE_OF => array(
+      __NAMESPACE__.'\Dynamic\DynamicType',
+      __NAMESPACE__.'\SubTyped\SubTypedType',
+    ));
 
     return array(
       // object of any class
@@ -38,16 +43,20 @@ class ObjectTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
       array(false, $this->resourceFixture()),  // #8: resource
 
       // object of a specific class
-      array(true,  new stdClass,             $attributes),  // #9: object of correct class
-      array(false, new ObjectType,           $attributes),  // #10: object of incorrect class
-      array(false, null,                     $attributes),  // #11: null
-      array(false, true,                     $attributes),  // #12: boolean
-      array(false, 'string',                 $attributes),  // #13: string
-      array(false, 1,                        $attributes),  // #14: integer
-      array(false, .1,                       $attributes),  // #15: float
-      array(false, array(),                  $attributes),  // #16: array
-      array(false, function(){},             $attributes),  // #17: closure
-      array(false, $this->resourceFixture(), $attributes),  // #18: resource
+      array(true,  new stdClass,             $stdClassAttributes),  // #9: object of correct class
+      array(false, new ObjectType,           $stdClassAttributes),  // #10: object of incorrect class
+      array(false, null,                     $stdClassAttributes),  // #11: null
+      array(false, true,                     $stdClassAttributes),  // #12: boolean
+      array(false, 'string',                 $stdClassAttributes),  // #13: string
+      array(false, 1,                        $stdClassAttributes),  // #14: integer
+      array(false, .1,                       $stdClassAttributes),  // #15: float
+      array(false, array(),                  $stdClassAttributes),  // #16: array
+      array(false, function(){},             $stdClassAttributes),  // #17: closure
+      array(false, $this->resourceFixture(), $stdClassAttributes),  // #18: resource
+
+      array(true,  new TraversableType,      $dynamicAndSubTypedTypeAttributes),  // #19: object of two simultaneous types success
+      array(false, new StringType,           $dynamicAndSubTypedTypeAttributes),  // #20: object of two simultaneous types partial failure
+      array(false, new stdClass,             $dynamicAndSubTypedTypeAttributes),  // #21: object of two simultaneous types complete failure
     );
   }
 
@@ -67,9 +76,15 @@ class ObjectTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    */
   public function testConfigureAttributeSignature()
   {
+    $arrayOfStringType = new ArrayType;
+    $arrayOfStringType->setTyphoonSubType(new StringType);
+    $stringOrArrayOfStringType = new Composite\OrType;
+    $stringOrArrayOfStringType->addTyphoonType(new StringType);
+    $stringOrArrayOfStringType->addTyphoonType($arrayOfStringType);
+
     $expected = new AttributeSignature;
     $expected->setHolderName(new String($this->typeClass()));
-    $expected->set(ObjectType::ATTRIBUTE_INSTANCE_OF, new StringType);
+    $expected->set(ObjectType::ATTRIBUTE_INSTANCE_OF, $stringOrArrayOfStringType);
 
     $type = new ObjectType;
 

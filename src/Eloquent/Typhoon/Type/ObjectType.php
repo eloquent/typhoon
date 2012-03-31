@@ -24,10 +24,22 @@ class ObjectType extends Dynamic\BaseDynamicType
   {
     if (
       $this->hasAttributes()
-      && $class = $this->typhoonAttributes()->get(self::ATTRIBUTE_INSTANCE_OF, null)
+      && $classes = $this->typhoonAttributes()->get(self::ATTRIBUTE_INSTANCE_OF, null)
     )
     {
-      return $value instanceof $class;
+      if (!is_array($classes))
+      {
+        $classes = array($classes);
+      }
+      foreach ($classes as $class)
+      {
+        if (!$value instanceof $class)
+        {
+          return false;
+        }
+      }
+
+      return true;
     }
 
     return is_object($value);
@@ -41,7 +53,13 @@ class ObjectType extends Dynamic\BaseDynamicType
    */
   static protected function configureAttributeSignature(AttributeSignature $attributeSignature, Dynamic\BaseDynamicType $type)
   {
-    $attributeSignature->set(self::ATTRIBUTE_INSTANCE_OF, new StringType);
+    $arrayOfStringType = new ArrayType;
+    $arrayOfStringType->setTyphoonSubType(new StringType);
+    $stringOrArrayOfStringType = new Composite\OrType;
+    $stringOrArrayOfStringType->addTyphoonType(new StringType);
+    $stringOrArrayOfStringType->addTyphoonType($arrayOfStringType);
+    
+    $attributeSignature->set(self::ATTRIBUTE_INSTANCE_OF, $stringOrArrayOfStringType);
   }
 
   const ATTRIBUTE_INSTANCE_OF = 'instanceOf';
