@@ -11,7 +11,9 @@
 
 namespace Eloquent\Typhoon\Type;
 
-class ScalarType extends BaseType
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
+
+class ScalarType implements NamedType
 {
   /**
    * @param mixed value
@@ -23,5 +25,11 @@ class ScalarType extends BaseType
     return is_scalar($value);
   }
 
-  const ALIAS = 'scalar';
+  /**
+   * @return string
+   */
+  public function typhoonName()
+  {
+    return IntrinsicTypeName::NAME_SCALAR()->value();
+  }
 }

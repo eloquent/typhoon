@@ -11,6 +11,8 @@
 
 namespace Eloquent\Typhoon\Type\Composite;
 
+use Eloquent\Typhax\Lexer\Token;
+
 class OrType extends BaseCompositeType
 {
   /**
@@ -29,5 +31,13 @@ class OrType extends BaseCompositeType
     }
 
     return false;
+  }
+
+  /**
+   * @return string
+   */
+  public function operator()
+  {
+    return Token::TOKEN_PIPE;
   }
 }

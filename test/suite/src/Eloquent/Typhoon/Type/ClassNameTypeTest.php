@@ -11,9 +11,10 @@
 
 namespace Eloquent\Typhoon\Type;
 
-use stdClass;
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
 use Eloquent\Typhoon\Attribute\AttributeSignature;
 use Eloquent\Typhoon\Primitive\String;
+use stdClass;
 
 class ClassNameTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
 {
@@ -22,8 +23,8 @@ class ClassNameTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    */
   public function typeValues()
   {
-    $baseTypeClassAttributes = array(
-      ClassNameType::ATTRIBUTE_CLASS_OF => __NAMESPACE__.'\BaseType',
+    $baseDynamicTypeClassAttributes = array(
+      ClassNameType::ATTRIBUTE_CLASS_OF => __NAMESPACE__.'\Dynamic\BaseDynamicType',
     );
 
     $typeClassAttributes = array(
@@ -58,10 +59,10 @@ class ClassNameTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
 
       array(false, __NAMESPACE__.'\Type'),           // #11: interface name
 
-      array(true,  __NAMESPACE__.'\ClassNameType',    $baseTypeClassAttributes),  // #12: class name of specific class inheritance success
-      array(true,  __NAMESPACE__.'\BaseType',         $baseTypeClassAttributes),  // #13: class name of exact match success - no leading slash
-      array(true,  '\\' . __NAMESPACE__.'\BaseType',  $baseTypeClassAttributes),  // #14: class name of exact match success - leading slash
-      array(false, __CLASS__,                         $baseTypeClassAttributes),  // #15: class name of specific class inheritance failure
+      array(true,  __NAMESPACE__.'\StringType',                      $baseDynamicTypeClassAttributes),  // #12: class name of specific class inheritance success
+      array(true,  __NAMESPACE__.'\Dynamic\BaseDynamicType',         $baseDynamicTypeClassAttributes),  // #13: class name of exact match success - no leading slash
+      array(true,  '\\' . __NAMESPACE__.'\Dynamic\BaseDynamicType',  $baseDynamicTypeClassAttributes),  // #14: class name of exact match success - leading slash
+      array(false, __CLASS__,                                        $baseDynamicTypeClassAttributes),  // #15: class name of specific class inheritance failure
 
       array(true,  __NAMESPACE__.'\ClassNameType',    $typeClassAttributes),  // #16: class name of specific interface inheritance success
       array(false, __CLASS__,                         $typeClassAttributes),  // #17: class name of specific interface inheritance failure
@@ -70,8 +71,8 @@ class ClassNameTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
       array(false, __NAMESPACE__.'\StringType',       $dynamicAndSubTypedTypeClassAttributes),  // #19: class name of two simultaneous interface inheritances partial failure
       array(false, 'stdClass',                        $dynamicAndSubTypedTypeClassAttributes),  // #20: class name of two simultaneous interface inheritances complete failure
 
-      array(true,  __NAMESPACE__.'\StringType',       $instantiableTypeClassAttributes),  // #21: instantiable type class success
-      array(false, __NAMESPACE__.'\BaseType',         $instantiableTypeClassAttributes),  // #22: instantiable type class failure
+      array(true,  __NAMESPACE__.'\StringType',               $instantiableTypeClassAttributes),  // #21: instantiable type class success
+      array(false, __NAMESPACE__.'\Dynamic\BaseDynamicType',  $instantiableTypeClassAttributes),  // #22: instantiable type class failure
     );
   }
 
@@ -84,8 +85,16 @@ class ClassNameTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
   }
 
   /**
+   * @return string
+   */
+  protected function typeName()
+  {
+    return IntrinsicTypeName::NAME_CLASS_NAME()->value();
+  }
+
+  /**
    * @covers Eloquent\Typhoon\Type\ClassNameType::configureAttributeSignature
-   * @covers Eloquent\Typhoon\Type\BaseClassType
+   * @covers Eloquent\Typhoon\Type\BaseClassNameType
    * @group class-types
    * @group types
    * @group type
@@ -114,7 +123,7 @@ class ClassNameTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
 
   /**
    * @covers Eloquent\Typhoon\Type\ClassNameType
-   * @covers Eloquent\Typhoon\Type\BaseClassType
+   * @covers Eloquent\Typhoon\Type\BaseClassNameType
    * @dataProvider typeValues
    * @group class-types
    * @group types
@@ -122,4 +131,10 @@ class ClassNameTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    * @group dynamic-type
    */
   public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
+
+  /**
+   * @covers Eloquent\Typhoon\Type\ClassNameType::typhoonName
+   * @group types
+   */
+  public function testTyphoonName() { parent::testTyphoonName(); }
 }

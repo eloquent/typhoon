@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Type;
 
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
 use stdClass;
 
 class BooleanTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
@@ -32,13 +33,21 @@ class BooleanTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
       array(false, $this->resourceFixture()),  // #8: resource
     );
   }
-  
+
   /**
    * @return string
    */
   protected function typeClass()
   {
     return __NAMESPACE__.'\BooleanType';
+  }
+
+  /**
+   * @return string
+   */
+  protected function typeName()
+  {
+    return IntrinsicTypeName::NAME_BOOLEAN()->value();
   }
 
   // methods below must be manually overridden to implement @covers
@@ -51,4 +60,10 @@ class BooleanTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    * @group core
    */
   public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
+
+  /**
+   * @covers Eloquent\Typhoon\Type\BooleanType::typhoonName
+   * @group types
+   */
+  public function testTyphoonName() { parent::testTyphoonName(); }
 }

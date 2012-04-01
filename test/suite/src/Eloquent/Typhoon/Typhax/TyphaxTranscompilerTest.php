@@ -39,7 +39,7 @@ class TyphaxTranscompilerTest extends \Eloquent\Typhoon\Test\TestCase
   public function transcompilerData()
   {
     $data = array();
-    
+
     // #0: simple type
     $expected = new NullType;
     $typhaxNode = new TyphaxType('null');
@@ -59,7 +59,7 @@ class TyphaxTranscompilerTest extends \Eloquent\Typhoon\Test\TestCase
     $expected = new TraversableType(array(
       TraversableType::ATTRIBUTE_INSTANCE_OF => 'foo',
     ));
-    $expected->setTyphoonSubTypes(array(
+    $expected->setTyphoonTypes(array(
       new StringType,
       new ClassNameType,
     ));

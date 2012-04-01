@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Type;
 
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
 use Eloquent\Typhoon\Attribute\Attributes;
 use Eloquent\Typhoon\Attribute\AttributeSignature;
 
@@ -36,7 +37,7 @@ class StringableType extends Dynamic\BaseDynamicType
     {
       return true;
     }
-    
+
     if ($this->innerObjectType->typhoonCheck($value))
     {
       if (!method_exists($value, '__toString'))
@@ -48,16 +49,22 @@ class StringableType extends Dynamic\BaseDynamicType
     {
       return false;
     }
-    
+
     if ($this->typhoonAttributes()->isEmpty())
     {
       return true;
     }
-    
+
     return $this->innerStringType->typhoonCheck((string)$value);
   }
 
-  const ALIAS = 'stringable';
+  /**
+   * @return string
+   */
+  public function typhoonName()
+  {
+    return IntrinsicTypeName::NAME_STRINGABLE()->value();
+  }
 
   const ATTRIBUTE_ENCODING = 'encoding';
 

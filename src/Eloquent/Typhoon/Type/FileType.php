@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Type;
 
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
 use Eloquent\Typhoon\Attribute\AttributeSignature;
 
 class FileType extends Dynamic\BaseDynamicType
@@ -35,7 +36,13 @@ class FileType extends Dynamic\BaseDynamicType
     return $this->innerType->typhoonCheck($value);
   }
 
-  const ALIAS = 'file';
+  /**
+   * @return string
+   */
+  public function typhoonName()
+  {
+    return IntrinsicTypeName::NAME_FILE()->value();
+  }
 
   const ATTRIBUTE_LOCAL = 'local';
   const ATTRIBUTE_MODE = 'mode';

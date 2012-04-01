@@ -11,7 +11,9 @@
 
 namespace Eloquent\Typhoon\Type;
 
-class CallbackType extends BaseType
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
+
+class CallbackType implements NamedType
 {
   /**
    * @param mixed value
@@ -23,5 +25,11 @@ class CallbackType extends BaseType
     return is_callable($value);
   }
 
-  const ALIAS = 'callback';
+  /**
+   * @return string
+   */
+  public function typhoonName()
+  {
+    return IntrinsicTypeName::NAME_CALLBACK()->value();
+  }
 }

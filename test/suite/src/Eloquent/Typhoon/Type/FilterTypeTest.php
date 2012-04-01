@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Type;
 
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
 use Eloquent\Typhoon\Attribute\AttributeSignature;
 use Eloquent\Typhoon\Primitive\Boolean;
 use Eloquent\Typhoon\Primitive\String;
@@ -53,6 +54,14 @@ class FilterTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
   }
 
   /**
+   * @return string
+   */
+  protected function typeName()
+  {
+    return IntrinsicTypeName::NAME_FILTER()->value();
+  }
+
+  /**
    * @covers Eloquent\Typhoon\Type\FilterType::configureAttributeSignature
    * @group types
    * @group type
@@ -89,4 +98,10 @@ class FilterTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    * @group dynamic-type
    */
   public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
+
+  /**
+   * @covers Eloquent\Typhoon\Type\FilterType::typhoonName
+   * @group types
+   */
+  public function testTyphoonName() { parent::testTyphoonName(); }
 }

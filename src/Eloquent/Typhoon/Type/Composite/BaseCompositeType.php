@@ -11,10 +11,9 @@
 
 namespace Eloquent\Typhoon\Type\Composite;
 
-use Eloquent\Typhoon\Type\BaseType;
 use Eloquent\Typhoon\Type\Type;
 
-abstract class BaseCompositeType extends BaseType implements CompositeType
+abstract class BaseCompositeType implements CompositeType
 {
   /**
    * @param Type $type
@@ -22,6 +21,14 @@ abstract class BaseCompositeType extends BaseType implements CompositeType
   public function addTyphoonType(Type $type)
   {
     $this->types[] = $type;
+  }
+
+  /**
+   * @return array
+   */
+  public function typhoonTypes()
+  {
+    return $this->types;
   }
 
   /**

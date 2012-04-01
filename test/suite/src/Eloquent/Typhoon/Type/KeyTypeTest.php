@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Type;
 
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
 use stdClass;
 
 class KeyTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
@@ -30,7 +31,7 @@ class KeyTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
       array(false, new stdClass),              // #6: object
       array(false, function(){}),              // #7: closure
       array(false, $this->resourceFixture()),  // #8: resource
-      
+
       array(false, 1.0),                       // #9: whole number float
       array(true, -1),                         // #10: negative integer
     );
@@ -44,6 +45,14 @@ class KeyTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
     return __NAMESPACE__.'\KeyType';
   }
 
+  /**
+   * @return string
+   */
+  protected function typeName()
+  {
+    return IntrinsicTypeName::NAME_KEY()->value();
+  }
+
   // methods below must be manually overridden to implement @covers
 
   /**
@@ -54,4 +63,10 @@ class KeyTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    * @group type
    */
   public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
+
+  /**
+   * @covers Eloquent\Typhoon\Type\KeyType::typhoonName
+   * @group types
+   */
+  public function testTyphoonName() { parent::testTyphoonName(); }
 }

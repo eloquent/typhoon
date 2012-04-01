@@ -11,9 +11,10 @@
 
 namespace Eloquent\Typhoon\Type;
 
-use stdClass;
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
 use Eloquent\Typhoon\Attribute\AttributeSignature;
 use Eloquent\Typhoon\Primitive\String;
+use stdClass;
 
 class StringTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
 {
@@ -55,13 +56,21 @@ class StringTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
       array(false, chr(128), $utf8OrUtf32Attributes),
     );
   }
-  
+
   /**
    * @return string
    */
   protected function typeClass()
   {
     return __NAMESPACE__.'\StringType';
+  }
+
+  /**
+   * @return string
+   */
+  protected function typeName()
+  {
+    return IntrinsicTypeName::NAME_STRING()->value();
   }
 
   /**
@@ -100,4 +109,10 @@ class StringTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    * @group core
    */
   public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
+
+  /**
+   * @covers Eloquent\Typhoon\Type\StringType::typhoonName
+   * @group types
+   */
+  public function testTyphoonName() { parent::testTyphoonName(); }
 }

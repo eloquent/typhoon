@@ -11,16 +11,17 @@
 
 namespace Eloquent\Typhoon\Type;
 
-use Phake;
-use ReflectionClass;
-use ReflectionObject;
-use stdClass;
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
 use Eloquent\Typhoon\Attribute\Attributes;
 use Eloquent\Typhoon\Attribute\AttributeSignature;
 use Eloquent\Typhoon\Primitive\String;
 use Eloquent\Typhoon\Type\Composite\AndType;
 use Eloquent\Typhoon\Type\Composite\OrType;
 use Eloquent\Typhoon\Type\StringType;
+use Phake;
+use ReflectionClass;
+use ReflectionObject;
+use stdClass;
 
 class TraversableTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
 {
@@ -70,6 +71,14 @@ class TraversableTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
   protected function typeClass()
   {
     return __NAMESPACE__.'\TraversableType';
+  }
+
+  /**
+   * @return string
+   */
+  protected function typeName()
+  {
+    return IntrinsicTypeName::NAME_TRAVERSABLE()->value();
   }
 
   /**
@@ -258,4 +267,10 @@ class TraversableTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    * @group traversable-type
    */
   public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
+
+  /**
+   * @covers Eloquent\Typhoon\Type\TraversableType::typhoonName
+   * @group types
+   */
+  public function testTyphoonName() { parent::testTyphoonName(); }
 }

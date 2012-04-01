@@ -30,7 +30,7 @@ class TyphaxTranscompiler
 
   /**
    * @param TyphaxNode $typhaxNode
-   * 
+   *
    * @return Type
    */
   public function parse(TyphaxNode $typhaxNode)
@@ -129,9 +129,9 @@ class TyphaxTranscompiler
         $subTypes[] = $this->parseType($typhaxSubType);
       }
 
-      $type->setTyphoonSubTypes($subTypes);
+      $type->setTyphoonTypes($subTypes);
     }
-    
+
     return $type;
   }
 

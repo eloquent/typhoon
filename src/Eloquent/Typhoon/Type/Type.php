@@ -19,11 +19,4 @@ interface Type
    * @return boolean
    */
   public function typhoonCheck($value);
-
-  /**
-   * @param Type $type
-   *
-   * @return boolean
-   */
-  public function equalsTyphoonType(Type $type);
 }

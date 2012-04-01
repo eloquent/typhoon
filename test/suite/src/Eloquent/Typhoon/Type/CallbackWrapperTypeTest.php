@@ -11,10 +11,11 @@
 
 namespace Eloquent\Typhoon\Type;
 
-use stdClass;
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
 use Eloquent\Typhoon\Attribute\AttributeSignature;
 use Eloquent\Typhoon\Primitive\Boolean;
 use Eloquent\Typhoon\Primitive\String;
+use stdClass;
 
 class CallbackWrapperTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
 {
@@ -56,6 +57,14 @@ class CallbackWrapperTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
   protected function typeClass()
   {
     return __NAMESPACE__.'\CallbackWrapperType';
+  }
+
+  /**
+   * @return string
+   */
+  protected function typeName()
+  {
+    return IntrinsicTypeName::NAME_CALLBACK_WRAPPER()->value();
   }
 
   /**
@@ -119,4 +128,10 @@ class CallbackWrapperTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    * @group dynamic-type
    */
   public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
+
+  /**
+   * @covers Eloquent\Typhoon\Type\CallbackWrapperType::typhoonName
+   * @group types
+   */
+  public function testTyphoonName() { parent::testTyphoonName(); }
 }

@@ -9,17 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace Eloquent\Typhoon\Type;
+namespace Eloquent\Typhoon\Test\Fixture;
 
-abstract class BaseType implements Type
+class ConcreteType implements \Eloquent\Typhoon\Type\Type
 {
   /**
-   * @param Type $type
+   * @param mixed value
    *
    * @return boolean
    */
-  public function equalsTyphoonType(Type $type)
+  public function typhoonCheck($value)
   {
-    return $this == $type;
+    return true;
   }
 }
+

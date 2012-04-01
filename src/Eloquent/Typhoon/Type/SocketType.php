@@ -11,7 +11,9 @@
 
 namespace Eloquent\Typhoon\Type;
 
-class SocketType extends BaseType
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
+
+class SocketType implements NamedType
 {
   public function __construct()
   {
@@ -30,7 +32,13 @@ class SocketType extends BaseType
     return $this->innerType->typhoonCheck($value);
   }
 
-  const ALIAS = 'socket';
+  /**
+   * @return string
+   */
+  public function typhoonName()
+  {
+    return IntrinsicTypeName::NAME_SOCKET()->value();
+  }
 
   /**
    * @var ResourceType

@@ -11,9 +11,10 @@
 
 namespace Eloquent\Typhoon\Type;
 
-use stdClass;
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
 use Eloquent\Typhoon\Attribute\AttributeSignature;
 use Eloquent\Typhoon\Primitive\String;
+use stdClass;
 
 class InterfaceNameTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
 {
@@ -68,8 +69,16 @@ class InterfaceNameTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
   }
 
   /**
+   * @return string
+   */
+  protected function typeName()
+  {
+    return IntrinsicTypeName::NAME_INTERFACE_NAME()->value();
+  }
+
+  /**
    * @covers Eloquent\Typhoon\Type\InterfaceNameType
-   * @covers Eloquent\Typhoon\Type\BaseClassType
+   * @covers Eloquent\Typhoon\Type\BaseClassNameType
    * @group class-types
    * @group types
    * @group type
@@ -96,7 +105,7 @@ class InterfaceNameTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
 
   /**
    * @covers Eloquent\Typhoon\Type\InterfaceNameType
-   * @covers Eloquent\Typhoon\Type\BaseClassType
+   * @covers Eloquent\Typhoon\Type\BaseClassNameType
    * @dataProvider typeValues
    * @group class-types
    * @group types
@@ -104,4 +113,10 @@ class InterfaceNameTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    * @group dynamic-type
    */
   public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
+
+  /**
+   * @covers Eloquent\Typhoon\Type\InterfaceNameType::typhoonName
+   * @group types
+   */
+  public function testTyphoonName() { parent::testTyphoonName(); }
 }

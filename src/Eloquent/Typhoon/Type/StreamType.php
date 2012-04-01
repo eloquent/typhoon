@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Type;
 
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
 use Eloquent\Typhoon\Attribute\AttributeSignature;
 
 class StreamType extends Dynamic\BaseDynamicType
@@ -126,7 +127,13 @@ class StreamType extends Dynamic\BaseDynamicType
     return true;
   }
 
-  const ALIAS = 'stream';
+  /**
+   * @return string
+   */
+  public function typhoonName()
+  {
+    return IntrinsicTypeName::NAME_STREAM()->value();
+  }
 
   const ATTRIBUTE_LOCAL = 'local';
   const ATTRIBUTE_MODE = 'mode';

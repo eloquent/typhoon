@@ -11,42 +11,14 @@
 
 namespace Eloquent\Typhoon\Type\Renderer;
 
-use Eloquent\Typhoon\Typhoon;
 use Eloquent\Typhoon\Type\Type;
-use Eloquent\Typhoon\Type\Registry\TypeRegistry;
 
-abstract class TypeRenderer
+interface TypeRenderer
 {
-  /**
-   * @param TypeRegistry $typeRegistry
-   */
-  public function setTypeRegistry(TypeRegistry $typeRegistry)
-  {
-    $this->typeRegistry = $typeRegistry;
-  }
-
-  /**
-   * @return TypeRegistry
-   */
-  public function typeRegistry()
-  {
-    if (!$this->typeRegistry)
-    {
-      $this->typeRegistry = Typhoon::instance()->typeRegistry();
-    }
-
-    return $this->typeRegistry;
-  }
-
   /**
    * @param Type $type
    *
    * @return string
    */
-  abstract public function render(Type $type);
-
-  /**
-   * @var TypeRegistry
-   */
-  protected $typeRegistry;
+  public function render(Type $type);
 }

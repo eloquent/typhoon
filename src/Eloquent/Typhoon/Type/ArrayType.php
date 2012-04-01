@@ -11,9 +11,17 @@
 
 namespace Eloquent\Typhoon\Type;
 
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
+
 class ArrayType extends SubTyped\BaseTraversableType
 {
-  const ALIAS = 'array';
+  /**
+   * @return string
+   */
+  public function typhoonName()
+  {
+    return IntrinsicTypeName::NAME_ARRAY()->value();
+  }
 
   /**
    * @param mixed value

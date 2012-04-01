@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Type;
 
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
 use Eloquent\Typhoon\Attribute\AttributeSignature;
 use Eloquent\Typhoon\Primitive\String;
 use stdClass;
@@ -57,6 +58,14 @@ class FileTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
   }
 
   /**
+   * @return string
+   */
+  protected function typeName()
+  {
+    return IntrinsicTypeName::NAME_FILE()->value();
+  }
+
+  /**
    * @covers Eloquent\Typhoon\Type\FileType::configureAttributeSignature
    * @group types
    * @group type
@@ -93,4 +102,10 @@ class FileTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    * @group type
    */
   public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
+
+  /**
+   * @covers Eloquent\Typhoon\Type\FileType::typhoonName
+   * @group types
+   */
+  public function testTyphoonName() { parent::testTyphoonName(); }
 }

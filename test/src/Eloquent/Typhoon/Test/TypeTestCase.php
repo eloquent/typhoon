@@ -45,9 +45,22 @@ abstract class TypeTestCase extends TestCase
   }
 
   /**
+   * @group types
+   */
+  public function testTyphoonName()
+  {
+    $this->assertSame($this->typeName(), $this->typeFixture()->typhoonName());
+  }
+
+  /**
    * @return string
    */
   abstract protected function typeClass();
+
+  /**
+   * @return string
+   */
+  abstract protected function typeName();
 
   /**
    * @return array

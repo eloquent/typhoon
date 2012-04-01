@@ -9,18 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Eloquent\Typhoon\Test\Fixture;
+namespace Eloquent\Typhoon\Type;
 
-class ConcreteBaseType extends \Eloquent\Typhoon\Type\BaseType
+interface NamedType extends Type
 {
   /**
-   * @param mixed value
-   *
-   * @return boolean
+   * @return string
    */
-  public function typhoonCheck($value)
-  {
-    return true;
-  }
+  public function typhoonName();
 }
-

@@ -11,10 +11,11 @@
 
 namespace Eloquent\Typhoon\Type;
 
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
 use Eloquent\Typhoon\Attribute\AttributeSignature;
 use Eloquent\Typhoon\Primitive\String;
-use stdClass;
 use ReflectionObject;
+use stdClass;
 
 class SocketTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
 {
@@ -37,12 +38,12 @@ class SocketTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
       array(false, $this->fileFixture()),      // #10: file
       array(false, $this->directoryFixture()), // #11: directory
     );
-    
+
     if (extension_loaded('sockets'))
     {
       $typeValues[] = array(true, $this->socketFixture()); // #12: socket
     }
-    
+
     return $typeValues;
   }
 
@@ -52,6 +53,14 @@ class SocketTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
   protected function typeClass()
   {
     return __NAMESPACE__.'\SocketType';
+  }
+
+  /**
+   * @return string
+   */
+  protected function typeName()
+  {
+    return IntrinsicTypeName::NAME_SOCKET()->value();
   }
 
   // methods below must be manually overridden to implement @covers
@@ -65,4 +74,10 @@ class SocketTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    * @group dynamic-type
    */
   public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
+
+  /**
+   * @covers Eloquent\Typhoon\Type\SocketType::typhoonName
+   * @group types
+   */
+  public function testTyphoonName() { parent::testTyphoonName(); }
 }

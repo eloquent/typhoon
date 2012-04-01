@@ -11,11 +11,12 @@
 
 namespace Eloquent\Typhoon\Type;
 
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
 use Eloquent\Typhoon\Attribute\AttributeSignature;
 use Eloquent\Typhoon\Primitive\String;
-use stdClass;
 use Phake;
 use ReflectionObject;
+use stdClass;
 
 class StreamTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
 {
@@ -38,12 +39,12 @@ class StreamTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
       array(true,  $this->fileFixture()),      // #10: file
       array(true,  $this->directoryFixture()), // #11: directory
     );
-    
+
     if (extension_loaded('sockets'))
     {
       $typeValues[] = array(false, $this->socketFixture()); // #12: socket
     }
-    
+
     return $typeValues;
   }
 
@@ -53,7 +54,7 @@ class StreamTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
   public function typeValuesWithMetaData()
   {
     $data = array();
-    
+
     $metaDataDefault = array(
       StreamType::META_DATA_MODE => 'mode',
       StreamType::META_DATA_TYPE => 'type',
@@ -477,6 +478,14 @@ class StreamTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
   }
 
   /**
+   * @return string
+   */
+  protected function typeName()
+  {
+    return IntrinsicTypeName::NAME_STREAM()->value();
+  }
+
+  /**
    * @covers Eloquent\Typhoon\Type\StreamType::isLocal
    * @group types
    * @group type
@@ -560,7 +569,7 @@ class StreamTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
 
     $this->assertSame($expected, $method->invoke($type, $pattern, $mode));
   }
-  
+
   /**
    * @return array
    */
@@ -733,4 +742,10 @@ class StreamTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    * @group dynamic-type
    */
   public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
+
+  /**
+   * @covers Eloquent\Typhoon\Type\StreamType::typhoonName
+   * @group types
+   */
+  public function testTyphoonName() { parent::testTyphoonName(); }
 }

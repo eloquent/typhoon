@@ -27,127 +27,123 @@ class TyphaxTypeRendererTest extends \Eloquent\Typhoon\Test\TestCase
   public function renderData()
   {
     $data = array();
-    $renderer = new TyphaxTypeRenderer;
 
-    // #0: Unregistered type
-    $type = Phake::mock('Eloquent\Typhoon\Type\Type');
-    $alias = NULL;
-    $expected = "unregistered(instanceOf='".get_class($type)."')";
-    $data[] = array($type, $alias, $expected);
-
-    // #1: Simple type
-    $type = Phake::mock('Eloquent\Typhoon\Type\Type');
-    $alias = 'foo';
+    // #0: Simple type
+    $type = Phake::mock('Eloquent\Typhoon\Type\NamedType');
+    Phake::when($type)->typhoonName()->thenReturn('foo');
     $expected = 'foo';
-    $data[] = array($type, $alias, $expected);
+    $data[] = array($expected, $type);
 
-    // #2: Dynamic type
+    // #1: Dynamic type
     $attributes = new Attributes(array(
       'bar' => 'baz',
       'qux' => 1,
       'doom' => .1,
     ));
     $type = Phake::mock('Eloquent\Typhoon\Type\Dynamic\DynamicType');
+    Phake::when($type)->typhoonName()->thenReturn('foo');
     Phake::when($type)->typhoonAttributes()->thenReturn($attributes);
-    $alias = 'foo';
-    $expected = "foo(bar='baz',qux=1,doom=0.1)";
-    $data[] = array($type, $alias, $expected);
+    $expected = "foo(bar:baz,qux:1,doom:0.1)";
+    $data[] = array($expected, $type);
 
-    // #3: Dynamic type with no attributes
+    // #2: Dynamic type with no attributes
     $attributes = new Attributes;
     $type = Phake::mock('Eloquent\Typhoon\Type\Dynamic\DynamicType');
+    Phake::when($type)->typhoonName()->thenReturn('foo');
     Phake::when($type)->typhoonAttributes()->thenReturn($attributes);
-    $alias = 'foo';
     $expected = 'foo';
-    $data[] = array($type, $alias, $expected);
+    $data[] = array($expected, $type);
 
-    // #4: Traversable type with mixed type for both key and sub type
+    // #3: Traversable type with mixed type for both key and sub type
     $attributes = new Attributes;
     $keyType = new MixedType;
     $subType = new MixedType;
     $type = Phake::mock('Eloquent\Typhoon\Type\SubTyped\TraversableType');
-    Phake::when($type)->typhoonKeyType()->thenReturn($keyType);
-    Phake::when($type)->typhoonSubType()->thenReturn($subType);
-    $alias = 'foo';
+    Phake::when($type)->typhoonName()->thenReturn('foo');
+    Phake::when($type)->typhoonTypes()->thenReturn(array());
     $expected = 'foo';
-    $data[] = array($type, $alias, $expected);
+    $data[] = array($expected, $type);
 
-    // #5: Traversable type with mixed type for key type
+    // #4: Traversable type with mixed type for key type
     $attributes = new Attributes;
     $keyType = new MixedType;
-    $subType = Phake::mock('Eloquent\Typhoon\Type\Type');
+    $subType = Phake::mock('Eloquent\Typhoon\Type\NamedType');
+    Phake::when($subType)->typhoonName()->thenReturn('bar');
     $type = Phake::mock('Eloquent\Typhoon\Type\SubTyped\TraversableType');
-    Phake::when($type)->typhoonKeyType()->thenReturn($keyType);
-    Phake::when($type)->typhoonSubType()->thenReturn($subType);
-    $alias = 'foo';
-    $expectedSub = $renderer->render($subType);
-    $expected = 'foo<'.$expectedSub.'>';
-    $data[] = array($type, $alias, $expected);
+    Phake::when($type)->typhoonName()->thenReturn('foo');
+    Phake::when($type)->typhoonTypes()->thenReturn(array($subType));
+    $expected = 'foo<bar>';
+    $data[] = array($expected, $type);
 
-    // #6: Traversable type
+    // #5: Traversable type
     $attributes = new Attributes;
-    $keyType = Phake::mock('Eloquent\Typhoon\Type\Type');
-    $subType = Phake::mock('Eloquent\Typhoon\Type\Type');
+    $keyType = Phake::mock('Eloquent\Typhoon\Type\NamedType');
+    Phake::when($keyType)->typhoonName()->thenReturn('bar');
+    $subType = Phake::mock('Eloquent\Typhoon\Type\NamedType');
+    Phake::when($subType)->typhoonName()->thenReturn('baz');
     $type = Phake::mock('Eloquent\Typhoon\Type\SubTyped\TraversableType');
-    Phake::when($type)->typhoonKeyType()->thenReturn($keyType);
-    Phake::when($type)->typhoonSubType()->thenReturn($subType);
-    $alias = 'foo';
-    $expectedKey = $renderer->render($keyType);
-    $expectedSub = $renderer->render($subType);
-    $expected = 'foo<'.$expectedKey.','.$expectedSub.'>';
-    $data[] = array($type, $alias, $expected);
+    Phake::when($type)->typhoonName()->thenReturn('foo');
+    Phake::when($type)->typhoonTypes()->thenReturn(array($keyType, $subType));
+    $expected = 'foo<bar,baz>';
+    $data[] = array($expected, $type);
 
-    // #7: Dynamic traversable type
+    // #6: Dynamic traversable type
     $attributes = new Attributes(array(
       'bar' => 'baz',
       'qux' => 1,
       'doom' => .1,
     ));
-    $keyType = Phake::mock('Eloquent\Typhoon\Type\Type');
-    $subType = Phake::mock('Eloquent\Typhoon\Type\Type');
+    $keyType = Phake::mock('Eloquent\Typhoon\Type\NamedType');
+    Phake::when($keyType)->typhoonName()->thenReturn('bar');
+    $subType = Phake::mock('Eloquent\Typhoon\Type\NamedType');
+    Phake::when($subType)->typhoonName()->thenReturn('baz');
     $type = Phake::mock('Eloquent\Typhoon\Test\Fixture\DynamicTraversable');
+    Phake::when($type)->typhoonName()->thenReturn('foo');
     Phake::when($type)->typhoonAttributes()->thenReturn($attributes);
-    Phake::when($type)->typhoonKeyType()->thenReturn($keyType);
-    Phake::when($type)->typhoonSubType()->thenReturn($subType);
-    $alias = 'foo';
-    $expectedKey = $renderer->render($keyType);
-    $expectedSub = $renderer->render($subType);
-    $expected = "foo(bar='baz',qux=1,doom=0.1)<".$expectedKey.','.$expectedSub.'>';
-    $data[] = array($type, $alias, $expected);
+    Phake::when($type)->typhoonTypes()->thenReturn(array($keyType, $subType));
+    $expected = "foo<bar,baz>(bar:baz,qux:1,doom:0.1)";
+    $data[] = array($expected, $type);
 
-    // #8: Object type
+    // #7: Object type
     $type = new ObjectType;
-    $alias = 'foo';
-    $expected = 'foo';
-    $data[] = array($type, $alias, $expected);
+    $expected = 'object';
+    $data[] = array($expected, $type);
 
-    // #9: Traversable type
+    // #8: Traversable type
     $type = new TraversableType;
-    $alias = 'foo';
-    $expected = 'foo';
-    $data[] = array($type, $alias, $expected);
+    $expected = 'traversable';
+    $data[] = array($expected, $type);
 
-    // #10: Object type of particular class
+    // #9: Object type of particular class
     $type = new ObjectType(array(
-      ObjectType::ATTRIBUTE_INSTANCE_OF => 'bar',
+      ObjectType::ATTRIBUTE_INSTANCE_OF => 'Bar',
     ));
-    $alias = 'foo';
-    $expected = 'bar';
-    $data[] = array($type, $alias, $expected);
+    $expected = 'Bar';
+    $data[] = array($expected, $type);
 
-    // #11: Traversable type of particular class
-    $keyType = Phake::mock('Eloquent\Typhoon\Type\Type');
-    $subType = Phake::mock('Eloquent\Typhoon\Type\Type');
+    // #10: Traversable type of particular class
+    $keyType = Phake::mock('Eloquent\Typhoon\Type\NamedType');
+    Phake::when($keyType)->typhoonName()->thenReturn('baz');
+    $subType = Phake::mock('Eloquent\Typhoon\Type\NamedType');
+    Phake::when($subType)->typhoonName()->thenReturn('qux');
     $type = new TraversableType(array(
-      TraversableType::ATTRIBUTE_INSTANCE_OF => 'bar',
+      TraversableType::ATTRIBUTE_INSTANCE_OF => 'Bar',
     ));
     $type->setTyphoonKeyType($keyType);
     $type->setTyphoonSubType($subType);
-    $alias = 'foo';
-    $expectedKey = $renderer->render($keyType);
-    $expectedSub = $renderer->render($subType);
-    $expected = "bar<".$expectedKey.','.$expectedSub.'>';
-    $data[] = array($type, $alias, $expected);
+    $expected = "Bar<baz,qux>";
+    $data[] = array($expected, $type);
+
+    // #11: Dynamic type with numeric strings
+    $attributes = new Attributes(array(
+      'bar' => '1',
+      'baz' => '0.1',
+    ));
+    $type = Phake::mock('Eloquent\Typhoon\Type\Dynamic\DynamicType');
+    Phake::when($type)->typhoonName()->thenReturn('foo');
+    Phake::when($type)->typhoonAttributes()->thenReturn($attributes);
+    $expected = "foo(bar:'1',baz:'0.1')";
+    $data[] = array($expected, $type);
 
     return $data;
   }
@@ -155,14 +151,8 @@ class TyphaxTypeRendererTest extends \Eloquent\Typhoon\Test\TestCase
   protected function setUp()
   {
     parent::setUp();
-    
-    $this->_renderer = new TyphaxTypeRenderer;
 
-    $this->_typeRegistry = new TypeRegistry;
-    foreach ($this->_typeRegistry as $alias => $type)
-    {
-      unset($this->_typeRegistry[$alias]);
-    }
+    $this->_renderer = new TyphaxTypeRenderer;
   }
 
   /**
@@ -172,14 +162,8 @@ class TyphaxTypeRendererTest extends \Eloquent\Typhoon\Test\TestCase
    * @group type-renderer
    * @group core
    */
-  public function testRender(Type $type, $alias, $expected)
+  public function testRender($expected, Type $type)
   {
-    if (null !== $alias)
-    {
-      $this->_typeRegistry[$alias] = get_class($type);
-    }
-    $this->_renderer->setTypeRegistry($this->_typeRegistry);
-
     $this->assertEquals($expected, $this->_renderer->render($type));
   }
 
@@ -187,9 +171,4 @@ class TyphaxTypeRendererTest extends \Eloquent\Typhoon\Test\TestCase
    * @var TyphaxTypeRenderer
    */
   protected $_renderer;
-
-  /**
-   * @var TypeRegistry
-   */
-  protected $_typeRegistry;
 }

@@ -11,7 +11,9 @@
 
 namespace Eloquent\Typhoon\Type;
 
-class KeyType extends BaseType
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
+
+class KeyType implements NamedType
 {
   public function __construct()
   {
@@ -19,7 +21,7 @@ class KeyType extends BaseType
     $this->innerType->addTyphoonType(new IntegerType);
     $this->innerType->addTyphoonType(new StringType);
   }
-  
+
   /**
    * @param mixed value
    *
@@ -30,7 +32,13 @@ class KeyType extends BaseType
     return $this->innerType->typhoonCheck($value);
   }
 
-  const ALIAS = 'key';
+  /**
+   * @return string
+   */
+  public function typhoonName()
+  {
+    return IntrinsicTypeName::NAME_KEY()->value();
+  }
 
   /**
    * @var Composite\OrType

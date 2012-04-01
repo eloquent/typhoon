@@ -11,11 +11,13 @@
 
 namespace Eloquent\Typhoon\Type;
 
-class BooleanType extends BaseType
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
+
+class BooleanType implements NamedType
 {
   /**
    * @param mixed value
-   * 
+   *
    * @return boolean
    */
   public function typhoonCheck($value)
@@ -23,5 +25,11 @@ class BooleanType extends BaseType
     return is_bool($value);
   }
 
-  const ALIAS = 'boolean';
+  /**
+   * @return string
+   */
+  public function typhoonName()
+  {
+    return IntrinsicTypeName::NAME_BOOLEAN()->value();
+  }
 }

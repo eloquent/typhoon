@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Type;
 
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
 use Phake;
 use stdClass;
 
@@ -32,7 +33,7 @@ class TypeTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
       array(false, function(){}),                // #7: closure
       array(false, $this->resourceFixture()),    // #8: resource
 
-      array(true,  Phake::mock('Eloquent\Typhoon\Type\Type'))  // #9: typhoon type
+      array(true,  Phake::mock('Eloquent\Typhoon\Type\NamedType'))  // #9: typhoon type
     );
   }
 
@@ -42,6 +43,14 @@ class TypeTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
   protected function typeClass()
   {
     return __NAMESPACE__.'\TypeType';
+  }
+
+  /**
+   * @return string
+   */
+  protected function typeName()
+  {
+    return 'typhoon.type';
   }
 
   // methods below must be manually overridden to implement @covers
@@ -54,4 +63,10 @@ class TypeTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    * @group core
    */
   public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
+
+  /**
+   * @covers Eloquent\Typhoon\Type\TypeType::typhoonName
+   * @group types
+   */
+  public function testTyphoonName() { parent::testTyphoonName(); }
 }

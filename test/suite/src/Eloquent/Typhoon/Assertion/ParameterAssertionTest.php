@@ -24,7 +24,7 @@ class ParameterAssertionTest extends \Eloquent\Typhoon\Test\TestCase
   protected function setUp()
   {
     parent::setUp();
-    
+
     $this->_assertion = new ParameterAssertion;
     $this->_parameter = new Parameter;
   }
@@ -59,7 +59,7 @@ class ParameterAssertionTest extends \Eloquent\Typhoon\Test\TestCase
    */
   public function testAssertFailureType()
   {
-    $type = Phake::mock('Eloquent\Typhoon\Type\Type');
+    $type = Phake::mock('Eloquent\Typhoon\Type\NamedType');
     Phake::when($type)->typhoonCheck()->thenReturn(false);
 
     $parameter = clone $this->_parameter;
@@ -126,7 +126,7 @@ class ParameterAssertionTest extends \Eloquent\Typhoon\Test\TestCase
    */
   public function testTypeAssertion()
   {
-    $type = Phake::mock('Eloquent\Typhoon\Type\Type');
+    $type = Phake::mock('Eloquent\Typhoon\Type\NamedType');
     $value = 'foo';
 
     $parameter = new Parameter;

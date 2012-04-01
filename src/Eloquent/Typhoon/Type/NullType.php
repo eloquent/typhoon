@@ -11,7 +11,9 @@
 
 namespace Eloquent\Typhoon\Type;
 
-class NullType extends BaseType
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
+
+class NullType implements NamedType
 {
   /**
    * @param mixed value
@@ -23,5 +25,11 @@ class NullType extends BaseType
     return null === $value;
   }
 
-  const ALIAS = 'null';
+  /**
+   * @return string
+   */
+  public function typhoonName()
+  {
+    return IntrinsicTypeName::NAME_NULL()->value();
+  }
 }

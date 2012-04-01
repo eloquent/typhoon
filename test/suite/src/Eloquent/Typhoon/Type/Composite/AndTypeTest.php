@@ -18,8 +18,8 @@ class AndTypeTest extends \Eloquent\Typhoon\Test\TestCase
   protected function setUp()
   {
     $this->_andType = new AndType;
-    $this->_typeA = Phake::mock('Eloquent\Typhoon\Type\Type');
-    $this->_typeB = Phake::mock('Eloquent\Typhoon\Type\Type');
+    $this->_typeA = Phake::mock('Eloquent\Typhoon\Type\NamedType');
+    $this->_typeB = Phake::mock('Eloquent\Typhoon\Type\NamedType');
   }
 
   /**

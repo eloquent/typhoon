@@ -48,13 +48,13 @@ class AttributeSignatureTest extends \Eloquent\Typhoon\Test\TestCase
    */
   public function testSignature()
   {
-    $type = Phake::mock('Eloquent\Typhoon\Type\Type');
+    $type = Phake::mock('Eloquent\Typhoon\Type\NamedType');
     $this->_signature->set('foo', $type);
 
     $this->assertSame($type, $this->_signature['foo']);
     $this->assertFalse($this->_signature->isRequired('foo'));
 
-    $type = Phake::mock('Eloquent\Typhoon\Type\Type');
+    $type = Phake::mock('Eloquent\Typhoon\Type\NamedType');
     $this->_signature->set('foo', $type, new Boolean(true));
 
     $this->assertSame($type, $this->_signature['foo']);
@@ -70,7 +70,7 @@ class AttributeSignatureTest extends \Eloquent\Typhoon\Test\TestCase
    */
   public function typeFailureData()
   {
-    $type = Phake::mock('Eloquent\Typhoon\Type\Type');
+    $type = Phake::mock('Eloquent\Typhoon\Type\NamedType');
 
     return array(
       array('offsetSet', 'foo', 'bar'),
@@ -85,7 +85,7 @@ class AttributeSignatureTest extends \Eloquent\Typhoon\Test\TestCase
       array('offsetSet', .1, $type),
     );
   }
-  
+
   /**
    * @covers Eloquent\Typhoon\Attribute\AttributeSignature
    * @dataProvider typeFailureData
@@ -101,7 +101,7 @@ class AttributeSignatureTest extends \Eloquent\Typhoon\Test\TestCase
     $this->setExpectedException('Eloquent\Typhoon\Assertion\Exception\UnexpectedArgumentException');
     call_user_func_array(array($this->_signature, $method), $arguments);
   }
-  
+
   /**
    * @var AttributeSignature
    */

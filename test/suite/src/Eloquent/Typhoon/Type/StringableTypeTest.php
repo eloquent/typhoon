@@ -11,9 +11,10 @@
 
 namespace Eloquent\Typhoon\Type;
 
-use stdClass;
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
 use Eloquent\Typhoon\Attribute\AttributeSignature;
 use Eloquent\Typhoon\Primitive\String;
+use stdClass;
 
 class StringableTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
 {
@@ -62,7 +63,7 @@ class StringableTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
       array(false, $this->stringableFixture(chr(128)), $utf8OrUtf32Attributes),
     );
   }
-  
+
   /**
    * @return string
    */
@@ -70,7 +71,15 @@ class StringableTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
   {
     return __NAMESPACE__.'\StringableType';
   }
-  
+
+  /**
+   * @return string
+   */
+  protected function typeName()
+  {
+    return IntrinsicTypeName::NAME_STRINGABLE()->value();
+  }
+
   /**
    * @covers Eloquent\Typhoon\Type\StringableType::typhoonCheck
    * @dataProvider typeValues
@@ -84,7 +93,7 @@ class StringableTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
     {
       (string)$value;
     }
-    
+
     $this->assertTrue(true);
   }
 
@@ -122,4 +131,10 @@ class StringableTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    * @group dynamic-type
    */
   public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
+
+  /**
+   * @covers Eloquent\Typhoon\Type\StringableType::typhoonName
+   * @group types
+   */
+  public function testTyphoonName() { parent::testTyphoonName(); }
 }

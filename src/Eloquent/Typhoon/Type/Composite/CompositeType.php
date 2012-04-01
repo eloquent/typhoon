@@ -19,4 +19,14 @@ interface CompositeType extends Type
    * @param Type $type;
    */
   public function addTyphoonType(Type $type);
+
+  /**
+   * @return array
+   */
+  public function typhoonTypes();
+
+  /**
+   * @return string
+   */
+  public function operator();
 }

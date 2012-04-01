@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Type;
 
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
 use Eloquent\Typhoon\Attribute\AttributeSignature;
 
 class DirectoryType extends Dynamic\BaseDynamicType
@@ -35,7 +36,13 @@ class DirectoryType extends Dynamic\BaseDynamicType
     return $this->innerType->typhoonCheck($value);
   }
 
-  const ALIAS = 'directory';
+  /**
+   * @return string
+   */
+  public function typhoonName()
+  {
+    return IntrinsicTypeName::NAME_DIRECTORY()->value();
+  }
 
   const ATTRIBUTE_LOCAL = 'local';
   const ATTRIBUTE_WRAPPER = 'wrapper';

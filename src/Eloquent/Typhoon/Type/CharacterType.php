@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Type;
 
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
 use Eloquent\Typhoon\Attribute\AttributeSignature;
 
 class CharacterType extends Dynamic\BaseDynamicType
@@ -57,7 +58,13 @@ class CharacterType extends Dynamic\BaseDynamicType
     return 1 === mb_strlen($value);
   }
 
-  const ALIAS = 'character';
+  /**
+   * @return string
+   */
+  public function typhoonName()
+  {
+    return IntrinsicTypeName::NAME_CHARACTER()->value();
+  }
 
   const ATTRIBUTE_ENCODING = 'encoding';
 

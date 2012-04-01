@@ -11,8 +11,10 @@
 
 namespace Eloquent\Typhoon\Type\Registry;
 
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeAlias;
 use Eloquent\Typhoon\Primitive\String;
-use Eloquent\Typhoon\Test\Fixture\ConcreteBaseType;
+use Eloquent\Typhoon\Test\Fixture\ConcreteType;
 use Eloquent\Typhoon\Type\ObjectType;
 use Phake;
 
@@ -24,44 +26,45 @@ class TypeRegistryTest extends \Eloquent\Typhoon\Test\TestCase
   public function defaultTypes()
   {
     $namespace = 'Eloquent\Typhoon\Type';
-    
+
     return array(
-      array('array', $namespace.'\ArrayType'),
-      array('boolean', $namespace.'\BooleanType'),
-      array('callback', $namespace.'\CallbackType'),
-      array('callback_wrapper', $namespace.'\CallbackWrapperType'),
-      array('character', $namespace.'\CharacterType'),
-      array('class_name', $namespace.'\ClassNameType'),
-      array('directory', $namespace.'\DirectoryType'),
-      array('file', $namespace.'\FileType'),
-      array('float', $namespace.'\FloatType'),
-      array('integer', $namespace.'\IntegerType'),
-      array('integerable', $namespace.'\IntegerableType'),
-      array('interface_name', $namespace.'\InterfaceNameType'),
-      array('key', $namespace.'\KeyType'),
-      array('mixed', $namespace.'\MixedType'),
-      array('null', $namespace.'\NullType'),
-      array('number', $namespace.'\NumberType'),
-      array('numeric', $namespace.'\NumericType'),
-      array('object', $namespace.'\ObjectType'),
-      array('resource', $namespace.'\ResourceType'),
-      array('scalar', $namespace.'\ScalarType'),
-      array('socket', $namespace.'\SocketType'),
-      array('stream', $namespace.'\StreamType'),
-      array('string', $namespace.'\StringType'),
-      array('stringable', $namespace.'\StringableType'),
-      array('traversable', $namespace.'\TraversableType'),
+      array(IntrinsicTypeName::NAME_ARRAY()->value(), $namespace.'\ArrayType'),
+      array(IntrinsicTypeName::NAME_BOOLEAN()->value(), $namespace.'\BooleanType'),
+      array(IntrinsicTypeName::NAME_CALLBACK()->value(), $namespace.'\CallbackType'),
+      array(IntrinsicTypeName::NAME_CALLBACK_WRAPPER()->value(), $namespace.'\CallbackWrapperType'),
+      array(IntrinsicTypeName::NAME_CHARACTER()->value(), $namespace.'\CharacterType'),
+      array(IntrinsicTypeName::NAME_CLASS_NAME()->value(), $namespace.'\ClassNameType'),
+      array(IntrinsicTypeName::NAME_DIRECTORY()->value(), $namespace.'\DirectoryType'),
+      array(IntrinsicTypeName::NAME_FILE()->value(), $namespace.'\FileType'),
+      array(IntrinsicTypeName::NAME_FLOAT()->value(), $namespace.'\FloatType'),
+      array(IntrinsicTypeName::NAME_INTEGER()->value(), $namespace.'\IntegerType'),
+      array(IntrinsicTypeName::NAME_INTEGERABLE()->value(), $namespace.'\IntegerableType'),
+      array(IntrinsicTypeName::NAME_INTERFACE_NAME()->value(), $namespace.'\InterfaceNameType'),
+      array(IntrinsicTypeName::NAME_KEY()->value(), $namespace.'\KeyType'),
+      array(IntrinsicTypeName::NAME_MIXED()->value(), $namespace.'\MixedType'),
+      array(IntrinsicTypeName::NAME_NULL()->value(), $namespace.'\NullType'),
+      array(IntrinsicTypeName::NAME_NUMBER()->value(), $namespace.'\NumberType'),
+      array(IntrinsicTypeName::NAME_NUMERIC()->value(), $namespace.'\NumericType'),
+      array(IntrinsicTypeName::NAME_OBJECT()->value(), $namespace.'\ObjectType'),
+      array(IntrinsicTypeName::NAME_RESOURCE()->value(), $namespace.'\ResourceType'),
+      array(IntrinsicTypeName::NAME_SCALAR()->value(), $namespace.'\ScalarType'),
+      array(IntrinsicTypeName::NAME_SOCKET()->value(), $namespace.'\SocketType'),
+      array(IntrinsicTypeName::NAME_STREAM()->value(), $namespace.'\StreamType'),
+      array(IntrinsicTypeName::NAME_STRING()->value(), $namespace.'\StringType'),
+      array(IntrinsicTypeName::NAME_STRINGABLE()->value(), $namespace.'\StringableType'),
+      array(IntrinsicTypeName::NAME_TRAVERSABLE()->value(), $namespace.'\TraversableType'),
+
+      array(IntrinsicTypeAlias::ALIAS_BOOL()->value(), $namespace.'\BooleanType', true),
+      array(IntrinsicTypeAlias::ALIAS_CALLABLE()->value(), $namespace.'\CallbackType', true),
+      array(IntrinsicTypeAlias::ALIAS_DOUBLE()->value(), $namespace.'\FloatType', true),
+      array(IntrinsicTypeAlias::ALIAS_FLOATABLE()->value(), $namespace.'\NumericType', true),
+      array(IntrinsicTypeAlias::ALIAS_INT()->value(), $namespace.'\IntegerType', true),
+      array(IntrinsicTypeAlias::ALIAS_KEYABLE()->value(), $namespace.'\ScalarType', true),
+      array(IntrinsicTypeAlias::ALIAS_LONG()->value(), $namespace.'\IntegerType', true),
+      array(IntrinsicTypeAlias::ALIAS_REAL()->value(), $namespace.'\FloatType', true),
+
       array('typhoon.parameter', $namespace.'\ParameterType'),
       array('typhoon.type', $namespace.'\TypeType'),
-
-      array('bool', $namespace.'\BooleanType', true),
-      array('callable', $namespace.'\CallbackType', true),
-      array('double', $namespace.'\FloatType', true),
-      array('floatable', $namespace.'\NumericType', true),
-      array('int', $namespace.'\IntegerType', true),
-      array('keyable', $namespace.'\ScalarType', true),
-      array('long', $namespace.'\IntegerType', true),
-      array('real', $namespace.'\FloatType', true),
     );
   }
 
@@ -82,9 +85,9 @@ class TypeRegistryTest extends \Eloquent\Typhoon\Test\TestCase
   protected function setUp()
   {
     parent::setUp();
-    
+
     $this->_registry = new TypeRegistry;
-    $this->_type = Phake::mock('Eloquent\Typhoon\Type\Type');
+    $this->_type = Phake::mock('Eloquent\Typhoon\Type\NamedType');
     $this->_typeName = get_class($this->_type);
   }
 
@@ -98,9 +101,9 @@ class TypeRegistryTest extends \Eloquent\Typhoon\Test\TestCase
   public function testConstructor()
   {
     $registry = Phake::partialMock(__NAMESPACE__.'\TypeRegistry');
-    
+
     Phake::verify($registry)->registerDefaults();
-  
+
     $this->assertTrue(true);
   }
 
@@ -164,15 +167,15 @@ class TypeRegistryTest extends \Eloquent\Typhoon\Test\TestCase
    */
   public function testAlias()
   {
-    $type_1 = Phake::mock('Eloquent\Typhoon\Type\Type');
-    $type_2 = new ConcreteBaseType;
+    $type_1 = Phake::mock('Eloquent\Typhoon\Type\NamedType');
+    $type_2 = new ConcreteType;
 
     $typeName_1 = get_class($type_1);
     $typeName_2 = get_class($type_2);
     $alias_1 = 'foo';
     $alias_2 = 'bar';
     $this->_registry[$alias_1] = $typeName_1;
-    
+
     $this->assertNotEquals($typeName_1, $typeName_2);
 
     $this->assertEquals($alias_1, $this->_registry->alias(new String($typeName_1)));
@@ -195,7 +198,7 @@ class TypeRegistryTest extends \Eloquent\Typhoon\Test\TestCase
       ObjectType::ATTRIBUTE_INSTANCE_OF => 'foo',
     ));
 
-    $this->assertEquals(ObjectType::ALIAS, $this->_registry->aliasByType($type));
+    $this->assertEquals(IntrinsicTypeName::NAME_OBJECT()->value(), $this->_registry->aliasByType($type));
   }
 
   /**

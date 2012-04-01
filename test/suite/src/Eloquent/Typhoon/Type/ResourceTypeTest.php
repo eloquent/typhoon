@@ -11,9 +11,10 @@
 
 namespace Eloquent\Typhoon\Type;
 
-use stdClass;
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
 use Eloquent\Typhoon\Attribute\AttributeSignature;
 use Eloquent\Typhoon\Primitive\String;
+use stdClass;
 
 class ResourceTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
 {
@@ -32,7 +33,7 @@ class ResourceTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
         ResourceType::TYPE_SOCKET,
       ),
     );
-    
+
     $typeValues = array(
       array(false, null),                      // #0: null
       array(false, true),                      // #1: boolean
@@ -55,7 +56,7 @@ class ResourceTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
       array(false, $this->resourceFixture(),   $streamOrSocketAttributes),  // #16: resource of type stream or socket failure
       array(true,  $this->streamFixture(),     $streamOrSocketAttributes),  // #17: resource of type stream or socket success
     );
-    
+
     if (extension_loaded('sockets'))
     {
       $typeValues[] = array(true, $this->socketFixture());                            // #18: resource of type stream or socket success
@@ -71,6 +72,14 @@ class ResourceTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
   protected function typeClass()
   {
     return __NAMESPACE__.'\ResourceType';
+  }
+
+  /**
+   * @return string
+   */
+  protected function typeName()
+  {
+    return IntrinsicTypeName::NAME_RESOURCE()->value();
   }
 
   /**
@@ -106,4 +115,10 @@ class ResourceTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    * @group dynamic-type
    */
   public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
+
+  /**
+   * @covers Eloquent\Typhoon\Type\ResourceType::typhoonName
+   * @group types
+   */
+  public function testTyphoonName() { parent::testTyphoonName(); }
 }

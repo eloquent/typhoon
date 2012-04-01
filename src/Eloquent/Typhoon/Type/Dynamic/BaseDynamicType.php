@@ -14,9 +14,8 @@ namespace Eloquent\Typhoon\Type\Dynamic;
 use Eloquent\Typhoon\Attribute\Attributes;
 use Eloquent\Typhoon\Attribute\AttributeSignature;
 use Eloquent\Typhoon\Primitive\String;
-use Eloquent\Typhoon\Type\BaseType;
 
-abstract class BaseDynamicType extends BaseType implements DynamicType
+abstract class BaseDynamicType implements DynamicType
 {
   public function __construct(array $attributes = null)
   {
@@ -35,7 +34,7 @@ abstract class BaseDynamicType extends BaseType implements DynamicType
   {
     $attributes = Attributes::adapt($this->attributes);
     $attributes->setSignature(static::attributeSignature($this));
-    
+
     return $attributes;
   }
 

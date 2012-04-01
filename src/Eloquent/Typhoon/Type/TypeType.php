@@ -11,7 +11,7 @@
 
 namespace Eloquent\Typhoon\Type;
 
-class TypeType extends BaseType
+class TypeType implements NamedType
 {
   /**
    * @param mixed value
@@ -23,5 +23,11 @@ class TypeType extends BaseType
     return $value instanceof Type;
   }
 
-  const ALIAS = 'typhoon.type';
+  /**
+   * @return string
+   */
+  public function typhoonName()
+  {
+    return 'typhoon.type';
+  }
 }

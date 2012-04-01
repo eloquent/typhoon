@@ -9,12 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Eloquent\Typhoon\Type\Composite;
+namespace Eloquent\Typhoon\Type;
 
-use Eloquent\Typhoon\Type\ArrayType;
-use Eloquent\Typhoon\Type\SubTyped\SubTypedType;
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
 
-class TupleType extends BaseCompositeType implements SubTypedType
+class TupleType implements NamedType, SubTyped\SubTypedType
 {
   public function __construct()
   {
@@ -24,9 +23,17 @@ class TupleType extends BaseCompositeType implements SubTypedType
   /**
    * @param array $subTypes
    */
-  public function setTyphoonSubTypes(array $subTypes)
+  public function setTyphoonTypes(array $subTypes)
   {
     $this->types = $subTypes;
+  }
+
+  /**
+   * @return array
+   */
+  public function typhoonTypes()
+  {
+    return $this->types;
   }
 
   /**
@@ -42,9 +49,9 @@ class TupleType extends BaseCompositeType implements SubTypedType
     }
 
     $expectedKeys = array();
-    if ($this->types)
+    if ($this->typhoonTypes())
     {
-      $expectedKeys = range(0, count($this->types) - 1);
+      $expectedKeys = range(0, count($this->typhoonTypes()) - 1);
     }
     if (array_keys($value) !== $expectedKeys)
     {
@@ -52,7 +59,7 @@ class TupleType extends BaseCompositeType implements SubTypedType
     }
 
     $i = 0;
-    foreach ($this->types as $type)
+    foreach ($this->typhoonTypes() as $type)
     {
       if (!$type->typhoonCheck($value[$i]))
       {
@@ -65,10 +72,21 @@ class TupleType extends BaseCompositeType implements SubTypedType
     return true;
   }
 
-  const ALIAS = 'tuple';
+  /**
+   * @return string
+   */
+  public function typhoonName()
+  {
+    return IntrinsicTypeName::NAME_TUPLE()->value();
+  }
 
   /**
    * @var ArrayType
    */
   protected $innerType;
+
+  /**
+   * @var array
+   */
+  protected $types = array();
 }

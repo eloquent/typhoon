@@ -11,17 +11,25 @@
 
 namespace Eloquent\Typhoon\Type\Renderer;
 
+use Eloquent\Typhax\Lexer\Token;
 use Eloquent\Typhoon\Attribute\Attributes;
 use Eloquent\Typhoon\Primitive\String;
+use Eloquent\Typhoon\Type\Composite\CompositeType;
 use Eloquent\Typhoon\Type\Dynamic\DynamicType;
-use Eloquent\Typhoon\Type\Registry\Exception\UnregisteredTypeException;
-use Eloquent\Typhoon\Type\SubTyped\TraversableType as TraversableTypeInterface;
+use Eloquent\Typhoon\Type\Inspector\TypeInspector;
+use Eloquent\Typhoon\Type\SubTyped\SubTypedType;
+use Eloquent\Typhoon\Type\ArrayType;
+use Eloquent\Typhoon\Type\BooleanType;
+use Eloquent\Typhoon\Type\FloatType;
+use Eloquent\Typhoon\Type\IntegerType;
 use Eloquent\Typhoon\Type\MixedType;
+use Eloquent\Typhoon\Type\NullType;
 use Eloquent\Typhoon\Type\ObjectType;
+use Eloquent\Typhoon\Type\StringType;
 use Eloquent\Typhoon\Type\TraversableType;
 use Eloquent\Typhoon\Type\Type;
 
-class TyphaxTypeRenderer extends TypeRenderer
+class TyphaxTypeRenderer implements TypeRenderer
 {
   /**
    * @param Type $type
@@ -31,14 +39,18 @@ class TyphaxTypeRenderer extends TypeRenderer
   public function render(Type $type)
   {
     $class = null;
-
     if ($type instanceof ObjectType)
     {
       $class = $type->typhoonAttributes()->get(ObjectType::ATTRIBUTE_INSTANCE_OF, null);
     }
-    if ($type instanceof TraversableType)
+    else if ($type instanceof TraversableType)
     {
       $class = $type->typhoonAttributes()->get(TraversableType::ATTRIBUTE_INSTANCE_OF, null);
+    }
+
+    if ($type instanceof CompositeType)
+    {
+      return $this->renderComposite($type);
     }
 
     if ($class)
@@ -47,39 +59,61 @@ class TyphaxTypeRenderer extends TypeRenderer
     }
     else
     {
-      $rendered = $this->renderAlias($type);
+      $rendered = $type->typhoonName();
     }
 
-    if (!$class && $type instanceof DynamicType)
+    if ($type instanceof SubTypedType)
+    {
+      $rendered .= $this->renderSubTypes($type->typhoonTypes());
+    }
+
+    if (null === $class && $type instanceof DynamicType)
     {
       $rendered .= $this->renderAttributes($type->typhoonAttributes());
-    }
-    if ($type instanceof TraversableTypeInterface)
-    {
-      $rendered .= $this->renderTraversable($type->typhoonKeyType(), $type->typhoonSubType());
     }
 
     return $rendered;
   }
 
   /**
-   * @param Type $type
+   * @param CompositeType $composite
    *
    * @return string
    */
-  protected function renderAlias(Type $type)
+  protected function renderComposite(CompositeType $composite)
   {
-    try
+    $rendered = array();
+    foreach ($composite->typhoonTypes() as $type)
     {
-      return $this->typeRegistry()->aliasByType($type);
+      $rendered[] = $this->render($type);
     }
-    catch (UnregisteredTypeException $e) {}
 
-    $attributes = new Attributes(array(
-      self::UNREGISTERED_ATTRIBUTE_INSTANCE_OF => get_class($type),
-    ));
-    
-    return self::UNREGISTERED.$this->renderAttributes($attributes);
+    return implode($composite->operator(), $rendered);
+  }
+
+  /**
+   * @param array $subTypes
+   *
+   * @return string
+   */
+  protected function renderSubTypes(array $subTypes)
+  {
+    if (count($subTypes) < 1)
+    {
+      return '';
+    }
+
+    $rendered = array();
+    foreach ($subTypes as $subType)
+    {
+      $rendered[] = $this->render($subType);
+    }
+
+    return
+      Token::TOKEN_LESS_THAN
+      .implode(Token::TOKEN_COMMA, $rendered)
+      .Token::TOKEN_GREATER_THAN
+    ;
   }
 
   /**
@@ -89,101 +123,208 @@ class TyphaxTypeRenderer extends TypeRenderer
    */
   protected function renderAttributes(Attributes $attributes)
   {
-    $rendered = '';
-
-    foreach ($attributes as $key => $value)
-    {
-      if ($rendered)
-      {
-        $rendered .= self::TOKEN_ATTRIBUTE_SEPARATOR;
-      }
-      else
-      {
-        $rendered .= self::TOKEN_ATTRIBUTES_START;
-      }
-
-      $rendered .= $this->renderAttribute(new String($key), $value);
-    }
-
-    if ($rendered)
-    {
-      $rendered .= self::TOKEN_ATTRIBUTES_END;
-    }
-
-    return $rendered;
-  }
-
-  /**
-   * @param String $key
-   * @param mixed $value
-   *
-   * @return string
-   */
-  protected function renderAttribute(String $key, $value)
-  {
-    return
-      $this->renderAttributeKey($key)
-      .self::TOKEN_ATTRIBUTE_EQUALS
-      .$this->renderAttributeValue($value)
-    ;
-  }
-
-  /**
-   * @param String $key
-   *
-   * @return string
-   */
-  protected function renderAttributeKey(String $key)
-  {
-    return $key->value();
-  }
-
-  /**
-   * @param mixed $value
-   *
-   * @return string
-   */
-  protected function renderAttributeValue($value)
-  {
-    return var_export($value, true);
-  }
-
-  /**
-   * @param Type $keyType
-   * @param Type $subType
-   *
-   * @return string
-   */
-  protected function renderTraversable(Type $keyType, Type $subType)
-  {
-    if ($keyType instanceof MixedType && $subType instanceof MixedType)
+    if (count($attributes) < 1)
     {
       return '';
     }
 
-    $rendered = self::TOKEN_TRAVERSABLE_START;
-
-    if (!$keyType instanceof MixedType)
-    {
-      $rendered .= $this->render($keyType).self::TOKEN_TRAVERSABLE_SEPARATOR;
-    }
-
-    $rendered .= $this->render($subType);
-    $rendered .= self::TOKEN_TRAVERSABLE_END;
-
-    return $rendered;
+    return
+      Token::TOKEN_PARENTHESIS_OPEN
+      .$this->renderHashContents($attributes->values())
+      .Token::TOKEN_PARENTHESIS_CLOSE
+    ;
   }
 
-  const TOKEN_ATTRIBUTES_START = '(';
-  const TOKEN_ATTRIBUTES_END = ')';
+  /**
+   * @param array $hash
+   *
+   * @return string
+   */
+  protected function renderHash(array $hash)
+  {
+    return
+      Token::TOKEN_BRACE_OPEN
+      .$this->renderHashContents($hash)
+      .Token::TOKEN_BRACE_CLOSE
+    ;
+  }
 
-  const TOKEN_ATTRIBUTE_EQUALS = '=';
-  const TOKEN_ATTRIBUTE_SEPARATOR = ',';
-  
-  const TOKEN_TRAVERSABLE_START = '<';
-  const TOKEN_TRAVERSABLE_SEPARATOR = ',';
-  const TOKEN_TRAVERSABLE_END = '>';
+  /**
+   * @param array $array
+   *
+   * @return string
+   */
+  protected function renderArray(array $array)
+  {
+    return
+      Token::TOKEN_SQUARE_BRACKET_OPEN
+      .$this->renderArrayContents($array)
+      .Token::TOKEN_SQUARE_BRACKET_CLOSE
+    ;
+  }
 
-  const UNREGISTERED = 'unregistered';
-  const UNREGISTERED_ATTRIBUTE_INSTANCE_OF = 'instanceOf';
+  /**
+   * @param array $values
+   *
+   * @return string
+   */
+  protected function renderHashContents(array $values)
+  {
+    $rendered = array();
+    foreach ($values as $key => $value)
+    {
+      $rendered[] =
+        $this->renderValue($key)
+        .Token::TOKEN_COLON
+        .$this->renderValue($value)
+      ;
+    }
+
+    return implode(Token::TOKEN_COMMA, $rendered);
+  }
+
+  /**
+   * @param array $values
+   *
+   * @return string
+   */
+  protected function renderArrayContents(array $values)
+  {
+    $rendered = array();
+    foreach ($values as $value)
+    {
+      $rendered[] = $this->renderValue($value);
+    }
+
+    return implode(Token::TOKEN_COMMA, $rendered);
+  }
+
+  /**
+   * @param mixed $value
+   *
+   * @return string
+   */
+  protected function renderValue($value)
+  {
+    $valueType = $this->typeInspector()->typeOf($value);
+
+    if ($valueType instanceof ArrayType)
+    {
+      if ($this->isSequentialArray($value))
+      {
+        return $this->renderArray($value);
+      }
+      else
+      {
+        return $this->renderHash($value);
+      }
+    }
+    if ($valueType instanceof NullType)
+    {
+      return $this->renderNull();
+    }
+    if ($valueType instanceof BooleanType)
+    {
+      return $this->renderBoolean($value);
+    }
+    if ($valueType instanceof StringType)
+    {
+      return $this->renderString($value);
+    }
+    if ($valueType instanceof IntegerType)
+    {
+      return $this->renderInteger($value);
+    }
+    if ($valueType instanceof FloatType)
+    {
+      return $this->renderFloat($value);
+    }
+
+    throw new Exception\UnsupportedValueException($value);
+  }
+
+  /**
+   * @return string
+   */
+  protected function renderNull()
+  {
+    return Token::TOKEN_NULL;
+  }
+
+  /**
+   * @param boolean $boolean
+   *
+   * @return string
+   */
+  protected function renderBoolean($boolean)
+  {
+    return
+      $boolean
+      ? Token::TOKEN_TRUE
+      : Token::TOKEN_FALSE
+    ;
+  }
+
+  /**
+   * @param string $string
+   *
+   * @return string
+   */
+  protected function renderString($string)
+  {
+    if (preg_match('/^\d+(?:\.\d+)?$/', $string))
+    {
+      return var_export($string, true);
+    }
+
+    return $string;
+  }
+
+  /**
+   * @param integer $integer
+   *
+   * @return string
+   */
+  protected function renderInteger($integer)
+  {
+    return (string)$integer;
+  }
+
+  /**
+   * @param float $float
+   *
+   * @return string
+   */
+  protected function renderFloat($float)
+  {
+    return (string)$float;
+  }
+
+  /**
+   * @param array $array
+   *
+   * @return boolean
+   */
+  protected function isSequentialArray(array $array)
+  {
+    return array_keys($array) === range(0, count($array) - 1);
+  }
+
+  /**
+   * @return TypeInspector
+   */
+  protected function typeInspector()
+  {
+    if (null === $this->typeInspector)
+    {
+      $this->typeInspector = new TypeInspector;
+    }
+
+    return $this->typeInspector;
+  }
+
+  /**
+   * @var TypeInspector
+   */
+  protected $typeInspector;
 }

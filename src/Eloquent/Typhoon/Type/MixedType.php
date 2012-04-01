@@ -11,7 +11,9 @@
 
 namespace Eloquent\Typhoon\Type;
 
-class MixedType extends BaseType
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
+
+class MixedType implements NamedType
 {
   /**
    * @param mixed value
@@ -23,5 +25,11 @@ class MixedType extends BaseType
     return true;
   }
 
-  const ALIAS = 'mixed';
+  /**
+   * @return string
+   */
+  public function typhoonName()
+  {
+    return IntrinsicTypeName::NAME_MIXED()->value();
+  }
 }

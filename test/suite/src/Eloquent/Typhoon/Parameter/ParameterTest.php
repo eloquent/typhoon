@@ -21,9 +21,9 @@ class ParameterTest extends \Eloquent\Typhoon\Test\TestCase
   protected function setUp()
   {
     parent::setUp();
-    
+
     $this->_parameter = new Parameter;
-    $this->_type = Phake::mock('Eloquent\Typhoon\Type\Type');
+    $this->_type = Phake::mock('Eloquent\Typhoon\Type\NamedType');
   }
 
   /**
@@ -36,7 +36,7 @@ class ParameterTest extends \Eloquent\Typhoon\Test\TestCase
   public function testType()
   {
     $this->assertEquals(new MixedType, $this->_parameter->type());
-    
+
     $this->_parameter->setType($this->_type);
 
     $this->assertSame($this->_type, $this->_parameter->type());

@@ -34,7 +34,7 @@ class UnregisteredTypeExceptionTest extends \Eloquent\Typhoon\Test\ExceptionTest
   protected function setUp()
   {
     parent::setUp();
-    
+
     $this->_typeName = new String('foo');
   }
 
@@ -48,7 +48,7 @@ class UnregisteredTypeExceptionTest extends \Eloquent\Typhoon\Test\ExceptionTest
    */
   public function testConstructor()
   {
-    $this->assertEquals("No registered alias for type '".$this->_typeName."'.", $this->exceptionFixture()->getMessage());
+    $this->assertEquals("Type '".$this->_typeName."' not registered.", $this->exceptionFixture()->getMessage());
 
     parent::testConstructor();
   }

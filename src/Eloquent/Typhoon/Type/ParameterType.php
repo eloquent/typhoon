@@ -13,7 +13,7 @@ namespace Eloquent\Typhoon\Type;
 
 use Eloquent\Typhoon\Parameter\Parameter;
 
-class ParameterType extends BaseType
+class ParameterType implements NamedType
 {
   /**
    * @param mixed value
@@ -25,5 +25,11 @@ class ParameterType extends BaseType
     return $value instanceof Parameter;
   }
 
-  const ALIAS = 'typhoon.parameter';
+  /**
+   * @return string
+   */
+  public function typhoonName()
+  {
+    return 'typhoon.parameter';
+  }
 }

@@ -11,6 +11,8 @@
 
 namespace Eloquent\Typhoon\Type\Composite;
 
+use Eloquent\Typhax\Lexer\Token;
+
 class AndType extends BaseCompositeType
 {
   /**
@@ -29,5 +31,13 @@ class AndType extends BaseCompositeType
     }
 
     return true;
+  }
+
+  /**
+   * @return string
+   */
+  public function operator()
+  {
+    return Token::TOKEN_AND;
   }
 }

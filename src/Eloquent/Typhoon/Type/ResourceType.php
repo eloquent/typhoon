@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Type;
 
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
 use Eloquent\Typhoon\Attribute\AttributeSignature;
 
 class ResourceType extends Dynamic\BaseDynamicType
@@ -44,7 +45,13 @@ class ResourceType extends Dynamic\BaseDynamicType
     return true;
   }
 
-  const ALIAS = 'resource';
+  /**
+   * @return string
+   */
+  public function typhoonName()
+  {
+    return IntrinsicTypeName::NAME_RESOURCE()->value();
+  }
 
   const ATTRIBUTE_TYPE = 'type';
 

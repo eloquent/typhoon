@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Type;
 
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
 use stdClass;
 
 class IntegerableTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
@@ -33,7 +34,7 @@ class IntegerableTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
       array(true,  '1'),                       // #9: integer string
       array(false, 1.0),                       // #10: whole number float
       array(true,  -1),                        // #11: negative integer
-        
+
       array(true,  '1'),    // #12: integer string
       array(false, '.1'),   // #13: float string
       array(false, '1e4'),  // #14: float string
@@ -48,6 +49,14 @@ class IntegerableTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
     return __NAMESPACE__.'\IntegerableType';
   }
 
+  /**
+   * @return string
+   */
+  protected function typeName()
+  {
+    return IntrinsicTypeName::NAME_INTEGERABLE()->value();
+  }
+
   // methods below must be manually overridden to implement @covers
 
   /**
@@ -58,4 +67,10 @@ class IntegerableTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    * @group type
    */
   public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
+
+  /**
+   * @covers Eloquent\Typhoon\Type\IntegerableType::typhoonName
+   * @group types
+   */
+  public function testTyphoonName() { parent::testTyphoonName(); }
 }

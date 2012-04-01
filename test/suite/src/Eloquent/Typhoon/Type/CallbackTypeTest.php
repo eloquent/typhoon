@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Type;
 
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
 use stdClass;
 
 class CallbackTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
@@ -47,6 +48,14 @@ class CallbackTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
     return __NAMESPACE__.'\CallbackType';
   }
 
+  /**
+   * @return string
+   */
+  protected function typeName()
+  {
+    return IntrinsicTypeName::NAME_CALLBACK()->value();
+  }
+
   // methods below must be manually overridden to implement @covers
 
   /**
@@ -56,4 +65,10 @@ class CallbackTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    * @group type
    */
   public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
+
+  /**
+   * @covers Eloquent\Typhoon\Type\CallbackType::typhoonName
+   * @group types
+   */
+  public function testTyphoonName() { parent::testTyphoonName(); }
 }

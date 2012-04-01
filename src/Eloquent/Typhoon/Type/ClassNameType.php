@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Type;
 
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
 use Eloquent\Typhoon\Attribute\Attributes;
 use Eloquent\Typhoon\Attribute\AttributeSignature;
 use Eloquent\Typhoon\Primitive\Boolean;
@@ -23,7 +24,13 @@ class ClassNameType extends BaseClassNameType
     parent::__construct(new Boolean(false), $attributes);
   }
 
-  const ALIAS = 'class_name';
+  /**
+   * @return string
+   */
+  public function typhoonName()
+  {
+    return IntrinsicTypeName::NAME_CLASS_NAME()->value();
+  }
 
   const ATTRIBUTE_CLASS_OF = 'classOf';
   const ATTRIBUTE_INSTANTIABLE = 'instantiable';

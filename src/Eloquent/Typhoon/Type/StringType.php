@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Type;
 
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
 use Eloquent\Typhoon\Attribute\AttributeSignature;
 
 class StringType extends Dynamic\BaseDynamicType
@@ -50,7 +51,13 @@ class StringType extends Dynamic\BaseDynamicType
     return true;
   }
 
-  const ALIAS = 'string';
+  /**
+   * @return string
+   */
+  public function typhoonName()
+  {
+    return IntrinsicTypeName::NAME_STRING()->value();
+  }
 
   const ATTRIBUTE_ENCODING = 'encoding';
 
@@ -67,7 +74,7 @@ class StringType extends Dynamic\BaseDynamicType
     $stringOrArrayOfStringType = new Composite\OrType;
     $stringOrArrayOfStringType->addTyphoonType(new StringType);
     $stringOrArrayOfStringType->addTyphoonType($arrayOfStringType);
-    
+
     $attributeSignature->set(self::ATTRIBUTE_ENCODING, $stringOrArrayOfStringType);
   }
 }

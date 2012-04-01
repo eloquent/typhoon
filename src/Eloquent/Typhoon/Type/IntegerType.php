@@ -11,11 +11,13 @@
 
 namespace Eloquent\Typhoon\Type;
 
-class IntegerType extends BaseType
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
+
+class IntegerType implements NamedType
 {
   /**
    * @param mixed value
-   * 
+   *
    * @return boolean
    */
   public function typhoonCheck($value)
@@ -23,5 +25,11 @@ class IntegerType extends BaseType
     return is_integer($value);
   }
 
-  const ALIAS = 'integer';
+  /**
+   * @return string
+   */
+  public function typhoonName()
+  {
+    return IntrinsicTypeName::NAME_INTEGER()->value();
+  }
 }

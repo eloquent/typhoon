@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Type;
 
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
 use Eloquent\Typhoon\Primitive\Boolean;
 
 class InterfaceNameType extends BaseClassNameType
@@ -20,5 +21,11 @@ class InterfaceNameType extends BaseClassNameType
     parent::__construct(new Boolean(true), $attributes);
   }
 
-  const ALIAS = 'interface_name';
+  /**
+   * @return string
+   */
+  public function typhoonName()
+  {
+    return IntrinsicTypeName::NAME_INTERFACE_NAME()->value();
+  }
 }

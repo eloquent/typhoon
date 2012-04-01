@@ -11,8 +11,9 @@
 
 namespace Eloquent\Typhoon\Type;
 
-use stdClass;
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
 use Eloquent\Typhoon\Parameter\Parameter;
+use stdClass;
 
 class ParameterTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
 {
@@ -44,6 +45,14 @@ class ParameterTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
     return __NAMESPACE__.'\ParameterType';
   }
 
+  /**
+   * @return string
+   */
+  protected function typeName()
+  {
+    return 'typhoon.parameter';
+  }
+
   // methods below must be manually overridden to implement @covers
 
   /**
@@ -54,4 +63,10 @@ class ParameterTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    * @group core
    */
   public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
+
+  /**
+   * @covers Eloquent\Typhoon\Type\ParameterType::typhoonName
+   * @group types
+   */
+  public function testTyphoonName() { parent::testTyphoonName(); }
 }

@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Type;
 
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
 use Eloquent\Typhoon\Primitive\Boolean;
 use Eloquent\Typhoon\Attribute\AttributeSignature;
 
@@ -30,7 +31,13 @@ class FilterType extends Dynamic\BaseDynamicType
     return true && filter_var($value, $filter, $options);
   }
 
-  const ALIAS = 'filter';
+  /**
+   * @return string
+   */
+  public function typhoonName()
+  {
+    return IntrinsicTypeName::NAME_FILTER()->value();
+  }
 
   const ATTRIBUTE_FILTER = 'filter';
   const ATTRIBUTE_OPTIONS = 'options';

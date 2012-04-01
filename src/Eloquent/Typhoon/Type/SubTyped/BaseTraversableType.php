@@ -11,14 +11,13 @@
 
 namespace Eloquent\Typhoon\Type\SubTyped;
 
-use Eloquent\Typhoon\Type\BaseType;
 use Eloquent\Typhoon\Type\MixedType;
 use Eloquent\Typhoon\Type\SubTyped\Exception\UnexpectedSubTypeException;
 use Eloquent\Typhoon\Type\Type;
 use Eloquent\Typhoon\Primitive\Integer;
 use Eloquent\Typhoon\Primitive\String;
 
-abstract class BaseTraversableType extends BaseType implements TraversableType
+abstract class BaseTraversableType implements TraversableType
 {
   public function __construct()
   {
@@ -61,7 +60,7 @@ abstract class BaseTraversableType extends BaseType implements TraversableType
   /**
    * @param array $subTypes
    */
-  public function setTyphoonSubTypes(array $subTypes)
+  public function setTyphoonTypes(array $subTypes)
   {
     $numSubTypes = count($subTypes);
 
@@ -78,7 +77,35 @@ abstract class BaseTraversableType extends BaseType implements TraversableType
       {
         $this->setTyphoonKeyType(array_pop($subTypes));
       }
+      else
+      {
+        $this->setTyphoonKeyType(new MixedType);
+      }
     }
+  }
+
+  /**
+   * @return array
+   */
+  public function typhoonTypes()
+  {
+    $keyTypeIsMixed = $this->typhoonKeyType() instanceof MixedType;
+    $subTypeIsMixed = $this->typhoonSubType() instanceof MixedType;
+
+    if ($keyTypeIsMixed && $subTypeIsMixed)
+    {
+      return array();
+    }
+
+    if ($keyTypeIsMixed)
+    {
+      return array($this->typhoonSubType());
+    }
+
+    return array(
+      $this->typhoonKeyType(),
+      $this->typhoonSubType(),
+    );
   }
 
   /**

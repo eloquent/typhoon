@@ -36,7 +36,7 @@ class BaseTraversableTypeTest extends \Eloquent\Typhoon\Test\TestCase
   {
     $this->assertEquals(new MixedType, $this->_type->typhoonSubType());
 
-    $type = Phake::mock('Eloquent\Typhoon\Type\Type');
+    $type = Phake::mock('Eloquent\Typhoon\Type\NamedType');
     $this->_type->setTyphoonSubType($type);
 
     $this->assertSame($type, $this->_type->typhoonSubType());
@@ -55,61 +55,61 @@ class BaseTraversableTypeTest extends \Eloquent\Typhoon\Test\TestCase
   {
     $this->assertEquals(new MixedType, $this->_type->typhoonKeyType());
 
-    $type = Phake::mock('Eloquent\Typhoon\Type\Type');
+    $type = Phake::mock('Eloquent\Typhoon\Type\NamedType');
     $this->_type->setTyphoonKeyType($type);
 
     $this->assertSame($type, $this->_type->typhoonKeyType());
   }
 
   /**
-   * @covers Eloquent\Typhoon\Type\SubTyped\BaseTraversableType::setTyphoonSubTypes
+   * @covers Eloquent\Typhoon\Type\SubTyped\BaseTraversableType::setTyphoonTypes
    * @group type
    * @group sub-typed-type
    * @group traversable-type
    * @group core
    */
-  public function testSetTyphoonSubTypesSubOnly()
+  public function testsetTyphoonTypesSubOnly()
   {
     $this->assertEquals(new MixedType, $this->_type->typhoonSubType());
 
-    $type = Phake::mock('Eloquent\Typhoon\Type\Type');
-    $this->_type->setTyphoonSubTypes(array($type));
+    $type = Phake::mock('Eloquent\Typhoon\Type\NamedType');
+    $this->_type->setTyphoonTypes(array($type));
 
     $this->assertSame($type, $this->_type->typhoonSubType());
   }
 
   /**
-   * @covers Eloquent\Typhoon\Type\SubTyped\BaseTraversableType::setTyphoonSubTypes
+   * @covers Eloquent\Typhoon\Type\SubTyped\BaseTraversableType::setTyphoonTypes
    * @group type
    * @group sub-typed-type
    * @group traversable-type
    * @group core
    */
-  public function testSetTyphoonSubTypesKeyAndSub()
+  public function testsetTyphoonTypesKeyAndSub()
   {
     $this->assertEquals(new MixedType, $this->_type->typhoonSubType());
 
-    $typeA = Phake::mock('Eloquent\Typhoon\Type\Type');
-    $typeB = Phake::mock('Eloquent\Typhoon\Type\Type');
-    $this->_type->setTyphoonSubTypes(array($typeA, $typeB));
+    $typeA = Phake::mock('Eloquent\Typhoon\Type\NamedType');
+    $typeB = Phake::mock('Eloquent\Typhoon\Type\NamedType');
+    $this->_type->setTyphoonTypes(array($typeA, $typeB));
 
     $this->assertSame($typeA, $this->_type->typhoonKeyType());
     $this->assertSame($typeB, $this->_type->typhoonSubType());
   }
 
   /**
-   * @covers Eloquent\Typhoon\Type\SubTyped\BaseTraversableType::setTyphoonSubTypes
+   * @covers Eloquent\Typhoon\Type\SubTyped\BaseTraversableType::setTyphoonTypes
    * @group type
    * @group sub-typed-type
    * @group traversable-type
    * @group core
    */
-  public function testSetTyphoonSubTypesFailure()
+  public function testsetTyphoonTypesFailure()
   {
-    $type = Phake::mock('Eloquent\Typhoon\Type\Type');
+    $type = Phake::mock('Eloquent\Typhoon\Type\NamedType');
 
     $this->setExpectedException('Eloquent\Typhoon\Type\SubTyped\Exception\UnexpectedSubTypeException');
-    $this->_type->setTyphoonSubTypes(array($type, $type, $type));
+    $this->_type->setTyphoonTypes(array($type, $type, $type));
   }
 
   /**
@@ -232,7 +232,7 @@ class BaseTraversableTypeTest extends \Eloquent\Typhoon\Test\TestCase
 
     if ($subResults)
     {
-      $subType = Phake::mock('Eloquent\Typhoon\Type\Type');
+      $subType = Phake::mock('Eloquent\Typhoon\Type\NamedType');
       $previous = Phake::when($subType)->typhoonCheck(Phake::anyParameters());
       foreach ($subResults as $subResult)
       {
@@ -244,7 +244,7 @@ class BaseTraversableTypeTest extends \Eloquent\Typhoon\Test\TestCase
 
     if ($keyResults)
     {
-      $keyType = Phake::mock('Eloquent\Typhoon\Type\Type');
+      $keyType = Phake::mock('Eloquent\Typhoon\Type\NamedType');
       $previous = Phake::when($keyType)->typhoonCheck(Phake::anyParameters());
       foreach ($keyResults as $keyResult)
       {

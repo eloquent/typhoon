@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Type;
 
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
 use stdClass;
 
 class NullTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
@@ -41,6 +42,14 @@ class NullTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
     return __NAMESPACE__.'\NullType';
   }
 
+  /**
+   * @return string
+   */
+  protected function typeName()
+  {
+    return IntrinsicTypeName::NAME_NULL()->value();
+  }
+
   // methods below must be manually overridden to implement @covers
 
   /**
@@ -51,4 +60,10 @@ class NullTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    * @group core
    */
   public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
+
+  /**
+   * @covers Eloquent\Typhoon\Type\NullType::typhoonName
+   * @group types
+   */
+  public function testTyphoonName() { parent::testTyphoonName(); }
 }

@@ -11,7 +11,9 @@
 
 namespace Eloquent\Typhoon\Type;
 
-class NumericType extends BaseType
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
+
+class NumericType implements NamedType
 {
   /**
    * @param mixed value
@@ -23,5 +25,11 @@ class NumericType extends BaseType
     return is_numeric($value);
   }
 
-  const ALIAS = 'numeric';
+  /**
+   * @return string
+   */
+  public function typhoonName()
+  {
+    return IntrinsicTypeName::NAME_NUMERIC()->value();
+  }
 }

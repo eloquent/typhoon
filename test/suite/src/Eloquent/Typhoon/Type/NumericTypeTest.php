@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Type;
 
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
 use stdClass;
 
 class NumericTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
@@ -45,6 +46,14 @@ class NumericTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
     return __NAMESPACE__.'\NumericType';
   }
 
+  /**
+   * @return string
+   */
+  protected function typeName()
+  {
+    return IntrinsicTypeName::NAME_NUMERIC()->value();
+  }
+
   // methods below must be manually overridden to implement @covers
 
   /**
@@ -54,4 +63,10 @@ class NumericTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    * @group type
    */
   public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
+
+  /**
+   * @covers Eloquent\Typhoon\Type\NumericType::typhoonName
+   * @group types
+   */
+  public function testTyphoonName() { parent::testTyphoonName(); }
 }

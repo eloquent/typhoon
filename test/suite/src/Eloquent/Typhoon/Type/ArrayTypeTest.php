@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Type;
 
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
 use stdClass;
 
 class ArrayTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
@@ -41,6 +42,14 @@ class ArrayTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
     return __NAMESPACE__.'\ArrayType';
   }
 
+  /**
+   * @return string
+   */
+  protected function typeName()
+  {
+    return IntrinsicTypeName::NAME_ARRAY()->value();
+  }
+
   // methods below must be manually overridden to implement @covers
 
   /**
@@ -52,4 +61,10 @@ class ArrayTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    * @group traversable-type
    */
   public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
+
+  /**
+   * @covers Eloquent\Typhoon\Type\ArrayType::typhoonName
+   * @group types
+   */
+  public function testTyphoonName() { parent::testTyphoonName(); }
 }

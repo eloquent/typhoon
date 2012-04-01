@@ -20,7 +20,7 @@ class TypeAssertionTest extends \Eloquent\Typhoon\Test\TestCase
   protected function setUp()
   {
     parent::setUp();
-    
+
     $this->_assertion = new TypeAssertion;
   }
 
@@ -33,7 +33,7 @@ class TypeAssertionTest extends \Eloquent\Typhoon\Test\TestCase
   public function testAssertion()
   {
     $value = 'foo';
-    $type = Phake::mock('Eloquent\Typhoon\Type\Type');
+    $type = Phake::mock('Eloquent\Typhoon\Type\NamedType');
     Phake::when($type)->typhoonCheck($value)->thenReturn(true);
 
     $assertion = new TypeAssertion;
@@ -55,7 +55,7 @@ class TypeAssertionTest extends \Eloquent\Typhoon\Test\TestCase
   public function testAssertionFailure()
   {
     $value = 'foo';
-    $type = Phake::mock('Eloquent\Typhoon\Type\Type');
+    $type = Phake::mock('Eloquent\Typhoon\Type\NamedType');
     Phake::when($type)->typhoonCheck($value)->thenReturn(false);
 
     $assertion = new TypeAssertion;
@@ -75,7 +75,7 @@ class TypeAssertionTest extends \Eloquent\Typhoon\Test\TestCase
 
     if ($e) throw $e;
   }
-  
+
   /**
    * @covers Eloquent\Typhoon\Assertion\TypeAssertion::setType
    * @covers Eloquent\Typhoon\Assertion\TypeAssertion::type
@@ -86,7 +86,7 @@ class TypeAssertionTest extends \Eloquent\Typhoon\Test\TestCase
   {
     $this->assertEquals(new MixedType, $this->_assertion->type());
 
-    $type = Phake::mock('Eloquent\Typhoon\Type\Type');
+    $type = Phake::mock('Eloquent\Typhoon\Type\NamedType');
     $this->_assertion->setType($type);
 
     $this->assertSame($type, $this->_assertion->type());

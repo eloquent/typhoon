@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Type;
 
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
 use Eloquent\Typhoon\Attribute\AttributeSignature;
 use Eloquent\Typhoon\Primitive\Boolean;
 
@@ -36,7 +37,13 @@ class CallbackWrapperType extends Dynamic\BaseDynamicType
     );
   }
 
-  const ALIAS = 'callback_wrapper';
+  /**
+   * @return string
+   */
+  public function typhoonName()
+  {
+    return IntrinsicTypeName::NAME_CALLBACK_WRAPPER()->value();
+  }
 
   const ATTRIBUTE_CALLBACK = 'callback';
   const ATTRIBUTE_ARGUMENTS = 'arguments';

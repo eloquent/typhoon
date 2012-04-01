@@ -23,7 +23,7 @@ final class UnregisteredTypeException extends LogicException implements Undefine
    */
   public function __construct(String $typeName, \Exception $previous = null)
   {
-    $message = new String("No registered alias for type '".$typeName."'.");
+    $message = new String("Type '".$typeName."' not registered.");
 
     parent::__construct($message, $previous);
   }

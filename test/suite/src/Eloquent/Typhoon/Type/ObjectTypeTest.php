@@ -11,10 +11,11 @@
 
 namespace Eloquent\Typhoon\Type;
 
-use stdClass;
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
 use Eloquent\Typhoon\Attribute\AttributeSignature;
 use Eloquent\Typhoon\Primitive\String;
 use Eloquent\Typhoon\Type\StringType;
+use stdClass;
 
 class ObjectTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
 {
@@ -69,6 +70,14 @@ class ObjectTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
   }
 
   /**
+   * @return string
+   */
+  protected function typeName()
+  {
+    return IntrinsicTypeName::NAME_OBJECT()->value();
+  }
+
+  /**
    * @covers Eloquent\Typhoon\Type\ObjectType::configureAttributeSignature
    * @group types
    * @group type
@@ -92,7 +101,7 @@ class ObjectTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
   }
 
   // methods below must be manually overridden to implement @covers
-  
+
   /**
    * @covers Eloquent\Typhoon\Type\ObjectType::typhoonCheck
    * @dataProvider typeValues
@@ -101,4 +110,10 @@ class ObjectTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    * @group dynamic-type
    */
   public function testTyphoonCheck($expected, $value, $attributes = null) { parent::testTyphoonCheck($expected, $value, $attributes); }
+
+  /**
+   * @covers Eloquent\Typhoon\Type\ObjectType::typhoonName
+   * @group types
+   */
+  public function testTyphoonName() { parent::testTyphoonName(); }
 }

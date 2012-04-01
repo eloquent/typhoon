@@ -12,12 +12,17 @@
 namespace Eloquent\Typhoon\Type\SubTyped;
 
 use Eloquent\Typhoon\Primitive\Integer;
-use Eloquent\Typhoon\Type\Type;
+use Eloquent\Typhoon\Type\NamedType;
 
-interface SubTypedType extends Type
+interface SubTypedType extends NamedType
 {
   /**
    * @param array $subTypes
    */
-  public function setTyphoonSubTypes(array $subTypes);
+  public function setTyphoonTypes(array $subTypes);
+
+  /**
+   * @return array
+   */
+  public function typhoonTypes();
 }

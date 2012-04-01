@@ -12,6 +12,6 @@
 namespace Eloquent\Typhoon\Type\Dynamic;
 
 use Eloquent\Typhoon\Attribute\AttributeHolder;
-use Eloquent\Typhoon\Type\Type;
+use Eloquent\Typhoon\Type\NamedType;
 
-interface DynamicType extends Type, AttributeHolder {}
+interface DynamicType extends NamedType, AttributeHolder {}

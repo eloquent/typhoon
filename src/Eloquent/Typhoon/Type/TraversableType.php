@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Type;
 
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
 use Eloquent\Typhoon\Attribute\Attributes;
 use Eloquent\Typhoon\Attribute\AttributeSignature;
 use Eloquent\Typhoon\Primitive\String;
@@ -40,8 +41,14 @@ class TraversableType extends SubTyped\BaseTraversableType implements Dynamic\Dy
     return $attributes;
   }
 
-  const ALIAS = 'traversable';
-  
+  /**
+   * @return string
+   */
+  public function typhoonName()
+  {
+    return IntrinsicTypeName::NAME_TRAVERSABLE()->value();
+  }
+
   const ATTRIBUTE_INSTANCE_OF = 'instanceOf';
 
   /**
@@ -84,10 +91,10 @@ class TraversableType extends SubTyped\BaseTraversableType implements Dynamic\Dy
     $stringOrArrayOfStringType = new Composite\OrType;
     $stringOrArrayOfStringType->addTyphoonType(new StringType);
     $stringOrArrayOfStringType->addTyphoonType($arrayOfStringType);
-    
+
     $attributeSignature->set(self::ATTRIBUTE_INSTANCE_OF, $stringOrArrayOfStringType);
   }
-  
+
   /**
    * @param mixed value
    *

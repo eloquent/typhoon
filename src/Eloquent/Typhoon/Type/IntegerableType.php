@@ -11,14 +11,16 @@
 
 namespace Eloquent\Typhoon\Type;
 
-class IntegerableType extends BaseType
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
+
+class IntegerableType implements NamedType
 {
   public function __construct()
   {
     $this->innerNumericType = new NumericType;
     $this->innerIntegerType = new IntegerType;
   }
-  
+
   /**
    * @param mixed value
    *
@@ -30,17 +32,23 @@ class IntegerableType extends BaseType
     {
       return false;
     }
-    
+
     return $this->innerIntegerType->typhoonCheck($value + 0);
   }
 
-  const ALIAS = 'integerable';
+  /**
+   * @return string
+   */
+  public function typhoonName()
+  {
+    return IntrinsicTypeName::NAME_INTEGERABLE()->value();
+  }
 
   /**
    * @var NumericType
    */
   protected $innerNumericType;
-  
+
   /**
    * @var IntegerType
    */

@@ -11,7 +11,9 @@
 
 namespace Eloquent\Typhoon\Type;
 
-class FloatType extends BaseType
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
+
+class FloatType implements NamedType
 {
   /**
    * @param mixed value
@@ -23,5 +25,11 @@ class FloatType extends BaseType
     return is_float($value);
   }
 
-  const ALIAS = 'float';
+  /**
+   * @return string
+   */
+  public function typhoonName()
+  {
+    return IntrinsicTypeName::NAME_FLOAT()->value();
+  }
 }

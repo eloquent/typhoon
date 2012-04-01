@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Type;
 
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
 use Eloquent\Typhoon\Attribute\AttributeSignature;
 
 class ObjectType extends Dynamic\BaseDynamicType
@@ -45,7 +46,13 @@ class ObjectType extends Dynamic\BaseDynamicType
     return is_object($value);
   }
 
-  const ALIAS = 'object';
+  /**
+   * @return string
+   */
+  public function typhoonName()
+  {
+    return IntrinsicTypeName::NAME_OBJECT()->value();
+  }
 
   const ATTRIBUTE_INSTANCE_OF = 'instanceOf';
 
@@ -62,7 +69,7 @@ class ObjectType extends Dynamic\BaseDynamicType
     $stringOrArrayOfStringType = new Composite\OrType;
     $stringOrArrayOfStringType->addTyphoonType(new StringType);
     $stringOrArrayOfStringType->addTyphoonType($arrayOfStringType);
-    
+
     $attributeSignature->set(self::ATTRIBUTE_INSTANCE_OF, $stringOrArrayOfStringType);
   }
 }

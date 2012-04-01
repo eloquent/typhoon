@@ -11,7 +11,9 @@
 
 namespace Eloquent\Typhoon\Type;
 
-class NumberType extends BaseType
+use Eloquent\Typhax\IntrinsicType\IntrinsicTypeName;
+
+class NumberType implements NamedType
 {
   public function __construct()
   {
@@ -19,7 +21,7 @@ class NumberType extends BaseType
     $this->innerType->addTyphoonType(new IntegerType);
     $this->innerType->addTyphoonType(new FloatType);
   }
-  
+
   /**
    * @param mixed value
    *
@@ -30,7 +32,13 @@ class NumberType extends BaseType
     return $this->innerType->typhoonCheck($value);
   }
 
-  const ALIAS = 'number';
+  /**
+   * @return string
+   */
+  public function typhoonName()
+  {
+    return IntrinsicTypeName::NAME_NUMBER()->value();
+  }
 
   /**
    * @var Composite\OrType
