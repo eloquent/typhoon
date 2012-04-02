@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Type\Composite;
 
+use Eloquent\Typhax\Lexer\Token;
 use Phake;
 
 class OrTypeTest extends \Eloquent\Typhoon\Test\TestCase
@@ -79,6 +80,17 @@ class OrTypeTest extends \Eloquent\Typhoon\Test\TestCase
     $this->assertFalse($this->_orType->typhoonCheck($value));
     Phake::verify($this->_typeA)->typhoonCheck($value);
     Phake::verify($this->_typeB)->typhoonCheck($value);
+  }
+
+  /**
+   * @covers Eloquent\Typhoon\Type\Composite\OrType::typhoonOperator
+   * @group type
+   * @group composite-type
+   * @group core
+   */
+  public function testTyphoonOperator()
+  {
+    $this->assertSame(Token::TOKEN_PIPE, $this->_orType->typhoonOperator());
   }
 
   /**

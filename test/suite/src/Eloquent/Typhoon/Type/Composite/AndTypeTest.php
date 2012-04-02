@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Type\Composite;
 
+use Eloquent\Typhax\Lexer\Token;
 use Phake;
 
 class AndTypeTest extends \Eloquent\Typhoon\Test\TestCase
@@ -82,6 +83,17 @@ class AndTypeTest extends \Eloquent\Typhoon\Test\TestCase
   }
 
   /**
+   * @covers Eloquent\Typhoon\Type\Composite\AndType::typhoonOperator
+   * @group type
+   * @group composite-type
+   * @group core
+   */
+  public function testTyphoonOperator()
+  {
+    $this->assertSame(Token::TOKEN_AND, $this->_andType->typhoonOperator());
+  }
+
+  /**
    * @covers Eloquent\Typhoon\Type\Composite\AndType
    * @group type
    * @group composite-type
@@ -95,7 +107,7 @@ class AndTypeTest extends \Eloquent\Typhoon\Test\TestCase
   /**
    * @var AndType
    */
-  protected $_orType;
+  protected $_andType;
 
   /**
    * @var Type

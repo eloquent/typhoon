@@ -27,6 +27,7 @@ class BaseTraversableTypeTest extends \Eloquent\Typhoon\Test\TestCase
    * @covers Eloquent\Typhoon\Type\SubTyped\BaseTraversableType::__construct
    * @covers Eloquent\Typhoon\Type\SubTyped\BaseTraversableType::setTyphoonSubType
    * @covers Eloquent\Typhoon\Type\SubTyped\BaseTraversableType::typhoonSubType
+   * @covers Eloquent\Typhoon\Type\SubTyped\BaseTraversableType::typhoonTypes
    * @group type
    * @group sub-typed-type
    * @group traversable-type
@@ -40,12 +41,14 @@ class BaseTraversableTypeTest extends \Eloquent\Typhoon\Test\TestCase
     $this->_type->setTyphoonSubType($type);
 
     $this->assertSame($type, $this->_type->typhoonSubType());
+    $this->assertSame(array($type), $this->_type->typhoonTypes());
   }
 
   /**
    * @covers Eloquent\Typhoon\Type\SubTyped\BaseTraversableType::__construct
    * @covers Eloquent\Typhoon\Type\SubTyped\BaseTraversableType::setTyphoonKeyType
    * @covers Eloquent\Typhoon\Type\SubTyped\BaseTraversableType::typhoonKeyType
+   * @covers Eloquent\Typhoon\Type\SubTyped\BaseTraversableType::typhoonTypes
    * @group type
    * @group sub-typed-type
    * @group traversable-type
@@ -59,10 +62,12 @@ class BaseTraversableTypeTest extends \Eloquent\Typhoon\Test\TestCase
     $this->_type->setTyphoonKeyType($type);
 
     $this->assertSame($type, $this->_type->typhoonKeyType());
+    $this->assertEquals(array($type, new MixedType), $this->_type->typhoonTypes());
   }
 
   /**
    * @covers Eloquent\Typhoon\Type\SubTyped\BaseTraversableType::setTyphoonTypes
+   * @covers Eloquent\Typhoon\Type\SubTyped\BaseTraversableType::typhoonTypes
    * @group type
    * @group sub-typed-type
    * @group traversable-type
@@ -76,10 +81,12 @@ class BaseTraversableTypeTest extends \Eloquent\Typhoon\Test\TestCase
     $this->_type->setTyphoonTypes(array($type));
 
     $this->assertSame($type, $this->_type->typhoonSubType());
+    $this->assertEquals(array($type), $this->_type->typhoonTypes());
   }
 
   /**
    * @covers Eloquent\Typhoon\Type\SubTyped\BaseTraversableType::setTyphoonTypes
+   * @covers Eloquent\Typhoon\Type\SubTyped\BaseTraversableType::typhoonTypes
    * @group type
    * @group sub-typed-type
    * @group traversable-type
@@ -95,6 +102,7 @@ class BaseTraversableTypeTest extends \Eloquent\Typhoon\Test\TestCase
 
     $this->assertSame($typeA, $this->_type->typhoonKeyType());
     $this->assertSame($typeB, $this->_type->typhoonSubType());
+    $this->assertSame(array($typeA, $typeB), $this->_type->typhoonTypes());
   }
 
   /**

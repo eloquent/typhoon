@@ -28,5 +28,5 @@ interface CompositeType extends Type
   /**
    * @return string
    */
-  public function operator();
+  public function typhoonOperator();
 }

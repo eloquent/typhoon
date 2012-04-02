@@ -36,7 +36,7 @@ class OrType extends BaseCompositeType
   /**
    * @return string
    */
-  public function operator()
+  public function typhoonOperator()
   {
     return Token::TOKEN_PIPE;
   }

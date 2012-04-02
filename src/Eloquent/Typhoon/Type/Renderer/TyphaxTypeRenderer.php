@@ -88,7 +88,7 @@ class TyphaxTypeRenderer implements TypeRenderer
       $rendered[] = $this->render($type);
     }
 
-    return implode($composite->operator(), $rendered);
+    return implode($composite->typhoonOperator(), $rendered);
   }
 
   /**
