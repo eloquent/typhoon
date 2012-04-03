@@ -39,6 +39,11 @@ class TyphaxTypeRenderer implements TypeRenderer
    */
   public function render(Type $type)
   {
+    if ($type instanceof CompositeType)
+    {
+      return $this->renderComposite($type);
+    }
+
     $class = null;
     if ($type instanceof ObjectType)
     {
@@ -47,11 +52,6 @@ class TyphaxTypeRenderer implements TypeRenderer
     else if ($type instanceof TraversableType)
     {
       $class = $type->typhoonAttributes()->get(TraversableType::ATTRIBUTE_INSTANCE_OF, null);
-    }
-
-    if ($type instanceof CompositeType)
-    {
-      return $this->renderComposite($type);
     }
 
     if ($class)
@@ -261,8 +261,8 @@ class TyphaxTypeRenderer implements TypeRenderer
   {
     return
       $boolean
-      ? Token::TOKEN_TRUE
-      : Token::TOKEN_FALSE
+      ? Token::TOKEN_BOOLEAN_TRUE
+      : Token::TOKEN_BOOLEAN_FALSE
     ;
   }
 
@@ -308,7 +308,10 @@ class TyphaxTypeRenderer implements TypeRenderer
    */
   protected function isSequentialArray(array $array)
   {
-    return array_keys($array) === range(0, count($array) - 1);
+    return
+      0 === count($array)
+      || array_keys($array) === range(0, count($array) - 1)
+    ;
   }
 
   /**

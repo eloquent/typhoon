@@ -13,14 +13,22 @@ namespace Eloquent\Typhoon\Typhax;
 
 use Phake;
 use Eloquent\Typhoon\Attribute\Attributes;
-use Eloquent\Typhoon\Type\Registry\TypeRegistry;
-use Eloquent\Typhoon\Type\MixedType;
+use Eloquent\Typhoon\Type\IntegerType;
 use Eloquent\Typhoon\Type\ObjectType;
+use Eloquent\Typhoon\Type\StringType;
 use Eloquent\Typhoon\Type\TraversableType;
+use Eloquent\Typhoon\Type\TupleType;
 use Eloquent\Typhoon\Type\Type;
 
 class TyphaxTypeRendererTest extends \Eloquent\Typhoon\Test\TestCase
 {
+  protected function setUp()
+  {
+    parent::setUp();
+
+    $this->_renderer = new TyphaxTypeRenderer;
+  }
+
   /**
    * @return array
    */
@@ -28,131 +36,109 @@ class TyphaxTypeRendererTest extends \Eloquent\Typhoon\Test\TestCase
   {
     $data = array();
 
+    $typeFoo = Phake::mock('Eloquent\Typhoon\Type\NamedType');
+    Phake::when($typeFoo)->typhoonName()->thenReturn('foo');
+    $typeBar = Phake::mock('Eloquent\Typhoon\Type\NamedType');
+    Phake::when($typeBar)->typhoonName()->thenReturn('bar');
+    $typeBaz = Phake::mock('Eloquent\Typhoon\Type\NamedType');
+    Phake::when($typeBaz)->typhoonName()->thenReturn('baz');
+
     // #0: Simple type
-    $type = Phake::mock('Eloquent\Typhoon\Type\NamedType');
-    Phake::when($type)->typhoonName()->thenReturn('foo');
+    $type = $typeFoo;
     $expected = 'foo';
     $data[] = array($expected, $type);
 
-    // #1: Dynamic type
-    $attributes = new Attributes(array(
-      'bar' => 'baz',
-      'qux' => 1,
-      'doom' => .1,
-    ));
-    $type = Phake::mock('Eloquent\Typhoon\Type\Dynamic\DynamicType');
-    Phake::when($type)->typhoonName()->thenReturn('foo');
-    Phake::when($type)->typhoonAttributes()->thenReturn($attributes);
-    $expected = "foo(bar:baz,qux:1,doom:0.1)";
-    $data[] = array($expected, $type);
-
-    // #2: Dynamic type with no attributes
-    $attributes = new Attributes;
-    $type = Phake::mock('Eloquent\Typhoon\Type\Dynamic\DynamicType');
-    Phake::when($type)->typhoonName()->thenReturn('foo');
-    Phake::when($type)->typhoonAttributes()->thenReturn($attributes);
-    $expected = 'foo';
-    $data[] = array($expected, $type);
-
-    // #3: Traversable type with mixed type for both key and sub type
-    $attributes = new Attributes;
-    $keyType = new MixedType;
-    $subType = new MixedType;
-    $type = Phake::mock('Eloquent\Typhoon\Type\SubTyped\TraversableType');
-    Phake::when($type)->typhoonName()->thenReturn('foo');
-    Phake::when($type)->typhoonTypes()->thenReturn(array());
-    $expected = 'foo';
-    $data[] = array($expected, $type);
-
-    // #4: Traversable type with mixed type for key type
-    $attributes = new Attributes;
-    $keyType = new MixedType;
-    $subType = Phake::mock('Eloquent\Typhoon\Type\NamedType');
-    Phake::when($subType)->typhoonName()->thenReturn('bar');
-    $type = Phake::mock('Eloquent\Typhoon\Type\SubTyped\TraversableType');
-    Phake::when($type)->typhoonName()->thenReturn('foo');
-    Phake::when($type)->typhoonTypes()->thenReturn(array($subType));
-    $expected = 'foo<bar>';
-    $data[] = array($expected, $type);
-
-    // #5: Traversable type
-    $attributes = new Attributes;
-    $keyType = Phake::mock('Eloquent\Typhoon\Type\NamedType');
-    Phake::when($keyType)->typhoonName()->thenReturn('bar');
-    $subType = Phake::mock('Eloquent\Typhoon\Type\NamedType');
-    Phake::when($subType)->typhoonName()->thenReturn('baz');
-    $type = Phake::mock('Eloquent\Typhoon\Type\SubTyped\TraversableType');
-    Phake::when($type)->typhoonName()->thenReturn('foo');
-    Phake::when($type)->typhoonTypes()->thenReturn(array($keyType, $subType));
-    $expected = 'foo<bar,baz>';
-    $data[] = array($expected, $type);
-
-    // #6: Dynamic traversable type
-    $attributes = new Attributes(array(
-      'bar' => 'baz',
-      'qux' => 1,
-      'doom' => .1,
-    ));
-    $keyType = Phake::mock('Eloquent\Typhoon\Type\NamedType');
-    Phake::when($keyType)->typhoonName()->thenReturn('bar');
-    $subType = Phake::mock('Eloquent\Typhoon\Type\NamedType');
-    Phake::when($subType)->typhoonName()->thenReturn('baz');
-    $type = Phake::mock('Eloquent\Typhoon\Test\Fixture\DynamicTraversable');
-    Phake::when($type)->typhoonName()->thenReturn('foo');
-    Phake::when($type)->typhoonAttributes()->thenReturn($attributes);
-    Phake::when($type)->typhoonTypes()->thenReturn(array($keyType, $subType));
-    $expected = "foo<bar,baz>(bar:baz,qux:1,doom:0.1)";
-    $data[] = array($expected, $type);
-
-    // #7: Object type
-    $type = new ObjectType;
-    $expected = 'object';
-    $data[] = array($expected, $type);
-
-    // #8: Traversable type
-    $type = new TraversableType;
-    $expected = 'traversable';
-    $data[] = array($expected, $type);
-
-    // #9: Object type of particular class
+    // #1: Object type
     $type = new ObjectType(array(
-      ObjectType::ATTRIBUTE_INSTANCE_OF => 'Bar',
+      ObjectType::ATTRIBUTE_INSTANCE_OF => 'stdClass',
     ));
-    $expected = 'Bar';
+    $expected = 'stdClass';
     $data[] = array($expected, $type);
 
-    // #10: Traversable type of particular class
-    $keyType = Phake::mock('Eloquent\Typhoon\Type\NamedType');
-    Phake::when($keyType)->typhoonName()->thenReturn('baz');
-    $subType = Phake::mock('Eloquent\Typhoon\Type\NamedType');
-    Phake::when($subType)->typhoonName()->thenReturn('qux');
+    // #2: Traversable type with no specific key-type or sub-type
     $type = new TraversableType(array(
-      TraversableType::ATTRIBUTE_INSTANCE_OF => 'Bar',
+      TraversableType::ATTRIBUTE_INSTANCE_OF => 'ArrayIterator',
     ));
-    $type->setTyphoonKeyType($keyType);
-    $type->setTyphoonSubType($subType);
-    $expected = "Bar<baz,qux>";
+    $expected = 'ArrayIterator';
     $data[] = array($expected, $type);
 
-    // #11: Dynamic type with numeric strings
-    $attributes = new Attributes(array(
-      'bar' => '1',
-      'baz' => '0.1',
+    // #3: Composite type
+    $type = Phake::partialMock('Eloquent\Typhoon\Type\Composite\BaseCompositeType');
+    Phake::when($type)->typhoonOperator()->thenReturn('~');
+    $type->addTyphoonType($typeFoo);
+    $type->addTyphoonType($typeBar);
+    $type->addTyphoonType($typeBaz);
+    $expected = 'foo~bar~baz';
+    $data[] = array($expected, $type);
+
+    // #4: Sub-typed type
+    $type = new TupleType;
+    $type->setTyphoonTypes(array(
+      $typeFoo,
+      $typeBar,
+      $typeBaz,
     ));
+    $expected = 'tuple<foo,bar,baz>';
+    $data[] = array($expected, $type);
+
+    // #5: Dynamic type with empty attributes
     $type = Phake::mock('Eloquent\Typhoon\Type\Dynamic\DynamicType');
     Phake::when($type)->typhoonName()->thenReturn('foo');
-    Phake::when($type)->typhoonAttributes()->thenReturn($attributes);
-    $expected = "foo(bar:'1',baz:'0.1')";
+    Phake::when($type)->typhoonAttributes()->thenReturn(new Attributes);
+    $expected = 'foo';
+    $data[] = array($expected, $type);
+
+    // #6: Dynamic type with lots of attributes
+    $type = Phake::mock('Eloquent\Typhoon\Type\Dynamic\DynamicType');
+    Phake::when($type)->typhoonName()->thenReturn('foo');
+    Phake::when($type)->typhoonAttributes()->thenReturn(new Attributes(array(
+      'bar' => 'rab',
+      'baz' => '1',
+      'qux' => '0.1',
+      'doom' => 1,
+      'splat' => 0.1,
+      'ping' => null,
+      'pong' => true,
+      'pang' => false,
+      'bip' => array(),
+      'bop' => array('pib', 'pob', 'pab'),
+      'bap' => array('flip' => 'flop', 'flap' => 'flep'),
+    )));
+    $expected = "foo(bar:rab,baz:'1',qux:'0.1',doom:1,splat:0.1,ping:null,pong:true,pang:false,bip:[],bop:[pib,pob,pab],bap:{flip:flop,flap:flep})";
+
+    // #7: Type that is both sub-typed and dynamic
+    $type = Phake::mock('Eloquent\Typhoon\Test\Fixture\DynamicSubTypedType');
+    Phake::when($type)->typhoonName()->thenReturn('foo');
+    Phake::when($type)->typhoonTypes()->thenReturn(array(
+      $typeBar,
+      $typeBaz,
+    ));
+    Phake::when($type)->typhoonAttributes()->thenReturn(new Attributes(array(
+      'qux' => 'xuq',
+      'doom' => 'mood',
+    )));
+    $expected = "foo<bar,baz>(qux:xuq,doom:mood)";
+    $data[] = array($expected, $type);
+
+    // #8: Nesting of subtypes and attributes
+    $encodingStringType = new StringType(array(
+      StringType::ATTRIBUTE_ENCODING => 'utf-8',
+    ));
+    $subTuple = new TupleType;
+    $subTuple->setTyphoonTypes(array(
+      $typeBar,
+      $typeBaz,
+    ));
+    $type = new TupleType;
+    $type->setTyphoonTypes(array(
+      $typeFoo
+      , $subTuple
+      , $encodingStringType
+    ));
+    $expected = "tuple<foo,tuple<bar,baz>,string(encoding:utf-8)>";
     $data[] = array($expected, $type);
 
     return $data;
-  }
-
-  protected function setUp()
-  {
-    parent::setUp();
-
-    $this->_renderer = new TyphaxTypeRenderer;
   }
 
   /**
