@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Eloquent\Typhoon\Type\Renderer;
+namespace Eloquent\Typhoon\Typhax;
 
 use Eloquent\Typhax\Lexer\Token;
 use Eloquent\Typhoon\Attribute\Attributes;
@@ -25,6 +25,7 @@ use Eloquent\Typhoon\Type\IntegerType;
 use Eloquent\Typhoon\Type\MixedType;
 use Eloquent\Typhoon\Type\NullType;
 use Eloquent\Typhoon\Type\ObjectType;
+use Eloquent\Typhoon\Type\Renderer\TypeRenderer;
 use Eloquent\Typhoon\Type\StringType;
 use Eloquent\Typhoon\Type\TraversableType;
 use Eloquent\Typhoon\Type\Type;

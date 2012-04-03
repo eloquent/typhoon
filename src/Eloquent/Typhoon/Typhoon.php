@@ -14,7 +14,7 @@ namespace Eloquent\Typhoon;
 use Eloquent\Typhoon\Type\Inspector\TypeInspector;
 use Eloquent\Typhoon\Type\Registry\TypeRegistry;
 use Eloquent\Typhoon\Type\Renderer\TypeRenderer;
-use Eloquent\Typhoon\Type\Renderer\TyphaxTypeRenderer;
+use Eloquent\Typhoon\Typhax\TyphaxTypeRenderer;
 
 class Typhoon
 {

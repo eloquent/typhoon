@@ -106,6 +106,18 @@ class BaseTraversableTypeTest extends \Eloquent\Typhoon\Test\TestCase
   }
 
   /**
+   * @covers Eloquent\Typhoon\Type\SubTyped\BaseTraversableType::typhoonTypes
+   * @group type
+   * @group sub-typed-type
+   * @group traversable-type
+   * @group core
+   */
+  public function testsetTyphoonTypesNeither()
+  {
+    $this->assertSame(array(), $this->_type->typhoonTypes());
+  }
+
+  /**
    * @covers Eloquent\Typhoon\Type\SubTyped\BaseTraversableType::setTyphoonTypes
    * @group type
    * @group sub-typed-type

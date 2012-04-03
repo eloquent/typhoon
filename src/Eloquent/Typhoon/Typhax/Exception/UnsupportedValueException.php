@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Eloquent\Typhoon\Type\Renderer\Exception;
+namespace Eloquent\Typhoon\Typhax\Exception;
 
 use Eloquent\Typhoon\Exception\LogicException;
 use Eloquent\Typhoon\Primitive\String;
 use Eloquent\Typhoon\Type\Inspector\TypeInspector;
-use Eloquent\Typhoon\Type\Renderer\TyphaxTypeRenderer;
+use Eloquent\Typhoon\Typhax\TyphaxTypeRenderer;
 
 final class UnsupportedValueException extends LogicException
 {

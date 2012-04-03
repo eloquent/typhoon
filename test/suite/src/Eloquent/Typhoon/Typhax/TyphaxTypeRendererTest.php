@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Eloquent\Typhoon\Type\Renderer;
+namespace Eloquent\Typhoon\Typhax;
 
 use Phake;
 use Eloquent\Typhoon\Attribute\Attributes;
@@ -156,7 +156,8 @@ class TyphaxTypeRendererTest extends \Eloquent\Typhoon\Test\TestCase
   }
 
   /**
-   * @covers Eloquent\Typhoon\Type\Renderer\TyphaxTypeRenderer
+   * @covers Eloquent\Typhoon\Typhax\TyphaxTypeRenderer
+   * @covers Eloquent\Typhoon\Type\Renderer\TypeRenderer
    * @dataProvider renderData
    * @group type
    * @group type-renderer

@@ -41,6 +41,7 @@ class NotImplementedExceptionTest extends ExceptionTestCase
 
   /**
    * @covers Eloquent\Typhoon\Exception\NotImplementedException::__construct
+   * @covers Eloquent\Typhoon\Exception\Exception
    * @group exceptions
    * @group core
    */

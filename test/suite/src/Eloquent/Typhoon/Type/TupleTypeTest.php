@@ -25,7 +25,7 @@ class TupleTypeTest extends \Eloquent\Typhoon\Test\TestCase
   }
 
   /**
-   * @covers Eloquent\Typhoon\Type\TupleType::typhoonCheck
+   * @covers Eloquent\Typhoon\Type\TupleType
    * @group type
    * @group sub-typed-type
    * @group core
@@ -48,7 +48,7 @@ class TupleTypeTest extends \Eloquent\Typhoon\Test\TestCase
   }
 
   /**
-   * @covers Eloquent\Typhoon\Type\TupleType::typhoonCheck
+   * @covers Eloquent\Typhoon\Type\TupleType
    * @group type
    * @group sub-typed-type
    * @group core
@@ -61,7 +61,7 @@ class TupleTypeTest extends \Eloquent\Typhoon\Test\TestCase
   }
 
   /**
-   * @covers Eloquent\Typhoon\Type\TupleType::typhoonCheck
+   * @covers Eloquent\Typhoon\Type\TupleType
    * @group type
    * @group sub-typed-type
    * @group core
@@ -74,7 +74,7 @@ class TupleTypeTest extends \Eloquent\Typhoon\Test\TestCase
   }
 
   /**
-   * @covers Eloquent\Typhoon\Type\TupleType::typhoonCheck
+   * @covers Eloquent\Typhoon\Type\TupleType
    * @group type
    * @group sub-typed-type
    * @group core
@@ -95,7 +95,7 @@ class TupleTypeTest extends \Eloquent\Typhoon\Test\TestCase
   }
 
   /**
-   * @covers Eloquent\Typhoon\Type\TupleType::typhoonCheck
+   * @covers Eloquent\Typhoon\Type\TupleType
    * @group type
    * @group sub-typed-type
    * @group core
@@ -118,7 +118,7 @@ class TupleTypeTest extends \Eloquent\Typhoon\Test\TestCase
   }
 
   /**
-   * @covers Eloquent\Typhoon\Type\TupleType::typhoonCheck
+   * @covers Eloquent\Typhoon\Type\TupleType
    * @group type
    * @group sub-typed-type
    * @group core
@@ -137,7 +137,7 @@ class TupleTypeTest extends \Eloquent\Typhoon\Test\TestCase
   }
 
   /**
-   * @covers Eloquent\Typhoon\Type\TupleType::typhoonCheck
+   * @covers Eloquent\Typhoon\Type\TupleType
    * @group type
    * @group sub-typed-type
    * @group core
@@ -156,7 +156,7 @@ class TupleTypeTest extends \Eloquent\Typhoon\Test\TestCase
   }
 
   /**
-   * @covers Eloquent\Typhoon\Type\TupleType::typhoonCheck
+   * @covers Eloquent\Typhoon\Type\TupleType
    * @group type
    * @group sub-typed-type
    * @group core
@@ -185,22 +185,20 @@ class TupleTypeTest extends \Eloquent\Typhoon\Test\TestCase
 
   /**
    * @covers Eloquent\Typhoon\Type\TupleType::setTyphoonTypes
+   * @covers Eloquent\Typhoon\Type\TupleType::typhoonTypes
    * @group type
    * @group sub-typed-type
    * @group core
    */
-  public function testsetTyphoonTypes()
+  public function testTyphoonTypes()
   {
     $expected = array(
       $this->_typeA,
       $this->_typeB,
     );
     $this->_tupleType->setTyphoonTypes($expected);
-    $reflector = new ReflectionObject($this->_tupleType);
-    $property = $reflector->getProperty('types');
-    $property->setAccessible(true);
 
-    $this->assertEquals($expected, $property->getValue($this->_tupleType));
+    $this->assertEquals($expected, $this->_tupleType->typhoonTypes());
   }
 
   /**

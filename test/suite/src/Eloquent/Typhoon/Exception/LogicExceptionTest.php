@@ -40,6 +40,7 @@ class LogicExceptionTest extends \Eloquent\Typhoon\Test\ExceptionTestCase
   
   /**
    * @covers Eloquent\Typhoon\Exception\LogicException::__construct
+   * @covers Eloquent\Typhoon\Exception\Exception
    * @group exceptions
    * @group core
    */

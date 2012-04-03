@@ -82,7 +82,7 @@ class TyphoonTest extends \Eloquent\Typhoon\Test\TestCase
    */
   public function testTypeRenderer()
   {
-    $this->assertInstanceOf('Eloquent\Typhoon\Type\Renderer\TyphaxTypeRenderer', $this->_typhoon->typeRenderer());
+    $this->assertInstanceOf('Eloquent\Typhoon\Typhax\TyphaxTypeRenderer', $this->_typhoon->typeRenderer());
 
     $this->_typhoon->setTypeRenderer($this->_typeRenderer);
 

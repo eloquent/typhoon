@@ -42,6 +42,7 @@ class UndefinedMethodExceptionTest extends ExceptionTestCase
 
   /**
    * @covers Eloquent\Typhoon\Exception\UndefinedMethodException::__construct
+   * @covers Eloquent\Typhoon\Exception\Exception
    * @group exceptions
    * @group core
    */

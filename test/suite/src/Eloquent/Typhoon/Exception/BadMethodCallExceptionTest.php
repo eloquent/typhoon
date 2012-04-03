@@ -40,6 +40,7 @@ class BadMethodCallExceptionTest extends \Eloquent\Typhoon\Test\ExceptionTestCas
 
   /**
    * @covers Eloquent\Typhoon\Exception\BadMethodCallException::__construct
+   * @covers Eloquent\Typhoon\Exception\Exception
    * @group exceptions
    * @group core
    */
