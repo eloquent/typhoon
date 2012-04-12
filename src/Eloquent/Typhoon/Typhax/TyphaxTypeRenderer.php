@@ -298,7 +298,12 @@ class TyphaxTypeRenderer implements TypeRenderer
    */
   protected function renderFloat($float)
   {
-    return (string)$float;
+    $float = (string)$float;
+    if (false === strpos($float, '.')) {
+      $float .= '.0';
+    }
+
+    return $float;
   }
 
   /**

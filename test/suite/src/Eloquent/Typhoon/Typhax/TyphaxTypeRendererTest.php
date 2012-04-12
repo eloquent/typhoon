@@ -11,7 +11,6 @@
 
 namespace Eloquent\Typhoon\Typhax;
 
-use Phake;
 use Eloquent\Typhoon\Attribute\Attributes;
 use Eloquent\Typhoon\Type\IntegerType;
 use Eloquent\Typhoon\Type\ObjectType;
@@ -19,6 +18,8 @@ use Eloquent\Typhoon\Type\StringType;
 use Eloquent\Typhoon\Type\TraversableType;
 use Eloquent\Typhoon\Type\TupleType;
 use Eloquent\Typhoon\Type\Type;
+use Phake;
+use stdClass;
 
 class TyphaxTypeRendererTest extends \Eloquent\Typhoon\Test\TestCase
 {
@@ -137,6 +138,75 @@ class TyphaxTypeRendererTest extends \Eloquent\Typhoon\Test\TestCase
     ));
     $expected = "tuple<foo,tuple<bar,baz>,string(encoding:utf-8)>";
     $data[] = array($expected, $type);
+    $data[] = array($expected, $type);
+
+    // #9: Ensure coverage of renderHash()
+    $type = Phake::mock('Eloquent\Typhoon\Type\Dynamic\DynamicType');
+    Phake::when($type)->typhoonName()->thenReturn('foo');
+    Phake::when($type)->typhoonAttributes()->thenReturn(new Attributes(array(
+      'bar' => array('baz' => 'qux', 'doom' => 'splat'),
+    )));
+    $expected = "foo(bar:{baz:qux,doom:splat})";
+    $data[] = array($expected, $type);
+
+    // #10: Ensure coverage of renderArray()
+    $type = Phake::mock('Eloquent\Typhoon\Type\Dynamic\DynamicType');
+    Phake::when($type)->typhoonName()->thenReturn('foo');
+    Phake::when($type)->typhoonAttributes()->thenReturn(new Attributes(array(
+      'bar' => array('baz', 'qux'),
+    )));
+    $expected = "foo(bar:[baz,qux])";
+    $data[] = array($expected, $type);
+
+    // #11: Ensure coverage of renderNull()
+    $type = Phake::mock('Eloquent\Typhoon\Type\Dynamic\DynamicType');
+    Phake::when($type)->typhoonName()->thenReturn('foo');
+    Phake::when($type)->typhoonAttributes()->thenReturn(new Attributes(array(
+      'bar' => null,
+    )));
+    $expected = "foo(bar:null)";
+    $data[] = array($expected, $type);
+
+    // #12: Ensure coverage of renderBoolean()
+    $type = Phake::mock('Eloquent\Typhoon\Type\Dynamic\DynamicType');
+    Phake::when($type)->typhoonName()->thenReturn('foo');
+    Phake::when($type)->typhoonAttributes()->thenReturn(new Attributes(array(
+      'bar' => true,
+      'baz' => false,
+    )));
+    $expected = "foo(bar:true,baz:false)";
+    $data[] = array($expected, $type);
+
+    // #13: Ensure coverage of renderString()
+    $type = Phake::mock('Eloquent\Typhoon\Type\Dynamic\DynamicType');
+    Phake::when($type)->typhoonName()->thenReturn('foo');
+    Phake::when($type)->typhoonAttributes()->thenReturn(new Attributes(array(
+      'bar' => 'baz',
+      'qux' => '1',
+      'doom' => '0.1',
+    )));
+    $expected = "foo(bar:baz,qux:'1',doom:'0.1')";
+    $data[] = array($expected, $type);
+
+    // #14: Ensure coverage of renderInteger()
+    $type = Phake::mock('Eloquent\Typhoon\Type\Dynamic\DynamicType');
+    Phake::when($type)->typhoonName()->thenReturn('foo');
+    Phake::when($type)->typhoonAttributes()->thenReturn(new Attributes(array(
+      'bar' => 1,
+    )));
+    $expected = "foo(bar:1)";
+    $data[] = array($expected, $type);
+
+    // #15: Ensure coverage of renderFloat()
+    $type = Phake::mock('Eloquent\Typhoon\Type\Dynamic\DynamicType');
+    Phake::when($type)->typhoonName()->thenReturn('foo');
+    Phake::when($type)->typhoonAttributes()->thenReturn(new Attributes(array(
+      'bar' => 0.1,
+      'baz' => 1.0,
+      'qux' => 0.123456789,
+    )));
+    $expected = "foo(bar:0.1,baz:1.0,qux:0.123456789)";
+    $data[] = array($expected, $type);
 
     return $data;
   }
@@ -152,6 +222,38 @@ class TyphaxTypeRendererTest extends \Eloquent\Typhoon\Test\TestCase
   public function testRender($expected, Type $type)
   {
     $this->assertEquals($expected, $this->_renderer->render($type));
+  }
+
+  /**
+   * @return array
+   */
+  public function renderFailureData()
+  {
+    $data = array();
+
+    // #0: Unsupported value type
+    $type = Phake::mock('Eloquent\Typhoon\Type\Dynamic\DynamicType');
+    Phake::when($type)->typhoonName()->thenReturn('foo');
+    Phake::when($type)->typhoonAttributes()->thenReturn(new Attributes(array(
+      'bar' => new stdClass,
+    )));
+    $expected = __NAMESPACE__.'\Exception\UnsupportedValueException';
+    $data[] = array($expected, $type);
+
+    return $data;
+  }
+
+  /**
+   * @covers Eloquent\Typhoon\Typhax\TyphaxTypeRenderer::renderValue
+   * @dataProvider renderFailureData
+   * @group type
+   * @group type-renderer
+   * @group core
+   */
+  public function testRenderFailure($expected, Type $type)
+  {
+    $this->setExpectedException($expected);
+    $this->_renderer->render($type);
   }
 
   /**
