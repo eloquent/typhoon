@@ -63,7 +63,7 @@ class CharacterType extends Dynamic\BaseDynamicType
    */
   public function typhoonName()
   {
-    return IntrinsicTypeName::NAME_CHARACTER()->value();
+    return IntrinsicTypeName::NAME_CHARACTER()->_value();
   }
 
   const ATTRIBUTE_ENCODING = 'encoding';

@@ -53,7 +53,7 @@ class CallbackTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    */
   protected function typeName()
   {
-    return IntrinsicTypeName::NAME_CALLBACK()->value();
+    return IntrinsicTypeName::NAME_CALLBACK()->_value();
   }
 
   // methods below must be manually overridden to implement @covers

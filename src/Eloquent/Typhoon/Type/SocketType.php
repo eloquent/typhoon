@@ -37,7 +37,7 @@ class SocketType implements NamedType
    */
   public function typhoonName()
   {
-    return IntrinsicTypeName::NAME_SOCKET()->value();
+    return IntrinsicTypeName::NAME_SOCKET()->_value();
   }
 
   /**

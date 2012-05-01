@@ -30,6 +30,6 @@ class NullType implements NamedType
    */
   public function typhoonName()
   {
-    return IntrinsicTypeName::NAME_NULL()->value();
+    return IntrinsicTypeName::NAME_NULL()->_value();
   }
 }

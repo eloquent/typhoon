@@ -64,7 +64,7 @@ class CallbackWrapperTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    */
   protected function typeName()
   {
-    return IntrinsicTypeName::NAME_CALLBACK_WRAPPER()->value();
+    return IntrinsicTypeName::NAME_CALLBACK_WRAPPER()->_value();
   }
 
   /**

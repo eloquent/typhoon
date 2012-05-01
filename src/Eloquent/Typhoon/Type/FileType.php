@@ -41,7 +41,7 @@ class FileType extends Dynamic\BaseDynamicType
    */
   public function typhoonName()
   {
-    return IntrinsicTypeName::NAME_FILE()->value();
+    return IntrinsicTypeName::NAME_FILE()->_value();
   }
 
   const ATTRIBUTE_LOCAL = 'local';

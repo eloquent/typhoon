@@ -30,6 +30,6 @@ class IntegerType implements NamedType
    */
   public function typhoonName()
   {
-    return IntrinsicTypeName::NAME_INTEGER()->value();
+    return IntrinsicTypeName::NAME_INTEGER()->_value();
   }
 }

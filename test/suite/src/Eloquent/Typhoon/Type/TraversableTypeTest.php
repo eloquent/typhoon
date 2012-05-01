@@ -78,7 +78,7 @@ class TraversableTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    */
   protected function typeName()
   {
-    return IntrinsicTypeName::NAME_TRAVERSABLE()->value();
+    return IntrinsicTypeName::NAME_TRAVERSABLE()->_value();
   }
 
   /**

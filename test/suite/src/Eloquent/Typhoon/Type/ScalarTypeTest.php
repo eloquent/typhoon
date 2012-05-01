@@ -47,7 +47,7 @@ class ScalarTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    */
   protected function typeName()
   {
-    return IntrinsicTypeName::NAME_SCALAR()->value();
+    return IntrinsicTypeName::NAME_SCALAR()->_value();
   }
 
   // methods below must be manually overridden to implement @covers

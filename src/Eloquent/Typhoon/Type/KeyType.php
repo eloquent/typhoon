@@ -37,7 +37,7 @@ class KeyType implements NamedType
    */
   public function typhoonName()
   {
-    return IntrinsicTypeName::NAME_KEY()->value();
+    return IntrinsicTypeName::NAME_KEY()->_value();
   }
 
   /**

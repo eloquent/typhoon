@@ -47,7 +47,7 @@ class NullTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    */
   protected function typeName()
   {
-    return IntrinsicTypeName::NAME_NULL()->value();
+    return IntrinsicTypeName::NAME_NULL()->_value();
   }
 
   // methods below must be manually overridden to implement @covers

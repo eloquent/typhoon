@@ -20,7 +20,7 @@ class ArrayType extends SubTyped\BaseTraversableType
    */
   public function typhoonName()
   {
-    return IntrinsicTypeName::NAME_ARRAY()->value();
+    return IntrinsicTypeName::NAME_ARRAY()->_value();
   }
 
   /**

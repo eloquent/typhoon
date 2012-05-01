@@ -51,7 +51,7 @@ class ObjectType extends Dynamic\BaseDynamicType
    */
   public function typhoonName()
   {
-    return IntrinsicTypeName::NAME_OBJECT()->value();
+    return IntrinsicTypeName::NAME_OBJECT()->_value();
   }
 
   const ATTRIBUTE_INSTANCE_OF = 'instanceOf';

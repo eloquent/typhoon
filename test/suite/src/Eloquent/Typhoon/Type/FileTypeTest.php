@@ -62,7 +62,7 @@ class FileTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    */
   protected function typeName()
   {
-    return IntrinsicTypeName::NAME_FILE()->value();
+    return IntrinsicTypeName::NAME_FILE()->_value();
   }
 
   /**

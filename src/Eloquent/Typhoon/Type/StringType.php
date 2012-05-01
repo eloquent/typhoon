@@ -56,7 +56,7 @@ class StringType extends Dynamic\BaseDynamicType
    */
   public function typhoonName()
   {
-    return IntrinsicTypeName::NAME_STRING()->value();
+    return IntrinsicTypeName::NAME_STRING()->_value();
   }
 
   const ATTRIBUTE_ENCODING = 'encoding';

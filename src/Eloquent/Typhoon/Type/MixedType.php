@@ -30,6 +30,6 @@ class MixedType implements NamedType
    */
   public function typhoonName()
   {
-    return IntrinsicTypeName::NAME_MIXED()->value();
+    return IntrinsicTypeName::NAME_MIXED()->_value();
   }
 }

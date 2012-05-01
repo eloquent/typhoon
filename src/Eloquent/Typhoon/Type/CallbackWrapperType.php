@@ -42,7 +42,7 @@ class CallbackWrapperType extends Dynamic\BaseDynamicType
    */
   public function typhoonName()
   {
-    return IntrinsicTypeName::NAME_CALLBACK_WRAPPER()->value();
+    return IntrinsicTypeName::NAME_CALLBACK_WRAPPER()->_value();
   }
 
   const ATTRIBUTE_CALLBACK = 'callback';

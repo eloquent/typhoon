@@ -36,7 +36,7 @@ class FilterType extends Dynamic\BaseDynamicType
    */
   public function typhoonName()
   {
-    return IntrinsicTypeName::NAME_FILTER()->value();
+    return IntrinsicTypeName::NAME_FILTER()->_value();
   }
 
   const ATTRIBUTE_FILTER = 'filter';

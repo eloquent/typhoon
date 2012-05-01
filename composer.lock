@@ -4,13 +4,16 @@
         {
             "package": "eloquent/enumeration",
             "version": "dev-master",
-            "source-reference": "9897833001529704facbdf9720b79e90bef000c8"
+            "source-reference": "355baeca34cba8c0ea82d7a0cf397a2a825d7c37"
         },
         {
             "package": "eloquent/typhax",
             "version": "dev-master",
-            "source-reference": "4a9bdb4e01a7d3338fa10f315ae437ae46a5b184"
+            "source-reference": "75bc4abb65fe2c76caabfac44205fcdd72cf521f"
         }
     ],
-    "aliases": []
+    "packages-dev": null,
+    "aliases": [
+
+    ]
 }

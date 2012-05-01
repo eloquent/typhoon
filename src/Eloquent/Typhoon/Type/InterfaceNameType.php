@@ -26,6 +26,6 @@ class InterfaceNameType extends BaseClassNameType
    */
   public function typhoonName()
   {
-    return IntrinsicTypeName::NAME_INTERFACE_NAME()->value();
+    return IntrinsicTypeName::NAME_INTERFACE_NAME()->_value();
   }
 }

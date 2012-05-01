@@ -74,7 +74,7 @@ class ObjectTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    */
   protected function typeName()
   {
-    return IntrinsicTypeName::NAME_OBJECT()->value();
+    return IntrinsicTypeName::NAME_OBJECT()->_value();
   }
 
   /**

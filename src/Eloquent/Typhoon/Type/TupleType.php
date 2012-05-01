@@ -77,7 +77,7 @@ class TupleType implements NamedType, SubTyped\SubTypedType
    */
   public function typhoonName()
   {
-    return IntrinsicTypeName::NAME_TUPLE()->value();
+    return IntrinsicTypeName::NAME_TUPLE()->_value();
   }
 
   /**

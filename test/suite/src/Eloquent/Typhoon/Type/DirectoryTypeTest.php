@@ -62,7 +62,7 @@ class DirectoryTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    */
   protected function typeName()
   {
-    return IntrinsicTypeName::NAME_DIRECTORY()->value();
+    return IntrinsicTypeName::NAME_DIRECTORY()->_value();
   }
 
   /**

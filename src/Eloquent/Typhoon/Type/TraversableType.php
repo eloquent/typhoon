@@ -46,7 +46,7 @@ class TraversableType extends SubTyped\BaseTraversableType implements Dynamic\Dy
    */
   public function typhoonName()
   {
-    return IntrinsicTypeName::NAME_TRAVERSABLE()->value();
+    return IntrinsicTypeName::NAME_TRAVERSABLE()->_value();
   }
 
   const ATTRIBUTE_INSTANCE_OF = 'instanceOf';

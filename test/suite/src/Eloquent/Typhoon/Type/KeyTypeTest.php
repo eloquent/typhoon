@@ -50,7 +50,7 @@ class KeyTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    */
   protected function typeName()
   {
-    return IntrinsicTypeName::NAME_KEY()->value();
+    return IntrinsicTypeName::NAME_KEY()->_value();
   }
 
   // methods below must be manually overridden to implement @covers

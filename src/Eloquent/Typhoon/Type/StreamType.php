@@ -132,7 +132,7 @@ class StreamType extends Dynamic\BaseDynamicType
    */
   public function typhoonName()
   {
-    return IntrinsicTypeName::NAME_STREAM()->value();
+    return IntrinsicTypeName::NAME_STREAM()->_value();
   }
 
   const ATTRIBUTE_LOCAL = 'local';

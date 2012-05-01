@@ -47,7 +47,7 @@ class MixedTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    */
   protected function typeName()
   {
-    return IntrinsicTypeName::NAME_MIXED()->value();
+    return IntrinsicTypeName::NAME_MIXED()->_value();
   }
 
   // methods below must be manually overridden to implement @covers

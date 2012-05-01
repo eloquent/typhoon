@@ -79,7 +79,7 @@ class ResourceTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    */
   protected function typeName()
   {
-    return IntrinsicTypeName::NAME_RESOURCE()->value();
+    return IntrinsicTypeName::NAME_RESOURCE()->_value();
   }
 
   /**
