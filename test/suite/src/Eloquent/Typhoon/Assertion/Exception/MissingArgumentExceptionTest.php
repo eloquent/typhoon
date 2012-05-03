@@ -13,6 +13,8 @@ namespace Eloquent\Typhoon\Assertion\Exception;
 
 use Eloquent\Typhoon\Primitive\Integer;
 use Eloquent\Typhoon\Primitive\String;
+use Eloquent\Typhoon\Type\StringType;
+use Phake;
 
 class MissingArgumentExceptionTest extends \Eloquent\Typhoon\Test\ExceptionTestCase
 {
@@ -29,16 +31,16 @@ class MissingArgumentExceptionTest extends \Eloquent\Typhoon\Test\ExceptionTestC
    */
   protected function defaultArguments()
   {
-    return array($this->_index, $this->_expectedTypeName, $this->_parameterName);
+    return array($this->_index, $this->_expectedType, $this->_parameterName, null);
   }
 
   protected function setUp()
   {
     parent::setUp();
-    
+
     $this->_index = new Integer(0);
-    $this->_expectedTypeName = new String('foo');
-    $this->_parameterName = new String('bar');
+    $this->_expectedType = new StringType;
+    $this->_parameterName = new String('foo');
   }
 
   /**
@@ -51,29 +53,29 @@ class MissingArgumentExceptionTest extends \Eloquent\Typhoon\Test\ExceptionTestC
   public function testConstructor()
   {
     $exception = $this->exceptionFixture();
-    $expected =
-      "Missing argument at index "
-      .$this->_index
-      ." (".$this->_parameterName.")"
-      ." - expected '"
-      .$this->_expectedTypeName
-      ."'."
-    ;
+    $expected = "Missing argument at index 0 (foo) - expected 'string'.";
 
-    $this->assertEquals($expected, $exception->getMessage());
-    $this->assertEquals(0, $exception->index());
-    $this->assertEquals('foo', $exception->expectedTypeName());
-    $this->assertEquals('bar', $exception->parameterName());
+    $this->assertSame($expected, $exception->getMessage());
+    $this->assertSame(0, $exception->index());
+    $this->assertSame($this->_expectedType, $exception->expectedType());
+    $this->assertSame('foo', $exception->parameterName());
+    $this->assertInstanceOf('Eloquent\Typhoon\Typhax\TyphaxTypeRenderer', $exception->typeRenderer());
 
-    $expected =
-      "Missing argument at index "
-      .$this->_index
-      ." - expected '"
-      .$this->_expectedTypeName
-      ."'."
-    ;
 
-    $this->assertEquals($expected, $this->exceptionFixture(array($this->_index, $this->_expectedTypeName))->getMessage());
+    $expected = "Missing argument at index 0 - expected 'string'.";
+
+    $this->assertEquals($expected, $this->exceptionFixture(array($this->_index, $this->_expectedType))->getMessage());
+
+
+    $typeRenderer = Phake::mock('Eloquent\Typhoon\Type\Renderer\TypeRenderer');
+    Phake::when($typeRenderer)->render($this->identicalTo($this->_expectedType))->thenReturn('bar');
+    $exception = $this->exceptionFixture(array($this->_index, $this->_expectedType, $this->_parameterName, $typeRenderer));
+    $expected = "Missing argument at index 0 (foo) - expected 'bar'.";
+
+    $this->assertSame($expected, $exception->getMessage());
+    $this->assertSame($typeRenderer, $exception->typeRenderer());
+    Phake::verify($typeRenderer)->render($this->identicalTo($this->_expectedType));
+
 
     parent::testConstructor();
   }
@@ -84,9 +86,9 @@ class MissingArgumentExceptionTest extends \Eloquent\Typhoon\Test\ExceptionTestC
   protected $_index;
 
   /**
-   * @var String
+   * @var Type
    */
-  protected $_expectedTypeName;
+  protected $_expectedType;
 
   /**
    * @var String

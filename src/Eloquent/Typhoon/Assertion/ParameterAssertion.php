@@ -38,10 +38,11 @@ class ParameterAssertion implements Assertion
       }
 
       throw new Exception\UnexpectedArgumentException(
-        new String($e->typeName())
+        $e->type()
         , new Integer($this->index)
-        , new String($e->expectedTypeName())
+        , $e->expectedType()
         , $parameterName
+        , $e->typeRenderer()
         , $e
       );
     }

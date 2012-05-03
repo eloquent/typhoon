@@ -14,47 +14,76 @@ namespace Eloquent\Typhoon\Assertion\Exception;
 use Eloquent\Typhoon\Exception\LogicException;
 use Eloquent\Typhoon\Exception\UnexpectedInputException;
 use Eloquent\Typhoon\Primitive\String;
+use Eloquent\Typhoon\Type\Renderer\TypeRenderer;
+use Eloquent\Typhoon\Type\Type;
+use Eloquent\Typhoon\Typhax\TyphaxTypeRenderer;
 
 final class UnexpectedTypeException extends LogicException implements UnexpectedInputException
 {
   /**
-   * @param String $typeName
-   * @param String $expectedTypeName
+   * @param Type $type
+   * @param Type $expectedType
+   * @param TypeRenderer $typeRenderer
    * @param \Exception $previous
    */
-  public function __construct(String $typeName, String $expectedTypeName, \Exception $previous = null)
+  public function __construct(Type $type, Type $expectedType, TypeRenderer $typeRenderer = null, \Exception $previous = null)
   {
-    $this->typeName = $typeName->value();
-    $this->expectedTypeName = $expectedTypeName->value();
+    if (null === $typeRenderer)
+    {
+      $typeRenderer = new TyphaxTypeRenderer;
+    }
 
-    $message = "Unexpected value of type '".$this->typeName."' - expected '".$this->expectedTypeName."'.";
+    $this->type = $type;
+    $this->expectedType = $expectedType;
+    $this->typeRenderer = $typeRenderer;
+
+    $message =
+      "Unexpected value of type '"
+      .$this->typeRenderer->render($this->type)
+      ."' - expected '"
+      .$this->typeRenderer->render($this->expectedType)
+      ."'."
+    ;
 
     parent::__construct(new String($message), $previous);
   }
-  
+
   /**
-   * @return string
+   * @return Type
    */
-  public function typeName()
+  public function type()
   {
-    return $this->typeName;
-  }
-  
-  /**
-   * @return string
-   */
-  public function expectedTypeName()
-  {
-    return $this->expectedTypeName;
+    return $this->type;
   }
 
   /**
-   * @var string
+   * @return Type
    */
-  protected $typeName;
+  public function expectedType()
+  {
+    return $this->expectedType;
+  }
 
   /**
-   * @var string
+   * @return TypeRenderer
    */
-  protected $expectedTypeName;
+  public function typeRenderer()
+  {
+    return $this->typeRenderer;
+  }
+
+  /**
+   * @var Type
+   */
+  protected $type;
+
+  /**
+   * @var Type
+   */
+  protected $expectedType;
+
+  /**
+   * @var TypeRenderer
+   */
+  protected $typeRenderer;
 }

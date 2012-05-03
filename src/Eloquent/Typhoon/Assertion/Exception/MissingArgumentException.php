@@ -15,30 +15,51 @@ use Eloquent\Typhoon\Exception\LogicException;
 use Eloquent\Typhoon\Exception\UnexpectedInputException;
 use Eloquent\Typhoon\Primitive\Integer;
 use Eloquent\Typhoon\Primitive\String;
+use Eloquent\Typhoon\Type\Renderer\TypeRenderer;
+use Eloquent\Typhoon\Type\Type;
+use Eloquent\Typhoon\Typhax\TyphaxTypeRenderer;
 
 final class MissingArgumentException extends LogicException implements UnexpectedInputException
 {
   /**
    * @param Integer $index
-   * @param String $expectedTypeName
+   * @param Type $expectedType
    * @param String $parameterName
+   * @param TypeRenderer $typeRenderer
    * @param \Exception $previous
    */
-  public function __construct(Integer $index, String $expectedTypeName, String $parameterName = null, \Exception $previous = null)
+  public function __construct(Integer $index, Type $expectedType, String $parameterName = null, TypeRenderer $typeRenderer = null, \Exception $previous = null)
   {
-    $this->index = $index->value();
-    $this->expectedTypeName = $expectedTypeName->value();
+    if (null === $typeRenderer)
+    {
+      $typeRenderer = new TyphaxTypeRenderer;
+    }
 
-    $message = "Missing argument at index ".$this->index;
+    $this->index = $index->value();
+    $this->expectedType = $expectedType;
+    $this->typeRenderer = $typeRenderer;
+
+    $message =
+      "Missing argument at index "
+      .$this->index
+    ;
 
     if ($parameterName)
     {
       $this->parameterName = $parameterName->value();
 
-      $message .= " (".$this->parameterName.")";
+      $message .=
+        " ("
+        .$this->parameterName
+        .")"
+      ;
     }
 
-    $message .= " - expected '".$this->expectedTypeName."'.";
+    $message .=
+      " - expected '"
+      .$this->typeRenderer->render($this->expectedType)
+      ."'."
+    ;
 
     parent::__construct(new String($message), $previous);
   }
@@ -52,11 +73,11 @@ final class MissingArgumentException extends LogicException implements Unexpecte
   }
 
   /**
-   * @return string
+   * @return Type
    */
-  public function expectedTypeName()
+  public function expectedType()
   {
-    return $this->expectedTypeName;
+    return $this->expectedType;
   }
 
   /**
@@ -68,17 +89,30 @@ final class MissingArgumentException extends LogicException implements Unexpecte
   }
 
   /**
+   * @return TypeRenderer
+   */
+  public function typeRenderer()
+  {
+    return $this->typeRenderer;
+  }
+
+  /**
    * @var integer
    */
   protected $index;
 
   /**
-   * @var string
+   * @var Type
    */
-  protected $expectedTypeName;
+  protected $expectedType;
 
   /**
    * @var string
    */
   protected $parameterName;
+
+  /**
+   * @var TypeRenderer
+   */
+  protected $typeRenderer;
 }

@@ -15,34 +15,57 @@ use Eloquent\Typhoon\Exception\LogicException;
 use Eloquent\Typhoon\Exception\UnexpectedInputException;
 use Eloquent\Typhoon\Primitive\Integer;
 use Eloquent\Typhoon\Primitive\String;
+use Eloquent\Typhoon\Type\Renderer\TypeRenderer;
+use Eloquent\Typhoon\Type\Type;
+use Eloquent\Typhoon\Typhax\TyphaxTypeRenderer;
 
 final class UnexpectedArgumentException extends LogicException implements UnexpectedInputException
 {
   /**
-   * @param String $typeName
+   * @param Type $type
    * @param Integer $index
-   * @param String $expectedTypeName
+   * @param Type $expectedType
    * @param String $parameterName
+   * @param TypeRenderer $typeRenderer
    * @param \Exception $previous
    */
-  public function __construct(String $typeName, Integer $index, String $expectedTypeName = null, String $parameterName = null, \Exception $previous = null)
+  public function __construct(Type $type, Integer $index, Type $expectedType = null, String $parameterName = null, TypeRenderer $typeRenderer = null, \Exception $previous = null)
   {
-    $this->typeName = $typeName->value();
-    $this->index = $index->value();
+    if (null === $typeRenderer)
+    {
+      $typeRenderer = new TyphaxTypeRenderer;
+    }
 
-    $message = "Unexpected argument of type '".$this->typeName."' at index ".$this->index;
+    $this->type = $type;
+    $this->index = $index->value();
+    $this->typeRenderer = $typeRenderer;
+
+    $message =
+      "Unexpected argument of type '"
+      .$this->typeRenderer->render($this->type)
+      ."' at index "
+      .$this->index
+    ;
 
     if ($parameterName)
     {
       $this->parameterName = $parameterName->value();
 
-      $message .= " (".$this->parameterName.")";
+      $message .=
+        " ("
+        .$this->parameterName
+        .")"
+      ;
     }
-    if ($expectedTypeName)
+    if ($expectedType)
     {
-      $this->expectedTypeName = $expectedTypeName->value();
+      $this->expectedType = $expectedType;
 
-      $message .= " - expected '".$this->expectedTypeName."'";
+      $message .=
+        " - expected '"
+        .$this->typeRenderer->render($this->expectedType)
+        ."'"
+      ;
     }
 
     $message .= ".";
@@ -51,11 +74,11 @@ final class UnexpectedArgumentException extends LogicException implements Unexpe
   }
 
   /**
-   * @return string
+   * @return Type
    */
-  public function typeName()
+  public function type()
   {
-    return $this->typeName;
+    return $this->type;
   }
 
   /**
@@ -67,11 +90,11 @@ final class UnexpectedArgumentException extends LogicException implements Unexpe
   }
 
   /**
-   * @return string
+   * @return Type
    */
-  public function expectedTypeName()
+  public function expectedType()
   {
-    return $this->expectedTypeName;
+    return $this->expectedType;
   }
 
   /**
@@ -83,9 +106,17 @@ final class UnexpectedArgumentException extends LogicException implements Unexpe
   }
 
   /**
-   * @var string
+   * @return TypeRenderer
    */
-  protected $typeName;
+  public function typeRenderer()
+  {
+    return $this->typeRenderer;
+  }
+
+  /**
+   * @var Type
+   */
+  protected $type;
 
   /**
    * @var integer
@@ -93,12 +124,17 @@ final class UnexpectedArgumentException extends LogicException implements Unexpe
   protected $index;
 
   /**
-   * @var string
+   * @var Type
    */
-  protected $expectedTypeName;
+  protected $expectedType;
 
   /**
    * @var string
    */
   protected $parameterName;
+
+  /**
+   * @var TypeRenderer
+   */
+  protected $typeRenderer;
 }

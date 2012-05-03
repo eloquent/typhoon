@@ -12,6 +12,8 @@
 namespace Eloquent\Typhoon\Assertion\Exception;
 
 use Eloquent\Typhoon\Primitive\String;
+use Eloquent\Typhoon\Type\StringType;
+use Phake;
 
 class MissingAttributeExceptionTest extends \Eloquent\Typhoon\Test\ExceptionTestCase
 {
@@ -28,7 +30,7 @@ class MissingAttributeExceptionTest extends \Eloquent\Typhoon\Test\ExceptionTest
    */
   protected function defaultArguments()
   {
-    return array($this->_attributeName, $this->_expectedTypeName, $this->_holderName);
+    return array($this->_attributeName, $this->_expectedType, $this->_holderName, null);
   }
 
   protected function setUp()
@@ -36,8 +38,8 @@ class MissingAttributeExceptionTest extends \Eloquent\Typhoon\Test\ExceptionTest
     parent::setUp();
 
     $this->_attributeName = new String('foo');
-    $this->_expectedTypeName = new String('bar');
-    $this->_holderName = new String('baz');
+    $this->_expectedType = new StringType;
+    $this->_holderName = new String('bar');
   }
 
   /**
@@ -50,30 +52,29 @@ class MissingAttributeExceptionTest extends \Eloquent\Typhoon\Test\ExceptionTest
   public function testConstructor()
   {
     $exception = $this->exceptionFixture();
-    $expected =
-      "Missing required attribute '"
-      .$this->_attributeName
-      ."' for '"
-      .$this->_holderName
-      ."' - expected '"
-      .$this->_expectedTypeName
-      ."'."
-    ;
+    $expected = "Missing required attribute 'foo' for 'bar' - expected 'string'.";
 
-    $this->assertEquals($expected, $exception->getMessage());
-    $this->assertEquals('foo', $exception->attributeName());
-    $this->assertEquals('bar', $exception->expectedTypeName());
-    $this->assertEquals('baz', $exception->holderName());
+    $this->assertSame($expected, $exception->getMessage());
+    $this->assertSame('foo', $exception->attributeName());
+    $this->assertSame($this->_expectedType, $exception->expectedType());
+    $this->assertSame('bar', $exception->holderName());
+    $this->assertInstanceOf('Eloquent\Typhoon\Typhax\TyphaxTypeRenderer', $exception->typeRenderer());
 
-    $expected =
-      "Missing required attribute '"
-      .$this->_attributeName
-      ."' - expected '"
-      .$this->_expectedTypeName
-      ."'."
-    ;
 
-    $this->assertEquals($expected, $this->exceptionFixture(array($this->_attributeName, $this->_expectedTypeName))->getMessage());
+    $expected = "Missing required attribute 'foo' - expected 'string'.";
+
+    $this->assertSame($expected, $this->exceptionFixture(array($this->_attributeName, $this->_expectedType))->getMessage());
+
+
+    $typeRenderer = Phake::mock('Eloquent\Typhoon\Type\Renderer\TypeRenderer');
+    Phake::when($typeRenderer)->render($this->identicalTo($this->_expectedType))->thenReturn('baz');
+    $exception = $this->exceptionFixture(array($this->_attributeName, $this->_expectedType, $this->_holderName, $typeRenderer));
+    $expected = "Missing required attribute 'foo' for 'bar' - expected 'baz'.";
+
+    $this->assertSame($expected, $exception->getMessage());
+    $this->assertSame($typeRenderer, $exception->typeRenderer());
+    Phake::verify($typeRenderer)->render($this->identicalTo($this->_expectedType));
+
 
     parent::testConstructor();
   }
@@ -84,9 +85,9 @@ class MissingAttributeExceptionTest extends \Eloquent\Typhoon\Test\ExceptionTest
   protected $_attributeName;
 
   /**
-   * @var String
+   * @var Type
    */
-  protected $_expectedTypeName;
+  protected $_expectedType;
 
   /**
    * @var String

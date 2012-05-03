@@ -14,34 +14,58 @@ namespace Eloquent\Typhoon\Assertion\Exception;
 use Eloquent\Typhoon\Exception\LogicException;
 use Eloquent\Typhoon\Exception\UnexpectedInputException;
 use Eloquent\Typhoon\Primitive\String;
+use Eloquent\Typhoon\Type\Renderer\TypeRenderer;
+use Eloquent\Typhoon\Type\Type;
+use Eloquent\Typhoon\Typhax\TyphaxTypeRenderer;
 
 final class UnexpectedAttributeException extends LogicException implements UnexpectedInputException
 {
   /**
-   * @param String $typeName
+   * @param Type $type
    * @param String $attributeName
-   * @param String $expectedTypeName
+   * @param Type $expectedType
    * @param String $holderName
+   * @param TypeRenderer $typeRenderer
    * @param \Exception $previous
    */
-  public function __construct(String $typeName, String $attributeName, String $expectedTypeName = null, String $holderName = null, \Exception $previous = null)
+  public function __construct(Type $type, String $attributeName, Type $expectedType = null, String $holderName = null, TypeRenderer $typeRenderer = null, \Exception $previous = null)
   {
-    $this->typeName = $typeName->value();
-    $this->attributeName = $attributeName->value();
+    if (null === $typeRenderer)
+    {
+      $typeRenderer = new TyphaxTypeRenderer;
+    }
 
-    $message = "Unexpected value of type '".$this->typeName."' for attribute '".$this->attributeName."'";
+    $this->type = $type;
+    $this->attributeName = $attributeName->value();
+    $this->typeRenderer = $typeRenderer;
+
+    $message =
+      "Unexpected value of type '"
+      .$this->typeRenderer->render($this->type)
+      ."' for attribute '"
+      .$this->attributeName
+      ."'"
+    ;
 
     if ($holderName)
     {
       $this->holderName = $holderName->value();
 
-      $message .= " of '".$this->holderName."'";
+      $message .=
+        " of '"
+        .$this->holderName
+        ."'"
+      ;
     }
-    if ($expectedTypeName)
+    if ($expectedType)
     {
-      $this->expectedTypeName = $expectedTypeName->value();
+      $this->expectedType = $expectedType;
 
-      $message .= " - expected '".$this->expectedTypeName."'";
+      $message .=
+        " - expected '"
+        .$this->typeRenderer->render($this->expectedType)
+        ."'"
+      ;
     }
 
     $message .= ".";
@@ -50,11 +74,11 @@ final class UnexpectedAttributeException extends LogicException implements Unexp
   }
 
   /**
-   * @return string
+   * @return Type
    */
-  public function typeName()
+  public function type()
   {
-    return $this->typeName;
+    return $this->type;
   }
 
   /**
@@ -66,11 +90,11 @@ final class UnexpectedAttributeException extends LogicException implements Unexp
   }
 
   /**
-   * @return string
+   * @return Type
    */
-  public function expectedTypeName()
+  public function expectedType()
   {
-    return $this->expectedTypeName;
+    return $this->expectedType;
   }
 
   /**
@@ -82,9 +106,17 @@ final class UnexpectedAttributeException extends LogicException implements Unexp
   }
 
   /**
-   * @var string
+   * @return TypeRenderer
    */
-  protected $typeName;
+  public function typeRenderer()
+  {
+    return $this->typeRenderer;
+  }
+
+  /**
+   * @var Type
+   */
+  protected $type;
 
   /**
    * @var string
@@ -92,12 +124,17 @@ final class UnexpectedAttributeException extends LogicException implements Unexp
   protected $attributeName;
 
   /**
-   * @var string
+   * @var Type
    */
-  protected $expectedTypeName;
+  protected $expectedType;
 
   /**
    * @var string
    */
   protected $holderName;
+
+  /**
+   * @var TypeRenderer
+   */
+  protected $typeRenderer;
 }

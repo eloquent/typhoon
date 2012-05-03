@@ -14,30 +14,52 @@ namespace Eloquent\Typhoon\Assertion\Exception;
 use Eloquent\Typhoon\Exception\LogicException;
 use Eloquent\Typhoon\Exception\UnexpectedInputException;
 use Eloquent\Typhoon\Primitive\String;
+use Eloquent\Typhoon\Type\Renderer\TypeRenderer;
+use Eloquent\Typhoon\Type\Type;
+use Eloquent\Typhoon\Typhax\TyphaxTypeRenderer;
 
 final class MissingAttributeException extends LogicException implements UnexpectedInputException
 {
   /**
    * @param String $attributeName
-   * @param String $expectedTypeName
+   * @param Type $expectedType
    * @param String $holderName
+   * @param TypeRenderer $typeRenderer
    * @param \Exception $previous
    */
-  public function __construct(String $attributeName, String $expectedTypeName, String $holderName = null, \Exception $previous = null)
+  public function __construct(String $attributeName, Type $expectedType, String $holderName = null, TypeRenderer $typeRenderer = null, \Exception $previous = null)
   {
-    $this->attributeName = $attributeName->value();
-    $this->expectedTypeName = $expectedTypeName->value();
+    if (null === $typeRenderer)
+    {
+      $typeRenderer = new TyphaxTypeRenderer;
+    }
 
-    $message = "Missing required attribute '".$this->attributeName."'";
+    $this->attributeName = $attributeName->value();
+    $this->expectedType = $expectedType;
+    $this->typeRenderer = $typeRenderer;
+
+    $message =
+      "Missing required attribute '"
+      .$this->attributeName
+      ."'"
+    ;
 
     if ($holderName)
     {
       $this->holderName = $holderName->value();
-      
-      $message .= " for '".$this->holderName."'";
+
+      $message .=
+        " for '"
+        .$this->holderName
+        ."'"
+      ;
     }
 
-    $message .= " - expected '".$this->expectedTypeName."'.";
+    $message .=
+      " - expected '"
+      .$this->typeRenderer->render($this->expectedType)
+      ."'."
+    ;
 
     parent::__construct(new String($message), $previous);
   }
@@ -51,11 +73,11 @@ final class MissingAttributeException extends LogicException implements Unexpect
   }
 
   /**
-   * @return string
+   * @return Type
    */
-  public function expectedTypeName()
+  public function expectedType()
   {
-    return $this->expectedTypeName;
+    return $this->expectedType;
   }
 
   /**
@@ -67,17 +89,30 @@ final class MissingAttributeException extends LogicException implements Unexpect
   }
 
   /**
+   * @return TypeRenderer
+   */
+  public function typeRenderer()
+  {
+    return $this->typeRenderer;
+  }
+
+  /**
    * @var string
    */
   protected $attributeName;
 
   /**
-   * @var string
+   * @var Type
    */
-  protected $expectedTypeName;
+  protected $expectedType;
 
   /**
    * @var string
    */
   protected $holderName;
+
+  /**
+   * @var TypeRenderer
+   */
+  protected $typeRenderer;
 }

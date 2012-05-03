@@ -14,6 +14,7 @@ namespace Eloquent\Typhoon\Typhax\Exception;
 use Eloquent\Typhoon\Exception\LogicException;
 use Eloquent\Typhoon\Primitive\String;
 use Eloquent\Typhoon\Type\Inspector\TypeInspector;
+use Eloquent\Typhoon\Type\Renderer\TypeRenderer;
 use Eloquent\Typhoon\Typhax\TyphaxTypeRenderer;
 
 final class UnsupportedValueException extends LogicException

@@ -25,7 +25,7 @@ abstract class Primitive
     $assertion = $this->typeAssertion();
     $assertion->setType($this->type());
     $assertion->setValue($value);
-    
+
     try
     {
       $assertion->assert();
@@ -33,10 +33,11 @@ abstract class Primitive
     catch (UnexpectedTypeException $e)
     {
       throw new UnexpectedArgumentException(
-        new String($e->typeName())
+        $e->type()
         , new Integer(0)
-        , new String($e->expectedTypeName())
+        , $e->expectedType()
         , new String('value')
+        , $e->typeRenderer()
         , $e
       );
     }

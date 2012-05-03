@@ -13,6 +13,9 @@ namespace Eloquent\Typhoon\Assertion\Exception;
 
 use Eloquent\Typhoon\Primitive\Integer;
 use Eloquent\Typhoon\Primitive\String;
+use Eloquent\Typhoon\Type\IntegerType;
+use Eloquent\Typhoon\Type\StringType;
+use Phake;
 
 class UnexpectedArgumentExceptionTest extends \Eloquent\Typhoon\Test\ExceptionTestCase
 {
@@ -29,17 +32,17 @@ class UnexpectedArgumentExceptionTest extends \Eloquent\Typhoon\Test\ExceptionTe
    */
   protected function defaultArguments()
   {
-    return array($this->_typeName, $this->_index, $this->_expectedTypeName, $this->_parameterName);
+    return array($this->_type, $this->_index, $this->_expectedType, $this->_parameterName, null);
   }
 
   protected function setUp()
   {
     parent::setUp();
-    
-    $this->_typeName = new String('foo');
+
+    $this->_type = new StringType;
     $this->_index = new Integer(0);
-    $this->_expectedTypeName = new String('bar');
-    $this->_parameterName = new String('baz');
+    $this->_expectedType = new IntegerType;
+    $this->_parameterName = new String('foo');
   }
 
   /**
@@ -52,54 +55,45 @@ class UnexpectedArgumentExceptionTest extends \Eloquent\Typhoon\Test\ExceptionTe
   public function testConstructor()
   {
     $exception = $this->exceptionFixture();
-    $expected =
-      "Unexpected argument of type '"
-      .$this->_typeName
-      ."' at index "
-      .$this->_index
-      ." ("
-      .$this->_parameterName
-      .")"
-      ." - expected '"
-      .$this->_expectedTypeName
-      ."'."
-    ;
+    $expected = "Unexpected argument of type 'string' at index 0 (foo) - expected 'integer'.";
 
-    $this->assertEquals($expected, $exception->getMessage());
-    $this->assertEquals($this->_typeName->value(), $exception->typeName());
-    $this->assertEquals($this->_index->value(), $exception->index());
-    $this->assertEquals($this->_expectedTypeName->value(), $exception->expectedTypeName());
-    $this->assertEquals($this->_parameterName->value(), $exception->parameterName());
+    $this->assertSame($expected, $exception->getMessage());
+    $this->assertSame($this->_type, $exception->type());
+    $this->assertSame($this->_index->value(), $exception->index());
+    $this->assertSame($this->_expectedType, $exception->expectedType());
+    $this->assertSame($this->_parameterName->value(), $exception->parameterName());
+    $this->assertInstanceOf('Eloquent\Typhoon\Typhax\TyphaxTypeRenderer', $exception->typeRenderer());
 
-    $expected =
-      "Unexpected argument of type '"
-      .$this->_typeName
-      ."' at index "
-      .$this->_index
-      ." - expected '"
-      .$this->_expectedTypeName
-      ."'."
-    ;
 
-    $this->assertEquals($expected, $this->exceptionFixture(array($this->_typeName, $this->_index, $this->_expectedTypeName))->getMessage());
+    $expected = "Unexpected argument of type 'string' at index 0 - expected 'integer'.";
 
-    $expected =
-      "Unexpected argument of type '"
-      .$this->_typeName
-      ."' at index "
-      .$this->_index
-      ."."
-    ;
+    $this->assertSame($expected, $this->exceptionFixture(array($this->_type, $this->_index, $this->_expectedType))->getMessage());
 
-    $this->assertEquals($expected, $this->exceptionFixture(array($this->_typeName, $this->_index))->getMessage());
+
+    $expected = "Unexpected argument of type 'string' at index 0.";
+
+    $this->assertSame($expected, $this->exceptionFixture(array($this->_type, $this->_index))->getMessage());
+
+
+    $typeRenderer = Phake::mock('Eloquent\Typhoon\Type\Renderer\TypeRenderer');
+    Phake::when($typeRenderer)->render($this->identicalTo($this->_type))->thenReturn('bar');
+    Phake::when($typeRenderer)->render($this->identicalTo($this->_expectedType))->thenReturn('baz');
+    $exception = $this->exceptionFixture(array($this->_type, $this->_index, $this->_expectedType, $this->_parameterName, $typeRenderer));
+    $expected = "Unexpected argument of type 'bar' at index 0 (foo) - expected 'baz'.";
+
+    $this->assertSame($expected, $exception->getMessage());
+    $this->assertSame($typeRenderer, $exception->typeRenderer());
+    Phake::verify($typeRenderer)->render($this->identicalTo($this->_type));
+    Phake::verify($typeRenderer)->render($this->identicalTo($this->_expectedType));
+
 
     parent::testConstructor();
   }
 
   /**
-   * @var String
+   * @var Type
    */
-  protected $_typeName;
+  protected $_type;
 
   /**
    * @var Integer
@@ -107,9 +101,9 @@ class UnexpectedArgumentExceptionTest extends \Eloquent\Typhoon\Test\ExceptionTe
   protected $_index;
 
   /**
-   * @var String
+   * @var Type
    */
-  protected $_expectedTypeName;
+  protected $_expectedType;
 
   /**
    * @var String

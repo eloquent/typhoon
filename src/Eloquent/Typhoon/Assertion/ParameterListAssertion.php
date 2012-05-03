@@ -49,12 +49,8 @@ class ParameterListAssertion implements Assertion
         continue;
       }
 
-      $typeName = Typhoon::instance()->typeRenderer()->render(
-        Typhoon::instance()->typeInspector()->typeOf($value)
-      );
-
       throw new Exception\UnexpectedArgumentException(
-        new String((string)$typeName)
+        Typhoon::instance()->typeInspector()->typeOf($value)
         , new Integer($index)
       );
     }
@@ -73,10 +69,6 @@ class ParameterListAssertion implements Assertion
       return;
     }
 
-    $expectedTypeName = Typhoon::instance()->typeRenderer()->render(
-      $parameter->type()
-    );
-
     if ($parameterName = $parameter->name())
     {
       $parameterName = new String($parameterName);
@@ -84,7 +76,7 @@ class ParameterListAssertion implements Assertion
 
     throw new Exception\MissingArgumentException(
       new Integer($index)
-      , new String((string)$expectedTypeName)
+      , $parameter->type()
       , $parameterName
     );
   }
@@ -114,7 +106,7 @@ class ParameterListAssertion implements Assertion
     {
       new Integer($index);
     }
-    
+
     $this->arguments = $arguments;
   }
 

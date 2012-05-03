@@ -79,9 +79,10 @@ class PrimitiveTest extends \Eloquent\Typhoon\Test\TestCase
   public function testPrimitiveFailure()
   {
     $type = Phake::mock('Eloquent\Typhoon\Type\NamedType');
+    $expectedType = Phake::mock('Eloquent\Typhoon\Type\NamedType');
     $typeAssertion = Phake::mock('Eloquent\Typhoon\Assertion\TypeAssertion');
 
-    Phake::when($typeAssertion)->assert()->thenThrow(new UnexpectedTypeException(new String('typeName'), new String('expectedTypeName')));
+    Phake::when($typeAssertion)->assert()->thenThrow(new UnexpectedTypeException($type, $expectedType));
 
     $primitive = $this->primitiveFixture();
     $primitive

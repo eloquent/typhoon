@@ -43,7 +43,7 @@ class Attributes extends Collection
     {
       return new static;
     }
-    
+
     $parameter = new Parameter;
     $parameter->setName(new String('attributes'));
     $parameter->setType(new ArrayType);
@@ -74,7 +74,7 @@ class Attributes extends Collection
     {
       return null;
     }
-    
+
     return clone $this->signature;
   }
 
@@ -90,7 +90,7 @@ class Attributes extends Collection
   {
     return $this->finalized;
   }
-  
+
   /**
    * @param integer|string $key
    * @param mixed $value
@@ -120,7 +120,7 @@ class Attributes extends Collection
     }
 
     $this->assertKeyExists($key);
-    
+
     if ($this->signature && $this->signature->isRequired($key))
     {
       if ($holderName = $this->signature->holderName())
@@ -128,13 +128,9 @@ class Attributes extends Collection
         $holderName = new String($holderName);
       }
 
-      $expectedTypeName = Typhoon::instance()->typeRenderer()->render(
-        $this->valueType($key)
-      );
-
       throw new MissingAttributeException(
         new String($key)
-        , new String((string)$expectedTypeName)
+        , $this->valueType($key)
         , $holderName
       );
     }
@@ -177,7 +173,7 @@ class Attributes extends Collection
 
     return $this->signature[$key];
   }
-  
+
   /**
    * @param Type $type
    * @param mixed $key
@@ -199,7 +195,7 @@ class Attributes extends Collection
       {
         $holderName = new String($holderName);
       }
-      
+
       throw new UnsupportedAttributeException(
         new String($key)
         , $holderName
@@ -218,13 +214,9 @@ class Attributes extends Collection
           $holderName = new String($holderName);
         }
 
-        $expectedTypeName = Typhoon::instance()->typeRenderer()->render(
-          $this->valueType($key)
-        );
-
         throw new MissingAttributeException(
           new String($key)
-          , new String((string)$expectedTypeName)
+          , $this->valueType($key)
           , $holderName
         );
       }
@@ -257,10 +249,11 @@ class Attributes extends Collection
       }
 
       throw new UnexpectedAttributeException(
-        new String($e->typeName())
+        $e->type()
         , new String($key)
-        , new String($e->expectedTypeName())
+        , $e->expectedType()
         , $holderName
+        , $e->typeRenderer()
         , $e
       );
     }
