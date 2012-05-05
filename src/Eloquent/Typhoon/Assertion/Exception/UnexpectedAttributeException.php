@@ -14,6 +14,7 @@ namespace Eloquent\Typhoon\Assertion\Exception;
 use Eloquent\Typhoon\Exception\LogicException;
 use Eloquent\Typhoon\Exception\UnexpectedInputException;
 use Eloquent\Typhoon\Primitive\String;
+use Eloquent\Typhoon\Type\Inspector\TypeInspector;
 use Eloquent\Typhoon\Type\Renderer\TypeRenderer;
 use Eloquent\Typhoon\Type\Type;
 use Eloquent\Typhoon\Typhax\TyphaxTypeRenderer;
@@ -21,27 +22,41 @@ use Eloquent\Typhoon\Typhax\TyphaxTypeRenderer;
 final class UnexpectedAttributeException extends LogicException implements UnexpectedInputException
 {
   /**
-   * @param Type $type
+   * @param mixed $value
    * @param String $attributeName
    * @param Type $expectedType
    * @param String $holderName
+   * @param TypeInspector $typeInspector
    * @param TypeRenderer $typeRenderer
    * @param \Exception $previous
    */
-  public function __construct(Type $type, String $attributeName, Type $expectedType = null, String $holderName = null, TypeRenderer $typeRenderer = null, \Exception $previous = null)
+  public function __construct(
+    $value
+    , String $attributeName
+    , Type $expectedType = null
+    , String $holderName = null
+    , TypeInspector $typeInspector = null
+    , TypeRenderer $typeRenderer = null
+    , \Exception $previous = null
+  )
   {
+    if (null === $typeInspector)
+    {
+      $typeInspector = new TypeInspector;
+    }
     if (null === $typeRenderer)
     {
       $typeRenderer = new TyphaxTypeRenderer;
     }
 
-    $this->type = $type;
+    $this->value = $value;
     $this->attributeName = $attributeName->value();
+    $this->typeInspector = $typeInspector;
     $this->typeRenderer = $typeRenderer;
 
     $message =
       "Unexpected value of type '"
-      .$this->typeRenderer->render($this->type)
+      .$this->typeRenderer->render($this->typeInspector->typeOf($this->value))
       ."' for attribute '"
       .$this->attributeName
       ."'"
@@ -74,11 +89,11 @@ final class UnexpectedAttributeException extends LogicException implements Unexp
   }
 
   /**
-   * @return Type
+   * @return mixed
    */
-  public function type()
+  public function value()
   {
-    return $this->type;
+    return $this->value;
   }
 
   /**
@@ -106,6 +121,14 @@ final class UnexpectedAttributeException extends LogicException implements Unexp
   }
 
   /**
+   * @return TypeInspector
+   */
+  public function typeInspector()
+  {
+    return $this->typeInspector;
+  }
+
+  /**
    * @return TypeRenderer
    */
   public function typeRenderer()
@@ -114,9 +137,9 @@ final class UnexpectedAttributeException extends LogicException implements Unexp
   }
 
   /**
-   * @var Type
+   * @var mixed
    */
-  protected $type;
+  protected $value;
 
   /**
    * @var string
@@ -132,6 +155,11 @@ final class UnexpectedAttributeException extends LogicException implements Unexp
    * @var string
    */
   protected $holderName;
+
+  /**
+   * @var TypeInspector
+   */
+  protected $typeInspector;
 
   /**
    * @var TypeRenderer

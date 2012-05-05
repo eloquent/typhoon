@@ -49,10 +49,7 @@ class ParameterListAssertion implements Assertion
         continue;
       }
 
-      throw new Exception\UnexpectedArgumentException(
-        Typhoon::instance()->typeInspector()->typeOf($value)
-        , new Integer($index)
-      );
+      throw new Exception\UnexpectedArgumentException($value, new Integer($index));
     }
 
     $index ++;

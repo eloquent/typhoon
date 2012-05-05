@@ -32,17 +32,17 @@ class UnexpectedArgumentExceptionTest extends \Eloquent\Typhoon\Test\ExceptionTe
    */
   protected function defaultArguments()
   {
-    return array($this->_type, $this->_index, $this->_expectedType, $this->_parameterName, null);
+    return array($this->_value, $this->_index, $this->_expectedType, $this->_parameterName, null, null);
   }
 
   protected function setUp()
   {
     parent::setUp();
 
-    $this->_type = new StringType;
+    $this->_value = 'foo';
     $this->_index = new Integer(0);
     $this->_expectedType = new IntegerType;
-    $this->_parameterName = new String('foo');
+    $this->_parameterName = new String('bar');
   }
 
   /**
@@ -55,10 +55,10 @@ class UnexpectedArgumentExceptionTest extends \Eloquent\Typhoon\Test\ExceptionTe
   public function testConstructor()
   {
     $exception = $this->exceptionFixture();
-    $expected = "Unexpected argument of type 'string' at index 0 (foo) - expected 'integer'.";
+    $expected = "Unexpected argument of type 'string' at index 0 (bar) - expected 'integer'.";
 
     $this->assertSame($expected, $exception->getMessage());
-    $this->assertSame($this->_type, $exception->type());
+    $this->assertSame($this->_value, $exception->value());
     $this->assertSame($this->_index->value(), $exception->index());
     $this->assertSame($this->_expectedType, $exception->expectedType());
     $this->assertSame($this->_parameterName->value(), $exception->parameterName());
@@ -67,23 +67,28 @@ class UnexpectedArgumentExceptionTest extends \Eloquent\Typhoon\Test\ExceptionTe
 
     $expected = "Unexpected argument of type 'string' at index 0 - expected 'integer'.";
 
-    $this->assertSame($expected, $this->exceptionFixture(array($this->_type, $this->_index, $this->_expectedType))->getMessage());
+    $this->assertSame($expected, $this->exceptionFixture(array($this->_value, $this->_index, $this->_expectedType))->getMessage());
 
 
     $expected = "Unexpected argument of type 'string' at index 0.";
 
-    $this->assertSame($expected, $this->exceptionFixture(array($this->_type, $this->_index))->getMessage());
+    $this->assertSame($expected, $this->exceptionFixture(array($this->_value, $this->_index))->getMessage());
 
 
+    $typeInspector = Phake::mock('Eloquent\Typhoon\Type\Inspector\TypeInspector');
     $typeRenderer = Phake::mock('Eloquent\Typhoon\Type\Renderer\TypeRenderer');
-    Phake::when($typeRenderer)->render($this->identicalTo($this->_type))->thenReturn('bar');
-    Phake::when($typeRenderer)->render($this->identicalTo($this->_expectedType))->thenReturn('baz');
-    $exception = $this->exceptionFixture(array($this->_type, $this->_index, $this->_expectedType, $this->_parameterName, $typeRenderer));
-    $expected = "Unexpected argument of type 'bar' at index 0 (foo) - expected 'baz'.";
+    $type = Phake::mock('Eloquent\Typhoon\Type\Type');
+    Phake::when($typeInspector)->typeOf($this->_value)->thenReturn($type);
+    Phake::when($typeRenderer)->render($this->identicalTo($type))->thenReturn('baz');
+    Phake::when($typeRenderer)->render($this->identicalTo($this->_expectedType))->thenReturn('qux');
+    $exception = $this->exceptionFixture(array($this->_value, $this->_index, $this->_expectedType, $this->_parameterName, $typeInspector, $typeRenderer));
+    $expected = "Unexpected argument of type 'baz' at index 0 (bar) - expected 'qux'.";
 
     $this->assertSame($expected, $exception->getMessage());
+    $this->assertSame($typeInspector, $exception->typeInspector());
     $this->assertSame($typeRenderer, $exception->typeRenderer());
-    Phake::verify($typeRenderer)->render($this->identicalTo($this->_type));
+    Phake::verify($typeInspector)->typeOf($this->_value);
+    Phake::verify($typeRenderer)->render($this->identicalTo($type));
     Phake::verify($typeRenderer)->render($this->identicalTo($this->_expectedType));
 
 
@@ -91,9 +96,9 @@ class UnexpectedArgumentExceptionTest extends \Eloquent\Typhoon\Test\ExceptionTe
   }
 
   /**
-   * @var Type
+   * @var mixed
    */
-  protected $_type;
+  protected $_value;
 
   /**
    * @var Integer

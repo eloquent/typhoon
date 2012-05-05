@@ -249,10 +249,11 @@ class Attributes extends Collection
       }
 
       throw new UnexpectedAttributeException(
-        $e->type()
+        $e->value()
         , new String($key)
         , $e->expectedType()
         , $holderName
+        , $e->typeInspector()
         , $e->typeRenderer()
         , $e
       );

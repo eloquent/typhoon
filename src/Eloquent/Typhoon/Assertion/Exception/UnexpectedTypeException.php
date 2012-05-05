@@ -14,6 +14,7 @@ namespace Eloquent\Typhoon\Assertion\Exception;
 use Eloquent\Typhoon\Exception\LogicException;
 use Eloquent\Typhoon\Exception\UnexpectedInputException;
 use Eloquent\Typhoon\Primitive\String;
+use Eloquent\Typhoon\Type\Inspector\TypeInspector;
 use Eloquent\Typhoon\Type\Renderer\TypeRenderer;
 use Eloquent\Typhoon\Type\Type;
 use Eloquent\Typhoon\Typhax\TyphaxTypeRenderer;
@@ -21,25 +22,37 @@ use Eloquent\Typhoon\Typhax\TyphaxTypeRenderer;
 final class UnexpectedTypeException extends LogicException implements UnexpectedInputException
 {
   /**
-   * @param Type $type
+   * @param mixed $value
    * @param Type $expectedType
+   * @param TypeInspector $typeInspector
    * @param TypeRenderer $typeRenderer
    * @param \Exception $previous
    */
-  public function __construct(Type $type, Type $expectedType, TypeRenderer $typeRenderer = null, \Exception $previous = null)
+  public function __construct(
+    $value
+    , Type $expectedType
+    , TypeInspector $typeInspector = null
+    , TypeRenderer $typeRenderer = null
+    , \Exception $previous = null
+  )
   {
+    if (null === $typeInspector)
+    {
+      $typeInspector = new TypeInspector;
+    }
     if (null === $typeRenderer)
     {
       $typeRenderer = new TyphaxTypeRenderer;
     }
 
-    $this->type = $type;
+    $this->value = $value;
     $this->expectedType = $expectedType;
+    $this->typeInspector = $typeInspector;
     $this->typeRenderer = $typeRenderer;
 
     $message =
       "Unexpected value of type '"
-      .$this->typeRenderer->render($this->type)
+      .$this->typeRenderer->render($this->typeInspector->typeOf($this->value))
       ."' - expected '"
       .$this->typeRenderer->render($this->expectedType)
       ."'."
@@ -49,11 +62,11 @@ final class UnexpectedTypeException extends LogicException implements Unexpected
   }
 
   /**
-   * @return Type
+   * @return mixed
    */
-  public function type()
+  public function value()
   {
-    return $this->type;
+    return $this->value;
   }
 
   /**
@@ -65,6 +78,14 @@ final class UnexpectedTypeException extends LogicException implements Unexpected
   }
 
   /**
+   * @return TypeInspector
+   */
+  public function typeInspector()
+  {
+    return $this->typeInspector;
+  }
+
+  /**
    * @return TypeRenderer
    */
   public function typeRenderer()
@@ -73,14 +94,19 @@ final class UnexpectedTypeException extends LogicException implements Unexpected
   }
 
   /**
-   * @var Type
+   * @var mixed
    */
-  protected $type;
+  protected $value;
 
   /**
    * @var Type
    */
   protected $expectedType;
+
+  /**
+   * @var TypeInspector
+   */
+  protected $typeInspector;
 
   /**
    * @var TypeRenderer

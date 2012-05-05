@@ -31,17 +31,17 @@ class UnexpectedAttributeExceptionTest extends \Eloquent\Typhoon\Test\ExceptionT
    */
   protected function defaultArguments()
   {
-    return array($this->_type, $this->_attributeName, $this->_expectedType, $this->_holderName, null);
+    return array($this->_value, $this->_attributeName, $this->_expectedType, $this->_holderName, null, null);
   }
 
   protected function setUp()
   {
     parent::setUp();
 
-    $this->_type = new StringType;
-    $this->_attributeName = new String('foo');
+    $this->_value = 'foo';
+    $this->_attributeName = new String('bar');
     $this->_expectedType = new IntegerType;
-    $this->_holderName = new String('bar');
+    $this->_holderName = new String('baz');
   }
 
   /**
@@ -54,35 +54,40 @@ class UnexpectedAttributeExceptionTest extends \Eloquent\Typhoon\Test\ExceptionT
   public function testConstructor()
   {
     $exception = $this->exceptionFixture();
-    $expected = "Unexpected value of type 'string' for attribute 'foo' of 'bar' - expected 'integer'.";
+    $expected = "Unexpected value of type 'string' for attribute 'bar' of 'baz' - expected 'integer'.";
 
     $this->assertSame($expected, $exception->getMessage());
-    $this->assertSame($this->_type, $exception->type());
+    $this->assertSame($this->_value, $exception->value());
     $this->assertSame($this->_attributeName->value(), $exception->attributeName());
     $this->assertSame($this->_expectedType, $exception->expectedType());
     $this->assertSame($this->_holderName->value(), $exception->holderName());
     $this->assertInstanceOf('Eloquent\Typhoon\Typhax\TyphaxTypeRenderer', $exception->typeRenderer());
 
 
-    $expected = "Unexpected value of type 'string' for attribute 'foo' - expected 'integer'.";
+    $expected = "Unexpected value of type 'string' for attribute 'bar' - expected 'integer'.";
 
-    $this->assertSame($expected, $this->exceptionFixture(array($this->_type, $this->_attributeName, $this->_expectedType))->getMessage());
-
-
-    $expected = "Unexpected value of type 'string' for attribute 'foo'.";
-
-    $this->assertSame($expected, $this->exceptionFixture(array($this->_type, $this->_attributeName))->getMessage());
+    $this->assertSame($expected, $this->exceptionFixture(array($this->_value, $this->_attributeName, $this->_expectedType))->getMessage());
 
 
+    $expected = "Unexpected value of type 'string' for attribute 'bar'.";
+
+    $this->assertSame($expected, $this->exceptionFixture(array($this->_value, $this->_attributeName))->getMessage());
+
+
+    $typeInspector = Phake::mock('Eloquent\Typhoon\Type\Inspector\TypeInspector');
     $typeRenderer = Phake::mock('Eloquent\Typhoon\Type\Renderer\TypeRenderer');
-    Phake::when($typeRenderer)->render($this->identicalTo($this->_type))->thenReturn('baz');
-    Phake::when($typeRenderer)->render($this->identicalTo($this->_expectedType))->thenReturn('qux');
-    $exception = $this->exceptionFixture(array($this->_type, $this->_attributeName, $this->_expectedType, $this->_holderName, $typeRenderer));
-    $expected = "Unexpected value of type 'baz' for attribute 'foo' of 'bar' - expected 'qux'.";
+    $type = Phake::mock('Eloquent\Typhoon\Type\Type');
+    Phake::when($typeInspector)->typeOf($this->_value)->thenReturn($type);
+    Phake::when($typeRenderer)->render($this->identicalTo($type))->thenReturn('qux');
+    Phake::when($typeRenderer)->render($this->identicalTo($this->_expectedType))->thenReturn('doom');
+    $exception = $this->exceptionFixture(array($this->_value, $this->_attributeName, $this->_expectedType, $this->_holderName, $typeInspector, $typeRenderer));
+    $expected = "Unexpected value of type 'qux' for attribute 'bar' of 'baz' - expected 'doom'.";
 
     $this->assertSame($expected, $exception->getMessage());
+    $this->assertSame($typeInspector, $exception->typeInspector());
     $this->assertSame($typeRenderer, $exception->typeRenderer());
-    Phake::verify($typeRenderer)->render($this->identicalTo($this->_type));
+    Phake::verify($typeInspector)->typeOf($this->_value);
+    Phake::verify($typeRenderer)->render($this->identicalTo($type));
     Phake::verify($typeRenderer)->render($this->identicalTo($this->_expectedType));
 
 
@@ -90,9 +95,9 @@ class UnexpectedAttributeExceptionTest extends \Eloquent\Typhoon\Test\ExceptionT
   }
 
   /**
-   * @var Type
+   * @var mixed
    */
-  protected $_type;
+  protected $_value;
 
   /**
    * @var String

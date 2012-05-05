@@ -30,10 +30,7 @@ class TypeAssertion implements Assertion
       return;
     }
 
-    throw new Exception\UnexpectedTypeException(
-      Typhoon::instance()->typeInspector()->typeOf($this->value)
-      , $this->type
-    );
+    throw new Exception\UnexpectedTypeException($this->value, $this->type);
   }
 
   /**

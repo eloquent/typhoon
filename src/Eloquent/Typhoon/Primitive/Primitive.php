@@ -33,10 +33,11 @@ abstract class Primitive
     catch (UnexpectedTypeException $e)
     {
       throw new UnexpectedArgumentException(
-        $e->type()
+        $e->value()
         , new Integer(0)
         , $e->expectedType()
         , new String('value')
+        , $e->typeInspector()
         , $e->typeRenderer()
         , $e
       );
