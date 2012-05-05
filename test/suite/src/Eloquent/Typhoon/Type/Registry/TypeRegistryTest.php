@@ -74,11 +74,11 @@ class TypeRegistryTest extends \Eloquent\Typhoon\Test\TestCase
   public function unexpectedArgumentData()
   {
     return array(
-      array('offsetExists', array(0)),                     // #0: non-string alias
-      array('offsetSet', array(null, $this->_typeName)),   // #1: null alias
-      array('offsetSet', array(0, $this->_typeName)),      // #2: non-string alias
+      array('offsetExists', array(0)),                     // #0: non-string type name
+      array('offsetSet', array(null, $this->_typeName)),   // #1: null type name
+      array('offsetSet', array(0, $this->_typeName)),      // #2: non-string type name
       array('offsetSet', array('foo', null)),              // #3: non-string type
-      array('offsetGet', array(0)),                        // #4: non-string alias
+      array('offsetGet', array(0)),                        // #4: non-string type name
     );
   }
 
@@ -115,7 +115,7 @@ class TypeRegistryTest extends \Eloquent\Typhoon\Test\TestCase
    * @group type-registry
    * @group core
    */
-  public function testRegisterDefaults($alias, $class, $is_alias = null)
+  public function testRegisterDefaults($typeName, $class, $is_alias = null)
   {
     if (null === $is_alias)
     {
@@ -127,7 +127,7 @@ class TypeRegistryTest extends \Eloquent\Typhoon\Test\TestCase
     $caught = false;
     try
     {
-      $registry->alias(new String($class));
+      $registry->typeNameByClass(new String($class));
     }
     catch (Exception\UnregisteredTypeException $e)
     {
@@ -138,9 +138,9 @@ class TypeRegistryTest extends \Eloquent\Typhoon\Test\TestCase
     $caught = false;
     try
     {
-      $registry[$alias];
+      $registry[$typeName];
     }
-    catch (Exception\UnregisteredTypeAliasException $e)
+    catch (Exception\UnregisteredTypeNameException $e)
     {
       $caught = true;
     }
@@ -150,68 +150,68 @@ class TypeRegistryTest extends \Eloquent\Typhoon\Test\TestCase
 
     if (!$is_alias)
     {
-      $this->assertEquals($alias, $registry->alias(new String($class)));
+      $this->assertEquals($typeName, $registry->typeNameByClass(new String($class)));
     }
 
-    $this->assertEquals($class, $registry[$alias]);
+    $this->assertEquals($class, $registry[$typeName]);
   }
 
   /**
-   * @covers Eloquent\Typhoon\Type\Registry\TypeRegistry::alias
-   * @covers Eloquent\Typhoon\Type\Registry\TypeRegistry::aliasByType
-   * @covers Eloquent\Typhoon\Type\Registry\TypeRegistry::aliases
+   * @covers Eloquent\Typhoon\Type\Registry\TypeRegistry::typeNameByClass
+   * @covers Eloquent\Typhoon\Type\Registry\TypeRegistry::typeNameByType
+   * @covers Eloquent\Typhoon\Type\Registry\TypeRegistry::typeNames
    * @group collection
    * @group type
    * @group type-registry
    * @group core
    */
-  public function testAlias()
+  public function testTypeNameMethods()
   {
     $type_1 = Phake::mock('Eloquent\Typhoon\Type\NamedType');
     $type_2 = new ConcreteType;
 
-    $typeName_1 = get_class($type_1);
-    $typeName_2 = get_class($type_2);
-    $alias_1 = 'foo';
-    $alias_2 = 'bar';
-    $this->_registry[$alias_1] = $typeName_1;
+    $typeClass_1 = get_class($type_1);
+    $typeClass_2 = get_class($type_2);
+    $typeName_1 = 'foo';
+    $typeName_2 = 'bar';
+    $this->_registry[$typeName_1] = $typeClass_1;
 
-    $this->assertNotEquals($typeName_1, $typeName_2);
+    $this->assertNotEquals($typeClass_1, $typeClass_2);
 
-    $this->assertEquals($alias_1, $this->_registry->alias(new String($typeName_1)));
-    $this->assertEquals($alias_1, $this->_registry->aliasByType($type_1));
+    $this->assertEquals($typeName_1, $this->_registry->typeNameByClass(new String($typeClass_1)));
+    $this->assertEquals($typeName_1, $this->_registry->typeNameByType($type_1));
 
-    $this->_registry[$alias_2] = $typeName_1;
+    $this->_registry[$typeName_2] = $typeClass_1;
 
-    $this->assertEquals($alias_1, $this->_registry->alias(new String($typeName_1)));
-    $this->assertEquals($alias_1, $this->_registry->aliasByType($type_1));
+    $this->assertEquals($typeName_1, $this->_registry->typeNameByClass(new String($typeClass_1)));
+    $this->assertEquals($typeName_1, $this->_registry->typeNameByType($type_1));
 
-    $this->_registry[$alias_1] = $typeName_2;
+    $this->_registry[$typeName_1] = $typeClass_2;
 
-    $this->assertEquals($alias_1, $this->_registry->alias(new String($typeName_2)));
-    $this->assertEquals($alias_1, $this->_registry->aliasByType($type_2));
+    $this->assertEquals($typeName_1, $this->_registry->typeNameByClass(new String($typeClass_2)));
+    $this->assertEquals($typeName_1, $this->_registry->typeNameByType($type_2));
 
-    $this->assertEquals($alias_2, $this->_registry->alias(new String($typeName_1)));
-    $this->assertEquals($alias_2, $this->_registry->aliasByType($type_1));
+    $this->assertEquals($typeName_2, $this->_registry->typeNameByClass(new String($typeClass_1)));
+    $this->assertEquals($typeName_2, $this->_registry->typeNameByType($type_1));
 
     $type = new ObjectType(array(
       ObjectType::ATTRIBUTE_INSTANCE_OF => 'foo',
     ));
 
-    $this->assertEquals(IntrinsicTypeName::NAME_OBJECT()->_value(), $this->_registry->aliasByType($type));
+    $this->assertEquals(IntrinsicTypeName::NAME_OBJECT()->_value(), $this->_registry->typeNameByType($type));
   }
 
   /**
-   * @covers Eloquent\Typhoon\Type\Registry\TypeRegistry::alias
+   * @covers Eloquent\Typhoon\Type\Registry\TypeRegistry::typeNameByClass
    * @group collection
    * @group type
    * @group type-registry
    * @group core
    */
-  public function testAliasFailure()
+  public function testTypeNameByClassFailure()
   {
     $this->setExpectedException(__NAMESPACE__.'\Exception\UnregisteredTypeException');
-    $this->_registry->alias(new String($this->_typeName));
+    $this->_registry->typeNameByClass(new String($this->_typeName));
   }
 
   /**
@@ -260,7 +260,7 @@ class TypeRegistryTest extends \Eloquent\Typhoon\Test\TestCase
    */
   public function testOffsetGetFailure()
   {
-    $this->setExpectedException(__NAMESPACE__.'\Exception\UnregisteredTypeAliasException');
+    $this->setExpectedException(__NAMESPACE__.'\Exception\UnregisteredTypeNameException');
     $this->_registry['foo'];
   }
 

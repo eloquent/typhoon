@@ -100,7 +100,7 @@ class TypeRegistry extends Collection
    */
   public function isRegistered(String $class)
   {
-    return array_key_exists($class->value(), $this->aliases());
+    return array_key_exists($class->value(), $this->typeNames());
   }
 
   /**
@@ -108,16 +108,16 @@ class TypeRegistry extends Collection
    *
    * @return string
    */
-  public function alias(String $class)
+  public function typeNameByClass(String $class)
   {
     if (!$this->isRegistered($class))
     {
       throw new Exception\UnregisteredTypeException($class);
     }
 
-    $aliases = $this->aliases();
+    $typeNames = $this->typeNames();
 
-    return $aliases[$class->value()];
+    return $typeNames[$class->value()];
   }
 
   /**
@@ -125,9 +125,9 @@ class TypeRegistry extends Collection
    *
    * @return string
    */
-  public function aliasByType(Type $type)
+  public function typeNameByType(Type $type)
   {
-    return $this->alias(new String(get_class($type)));
+    return $this->typeNameByClass(new String(get_class($type)));
   }
 
   /**
@@ -136,7 +136,7 @@ class TypeRegistry extends Collection
    */
   public function set($key, $value)
   {
-    $this->aliases = NULL;
+    $this->typeNames = NULL;
 
     parent::set($key, $value);
   }
@@ -146,7 +146,7 @@ class TypeRegistry extends Collection
    */
   public function remove($key)
   {
-    $this->aliases = NULL;
+    $this->typeNames = NULL;
 
     parent::remove($key);
   }
@@ -188,7 +188,7 @@ class TypeRegistry extends Collection
     }
     catch (UndefinedKeyException $e)
     {
-      throw new Exception\UnregisteredTypeAliasException(new String($key), $e);
+      throw new Exception\UnregisteredTypeNameException(new String($key), $e);
     }
   }
 
@@ -203,28 +203,28 @@ class TypeRegistry extends Collection
   /**
    * @return array
    */
-  protected function aliases()
+  protected function typeNames()
   {
-    if (null === $this->aliases)
+    if (null === $this->typeNames)
     {
-      $this->aliases = array();
+      $this->typeNames = array();
 
-      foreach ($this->values as $alias => $class)
+      foreach ($this->values as $typeName => $class)
       {
-        if (array_key_exists($class, $this->aliases))
+        if (array_key_exists($class, $this->typeNames))
         {
           continue;
         }
 
-        $this->aliases[$class] = $alias;
+        $this->typeNames[$class] = $typeName;
       }
     }
 
-    return $this->aliases;
+    return $this->typeNames;
   }
 
   /**
    * @var array
    */
-  protected $aliases;
+  protected $typeNames;
 }

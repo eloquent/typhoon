@@ -16,7 +16,7 @@ use Eloquent\Typhax\AST\Node as TyphaxNode;
 use Eloquent\Typhax\AST\Type as TyphaxType;
 use Eloquent\Typhoon\Primitive\String;
 use Eloquent\Typhoon\Type\Dynamic\DynamicType;
-use Eloquent\Typhoon\Type\Registry\Exception\UnregisteredTypeAliasException;
+use Eloquent\Typhoon\Type\Registry\Exception\UnregisteredTypeNameException;
 use Eloquent\Typhoon\Type\Registry\TypeRegistry;
 use Eloquent\Typhoon\Type\SubTyped\SubTypedType;
 use ReflectionClass;
@@ -88,7 +88,7 @@ class TyphaxTranscompiler
     {
       $typeClass = $this->typeRegistry->get($typhaxType->name());
     }
-    catch (UnregisteredTypeAliasException $e)
+    catch (UnregisteredTypeNameException $e)
     {
       throw new Exception\UnsupportedTyphaxNodeException(new String(get_class($typhaxType)), $e);
     }

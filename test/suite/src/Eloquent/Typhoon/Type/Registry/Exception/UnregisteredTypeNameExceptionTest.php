@@ -13,14 +13,14 @@ namespace Eloquent\Typhoon\Type\Registry\Exception;
 
 use Eloquent\Typhoon\Primitive\String;
 
-class UnregisteredTypeAliasExceptionTest extends \Eloquent\Typhoon\Test\ExceptionTestCase
+class UnregisteredTypeNameExceptionTest extends \Eloquent\Typhoon\Test\ExceptionTestCase
 {
   /**
    * @return string
    */
   protected function exceptionClass()
   {
-    return __NAMESPACE__.'\UnregisteredTypeAliasException';
+    return __NAMESPACE__.'\UnregisteredTypeNameException';
   }
 
   /**
@@ -28,18 +28,18 @@ class UnregisteredTypeAliasExceptionTest extends \Eloquent\Typhoon\Test\Exceptio
    */
   protected function defaultArguments()
   {
-    return array($this->_alias);
+    return array($this->_typeName);
   }
 
   protected function setUp()
   {
     parent::setUp();
-    
-    $this->_alias = new String('foo');
+
+    $this->_typeName = new String('foo');
   }
 
   /**
-   * @covers Eloquent\Typhoon\Type\Registry\Exception\UnregisteredTypeAliasException::__construct
+   * @covers Eloquent\Typhoon\Type\Registry\Exception\UnregisteredTypeNameException::__construct
    * @covers Eloquent\Typhoon\Exception\UndefinedKeyException
    * @group exceptions
    * @group type
@@ -48,7 +48,7 @@ class UnregisteredTypeAliasExceptionTest extends \Eloquent\Typhoon\Test\Exceptio
    */
   public function testConstructor()
   {
-    $this->assertEquals("No type registered for alias '".$this->_alias."'.", $this->exceptionFixture()->getMessage());
+    $this->assertEquals("No type registered for type name '".$this->_typeName."'.", $this->exceptionFixture()->getMessage());
 
     parent::testConstructor();
   }
@@ -56,5 +56,5 @@ class UnregisteredTypeAliasExceptionTest extends \Eloquent\Typhoon\Test\Exceptio
   /**
    * @var String
    */
-  protected $_alias;
+  protected $_typeName;
 }

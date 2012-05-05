@@ -15,15 +15,15 @@ use Eloquent\Typhoon\Exception\LogicException;
 use Eloquent\Typhoon\Exception\UndefinedKeyException;
 use Eloquent\Typhoon\Primitive\String;
 
-final class UnregisteredTypeAliasException extends LogicException implements UndefinedKeyException
+final class UnregisteredTypeNameException extends LogicException implements UndefinedKeyException
 {
   /**
-   * @param String $alias
+   * @param String $typeName
    * @param \Exception $previous
    */
-  public function __construct(String $alias, \Exception $previous = null)
+  public function __construct(String $typeName, \Exception $previous = null)
   {
-    $message = new String("No type registered for alias '".$alias."'.");
+    $message = new String("No type registered for type name '".$typeName."'.");
 
     parent::__construct($message, $previous);
   }
