@@ -77,7 +77,7 @@ class TypeRegistryTest extends \Eloquent\Typhoon\Test\TestCase
       array('offsetExists', array(0)),                     // #0: non-string type name
       array('offsetSet', array(null, $this->_typeName)),   // #1: null type name
       array('offsetSet', array(0, $this->_typeName)),      // #2: non-string type name
-      array('offsetSet', array('foo', null)),              // #3: non-string type
+      array('offsetSet', array('foo.bar', null)),          // #3: non-string type
       array('offsetGet', array(0)),                        // #4: non-string type name
     );
   }
@@ -109,6 +109,7 @@ class TypeRegistryTest extends \Eloquent\Typhoon\Test\TestCase
 
   /**
    * @covers Eloquent\Typhoon\Type\Registry\TypeRegistry::registerDefaults
+   * @covers Eloquent\Typhoon\Type\Registry\TypeRegistry::setIntrinsic
    * @dataProvider defaultTypes
    * @group collection
    * @group type
@@ -172,8 +173,8 @@ class TypeRegistryTest extends \Eloquent\Typhoon\Test\TestCase
 
     $typeClass_1 = get_class($type_1);
     $typeClass_2 = get_class($type_2);
-    $typeName_1 = 'foo';
-    $typeName_2 = 'bar';
+    $typeName_1 = 'foo.bar';
+    $typeName_2 = 'baz.qux';
     $this->_registry[$typeName_1] = $typeClass_1;
 
     $this->assertEquals($typeName_1, $this->_registry->typeNameByClass(new String($typeClass_1)));
@@ -228,25 +229,39 @@ class TypeRegistryTest extends \Eloquent\Typhoon\Test\TestCase
     $this->assertInstanceOf('ArrayAccess', $this->_registry);
 
     $this->assertFalse($this->_registry->isRegistered(new String($this->_typeName)));
-    $this->assertFalse(isset($this->_registry['foo']));
-    $this->assertNull($this->_registry->get('foo', NULL));
+    $this->assertFalse(isset($this->_registry['foo.bar']));
+    $this->assertNull($this->_registry->get('foo.bar', NULL));
 
-    $this->_registry['Foo'] = $this->_typeName;
+    $this->_registry['Foo.Bar'] = $this->_typeName;
 
     $this->assertTrue($this->_registry->isRegistered(new String($this->_typeName)));
-    $this->assertTrue(isset($this->_registry['foo']));
-    $this->assertEquals($this->_typeName, $this->_registry['foo']);
+    $this->assertTrue(isset($this->_registry['foo.bar']));
+    $this->assertEquals($this->_typeName, $this->_registry['foo.bar']);
 
-    $this->_registry['bar'] = $this->_typeName;
+    $this->_registry['baz.qux'] = $this->_typeName;
 
-    $this->assertTrue(isset($this->_registry['BAR']));
-    $this->assertTrue(isset($this->_registry['bar']));
-    $this->assertEquals($this->_typeName, $this->_registry['BAR']);
-    $this->assertEquals($this->_typeName, $this->_registry['bar']);
+    $this->assertTrue(isset($this->_registry['BAZ.QUX']));
+    $this->assertTrue(isset($this->_registry['baz.qux']));
+    $this->assertEquals($this->_typeName, $this->_registry['BAZ.QUX']);
+    $this->assertEquals($this->_typeName, $this->_registry['baz.qux']);
 
-    unset($this->_registry['FOO']);
+    unset($this->_registry['FOO.BAR']);
 
-    $this->assertFalse(isset($this->_registry['foo']));
+    $this->assertFalse(isset($this->_registry['foo.bar']));
+  }
+
+  /**
+   * @covers Eloquent\Typhoon\Type\Registry\TypeRegistry::assertKeyExists
+   * @covers Eloquent\Typhoon\Type\Registry\TypeRegistry::assertTypeNameNamespace
+   * @group collection
+   * @group type
+   * @group type-registry
+   * @group core
+   */
+  public function testSetFailureNoNamespace()
+  {
+    $this->setExpectedException(__NAMESPACE__.'\Exception\InvalidTypeNameNamespaceException');
+    $this->_registry['foo'] = 'bar';
   }
 
   /**
@@ -259,7 +274,7 @@ class TypeRegistryTest extends \Eloquent\Typhoon\Test\TestCase
   public function testOffsetGetFailure()
   {
     $this->setExpectedException(__NAMESPACE__.'\Exception\UnregisteredTypeNameException');
-    $this->_registry['foo'];
+    $this->_registry['foo.bar'];
   }
 
   /**

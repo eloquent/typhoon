@@ -57,40 +57,40 @@ class TypeRegistry extends Collection
   {
     $namespace = 'Eloquent\Typhoon\Type';
 
-    $this->set(IntrinsicTypeName::NAME_ARRAY()->_value(), $namespace.'\ArrayType');
-    $this->set(IntrinsicTypeName::NAME_BOOLEAN()->_value(), $namespace.'\BooleanType');
-    $this->set(IntrinsicTypeName::NAME_CALLBACK()->_value(), $namespace.'\CallbackType');
-    $this->set(IntrinsicTypeName::NAME_CALLBACK_WRAPPER()->_value(), $namespace.'\CallbackWrapperType');
-    $this->set(IntrinsicTypeName::NAME_CHARACTER()->_value(), $namespace.'\CharacterType');
-    $this->set(IntrinsicTypeName::NAME_CLASS_NAME()->_value(), $namespace.'\ClassNameType');
-    $this->set(IntrinsicTypeName::NAME_DIRECTORY()->_value(), $namespace.'\DirectoryType');
-    $this->set(IntrinsicTypeName::NAME_FILE()->_value(), $namespace.'\FileType');
-    $this->set(IntrinsicTypeName::NAME_FILTER()->_value(), $namespace.'\FilterType');
-    $this->set(IntrinsicTypeName::NAME_FLOAT()->_value(), $namespace.'\FloatType');
-    $this->set(IntrinsicTypeName::NAME_INTEGER()->_value(), $namespace.'\IntegerType');
-    $this->set(IntrinsicTypeName::NAME_INTEGERABLE()->_value(), $namespace.'\IntegerableType');
-    $this->set(IntrinsicTypeName::NAME_INTERFACE_NAME()->_value(), $namespace.'\InterfaceNameType');
-    $this->set(IntrinsicTypeName::NAME_KEY()->_value(), $namespace.'\KeyType');
-    $this->set(IntrinsicTypeName::NAME_MIXED()->_value(), $namespace.'\MixedType');
-    $this->set(IntrinsicTypeName::NAME_NULL()->_value(), $namespace.'\NullType');
-    $this->set(IntrinsicTypeName::NAME_NUMBER()->_value(), $namespace.'\NumberType');
-    $this->set(IntrinsicTypeName::NAME_NUMERIC()->_value(), $namespace.'\NumericType');
-    $this->set(IntrinsicTypeName::NAME_OBJECT()->_value(), $namespace.'\ObjectType');
-    $this->set(IntrinsicTypeName::NAME_RESOURCE()->_value(), $namespace.'\ResourceType');
-    $this->set(IntrinsicTypeName::NAME_SCALAR()->_value(), $namespace.'\ScalarType');
-    $this->set(IntrinsicTypeName::NAME_SOCKET()->_value(), $namespace.'\SocketType');
-    $this->set(IntrinsicTypeName::NAME_STREAM()->_value(), $namespace.'\StreamType');
-    $this->set(IntrinsicTypeName::NAME_STRING()->_value(), $namespace.'\StringType');
-    $this->set(IntrinsicTypeName::NAME_STRINGABLE()->_value(), $namespace.'\StringableType');
-    $this->set(IntrinsicTypeName::NAME_TRAVERSABLE()->_value(), $namespace.'\TraversableType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_ARRAY()->_value(), $namespace.'\ArrayType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_BOOLEAN()->_value(), $namespace.'\BooleanType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_CALLBACK()->_value(), $namespace.'\CallbackType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_CALLBACK_WRAPPER()->_value(), $namespace.'\CallbackWrapperType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_CHARACTER()->_value(), $namespace.'\CharacterType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_CLASS_NAME()->_value(), $namespace.'\ClassNameType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_DIRECTORY()->_value(), $namespace.'\DirectoryType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_FILE()->_value(), $namespace.'\FileType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_FILTER()->_value(), $namespace.'\FilterType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_FLOAT()->_value(), $namespace.'\FloatType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_INTEGER()->_value(), $namespace.'\IntegerType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_INTEGERABLE()->_value(), $namespace.'\IntegerableType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_INTERFACE_NAME()->_value(), $namespace.'\InterfaceNameType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_KEY()->_value(), $namespace.'\KeyType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_MIXED()->_value(), $namespace.'\MixedType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_NULL()->_value(), $namespace.'\NullType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_NUMBER()->_value(), $namespace.'\NumberType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_NUMERIC()->_value(), $namespace.'\NumericType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_OBJECT()->_value(), $namespace.'\ObjectType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_RESOURCE()->_value(), $namespace.'\ResourceType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_SCALAR()->_value(), $namespace.'\ScalarType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_SOCKET()->_value(), $namespace.'\SocketType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_STREAM()->_value(), $namespace.'\StreamType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_STRING()->_value(), $namespace.'\StringType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_STRINGABLE()->_value(), $namespace.'\StringableType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_TRAVERSABLE()->_value(), $namespace.'\TraversableType');
 
     foreach (IntrinsicTypeAlias::_instances() as $key => $alias)
     {
-      $this->set($alias->_value(), $this->get($alias->_typeName()));
+      $this->setIntrinsic($alias->_value(), $this->get($alias->_typeName()));
     }
 
-    $this->set('typhoon.parameter', $namespace.'\ParameterType');
-    $this->set('typhoon.type', $namespace.'\TypeType');
+    $this->setIntrinsic('typhoon.parameter', $namespace.'\ParameterType');
+    $this->setIntrinsic('typhoon.type', $namespace.'\TypeType');
   }
 
   /**
@@ -131,11 +131,12 @@ class TypeRegistry extends Collection
   }
 
   /**
-   * @param integer|string $key
-   * @param mixed $value
+   * @param string $key
+   * @param Type $value
    */
   public function set($key, $value)
   {
+    $this->assertTypeNameNamespace(new String($key));
     $this->typeNames = NULL;
 
     parent::set($key, $value);
@@ -149,6 +150,19 @@ class TypeRegistry extends Collection
     $this->typeNames = NULL;
 
     parent::remove($key);
+  }
+
+  const NAMESPACE_SEPARATOR = '.';
+
+  /**
+   * @param string $key
+   * @param Type $value
+   */
+  protected function setIntrinsic($key, $value)
+  {
+    $this->typeNames = NULL;
+
+    parent::set($key, $value);
   }
 
   /**
@@ -178,7 +192,22 @@ class TypeRegistry extends Collection
   }
 
   /**
-   * @param mixed $key
+   * @param String $key
+   */
+  protected function assertTypeNameNamespace(String $key)
+  {
+    $parts = explode(static::NAMESPACE_SEPARATOR, $key->value());
+    if (
+      count($parts) < 2
+      || !trim($parts[0])
+    )
+    {
+      throw new Exception\InvalidTypeNameNamespaceException($key);
+    }
+  }
+
+  /**
+   * @param string $key
    */
   protected function assertKeyExists($key)
   {
