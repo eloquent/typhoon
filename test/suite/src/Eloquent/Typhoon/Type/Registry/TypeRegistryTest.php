@@ -176,8 +176,6 @@ class TypeRegistryTest extends \Eloquent\Typhoon\Test\TestCase
     $typeName_2 = 'bar';
     $this->_registry[$typeName_1] = $typeClass_1;
 
-    $this->assertNotEquals($typeClass_1, $typeClass_2);
-
     $this->assertEquals($typeName_1, $this->_registry->typeNameByClass(new String($typeClass_1)));
     $this->assertEquals($typeName_1, $this->_registry->typeNameByType($type_1));
 
