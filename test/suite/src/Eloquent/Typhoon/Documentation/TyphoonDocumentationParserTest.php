@@ -43,7 +43,7 @@ EOD;
  *
  * @foo bar baz
  * @foo qux doom
- * @splat boing
+ * @splat  boing
  * This is ignored.
  * This is also ignored.
  */

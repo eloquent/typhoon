@@ -88,7 +88,7 @@ class TyphoonDocumentationParser implements DocumentationParser
       {
         break;
       }
-      
+
       $summary .= $blockCommentLine."\n";
 
       unset($blockCommentLines[$index]);
@@ -132,5 +132,5 @@ class TyphoonDocumentationParser implements DocumentationParser
   }
 
   const PATTERN_LINES = '~^\s*\* ?(?!/)(.*)$~m';
-  const PATTERN_TAG = '~^@(\w+) (.*)$~';
+  const PATTERN_TAG = '~^@(\w+)\s+(.*)\s*$~';
 }
