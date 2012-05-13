@@ -9,19 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace Eloquent\Typhoon\Typhax\Exception;
+namespace Eloquent\Typhoon\Parameter\ParameterList\Exception;
 
 use Eloquent\Typhoon\Primitive\String;
 use Eloquent\Typhoon\Test\ExceptionTestCase;
 
-class InvalidParameterTagExceptionTest extends ExceptionTestCase
+class VariableLengthParameterNotLastExceptionTest extends ExceptionTestCase
 {
   /**
    * @return string
    */
   protected function exceptionClass()
   {
-    return __NAMESPACE__.'\InvalidParameterTagException';
+    return __NAMESPACE__.'\VariableLengthParameterNotLastException';
   }
 
   /**
@@ -29,24 +29,24 @@ class InvalidParameterTagExceptionTest extends ExceptionTestCase
    */
   protected function defaultArguments()
   {
-    return array($this->_tagContent);
+    return array($this->_parameterName);
   }
 
   protected function setUp()
   {
     parent::setUp();
 
-    $this->_tagContent = new String('foo');
+    $this->_parameterName = new String('foo');
   }
 
   /**
-   * @covers Eloquent\Typhoon\Typhax\Exception\InvalidParameterTagException::__construct
+   * @covers Eloquent\Typhoon\Parameter\ParameterList\Exception\VariableLengthParameterNotLastException::__construct
    * @group exceptions
    * @group core
    */
   public function testConstructor()
   {
-    $this->assertEquals("Invalid documentation block parameter specification 'foo'.", $this->exceptionFixture()->getMessage());
+    $this->assertEquals("Parameter 'foo' is marked as variable length, but is not the last parameter.", $this->exceptionFixture()->getMessage());
 
     parent::testConstructor();
   }
@@ -54,5 +54,5 @@ class InvalidParameterTagExceptionTest extends ExceptionTestCase
   /**
    * @var String
    */
-  protected $_tagContent;
+  protected $_parameterName;
 }

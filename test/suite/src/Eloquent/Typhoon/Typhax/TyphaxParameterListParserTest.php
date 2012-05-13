@@ -16,8 +16,10 @@ use Eloquent\Typhoon\Documentation\AST\DocumentationTag;
 use Eloquent\Typhoon\Documentation\AST\DocumentationTags;
 use Eloquent\Typhoon\Parameter\Parameter;
 use Eloquent\Typhoon\Parameter\ParameterList\ParameterList;
+use Eloquent\Typhoon\Primitive\Boolean;
 use Eloquent\Typhoon\Primitive\String;
 use Eloquent\Typhoon\Type\Registry\TypeRegistry;
+use Eloquent\Typhoon\Type\IntegerType;
 use Eloquent\Typhoon\Type\StringType;
 use Eloquent\Typhoon\Type\Type;
 use Phake;
@@ -52,14 +54,19 @@ class TyphaxParameterListParserTest extends \Eloquent\Typhoon\Test\TestCase
   /**
    * @param string $name
    * @param Type $type
+   * @param string $description
    *
    * @return Parameter
    */
-  protected function parameterFixture($name, Type $type)
+  protected function parameterFixture($name, Type $type, $description = null)
   {
     $parameter = new Parameter;
     $parameter->setName(new String($name));
     $parameter->setType($type);
+    if (null !== $description)
+    {
+      $parameter->setDescription(new String($description));
+    }
 
     return $parameter;
   }
@@ -91,11 +98,25 @@ class TyphaxParameterListParserTest extends \Eloquent\Typhoon\Test\TestCase
 
     // #1: basic parameter list
     $documentationTags = new DocumentationTags(array(
-      $this->parameterTagFixture('string $foo'),
+      $this->parameterTagFixture('string $foo Description of foo.'),
+      $this->parameterTagFixture('integer $bar'),
     ));
     $documentationBlock = new DocumentationBlock($documentationTags);
     $expected = new ParameterList;
-    $expected[] = $this->parameterFixture('foo', new StringType);
+    $expected[] = $this->parameterFixture('foo', new StringType, 'Description of foo.');
+    $expected[] = $this->parameterFixture('bar', new IntegerType);
+    $data[] = array($expected, $documentationBlock);
+
+    // #2: variable length parameter list
+    $documentationTags = new DocumentationTags(array(
+      $this->parameterTagFixture('string $foo Description of foo.'),
+      $this->parameterTagFixture('integer $bar,... Description of bar.'),
+    ));
+    $documentationBlock = new DocumentationBlock($documentationTags);
+    $expected = new ParameterList;
+    $expected[] = $this->parameterFixture('foo', new StringType, 'Description of foo.');
+    $expected[] = $this->parameterFixture('bar', new IntegerType, 'Description of bar.');
+    $expected->setVariableLength(new Boolean(true));
     $data[] = array($expected, $documentationBlock);
 
     return $data;
@@ -106,7 +127,15 @@ class TyphaxParameterListParserTest extends \Eloquent\Typhoon\Test\TestCase
    */
   public function testParser(ParameterList $expected, DocumentationBlock $documentationBlock)
   {
-    $this->assertEquals($expected, $this->_parser->parseDocumentationBlock($documentationBlock));
+    $actual = $this->_parser->parseDocumentationBlock($documentationBlock);
+
+    $this->assertEquals($expected, $actual);
+    foreach ($expected as $key => $expectedParameter)
+    {
+      $this->assertTrue($actual->exists($key));
+      $this->assertSame($expectedParameter->name(), $actual[$key]->name());
+      $this->assertSame($expectedParameter->description(), $actual[$key]->description());
+    }
   }
 
   public function parserFailureData()
@@ -118,7 +147,7 @@ class TyphaxParameterListParserTest extends \Eloquent\Typhoon\Test\TestCase
       $this->parameterTagFixture('string'),
     ));
     $documentationBlock = new DocumentationBlock($documentationTags);
-    $expected = 'Eloquent\Typhoon\Typhax\Exception\InvalidParameterTagException';
+    $expected = 'Eloquent\Typhoon\Parameter\ParameterList\Exception\InvalidParameterTagException';
     $data[] = array($expected, $documentationBlock);
 
     // #1: invalid parameter specification
@@ -126,7 +155,16 @@ class TyphaxParameterListParserTest extends \Eloquent\Typhoon\Test\TestCase
       $this->parameterTagFixture('$foo'),
     ));
     $documentationBlock = new DocumentationBlock($documentationTags);
-    $expected = 'Eloquent\Typhoon\Typhax\Exception\InvalidParameterTagException';
+    $expected = 'Eloquent\Typhoon\Parameter\ParameterList\Exception\InvalidParameterTagException';
+    $data[] = array($expected, $documentationBlock);
+
+    // #2: variable length parameter not in last position
+    $documentationTags = new DocumentationTags(array(
+      $this->parameterTagFixture('string $foo,...'),
+      $this->parameterTagFixture('integer $bar'),
+    ));
+    $documentationBlock = new DocumentationBlock($documentationTags);
+    $expected = 'Eloquent\Typhoon\Parameter\ParameterList\Exception\VariableLengthParameterNotLastException';
     $data[] = array($expected, $documentationBlock);
 
     return $data;

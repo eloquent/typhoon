@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Eloquent\Typhoon\Typhax\Exception;
+namespace Eloquent\Typhoon\Parameter\ParameterList\Exception;
 
 use Eloquent\Typhoon\Exception\LogicException;
 use Eloquent\Typhoon\Primitive\String;
