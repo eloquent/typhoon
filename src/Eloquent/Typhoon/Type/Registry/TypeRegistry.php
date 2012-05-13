@@ -197,13 +197,16 @@ class TypeRegistry extends Collection
   protected function assertTypeNameNamespace(String $key)
   {
     $parts = explode(static::NAMESPACE_SEPARATOR, $key->value());
+
     if (
-      count($parts) < 2
-      || !trim($parts[0])
+      count($parts) > 1
+      && trim($parts[0])
     )
     {
-      throw new Exception\InvalidTypeNameNamespaceException($key);
+      return;
     }
+
+    throw new Exception\InvalidTypeNameNamespaceException($key);
   }
 
   /**

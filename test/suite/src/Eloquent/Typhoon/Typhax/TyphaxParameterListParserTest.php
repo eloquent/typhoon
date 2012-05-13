@@ -67,13 +67,16 @@ class TyphaxParameterListParserTest extends \Eloquent\Typhoon\Test\TestCase
   public function testConstructor()
   {
     $this->assertSame($this->_typhaxTranscompiler, $this->_parser->typhaxTranscompiler());
+    $this->assertInstanceOf('Eloquent\Typhax\Lexer\Lexer', $this->_parser->typhaxLexer());
     $this->assertInstanceOf('Eloquent\Typhax\Parser\Parser', $this->_parser->typhaxParser());
 
 
     $typhaxParser = Phake::mock('Eloquent\Typhax\Parser\Parser');
-    $this->_parser = new TyphaxParameterListParser($this->_typhaxTranscompiler, $typhaxParser);
+    $typhaxLexer = Phake::mock('Eloquent\Typhax\Lexer\Lexer');
+    $this->_parser = new TyphaxParameterListParser($this->_typhaxTranscompiler, $typhaxLexer, $typhaxParser);
 
     $this->assertSame($this->_typhaxTranscompiler, $this->_parser->typhaxTranscompiler());
+    $this->assertSame($typhaxLexer, $this->_parser->typhaxLexer());
     $this->assertSame($typhaxParser, $this->_parser->typhaxParser());
   }
 

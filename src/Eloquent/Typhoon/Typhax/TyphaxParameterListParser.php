@@ -16,21 +16,28 @@ use Eloquent\Typhoon\Parameter\Parameter;
 use Eloquent\Typhoon\Parameter\ParameterList\ParameterList;
 use Eloquent\Typhoon\Parameter\ParameterList\ParameterListParser;
 use Eloquent\Typhoon\Primitive\String;
+use Eloquent\Typhax\Lexer\Lexer as TyphaxLexer;
 use Eloquent\Typhax\Parser\Parser as TyphaxParser;
 
 class TyphaxParameterListParser implements ParameterListParser
 {
   public function __construct(
     TyphaxTranscompiler $typhaxTranscompiler
+    , TyphaxLexer $typhaxLexer = null
     , TyphaxParser $typhaxParser = null
   )
   {
+    if (null === $typhaxLexer)
+    {
+      $typhaxLexer = new TyphaxLexer;
+    }
     if (null === $typhaxParser)
     {
       $typhaxParser = new TyphaxParser;
     }
 
     $this->typhaxTranscompiler = $typhaxTranscompiler;
+    $this->typhaxLexer = $typhaxLexer;
     $this->typhaxParser = $typhaxParser;
   }
 
@@ -40,6 +47,14 @@ class TyphaxParameterListParser implements ParameterListParser
   public function typhaxTranscompiler()
   {
     return $this->typhaxTranscompiler;
+  }
+
+  /**
+   * @return TyphaxLexer
+   */
+  public function typhaxLexer()
+  {
+    return $this->typhaxLexer;
   }
 
   /**
@@ -83,8 +98,10 @@ class TyphaxParameterListParser implements ParameterListParser
    */
   protected function parseTypeSpecification($typeSpecification)
   {
+    $tokens = $this->typhaxLexer->tokens($typeSpecification);
+
     return $this->typhaxTranscompiler->parse(
-      $this->typhaxParser->parse($typeSpecification)
+      $this->typhaxParser->parseNode($tokens)
     );
   }
 
@@ -96,6 +113,11 @@ class TyphaxParameterListParser implements ParameterListParser
    * @var TyphaxTranscompiler
    */
   protected $typhaxTranscompiler;
+
+  /**
+   * @var TyphaxLexer
+   */
+  protected $typhaxLexer;
 
   /**
    * @var TyphaxParser

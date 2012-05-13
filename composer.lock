@@ -4,12 +4,12 @@
         {
             "package": "eloquent/enumeration",
             "version": "dev-master",
-            "source-reference": "355baeca34cba8c0ea82d7a0cf397a2a825d7c37"
+            "source-reference": "0.2.0"
         },
         {
             "package": "eloquent/typhax",
             "version": "dev-master",
-            "source-reference": "75bc4abb65fe2c76caabfac44205fcdd72cf521f"
+            "source-reference": "14b358c475e4b1a295c88e28356c28677760aff8"
         }
     ],
     "packages-dev": null,

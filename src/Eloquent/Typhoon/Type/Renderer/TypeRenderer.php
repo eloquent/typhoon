@@ -9,6 +9,8 @@
  * file that was distributed with this source code.
  */
 
+// @codeCoverageIgnoreStart
+
 namespace Eloquent\Typhoon\Type\Renderer;
 
 use Eloquent\Typhoon\Type\Type;
