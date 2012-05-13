@@ -11,6 +11,13 @@
 
 namespace Eloquent\Typhoon;
 
+use Eloquent\Typhoon\Assertion\ParameterListAssertion;
+use Eloquent\Typhoon\Documentation\TyphoonDocumentationParser;
+use Eloquent\Typhoon\Type\Registry\TypeRegistry;
+use Eloquent\Typhoon\Typhax\TyphaxParameterListParser;
+use Eloquent\Typhoon\Typhax\TyphaxTranscompiler;
+use ReflectionMethod;
+
 class Typhoon
 {
   /**
@@ -20,20 +27,20 @@ class Typhoon
   {
     if (!self::$instance)
     {
-      self::$instance = new self;
+      self::install(new self);
     }
 
     return self::$instance;
   }
 
+  public static function install(self $instance)
+  {
+    self::$instance = $instance;
+  }
+
   public static function uninstall()
   {
     self::$instance = null;
-  }
-
-  public function install()
-  {
-    self::$instance = $this;
   }
 
   /**

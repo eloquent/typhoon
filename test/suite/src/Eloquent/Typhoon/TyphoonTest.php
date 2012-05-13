@@ -11,24 +11,19 @@
 
 namespace Eloquent\Typhoon;
 
-use Eloquent\Typhoon\Renderer\Type as TypeRenderer;
-use Eloquent\Typhoon\Type\Inspector\TypeInspector;
-use Eloquent\Typhoon\Type\Registry\TypeRegistry;
 use Phake;
 
+/**
+ * @covers Eloquent\Typhoon\Typhoon
+ * @group core
+ */
 class TyphoonTest extends \Eloquent\Typhoon\Test\TestCase
 {
   protected function setUp()
   {
-    $this->_typhoon = new Typhoon;
+    $this->_typhoon = new Typhoon($this->_typeRegistry);
   }
 
-  /**
-   * @covers Eloquent\Typhoon\Typhoon::instance
-   * @covers Eloquent\Typhoon\Typhoon::uninstall
-   * @covers Eloquent\Typhoon\Typhoon::install
-   * @group core
-   */
   public function testInstanceAndInstall()
   {
     Typhoon::uninstall();
@@ -39,13 +34,8 @@ class TyphoonTest extends \Eloquent\Typhoon\Test\TestCase
     $this->assertSame($instance, Typhoon::instance());
 
     $instance = new Typhoon;
-    $instance->install();
+    Typhoon::install($instance);
 
     $this->assertSame($instance, Typhoon::instance());
   }
-
-  /**
-   * @var Typhoon
-   */
-  protected $_typhoon;
 }
