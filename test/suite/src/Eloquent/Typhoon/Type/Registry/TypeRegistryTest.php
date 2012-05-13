@@ -219,6 +219,7 @@ class TypeRegistryTest extends \Eloquent\Typhoon\Test\TestCase
    * @covers Eloquent\Typhoon\Type\Registry\TypeRegistry::get
    * @covers Eloquent\Typhoon\Type\Registry\TypeRegistry::remove
    * @covers Eloquent\Typhoon\Type\Registry\TypeRegistry::normaliseKey
+   * @covers Eloquent\Typhoon\Type\Registry\TypeRegistry::assertTypeNameNamespace
    * @group collection
    * @group type
    * @group type-registry
