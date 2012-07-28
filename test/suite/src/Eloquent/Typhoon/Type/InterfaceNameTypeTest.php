@@ -73,7 +73,7 @@ class InterfaceNameTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    */
   protected function typeName()
   {
-    return IntrinsicTypeName::NAME_INTERFACE_NAME()->_value();
+    return IntrinsicTypeName::NAME_INTERFACE_NAME()->value();
   }
 
   /**

@@ -482,7 +482,7 @@ class StreamTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    */
   protected function typeName()
   {
-    return IntrinsicTypeName::NAME_STREAM()->_value();
+    return IntrinsicTypeName::NAME_STREAM()->value();
   }
 
   /**

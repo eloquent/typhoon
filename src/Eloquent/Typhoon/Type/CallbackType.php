@@ -30,6 +30,6 @@ class CallbackType implements NamedType
    */
   public function typhoonName()
   {
-    return IntrinsicTypeName::NAME_CALLBACK()->_value();
+    return IntrinsicTypeName::NAME_CALLBACK()->value();
   }
 }

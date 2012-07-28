@@ -58,7 +58,7 @@ class FilterTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    */
   protected function typeName()
   {
-    return IntrinsicTypeName::NAME_FILTER()->_value();
+    return IntrinsicTypeName::NAME_FILTER()->value();
   }
 
   /**

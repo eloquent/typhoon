@@ -70,7 +70,7 @@ class StringTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    */
   protected function typeName()
   {
-    return IntrinsicTypeName::NAME_STRING()->_value();
+    return IntrinsicTypeName::NAME_STRING()->value();
   }
 
   /**

@@ -180,7 +180,7 @@ class TupleTypeTest extends \Eloquent\Typhoon\Test\TestCase
    */
   public function testTyphoonName()
   {
-    $this->assertSame(IntrinsicTypeName::NAME_TUPLE()->_value(), $this->_tupleType->typhoonName());
+    $this->assertSame(IntrinsicTypeName::NAME_TUPLE()->value(), $this->_tupleType->typhoonName());
   }
 
   /**

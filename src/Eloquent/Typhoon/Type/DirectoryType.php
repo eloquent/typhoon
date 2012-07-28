@@ -41,7 +41,7 @@ class DirectoryType extends Dynamic\BaseDynamicType
    */
   public function typhoonName()
   {
-    return IntrinsicTypeName::NAME_DIRECTORY()->_value();
+    return IntrinsicTypeName::NAME_DIRECTORY()->value();
   }
 
   const ATTRIBUTE_LOCAL = 'local';

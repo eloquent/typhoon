@@ -50,7 +50,7 @@ class IntegerTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    */
   protected function typeName()
   {
-    return IntrinsicTypeName::NAME_INTEGER()->_value();
+    return IntrinsicTypeName::NAME_INTEGER()->value();
   }
 
   // methods below must be manually overridden to implement @covers

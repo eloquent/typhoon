@@ -50,7 +50,7 @@ class ResourceType extends Dynamic\BaseDynamicType
    */
   public function typhoonName()
   {
-    return IntrinsicTypeName::NAME_RESOURCE()->_value();
+    return IntrinsicTypeName::NAME_RESOURCE()->value();
   }
 
   const ATTRIBUTE_TYPE = 'type';

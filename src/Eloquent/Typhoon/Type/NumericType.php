@@ -30,6 +30,6 @@ class NumericType implements NamedType
    */
   public function typhoonName()
   {
-    return IntrinsicTypeName::NAME_NUMERIC()->_value();
+    return IntrinsicTypeName::NAME_NUMERIC()->value();
   }
 }

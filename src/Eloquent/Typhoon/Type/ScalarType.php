@@ -30,6 +30,6 @@ class ScalarType implements NamedType
    */
   public function typhoonName()
   {
-    return IntrinsicTypeName::NAME_SCALAR()->_value();
+    return IntrinsicTypeName::NAME_SCALAR()->value();
   }
 }

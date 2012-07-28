@@ -77,7 +77,7 @@ class StringableTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    */
   protected function typeName()
   {
-    return IntrinsicTypeName::NAME_STRINGABLE()->_value();
+    return IntrinsicTypeName::NAME_STRINGABLE()->value();
   }
 
   /**

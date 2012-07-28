@@ -57,36 +57,36 @@ class TypeRegistry extends Collection
   {
     $namespace = 'Eloquent\Typhoon\Type';
 
-    $this->setIntrinsic(IntrinsicTypeName::NAME_ARRAY()->_value(), $namespace.'\ArrayType');
-    $this->setIntrinsic(IntrinsicTypeName::NAME_BOOLEAN()->_value(), $namespace.'\BooleanType');
-    $this->setIntrinsic(IntrinsicTypeName::NAME_CALLBACK()->_value(), $namespace.'\CallbackType');
-    $this->setIntrinsic(IntrinsicTypeName::NAME_CALLBACK_WRAPPER()->_value(), $namespace.'\CallbackWrapperType');
-    $this->setIntrinsic(IntrinsicTypeName::NAME_CHARACTER()->_value(), $namespace.'\CharacterType');
-    $this->setIntrinsic(IntrinsicTypeName::NAME_CLASS_NAME()->_value(), $namespace.'\ClassNameType');
-    $this->setIntrinsic(IntrinsicTypeName::NAME_DIRECTORY()->_value(), $namespace.'\DirectoryType');
-    $this->setIntrinsic(IntrinsicTypeName::NAME_FILE()->_value(), $namespace.'\FileType');
-    $this->setIntrinsic(IntrinsicTypeName::NAME_FILTER()->_value(), $namespace.'\FilterType');
-    $this->setIntrinsic(IntrinsicTypeName::NAME_FLOAT()->_value(), $namespace.'\FloatType');
-    $this->setIntrinsic(IntrinsicTypeName::NAME_INTEGER()->_value(), $namespace.'\IntegerType');
-    $this->setIntrinsic(IntrinsicTypeName::NAME_INTEGERABLE()->_value(), $namespace.'\IntegerableType');
-    $this->setIntrinsic(IntrinsicTypeName::NAME_INTERFACE_NAME()->_value(), $namespace.'\InterfaceNameType');
-    $this->setIntrinsic(IntrinsicTypeName::NAME_KEY()->_value(), $namespace.'\KeyType');
-    $this->setIntrinsic(IntrinsicTypeName::NAME_MIXED()->_value(), $namespace.'\MixedType');
-    $this->setIntrinsic(IntrinsicTypeName::NAME_NULL()->_value(), $namespace.'\NullType');
-    $this->setIntrinsic(IntrinsicTypeName::NAME_NUMBER()->_value(), $namespace.'\NumberType');
-    $this->setIntrinsic(IntrinsicTypeName::NAME_NUMERIC()->_value(), $namespace.'\NumericType');
-    $this->setIntrinsic(IntrinsicTypeName::NAME_OBJECT()->_value(), $namespace.'\ObjectType');
-    $this->setIntrinsic(IntrinsicTypeName::NAME_RESOURCE()->_value(), $namespace.'\ResourceType');
-    $this->setIntrinsic(IntrinsicTypeName::NAME_SCALAR()->_value(), $namespace.'\ScalarType');
-    $this->setIntrinsic(IntrinsicTypeName::NAME_SOCKET()->_value(), $namespace.'\SocketType');
-    $this->setIntrinsic(IntrinsicTypeName::NAME_STREAM()->_value(), $namespace.'\StreamType');
-    $this->setIntrinsic(IntrinsicTypeName::NAME_STRING()->_value(), $namespace.'\StringType');
-    $this->setIntrinsic(IntrinsicTypeName::NAME_STRINGABLE()->_value(), $namespace.'\StringableType');
-    $this->setIntrinsic(IntrinsicTypeName::NAME_TRAVERSABLE()->_value(), $namespace.'\TraversableType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_ARRAY()->value(), $namespace.'\ArrayType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_BOOLEAN()->value(), $namespace.'\BooleanType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_CALLBACK()->value(), $namespace.'\CallbackType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_CALLBACK_WRAPPER()->value(), $namespace.'\CallbackWrapperType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_CHARACTER()->value(), $namespace.'\CharacterType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_CLASS_NAME()->value(), $namespace.'\ClassNameType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_DIRECTORY()->value(), $namespace.'\DirectoryType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_FILE()->value(), $namespace.'\FileType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_FILTER()->value(), $namespace.'\FilterType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_FLOAT()->value(), $namespace.'\FloatType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_INTEGER()->value(), $namespace.'\IntegerType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_INTEGERABLE()->value(), $namespace.'\IntegerableType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_INTERFACE_NAME()->value(), $namespace.'\InterfaceNameType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_KEY()->value(), $namespace.'\KeyType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_MIXED()->value(), $namespace.'\MixedType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_NULL()->value(), $namespace.'\NullType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_NUMBER()->value(), $namespace.'\NumberType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_NUMERIC()->value(), $namespace.'\NumericType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_OBJECT()->value(), $namespace.'\ObjectType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_RESOURCE()->value(), $namespace.'\ResourceType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_SCALAR()->value(), $namespace.'\ScalarType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_SOCKET()->value(), $namespace.'\SocketType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_STREAM()->value(), $namespace.'\StreamType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_STRING()->value(), $namespace.'\StringType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_STRINGABLE()->value(), $namespace.'\StringableType');
+    $this->setIntrinsic(IntrinsicTypeName::NAME_TRAVERSABLE()->value(), $namespace.'\TraversableType');
 
-    foreach (IntrinsicTypeAlias::_instances() as $key => $alias)
+    foreach (IntrinsicTypeAlias::multitonInstances() as $key => $alias)
     {
-      $this->setIntrinsic($alias->_value(), $this->get($alias->_typeName()));
+      $this->setIntrinsic($alias->value(), $this->get($alias->typeName()));
     }
 
     $this->setIntrinsic('typhoon.parameter', $namespace.'\ParameterType');

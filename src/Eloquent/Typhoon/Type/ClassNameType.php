@@ -29,7 +29,7 @@ class ClassNameType extends BaseClassNameType
    */
   public function typhoonName()
   {
-    return IntrinsicTypeName::NAME_CLASS_NAME()->_value();
+    return IntrinsicTypeName::NAME_CLASS_NAME()->value();
   }
 
   const ATTRIBUTE_CLASS_OF = 'classOf';

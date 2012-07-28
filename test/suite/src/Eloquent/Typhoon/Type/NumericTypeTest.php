@@ -51,7 +51,7 @@ class NumericTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    */
   protected function typeName()
   {
-    return IntrinsicTypeName::NAME_NUMERIC()->_value();
+    return IntrinsicTypeName::NAME_NUMERIC()->value();
   }
 
   // methods below must be manually overridden to implement @covers

@@ -71,7 +71,7 @@ class CharacterTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    */
   protected function typeName()
   {
-    return IntrinsicTypeName::NAME_CHARACTER()->_value();
+    return IntrinsicTypeName::NAME_CHARACTER()->value();
   }
 
   /**

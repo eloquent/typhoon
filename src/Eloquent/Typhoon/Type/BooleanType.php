@@ -30,6 +30,6 @@ class BooleanType implements NamedType
    */
   public function typhoonName()
   {
-    return IntrinsicTypeName::NAME_BOOLEAN()->_value();
+    return IntrinsicTypeName::NAME_BOOLEAN()->value();
   }
 }

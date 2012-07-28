@@ -63,7 +63,7 @@ class StringableType extends Dynamic\BaseDynamicType
    */
   public function typhoonName()
   {
-    return IntrinsicTypeName::NAME_STRINGABLE()->_value();
+    return IntrinsicTypeName::NAME_STRINGABLE()->value();
   }
 
   const ATTRIBUTE_ENCODING = 'encoding';

@@ -89,7 +89,7 @@ class ClassNameTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    */
   protected function typeName()
   {
-    return IntrinsicTypeName::NAME_CLASS_NAME()->_value();
+    return IntrinsicTypeName::NAME_CLASS_NAME()->value();
   }
 
   /**

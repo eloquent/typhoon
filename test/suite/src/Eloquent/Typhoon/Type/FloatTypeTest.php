@@ -50,7 +50,7 @@ class FloatTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    */
   protected function typeName()
   {
-    return IntrinsicTypeName::NAME_FLOAT()->_value();
+    return IntrinsicTypeName::NAME_FLOAT()->value();
   }
 
   // methods below must be manually overridden to implement @covers

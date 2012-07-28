@@ -47,7 +47,7 @@ class BooleanTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    */
   protected function typeName()
   {
-    return IntrinsicTypeName::NAME_BOOLEAN()->_value();
+    return IntrinsicTypeName::NAME_BOOLEAN()->value();
   }
 
   // methods below must be manually overridden to implement @covers

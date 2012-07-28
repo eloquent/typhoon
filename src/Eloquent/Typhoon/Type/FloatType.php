@@ -30,6 +30,6 @@ class FloatType implements NamedType
    */
   public function typhoonName()
   {
-    return IntrinsicTypeName::NAME_FLOAT()->_value();
+    return IntrinsicTypeName::NAME_FLOAT()->value();
   }
 }

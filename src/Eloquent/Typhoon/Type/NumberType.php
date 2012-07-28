@@ -37,7 +37,7 @@ class NumberType implements NamedType
    */
   public function typhoonName()
   {
-    return IntrinsicTypeName::NAME_NUMBER()->_value();
+    return IntrinsicTypeName::NAME_NUMBER()->value();
   }
 
   /**

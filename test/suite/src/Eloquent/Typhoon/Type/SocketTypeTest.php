@@ -60,7 +60,7 @@ class SocketTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    */
   protected function typeName()
   {
-    return IntrinsicTypeName::NAME_SOCKET()->_value();
+    return IntrinsicTypeName::NAME_SOCKET()->value();
   }
 
   // methods below must be manually overridden to implement @covers

@@ -41,7 +41,7 @@ class IntegerableType implements NamedType
    */
   public function typhoonName()
   {
-    return IntrinsicTypeName::NAME_INTEGERABLE()->_value();
+    return IntrinsicTypeName::NAME_INTEGERABLE()->value();
   }
 
   /**

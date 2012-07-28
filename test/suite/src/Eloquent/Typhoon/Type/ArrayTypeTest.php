@@ -47,7 +47,7 @@ class ArrayTypeTest extends \Eloquent\Typhoon\Test\TypeTestCase
    */
   protected function typeName()
   {
-    return IntrinsicTypeName::NAME_ARRAY()->_value();
+    return IntrinsicTypeName::NAME_ARRAY()->value();
   }
 
   // methods below must be manually overridden to implement @covers
