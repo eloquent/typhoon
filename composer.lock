@@ -8,8 +8,8 @@
         {
             "package": "eloquent/typhax",
             "version": "dev-master",
-            "source-reference": "e47b67c58b7b7b9761d394ca880da0f0d235adb6",
-            "commit-date": "1343455316"
+            "source-reference": "bc9ecc1029c6864a391f0cf5946d54eb167c06b8",
+            "commit-date": "1343522066"
         }
     ],
     "packages-dev": [
