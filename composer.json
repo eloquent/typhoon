@@ -1,6 +1,5 @@
 {
     "name": "eloquent/typhoon",
-    "type": "library",
     "description": "Simple, flexible type-checking for PHP.",
     "keywords": ["type","hint","hinting","check","checking"],
     "homepage": "https://github.com/eloquent/typhoon",
@@ -24,26 +23,7 @@
     },
     "autoload": {
         "psr-0": {
-            "Eloquent": "src"
+            "Eloquent\\Typhoon": "src"
         }
-    },
-    "repositories": [
-        {
-            "type": "package",
-            "package": {
-                "name": "phake/phake",
-                "version": "1.0.2",
-                "dist": {
-                    "url": "https://github.com/mlively/Phake/zipball/v1.0.2",
-                    "type": "zip"
-                },
-                "autoload": {
-                    "classmap": ["src"]
-                },
-                "include-path": [
-                    "src"
-                ]
-            }
-        }
-    ]
+    }
 }

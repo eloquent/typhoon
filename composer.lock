@@ -1,21 +1,17 @@
 {
-    "hash": "0807b5447284205adbf9daecb8cb4b18",
+    "hash": "a4b6490dcab9553b75df00005989d52b",
     "packages": [
-        {
-            "package": "eloquent/enumeration",
-            "version": "2.0.1"
-        },
         {
             "package": "eloquent/typhax",
             "version": "dev-master",
-            "source-reference": "bc9ecc1029c6864a391f0cf5946d54eb167c06b8",
-            "commit-date": "1343522066"
+            "source-reference": "6724de32ba8fb0c9f80f5597760156c29efa5f75",
+            "commit-date": "1343917361"
         }
     ],
     "packages-dev": [
         {
             "package": "phake/phake",
-            "version": "1.0.2"
+            "version": "v1.0.3"
         }
     ],
     "aliases": [
