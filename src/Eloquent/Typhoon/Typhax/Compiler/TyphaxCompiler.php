@@ -202,6 +202,16 @@ class TyphaxCompiler implements Visitor
      */
     public function visitResourceType(ResourceType $type)
     {
+        if (null !== $type->ofType()) {
+            return $this->createCallback(
+                "return\n".
+                '    is_resource($value) &&'."\n".
+                '    get_resource_type($value) === '.
+                var_export($type->ofType(), true)."\n".
+                ';'
+            );
+        }
+
         return $this->createCallback(
             'return is_resource($value);'
         );

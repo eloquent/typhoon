@@ -25,7 +25,9 @@ use Eloquent\Typhax\Type\ResourceType;
 use Eloquent\Typhax\Type\StringType;
 use Eloquent\Typhax\Type\TraversableType;
 use Eloquent\Typhax\Type\TupleType;
+use Eloquent\Typhax\Type\Type;
 use PHPUnit_Framework_TestCase;
+use stdClass;
 
 class TyphaxCompilerTest extends PHPUnit_Framework_TestCase
 {
@@ -34,6 +36,16 @@ class TyphaxCompilerTest extends PHPUnit_Framework_TestCase
         parent::setUp();
 
         $this->_compiler = new TyphaxCompiler;
+    }
+
+    protected function validatorFixture(Type $type)
+    {
+        return create_function(
+            '$value',
+            'return call_user_func('.
+            $type->accept($this->_compiler).
+            ', $value);'
+        );
     }
 
     public function testVisitAndType()
@@ -88,6 +100,24 @@ EOD;
         $this->assertSame($expected, $type->accept($this->_compiler));
     }
 
+    public function testVisitArrayTypeLogic()
+    {
+        $validator = $this->validatorFixture(new ArrayType);
+
+        $this->assertTrue($validator(array()));
+        $this->assertTrue($validator(array('foo')));
+        $this->assertTrue($validator(array('foo' => 'bar')));
+
+        $this->assertFalse($validator(null));
+        $this->assertFalse($validator(true));
+        $this->assertFalse($validator(false));
+        $this->assertFalse($validator(111));
+        $this->assertFalse($validator(1.11));
+        $this->assertFalse($validator('foo'));
+        $this->assertFalse($validator(new stdClass));
+        $this->assertFalse($validator(stream_context_create()));
+    }
+
     public function testVisitBooleanType()
     {
         $type = new BooleanType;
@@ -98,6 +128,22 @@ function($value) {
 EOD;
 
         $this->assertSame($expected, $type->accept($this->_compiler));
+    }
+
+    public function testVisitBooleanTypeLogic()
+    {
+        $validator = $this->validatorFixture(new BooleanType);
+
+        $this->assertTrue($validator(true));
+        $this->assertTrue($validator(false));
+
+        $this->assertFalse($validator(null));
+        $this->assertFalse($validator(111));
+        $this->assertFalse($validator(1.11));
+        $this->assertFalse($validator('foo'));
+        $this->assertFalse($validator(array()));
+        $this->assertFalse($validator(new stdClass));
+        $this->assertFalse($validator(stream_context_create()));
     }
 
     public function testVisitCallbackType()
@@ -112,6 +158,24 @@ EOD;
         $this->assertSame($expected, $type->accept($this->_compiler));
     }
 
+    public function testVisitCallbackTypeLogic()
+    {
+        $validator = $this->validatorFixture(new CallbackType);
+
+        $this->assertTrue($validator(function() {}));
+        $this->assertTrue($validator('substr'));
+
+        $this->assertFalse($validator(true));
+        $this->assertFalse($validator(false));
+        $this->assertFalse($validator(null));
+        $this->assertFalse($validator(111));
+        $this->assertFalse($validator(1.11));
+        $this->assertFalse($validator('foo'));
+        $this->assertFalse($validator(array()));
+        $this->assertFalse($validator(new stdClass));
+        $this->assertFalse($validator(stream_context_create()));
+    }
+
     public function testVisitFloatType()
     {
         $type = new FloatType;
@@ -122,6 +186,22 @@ function($value) {
 EOD;
 
         $this->assertSame($expected, $type->accept($this->_compiler));
+    }
+
+    public function testVisitFloatTypeLogic()
+    {
+        $validator = $this->validatorFixture(new FloatType);
+
+        $this->assertTrue($validator(1.11));
+
+        $this->assertFalse($validator(true));
+        $this->assertFalse($validator(false));
+        $this->assertFalse($validator(null));
+        $this->assertFalse($validator(111));
+        $this->assertFalse($validator('foo'));
+        $this->assertFalse($validator(array()));
+        $this->assertFalse($validator(new stdClass));
+        $this->assertFalse($validator(stream_context_create()));
     }
 
     public function testVisitIntegerType()
@@ -136,6 +216,22 @@ EOD;
         $this->assertSame($expected, $type->accept($this->_compiler));
     }
 
+    public function testVisitIntegerTypeLogic()
+    {
+        $validator = $this->validatorFixture(new IntegerType);
+
+        $this->assertTrue($validator(111));
+
+        $this->assertFalse($validator(true));
+        $this->assertFalse($validator(false));
+        $this->assertFalse($validator(null));
+        $this->assertFalse($validator(1.11));
+        $this->assertFalse($validator('foo'));
+        $this->assertFalse($validator(array()));
+        $this->assertFalse($validator(new stdClass));
+        $this->assertFalse($validator(stream_context_create()));
+    }
+
     public function testVisitMixedType()
     {
         $type = new MixedType;
@@ -148,6 +244,21 @@ EOD;
         $this->assertSame($expected, $type->accept($this->_compiler));
     }
 
+    public function testVisitMixedTypeLogic()
+    {
+        $validator = $this->validatorFixture(new MixedType);
+
+        $this->assertTrue($validator(true));
+        $this->assertTrue($validator(false));
+        $this->assertTrue($validator(null));
+        $this->assertTrue($validator(111));
+        $this->assertTrue($validator(1.11));
+        $this->assertTrue($validator('foo'));
+        $this->assertTrue($validator(array()));
+        $this->assertTrue($validator(new stdClass));
+        $this->assertTrue($validator(stream_context_create()));
+    }
+
     public function testVisitNullType()
     {
         $type = new NullType;
@@ -158,6 +269,22 @@ function($value) {
 EOD;
 
         $this->assertSame($expected, $type->accept($this->_compiler));
+    }
+
+    public function testVisitNullTypeLogic()
+    {
+        $validator = $this->validatorFixture(new NullType);
+
+        $this->assertTrue($validator(null));
+
+        $this->assertFalse($validator(true));
+        $this->assertFalse($validator(false));
+        $this->assertFalse($validator(111));
+        $this->assertFalse($validator(1.11));
+        $this->assertFalse($validator('foo'));
+        $this->assertFalse($validator(array()));
+        $this->assertFalse($validator(new stdClass));
+        $this->assertFalse($validator(stream_context_create()));
     }
 
     public function testVisitObjectType()
@@ -182,6 +309,60 @@ function($value) {
 EOD;
 
         $this->assertSame($expected, $type->accept($this->_compiler));
+    }
+
+    public function testVisitObjectTypeLogic()
+    {
+        $validator = $this->validatorFixture(new ObjectType);
+
+        $this->assertTrue($validator(new stdClass));
+
+        $this->assertFalse($validator(true));
+        $this->assertFalse($validator(false));
+        $this->assertFalse($validator(null));
+        $this->assertFalse($validator(111));
+        $this->assertFalse($validator(1.11));
+        $this->assertFalse($validator('foo'));
+        $this->assertFalse($validator(array()));
+        $this->assertFalse($validator(stream_context_create()));
+    }
+
+    public function testVisitObjectOfTypeClassLogic()
+    {
+        $validator = $this->validatorFixture(new ObjectType(
+            __NAMESPACE__.'\TyphaxCompiler'
+        ));
+
+        $this->assertTrue($validator($this->_compiler));
+
+        $this->assertFalse($validator(true));
+        $this->assertFalse($validator(false));
+        $this->assertFalse($validator(null));
+        $this->assertFalse($validator(111));
+        $this->assertFalse($validator(1.11));
+        $this->assertFalse($validator('foo'));
+        $this->assertFalse($validator(array()));
+        $this->assertFalse($validator(new stdClass));
+        $this->assertFalse($validator(stream_context_create()));
+    }
+
+    public function testVisitObjectOfTypeInterfaceLogic()
+    {
+        $validator = $this->validatorFixture(new ObjectType(
+            'Eloquent\Typhax\Type\Visitor'
+        ));
+
+        $this->assertTrue($validator($this->_compiler));
+
+        $this->assertFalse($validator(true));
+        $this->assertFalse($validator(false));
+        $this->assertFalse($validator(null));
+        $this->assertFalse($validator(111));
+        $this->assertFalse($validator(1.11));
+        $this->assertFalse($validator('foo'));
+        $this->assertFalse($validator(array()));
+        $this->assertFalse($validator(new stdClass));
+        $this->assertFalse($validator(stream_context_create()));
     }
 
     public function testVisitOrType()
@@ -236,6 +417,58 @@ EOD;
         $this->assertSame($expected, $type->accept($this->_compiler));
     }
 
+    public function testVisitResourceTypeOfType()
+    {
+        $type = new ResourceType('foo');
+        $expected = <<<'EOD'
+function($value) {
+    return
+        is_resource($value) &&
+        get_resource_type($value) === 'foo'
+    ;
+}
+EOD;
+
+        $this->assertSame($expected, $type->accept($this->_compiler));
+    }
+
+    public function testVisitResourceTypeLogic()
+    {
+        $validator = $this->validatorFixture(new ResourceType);
+
+        $this->assertTrue($validator(stream_context_create()));
+
+        $this->assertFalse($validator(true));
+        $this->assertFalse($validator(false));
+        $this->assertFalse($validator(null));
+        $this->assertFalse($validator(111));
+        $this->assertFalse($validator(1.11));
+        $this->assertFalse($validator('foo'));
+        $this->assertFalse($validator(array()));
+        $this->assertFalse($validator(new stdClass));
+    }
+
+    public function testVisitResourceTypeOfTypeLogic()
+    {
+        $file = fopen(__FILE__, 'rb');
+        $resourceType = get_resource_type($file);
+        $validator = $this->validatorFixture(new ResourceType($resourceType));
+        $actual = $validator($file);
+        fclose($file);
+
+        $this->assertTrue($actual);
+
+        $this->assertFalse($validator(true));
+        $this->assertFalse($validator(false));
+        $this->assertFalse($validator(null));
+        $this->assertFalse($validator(111));
+        $this->assertFalse($validator(1.11));
+        $this->assertFalse($validator('foo'));
+        $this->assertFalse($validator(array()));
+        $this->assertFalse($validator(new stdClass));
+        $this->assertFalse($validator(stream_context_create()));
+    }
+
     public function testVisitStringType()
     {
         $type = new StringType;
@@ -246,6 +479,22 @@ function($value) {
 EOD;
 
         $this->assertSame($expected, $type->accept($this->_compiler));
+    }
+
+    public function testVisitStringTypeLogic()
+    {
+        $validator = $this->validatorFixture(new StringType);
+
+        $this->assertTrue($validator('foo'));
+
+        $this->assertFalse($validator(true));
+        $this->assertFalse($validator(false));
+        $this->assertFalse($validator(null));
+        $this->assertFalse($validator(111));
+        $this->assertFalse($validator(1.11));
+        $this->assertFalse($validator(array()));
+        $this->assertFalse($validator(new stdClass));
+        $this->assertFalse($validator(stream_context_create()));
     }
 
     public function testTraversableType()
