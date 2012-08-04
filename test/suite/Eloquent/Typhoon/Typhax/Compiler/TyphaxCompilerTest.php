@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Typhax\Compiler;
 
+use ArrayIterator;
 use Eloquent\Typhax\Type\AndType;
 use Eloquent\Typhax\Type\ArrayType;
 use Eloquent\Typhax\Type\BooleanType;
@@ -26,6 +27,7 @@ use Eloquent\Typhax\Type\StringType;
 use Eloquent\Typhax\Type\TraversableType;
 use Eloquent\Typhax\Type\TupleType;
 use Eloquent\Typhax\Type\Type;
+use Phake;
 use PHPUnit_Framework_TestCase;
 use stdClass;
 
@@ -86,6 +88,27 @@ function($value) {
 EOD;
 
         $this->assertSame($expected, $type->accept($this->_compiler));
+    }
+
+    public function testVisitAndTypeLogic()
+    {
+        $validator = $this->validatorFixture(new AndType(array(
+            new ObjectType('Eloquent\Typhax\Type\Visitor'),
+            new ObjectType('Phake_IMock'),
+        )));
+
+        $this->assertTrue($validator(Phake::mock('Eloquent\Typhax\Type\Visitor')));
+
+        $this->assertFalse($validator(null));
+        $this->assertFalse($validator(true));
+        $this->assertFalse($validator(false));
+        $this->assertFalse($validator(111));
+        $this->assertFalse($validator(1.11));
+        $this->assertFalse($validator('foo'));
+        $this->assertFalse($validator(array()));
+        $this->assertFalse($validator(new stdClass));
+        $this->assertFalse($validator($this->_compiler));
+        $this->assertFalse($validator(stream_context_create()));
     }
 
     public function testVisitArrayType()
@@ -405,6 +428,28 @@ EOD;
         $this->assertSame($expected, $type->accept($this->_compiler));
     }
 
+    public function testVisitOrTypeLogic()
+    {
+        $validator = $this->validatorFixture(new OrType(array(
+            new ObjectType('Eloquent\Typhax\Type\Visitor'),
+            new ObjectType('Phake_IMock'),
+        )));
+
+        $this->assertTrue($validator($this->_compiler));
+        $this->assertTrue($validator(Phake::mock('Eloquent\Typhax\Type\Visitor')));
+        $this->assertTrue($validator(Phake::mock('stdClass')));
+
+        $this->assertFalse($validator(null));
+        $this->assertFalse($validator(true));
+        $this->assertFalse($validator(false));
+        $this->assertFalse($validator(111));
+        $this->assertFalse($validator(1.11));
+        $this->assertFalse($validator('foo'));
+        $this->assertFalse($validator(array()));
+        $this->assertFalse($validator(new stdClass));
+        $this->assertFalse($validator(stream_context_create()));
+    }
+
     public function testVisitResourceType()
     {
         $type = new ResourceType;
@@ -547,6 +592,46 @@ EOD;
         $this->assertSame($expected, $type->accept($this->_compiler));
     }
 
+    public function testTraversableTypeLogic()
+    {
+        $validator = $this->validatorFixture(new TraversableType(
+            new ArrayType,
+            new StringType,
+            new IntegerType
+        ));
+        $validArray = array(
+            'foo' => 111,
+            'bar' => 222,
+        );
+        $partiallyValidArrayValues = array(
+            'foo' => 111,
+            'bar' => 2.22,
+        );
+        $partiallyValidArrayKeys = array(
+            'foo' => 111,
+            222 => 333,
+        );
+        $invalidPrimaryType = new ArrayIterator(array(
+            'foo' => 111,
+            'bar' => 222,
+        ));
+
+        $this->assertTrue($validator($validArray));
+        $this->assertTrue($validator(array()));
+
+        $this->assertFalse($validator($partiallyValidArrayValues));
+        $this->assertFalse($validator($partiallyValidArrayKeys));
+        $this->assertFalse($validator($invalidPrimaryType));
+        $this->assertFalse($validator(null));
+        $this->assertFalse($validator(true));
+        $this->assertFalse($validator(false));
+        $this->assertFalse($validator(111));
+        $this->assertFalse($validator(1.11));
+        $this->assertFalse($validator('foo'));
+        $this->assertFalse($validator(new stdClass));
+        $this->assertFalse($validator(stream_context_create()));
+    }
+
     public function testTupleType()
     {
         $type = new TupleType(array(
@@ -610,6 +695,39 @@ function($value) {
 EOD;
 
         $this->assertSame($expected, $type->accept($this->_compiler));
+    }
+
+    public function testTupleTypeLogic()
+    {
+        $validator = $this->validatorFixture(new TupleType(array(
+            new StringType,
+            new IntegerType,
+        )));
+        $validTuple = array(
+            'foo',
+            111,
+        );
+        $partiallyValidTuple = array(
+            'foo',
+            'bar',
+        );
+        $invalidTupleNonVector = array(
+            1 => 'foo',
+            2 => 111,
+        );
+
+        $this->assertTrue($validator($validTuple));
+
+        $this->assertFalse($validator($partiallyValidTuple));
+        $this->assertFalse($validator($invalidTupleNonVector));
+        $this->assertFalse($validator(null));
+        $this->assertFalse($validator(true));
+        $this->assertFalse($validator(false));
+        $this->assertFalse($validator(111));
+        $this->assertFalse($validator(1.11));
+        $this->assertFalse($validator('foo'));
+        $this->assertFalse($validator(new stdClass));
+        $this->assertFalse($validator(stream_context_create()));
     }
 }
 
