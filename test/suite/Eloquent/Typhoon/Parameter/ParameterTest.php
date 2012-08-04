@@ -29,4 +29,16 @@ class ParameterTest extends PHPUnit_Framework_TestCase
         $this->assertSame('foo', $parameter->name());
         $this->assertSame('bar', $parameter->description());
     }
+
+    public function testParameterOptionalParameters()
+    {
+        $type = new StringType;
+        $parameter = new Parameter(
+            $type
+        );
+
+        $this->assertSame($type, $parameter->type());
+        $this->assertNull($parameter->name());
+        $this->assertNull($parameter->description());
+    }
 }

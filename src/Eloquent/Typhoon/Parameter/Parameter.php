@@ -17,10 +17,10 @@ class Parameter
 {
     /**
      * @param Type $type
-     * @param string $name
-     * @param string $description
+     * @param string|null $name
+     * @param string|null $description
      */
-    public function __construct(Type $type, $name, $description = null)
+    public function __construct(Type $type, $name = null, $description = null)
     {
         $this->type = $type;
         $this->name = $name;
@@ -36,7 +36,7 @@ class Parameter
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function name()
     {
@@ -44,7 +44,7 @@ class Parameter
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function description()
     {
