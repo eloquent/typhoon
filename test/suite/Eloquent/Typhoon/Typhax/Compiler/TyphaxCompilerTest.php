@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Typhax package.
+ * This file is part of the Typhoon package.
  *
  * Copyright © 2012 Erin Millard
  *
