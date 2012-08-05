@@ -12,8 +12,9 @@
 namespace Eloquent\Typhoon\Parameter;
 
 use Eloquent\Typhax\Type\Type;
+use Icecave\Visita\Host;
 
-class Parameter
+class Parameter extends Host
 {
     /**
      * @param Type $type

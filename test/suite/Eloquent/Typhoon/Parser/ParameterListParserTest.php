@@ -50,24 +50,37 @@ class ParameterListParserTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testVisitEmptyParameterList()
+    public function testParseEmptyParameterList()
     {
-        $block = new DocumentationBlock;
+        $source = <<<'EOD'
+/**
+     * Summary
+     * Summary
+     *
+     * Description
+     * Description
+     */
+EOD;
         $expected = new ParameterList;
 
-        $this->assertEquals($expected, $block->accept($this->_parser));
+        $this->assertEquals($expected, $this->_parser->parseBlockComment($source));
     }
 
     public function testVisitParameterList()
     {
-        $fooTag = new DocumentationTag('param', 'string $foo This is the foo parameter.');
-        $barTag = new DocumentationTag('param', 'integer $bar This is the bar parameter.');
-        $bazTag = new DocumentationTag('param', 'float|null $baz');
-        $block = new DocumentationBlock(array(
-            $fooTag,
-            $barTag,
-            $bazTag,
-        ));
+        $source = <<<'EOD'
+/**
+     * Summary
+     * Summary
+     *
+     * Description
+     * Description
+     *
+     * @param string $foo This is the foo parameter.
+     * @param integer $bar This is the bar parameter.
+     * @param float|null $baz
+     */
+EOD;
         $fooType = new StringType;
         $fooParameter = new Parameter($fooType, 'foo', 'This is the foo parameter.');
         $barType = new IntegerType;
@@ -82,7 +95,7 @@ class ParameterListParserTest extends PHPUnit_Framework_TestCase
             $barParameter,
             $bazParameter,
         ));
-        $actual = $block->accept($this->_parser);
+        $actual = $this->_parser->parseBlockComment($source);
 
         $this->assertEquals($expected, $actual);
         $this->assertInstanceOf(
@@ -94,10 +107,17 @@ class ParameterListParserTest extends PHPUnit_Framework_TestCase
 
     public function testVisitParameterListVariableLength()
     {
-        $fooTag = new DocumentationTag('param', 'string $foo,... This is the foo parameter.');
-        $block = new DocumentationBlock(array(
-            $fooTag,
-        ));
+        $source = <<<'EOD'
+/**
+     * Summary
+     * Summary
+     *
+     * Description
+     * Description
+     *
+     * @param string $foo,... This is the foo parameter.
+     */
+EOD;
         $fooType = new StringType;
         $fooParameter = new Parameter($fooType, 'foo', 'This is the foo parameter.');
         $expected = new ParameterList(
@@ -107,28 +127,48 @@ class ParameterListParserTest extends PHPUnit_Framework_TestCase
             true
         );
 
-        $this->assertEquals($expected, $block->accept($this->_parser));
+        $this->assertEquals($expected, $this->_parser->parseBlockComment($source));
     }
 
     public function testVisitInvalidParameterTagFailureNoType()
     {
-        $tag = new DocumentationTag('param', ' ');
+        $source = <<<'EOD'
+/**
+     * Summary
+     * Summary
+     *
+     * Description
+     * Description
+     *
+     * @param
+     */
+EOD;
 
         $this->setExpectedException(
             __NAMESPACE__.'\Exception\UnexpectedContentException',
-            "Unexpected content at position 2. Expected 'type'."
+            "Unexpected content at position 0. Expected 'type'."
         );
-        $tag->accept($this->_parser);
+        $this->_parser->parseBlockComment($source);
     }
 
     public function testVisitInvalidParameterTagFailureNoName()
     {
-        $tag = new DocumentationTag('param', 'string ');
+        $source = <<<'EOD'
+/**
+     * Summary
+     * Summary
+     *
+     * Description
+     * Description
+     *
+     * @param string
+     */
+EOD;
 
         $this->setExpectedException(
             __NAMESPACE__.'\Exception\UnexpectedContentException',
-            "Unexpected content at position 8. Expected 'name'."
+            "Unexpected content at position 7. Expected 'name'."
         );
-        $tag->accept($this->_parser);
+        $this->_parser->parseBlockComment($source);
     }
 }

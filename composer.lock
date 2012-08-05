@@ -1,15 +1,23 @@
 {
-    "hash": "c02b02921c3df956d1100589c4228720",
+    "hash": "3d226de8ce79dc2a8bc8c294d0ea66d7",
     "packages": [
         {
             "package": "eloquent/blox",
-            "version": "1.1.1"
+            "version": "1.2.0"
+        },
+        {
+            "package": "eloquent/cosmos",
+            "version": "1.0.0"
         },
         {
             "package": "eloquent/typhax",
             "version": "dev-master",
-            "source-reference": "63ed9892bd8c974a1115faab1d39396f7343751b",
-            "commit-date": "1344134434"
+            "source-reference": "58eef45546195a4dbd5fd0d326676b3320a186d5",
+            "commit-date": "1344151655"
+        },
+        {
+            "package": "icecave/visita",
+            "version": "0.1.0"
         }
     ],
     "packages-dev": [

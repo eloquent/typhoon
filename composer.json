@@ -14,7 +14,9 @@
     "require": {
         "php": ">=5.3.0",
         "eloquent/blox": ">=1,<2",
-        "eloquent/typhax": "dev-master@dev"
+        "eloquent/cosmos": ">=1,<2",
+        "eloquent/typhax": "dev-master@dev",
+        "icecave/visita": "0.1.*"
     },
     "require-dev": {
         "phake/phake": "1.*"

@@ -11,7 +11,9 @@
 
 namespace Eloquent\Typhoon\Parameter;
 
-class ParameterList
+use Icecave\Visita\Host;
+
+class ParameterList extends Host
 {
     /**
      * @param array<Parameter> $parameters

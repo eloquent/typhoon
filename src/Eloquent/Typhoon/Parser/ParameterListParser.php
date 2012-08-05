@@ -14,8 +14,12 @@ namespace Eloquent\Typhoon\Parser;
 use Eloquent\Blox\AST\DocumentationBlock;
 use Eloquent\Blox\AST\DocumentationTag;
 use Eloquent\Blox\AST\Visitor;
+use Eloquent\Blox\BloxParser;
+use Eloquent\Blox\DocumentationBlockParser;
 use Eloquent\Typhax\Parser\Parser as TyphaxParser;
 use Eloquent\Typhax\Parser\Exception\UnexpectedTokenException;
+use Eloquent\Typhax\Type\ObjectType;
+use Eloquent\Typhax\Type\Type;
 use Eloquent\Typhoon\Parameter\Parameter;
 use Eloquent\Typhoon\Parameter\ParameterList;
 
@@ -37,6 +41,27 @@ class ParameterListParser implements Visitor
     public function typhaxParser()
     {
         return $this->typhaxParser;
+    }
+
+    /**
+     * @param string $blockComment
+     * @param DocumentationBlockParser $documentationParser
+     *
+     * @return ParameterList
+     */
+    public function parseBlockComment(
+        $blockComment,
+        DocumentationBlockParser $documentationParser = null
+    ) {
+        if (null === $documentationParser) {
+            $documentationParser = new BloxParser;
+        }
+
+        return
+            $documentationParser
+            ->parseBlockComment($blockComment)
+            ->accept($this)
+        ;
     }
 
     /**
@@ -100,7 +125,7 @@ class ParameterListParser implements Visitor
     protected function parseType($content, &$position)
     {
         try {
-            return $this->typhaxParser->parse(
+            return $this->typhaxParser()->parse(
                 $content,
                 $position
             );

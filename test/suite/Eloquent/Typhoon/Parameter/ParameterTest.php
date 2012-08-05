@@ -12,6 +12,7 @@
 namespace Eloquent\Typhoon\Parameter;
 
 use Eloquent\Typhax\Type\StringType;
+use Phake;
 use PHPUnit_Framework_TestCase;
 
 class ParameterTest extends PHPUnit_Framework_TestCase
