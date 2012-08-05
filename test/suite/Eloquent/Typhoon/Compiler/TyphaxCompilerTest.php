@@ -42,12 +42,9 @@ class TyphaxCompilerTest extends PHPUnit_Framework_TestCase
 
     protected function validatorFixture(Type $type)
     {
-        return create_function(
-            '$value',
-            'return call_user_func('.
-            $type->accept($this->_compiler).
-            ', $value);'
-        );
+        eval('$check = '.$type->accept($this->_compiler).';');
+
+        return $check;
     }
 
     public function testVisitAndType()
@@ -58,19 +55,16 @@ class TyphaxCompilerTest extends PHPUnit_Framework_TestCase
         ));
         $expected = <<<'EOD'
 function($value) {
+    $check0 = function($value) {
+        return $value instanceof Foo;
+    };
+    $check1 = function($value) {
+        return $value instanceof Bar;
+    };
+
     return (
-        call_user_func(
-            function($value) {
-                return $value instanceof Foo;
-            },
-            $value
-        ) &&
-        call_user_func(
-            function($value) {
-                return $value instanceof Bar;
-            },
-            $value
-        )
+        $check0($value) &&
+        $check1($value)
     );
 }
 EOD;
@@ -396,20 +390,21 @@ EOD;
         ));
         $expected = <<<'EOD'
 function($value) {
-    return (
-        call_user_func(
-            function($value) {
-                return $value instanceof Foo;
-            },
-            $value
-        ) ||
-        call_user_func(
-            function($value) {
-                return $value instanceof Bar;
-            },
-            $value
-        )
-    );
+    $check = function($value) {
+        return $value instanceof Foo;
+    };
+    if ($check($value)) {
+        return true;
+    }
+
+    $check = function($value) {
+        return $value instanceof Bar;
+    };
+    if ($check($value)) {
+        return true;
+    }
+
+    return false;
 }
 EOD;
 
@@ -542,7 +537,7 @@ EOD;
         $this->assertFalse($validator(stream_context_create()));
     }
 
-    public function testTraversableType()
+    public function testVisitTraversableType()
     {
         $type = new TraversableType(
             new ArrayType,
@@ -551,36 +546,24 @@ EOD;
         );
         $expected = <<<'EOD'
 function($value) {
-    if (
-        !call_user_func(
-            function($value) {
-                return is_array($value);
-            },
-            $value
-        )
-    ) {
+    $primaryCheck = function($value) {
+        return is_array($value);
+    };
+    if (!$primaryCheck($value)) {
         return false;
     }
 
+    $keyCheck = function($value) {
+        return is_string($value);
+    };
+    $valueCheck = function($value) {
+        return true;
+    };
     foreach ($value as $key => $subValue) {
-        if (
-            !call_user_func(
-                function($value) {
-                    return is_string($value);
-                },
-                $key
-            )
-        ) {
+        if (!$keyCheck($key)) {
             return false;
         }
-        if (
-            !call_user_func(
-                function($value) {
-                    return true;
-                },
-                $subValue
-            )
-        ) {
+        if (!$valueCheck($subValue)) {
             return false;
         }
     }
@@ -592,7 +575,7 @@ EOD;
         $this->assertSame($expected, $type->accept($this->_compiler));
     }
 
-    public function testTraversableTypeLogic()
+    public function testVisitTraversableTypeLogic()
     {
         $validator = $this->validatorFixture(new TraversableType(
             new ArrayType,
@@ -632,7 +615,7 @@ EOD;
         $this->assertFalse($validator(stream_context_create()));
     }
 
-    public function testTupleType()
+    public function testVisitTupleType()
     {
         $type = new TupleType(array(
             new StringType,
@@ -648,37 +631,21 @@ function($value) {
         return false;
     }
 
-    if (
-        !call_user_func(
-            function($value) {
-                    return (
-                        call_user_func(
-                            function($value) {
-                                return is_string($value);
-                            },
-                            $value[0]
-                        ) &&
-                        call_user_func(
-                            function($value) {
-                                return is_integer($value);
-                            },
-                            $value[1]
-                        ) &&
-                        call_user_func(
-                            function($value) {
-                                return $value === null;
-                            },
-                            $value[2]
-                        )
-                    );
-            },
-            $value
-        )
-    ) {
-        return false;
-    }
+    $check0 = function($value) {
+        return is_string($value);
+    };
+    $check1 = function($value) {
+        return is_integer($value);
+    };
+    $check2 = function($value) {
+        return $value === null;
+    };
 
-    return true;
+    return
+        $check0($value[0]) &&
+        $check1($value[1]) &&
+        $check2($value[2])
+    ;
 }
 EOD;
 
@@ -697,7 +664,7 @@ EOD;
         $this->assertSame($expected, $type->accept($this->_compiler));
     }
 
-    public function testTupleTypeLogic()
+    public function testVisitTupleTypeLogic()
     {
         $validator = $this->validatorFixture(new TupleType(array(
             new StringType,

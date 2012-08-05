@@ -15,6 +15,7 @@ use Eloquent\Typhax\Type\AndType;
 use Eloquent\Typhax\Type\ArrayType;
 use Eloquent\Typhax\Type\BooleanType;
 use Eloquent\Typhax\Type\CallbackType;
+use Eloquent\Typhax\Type\CompositeType;
 use Eloquent\Typhax\Type\FloatType;
 use Eloquent\Typhax\Type\IntegerType;
 use Eloquent\Typhax\Type\MixedType;
@@ -32,39 +33,47 @@ class TyphaxCompiler implements Visitor
     /**
      * @param AndType
      *
-     * @return mixed
+     * @return string
      */
     public function visitAndType(AndType $type)
     {
-        $callbacks = array();
-        foreach ($type->types() as $subType) {
-            $callbacks[] =
-                "call_user_func(\n".
-                $this->indent(
-                    $subType->accept($this)
-                ).",\n".
-                '    $value'."\n".
-                ')'
+        if (count($type->types()) < 1) {
+            return $this->createCallback(
+                'return true;'
+            );
+        }
+
+        $checks = '';
+        $return = '';
+        foreach ($type->types() as $index => $subType) {
+            $checks .=
+                '$check'.$index.
+                ' = '.
+                $subType->accept($this).";\n"
+            ;
+
+            if ($return) {
+                $return .= ' &&';
+            }
+            $return .=
+                "\n".
+                '    $check'.$index.
+                '($value)'
             ;
         }
 
-        if (count($callbacks) < 1) {
-            $content = 'return true;';
-        } else {
-            $content =
-                "return (\n".
-                $this->indent(implode(" &&\n", $callbacks))."\n".
-                ');'
-            ;
-        }
-
-        return $this->createCallback($content);
+        return $this->createCallback(
+            $checks."\n".
+            'return ('.
+            $return.
+            "\n);"
+        );
     }
 
     /**
      * @param ArrayType
      *
-     * @return mixed
+     * @return string
      */
     public function visitArrayType(ArrayType $type)
     {
@@ -76,7 +85,7 @@ class TyphaxCompiler implements Visitor
     /**
      * @param BooleanType
      *
-     * @return mixed
+     * @return string
      */
     public function visitBooleanType(BooleanType $type)
     {
@@ -88,7 +97,7 @@ class TyphaxCompiler implements Visitor
     /**
      * @param CallbackType
      *
-     * @return mixed
+     * @return string
      */
     public function visitCallbackType(CallbackType $type)
     {
@@ -100,7 +109,7 @@ class TyphaxCompiler implements Visitor
     /**
      * @param FloatType
      *
-     * @return mixed
+     * @return string
      */
     public function visitFloatType(FloatType $type)
     {
@@ -112,7 +121,7 @@ class TyphaxCompiler implements Visitor
     /**
      * @param IntegerType
      *
-     * @return mixed
+     * @return string
      */
     public function visitIntegerType(IntegerType $type)
     {
@@ -124,7 +133,7 @@ class TyphaxCompiler implements Visitor
     /**
      * @param MixedType
      *
-     * @return mixed
+     * @return string
      */
     public function visitMixedType(MixedType $type)
     {
@@ -136,7 +145,7 @@ class TyphaxCompiler implements Visitor
     /**
      * @param NullType
      *
-     * @return mixed
+     * @return string
      */
     public function visitNullType(NullType $type)
     {
@@ -148,7 +157,7 @@ class TyphaxCompiler implements Visitor
     /**
      * @param ObjectType
      *
-     * @return mixed
+     * @return string
      */
     public function visitObjectType(ObjectType $type)
     {
@@ -166,39 +175,40 @@ class TyphaxCompiler implements Visitor
     /**
      * @param OrType
      *
-     * @return mixed
+     * @return string
      */
     public function visitOrType(OrType $type)
     {
-        $callbacks = array();
+        if (count($type->types()) < 1) {
+            return $this->createCallback(
+                'return true;'
+            );
+        }
+
+        $content = '';
         foreach ($type->types() as $subType) {
-            $callbacks[] =
-                "call_user_func(\n".
-                $this->indent(
-                    $subType->accept($this)
-                ).",\n".
-                '    $value'."\n".
-                ')'
+            $content .=
+                '$check'.
+                ' = '.
+                $subType->accept($this).";\n"
+            ;
+            $content .=
+                'if ($check($value)) {'."\n".
+                '    return true;'."\n".
+                "}\n\n"
             ;
         }
 
-        if (count($callbacks) < 1) {
-            $content = 'return true;';
-        } else {
-            $content =
-                "return (\n".
-                $this->indent(implode(" ||\n", $callbacks))."\n".
-                ');'
-            ;
-        }
-
-        return $this->createCallback($content);
+        return $this->createCallback(
+            $content.
+            'return false;'
+        );
     }
 
     /**
      * @param ResourceType
      *
-     * @return mixed
+     * @return string
      */
     public function visitResourceType(ResourceType $type)
     {
@@ -220,7 +230,7 @@ class TyphaxCompiler implements Visitor
     /**
      * @param StringType
      *
-     * @return mixed
+     * @return string
      */
     public function visitStringType(StringType $type)
     {
@@ -232,54 +242,36 @@ class TyphaxCompiler implements Visitor
     /**
      * @param TraversableType
      *
-     * @return mixed
+     * @return string
      */
     public function visitTraversableType(TraversableType $type)
     {
-        $primaryCallback =
-            "call_user_func(\n".
-            $this->indent(
-                $type->primaryType()->accept($this),
-                2
-            ).",\n".
-            '        $value'."\n".
-            '    )'
+        $primaryCheck =
+            '$primaryCheck = '.
+            $type->primaryType()->accept($this).';'
         ;
-        $keyCallback =
-            "call_user_func(\n".
-            $this->indent(
-                $type->keyType()->accept($this),
-                3
-            ).",\n".
-            '            $key'."\n".
-            '        )'
+        $keyCheck =
+            '$keyCheck = '.
+            $type->keyType()->accept($this).';'
         ;
-        $valueCallback =
-            "call_user_func(\n".
-            $this->indent(
-                $type->valueType()->accept($this),
-                3
-            ).",\n".
-            '            $subValue'."\n".
-            '        )'
+        $valueCheck =
+            '$valueCheck = '.
+            $type->valueType()->accept($this).';'
         ;
 
         return $this->createCallback(<<<EOD
-if (
-    !$primaryCallback
-) {
+$primaryCheck
+if (!\$primaryCheck(\$value)) {
     return false;
 }
 
+$keyCheck
+$valueCheck
 foreach (\$value as \$key => \$subValue) {
-    if (
-        !$keyCallback
-    ) {
+    if (!\$keyCheck(\$key)) {
         return false;
     }
-    if (
-        !$valueCallback
-    ) {
+    if (!\$valueCheck(\$subValue)) {
         return false;
     }
 }
@@ -292,51 +284,42 @@ EOD
     /**
      * @param TupleType
      *
-     * @return mixed
+     * @return string
      */
     public function visitTupleType(TupleType $type)
     {
-        if (count($type->types()) < 1) {
+        $typeCount = count($type->types());
+
+        if ($typeCount < 1) {
             return $this->createCallback(
                 'return $value === array();'
             );
         }
-        $callbacks = array();
-        foreach ($type->types() as $index => $subType) {
-            $callbacks[] =
-                "call_user_func(\n".
-                $this->indent(
-                    $subType->accept($this)
-                ).",\n".
-                '    $value['.$index."]\n".
-                ')'
-            ;
-        }
 
         $expectedKeys =
             'range(0, '.
-            (count($callbacks) - 1).
+            ($typeCount - 1).
             ')'
         ;
 
-        $tupleCallback = $this->createCallback(
-            "    return (\n".
-            $this->indent(
-                implode(" &&\n", $callbacks),
-                2
-            )."\n".
-            '    );'
-        );
+        $checks = '';
+        $return = '';
+        foreach ($type->types() as $index => $subType) {
+            $checks .=
+                '$check'.$index.
+                ' = '.
+                $subType->accept($this).";\n"
+            ;
 
-        $tupleCallback =
-            "call_user_func(\n".
-            $this->indent(
-                $tupleCallback,
-                2
-            ).",\n".
-            '        $value'."\n".
-            '    )'
-        ;
+            if ($return) {
+                $return .= ' &&';
+            }
+            $return .=
+                "\n".
+                '    $check'.$index.
+                '($value['.$index.'])'
+            ;
+        }
 
         return $this->createCallback(<<<EOD
 if (
@@ -346,13 +329,9 @@ if (
     return false;
 }
 
-if (
-    !$tupleCallback
-) {
-    return false;
-}
-
-return true;
+$checks
+return$return
+;
 EOD
         );
     }
