@@ -30,8 +30,8 @@ class ParameterListCompilerTest extends PHPUnit_Framework_TestCase
     public function testVisitParameter()
     {
         $parameter = new Parameter(
-            new StringType,
-            'foo'
+            'foo',
+            new StringType
         );
         $expected = <<<'EOD'
 function($argument, $index) {
@@ -51,16 +51,16 @@ EOD;
     {
         $list = new ParameterList(array(
             new Parameter(
-                new StringType,
-                'foo'
+                'foo',
+                new StringType
             ),
             new Parameter(
-                new IntegerType,
-                'bar'
+                'bar',
+                new IntegerType
             ),
             new Parameter(
-                new FloatType,
-                'baz'
+                'baz',
+                new FloatType
             ),
         ));
         $expected = <<<'EOD'
@@ -132,16 +132,16 @@ EOD;
         $list = new ParameterList(
             array(
                 new Parameter(
-                    new StringType,
-                    'foo'
+                    'foo',
+                    new StringType
                 ),
                 new Parameter(
-                    new IntegerType,
-                    'bar'
+                    'bar',
+                    new IntegerType
                 ),
                 new Parameter(
-                    new FloatType,
-                    'baz'
+                    'baz',
+                    new FloatType
                 ),
             ),
             true

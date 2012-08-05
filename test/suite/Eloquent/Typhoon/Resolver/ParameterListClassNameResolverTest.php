@@ -42,22 +42,22 @@ class ParameterListClassNameResolverTest extends PHPUnit_Framework_TestCase
     {
         $list = new ParameterList(array(
             new Parameter(
-                new ObjectType('Spam'),
-                'foo'
+                'foo',
+                new ObjectType('Spam')
             ),
             new Parameter(
-                new ObjectType('Pip'),
-                'bar'
+                'bar',
+                new ObjectType('Pip')
             ),
         ));
         $expected = new ParameterList(array(
             new Parameter(
-                new ObjectType('Foo\Bar\Baz\Spam'),
-                'foo'
+                'foo',
+                new ObjectType('Foo\Bar\Baz\Spam')
             ),
             new Parameter(
-                new ObjectType('Qux\Doom\Splat'),
-                'bar'
+                'bar',
+                new ObjectType('Qux\Doom\Splat')
             ),
         ));
 

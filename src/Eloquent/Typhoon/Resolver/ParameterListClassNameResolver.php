@@ -42,8 +42,8 @@ class ParameterListClassNameResolver implements Visitor
     public function visitParameter(Parameter $parameter)
     {
         return new Parameter(
-            $parameter->type()->accept($this->typeResolver()),
             $parameter->name(),
+            $parameter->type()->accept($this->typeResolver()),
             $parameter->description()
         );
     }

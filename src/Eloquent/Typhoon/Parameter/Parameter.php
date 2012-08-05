@@ -17,15 +17,25 @@ use Icecave\Visita\Host;
 class Parameter extends Host
 {
     /**
+     * @param string $name
      * @param Type $type
-     * @param string|null $name
+     * @param boolean $optional
      * @param string|null $description
      */
-    public function __construct(Type $type, $name = null, $description = null)
+    public function __construct($name, Type $type, $optional = false, $description = null)
     {
-        $this->type = $type;
         $this->name = $name;
+        $this->type = $type;
+        $this->optional = $optional;
         $this->description = $description;
+    }
+
+    /**
+     * @return string
+     */
+    public function name()
+    {
+        return $this->name;
     }
 
     /**
@@ -37,11 +47,11 @@ class Parameter extends Host
     }
 
     /**
-     * @return string|null
+     * @return boolean
      */
-    public function name()
+    public function isOptional()
     {
-        return $this->name;
+        return $this->optional;
     }
 
     /**
@@ -52,7 +62,8 @@ class Parameter extends Host
         return $this->description;
     }
 
-    private $type;
     private $name;
+    private $type;
+    private $optional;
     private $description;
 }

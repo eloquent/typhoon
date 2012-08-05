@@ -110,8 +110,8 @@ class ParameterListParser implements Visitor
         );
 
         return new Parameter(
-            $type,
             $name,
+            $type,
             $description
         );
     }

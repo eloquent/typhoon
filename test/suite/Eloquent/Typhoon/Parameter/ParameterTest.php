@@ -21,13 +21,15 @@ class ParameterTest extends PHPUnit_Framework_TestCase
     {
         $type = new StringType;
         $parameter = new Parameter(
-            $type,
             'foo',
+            $type,
+            true,
             'bar'
         );
 
-        $this->assertSame($type, $parameter->type());
         $this->assertSame('foo', $parameter->name());
+        $this->assertSame($type, $parameter->type());
+        $this->assertTrue($parameter->isOptional());
         $this->assertSame('bar', $parameter->description());
     }
 
@@ -35,11 +37,13 @@ class ParameterTest extends PHPUnit_Framework_TestCase
     {
         $type = new StringType;
         $parameter = new Parameter(
+            'foo',
             $type
         );
 
+        $this->assertSame('foo', $parameter->name());
         $this->assertSame($type, $parameter->type());
-        $this->assertNull($parameter->name());
+        $this->assertFalse($parameter->isOptional());
         $this->assertNull($parameter->description());
     }
 }
