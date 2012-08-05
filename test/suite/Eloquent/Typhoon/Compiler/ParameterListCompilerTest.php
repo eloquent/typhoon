@@ -113,13 +113,65 @@ EOD;
         $this->assertSame($expected, $list->accept($this->_compiler));
     }
 
-    public function testVisitParameterListEmpty()
+    public function testVisitParameterListOptionalParameters()
     {
-        $list = new ParameterList;
+        $list = new ParameterList(array(
+            new Parameter(
+                'foo',
+                new StringType
+            ),
+            new Parameter(
+                'bar',
+                new IntegerType,
+                true
+            ),
+            new Parameter(
+                'baz',
+                new FloatType,
+                true
+            ),
+        ));
         $expected = <<<'EOD'
 function(array $arguments) {
-    if (count($arguments) > 0) {
-        throw new \InvalidArgumentException("Unexpected argument at index 1.");
+    $argumentCount = count($arguments);
+    if ($argumentCount < 1) {
+        throw new \InvalidArgumentException("Missing argument for parameter 'foo'.");
+    } elseif ($argumentCount > 3) {
+        throw new \InvalidArgumentException("Unexpected argument at index 4.");
+    }
+
+    $check = function($argument, $index) {
+        $check = function($value) {
+            return is_string($value);
+        };
+        if (!$check($argument)) {
+            throw new \InvalidArgumentException("Unexpected argument for parameter 'foo' at index ".$index.".");
+        }
+    };
+    $check($arguments[0], 0);
+
+    if ($argumentCount > 1) {
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return is_integer($value);
+            };
+            if (!$check($argument)) {
+                throw new \InvalidArgumentException("Unexpected argument for parameter 'bar' at index ".$index.".");
+            }
+        };
+        $check($arguments[1], 1);
+    }
+
+    if ($argumentCount > 2) {
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return is_float($value);
+            };
+            if (!$check($argument)) {
+                throw new \InvalidArgumentException("Unexpected argument for parameter 'baz' at index ".$index.".");
+            }
+        };
+        $check($arguments[2], 2);
     }
 }
 EOD;
@@ -141,7 +193,8 @@ EOD;
                 ),
                 new Parameter(
                     'baz',
-                    new FloatType
+                    new FloatType,
+                    true
                 ),
             ),
             true
@@ -176,16 +229,32 @@ function(array $arguments) {
     };
     $check($arguments[1], 1);
 
-    $check = function($argument, $index) {
-        $check = function($value) {
-            return is_float($value);
+    if ($argumentCount > 2) {
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return is_float($value);
+            };
+            if (!$check($argument)) {
+                throw new \InvalidArgumentException("Unexpected argument for parameter 'baz' at index ".$index.".");
+            }
         };
-        if (!$check($argument)) {
-            throw new \InvalidArgumentException("Unexpected argument for parameter 'baz' at index ".$index.".");
+        for ($i = 2; $i < $argumentCount; $i ++) {
+            $check($arguments[$i], $i);
         }
-    };
-    for ($i = 2; $i < $argumentCount; $i ++) {
-        $check($arguments[$i], $i);
+    }
+}
+EOD;
+
+        $this->assertSame($expected, $list->accept($this->_compiler));
+    }
+
+    public function testVisitParameterListEmpty()
+    {
+        $list = new ParameterList;
+        $expected = <<<'EOD'
+function(array $arguments) {
+    if (count($arguments) > 0) {
+        throw new \InvalidArgumentException("Unexpected argument at index 1.");
     }
 }
 EOD;

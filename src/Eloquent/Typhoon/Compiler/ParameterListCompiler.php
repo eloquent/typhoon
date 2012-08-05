@@ -78,14 +78,13 @@ EOD
             );
         }
 
-        $mandatoryParameterCount = $parameterCount;
-        if ($parameterList->isVariableLength()) {
-            $mandatoryParameterCount --;
-        }
+        $requiredParameterCount = count(
+            $parameterList->requiredParameters()
+        );
         $parameterCountPlusOne = $parameterCount + 1;
 
         $missingParameterContent = '';
-        for ($i = 1; $i < $mandatoryParameterCount; $i ++) {
+        for ($i = 1; $i < $requiredParameterCount; $i ++) {
             $parameterName = var_export($parameters[$i - 1]->name(), true);
 
             $missingParameterContent .= <<<EOD
@@ -95,7 +94,7 @@ EOD
 
 EOD;
         }
-        $parameterName = var_export($parameters[$mandatoryParameterCount - 1]->name(), true);
+        $parameterName = var_export($parameters[$requiredParameterCount - 1]->name(), true);
         $missingParameterContent .= <<<EOD
     throw new \InvalidArgumentException("Missing argument for parameter $parameterName.");
 EOD;
@@ -121,7 +120,7 @@ EOD;
                 $parameterList->isVariableLength() &&
                 $index === $parameterCount - 1
             ) {
-                $parameterChecks .= <<<EOD
+                $parameterCheck = <<<EOD
 
 \$check = $check;
 for (\$i = $index; \$i < \$argumentCount; \$i ++) {
@@ -129,19 +128,29 @@ for (\$i = $index; \$i < \$argumentCount; \$i ++) {
 }
 EOD;
             } else {
-                $parameterChecks .= <<<EOD
+                $parameterCheck = <<<EOD
 
 \$check = $check;
 \$check(\$arguments[$index], $index);
 EOD;
             }
+
+            if ($parameter->isOptional()) {
+                $parameterCheck = $this->indent($parameterCheck);
+                $parameterCheck = <<<EOD
+
+if (\$argumentCount > $index) {{$parameterCheck}
+}
+EOD;
+            }
+            $parameterChecks .= $parameterCheck;
         }
 
         return $this->createCallback(
             'array $arguments',
             <<<EOD
 \$argumentCount = count(\$arguments);
-if (\$argumentCount < $mandatoryParameterCount) {
+if (\$argumentCount < $requiredParameterCount) {
 $missingParameterContent
 }$maxArgumentLengthCheck
 $parameterChecks
