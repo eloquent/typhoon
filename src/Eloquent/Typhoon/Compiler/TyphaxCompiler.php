@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Eloquent\Typhoon\Typhax;
+namespace Eloquent\Typhoon\Compiler;
 
 use Eloquent\Typhax\Type\AndType;
 use Eloquent\Typhax\Type\ArrayType;

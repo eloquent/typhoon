@@ -32,6 +32,20 @@ class ParameterList
     }
 
     /**
+     * @return Parameter|null
+     */
+    public function parameterByName($name)
+    {
+        foreach ($this->parameters() as $parameter) {
+            if ($parameter->name() === $name) {
+                return $parameter;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * @return boolean
      */
     public function isVariableLength()

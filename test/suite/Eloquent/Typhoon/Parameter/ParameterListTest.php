@@ -40,4 +40,23 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
         $this->assertSame(array(), $list->parameters());
         $this->assertFalse($list->isVariableLength());
     }
+
+    public function testParameterByName()
+    {
+        $parameterFoo = Phake::mock(__NAMESPACE__.'\Parameter');
+        Phake::when($parameterFoo)->name()->thenReturn('foo');
+        $parameterBar = Phake::mock(__NAMESPACE__.'\Parameter');
+        Phake::when($parameterBar)->name()->thenReturn('bar');
+        $parameters = array(
+            $parameterFoo,
+            $parameterBar,
+        );
+        $list = new ParameterList(
+            $parameters
+        );
+
+        $this->assertSame($parameterFoo, $list->parameterByName('foo'));
+        $this->assertSame($parameterBar, $list->parameterByName('bar'));
+        $this->assertNull($list->parameterByName('baz'));
+    }
 }

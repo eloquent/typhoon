@@ -1,11 +1,15 @@
 {
-    "hash": "a4b6490dcab9553b75df00005989d52b",
+    "hash": "c02b02921c3df956d1100589c4228720",
     "packages": [
+        {
+            "package": "eloquent/blox",
+            "version": "1.1.1"
+        },
         {
             "package": "eloquent/typhax",
             "version": "dev-master",
-            "source-reference": "94796fe2d88cbed24cb9a17a7df6ea46cf09b169",
-            "commit-date": "1343990566"
+            "source-reference": "63ed9892bd8c974a1115faab1d39396f7343751b",
+            "commit-date": "1344134434"
         }
     ],
     "packages-dev": [
