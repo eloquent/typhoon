@@ -48,19 +48,24 @@ class TyphaxCompiler implements Visitor
         foreach ($type->types() as $index => $subType) {
             $checks .=
                 '$check'.$index.
-                ' = '.
-                $subType->accept($this).";\n"
+                ' = '.$subType->accept($this).";\n"
             ;
 
             if ($return) {
-                $return .= ' &&';
+                $return .= " &&\n";
             }
             $return .=
-                "\n".
-                '    $check'.$index.
-                '($value)'
+                '    $check'.$index.'($value)'
             ;
         }
+        $return .= "\n";
+
+        return $this->createCallback(<<<EOD
+$checks
+return
+$return;
+EOD
+        );
 
         return $this->createCallback(
             $checks."\n".
@@ -187,6 +192,9 @@ class TyphaxCompiler implements Visitor
 
         $content = '';
         foreach ($type->types() as $subType) {
+            if ($content) {
+                $content .= "\n";
+            }
             $content .=
                 '$check'.
                 ' = '.
@@ -195,9 +203,15 @@ class TyphaxCompiler implements Visitor
             $content .=
                 'if ($check($value)) {'."\n".
                 '    return true;'."\n".
-                "}\n\n"
+                "}\n"
             ;
         }
+
+        return $this->createCallback(<<<EOD
+$content
+return false;
+EOD
+        );
 
         return $this->createCallback(
             $content.
@@ -246,27 +260,18 @@ class TyphaxCompiler implements Visitor
      */
     public function visitTraversableType(TraversableType $type)
     {
-        $primaryCheck =
-            '$primaryCheck = '.
-            $type->primaryType()->accept($this).';'
-        ;
-        $keyCheck =
-            '$keyCheck = '.
-            $type->keyType()->accept($this).';'
-        ;
-        $valueCheck =
-            '$valueCheck = '.
-            $type->valueType()->accept($this).';'
-        ;
+        $primaryCheck = $type->primaryType()->accept($this);
+        $keyCheck = $type->keyType()->accept($this);
+        $valueCheck = $type->valueType()->accept($this);
 
         return $this->createCallback(<<<EOD
-$primaryCheck
+\$primaryCheck = $primaryCheck;
 if (!\$primaryCheck(\$value)) {
     return false;
 }
 
-$keyCheck
-$valueCheck
+\$keyCheck = $keyCheck;
+\$valueCheck = $valueCheck;
 foreach (\$value as \$key => \$subValue) {
     if (!\$keyCheck(\$key)) {
         return false;
@@ -312,14 +317,11 @@ EOD
             ;
 
             if ($return) {
-                $return .= ' &&';
+                $return .= " &&\n";
             }
-            $return .=
-                "\n".
-                '    $check'.$index.
-                '($value['.$index.'])'
-            ;
+            $return .= '    $check'.$index.'($value['.$index.'])';
         }
+        $return .= "\n";
 
         return $this->createCallback(<<<EOD
 if (
@@ -330,8 +332,8 @@ if (
 }
 
 $checks
-return$return
-;
+return
+$return;
 EOD
         );
     }

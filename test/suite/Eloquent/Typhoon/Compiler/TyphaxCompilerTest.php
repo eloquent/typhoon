@@ -62,10 +62,10 @@ function($value) {
         return $value instanceof Bar;
     };
 
-    return (
+    return
         $check0($value) &&
         $check1($value)
-    );
+    ;
 }
 EOD;
 
@@ -697,4 +697,3 @@ EOD;
         $this->assertFalse($validator(stream_context_create()));
     }
 }
-
