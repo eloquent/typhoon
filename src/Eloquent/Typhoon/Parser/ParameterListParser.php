@@ -79,7 +79,7 @@ class ParameterListParser implements Visitor
             $parameters[] = $paramTag->accept($this);
             if ($index === $lastIndex) {
                 $variableLength = preg_match(
-                    '/^.*\s\$\w+,\.{3}\s/',
+                    static::PATTERN_VARIABLE_LENGTH,
                     $paramTag->content()
                 );
             }
@@ -108,13 +108,19 @@ class ParameterListParser implements Visitor
             $documentationTag->content(),
             $position
         );
+        $optional = $this->parseOptional(
+            $documentationTag->content()
+        );
 
         return new Parameter(
             $name,
             $type,
+            $optional,
             $description
         );
     }
+
+    const PATTERN_VARIABLE_LENGTH = '/^.*\s\$\w+,\.{3}\s/';
 
     /**
      * @param string $content
@@ -170,6 +176,20 @@ class ParameterListParser implements Visitor
             true,
             'description'
         );
+    }
+
+    /**
+     * @param string $content
+     *
+     * @return boolean
+     */
+    protected function parseOptional($content)
+    {
+        if (preg_match(static::PATTERN_VARIABLE_LENGTH, $content)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

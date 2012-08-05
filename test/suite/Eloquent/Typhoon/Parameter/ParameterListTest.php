@@ -11,15 +11,15 @@
 
 namespace Eloquent\Typhoon\Parameter;
 
-use Phake;
+use Eloquent\Typhax\Type\MixedType;
 use PHPUnit_Framework_TestCase;
 
 class ParameterListTest extends PHPUnit_Framework_TestCase
 {
     public function testParameterList()
     {
-        $parameterFoo = Phake::mock(__NAMESPACE__.'\Parameter');
-        $parameterBar = Phake::mock(__NAMESPACE__.'\Parameter');
+        $parameterFoo = new Parameter('foo', new MixedType);
+        $parameterBar = new Parameter('bar', new MixedType);
         $parameters = array(
             $parameterFoo,
             $parameterBar,
@@ -43,10 +43,8 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
 
     public function testParameterByName()
     {
-        $parameterFoo = Phake::mock(__NAMESPACE__.'\Parameter');
-        Phake::when($parameterFoo)->name()->thenReturn('foo');
-        $parameterBar = Phake::mock(__NAMESPACE__.'\Parameter');
-        Phake::when($parameterBar)->name()->thenReturn('bar');
+        $parameterFoo = new Parameter('foo', new MixedType);
+        $parameterBar = new Parameter('bar', new MixedType);
         $parameters = array(
             $parameterFoo,
             $parameterBar,
@@ -58,5 +56,26 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
         $this->assertSame($parameterFoo, $list->parameterByName('foo'));
         $this->assertSame($parameterBar, $list->parameterByName('bar'));
         $this->assertNull($list->parameterByName('baz'));
+    }
+
+    public function testRequiredParameters()
+    {
+        $parameterFoo = new Parameter('foo', new MixedType);
+        $parameterBar = new Parameter('bar', new MixedType, true);
+        $parameterBaz = new Parameter('baz', new MixedType);
+        $parameterQux = new Parameter('qux', new MixedType, true);
+        $list = new ParameterList(array(
+            $parameterFoo,
+            $parameterBar,
+            $parameterBaz,
+            $parameterQux,
+        ));
+        $expected = array(
+            $parameterFoo,
+            $parameterBar,
+            $parameterBaz,
+        );
+
+        $this->assertSame($expected, $list->requiredParameters());
     }
 }

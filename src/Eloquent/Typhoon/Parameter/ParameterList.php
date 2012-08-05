@@ -55,6 +55,30 @@ class ParameterList extends Host
         return $this->variableLength;
     }
 
+    /**
+     * @return array<Parameter>
+     */
+    public function requiredParameters()
+    {
+        $requiredParameters = array();
+        $parameters = $this->parameters();
+        $numberOfParameters = count($parameters);
+        $requiredEncountered = false;
+
+        for ($i = $numberOfParameters - 1; $i >= 0; $i --) {
+            $requiredEncountered =
+                $requiredEncountered ||
+                !$parameters[$i]->isOptional()
+            ;
+
+            if ($requiredEncountered) {
+                $requiredParameters[] = $parameters[$i];
+            }
+        }
+
+        return array_reverse($requiredParameters);
+    }
+
     private $parameters;
     private $variableLength;
 }
