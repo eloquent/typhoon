@@ -20,10 +20,13 @@ use Eloquent\Typhax\Type\FloatType;
 use Eloquent\Typhax\Type\IntegerType;
 use Eloquent\Typhax\Type\MixedType;
 use Eloquent\Typhax\Type\NullType;
+use Eloquent\Typhax\Type\NumericType;
 use Eloquent\Typhax\Type\ObjectType;
 use Eloquent\Typhax\Type\OrType;
 use Eloquent\Typhax\Type\ResourceType;
+use Eloquent\Typhax\Type\StreamType;
 use Eloquent\Typhax\Type\StringType;
+use Eloquent\Typhax\Type\StringableType;
 use Eloquent\Typhax\Type\TraversableType;
 use Eloquent\Typhax\Type\TupleType;
 use Eloquent\Typhax\Type\Visitor;
@@ -160,6 +163,18 @@ EOD
     }
 
     /**
+     * @param NumericType
+     *
+     * @return string
+     */
+    public function visitNumericType(NumericType $type)
+    {
+        return $this->createCallback(
+            'return is_numeric($value);'
+        );
+    }
+
+    /**
      * @param ObjectType
      *
      * @return string
@@ -168,7 +183,7 @@ EOD
     {
         if (null !== $type->ofType()) {
             return $this->createCallback(
-                'return $value instanceof '.$type->ofType().';'
+                'return $value instanceof \\'.$type->ofType().';'
             );
         }
 
@@ -242,6 +257,94 @@ EOD
     }
 
     /**
+     * @param StreamType
+     *
+     * @return string
+     */
+    public function visitStreamType(StreamType $type)
+    {
+        $readableCheck = null;
+        if (null !== $type->readable()) {
+            if ($type->readable()) {
+                $condition = <<<'EOD'
+    false === strpos($streamMetaData['mode'], 'r') &&
+    false === strpos($streamMetaData['mode'], '+')
+EOD;
+            } else {
+                $condition = <<<'EOD'
+    false !== strpos($streamMetaData['mode'], 'r') ||
+    false !== strpos($streamMetaData['mode'], '+')
+EOD;
+            }
+
+            $readableCheck = <<<EOD
+
+if (
+$condition
+) {
+    return false;
+}
+
+EOD;
+        }
+
+        $writableCheck = null;
+        if (null !== $type->writable()) {
+            if ($type->writable()) {
+                $condition = <<<'EOD'
+    false === strpos($streamMetaData['mode'], 'w') &&
+    false === strpos($streamMetaData['mode'], 'a') &&
+    false === strpos($streamMetaData['mode'], 'x') &&
+    false === strpos($streamMetaData['mode'], 'c') &&
+    false === strpos($streamMetaData['mode'], '+')
+EOD;
+            } else {
+                $condition = <<<'EOD'
+    false !== strpos($streamMetaData['mode'], 'w') ||
+    false !== strpos($streamMetaData['mode'], 'a') ||
+    false !== strpos($streamMetaData['mode'], 'x') ||
+    false !== strpos($streamMetaData['mode'], 'c') ||
+    false !== strpos($streamMetaData['mode'], '+')
+EOD;
+            }
+
+            $writableCheck = <<<EOD
+
+if (
+$condition
+) {
+    return false;
+}
+
+EOD;
+        }
+
+        $fetchStreamMetaData = '';
+        if (
+            null !== $readableCheck ||
+            null !== $writableCheck
+        ) {
+            $fetchStreamMetaData = <<<'EOD'
+
+$streamMetaData = stream_get_meta_data($value);
+
+EOD;
+        }
+
+        return $this->createCallback(<<<EOD
+if (
+    !is_resource(\$value) ||
+    'stream' !== get_resource_type(\$value)
+) {
+    return false;
+}
+$fetchStreamMetaData$readableCheck$writableCheck
+return true;
+EOD
+        );
+    }
+
+    /**
      * @param StringType
      *
      * @return string
@@ -250,6 +353,33 @@ EOD
     {
         return $this->createCallback(
             'return is_string($value);'
+        );
+    }
+
+    /**
+     * @param StringableType
+     *
+     * @return string
+     */
+    public function visitStringableType(StringableType $type)
+    {
+        return $this->createCallback(<<<'EOD'
+if (
+    is_string($value) ||
+    is_integer($value) ||
+    is_float($value)
+) {
+    return true;
+}
+
+if (!is_object($value)) {
+    return false;
+}
+
+$reflector = new \ReflectionObject($value);
+
+return $reflector->hasMethod('__toString');
+EOD
         );
     }
 

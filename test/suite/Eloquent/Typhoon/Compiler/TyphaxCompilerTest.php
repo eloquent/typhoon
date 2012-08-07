@@ -16,14 +16,18 @@ use Eloquent\Typhax\Type\AndType;
 use Eloquent\Typhax\Type\ArrayType;
 use Eloquent\Typhax\Type\BooleanType;
 use Eloquent\Typhax\Type\CallableType;
+use Eloquent\Typhax\Type\CompositeType;
 use Eloquent\Typhax\Type\FloatType;
 use Eloquent\Typhax\Type\IntegerType;
 use Eloquent\Typhax\Type\MixedType;
 use Eloquent\Typhax\Type\NullType;
+use Eloquent\Typhax\Type\NumericType;
 use Eloquent\Typhax\Type\ObjectType;
 use Eloquent\Typhax\Type\OrType;
 use Eloquent\Typhax\Type\ResourceType;
+use Eloquent\Typhax\Type\StreamType;
 use Eloquent\Typhax\Type\StringType;
+use Eloquent\Typhax\Type\StringableType;
 use Eloquent\Typhax\Type\TraversableType;
 use Eloquent\Typhax\Type\TupleType;
 use Eloquent\Typhax\Type\Type;
@@ -38,6 +42,20 @@ class TyphaxCompilerTest extends PHPUnit_Framework_TestCase
         parent::setUp();
 
         $this->_compiler = new TyphaxCompiler;
+        $this->_streams = array();
+        $this->_files = array();
+    }
+
+    protected function tearDown()
+    {
+        parent::tearDown();
+
+        foreach ($this->_streams as $stream) {
+            fclose($stream);
+        }
+        foreach ($this->_files as $file) {
+            unlink($file);
+        }
     }
 
     protected function validatorFixture(Type $type)
@@ -45,6 +63,14 @@ class TyphaxCompilerTest extends PHPUnit_Framework_TestCase
         eval('$check = '.$type->accept($this->_compiler).';');
 
         return $check;
+    }
+
+    protected function streamFixture($mode) {
+        $this->_files[] = $file = $path = sys_get_temp_dir().'/'.uniqid('typhoon-');
+        touch($file);
+        $this->_streams[] = $stream = fopen($file, $mode);
+
+        return $stream;
     }
 
     public function testVisitAndType()
@@ -56,10 +82,10 @@ class TyphaxCompilerTest extends PHPUnit_Framework_TestCase
         $expected = <<<'EOD'
 function($value) {
     $check0 = function($value) {
-        return $value instanceof Foo;
+        return $value instanceof \Foo;
     };
     $check1 = function($value) {
-        return $value instanceof Bar;
+        return $value instanceof \Bar;
     };
 
     return
@@ -304,6 +330,38 @@ EOD;
         $this->assertFalse($validator(stream_context_create()));
     }
 
+    public function testVisitNumericType()
+    {
+        $type = new NumericType;
+        $expected = <<<'EOD'
+function($value) {
+    return is_numeric($value);
+}
+EOD;
+
+        $this->assertSame($expected, $type->accept($this->_compiler));
+    }
+
+    public function testVisitNumericTypeLogic()
+    {
+        $validator = $this->validatorFixture(new NumericType);
+
+        $this->assertTrue($validator(111));
+        $this->assertTrue($validator(1.11));
+        $this->assertTrue($validator('111'));
+        $this->assertTrue($validator('1.11'));
+        $this->assertTrue($validator('+0123.45e6'));
+        $this->assertTrue($validator('0xFF'));
+
+        $this->assertFalse($validator(true));
+        $this->assertFalse($validator(false));
+        $this->assertFalse($validator(null));
+        $this->assertFalse($validator('foo'));
+        $this->assertFalse($validator(array()));
+        $this->assertFalse($validator(new stdClass));
+        $this->assertFalse($validator(stream_context_create()));
+    }
+
     public function testVisitObjectType()
     {
         $type = new ObjectType;
@@ -321,7 +379,7 @@ EOD;
         $type = new ObjectType('Foo\Bar\Baz');
         $expected = <<<'EOD'
 function($value) {
-    return $value instanceof Foo\Bar\Baz;
+    return $value instanceof \Foo\Bar\Baz;
 }
 EOD;
 
@@ -391,14 +449,14 @@ EOD;
         $expected = <<<'EOD'
 function($value) {
     $check = function($value) {
-        return $value instanceof Foo;
+        return $value instanceof \Foo;
     };
     if ($check($value)) {
         return true;
     }
 
     $check = function($value) {
-        return $value instanceof Bar;
+        return $value instanceof \Bar;
     };
     if ($check($value)) {
         return true;
@@ -509,6 +567,306 @@ EOD;
         $this->assertFalse($validator(stream_context_create()));
     }
 
+    public function testVisitStreamType()
+    {
+        $type = new StreamType;
+        $expected = <<<'EOD'
+function($value) {
+    if (
+        !is_resource($value) ||
+        'stream' !== get_resource_type($value)
+    ) {
+        return false;
+    }
+
+    return true;
+}
+EOD;
+
+        $this->assertSame($expected, $type->accept($this->_compiler));
+    }
+
+    public function testVisitStreamTypeReadable()
+    {
+        $type = new StreamType(true);
+        $expected = <<<'EOD'
+function($value) {
+    if (
+        !is_resource($value) ||
+        'stream' !== get_resource_type($value)
+    ) {
+        return false;
+    }
+
+    $streamMetaData = stream_get_meta_data($value);
+
+    if (
+        false === strpos($streamMetaData['mode'], 'r') &&
+        false === strpos($streamMetaData['mode'], '+')
+    ) {
+        return false;
+    }
+
+    return true;
+}
+EOD;
+
+        $this->assertSame($expected, $type->accept($this->_compiler));
+    }
+
+    public function testVisitStreamTypeNotReadable()
+    {
+        $type = new StreamType(false);
+        $expected = <<<'EOD'
+function($value) {
+    if (
+        !is_resource($value) ||
+        'stream' !== get_resource_type($value)
+    ) {
+        return false;
+    }
+
+    $streamMetaData = stream_get_meta_data($value);
+
+    if (
+        false !== strpos($streamMetaData['mode'], 'r') ||
+        false !== strpos($streamMetaData['mode'], '+')
+    ) {
+        return false;
+    }
+
+    return true;
+}
+EOD;
+
+        $this->assertSame($expected, $type->accept($this->_compiler));
+    }
+
+    public function testVisitStreamTypeWritable()
+    {
+        $type = new StreamType(null, true);
+        $expected = <<<'EOD'
+function($value) {
+    if (
+        !is_resource($value) ||
+        'stream' !== get_resource_type($value)
+    ) {
+        return false;
+    }
+
+    $streamMetaData = stream_get_meta_data($value);
+
+    if (
+        false === strpos($streamMetaData['mode'], 'w') &&
+        false === strpos($streamMetaData['mode'], 'a') &&
+        false === strpos($streamMetaData['mode'], 'x') &&
+        false === strpos($streamMetaData['mode'], 'c') &&
+        false === strpos($streamMetaData['mode'], '+')
+    ) {
+        return false;
+    }
+
+    return true;
+}
+EOD;
+
+        $this->assertSame($expected, $type->accept($this->_compiler));
+    }
+
+    public function testVisitStreamTypeNotWritable()
+    {
+        $type = new StreamType(null, false);
+        $expected = <<<'EOD'
+function($value) {
+    if (
+        !is_resource($value) ||
+        'stream' !== get_resource_type($value)
+    ) {
+        return false;
+    }
+
+    $streamMetaData = stream_get_meta_data($value);
+
+    if (
+        false !== strpos($streamMetaData['mode'], 'w') ||
+        false !== strpos($streamMetaData['mode'], 'a') ||
+        false !== strpos($streamMetaData['mode'], 'x') ||
+        false !== strpos($streamMetaData['mode'], 'c') ||
+        false !== strpos($streamMetaData['mode'], '+')
+    ) {
+        return false;
+    }
+
+    return true;
+}
+EOD;
+
+        $this->assertSame($expected, $type->accept($this->_compiler));
+    }
+
+    public function testVisitStreamTypeReadWrite()
+    {
+        $type = new StreamType(true, true);
+        $expected = <<<'EOD'
+function($value) {
+    if (
+        !is_resource($value) ||
+        'stream' !== get_resource_type($value)
+    ) {
+        return false;
+    }
+
+    $streamMetaData = stream_get_meta_data($value);
+
+    if (
+        false === strpos($streamMetaData['mode'], 'r') &&
+        false === strpos($streamMetaData['mode'], '+')
+    ) {
+        return false;
+    }
+
+    if (
+        false === strpos($streamMetaData['mode'], 'w') &&
+        false === strpos($streamMetaData['mode'], 'a') &&
+        false === strpos($streamMetaData['mode'], 'x') &&
+        false === strpos($streamMetaData['mode'], 'c') &&
+        false === strpos($streamMetaData['mode'], '+')
+    ) {
+        return false;
+    }
+
+    return true;
+}
+EOD;
+
+        $this->assertSame($expected, $type->accept($this->_compiler));
+    }
+
+    public function testVisitStreamTypeLogic()
+    {
+        $validator = $this->validatorFixture(new StreamType);
+        $stream = $this->streamFixture('rb');
+
+        $this->assertTrue($validator($stream));
+
+        $this->assertFalse($validator(true));
+        $this->assertFalse($validator(false));
+        $this->assertFalse($validator(null));
+        $this->assertFalse($validator(111));
+        $this->assertFalse($validator(1.11));
+        $this->assertFalse($validator('foo'));
+        $this->assertFalse($validator(array()));
+        $this->assertFalse($validator(new stdClass));
+        $this->assertFalse($validator(stream_context_create()));
+    }
+
+    public function testVisitStreamTypeReadableLogic()
+    {
+        $validator = $this->validatorFixture(new StreamType(true));
+
+        $readableStream = $this->streamFixture('rb');
+        $nonReadableStream = $this->streamFixture('wb');
+
+        $this->assertTrue($validator($readableStream));
+
+        $this->assertFalse($validator($nonReadableStream));
+        $this->assertFalse($validator(true));
+        $this->assertFalse($validator(false));
+        $this->assertFalse($validator(null));
+        $this->assertFalse($validator(111));
+        $this->assertFalse($validator(1.11));
+        $this->assertFalse($validator('foo'));
+        $this->assertFalse($validator(array()));
+        $this->assertFalse($validator(new stdClass));
+        $this->assertFalse($validator(stream_context_create()));
+    }
+
+    public function testVisitStreamTypeNotReadableLogic()
+    {
+        $validator = $this->validatorFixture(new StreamType(false));
+
+        $readableStream = $this->streamFixture('rb');
+        $nonReadableStream = $this->streamFixture('wb');
+
+        $this->assertTrue($validator($nonReadableStream));
+
+        $this->assertFalse($validator($readableStream));
+        $this->assertFalse($validator(true));
+        $this->assertFalse($validator(false));
+        $this->assertFalse($validator(null));
+        $this->assertFalse($validator(111));
+        $this->assertFalse($validator(1.11));
+        $this->assertFalse($validator('foo'));
+        $this->assertFalse($validator(array()));
+        $this->assertFalse($validator(new stdClass));
+        $this->assertFalse($validator(stream_context_create()));
+    }
+
+    public function testVisitStreamTypeWritableLogic()
+    {
+        $validator = $this->validatorFixture(new StreamType(null, true));
+
+        $writableStream = $this->streamFixture('wb');
+        $nonWritableStream = $this->streamFixture('rb');
+
+        $this->assertTrue($validator($writableStream));
+
+        $this->assertFalse($validator($nonWritableStream));
+        $this->assertFalse($validator(true));
+        $this->assertFalse($validator(false));
+        $this->assertFalse($validator(null));
+        $this->assertFalse($validator(111));
+        $this->assertFalse($validator(1.11));
+        $this->assertFalse($validator('foo'));
+        $this->assertFalse($validator(array()));
+        $this->assertFalse($validator(new stdClass));
+        $this->assertFalse($validator(stream_context_create()));
+    }
+
+    public function testVisitStreamTypeNotWritableLogic()
+    {
+        $validator = $this->validatorFixture(new StreamType(null, false));
+
+        $writableStream = $this->streamFixture('wb');
+        $nonWritableStream = $this->streamFixture('rb');
+
+        $this->assertTrue($validator($nonWritableStream));
+
+        $this->assertFalse($validator($writableStream));
+        $this->assertFalse($validator(true));
+        $this->assertFalse($validator(false));
+        $this->assertFalse($validator(null));
+        $this->assertFalse($validator(111));
+        $this->assertFalse($validator(1.11));
+        $this->assertFalse($validator('foo'));
+        $this->assertFalse($validator(array()));
+        $this->assertFalse($validator(new stdClass));
+        $this->assertFalse($validator(stream_context_create()));
+    }
+
+    public function testVisitStreamTypeReadWriteLogic()
+    {
+        $validator = $this->validatorFixture(new StreamType(true, true));
+
+        $readWriteStream = $this->streamFixture('r+');
+        $nonReadableStream = $this->streamFixture('wb');
+        $nonWritableStream = $this->streamFixture('rb');
+
+        $this->assertTrue($validator($readWriteStream));
+
+        $this->assertFalse($validator($nonReadableStream));
+        $this->assertFalse($validator($nonWritableStream));
+        $this->assertFalse($validator(true));
+        $this->assertFalse($validator(false));
+        $this->assertFalse($validator(null));
+        $this->assertFalse($validator(111));
+        $this->assertFalse($validator(1.11));
+        $this->assertFalse($validator('foo'));
+        $this->assertFalse($validator(array()));
+        $this->assertFalse($validator(new stdClass));
+        $this->assertFalse($validator(stream_context_create()));
+    }
+
     public function testVisitStringType()
     {
         $type = new StringType;
@@ -532,6 +890,49 @@ EOD;
         $this->assertFalse($validator(null));
         $this->assertFalse($validator(111));
         $this->assertFalse($validator(1.11));
+        $this->assertFalse($validator(array()));
+        $this->assertFalse($validator(new stdClass));
+        $this->assertFalse($validator(stream_context_create()));
+    }
+
+    public function testVisitStringableType()
+    {
+        $type = new StringableType;
+        $expected = <<<'EOD'
+function($value) {
+    if (
+        is_string($value) ||
+        is_integer($value) ||
+        is_float($value)
+    ) {
+        return true;
+    }
+
+    if (!is_object($value)) {
+        return false;
+    }
+
+    $reflector = new \ReflectionObject($value);
+
+    return $reflector->hasMethod('__toString');
+}
+EOD;
+
+        $this->assertSame($expected, $type->accept($this->_compiler));
+    }
+
+    public function testVisitStringableTypeLogic()
+    {
+        $validator = $this->validatorFixture(new StringableType);
+
+        $this->assertTrue($validator('foo'));
+        $this->assertTrue($validator(111));
+        $this->assertTrue($validator(1.11));
+        $this->assertTrue($validator(Phake::mock('SplFileInfo')));
+
+        $this->assertFalse($validator(true));
+        $this->assertFalse($validator(false));
+        $this->assertFalse($validator(null));
         $this->assertFalse($validator(array()));
         $this->assertFalse($validator(new stdClass));
         $this->assertFalse($validator(stream_context_create()));

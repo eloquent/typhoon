@@ -12,8 +12,8 @@
         {
             "package": "eloquent/typhax",
             "version": "dev-master",
-            "source-reference": "64d6d69b7247636a6536b2191bdc05c47ea0068b",
-            "commit-date": "1344335005"
+            "source-reference": "afa8dd69fca4de84f1b3b6632414e5d8c44204bc",
+            "commit-date": "1344339547"
         },
         {
             "package": "icecave/visita",
