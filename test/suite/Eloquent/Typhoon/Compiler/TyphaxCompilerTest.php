@@ -15,7 +15,7 @@ use ArrayIterator;
 use Eloquent\Typhax\Type\AndType;
 use Eloquent\Typhax\Type\ArrayType;
 use Eloquent\Typhax\Type\BooleanType;
-use Eloquent\Typhax\Type\CallbackType;
+use Eloquent\Typhax\Type\CallableType;
 use Eloquent\Typhax\Type\FloatType;
 use Eloquent\Typhax\Type\IntegerType;
 use Eloquent\Typhax\Type\MixedType;
@@ -163,9 +163,9 @@ EOD;
         $this->assertFalse($validator(stream_context_create()));
     }
 
-    public function testVisitCallbackType()
+    public function testVisitCallableType()
     {
-        $type = new CallbackType;
+        $type = new CallableType;
         $expected = <<<'EOD'
 function($value) {
     return is_callable($value);
@@ -175,9 +175,9 @@ EOD;
         $this->assertSame($expected, $type->accept($this->_compiler));
     }
 
-    public function testVisitCallbackTypeLogic()
+    public function testVisitCallableTypeLogic()
     {
-        $validator = $this->validatorFixture(new CallbackType);
+        $validator = $this->validatorFixture(new CallableType);
 
         $this->assertTrue($validator(function() {}));
         $this->assertTrue($validator('substr'));

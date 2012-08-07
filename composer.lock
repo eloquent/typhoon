@@ -7,13 +7,13 @@
         },
         {
             "package": "eloquent/cosmos",
-            "version": "1.0.0"
+            "version": "1.0.1"
         },
         {
             "package": "eloquent/typhax",
             "version": "dev-master",
-            "source-reference": "58eef45546195a4dbd5fd0d326676b3320a186d5",
-            "commit-date": "1344151655"
+            "source-reference": "64d6d69b7247636a6536b2191bdc05c47ea0068b",
+            "commit-date": "1344335005"
         },
         {
             "package": "icecave/visita",

@@ -14,7 +14,7 @@ namespace Eloquent\Typhoon\Compiler;
 use Eloquent\Typhax\Type\AndType;
 use Eloquent\Typhax\Type\ArrayType;
 use Eloquent\Typhax\Type\BooleanType;
-use Eloquent\Typhax\Type\CallbackType;
+use Eloquent\Typhax\Type\CallableType;
 use Eloquent\Typhax\Type\CompositeType;
 use Eloquent\Typhax\Type\FloatType;
 use Eloquent\Typhax\Type\IntegerType;
@@ -100,11 +100,11 @@ EOD
     }
 
     /**
-     * @param CallbackType
+     * @param CallableType
      *
      * @return string
      */
-    public function visitCallbackType(CallbackType $type)
+    public function visitCallableType(CallableType $type)
     {
         return $this->createCallback(
             'return is_callable($value);'
