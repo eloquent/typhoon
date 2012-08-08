@@ -27,6 +27,13 @@ class ParameterListCompilerTest extends PHPUnit_Framework_TestCase
         $this->_compiler = new ParameterListCompiler;
     }
 
+    protected function validatorFixture(ParameterList $parameterList)
+    {
+        eval('$check = '.$parameterList->accept($this->_compiler).';');
+
+        return $check;
+    }
+
     public function testVisitParameter()
     {
         $parameter = new Parameter(
@@ -260,5 +267,269 @@ function(array $arguments) {
 EOD;
 
         $this->assertSame($expected, $list->accept($this->_compiler));
+    }
+
+    public function testVisitParameterListLogic()
+    {
+        $validatorFixture = $this->validatorFixture(new ParameterList(array(
+            new Parameter(
+                'foo',
+                new StringType
+            ),
+            new Parameter(
+                'bar',
+                new IntegerType
+            ),
+            new Parameter(
+                'baz',
+                new FloatType
+            ),
+        )));
+
+        $this->assertNull($validatorFixture(array('foo', 111, 1.11)));
+        $this->assertNull($validatorFixture(array('bar', 222, 2.22)));
+    }
+
+    public function testVisitParameterListLogicOptional()
+    {
+        $validatorFixture = $this->validatorFixture(new ParameterList(array(
+            new Parameter(
+                'foo',
+                new StringType
+            ),
+            new Parameter(
+                'bar',
+                new IntegerType,
+                true
+            ),
+            new Parameter(
+                'baz',
+                new FloatType,
+                true
+            ),
+        )));
+
+        $this->assertNull($validatorFixture(array('foo')));
+        $this->assertNull($validatorFixture(array('bar')));
+    }
+
+    public function testVisitParameterListLogicVariableLength()
+    {
+        $validatorFixture = $this->validatorFixture(new ParameterList(
+            array(
+                new Parameter(
+                    'foo',
+                    new StringType
+                ),
+                new Parameter(
+                    'bar',
+                    new IntegerType
+                ),
+                new Parameter(
+                    'baz',
+                    new FloatType,
+                    true
+                ),
+            ),
+            true
+        ));
+
+        $this->assertNull($validatorFixture(array('foo', 111, 1.11, 2.22, 3.33, 4.44, 5.55)));
+        $this->assertNull($validatorFixture(array('bar', 222, 6.66, 7.77, 8.88, 9.99)));
+        $this->assertNull($validatorFixture(array('baz', 333)));
+    }
+
+    public function testVisitParameterListLogicEmpty()
+    {
+        $validatorFixture = $this->validatorFixture(new ParameterList);
+
+        $this->assertNull($validatorFixture(array()));
+        $this->assertNull($validatorFixture(array()));
+    }
+
+    public function parameterListLogicFailureData()
+    {
+        $data = array();
+
+        // #0: Not enough arguments
+        $list = new ParameterList(array(
+            new Parameter(
+                'foo',
+                new StringType
+            ),
+            new Parameter(
+                'bar',
+                new IntegerType
+            ),
+            new Parameter(
+                'baz',
+                new FloatType
+            ),
+        ));
+        $arguments = array('foo', 111);
+        $expected = 'InvalidArgumentException';
+        $expectedMessage = "Missing argument for parameter 'baz'.";
+        $data[] = array($expected, $expectedMessage, $list, $arguments);
+
+        // #1: Not enough arguments
+        $list = new ParameterList(array(
+            new Parameter(
+                'foo',
+                new StringType
+            ),
+            new Parameter(
+                'bar',
+                new IntegerType
+            ),
+            new Parameter(
+                'baz',
+                new FloatType
+            ),
+        ));
+        $arguments = array('foo');
+        $expected = 'InvalidArgumentException';
+        $expectedMessage = "Missing argument for parameter 'bar'.";
+        $data[] = array($expected, $expectedMessage, $list, $arguments);
+
+        // #2: Not enough arguments
+        $list = new ParameterList(array(
+            new Parameter(
+                'foo',
+                new StringType
+            ),
+            new Parameter(
+                'bar',
+                new IntegerType
+            ),
+            new Parameter(
+                'baz',
+                new FloatType
+            ),
+        ));
+        $arguments = array();
+        $expected = 'InvalidArgumentException';
+        $expectedMessage = "Missing argument for parameter 'foo'.";
+        $data[] = array($expected, $expectedMessage, $list, $arguments);
+
+        // #3: Too many arguments
+        $list = new ParameterList(array(
+            new Parameter(
+                'foo',
+                new StringType
+            ),
+            new Parameter(
+                'bar',
+                new IntegerType
+            ),
+            new Parameter(
+                'baz',
+                new FloatType
+            ),
+        ));
+        $arguments = array('foo', 111, 1.11, 2.22);
+        $expected = 'InvalidArgumentException';
+        $expectedMessage = "Unexpected argument at index 4.";
+        $data[] = array($expected, $expectedMessage, $list, $arguments);
+
+        // #4: Type mismatch
+        $list = new ParameterList(array(
+            new Parameter(
+                'foo',
+                new StringType
+            ),
+            new Parameter(
+                'bar',
+                new IntegerType
+            ),
+            new Parameter(
+                'baz',
+                new FloatType
+            ),
+        ));
+        $arguments = array('foo', 111, 'bar');
+        $expected = 'InvalidArgumentException';
+        $expectedMessage = "Unexpected argument for parameter 'baz' at index 2.";
+        $data[] = array($expected, $expectedMessage, $list, $arguments);
+
+        // #5: Type mismatch
+        $list = new ParameterList(array(
+            new Parameter(
+                'foo',
+                new StringType
+            ),
+            new Parameter(
+                'bar',
+                new IntegerType
+            ),
+            new Parameter(
+                'baz',
+                new FloatType
+            ),
+        ));
+        $arguments = array('foo', 'bar', 'baz');
+        $expected = 'InvalidArgumentException';
+        $expectedMessage = "Unexpected argument for parameter 'bar' at index 1.";
+        $data[] = array($expected, $expectedMessage, $list, $arguments);
+
+        // #6: Type mismatch
+        $list = new ParameterList(array(
+            new Parameter(
+                'foo',
+                new StringType
+            ),
+            new Parameter(
+                'bar',
+                new IntegerType
+            ),
+            new Parameter(
+                'baz',
+                new FloatType
+            ),
+        ));
+        $arguments = array(111, 'bar', 'baz');
+        $expected = 'InvalidArgumentException';
+        $expectedMessage = "Unexpected argument for parameter 'foo' at index 0.";
+        $data[] = array($expected, $expectedMessage, $list, $arguments);
+
+        // #7: Type mismatch - variable length
+        $list = new ParameterList(
+            array(
+                new Parameter(
+                    'foo',
+                    new StringType
+                ),
+                new Parameter(
+                    'bar',
+                    new IntegerType
+                ),
+                new Parameter(
+                    'baz',
+                    new FloatType,
+                    true
+                ),
+            ),
+            true
+        );
+        $arguments = array('foo', 111, 1.11, 2.22, 'bar', 3.33);
+        $expected = 'InvalidArgumentException';
+        $expectedMessage = "Unexpected argument for parameter 'baz' at index 4.";
+        $data[] = array($expected, $expectedMessage, $list, $arguments);
+
+        return $data;
+    }
+
+    /**
+     * @dataProvider parameterListLogicFailureData
+     */
+    public function testVisitParameterListLogicFailure(
+        $expected,
+        $expectedMessage,
+        ParameterList $list,
+        array $arguments
+    ) {
+        $validatorFixture = $this->validatorFixture($list);
+
+        $this->setExpectedException($expected, $expectedMessage);
+        $validatorFixture($arguments);
     }
 }
