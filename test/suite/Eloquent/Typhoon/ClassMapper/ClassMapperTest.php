@@ -46,27 +46,33 @@ class ClassMapperTest extends PHPUnit_Framework_TestCase
             $this->fileInfoFixture('baz'),
         ));
         Phake::when($this->_mapper)->fileIterator(Phake::anyParameters())->thenReturn($iterator);
+        $fooOneDefinition = new ClassDefinition('FooOne');
+        $fooTwoDefinition = new ClassDefinition('FooTwo');
+        $barOneDefinition = new ClassDefinition('BarOne');
+        $barTwoDefinition = new ClassDefinition('BarTwo');
+        $bazOneDefinition = new ClassDefinition('BazOne');
+        $bazTwoDefinition = new ClassDefinition('BazTwo');
         Phake::when($this->_mapper)->classesByFile(Phake::anyParameters())
             ->thenReturn(array(
-                'FooOne',
-                'FooTwo',
+                $fooOneDefinition,
+                $fooTwoDefinition,
             ))
             ->thenReturn(array(
-                'BarOne',
-                'BarTwo',
+                $barOneDefinition,
+                $barTwoDefinition,
             ))
             ->thenReturn(array(
-                'BazOne',
-                'BazTwo',
+                $bazOneDefinition,
+                $bazTwoDefinition,
             ))
         ;
         $expected = array(
-            'FooOne' => 'foo',
-            'FooTwo' => 'foo',
-            'BarOne' => 'bar',
-            'BarTwo' => 'bar',
-            'BazOne' => 'baz',
-            'BazTwo' => 'baz',
+            $fooOneDefinition,
+            $fooTwoDefinition,
+            $barOneDefinition,
+            $barTwoDefinition,
+            $bazOneDefinition,
+            $bazTwoDefinition,
         );
 
         $this->assertSame($expected, $this->_mapper->classesByDirectory('qux'));
@@ -79,7 +85,7 @@ class ClassMapperTest extends PHPUnit_Framework_TestCase
     public function testClassesByFile()
     {
         $expected = array(
-            'foo',
+            new ClassDefinition('foo'),
         );
         Phake::when($this->_isolator)->file_get_contents(Phake::anyParameters())->thenReturn('bar');
         Phake::when($this->_mapper)->classesBySource(Phake::anyParameters())->thenReturn($expected);
@@ -96,7 +102,7 @@ class ClassMapperTest extends PHPUnit_Framework_TestCase
             array(
                 array(
                 ),
-                <<<EOD
+                <<<'EOD'
 There are no classes in this source
 EOD
                 ,
@@ -105,21 +111,21 @@ EOD
             // #1: Source with a single class
             array(
                 array(
-                    'Foo',
+                    new ClassDefinition('Foo'),
                 ),
-                <<<EOD
+                <<<'EOD'
 <?php
 class Foo {}
 EOD
                 ,
             ),
 
-            // #1: Source with a single, namespaced class
+            // #2: Source with a single, namespaced class
             array(
                 array(
-                    'Foo\Bar\Baz',
+                    new ClassDefinition('Baz', 'Foo\Bar'),
                 ),
-                <<<EOD
+                <<<'EOD'
 <?php
 namespace Foo\Bar;
 class Baz {}
@@ -127,17 +133,128 @@ EOD
                 ,
             ),
 
-            // #1: Source with a multiple, namespaced classes, and extends/implements keywords
+            // #3: Source with a multiple, namespaced classes, and extends/implements keywords
             array(
                 array(
-                    'Foo\Bar\Baz',
-                    'Foo\Bar\Pip',
+                    new ClassDefinition('Baz', 'Foo\Bar'),
+                    new ClassDefinition('Pip', 'Foo\Bar'),
                 ),
-                <<<EOD
+                <<<'EOD'
 <?php
 namespace Foo\Bar;
 class Baz extends Qux implements Doom, Splat {}
 class Pip extends Pop implements Pep, Pap {}
+EOD
+                ,
+            ),
+
+            // #4: Source with multiple namespaces
+            array(
+                array(
+                    new ClassDefinition('Baz', 'Foo\Bar'),
+                    new ClassDefinition('Qux', 'Foo\Bar'),
+                    new ClassDefinition('Pip', 'Doom\Splat'),
+                    new ClassDefinition('Pop', 'Doom\Splat'),
+                ),
+                <<<'EOD'
+<?php
+namespace Foo\Bar;
+class Baz {}
+class Qux {}
+namespace Doom\Splat;
+class Pip {}
+class Pop {}
+EOD
+                ,
+            ),
+
+            // #5: Source with use statements
+            array(
+                array(
+                    new ClassDefinition('Pop', 'Foo\Bar', array(
+                        'Baz\Qux' => null,
+                        'Doom\Splat' => 'Pip',
+                    )),
+                    new ClassDefinition('Pep', 'Foo\Bar', array(
+                        'Baz\Qux' => null,
+                        'Doom\Splat' => 'Pip',
+                    )),
+                ),
+                <<<'EOD'
+<?php
+namespace Foo\Bar;
+use Baz\Qux;
+use Doom\Splat as Pip;
+class Pop {}
+class Pep {}
+EOD
+                ,
+            ),
+
+            // #6: Multiple namespaces with use statements
+            array(
+                array(
+                    new ClassDefinition('Baz', 'Foo', array(
+                        'Bar' => null,
+                    )),
+                    new ClassDefinition('Splat', 'Qux', array(
+                        'Doom' => null,
+                    )),
+                ),
+                <<<'EOD'
+<?php
+namespace Foo;
+use Bar;
+class Baz {}
+namespace Qux;
+use Doom;
+class Splat {}
+EOD
+                ,
+            ),
+
+            // #7: Ignore keywords outside of relevant context
+            array(
+                array(
+                    new ClassDefinition('Foo'),
+                    new ClassDefinition('Splat'),
+                ),
+                <<<'EOD'
+<?php
+class Foo
+{
+    function bar()
+    {
+        $baz = null;
+        $qux = function() use($baz) {};
+        foreach (array() as $doom) {}
+    }
+}
+class Splat {}
+EOD
+                ,
+            ),
+
+            // #8: Alternate namespace syntax
+            array(
+                array(
+                    new ClassDefinition('Baz', 'Foo\Bar'),
+                    new ClassDefinition('Qux', 'Foo\Bar'),
+                    new ClassDefinition('Pip', 'Doom\Splat'),
+                    new ClassDefinition('Pop', 'Doom\Splat'),
+                ),
+                <<<'EOD'
+<?php
+namespace Foo\Bar
+{
+    class Baz {}
+    class Qux {}
+}
+namespace Doom\Splat
+{
+    class Pip {}
+    class Pop {}
+}
 EOD
                 ,
             ),
@@ -149,7 +266,7 @@ EOD
      */
     public function testClassesBySource(array $expected, $source)
     {
-        $this->assertSame($expected, $this->_mapper->classesBySource($source));
+        $this->assertEquals($expected, $this->_mapper->classesBySource($source));
     }
 
     public function testFileIterator()
