@@ -1,5 +1,5 @@
 {
-    "hash": "3d226de8ce79dc2a8bc8c294d0ea66d7",
+    "hash": "065b1948224b461e18ae37d7060a94b0",
     "packages": [
         {
             "package": "eloquent/blox",
@@ -16,11 +16,23 @@
             "commit-date": "1344339547"
         },
         {
+            "package": "icecave/isolator",
+            "version": "2.0.0"
+        },
+        {
             "package": "icecave/visita",
             "version": "0.1.0"
         }
     ],
     "packages-dev": [
+        {
+            "package": "eloquent/liberator",
+            "version": "1.1.0"
+        },
+        {
+            "package": "eloquent/pops",
+            "version": "3.1.0"
+        },
         {
             "package": "phake/phake",
             "version": "v1.0.3"
