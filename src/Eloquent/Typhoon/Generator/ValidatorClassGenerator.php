@@ -167,7 +167,7 @@ EOD;
     ) {
         $blockComment = $method->getDocComment();
         if (null === $blockComment) {
-            $parameterList = ParameterList;
+            $parameterList = ParameterList::createUnrestricted();
         } else {
             $parameterList = $this->parser()->parseBlockComment($blockComment);
         }

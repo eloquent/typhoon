@@ -11,10 +11,28 @@
 
 namespace Eloquent\Typhoon\Parameter;
 
+use Eloquent\Typhax\Type\MixedType;
 use Icecave\Visita\Host;
 
 class ParameterList extends Host
 {
+    /**
+     * @return ParameterList
+     */
+    public static function createUnrestricted()
+    {
+        return new ParameterList(
+            array(
+                new Parameter(
+                    'undefined',
+                    new MixedType,
+                    true
+                ),
+            ),
+            true
+        );
+    }
+
     /**
      * @param array<Parameter> $parameters
      * @param boolean $variableLength
