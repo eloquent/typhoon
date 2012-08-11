@@ -68,14 +68,12 @@ EOD
         $parameterCount = count($parameters);
 
         if ($parameterCount < 1) {
-            return $this->createCallback(
-                'array $arguments',
-                <<<EOD
+            return <<<EOD
 if (count(\$arguments) > 0) {
     throw new \InvalidArgumentException("Unexpected argument at index 1.");
 }
 EOD
-            );
+            ;
         }
 
         $requiredParameterCount = count(
@@ -84,28 +82,45 @@ EOD
         $parameterCountPlusOne = $parameterCount + 1;
 
         $missingParameterContent = '';
-        for ($i = 1; $i < $requiredParameterCount; $i ++) {
-            $parameterName = var_export($parameters[$i - 1]->name(), true);
+        if ($requiredParameterCount > 0) {
+            for ($i = 1; $i < $requiredParameterCount; $i ++) {
+                $parameterName = var_export($parameters[$i - 1]->name(), true);
 
-            $missingParameterContent .= <<<EOD
+                $missingParameterContent .= <<<EOD
     if (\$argumentCount < $i) {
         throw new \InvalidArgumentException("Missing argument for parameter $parameterName.");
     }
 
 EOD;
-        }
-        $parameterName = var_export($parameters[$requiredParameterCount - 1]->name(), true);
-        $missingParameterContent .= <<<EOD
+            }
+            $parameterName = var_export($parameters[$requiredParameterCount - 1]->name(), true);
+            $missingParameterContent .= <<<EOD
     throw new \InvalidArgumentException("Missing argument for parameter $parameterName.");
 EOD;
+
+            $missingParameterContent = <<<EOD
+if (\$argumentCount < $requiredParameterCount) {
+$missingParameterContent
+}
+EOD;
+        }
 
         $maxArgumentLengthCheck = '';
         if (!$parameterList->isVariableLength()) {
             $maxArgumentLengthCheck = <<<EOD
- elseif (\$argumentCount > $parameterCount) {
+(\$argumentCount > $parameterCount) {
     throw new \InvalidArgumentException("Unexpected argument at index $parameterCountPlusOne.");
 }
 EOD;
+            if ($requiredParameterCount > 0) {
+                $maxArgumentLengthCheck =
+                    ' elseif '.$maxArgumentLengthCheck
+                ;
+            } else {
+                $maxArgumentLengthCheck =
+                    'if '.$maxArgumentLengthCheck
+                ;
+            }
         }
 
         $parameterChecks = '';
@@ -146,16 +161,12 @@ EOD;
             $parameterChecks .= $parameterCheck;
         }
 
-        return $this->createCallback(
-            'array $arguments',
-            <<<EOD
+        return <<<EOD
 \$argumentCount = count(\$arguments);
-if (\$argumentCount < $requiredParameterCount) {
-$missingParameterContent
-}$maxArgumentLengthCheck
+$missingParameterContent$maxArgumentLengthCheck
 $parameterChecks
 EOD
-        );
+        ;
     }
 
     /**

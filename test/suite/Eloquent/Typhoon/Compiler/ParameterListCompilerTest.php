@@ -29,7 +29,7 @@ class ParameterListCompilerTest extends PHPUnit_Framework_TestCase
 
     protected function validatorFixture(ParameterList $parameterList)
     {
-        eval('$check = '.$parameterList->accept($this->_compiler).';');
+        eval('$check = function(array $arguments) {'.$parameterList->accept($this->_compiler).'};');
 
         return $check;
     }
@@ -71,50 +71,48 @@ EOD;
             ),
         ));
         $expected = <<<'EOD'
-function(array $arguments) {
-    $argumentCount = count($arguments);
-    if ($argumentCount < 3) {
-        if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'foo'.");
-        }
-        if ($argumentCount < 2) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'bar'.");
-        }
-        throw new \InvalidArgumentException("Missing argument for parameter 'baz'.");
-    } elseif ($argumentCount > 3) {
-        throw new \InvalidArgumentException("Unexpected argument at index 4.");
+$argumentCount = count($arguments);
+if ($argumentCount < 3) {
+    if ($argumentCount < 1) {
+        throw new \InvalidArgumentException("Missing argument for parameter 'foo'.");
     }
-
-    $check = function($argument, $index) {
-        $check = function($value) {
-            return is_string($value);
-        };
-        if (!$check($argument)) {
-            throw new \InvalidArgumentException("Unexpected argument for parameter 'foo' at index ".$index.".");
-        }
-    };
-    $check($arguments[0], 0);
-
-    $check = function($argument, $index) {
-        $check = function($value) {
-            return is_integer($value);
-        };
-        if (!$check($argument)) {
-            throw new \InvalidArgumentException("Unexpected argument for parameter 'bar' at index ".$index.".");
-        }
-    };
-    $check($arguments[1], 1);
-
-    $check = function($argument, $index) {
-        $check = function($value) {
-            return is_float($value);
-        };
-        if (!$check($argument)) {
-            throw new \InvalidArgumentException("Unexpected argument for parameter 'baz' at index ".$index.".");
-        }
-    };
-    $check($arguments[2], 2);
+    if ($argumentCount < 2) {
+        throw new \InvalidArgumentException("Missing argument for parameter 'bar'.");
+    }
+    throw new \InvalidArgumentException("Missing argument for parameter 'baz'.");
+} elseif ($argumentCount > 3) {
+    throw new \InvalidArgumentException("Unexpected argument at index 4.");
 }
+
+$check = function($argument, $index) {
+    $check = function($value) {
+        return is_string($value);
+    };
+    if (!$check($argument)) {
+        throw new \InvalidArgumentException("Unexpected argument for parameter 'foo' at index ".$index.".");
+    }
+};
+$check($arguments[0], 0);
+
+$check = function($argument, $index) {
+    $check = function($value) {
+        return is_integer($value);
+    };
+    if (!$check($argument)) {
+        throw new \InvalidArgumentException("Unexpected argument for parameter 'bar' at index ".$index.".");
+    }
+};
+$check($arguments[1], 1);
+
+$check = function($argument, $index) {
+    $check = function($value) {
+        return is_float($value);
+    };
+    if (!$check($argument)) {
+        throw new \InvalidArgumentException("Unexpected argument for parameter 'baz' at index ".$index.".");
+    }
+};
+$check($arguments[2], 2);
 EOD;
 
         $this->assertSame($expected, $list->accept($this->_compiler));
@@ -139,14 +137,77 @@ EOD;
             ),
         ));
         $expected = <<<'EOD'
-function(array $arguments) {
-    $argumentCount = count($arguments);
-    if ($argumentCount < 1) {
-        throw new \InvalidArgumentException("Missing argument for parameter 'foo'.");
-    } elseif ($argumentCount > 3) {
-        throw new \InvalidArgumentException("Unexpected argument at index 4.");
+$argumentCount = count($arguments);
+if ($argumentCount < 1) {
+    throw new \InvalidArgumentException("Missing argument for parameter 'foo'.");
+} elseif ($argumentCount > 3) {
+    throw new \InvalidArgumentException("Unexpected argument at index 4.");
+}
+
+$check = function($argument, $index) {
+    $check = function($value) {
+        return is_string($value);
+    };
+    if (!$check($argument)) {
+        throw new \InvalidArgumentException("Unexpected argument for parameter 'foo' at index ".$index.".");
+    }
+};
+$check($arguments[0], 0);
+
+if ($argumentCount > 1) {
+    $check = function($argument, $index) {
+        $check = function($value) {
+            return is_integer($value);
+        };
+        if (!$check($argument)) {
+            throw new \InvalidArgumentException("Unexpected argument for parameter 'bar' at index ".$index.".");
+        }
+    };
+    $check($arguments[1], 1);
+}
+
+if ($argumentCount > 2) {
+    $check = function($argument, $index) {
+        $check = function($value) {
+            return is_float($value);
+        };
+        if (!$check($argument)) {
+            throw new \InvalidArgumentException("Unexpected argument for parameter 'baz' at index ".$index.".");
+        }
+    };
+    $check($arguments[2], 2);
+}
+EOD;
+
+        $this->assertSame($expected, $list->accept($this->_compiler));
     }
 
+    public function testVisitParameterListNoRequiredParameters()
+    {
+        $list = new ParameterList(array(
+            new Parameter(
+                'foo',
+                new StringType,
+                true
+            ),
+            new Parameter(
+                'bar',
+                new IntegerType,
+                true
+            ),
+            new Parameter(
+                'baz',
+                new FloatType,
+                true
+            ),
+        ));
+        $expected = <<<'EOD'
+$argumentCount = count($arguments);
+if ($argumentCount > 3) {
+    throw new \InvalidArgumentException("Unexpected argument at index 4.");
+}
+
+if ($argumentCount > 0) {
     $check = function($argument, $index) {
         $check = function($value) {
             return is_string($value);
@@ -156,30 +217,30 @@ function(array $arguments) {
         }
     };
     $check($arguments[0], 0);
+}
 
-    if ($argumentCount > 1) {
-        $check = function($argument, $index) {
-            $check = function($value) {
-                return is_integer($value);
-            };
-            if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'bar' at index ".$index.".");
-            }
+if ($argumentCount > 1) {
+    $check = function($argument, $index) {
+        $check = function($value) {
+            return is_integer($value);
         };
-        $check($arguments[1], 1);
-    }
+        if (!$check($argument)) {
+            throw new \InvalidArgumentException("Unexpected argument for parameter 'bar' at index ".$index.".");
+        }
+    };
+    $check($arguments[1], 1);
+}
 
-    if ($argumentCount > 2) {
-        $check = function($argument, $index) {
-            $check = function($value) {
-                return is_float($value);
-            };
-            if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'baz' at index ".$index.".");
-            }
+if ($argumentCount > 2) {
+    $check = function($argument, $index) {
+        $check = function($value) {
+            return is_float($value);
         };
-        $check($arguments[2], 2);
-    }
+        if (!$check($argument)) {
+            throw new \InvalidArgumentException("Unexpected argument for parameter 'baz' at index ".$index.".");
+        }
+    };
+    $check($arguments[2], 2);
 }
 EOD;
 
@@ -207,47 +268,45 @@ EOD;
             true
         );
         $expected = <<<'EOD'
-function(array $arguments) {
-    $argumentCount = count($arguments);
-    if ($argumentCount < 2) {
-        if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'foo'.");
-        }
-        throw new \InvalidArgumentException("Missing argument for parameter 'bar'.");
+$argumentCount = count($arguments);
+if ($argumentCount < 2) {
+    if ($argumentCount < 1) {
+        throw new \InvalidArgumentException("Missing argument for parameter 'foo'.");
     }
+    throw new \InvalidArgumentException("Missing argument for parameter 'bar'.");
+}
 
+$check = function($argument, $index) {
+    $check = function($value) {
+        return is_string($value);
+    };
+    if (!$check($argument)) {
+        throw new \InvalidArgumentException("Unexpected argument for parameter 'foo' at index ".$index.".");
+    }
+};
+$check($arguments[0], 0);
+
+$check = function($argument, $index) {
+    $check = function($value) {
+        return is_integer($value);
+    };
+    if (!$check($argument)) {
+        throw new \InvalidArgumentException("Unexpected argument for parameter 'bar' at index ".$index.".");
+    }
+};
+$check($arguments[1], 1);
+
+if ($argumentCount > 2) {
     $check = function($argument, $index) {
         $check = function($value) {
-            return is_string($value);
+            return is_float($value);
         };
         if (!$check($argument)) {
-            throw new \InvalidArgumentException("Unexpected argument for parameter 'foo' at index ".$index.".");
+            throw new \InvalidArgumentException("Unexpected argument for parameter 'baz' at index ".$index.".");
         }
     };
-    $check($arguments[0], 0);
-
-    $check = function($argument, $index) {
-        $check = function($value) {
-            return is_integer($value);
-        };
-        if (!$check($argument)) {
-            throw new \InvalidArgumentException("Unexpected argument for parameter 'bar' at index ".$index.".");
-        }
-    };
-    $check($arguments[1], 1);
-
-    if ($argumentCount > 2) {
-        $check = function($argument, $index) {
-            $check = function($value) {
-                return is_float($value);
-            };
-            if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'baz' at index ".$index.".");
-            }
-        };
-        for ($i = 2; $i < $argumentCount; $i ++) {
-            $check($arguments[$i], $i);
-        }
+    for ($i = 2; $i < $argumentCount; $i ++) {
+        $check($arguments[$i], $i);
     }
 }
 EOD;
@@ -259,10 +318,8 @@ EOD;
     {
         $list = new ParameterList;
         $expected = <<<'EOD'
-function(array $arguments) {
-    if (count($arguments) > 0) {
-        throw new \InvalidArgumentException("Unexpected argument at index 1.");
-    }
+if (count($arguments) > 0) {
+    throw new \InvalidArgumentException("Unexpected argument at index 1.");
 }
 EOD;
 
@@ -313,6 +370,30 @@ EOD;
         $this->assertNull($validatorFixture(array('bar')));
     }
 
+    public function testVisitParameterListLogicNoRequired()
+    {
+        $validatorFixture = $this->validatorFixture(new ParameterList(array(
+            new Parameter(
+                'foo',
+                new StringType,
+                true
+            ),
+            new Parameter(
+                'bar',
+                new IntegerType,
+                true
+            ),
+            new Parameter(
+                'baz',
+                new FloatType,
+                true
+            ),
+        )));
+
+        $this->assertNull($validatorFixture(array('foo')));
+        $this->assertNull($validatorFixture(array()));
+    }
+
     public function testVisitParameterListLogicVariableLength()
     {
         $validatorFixture = $this->validatorFixture(new ParameterList(
@@ -351,7 +432,6 @@ EOD;
     {
         $data = array();
 
-        // #0: Not enough arguments
         $list = new ParameterList(array(
             new Parameter(
                 'foo',
@@ -369,9 +449,10 @@ EOD;
         $arguments = array('foo', 111);
         $expected = 'InvalidArgumentException';
         $expectedMessage = "Missing argument for parameter 'baz'.";
-        $data[] = array($expected, $expectedMessage, $list, $arguments);
+        $data['Not enough arguments 1'] =
+            array($expected, $expectedMessage, $list, $arguments)
+        ;
 
-        // #1: Not enough arguments
         $list = new ParameterList(array(
             new Parameter(
                 'foo',
@@ -389,9 +470,10 @@ EOD;
         $arguments = array('foo');
         $expected = 'InvalidArgumentException';
         $expectedMessage = "Missing argument for parameter 'bar'.";
-        $data[] = array($expected, $expectedMessage, $list, $arguments);
+        $data['Not enough arguments 2'] =
+            array($expected, $expectedMessage, $list, $arguments)
+        ;
 
-        // #2: Not enough arguments
         $list = new ParameterList(array(
             new Parameter(
                 'foo',
@@ -409,9 +491,10 @@ EOD;
         $arguments = array();
         $expected = 'InvalidArgumentException';
         $expectedMessage = "Missing argument for parameter 'foo'.";
-        $data[] = array($expected, $expectedMessage, $list, $arguments);
+        $data['Not enough arguments 3'] =
+            array($expected, $expectedMessage, $list, $arguments)
+        ;
 
-        // #3: Too many arguments
         $list = new ParameterList(array(
             new Parameter(
                 'foo',
@@ -429,9 +512,10 @@ EOD;
         $arguments = array('foo', 111, 1.11, 2.22);
         $expected = 'InvalidArgumentException';
         $expectedMessage = "Unexpected argument at index 4.";
-        $data[] = array($expected, $expectedMessage, $list, $arguments);
+        $data['Too many arguments'] =
+            array($expected, $expectedMessage, $list, $arguments)
+        ;
 
-        // #4: Type mismatch
         $list = new ParameterList(array(
             new Parameter(
                 'foo',
@@ -449,9 +533,10 @@ EOD;
         $arguments = array('foo', 111, 'bar');
         $expected = 'InvalidArgumentException';
         $expectedMessage = "Unexpected argument for parameter 'baz' at index 2.";
-        $data[] = array($expected, $expectedMessage, $list, $arguments);
+        $data['Type mismatch 1'] =
+            array($expected, $expectedMessage, $list, $arguments)
+        ;
 
-        // #5: Type mismatch
         $list = new ParameterList(array(
             new Parameter(
                 'foo',
@@ -469,9 +554,10 @@ EOD;
         $arguments = array('foo', 'bar', 'baz');
         $expected = 'InvalidArgumentException';
         $expectedMessage = "Unexpected argument for parameter 'bar' at index 1.";
-        $data[] = array($expected, $expectedMessage, $list, $arguments);
+        $data['Type mismatch 2'] =
+            array($expected, $expectedMessage, $list, $arguments)
+        ;
 
-        // #6: Type mismatch
         $list = new ParameterList(array(
             new Parameter(
                 'foo',
@@ -489,9 +575,10 @@ EOD;
         $arguments = array(111, 'bar', 'baz');
         $expected = 'InvalidArgumentException';
         $expectedMessage = "Unexpected argument for parameter 'foo' at index 0.";
-        $data[] = array($expected, $expectedMessage, $list, $arguments);
+        $data['Type mismatch 3'] =
+            array($expected, $expectedMessage, $list, $arguments)
+        ;
 
-        // #7: Type mismatch - variable length
         $list = new ParameterList(
             array(
                 new Parameter(
@@ -513,7 +600,9 @@ EOD;
         $arguments = array('foo', 111, 1.11, 2.22, 'bar', 3.33);
         $expected = 'InvalidArgumentException';
         $expectedMessage = "Unexpected argument for parameter 'baz' at index 4.";
-        $data[] = array($expected, $expectedMessage, $list, $arguments);
+        $data['Variable length type mismatch'] =
+            array($expected, $expectedMessage, $list, $arguments)
+        ;
 
         return $data;
     }
