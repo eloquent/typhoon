@@ -120,7 +120,7 @@ class ParameterListParser implements Visitor
         );
     }
 
-    const PATTERN_VARIABLE_LENGTH = '/^.*\s\$\w+,\.{3}\s/';
+    const PATTERN_VARIABLE_LENGTH = '/^.*\s&?\$\w+,\.{3}\s/';
 
     /**
      * @param string $content
@@ -155,7 +155,7 @@ class ParameterListParser implements Visitor
         return $this->parseContent(
             $content,
             $position,
-            '/^\s*\$(\w+)(?:,\.{3})?/',
+            '/^\s*&?\$(\w+)(?:,\.{3})?/',
             false,
             'name'
         );

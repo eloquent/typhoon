@@ -77,7 +77,7 @@ EOD;
      * Description
      *
      * @param string $foo This is the foo parameter.
-     * @param integer $bar This is the bar parameter.
+     * @param integer &$bar This is the bar parameter.
      * @param float|null $baz
      */
 EOD;
