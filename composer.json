@@ -29,7 +29,8 @@
     },
     "autoload": {
         "psr-0": {
-            "Eloquent\\Typhoon": "src"
+            "Eloquent\\Typhoon": "src",
+            "Typhoon\\Eloquent\\Typhoon": "src-typhoon"
         }
     },
     "bin": [
