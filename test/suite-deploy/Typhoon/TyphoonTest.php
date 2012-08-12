@@ -11,11 +11,23 @@
 
 namespace Typhoon;
 
+use Eloquent\Liberator\Liberator;
 use PHPUnit_Framework_TestCase;
 use stdClass;
+use Typhoon\Eloquent\Typhoon\TestFixture\ExampleTyphoon;
 
 class TyphoonTest extends PHPUnit_Framework_TestCase
 {
+    protected function setUp()
+    {
+        parent::setUp();
+
+        Liberator::liberateClass(__NAMESPACE__.'\Typhoon')->instances = array();
+        if (class_exists('Typhoon\Eloquent\Typhoon\TestFixture\ExampleTyphoon', false)) {
+            ExampleTyphoon::$arguments = null;
+        }
+    }
+
     public function testGet()
     {
         $className = 'Eloquent\Typhoon\TestFixture\Example';
@@ -26,7 +38,7 @@ class TyphoonTest extends PHPUnit_Framework_TestCase
             $validator
         );
         $this->assertSame($validator, Typhoon::get($className));
-        $this->assertNull($validator->arguments());
+        $this->assertFalse(array_key_exists('validateConstructor', ExampleTyphoon::$arguments));
     }
 
     public function testGetWithArguments()
@@ -40,7 +52,18 @@ class TyphoonTest extends PHPUnit_Framework_TestCase
             $validator
         );
         $this->assertSame($validator, Typhoon::get($className));
-        $this->assertSame($arguments, $validator->arguments());
+        $this->assertTrue(array_key_exists('validateConstructor', ExampleTyphoon::$arguments));
+        $this->assertSame($arguments, ExampleTyphoon::$arguments['validateConstructor']);
+    }
+
+    public function testValidate()
+    {
+        $methodName = 'Eloquent\Typhoon\TestFixture\Example::foo';
+        $arguments = array(new stdClass);
+        $validator = Typhoon::validate($methodName, $arguments);
+
+        $this->assertTrue(array_key_exists('foo', ExampleTyphoon::$arguments));
+        $this->assertSame($arguments, ExampleTyphoon::$arguments['foo']);
     }
 
     public function testInstall()

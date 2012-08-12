@@ -16,13 +16,13 @@ class ExampleTyphoon
 {
     public function validateConstructor(array $arguments)
     {
-        $this->arguments = $arguments;
+        static::$arguments[__FUNCTION__] = $arguments;
     }
 
-    public function arguments()
+    public function foo(array $arguments)
     {
-        return $this->arguments;
+        static::$arguments[__FUNCTION__] = $arguments;
     }
 
-    private $arguments;
+    public static $arguments = array();
 }
