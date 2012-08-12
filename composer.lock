@@ -1,5 +1,5 @@
 {
-    "hash": "636c1bfb1fd1ce569f1059852f205ffe",
+    "hash": "6611f3161c665b26574a5cbb3cc1816f",
     "packages": [
         {
             "package": "eloquent/blox",
@@ -12,7 +12,7 @@
         {
             "package": "eloquent/typhax",
             "version": "dev-master",
-            "source-reference": "948fd4f1077cd343a0faaf8f667547a9179b700b",
+            "source-reference": "0.2.0",
             "commit-date": "1344777281"
         },
         {
@@ -46,7 +46,7 @@
 
     ],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "eloquent/typhax": 20
-    }
+    "stability-flags": [
+
+    ]
 }
