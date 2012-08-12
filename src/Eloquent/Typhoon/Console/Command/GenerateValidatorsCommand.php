@@ -19,6 +19,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Typhoon\Typhoon;
 
 class GenerateValidatorsCommand extends Command
 {
@@ -32,6 +33,7 @@ class GenerateValidatorsCommand extends Command
         DeploymentManager $deploymentManager = null,
         Isolator $isolator = null
     ) {
+        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
         if (null === $generator) {
             $generator = new ProjectValidatorGenerator;
         }
@@ -51,6 +53,8 @@ class GenerateValidatorsCommand extends Command
      */
     public function generator()
     {
+        $this->typhoon->generator(func_get_args());
+
         return $this->generator;
     }
 
@@ -59,11 +63,15 @@ class GenerateValidatorsCommand extends Command
      */
     public function deploymentManager()
     {
+        $this->typhoon->deploymentManager(func_get_args());
+
         return $this->deploymentManager;
     }
 
     protected function configure()
     {
+        $this->typhoon->configure(func_get_args());
+
         $this->setName('generate:validators');
         $this->setDescription(
             'Generates Typhoon validator classes for a given directory.'
@@ -97,6 +105,8 @@ class GenerateValidatorsCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->typhoon->execute(func_get_args());
+
         $output->setVerbosity(OutputInterface::VERBOSITY_VERBOSE);
 
         $output->writeln('Including loaders...');
@@ -121,4 +131,5 @@ class GenerateValidatorsCommand extends Command
     private $generator;
     private $deploymentManager;
     private $isolator;
+    private $typhoon;
 }

@@ -12,6 +12,7 @@
 namespace Eloquent\Typhoon\Deployment;
 
 use Icecave\Isolator\Isolator;
+use Typhoon\Typhoon;
 
 class DeploymentManager
 {
@@ -20,6 +21,7 @@ class DeploymentManager
      */
     public function __construct(Isolator $isolator = null)
     {
+        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
         $this->deploySourcePath =
             dirname(dirname(dirname(dirname(__DIR__)))).
             '/src-deploy'
@@ -32,6 +34,8 @@ class DeploymentManager
      */
     public function deploy($path)
     {
+        $this->typhoon->deploy(func_get_args());
+
         $this->copyFile(
             $this->deploySourcePath.'/Typhoon/Typhoon.php',
             $path.'/Typhoon/Typhoon.php'
@@ -44,6 +48,8 @@ class DeploymentManager
      */
     protected function copyFile($from, $to)
     {
+        $this->typhoon->copyFile(func_get_args());
+
         $parentPath = dirname($to);
         if (!$this->isolator->is_dir($parentPath)) {
             $this->isolator->mkdir($parentPath, 0777, true);
@@ -54,4 +60,5 @@ class DeploymentManager
 
     private $deploySourcePath;
     private $isolator;
+    private $typhoon;
 }

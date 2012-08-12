@@ -13,6 +13,7 @@ namespace Eloquent\Typhoon\Generator;
 
 use Eloquent\Typhoon\ClassMapper\ClassMapper;
 use Icecave\Isolator\Isolator;
+use Typhoon\Typhoon;
 
 class ProjectValidatorGenerator
 {
@@ -26,6 +27,7 @@ class ProjectValidatorGenerator
         ValidatorClassGenerator $classGenerator = null,
         Isolator $isolator = null
     ) {
+        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
         if (null === $classMapper) {
             $classMapper = new ClassMapper;
         }
@@ -43,6 +45,8 @@ class ProjectValidatorGenerator
      */
     public function classMapper()
     {
+        $this->typhoon->classMapper(func_get_args());
+
         return $this->classMapper;
     }
 
@@ -51,6 +55,8 @@ class ProjectValidatorGenerator
      */
     public function classGenerator()
     {
+        $this->typhoon->classGenerator(func_get_args());
+
         return $this->classGenerator;
     }
 
@@ -60,6 +66,8 @@ class ProjectValidatorGenerator
      */
     public function generate($outputPath, array $classPaths)
     {
+        $this->typhoon->generate(func_get_args());
+
         foreach ($this->buildClassMap($classPaths) as $classDefinition) {
             $namespaceName = null;
             $className = null;
@@ -93,6 +101,8 @@ class ProjectValidatorGenerator
      */
     protected function buildClassMap(array $classPaths)
     {
+        $this->typhoon->buildClassMap(func_get_args());
+
         $classMap = array();
         foreach ($classPaths as $classPath) {
             $classMap = array_merge(
@@ -114,6 +124,8 @@ class ProjectValidatorGenerator
      */
     protected function PSRPath($namespaceName, $className)
     {
+        $this->typhoon->PSRPath(func_get_args());
+
         return
             str_replace('\\', '/', $namespaceName).
             '/'.
@@ -125,4 +137,5 @@ class ProjectValidatorGenerator
     private $classMapper;
     private $classGenerator;
     private $isolator;
+    private $typhoon;
 }

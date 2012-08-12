@@ -15,6 +15,7 @@ use Eloquent\Typhoon\Parameter\Parameter;
 use Eloquent\Typhoon\Parameter\ParameterList;
 use Eloquent\Typhoon\Parameter\Visitor;
 use ReflectionMethod;
+use Typhoon\Typhoon;
 
 class ParameterListReflectionResolver implements Visitor
 {
@@ -23,6 +24,7 @@ class ParameterListReflectionResolver implements Visitor
      */
     public function __construct(ReflectionMethod $reflector)
     {
+        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
         $this->reflector = $reflector;
     }
 
@@ -31,6 +33,8 @@ class ParameterListReflectionResolver implements Visitor
      */
     public function reflector()
     {
+        $this->typhoon->reflector(func_get_args());
+
         return $this->reflector;
     }
 
@@ -41,6 +45,8 @@ class ParameterListReflectionResolver implements Visitor
      */
     public function visitParameter(Parameter $parameter)
     {
+        $this->typhoon->visitParameter(func_get_args());
+
         $reflector = $this->parameterReflectorByName(
             $parameter->name()
         );
@@ -63,6 +69,8 @@ class ParameterListReflectionResolver implements Visitor
      */
     public function visitParameterList(ParameterList $parameterList)
     {
+        $this->typhoon->visitParameterList(func_get_args());
+
         $parameters = array();
         foreach ($parameterList->parameters() as $parameter) {
             $parameters[] = $parameter->accept($this);
@@ -81,6 +89,8 @@ class ParameterListReflectionResolver implements Visitor
      */
     protected function parameterReflectorByName($name)
     {
+        $this->typhoon->parameterReflectorByName(func_get_args());
+
         foreach ($this->reflector()->getParameters() as $parameter) {
             if ($parameter->getName() === $name) {
                 return $parameter;
@@ -91,4 +101,5 @@ class ParameterListReflectionResolver implements Visitor
     }
 
     private $reflector;
+    private $typhoon;
 }

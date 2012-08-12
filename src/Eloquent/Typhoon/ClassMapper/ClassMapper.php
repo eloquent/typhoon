@@ -15,6 +15,7 @@ use FilesystemIterator;
 use Icecave\Isolator\Isolator;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
+use Typhoon\Typhoon;
 
 class ClassMapper
 {
@@ -23,6 +24,7 @@ class ClassMapper
      */
     public function __construct(Isolator $isolator = null)
     {
+        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
         $this->isolator = Isolator::get($isolator);
     }
 
@@ -33,8 +35,9 @@ class ClassMapper
      */
     public function classesByDirectory($directoryPath)
     {
-        $classDefinitions = array();
+        $this->typhoon->classesByDirectory(func_get_args());
 
+        $classDefinitions = array();
         foreach ($this->fileIterator($directoryPath) as $filePathInfo) {
             $classDefinitions = array_merge(
                 $classDefinitions,
@@ -52,6 +55,8 @@ class ClassMapper
      */
     public function classesByFile($filePath)
     {
+        $this->typhoon->classesByFile(func_get_args());
+
         return $this->classesBySource(
             $this->isolator->file_get_contents($filePath)
         );
@@ -64,6 +69,8 @@ class ClassMapper
      */
     public function classesBySource($source)
     {
+        $this->typhoon->classesBySource(func_get_args());
+
         $classDefinitions = array();
         $namespaceName = null;
         $usedClasses = array();
@@ -101,9 +108,11 @@ class ClassMapper
      *
      * @return string
      */
-    protected function parseNamespaceName(array &$tokens) {
-        $namespaceName = '';
+    protected function parseNamespaceName(array &$tokens)
+    {
+        $this->typhoon->parseNamespaceName(func_get_args());
 
+        $namespaceName = '';
         do {
             $token = next($tokens);
 
@@ -128,7 +137,10 @@ class ClassMapper
      *
      * @return tuple<string,string|null>|null
      */
-    protected function parseUsedClass(array &$tokens) {
+    protected function parseUsedClass(array &$tokens)
+    {
+        $this->typhoon->parseUsedClass(func_get_args());
+
         $usedClass = null;
         $token = next($tokens);
         while (
@@ -172,7 +184,10 @@ class ClassMapper
      *
      * @return string
      */
-    protected function parseClassName(array &$tokens) {
+    protected function parseClassName(array &$tokens)
+    {
+        $this->typhoon->parseClassName(func_get_args());
+
         $token = next($tokens);
 
         return $token[1];
@@ -185,6 +200,8 @@ class ClassMapper
      */
     protected function sourceTokens($source)
     {
+        $this->typhoon->sourceTokens(func_get_args());
+
         $tokens = $this->isolator->token_get_all($source);
         $tokens = array_filter($tokens, function($token) {
             if (!is_array($token)) {
@@ -204,6 +221,8 @@ class ClassMapper
      */
     protected function fileIterator($directoryPath)
     {
+        $this->typhoon->fileIterator(func_get_args());
+
         return new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator(
                 $directoryPath,
@@ -214,4 +233,5 @@ class ClassMapper
     }
 
     private $isolator;
+    private $typhoon;
 }

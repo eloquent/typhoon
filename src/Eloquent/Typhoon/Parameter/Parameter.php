@@ -13,6 +13,7 @@ namespace Eloquent\Typhoon\Parameter;
 
 use Eloquent\Typhax\Type\Type;
 use Icecave\Visita\Host;
+use Typhoon\Typhoon;
 
 class Parameter extends Host
 {
@@ -22,8 +23,13 @@ class Parameter extends Host
      * @param boolean $optional
      * @param string|null $description
      */
-    public function __construct($name, Type $type, $optional = false, $description = null)
-    {
+    public function __construct(
+        $name,
+        Type $type,
+        $optional = false,
+        $description = null
+    ) {
+        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
         $this->name = $name;
         $this->type = $type;
         $this->optional = $optional;
@@ -35,6 +41,8 @@ class Parameter extends Host
      */
     public function name()
     {
+        $this->typhoon->name(func_get_args());
+
         return $this->name;
     }
 
@@ -43,6 +51,8 @@ class Parameter extends Host
      */
     public function type()
     {
+        $this->typhoon->type(func_get_args());
+
         return $this->type;
     }
 
@@ -51,6 +61,8 @@ class Parameter extends Host
      */
     public function isOptional()
     {
+        $this->typhoon->isOptional(func_get_args());
+
         return $this->optional;
     }
 
@@ -59,6 +71,8 @@ class Parameter extends Host
      */
     public function description()
     {
+        $this->typhoon->description(func_get_args());
+
         return $this->description;
     }
 
@@ -66,4 +80,5 @@ class Parameter extends Host
     private $type;
     private $optional;
     private $description;
+    private $typhoon;
 }

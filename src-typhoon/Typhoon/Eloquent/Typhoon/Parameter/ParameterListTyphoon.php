@@ -84,9 +84,22 @@ class ParameterListTyphoon
 
     public function parameterByName(array $arguments)
     {
-        if (count($arguments) > 0) {
-            throw new \InvalidArgumentException("Unexpected argument at index 1.");
+        $argumentCount = count($arguments);
+        if ($argumentCount < 1) {
+            throw new \InvalidArgumentException("Missing argument for parameter 'name'.");
+        } elseif ($argumentCount > 1) {
+            throw new \InvalidArgumentException("Unexpected argument at index 2.");
         }
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return is_string($value);
+            };
+            if (!$check($argument)) {
+                throw new \InvalidArgumentException("Unexpected argument for parameter 'name' at index ".$index.".");
+            }
+        };
+        $check($arguments[0], 0);
     }
 
     public function isVariableLength(array $arguments)

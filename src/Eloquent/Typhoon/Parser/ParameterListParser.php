@@ -22,12 +22,14 @@ use Eloquent\Typhax\Type\ObjectType;
 use Eloquent\Typhax\Type\Type;
 use Eloquent\Typhoon\Parameter\Parameter;
 use Eloquent\Typhoon\Parameter\ParameterList;
+use Typhoon\Typhoon;
 
 class ParameterListParser implements Visitor
 {
     public function __construct(
         TyphaxParser $typhaxParser = null
     ) {
+        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
         if (null === $typhaxParser) {
             $typhaxParser = new TyphaxParser;
         }
@@ -40,6 +42,8 @@ class ParameterListParser implements Visitor
      */
     public function typhaxParser()
     {
+        $this->typhoon->typhaxParser(func_get_args());
+
         return $this->typhaxParser;
     }
 
@@ -53,6 +57,8 @@ class ParameterListParser implements Visitor
         $blockComment,
         DocumentationBlockParser $documentationParser = null
     ) {
+        $this->typhoon->parseBlockComment(func_get_args());
+
         if (null === $documentationParser) {
             $documentationParser = new BloxParser;
         }
@@ -71,6 +77,8 @@ class ParameterListParser implements Visitor
      */
     public function visitDocumentationBlock(DocumentationBlock $documentationBlock)
     {
+        $this->typhoon->visitDocumentationBlock(func_get_args());
+
         $parameters = array();
         $paramTags = $documentationBlock->tagsByName('param');
         $lastIndex = count($paramTags) - 1;
@@ -81,7 +89,7 @@ class ParameterListParser implements Visitor
                 $variableLength = preg_match(
                     static::PATTERN_VARIABLE_LENGTH,
                     $paramTag->content()
-                );
+                ) && true;
             }
         }
 
@@ -95,9 +103,11 @@ class ParameterListParser implements Visitor
      */
     public function visitDocumentationTag(DocumentationTag $documentationTag)
     {
+        $this->typhoon->visitDocumentationTag(func_get_args());
+
         $position = 0;
         $type = $this->parseType(
-            $documentationTag->content(),
+            $documentationTag->content() ?: '',
             $position
         );
         $name = $this->parseName(
@@ -130,6 +140,8 @@ class ParameterListParser implements Visitor
      */
     protected function parseType($content, &$position)
     {
+        $this->typhoon->parseType(func_get_args());
+
         try {
             return $this->typhaxParser()->parse(
                 $content,
@@ -152,6 +164,8 @@ class ParameterListParser implements Visitor
      */
     protected function parseName($content, &$position)
     {
+        $this->typhoon->parseName(func_get_args());
+
         return $this->parseContent(
             $content,
             $position,
@@ -169,6 +183,8 @@ class ParameterListParser implements Visitor
      */
     protected function parseDescription($content, &$position)
     {
+        $this->typhoon->parseDescription(func_get_args());
+
         return $this->parseContent(
             $content,
             $position,
@@ -185,6 +201,8 @@ class ParameterListParser implements Visitor
      */
     protected function parseOptional($content)
     {
+        $this->typhoon->parseOptional(func_get_args());
+
         if (preg_match(static::PATTERN_VARIABLE_LENGTH, $content)) {
             return true;
         }
@@ -203,6 +221,8 @@ class ParameterListParser implements Visitor
      */
     protected function parseContent($content, &$position, $pattern, $optional, $type)
     {
+        $this->typhoon->parseContent(func_get_args());
+
         $subject = substr($content, $position - 1);
         if (
             !preg_match($pattern, $subject, $matches) ||
@@ -224,4 +244,5 @@ class ParameterListParser implements Visitor
     }
 
     private $typhaxParser;
+    private $typhoon;
 }

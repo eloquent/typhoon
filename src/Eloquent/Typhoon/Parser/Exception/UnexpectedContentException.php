@@ -12,6 +12,7 @@
 namespace Eloquent\Typhoon\Parser\Exception;
 
 use Exception;
+use Typhoon\Typhoon;
 
 final class UnexpectedContentException extends ParseException
 {
@@ -22,6 +23,7 @@ final class UnexpectedContentException extends ParseException
      */
     public function __construct($expected, $position, Exception $previous = null)
     {
+        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
         $this->expected = $expected;
 
         $message =
@@ -40,8 +42,11 @@ final class UnexpectedContentException extends ParseException
      */
     public function expected()
     {
+        $this->typhoon->expected(func_get_args());
+
         return $this->expected;
     }
 
     private $expected;
+    private $typhoon;
 }

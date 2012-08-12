@@ -12,6 +12,7 @@
 namespace Eloquent\Typhoon\ClassMapper;
 
 use Eloquent\Cosmos\ClassNameResolver;
+use Typhoon\Typhoon;
 
 class ClassDefinition
 {
@@ -25,6 +26,7 @@ class ClassDefinition
         $namespaceName = null,
         array $usedClasses = array()
     ) {
+        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
         $this->className = $className;
         $this->namespaceName = $namespaceName;
         $this->usedClasses = $usedClasses;
@@ -35,6 +37,8 @@ class ClassDefinition
      */
     public function className()
     {
+        $this->typhoon->className(func_get_args());
+
         return $this->className;
     }
 
@@ -43,6 +47,8 @@ class ClassDefinition
      */
     public function canonicalClassName()
     {
+        $this->typhoon->canonicalClassName(func_get_args());
+
         return $this->classNameResolver()->resolve(
             $this->className()
         );
@@ -53,6 +59,8 @@ class ClassDefinition
      */
     public function namespaceName()
     {
+        $this->typhoon->namespaceName(func_get_args());
+
         return $this->namespaceName;
     }
 
@@ -61,6 +69,8 @@ class ClassDefinition
      */
     public function usedClasses()
     {
+        $this->typhoon->usedClasses(func_get_args());
+
         return $this->usedClasses;
     }
 
@@ -69,6 +79,8 @@ class ClassDefinition
      */
     public function classNameResolver()
     {
+        $this->typhoon->classNameResolver(func_get_args());
+
         return new ClassNameResolver(
             $this->namespaceName(),
             $this->usedClasses()
@@ -78,4 +90,5 @@ class ClassDefinition
     private $className;
     private $namespaceName;
     private $usedClasses;
+    private $typhoon;
 }

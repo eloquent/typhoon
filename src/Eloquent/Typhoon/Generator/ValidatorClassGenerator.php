@@ -20,6 +20,7 @@ use Eloquent\Typhoon\Resolver\ParameterListClassNameResolver;
 use Eloquent\Typhoon\Resolver\ParameterListReflectionResolver;
 use ReflectionClass;
 use ReflectionMethod;
+use Typhoon\Typhoon;
 
 class ValidatorClassGenerator
 {
@@ -31,6 +32,7 @@ class ValidatorClassGenerator
         ParameterListParser $parser = null,
         ParameterListCompiler $compiler = null
     ) {
+        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
         if (null === $parser) {
             $parser = new ParameterListParser;
         }
@@ -47,6 +49,8 @@ class ValidatorClassGenerator
      */
     public function parser()
     {
+        $this->typhoon->parser(func_get_args());
+
         return $this->parser;
     }
 
@@ -55,6 +59,8 @@ class ValidatorClassGenerator
      */
     public function compiler()
     {
+        $this->typhoon->compiler(func_get_args());
+
         return $this->compiler;
     }
 
@@ -70,6 +76,8 @@ class ValidatorClassGenerator
         &$namespaceName = null,
         &$className = null
     ) {
+        $this->typhoon->generate(func_get_args());
+
         $namespaceName =
             'Typhoon\\'.
             $classDefinition->namespaceName()
@@ -120,6 +128,8 @@ EOD;
      */
     protected function methods(ClassDefinition $classDefinition)
     {
+        $this->typhoon->methods(func_get_args());
+
         $class = new ReflectionClass(
             $classDefinition->canonicalClassName()
         );
@@ -142,6 +152,8 @@ EOD;
         ReflectionMethod $method,
         ClassDefinition $classDefinition
     ) {
+        $this->typhoon->generateMethod(func_get_args());
+
         $methodName = $method->getName();
         if ('__construct' === $methodName) {
             $methodName = 'validateConstructor';
@@ -171,6 +183,8 @@ EOD;
         ReflectionMethod $method,
         ClassDefinition $classDefinition
     ) {
+        $this->typhoon->parameterList(func_get_args());
+
         $blockComment = $method->getDocComment();
         if (false === $blockComment) {
             $parameterList = ParameterList::createUnrestricted();
@@ -190,6 +204,8 @@ EOD;
      * @return ParameterListClassNameResolver
      */
     protected function classNameResolver(ClassDefinition $classDefinition) {
+        $this->typhoon->classNameResolver(func_get_args());
+
         return new ParameterListClassNameResolver(
             new ObjectTypeClassNameResolver(
                 $classDefinition->classNameResolver()
@@ -198,11 +214,13 @@ EOD;
     }
 
     /**
-     * @param ClassDefinition $classDefinition
+     * @param ReflectionMethod $method
      *
      * @return ParameterListClassNameResolver
      */
     protected function reflectionResolver(ReflectionMethod $method) {
+        $this->typhoon->reflectionResolver(func_get_args());
+
         return new ParameterListReflectionResolver($method);
     }
 
@@ -213,6 +231,8 @@ EOD;
      * @return string
      */
     protected function indent($content, $depth = 1) {
+        $this->typhoon->indent(func_get_args());
+
         $indent = str_repeat('    ', $depth);
         $lines = explode("\n", $content);
         $lines = array_map(function($line) use($indent) {
@@ -228,4 +248,5 @@ EOD;
 
     private $parser;
     private $compiler;
+    private $typhoon;
 }

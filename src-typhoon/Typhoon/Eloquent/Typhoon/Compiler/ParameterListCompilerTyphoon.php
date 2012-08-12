@@ -83,11 +83,24 @@ class ParameterListCompilerTyphoon
     public function createCallback(array $arguments)
     {
         $argumentCount = count($arguments);
-        if ($argumentCount < 1) {
+        if ($argumentCount < 2) {
+            if ($argumentCount < 1) {
+                throw new \InvalidArgumentException("Missing argument for parameter 'parameters'.");
+            }
             throw new \InvalidArgumentException("Missing argument for parameter 'content'.");
-        } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+        } elseif ($argumentCount > 2) {
+            throw new \InvalidArgumentException("Unexpected argument at index 3.");
         }
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return is_string($value);
+            };
+            if (!$check($argument)) {
+                throw new \InvalidArgumentException("Unexpected argument for parameter 'parameters' at index ".$index.".");
+            }
+        };
+        $check($arguments[0], 0);
 
         $check = function($argument, $index) {
             $check = function($value) {
@@ -97,7 +110,7 @@ class ParameterListCompilerTyphoon
                 throw new \InvalidArgumentException("Unexpected argument for parameter 'content' at index ".$index.".");
             }
         };
-        $check($arguments[0], 0);
+        $check($arguments[1], 1);
     }
 
     public function indent(array $arguments)

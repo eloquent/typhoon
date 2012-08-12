@@ -13,6 +13,7 @@ namespace Eloquent\Typhoon\Parameter;
 
 use Eloquent\Typhax\Type\MixedType;
 use Icecave\Visita\Host;
+use Typhoon\Typhoon;
 
 class ParameterList extends Host
 {
@@ -21,6 +22,8 @@ class ParameterList extends Host
      */
     public static function createUnrestricted()
     {
+        Typhoon::validate(__METHOD__, func_get_args());
+
         return new ParameterList(
             array(
                 new Parameter(
@@ -37,8 +40,11 @@ class ParameterList extends Host
      * @param array<Parameter> $parameters
      * @param boolean $variableLength
      */
-    public function __construct(array $parameters = array(), $variableLength = false)
-    {
+    public function __construct(
+        array $parameters = array(),
+        $variableLength = false
+    ) {
+        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
         $this->parameters = $parameters;
         $this->variableLength = $variableLength;
     }
@@ -48,14 +54,20 @@ class ParameterList extends Host
      */
     public function parameters()
     {
+        $this->typhoon->parameters(func_get_args());
+
         return $this->parameters;
     }
 
     /**
+     * @param string $name
+     *
      * @return Parameter|null
      */
     public function parameterByName($name)
     {
+        $this->typhoon->parameterByName(func_get_args());
+
         foreach ($this->parameters() as $parameter) {
             if ($parameter->name() === $name) {
                 return $parameter;
@@ -70,6 +82,8 @@ class ParameterList extends Host
      */
     public function isVariableLength()
     {
+        $this->typhoon->isVariableLength(func_get_args());
+
         return $this->variableLength;
     }
 
@@ -78,6 +92,8 @@ class ParameterList extends Host
      */
     public function requiredParameters()
     {
+        $this->typhoon->requiredParameters(func_get_args());
+
         $requiredParameters = array();
         $parameters = $this->parameters();
         $numberOfParameters = count($parameters);
@@ -99,4 +115,5 @@ class ParameterList extends Host
 
     private $parameters;
     private $variableLength;
+    private $typhoon;
 }

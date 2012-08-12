@@ -14,12 +14,14 @@ namespace Eloquent\Typhoon\Compiler;
 use Eloquent\Typhoon\Parameter\Parameter;
 use Eloquent\Typhoon\Parameter\ParameterList;
 use Eloquent\Typhoon\Parameter\Visitor;
+use Typhoon\Typhoon;
 
 class ParameterListCompiler implements Visitor
 {
     public function __construct(
         TyphaxCompiler $typhaxCompiler = null
     ){
+        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
         if (null === $typhaxCompiler) {
             $typhaxCompiler = new TyphaxCompiler;
         }
@@ -32,6 +34,8 @@ class ParameterListCompiler implements Visitor
      */
     public function typhaxCompiler()
     {
+        $this->typhoon->typhaxCompiler(func_get_args());
+
         return $this->typhaxCompiler;
     }
 
@@ -42,6 +46,8 @@ class ParameterListCompiler implements Visitor
      */
     public function visitParameter(Parameter $parameter)
     {
+        $this->typhoon->visitParameter(func_get_args());
+
         $check = $parameter->type()->accept(
             $this->typhaxCompiler()
         );
@@ -64,6 +70,8 @@ EOD
      */
     public function visitParameterList(ParameterList $parameterList)
     {
+        $this->typhoon->visitParameterList(func_get_args());
+
         $parameters = $parameterList->parameters();
         $parameterCount = count($parameters);
 
@@ -167,11 +175,15 @@ EOD
     }
 
     /**
+     * @param string $parameters
      * @param string $content
      *
      * @return string
      */
-    protected function createCallback($parameters, $content) {
+    protected function createCallback($parameters, $content)
+    {
+        $this->typhoon->createCallback(func_get_args());
+
         return
             "function($parameters) {\n".
             $this->indent($content)."\n".
@@ -185,7 +197,10 @@ EOD
      *
      * @return string
      */
-    protected function indent($content, $depth = 1) {
+    protected function indent($content, $depth = 1)
+    {
+        $this->typhoon->indent(func_get_args());
+
         $indent = str_repeat('    ', $depth);
         $lines = explode("\n", $content);
         $lines = array_map(function($line) use($indent) {
@@ -200,4 +215,5 @@ EOD
     }
 
     private $typhaxCompiler;
+    private $typhoon;
 }

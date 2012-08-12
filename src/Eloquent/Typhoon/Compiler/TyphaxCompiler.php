@@ -30,9 +30,15 @@ use Eloquent\Typhax\Type\StringableType;
 use Eloquent\Typhax\Type\TraversableType;
 use Eloquent\Typhax\Type\TupleType;
 use Eloquent\Typhax\Type\Visitor;
+use Typhoon\Typhoon;
 
 class TyphaxCompiler implements Visitor
 {
+    public function __construct()
+    {
+        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
+    }
+
     /**
      * @param AndType $type
      *
@@ -40,6 +46,8 @@ class TyphaxCompiler implements Visitor
      */
     public function visitAndType(AndType $type)
     {
+        $this->typhoon->visitAndType(func_get_args());
+
         if (count($type->types()) < 1) {
             return $this->createCallback(
                 'return true;'
@@ -85,6 +93,8 @@ EOD
      */
     public function visitArrayType(ArrayType $type)
     {
+        $this->typhoon->visitArrayType(func_get_args());
+
         return $this->createCallback(
             'return is_array($value);'
         );
@@ -97,6 +107,8 @@ EOD
      */
     public function visitBooleanType(BooleanType $type)
     {
+        $this->typhoon->visitBooleanType(func_get_args());
+
         return $this->createCallback(
             'return is_bool($value);'
         );
@@ -109,6 +121,8 @@ EOD
      */
     public function visitCallableType(CallableType $type)
     {
+        $this->typhoon->visitCallableType(func_get_args());
+
         return $this->createCallback(
             'return is_callable($value);'
         );
@@ -121,6 +135,8 @@ EOD
      */
     public function visitFloatType(FloatType $type)
     {
+        $this->typhoon->visitFloatType(func_get_args());
+
         return $this->createCallback(
             'return is_float($value);'
         );
@@ -133,6 +149,8 @@ EOD
      */
     public function visitIntegerType(IntegerType $type)
     {
+        $this->typhoon->visitIntegerType(func_get_args());
+
         return $this->createCallback(
             'return is_integer($value);'
         );
@@ -145,6 +163,8 @@ EOD
      */
     public function visitMixedType(MixedType $type)
     {
+        $this->typhoon->visitMixedType(func_get_args());
+
         return $this->createCallback(
             'return true;'
         );
@@ -157,6 +177,8 @@ EOD
      */
     public function visitNullType(NullType $type)
     {
+        $this->typhoon->visitNullType(func_get_args());
+
         return $this->createCallback(
             'return $value === null;'
         );
@@ -169,6 +191,8 @@ EOD
      */
     public function visitNumericType(NumericType $type)
     {
+        $this->typhoon->visitNumericType(func_get_args());
+
         return $this->createCallback(
             'return is_numeric($value);'
         );
@@ -181,6 +205,8 @@ EOD
      */
     public function visitObjectType(ObjectType $type)
     {
+        $this->typhoon->visitObjectType(func_get_args());
+
         if (null !== $type->ofType()) {
             return $this->createCallback(
                 'return $value instanceof \\'.$type->ofType().';'
@@ -199,6 +225,8 @@ EOD
      */
     public function visitOrType(OrType $type)
     {
+        $this->typhoon->visitOrType(func_get_args());
+
         if (count($type->types()) < 1) {
             return $this->createCallback(
                 'return true;'
@@ -241,6 +269,8 @@ EOD
      */
     public function visitResourceType(ResourceType $type)
     {
+        $this->typhoon->visitResourceType(func_get_args());
+
         if (null !== $type->ofType()) {
             return $this->createCallback(
                 "return\n".
@@ -263,6 +293,8 @@ EOD
      */
     public function visitStreamType(StreamType $type)
     {
+        $this->typhoon->visitStreamType(func_get_args());
+
         $readableCheck = null;
         if (null !== $type->readable()) {
             if ($type->readable()) {
@@ -351,6 +383,8 @@ EOD
      */
     public function visitStringType(StringType $type)
     {
+        $this->typhoon->visitStringType(func_get_args());
+
         return $this->createCallback(
             'return is_string($value);'
         );
@@ -363,6 +397,8 @@ EOD
      */
     public function visitStringableType(StringableType $type)
     {
+        $this->typhoon->visitStringableType(func_get_args());
+
         return $this->createCallback(<<<'EOD'
 if (
     is_string($value) ||
@@ -390,6 +426,8 @@ EOD
      */
     public function visitTraversableType(TraversableType $type)
     {
+        $this->typhoon->visitTraversableType(func_get_args());
+
         $primaryCheck = $type->primaryType()->accept($this);
         $keyCheck = $type->keyType()->accept($this);
         $valueCheck = $type->valueType()->accept($this);
@@ -423,6 +461,8 @@ EOD
      */
     public function visitTupleType(TupleType $type)
     {
+        $this->typhoon->visitTupleType(func_get_args());
+
         $typeCount = count($type->types());
 
         if ($typeCount < 1) {
@@ -473,7 +513,10 @@ EOD
      *
      * @return string
      */
-    protected function createCallback($content) {
+    protected function createCallback($content)
+    {
+        $this->typhoon->createCallback(func_get_args());
+
         return
             "function(\$value) {\n".
             $this->indent($content)."\n".
@@ -487,7 +530,10 @@ EOD
      *
      * @return string
      */
-    protected function indent($content, $depth = 1) {
+    protected function indent($content, $depth = 1)
+    {
+        $this->typhoon->indent(func_get_args());
+
         $indent = str_repeat('    ', $depth);
         $lines = explode("\n", $content);
         $lines = array_map(function($line) use($indent) {
@@ -500,4 +546,6 @@ EOD
 
         return implode("\n", $lines);
     }
+
+    private $typhoon;
 }

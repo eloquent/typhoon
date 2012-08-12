@@ -270,17 +270,17 @@ class ValidatorClassGeneratorTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'classDefinition'.");
+            throw new \InvalidArgumentException("Missing argument for parameter 'method'.");
         } elseif ($argumentCount > 1) {
             throw new \InvalidArgumentException("Unexpected argument at index 2.");
         }
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhoon\ClassMapper\ClassDefinition;
+                return $value instanceof \ReflectionMethod;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'classDefinition' at index ".$index.".");
+                throw new \InvalidArgumentException("Unexpected argument for parameter 'method' at index ".$index.".");
             }
         };
         $check($arguments[0], 0);
