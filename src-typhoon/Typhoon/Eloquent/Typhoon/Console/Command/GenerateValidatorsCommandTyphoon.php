@@ -6,8 +6,8 @@ class GenerateValidatorsCommandTyphoon
     public function validateConstructor(array $arguments)
     {
         $argumentCount = count($arguments);
-        if ($argumentCount > 2) {
-            throw new \InvalidArgumentException("Unexpected argument at index 3.");
+        if ($argumentCount > 3) {
+            throw new \InvalidArgumentException("Unexpected argument at index 4.");
         }
 
         if ($argumentCount > 0) {
@@ -40,6 +40,32 @@ class GenerateValidatorsCommandTyphoon
             $check = function($argument, $index) {
                 $check = function($value) {
                     $check = function($value) {
+                        return $value instanceof \Eloquent\Typhoon\Deployment\DeploymentManager;
+                    };
+                    if ($check($value)) {
+                        return true;
+                    }
+
+                    $check = function($value) {
+                        return $value === null;
+                    };
+                    if ($check($value)) {
+                        return true;
+                    }
+
+                    return false;
+                };
+                if (!$check($argument)) {
+                    throw new \InvalidArgumentException("Unexpected argument for parameter 'deploymentManager' at index ".$index.".");
+                }
+            };
+            $check($arguments[1], 1);
+        }
+
+        if ($argumentCount > 2) {
+            $check = function($argument, $index) {
+                $check = function($value) {
+                    $check = function($value) {
                         return $value instanceof \Icecave\Isolator\Isolator;
                     };
                     if ($check($value)) {
@@ -59,11 +85,18 @@ class GenerateValidatorsCommandTyphoon
                     throw new \InvalidArgumentException("Unexpected argument for parameter 'isolator' at index ".$index.".");
                 }
             };
-            $check($arguments[1], 1);
+            $check($arguments[2], 2);
         }
     }
 
     public function generator(array $arguments)
+    {
+        if (count($arguments) > 0) {
+            throw new \InvalidArgumentException("Unexpected argument at index 1.");
+        }
+    }
+
+    public function deploymentManager(array $arguments)
     {
         if (count($arguments) > 0) {
             throw new \InvalidArgumentException("Unexpected argument at index 1.");

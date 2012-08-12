@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Console\Command;
 
+use Eloquent\Typhoon\Deployment\DeploymentManager;
 use Eloquent\Typhoon\Generator\ProjectValidatorGenerator;
 use Icecave\Isolator\Isolator;
 use Symfony\Component\Console\Command\Command;
@@ -23,17 +24,23 @@ class GenerateValidatorsCommand extends Command
 {
     /**
      * @param ProjectValidatorGenerator|null $generator
+     * @param DeploymentManager|null $deploymentManager
      * @param Isolator|null $isolator
      */
     public function __construct(
         ProjectValidatorGenerator $generator = null,
+        DeploymentManager $deploymentManager = null,
         Isolator $isolator = null
     ) {
         if (null === $generator) {
             $generator = new ProjectValidatorGenerator;
         }
+        if (null === $deploymentManager) {
+            $deploymentManager = new DeploymentManager;
+        }
 
         $this->generator = $generator;
+        $this->deploymentManager = $deploymentManager;
         $this->isolator = Isolator::get($isolator);
 
         parent::__construct();
@@ -45,6 +52,14 @@ class GenerateValidatorsCommand extends Command
     public function generator()
     {
         return $this->generator;
+    }
+
+    /**
+     * @return DeploymentManager
+     */
+    public function deploymentManager()
+    {
+        return $this->deploymentManager;
     }
 
     protected function configure()
@@ -95,9 +110,15 @@ class GenerateValidatorsCommand extends Command
             $input->getArgument('class-path')
         );
 
+        $output->writeln('Deploying Typhoon...');
+        $this->deploymentManager->deploy(
+            $input->getArgument('output-path')
+        );
+
         $output->writeln('Done.');
     }
 
     private $generator;
+    private $deploymentManager;
     private $isolator;
 }

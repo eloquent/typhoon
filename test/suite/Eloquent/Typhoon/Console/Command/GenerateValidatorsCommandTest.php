@@ -25,9 +25,11 @@ class GenerateValidatorsCommandTest extends PHPUnit_Framework_TestCase
         parent::setUp();
 
         $this->_generator = Phake::mock('Eloquent\Typhoon\Generator\ProjectValidatorGenerator');
+        $this->_deploymentManager = Phake::mock('Eloquent\Typhoon\Deployment\DeploymentManager');
         $this->_isolator = Phake::mock('Icecave\Isolator\Isolator');
         $this->_command = new GenerateValidatorsCommand(
             $this->_generator,
+            $this->_deploymentManager,
             $this->_isolator
         );
     }
@@ -35,6 +37,7 @@ class GenerateValidatorsCommandTest extends PHPUnit_Framework_TestCase
     public function testConstructor()
     {
         $this->assertSame($this->_generator, $this->_command->generator());
+        $this->assertSame($this->_deploymentManager, $this->_command->deploymentManager());
     }
 
     public function testConstructorDefaults()
@@ -44,6 +47,10 @@ class GenerateValidatorsCommandTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf(
             'Eloquent\Typhoon\Generator\ProjectValidatorGenerator',
             $command->generator()
+        );
+        $this->assertInstanceOf(
+            'Eloquent\Typhoon\Deployment\DeploymentManager',
+            $command->deploymentManager()
         );
     }
 
@@ -100,6 +107,8 @@ class GenerateValidatorsCommandTest extends PHPUnit_Framework_TestCase
                     'doom',
                 )
             ),
+            Phake::verify($output)->writeln('Deploying Typhoon...'),
+            Phake::verify($this->_deploymentManager)->deploy('baz'),
             Phake::verify($output)->writeln('Done.')
         );
     }
