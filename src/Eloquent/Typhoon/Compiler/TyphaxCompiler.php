@@ -34,7 +34,7 @@ use Eloquent\Typhax\Type\Visitor;
 class TyphaxCompiler implements Visitor
 {
     /**
-     * @param AndType
+     * @param AndType $type
      *
      * @return string
      */
@@ -79,7 +79,7 @@ EOD
     }
 
     /**
-     * @param ArrayType
+     * @param ArrayType $type
      *
      * @return string
      */
@@ -91,7 +91,7 @@ EOD
     }
 
     /**
-     * @param BooleanType
+     * @param BooleanType $type
      *
      * @return string
      */
@@ -103,7 +103,7 @@ EOD
     }
 
     /**
-     * @param CallableType
+     * @param CallableType $type
      *
      * @return string
      */
@@ -115,7 +115,7 @@ EOD
     }
 
     /**
-     * @param FloatType
+     * @param FloatType $type
      *
      * @return string
      */
@@ -127,7 +127,7 @@ EOD
     }
 
     /**
-     * @param IntegerType
+     * @param IntegerType $type
      *
      * @return string
      */
@@ -139,7 +139,7 @@ EOD
     }
 
     /**
-     * @param MixedType
+     * @param MixedType $type
      *
      * @return string
      */
@@ -151,7 +151,7 @@ EOD
     }
 
     /**
-     * @param NullType
+     * @param NullType $type
      *
      * @return string
      */
@@ -163,7 +163,7 @@ EOD
     }
 
     /**
-     * @param NumericType
+     * @param NumericType $type
      *
      * @return string
      */
@@ -175,7 +175,7 @@ EOD
     }
 
     /**
-     * @param ObjectType
+     * @param ObjectType $type
      *
      * @return string
      */
@@ -193,7 +193,7 @@ EOD
     }
 
     /**
-     * @param OrType
+     * @param OrType $type
      *
      * @return string
      */
@@ -235,7 +235,7 @@ EOD
     }
 
     /**
-     * @param ResourceType
+     * @param ResourceType $type
      *
      * @return string
      */
@@ -257,7 +257,7 @@ EOD
     }
 
     /**
-     * @param StreamType
+     * @param StreamType $type
      *
      * @return string
      */
@@ -345,7 +345,7 @@ EOD
     }
 
     /**
-     * @param StringType
+     * @param StringType $type
      *
      * @return string
      */
@@ -357,7 +357,7 @@ EOD
     }
 
     /**
-     * @param StringableType
+     * @param StringableType $type
      *
      * @return string
      */
@@ -384,7 +384,7 @@ EOD
     }
 
     /**
-     * @param TraversableType
+     * @param TraversableType $type
      *
      * @return string
      */
@@ -417,7 +417,7 @@ EOD
     }
 
     /**
-     * @param TupleType
+     * @param TupleType $type
      *
      * @return string
      */
