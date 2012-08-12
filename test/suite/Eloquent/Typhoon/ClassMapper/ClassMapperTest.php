@@ -274,7 +274,6 @@ EOD
         $expected = new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator(
                 __DIR__,
-                FilesystemIterator::CURRENT_AS_PATHNAME |
                 FilesystemIterator::FOLLOW_SYMLINKS |
                 FilesystemIterator::SKIP_DOTS
             )

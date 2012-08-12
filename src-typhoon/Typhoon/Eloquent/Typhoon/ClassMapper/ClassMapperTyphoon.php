@@ -3,7 +3,7 @@ namespace Typhoon\Eloquent\Typhoon\ClassMapper;
 
 class ClassMapperTyphoon
 {
-    public function __construct(array $arguments)
+    public function validateConstructor(array $arguments)
     {
         $argumentCount = count($arguments);
         if ($argumentCount > 1) {

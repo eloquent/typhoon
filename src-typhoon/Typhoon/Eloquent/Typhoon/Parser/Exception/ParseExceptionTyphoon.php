@@ -3,7 +3,7 @@ namespace Typhoon\Eloquent\Typhoon\Parser\Exception;
 
 class ParseExceptionTyphoon
 {
-    public function __construct(array $arguments)
+    public function validateConstructor(array $arguments)
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 2) {

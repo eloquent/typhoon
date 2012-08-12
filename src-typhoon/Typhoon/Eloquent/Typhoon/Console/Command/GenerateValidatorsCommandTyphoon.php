@@ -3,7 +3,7 @@ namespace Typhoon\Eloquent\Typhoon\Console\Command;
 
 class GenerateValidatorsCommandTyphoon
 {
-    public function __construct(array $arguments)
+    public function validateConstructor(array $arguments)
     {
         $argumentCount = count($arguments);
         if ($argumentCount > 2) {
@@ -72,8 +72,20 @@ class GenerateValidatorsCommandTyphoon
 
     public function configure(array $arguments)
     {
-        if (count($arguments) > 0) {
-            throw new \InvalidArgumentException("Unexpected argument at index 1.");
+        $argumentCount = count($arguments);
+
+        if ($argumentCount > 0) {
+            $check = function($argument, $index) {
+                $check = function($value) {
+                    return true;
+                };
+                if (!$check($argument)) {
+                    throw new \InvalidArgumentException("Unexpected argument for parameter 'undefined' at index ".$index.".");
+                }
+            };
+            for ($i = 0; $i < $argumentCount; $i ++) {
+                $check($arguments[$i], $i);
+            }
         }
     }
 
