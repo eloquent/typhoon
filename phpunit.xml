@@ -12,6 +12,7 @@
     <testsuites>
         <testsuite>
             <directory>test/suite</directory>
+            <directory>test/suite-deploy</directory>
         </testsuite>
     </testsuites>
 </phpunit>

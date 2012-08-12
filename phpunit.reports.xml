@@ -12,6 +12,7 @@
     <testsuites>
         <testsuite>
             <directory>test/suite</directory>
+            <directory>test/suite-deploy</directory>
         </testsuite>
     </testsuites>
 
@@ -59,6 +60,7 @@
     <filter>
         <whitelist>
             <directory>src</directory>
+            <directory>src-deploy</directory>
         </whitelist>
     </filter>
 </phpunit>

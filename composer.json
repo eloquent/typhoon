@@ -30,6 +30,7 @@
     "autoload": {
         "psr-0": {
             "Eloquent\\Typhoon": "src",
+            "Typhoon": "src-deploy",
             "Typhoon\\Eloquent\\Typhoon": "src-typhoon"
         }
     },

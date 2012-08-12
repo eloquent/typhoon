@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Eloquent\Typhoon;
+namespace Typhoon;
 
 abstract class Typhoon
 {

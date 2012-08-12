@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Eloquent\Typhoon;
+namespace Typhoon;
 
 use PHPUnit_Framework_TestCase;
 use stdClass;
@@ -18,11 +18,11 @@ class TyphoonTest extends PHPUnit_Framework_TestCase
 {
     public function testGet()
     {
-        $className = __NAMESPACE__.'\TestFixture\Example';
+        $className = 'Eloquent\Typhoon\TestFixture\Example';
         $validator = Typhoon::get($className);
 
         $this->assertInstanceOf(
-            'Typhoon\\'.__NAMESPACE__.'\TestFixture\ExampleTyphoon',
+            'Typhoon\Eloquent\Typhoon\TestFixture\ExampleTyphoon',
             $validator
         );
         $this->assertSame($validator, Typhoon::get($className));
@@ -31,12 +31,12 @@ class TyphoonTest extends PHPUnit_Framework_TestCase
 
     public function testGetWithArguments()
     {
-        $className = __NAMESPACE__.'\TestFixture\Example';
+        $className = 'Eloquent\Typhoon\TestFixture\Example';
         $arguments = array(new stdClass);
         $validator = Typhoon::get($className, $arguments);
 
         $this->assertInstanceOf(
-            'Typhoon\\'.__NAMESPACE__.'\TestFixture\ExampleTyphoon',
+            'Typhoon\Eloquent\Typhoon\TestFixture\ExampleTyphoon',
             $validator
         );
         $this->assertSame($validator, Typhoon::get($className));
@@ -45,7 +45,7 @@ class TyphoonTest extends PHPUnit_Framework_TestCase
 
     public function testInstall()
     {
-        $className = __NAMESPACE__.'\TestFixture\Example';
+        $className = 'Eloquent\Typhoon\TestFixture\Example';
         Typhoon::get($className);
         $validator = new stdClass;
         Typhoon::install($className, $validator);
