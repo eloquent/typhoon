@@ -11,9 +11,7 @@
         },
         {
             "package": "eloquent/typhax",
-            "version": "dev-master",
-            "source-reference": "0.2.0",
-            "commit-date": "1344777281"
+            "version": "0.2.0"
         },
         {
             "package": "icecave/isolator",
