@@ -33,22 +33,29 @@ class ParameterListReflectionResolverTest extends PHPUnit_Framework_TestCase
         $list = new ParameterList(array(
             new Parameter(
                 'foo',
-                new StringType
+                new StringType,
+                false,
+                'Foo description'
             ),
             new Parameter(
                 'bar',
-                new StringType
+                new StringType,
+                false,
+                'Bar description'
             ),
         ));
         $expected = new ParameterList(array(
             new Parameter(
                 'foo',
-                new StringType
+                new StringType,
+                false,
+                'Foo description'
             ),
             new Parameter(
                 'bar',
                 new StringType,
-                true
+                true,
+                'Bar description'
             ),
         ));
 
@@ -66,21 +73,29 @@ class ParameterListReflectionResolverTest extends PHPUnit_Framework_TestCase
         $list = new ParameterList(array(
             new Parameter(
                 'foo',
-                new StringType
+                new StringType,
+                false,
+                'Foo description'
             ),
             new Parameter(
                 'bar',
-                new StringType
+                new StringType,
+                false,
+                'Bar description'
             ),
         ));
         $expected = new ParameterList(array(
             new Parameter(
                 'foo',
-                new StringType
+                new StringType,
+                false,
+                'Foo description'
             ),
             new Parameter(
                 'bar',
-                new StringType
+                new StringType,
+                false,
+                'Bar description'
             ),
         ));
 
@@ -89,5 +104,47 @@ class ParameterListReflectionResolverTest extends PHPUnit_Framework_TestCase
 
     protected function methodEmpty()
     {
+    }
+
+    public function testResolverVariableLength()
+    {
+        $resolver = $this->resolverFixture('methodEmpty');
+
+        $list = new ParameterList(
+            array(
+                new Parameter(
+                    'foo',
+                    new StringType,
+                    false,
+                    'Foo description'
+                ),
+                new Parameter(
+                    'bar',
+                    new StringType,
+                    false,
+                    'Bar description'
+                ),
+            ),
+            true
+        );
+        $expected = new ParameterList(
+            array(
+                new Parameter(
+                    'foo',
+                    new StringType,
+                    false,
+                    'Foo description'
+                ),
+                new Parameter(
+                    'bar',
+                    new StringType,
+                    false,
+                    'Bar description'
+                ),
+            ),
+            true
+        );
+
+        $this->assertEquals($expected, $list->accept($resolver));
     }
 }

@@ -148,6 +148,35 @@ EOD;
         $this->assertEquals($expected, $this->_parser->parseBlockComment($source));
     }
 
+    public function testVisitParameterListVariableLengthNoDescription()
+    {
+        $source = <<<'EOD'
+/**
+     * Summary
+     * Summary
+     *
+     * Description
+     * Description
+     *
+     * @param string $foo,...
+     */
+EOD;
+        $fooType = new StringType;
+        $fooParameter = new Parameter(
+            'foo',
+            $fooType,
+            true
+        );
+        $expected = new ParameterList(
+            array(
+                $fooParameter,
+            ),
+            true
+        );
+
+        $this->assertEquals($expected, $this->_parser->parseBlockComment($source));
+    }
+
     public function testVisitInvalidParameterTagFailureNoType()
     {
         $source = <<<'EOD'

@@ -272,7 +272,12 @@ EOD
     public function testFileIterator()
     {
         $expected = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator(__DIR__)
+            new RecursiveDirectoryIterator(
+                __DIR__,
+                FilesystemIterator::CURRENT_AS_PATHNAME |
+                FilesystemIterator::FOLLOW_SYMLINKS |
+                FilesystemIterator::SKIP_DOTS
+            )
         );
         $actual = Liberator::liberate($this->_mapper)->fileIterator(__DIR__);
 

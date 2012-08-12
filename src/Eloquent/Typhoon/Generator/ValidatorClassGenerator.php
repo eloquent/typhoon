@@ -157,7 +157,7 @@ EOD;
         ClassDefinition $classDefinition
     ) {
         $blockComment = $method->getDocComment();
-        if (null === $blockComment) {
+        if (false === $blockComment) {
             $parameterList = ParameterList::createUnrestricted();
         } else {
             $parameterList = $this->parser()->parseBlockComment($blockComment);

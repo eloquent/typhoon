@@ -35,10 +35,10 @@ class ClassMapper
     {
         $classDefinitions = array();
 
-        foreach ($this->fileIterator($directoryPath) as $filePathInfo) {
+        foreach ($this->fileIterator($directoryPath) as $filePath) {
             $classDefinitions = array_merge(
                 $classDefinitions,
-                $this->classesByFile($filePathInfo->getPathname())
+                $this->classesByFile($filePath)
             );
         }
 
@@ -205,7 +205,12 @@ class ClassMapper
     protected function fileIterator($directoryPath)
     {
         return new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($directoryPath)
+            new RecursiveDirectoryIterator(
+                $directoryPath,
+                FilesystemIterator::CURRENT_AS_PATHNAME |
+                FilesystemIterator::FOLLOW_SYMLINKS |
+                FilesystemIterator::SKIP_DOTS
+            )
         );
     }
 

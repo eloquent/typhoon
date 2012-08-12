@@ -43,23 +43,71 @@ class ParameterListClassNameResolverTest extends PHPUnit_Framework_TestCase
         $list = new ParameterList(array(
             new Parameter(
                 'foo',
-                new ObjectType('Spam')
+                new ObjectType('Spam'),
+                false,
+                'Foo description'
             ),
             new Parameter(
                 'bar',
-                new ObjectType('Pip')
+                new ObjectType('Pip'),
+                true,
+                'Bar description'
             ),
         ));
         $expected = new ParameterList(array(
             new Parameter(
                 'foo',
-                new ObjectType('Foo\Bar\Baz\Spam')
+                new ObjectType('Foo\Bar\Baz\Spam'),
+                false,
+                'Foo description'
             ),
             new Parameter(
                 'bar',
-                new ObjectType('Qux\Doom\Splat')
+                new ObjectType('Qux\Doom\Splat'),
+                true,
+                'Bar description'
             ),
         ));
+
+        $this->assertEquals($expected, $list->accept($this->_resolver));
+    }
+
+    public function testResolverVariableLength()
+    {
+        $list = new ParameterList(
+            array(
+                new Parameter(
+                    'foo',
+                    new ObjectType('Spam'),
+                    false,
+                    'Foo description'
+                ),
+                new Parameter(
+                    'bar',
+                    new ObjectType('Pip'),
+                    true,
+                    'Bar description'
+                ),
+            ),
+            true
+        );
+        $expected = new ParameterList(
+            array(
+                new Parameter(
+                    'foo',
+                    new ObjectType('Foo\Bar\Baz\Spam'),
+                    false,
+                    'Foo description'
+                ),
+                new Parameter(
+                    'bar',
+                    new ObjectType('Qux\Doom\Splat'),
+                    true,
+                    'Bar description'
+                ),
+            ),
+            true
+        );
 
         $this->assertEquals($expected, $list->accept($this->_resolver));
     }

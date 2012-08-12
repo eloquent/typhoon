@@ -120,7 +120,7 @@ class ParameterListParser implements Visitor
         );
     }
 
-    const PATTERN_VARIABLE_LENGTH = '/^.*\s&?\$\w+,\.{3}\s/';
+    const PATTERN_VARIABLE_LENGTH = '/^.*\s&?\$\w+,\.{3}(?:$|\s)/';
 
     /**
      * @param string $content

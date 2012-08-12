@@ -99,6 +99,7 @@ EOD;
 EOD;
 
             $missingParameterContent = <<<EOD
+
 if (\$argumentCount < $requiredParameterCount) {
 $missingParameterContent
 }
@@ -118,16 +119,14 @@ EOD;
                 ;
             } else {
                 $maxArgumentLengthCheck =
-                    'if '.$maxArgumentLengthCheck
+                    "\nif ".$maxArgumentLengthCheck
                 ;
             }
         }
 
         $parameterChecks = '';
         foreach ($parameters as $index => $parameter) {
-            if ($parameterChecks) {
-                $parameterChecks .= "\n";
-            }
+            $parameterChecks .= "\n";
 
             $check = $parameter->accept($this);
 
@@ -162,9 +161,7 @@ EOD;
         }
 
         return <<<EOD
-\$argumentCount = count(\$arguments);
-$missingParameterContent$maxArgumentLengthCheck
-$parameterChecks
+\$argumentCount = count(\$arguments);$missingParameterContent$maxArgumentLengthCheck$parameterChecks
 EOD
         ;
     }

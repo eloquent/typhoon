@@ -314,6 +314,31 @@ EOD;
         $this->assertSame($expected, $list->accept($this->_compiler));
     }
 
+    public function testVisitParameterListUnrestricted()
+    {
+        $list = ParameterList::createUnrestricted();
+
+        $expected = <<<'EOD'
+$argumentCount = count($arguments);
+
+if ($argumentCount > 0) {
+    $check = function($argument, $index) {
+        $check = function($value) {
+            return true;
+        };
+        if (!$check($argument)) {
+            throw new \InvalidArgumentException("Unexpected argument for parameter 'undefined' at index ".$index.".");
+        }
+    };
+    for ($i = 0; $i < $argumentCount; $i ++) {
+        $check($arguments[$i], $i);
+    }
+}
+EOD;
+
+        $this->assertSame($expected, $list->accept($this->_compiler));
+    }
+
     public function testVisitParameterListEmpty()
     {
         $list = new ParameterList;

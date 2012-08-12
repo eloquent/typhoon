@@ -11,9 +11,13 @@
 
 namespace Eloquent\Typhoon\Generator;
 
+use Eloquent\Typhoon\ClassMapper\ClassDefinition;
 use Eloquent\Typhoon\ClassMapper\ClassMapper;
+use FilesystemIterator;
 use Phake;
 use PHPUnit_Framework_TestCase;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 
 class ValidatorClassGeneratorTest extends PHPUnit_Framework_TestCase
 {
@@ -49,325 +53,45 @@ class ValidatorClassGeneratorTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testGenerate()
+    public function generateData()
     {
+        $exampleClassesPath =
+            __DIR__.
+            '/../../../../src/Eloquent/Typhoon/TestFixture/GeneratorExamples/'
+        ;
+
+        $data = array();
+        foreach (scandir($exampleClassesPath) as $item) {
+            if ('.' !== substr($item, 0, 1)) {
+                $className = pathinfo($item, PATHINFO_FILENAME);
+                $data[$className] = array($className);
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * @dataProvider generateData
+     */
+    public function testGenerate($className)
+    {
+        $classPath =
+            __DIR__.
+            '/../../../../src/Eloquent/Typhoon/TestFixture/GeneratorExamples/'.
+            $className.
+            '.php'
+        ;
+        $expectedPath =
+            __DIR__.
+            '/../../../../src/Typhoon/Eloquent/Typhoon/TestFixture/GeneratorExamples/'.
+            $className.
+            'Typhoon.php'
+        ;
         $classMapper = new ClassMapper;
-        $classDefinitions = $classMapper->classesByFile(
-            __DIR__.'/../../../../../src/Eloquent/Typhoon/Generator/ValidatorClassGenerator.php'
-        );
+        $classDefinitions = $classMapper->classesByFile($classPath);
         $classDefinition = array_pop($classDefinitions);
-        $expected = <<<'EOD'
-<?php
-namespace Typhoon\Eloquent\Typhoon\Generator;
-
-class ValidatorClassGeneratorTyphoon
-{
-    public function __construct(array $arguments)
-    {
-        $argumentCount = count($arguments);
-        if ($argumentCount > 2) {
-            throw new \InvalidArgumentException("Unexpected argument at index 3.");
-        }
-
-        if ($argumentCount > 0) {
-            $check = function($argument, $index) {
-                $check = function($value) {
-                    $check = function($value) {
-                        return $value instanceof \Eloquent\Typhoon\Parser\ParameterListParser;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    $check = function($value) {
-                        return $value === null;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    return false;
-                };
-                if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'parser' at index ".$index.".");
-                }
-            };
-            $check($arguments[0], 0);
-        }
-
-        if ($argumentCount > 1) {
-            $check = function($argument, $index) {
-                $check = function($value) {
-                    $check = function($value) {
-                        return $value instanceof \Eloquent\Typhoon\Compiler\ParameterListCompiler;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    $check = function($value) {
-                        return $value === null;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    return false;
-                };
-                if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'compiler' at index ".$index.".");
-                }
-            };
-            $check($arguments[1], 1);
-        }
-    }
-
-    public function parser(array $arguments)
-    {
-        if (count($arguments) > 0) {
-            throw new \InvalidArgumentException("Unexpected argument at index 1.");
-        }
-    }
-
-    public function compiler(array $arguments)
-    {
-        if (count($arguments) > 0) {
-            throw new \InvalidArgumentException("Unexpected argument at index 1.");
-        }
-    }
-
-    public function generate(array $arguments)
-    {
-        $argumentCount = count($arguments);
-        if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'classDefinition'.");
-        } elseif ($argumentCount > 3) {
-            throw new \InvalidArgumentException("Unexpected argument at index 4.");
-        }
-
-        $check = function($argument, $index) {
-            $check = function($value) {
-                return $value instanceof \Eloquent\Typhoon\ClassMapper\ClassDefinition;
-            };
-            if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'classDefinition' at index ".$index.".");
-            }
-        };
-        $check($arguments[0], 0);
-
-        if ($argumentCount > 1) {
-            $check = function($argument, $index) {
-                $check = function($value) {
-                    $check = function($value) {
-                        return is_string($value);
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    $check = function($value) {
-                        return $value === null;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    return false;
-                };
-                if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'namespaceName' at index ".$index.".");
-                }
-            };
-            $check($arguments[1], 1);
-        }
-
-        if ($argumentCount > 2) {
-            $check = function($argument, $index) {
-                $check = function($value) {
-                    $check = function($value) {
-                        return is_string($value);
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    $check = function($value) {
-                        return $value === null;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    return false;
-                };
-                if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'className' at index ".$index.".");
-                }
-            };
-            $check($arguments[2], 2);
-        }
-    }
-
-    public function methods(array $arguments)
-    {
-        $argumentCount = count($arguments);
-        if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'classDefinition'.");
-        } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
-        }
-
-        $check = function($argument, $index) {
-            $check = function($value) {
-                return $value instanceof \Eloquent\Typhoon\ClassMapper\ClassDefinition;
-            };
-            if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'classDefinition' at index ".$index.".");
-            }
-        };
-        $check($arguments[0], 0);
-    }
-
-    public function generateMethod(array $arguments)
-    {
-        $argumentCount = count($arguments);
-        if ($argumentCount < 2) {
-            if ($argumentCount < 1) {
-                throw new \InvalidArgumentException("Missing argument for parameter 'method'.");
-            }
-            throw new \InvalidArgumentException("Missing argument for parameter 'classDefinition'.");
-        } elseif ($argumentCount > 2) {
-            throw new \InvalidArgumentException("Unexpected argument at index 3.");
-        }
-
-        $check = function($argument, $index) {
-            $check = function($value) {
-                return $value instanceof \ReflectionMethod;
-            };
-            if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'method' at index ".$index.".");
-            }
-        };
-        $check($arguments[0], 0);
-
-        $check = function($argument, $index) {
-            $check = function($value) {
-                return $value instanceof \Eloquent\Typhoon\ClassMapper\ClassDefinition;
-            };
-            if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'classDefinition' at index ".$index.".");
-            }
-        };
-        $check($arguments[1], 1);
-    }
-
-    public function parameterList(array $arguments)
-    {
-        $argumentCount = count($arguments);
-        if ($argumentCount < 2) {
-            if ($argumentCount < 1) {
-                throw new \InvalidArgumentException("Missing argument for parameter 'method'.");
-            }
-            throw new \InvalidArgumentException("Missing argument for parameter 'classDefinition'.");
-        } elseif ($argumentCount > 2) {
-            throw new \InvalidArgumentException("Unexpected argument at index 3.");
-        }
-
-        $check = function($argument, $index) {
-            $check = function($value) {
-                return $value instanceof \ReflectionMethod;
-            };
-            if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'method' at index ".$index.".");
-            }
-        };
-        $check($arguments[0], 0);
-
-        $check = function($argument, $index) {
-            $check = function($value) {
-                return $value instanceof \Eloquent\Typhoon\ClassMapper\ClassDefinition;
-            };
-            if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'classDefinition' at index ".$index.".");
-            }
-        };
-        $check($arguments[1], 1);
-    }
-
-    public function classNameResolver(array $arguments)
-    {
-        $argumentCount = count($arguments);
-        if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'classDefinition'.");
-        } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
-        }
-
-        $check = function($argument, $index) {
-            $check = function($value) {
-                return $value instanceof \Eloquent\Typhoon\ClassMapper\ClassDefinition;
-            };
-            if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'classDefinition' at index ".$index.".");
-            }
-        };
-        $check($arguments[0], 0);
-    }
-
-    public function reflectionResolver(array $arguments)
-    {
-        $argumentCount = count($arguments);
-        if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'classDefinition'.");
-        } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
-        }
-
-        $check = function($argument, $index) {
-            $check = function($value) {
-                return $value instanceof \Eloquent\Typhoon\ClassMapper\ClassDefinition;
-            };
-            if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'classDefinition' at index ".$index.".");
-            }
-        };
-        $check($arguments[0], 0);
-    }
-
-    public function indent(array $arguments)
-    {
-        $argumentCount = count($arguments);
-        if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'content'.");
-        } elseif ($argumentCount > 2) {
-            throw new \InvalidArgumentException("Unexpected argument at index 3.");
-        }
-
-        $check = function($argument, $index) {
-            $check = function($value) {
-                return is_string($value);
-            };
-            if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'content' at index ".$index.".");
-            }
-        };
-        $check($arguments[0], 0);
-
-        if ($argumentCount > 1) {
-            $check = function($argument, $index) {
-                $check = function($value) {
-                    return is_integer($value);
-                };
-                if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'depth' at index ".$index.".");
-                }
-            };
-            $check($arguments[1], 1);
-        }
-    }
-}
-
-EOD;
+        $expected = file_get_contents($expectedPath);
 
         $this->assertSame($expected, $this->_generator->generate($classDefinition));
     }
