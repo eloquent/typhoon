@@ -1,5 +1,5 @@
 {
-    "hash": "e892b0fdf0841c48dcc3883189dfb64a",
+    "hash": "c8984cbd67b766d7432765e262fb18c4",
     "packages": [
         {
             "package": "eloquent/blox",
@@ -17,7 +17,7 @@
         },
         {
             "package": "icecave/isolator",
-            "version": "2.0.0"
+            "version": "2.1.0"
         },
         {
             "package": "icecave/visita",
