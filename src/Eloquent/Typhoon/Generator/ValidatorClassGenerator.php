@@ -24,18 +24,13 @@ use ReflectionMethod;
 class ValidatorClassGenerator
 {
     /**
-     * @param string|null $namespaceName
      * @param ParameterListParser|null $parser
      * @param ParameterListCompiler|null $compiler
      */
     public function __construct(
-        $namespaceName = null,
         ParameterListParser $parser = null,
         ParameterListCompiler $compiler = null
     ) {
-        if (null === $namespaceName) {
-            $namespaceName = 'Typhoon';
-        }
         if (null === $parser) {
             $parser = new ParameterListParser;
         }
@@ -43,17 +38,8 @@ class ValidatorClassGenerator
             $compiler = new ParameterListCompiler;
         }
 
-        $this->namespaceName = $namespaceName;
         $this->parser = $parser;
         $this->compiler = $compiler;
-    }
-
-    /**
-     * @return string
-     */
-    public function namespaceName()
-    {
-        return $this->namespaceName;
     }
 
     /**
@@ -74,13 +60,18 @@ class ValidatorClassGenerator
 
     /**
      * @param ClassDefinition $classDefinition
+     * @param string|null &$namespaceName
+     * @param string|null &$className
      *
      * @return string
      */
-    public function generate(ClassDefinition $classDefinition)
-    {
+    public function generate(
+        ClassDefinition $classDefinition,
+        &$namespaceName = null,
+        &$className = null
+    ) {
         $namespaceName =
-            $this->namespaceName().'\\'.
+            'Typhoon\\'.
             $classDefinition->namespaceName()
         ;
         $className =
@@ -220,7 +211,6 @@ EOD;
         return implode("\n", $lines);
     }
 
-    private $namespaceName;
     private $parser;
     private $compiler;
 }
