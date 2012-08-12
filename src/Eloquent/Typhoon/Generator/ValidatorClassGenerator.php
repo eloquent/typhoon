@@ -132,6 +132,10 @@ EOD;
         ClassDefinition $classDefinition
     ) {
         $methodName = $method->getName();
+        if ('__construct' === $methodName) {
+            $methodName = 'validateConstructor';
+        }
+
         $content = $this->indent(
             $this->parameterList($method, $classDefinition)
                 ->accept($this->compiler())
