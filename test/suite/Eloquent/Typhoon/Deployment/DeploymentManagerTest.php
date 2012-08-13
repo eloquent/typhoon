@@ -34,11 +34,19 @@ class DeploymentManagerTest extends PHPUnit_Framework_TestCase
 
 
         $manager->deploy('foo');
+        $isDirVerification = Phake::verify($isolator, Phake::times(2))
+            ->is_dir('foo/Typhoon')
+        ;
         Phake::inOrder(
-            Phake::verify($isolator)->is_dir('foo/Typhoon'),
+            $isDirVerification,
             Phake::verify($isolator)->copy(
                 $this->_deploySourcePath.'/Typhoon/Typhoon.php',
                 'foo/Typhoon/Typhoon.php'
+            ),
+            $isDirVerification,
+            Phake::verify($isolator)->copy(
+                $this->_deploySourcePath.'/Typhoon/DummyValidator.php',
+                'foo/Typhoon/DummyValidator.php'
             )
         );
     }
@@ -46,18 +54,25 @@ class DeploymentManagerTest extends PHPUnit_Framework_TestCase
     public function testDeployCopyCreateDir()
     {
         $isolator = Phake::mock('Icecave\Isolator\Isolator');
-        Phake::when($isolator)->is_dir(Phake::anyParameters())->thenReturn(false);
+        Phake::when($isolator)->is_dir(Phake::anyParameters())
+            ->thenReturn(false)
+            ->thenReturn(true)
+        ;
         $manager = new DeploymentManager($isolator);
 
 
         $manager->deploy('foo');
+        $isDirVerification = Phake::verify($isolator, Phake::times(2))
+            ->is_dir('foo/Typhoon')
+        ;
         Phake::inOrder(
-            Phake::verify($isolator)->is_dir('foo/Typhoon'),
+            $isDirVerification,
             Phake::verify($isolator)->mkdir('foo/Typhoon', 0777, true),
             Phake::verify($isolator)->copy(
                 $this->_deploySourcePath.'/Typhoon/Typhoon.php',
                 'foo/Typhoon/Typhoon.php'
-            )
+            ),
+            $isDirVerification
         );
     }
 }

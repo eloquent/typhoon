@@ -13,6 +13,8 @@ namespace Eloquent\Typhoon\Generator;
 
 use Eloquent\Typhoon\ClassMapper\ClassDefinition;
 use Eloquent\Typhoon\ClassMapper\ClassMapper;
+use Eloquent\Typhoon\Compiler\ParameterListCompiler;
+use Eloquent\Typhoon\Parser\ParameterListParser;
 use FilesystemIterator;
 use Phake;
 use PHPUnit_Framework_TestCase;
@@ -25,31 +27,43 @@ class ValidatorClassGeneratorTest extends PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $this->_generator = new ValidatorClassGenerator;
+        $this->_parser = new ParameterListParser;
+        $this->_compiler = new ParameterListCompiler;
+        $this->_classMapper = Phake::partialMock(
+            'Eloquent\Typhoon\ClassMapper\ClassMapper'
+        );
+        $this->_isolator = Phake::mock('IceCave\Isolator\Isolator');
+        $this->_generator = Phake::partialMock(
+            __NAMESPACE__.'\ValidatorClassGenerator',
+            $this->_parser,
+            $this->_compiler,
+            $this->_classMapper,
+            $this->_isolator
+        );
     }
 
     public function testConstructor()
     {
-        $parser = Phake::mock('Eloquent\Typhoon\Parser\ParameterListParser');
-        $compiler = Phake::mock('Eloquent\Typhoon\Compiler\ParameterListCompiler');
-        $generator = new ValidatorClassGenerator(
-            $parser,
-            $compiler
-        );
-
-        $this->assertSame($parser, $generator->parser());
-        $this->assertSame($compiler, $generator->compiler());
+        $this->assertSame($this->_parser, $this->_generator->parser());
+        $this->assertSame($this->_compiler, $this->_generator->compiler());
+        $this->assertSame($this->_classMapper, $this->_generator->classMapper());
     }
 
     public function testConstructorDefaults()
     {
+        $generator = new ValidatorClassGenerator;
+
         $this->assertInstanceOf(
             'Eloquent\Typhoon\Parser\ParameterListParser',
-            $this->_generator->parser()
+            $generator->parser()
         );
         $this->assertInstanceOf(
             'Eloquent\Typhoon\Compiler\ParameterListCompiler',
-            $this->_generator->compiler()
+            $generator->compiler()
+        );
+        $this->assertInstanceOf(
+            'Eloquent\Typhoon\ClassMapper\ClassMapper',
+            $generator->classMapper()
         );
     }
 
@@ -88,11 +102,122 @@ class ValidatorClassGeneratorTest extends PHPUnit_Framework_TestCase
             $className.
             'Typhoon.php'
         ;
-        $classMapper = new ClassMapper;
-        $classDefinitions = $classMapper->classesByFile($classPath);
+        $classDefinitions = $this->_classMapper->classesByFile($classPath);
         $classDefinition = array_pop($classDefinitions);
         $expected = file_get_contents($expectedPath);
 
         $this->assertSame($expected, $this->_generator->generate($classDefinition));
+    }
+
+    public function testGenerateFromSource()
+    {
+        $classDefinition = new ClassDefinition('Foo');
+        Phake::when($this->_classMapper)
+            ->classBySource(Phake::anyParameters())
+            ->thenReturn($classDefinition)
+        ;
+        Phake::when($this->_generator)
+            ->generate(Phake::anyParameters())
+            ->thenReturn('bar')
+        ;
+        Phake::when($this->_generator)
+            ->generate(
+                $this->identicalTo($classDefinition),
+                Phake::setReference('baz'),
+                Phake::setReference('qux')
+            )
+            ->thenReturn('doom')
+        ;
+        $actual = $this->_generator->generateFromSource(
+            'splat',
+            'ping',
+            $namespaceName,
+            $className
+        );
+
+        $this->assertSame('doom', $actual);
+        $this->assertSame('baz', $namespaceName);
+        $this->assertSame('qux', $className);
+        Phake::verify($this->_classMapper)->classBySource('splat', 'ping');
+        Phake::verify($this->_generator)->generate(
+            $this->identicalTo($classDefinition),
+            null,
+            null
+        );
+    }
+
+    public function testGenerateFromFile()
+    {
+        Phake::when($this->_isolator)
+            ->file_get_contents(Phake::anyParameters())
+            ->thenReturn('foo')
+        ;
+        Phake::when($this->_generator)
+            ->generateFromSource(Phake::anyParameters())
+            ->thenReturn('bar')
+        ;
+        Phake::when($this->_generator)
+            ->generateFromSource(
+                'baz',
+                'foo',
+                Phake::setReference('qux'),
+                Phake::setReference('doom')
+            )
+            ->thenReturn('splat')
+        ;
+        $actual = $this->_generator->generateFromFile(
+            'baz',
+            'pip',
+            $namespaceName,
+            $className
+        );
+
+        $this->assertSame('splat', $actual);
+        $this->assertSame('qux', $namespaceName);
+        $this->assertSame('doom', $className);
+        Phake::verify($this->_isolator)->file_get_contents('pip');
+        Phake::verify($this->_generator)->generateFromSource(
+            'baz',
+            'foo',
+            null,
+            null
+        );
+    }
+
+    public function testGenerateFromClass()
+    {
+        $class = Phake::mock('ReflectionClass');
+        Phake::when($class)->getName()->thenReturn('foo');
+        Phake::when($class)->getFileName()->thenReturn('bar');
+        Phake::when($this->_generator)
+            ->generateFromFile(Phake::anyParameters())
+            ->thenReturn('baz')
+        ;
+        Phake::when($this->_generator)
+            ->generateFromFile(
+                'foo',
+                'bar',
+                Phake::setReference('qux'),
+                Phake::setReference('doom')
+            )
+            ->thenReturn('splat')
+        ;
+        $actual = $this->_generator->generateFromClass(
+            $class,
+            $namespaceName,
+            $className
+        );
+
+        $this->assertSame('splat', $actual);
+        $this->assertSame('qux', $namespaceName);
+        $this->assertSame('doom', $className);
+        Phake::verify($class)->getName();
+        Phake::verify($class)->getFileName();
+        Phake::verify($this->_generator)->generateFromFile(
+            'foo',
+            'bar',
+            null,
+            null
+        );
     }
 }

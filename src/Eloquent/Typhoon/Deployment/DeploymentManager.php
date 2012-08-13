@@ -40,6 +40,10 @@ class DeploymentManager
             $this->deploySourcePath.'/Typhoon/Typhoon.php',
             $path.'/Typhoon/Typhoon.php'
         );
+        $this->copyFile(
+            $this->deploySourcePath.'/Typhoon/DummyValidator.php',
+            $path.'/Typhoon/DummyValidator.php'
+        );
     }
 
     /**

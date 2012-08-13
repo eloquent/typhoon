@@ -104,6 +104,26 @@ class ClassMapper
     }
 
     /**
+     * @param string $className
+     * @param string $source
+     *
+     * @return ClassDefinition
+     * @throws Exception\UndefinedClassException
+     */
+    public function classBySource($className, $source)
+    {
+        $this->typhoon->classBySource(func_get_args());
+
+        foreach ($this->classesBySource($source) as $classDefinition) {
+            if ($classDefinition->canonicalClassName() === $className) {
+                return $classDefinition;
+            }
+        }
+
+        throw new Exception\UndefinedClassException($className);
+    }
+
+    /**
      * @param array<string|array> $tokens
      *
      * @return string

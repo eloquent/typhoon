@@ -269,6 +269,39 @@ EOD
         $this->assertEquals($expected, $this->_mapper->classesBySource($source));
     }
 
+    public function testClassBySource()
+    {
+        $fooDefinition = new ClassDefinition('Foo');
+        $barDefinition = new ClassDefinition('Bar');
+        Phake::when($this->_mapper)
+            ->classesBySource(Phake::anyParameters())
+            ->thenReturn(array(
+                $fooDefinition,
+                $barDefinition,
+            ))
+        ;
+
+        $this->assertSame($fooDefinition, $this->_mapper->classBySource('Foo', 'baz'));
+        $this->assertSame($barDefinition, $this->_mapper->classBySource('Bar', 'qux'));
+        Phake::inOrder(
+            Phake::verify($this->_mapper)->classesBySource('baz'),
+            Phake::verify($this->_mapper)->classesBySource('qux')
+        );
+    }
+
+    public function testClassBySourceFailure()
+    {
+        Phake::when($this->_mapper)
+            ->classesBySource(Phake::anyParameters())
+            ->thenReturn(array(
+                new ClassDefinition('Foo'),
+            ))
+        ;
+
+        $this->setExpectedException(__NAMESPACE__.'\Exception\UndefinedClassException');
+        $this->_mapper->classBySource('Bar', 'qux');
+    }
+
     public function testFileIterator()
     {
         $expected = new RecursiveIteratorIterator(

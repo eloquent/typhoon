@@ -12,7 +12,7 @@
 
 namespace Typhoon\Eloquent\Typhoon\TestFixture;
 
-class ExampleTyphoon
+class ExampleClassTyphoon
 {
     public function validateConstructor(array $arguments)
     {

@@ -94,6 +94,39 @@ class ClassMapperTyphoon
         $check($arguments[0], 0);
     }
 
+    public function classBySource(array $arguments)
+    {
+        $argumentCount = count($arguments);
+        if ($argumentCount < 2) {
+            if ($argumentCount < 1) {
+                throw new \InvalidArgumentException("Missing argument for parameter 'className'.");
+            }
+            throw new \InvalidArgumentException("Missing argument for parameter 'source'.");
+        } elseif ($argumentCount > 2) {
+            throw new \InvalidArgumentException("Unexpected argument at index 3.");
+        }
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return is_string($value);
+            };
+            if (!$check($argument)) {
+                throw new \InvalidArgumentException("Unexpected argument for parameter 'className' at index ".$index.".");
+            }
+        };
+        $check($arguments[0], 0);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return is_string($value);
+            };
+            if (!$check($argument)) {
+                throw new \InvalidArgumentException("Unexpected argument for parameter 'source' at index ".$index.".");
+            }
+        };
+        $check($arguments[1], 1);
+    }
+
     public function parseNamespaceName(array $arguments)
     {
         $argumentCount = count($arguments);

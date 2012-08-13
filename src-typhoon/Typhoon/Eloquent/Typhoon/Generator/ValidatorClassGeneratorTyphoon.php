@@ -17,8 +17,8 @@ class ValidatorClassGeneratorTyphoon
     public function validateConstructor(array $arguments)
     {
         $argumentCount = count($arguments);
-        if ($argumentCount > 2) {
-            throw new \InvalidArgumentException("Unexpected argument at index 3.");
+        if ($argumentCount > 4) {
+            throw new \InvalidArgumentException("Unexpected argument at index 5.");
         }
 
         if ($argumentCount > 0) {
@@ -72,6 +72,58 @@ class ValidatorClassGeneratorTyphoon
             };
             $check($arguments[1], 1);
         }
+
+        if ($argumentCount > 2) {
+            $check = function($argument, $index) {
+                $check = function($value) {
+                    $check = function($value) {
+                        return $value instanceof \Eloquent\Typhoon\ClassMapper\ClassMapper;
+                    };
+                    if ($check($value)) {
+                        return true;
+                    }
+
+                    $check = function($value) {
+                        return $value === null;
+                    };
+                    if ($check($value)) {
+                        return true;
+                    }
+
+                    return false;
+                };
+                if (!$check($argument)) {
+                    throw new \InvalidArgumentException("Unexpected argument for parameter 'classMapper' at index ".$index.".");
+                }
+            };
+            $check($arguments[2], 2);
+        }
+
+        if ($argumentCount > 3) {
+            $check = function($argument, $index) {
+                $check = function($value) {
+                    $check = function($value) {
+                        return $value instanceof \Icecave\Isolator\Isolator;
+                    };
+                    if ($check($value)) {
+                        return true;
+                    }
+
+                    $check = function($value) {
+                        return $value === null;
+                    };
+                    if ($check($value)) {
+                        return true;
+                    }
+
+                    return false;
+                };
+                if (!$check($argument)) {
+                    throw new \InvalidArgumentException("Unexpected argument for parameter 'isolator' at index ".$index.".");
+                }
+            };
+            $check($arguments[3], 3);
+        }
     }
 
     public function parser(array $arguments)
@@ -82,6 +134,13 @@ class ValidatorClassGeneratorTyphoon
     }
 
     public function compiler(array $arguments)
+    {
+        if (count($arguments) > 0) {
+            throw new \InvalidArgumentException("Unexpected argument at index 1.");
+        }
+    }
+
+    public function classMapper(array $arguments)
     {
         if (count($arguments) > 0) {
             throw new \InvalidArgumentException("Unexpected argument at index 1.");
@@ -103,6 +162,248 @@ class ValidatorClassGeneratorTyphoon
             };
             if (!$check($argument)) {
                 throw new \InvalidArgumentException("Unexpected argument for parameter 'classDefinition' at index ".$index.".");
+            }
+        };
+        $check($arguments[0], 0);
+
+        if ($argumentCount > 1) {
+            $check = function($argument, $index) {
+                $check = function($value) {
+                    $check = function($value) {
+                        return is_string($value);
+                    };
+                    if ($check($value)) {
+                        return true;
+                    }
+
+                    $check = function($value) {
+                        return $value === null;
+                    };
+                    if ($check($value)) {
+                        return true;
+                    }
+
+                    return false;
+                };
+                if (!$check($argument)) {
+                    throw new \InvalidArgumentException("Unexpected argument for parameter 'namespaceName' at index ".$index.".");
+                }
+            };
+            $check($arguments[1], 1);
+        }
+
+        if ($argumentCount > 2) {
+            $check = function($argument, $index) {
+                $check = function($value) {
+                    $check = function($value) {
+                        return is_string($value);
+                    };
+                    if ($check($value)) {
+                        return true;
+                    }
+
+                    $check = function($value) {
+                        return $value === null;
+                    };
+                    if ($check($value)) {
+                        return true;
+                    }
+
+                    return false;
+                };
+                if (!$check($argument)) {
+                    throw new \InvalidArgumentException("Unexpected argument for parameter 'className' at index ".$index.".");
+                }
+            };
+            $check($arguments[2], 2);
+        }
+    }
+
+    public function generateFromSource(array $arguments)
+    {
+        $argumentCount = count($arguments);
+        if ($argumentCount < 2) {
+            if ($argumentCount < 1) {
+                throw new \InvalidArgumentException("Missing argument for parameter 'sourceClassName'.");
+            }
+            throw new \InvalidArgumentException("Missing argument for parameter 'source'.");
+        } elseif ($argumentCount > 4) {
+            throw new \InvalidArgumentException("Unexpected argument at index 5.");
+        }
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return is_string($value);
+            };
+            if (!$check($argument)) {
+                throw new \InvalidArgumentException("Unexpected argument for parameter 'sourceClassName' at index ".$index.".");
+            }
+        };
+        $check($arguments[0], 0);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return is_string($value);
+            };
+            if (!$check($argument)) {
+                throw new \InvalidArgumentException("Unexpected argument for parameter 'source' at index ".$index.".");
+            }
+        };
+        $check($arguments[1], 1);
+
+        if ($argumentCount > 2) {
+            $check = function($argument, $index) {
+                $check = function($value) {
+                    $check = function($value) {
+                        return is_string($value);
+                    };
+                    if ($check($value)) {
+                        return true;
+                    }
+
+                    $check = function($value) {
+                        return $value === null;
+                    };
+                    if ($check($value)) {
+                        return true;
+                    }
+
+                    return false;
+                };
+                if (!$check($argument)) {
+                    throw new \InvalidArgumentException("Unexpected argument for parameter 'namespaceName' at index ".$index.".");
+                }
+            };
+            $check($arguments[2], 2);
+        }
+
+        if ($argumentCount > 3) {
+            $check = function($argument, $index) {
+                $check = function($value) {
+                    $check = function($value) {
+                        return is_string($value);
+                    };
+                    if ($check($value)) {
+                        return true;
+                    }
+
+                    $check = function($value) {
+                        return $value === null;
+                    };
+                    if ($check($value)) {
+                        return true;
+                    }
+
+                    return false;
+                };
+                if (!$check($argument)) {
+                    throw new \InvalidArgumentException("Unexpected argument for parameter 'className' at index ".$index.".");
+                }
+            };
+            $check($arguments[3], 3);
+        }
+    }
+
+    public function generateFromFile(array $arguments)
+    {
+        $argumentCount = count($arguments);
+        if ($argumentCount < 2) {
+            if ($argumentCount < 1) {
+                throw new \InvalidArgumentException("Missing argument for parameter 'sourceClassName'.");
+            }
+            throw new \InvalidArgumentException("Missing argument for parameter 'path'.");
+        } elseif ($argumentCount > 4) {
+            throw new \InvalidArgumentException("Unexpected argument at index 5.");
+        }
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return is_string($value);
+            };
+            if (!$check($argument)) {
+                throw new \InvalidArgumentException("Unexpected argument for parameter 'sourceClassName' at index ".$index.".");
+            }
+        };
+        $check($arguments[0], 0);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return is_string($value);
+            };
+            if (!$check($argument)) {
+                throw new \InvalidArgumentException("Unexpected argument for parameter 'path' at index ".$index.".");
+            }
+        };
+        $check($arguments[1], 1);
+
+        if ($argumentCount > 2) {
+            $check = function($argument, $index) {
+                $check = function($value) {
+                    $check = function($value) {
+                        return is_string($value);
+                    };
+                    if ($check($value)) {
+                        return true;
+                    }
+
+                    $check = function($value) {
+                        return $value === null;
+                    };
+                    if ($check($value)) {
+                        return true;
+                    }
+
+                    return false;
+                };
+                if (!$check($argument)) {
+                    throw new \InvalidArgumentException("Unexpected argument for parameter 'namespaceName' at index ".$index.".");
+                }
+            };
+            $check($arguments[2], 2);
+        }
+
+        if ($argumentCount > 3) {
+            $check = function($argument, $index) {
+                $check = function($value) {
+                    $check = function($value) {
+                        return is_string($value);
+                    };
+                    if ($check($value)) {
+                        return true;
+                    }
+
+                    $check = function($value) {
+                        return $value === null;
+                    };
+                    if ($check($value)) {
+                        return true;
+                    }
+
+                    return false;
+                };
+                if (!$check($argument)) {
+                    throw new \InvalidArgumentException("Unexpected argument for parameter 'className' at index ".$index.".");
+                }
+            };
+            $check($arguments[3], 3);
+        }
+    }
+
+    public function generateFromClass(array $arguments)
+    {
+        $argumentCount = count($arguments);
+        if ($argumentCount < 1) {
+            throw new \InvalidArgumentException("Missing argument for parameter 'class'.");
+        } elseif ($argumentCount > 3) {
+            throw new \InvalidArgumentException("Unexpected argument at index 4.");
+        }
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return $value instanceof \ReflectionClass;
+            };
+            if (!$check($argument)) {
+                throw new \InvalidArgumentException("Unexpected argument for parameter 'class' at index ".$index.".");
             }
         };
         $check($arguments[0], 0);

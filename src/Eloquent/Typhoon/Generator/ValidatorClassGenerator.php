@@ -13,11 +13,13 @@ namespace Eloquent\Typhoon\Generator;
 
 use Eloquent\Typhax\Resolver\ObjectTypeClassNameResolver;
 use Eloquent\Typhoon\ClassMapper\ClassDefinition;
+use Eloquent\Typhoon\ClassMapper\ClassMapper;
 use Eloquent\Typhoon\Compiler\ParameterListCompiler;
 use Eloquent\Typhoon\Parameter\ParameterList;
 use Eloquent\Typhoon\Parser\ParameterListParser;
 use Eloquent\Typhoon\Resolver\ParameterListClassNameResolver;
 use Eloquent\Typhoon\Resolver\ParameterListReflectionResolver;
+use Icecave\Isolator\Isolator;
 use ReflectionClass;
 use ReflectionMethod;
 use Typhoon\Typhoon;
@@ -27,10 +29,14 @@ class ValidatorClassGenerator
     /**
      * @param ParameterListParser|null $parser
      * @param ParameterListCompiler|null $compiler
+     * @param ClassMapper|null $classMapper
+     * @param Isolator|null $isolator
      */
     public function __construct(
         ParameterListParser $parser = null,
-        ParameterListCompiler $compiler = null
+        ParameterListCompiler $compiler = null,
+        ClassMapper $classMapper = null,
+        Isolator $isolator = null
     ) {
         $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
         if (null === $parser) {
@@ -39,9 +45,14 @@ class ValidatorClassGenerator
         if (null === $compiler) {
             $compiler = new ParameterListCompiler;
         }
+        if (null === $classMapper) {
+            $classMapper = new ClassMapper;
+        }
 
         $this->parser = $parser;
         $this->compiler = $compiler;
+        $this->classMapper = $classMapper;
+        $this->isolator = Isolator::get($isolator);
     }
 
     /**
@@ -62,6 +73,16 @@ class ValidatorClassGenerator
         $this->typhoon->compiler(func_get_args());
 
         return $this->compiler;
+    }
+
+    /**
+     * @return ClassMapper
+     */
+    public function classMapper()
+    {
+        $this->typhoon->classMapper(func_get_args());
+
+        return $this->classMapper;
     }
 
     /**
@@ -119,6 +140,71 @@ class $className
 }
 
 EOD;
+    }
+
+    /**
+     * @param string $sourceClassName
+     * @param string $source
+     * @param string|null &$namespaceName
+     * @param string|null &$className
+     */
+    public function generateFromSource(
+        $sourceClassName,
+        $source,
+        &$namespaceName = null,
+        &$className = null
+    ) {
+        $this->typhoon->generateFromSource(func_get_args());
+
+        return $this->generate(
+            $this->classMapper()->classBySource($sourceClassName, $source),
+            $namespaceName,
+            $className
+        );
+    }
+
+    /**
+     * @param string $sourceClassName
+     * @param string $path
+     * @param string|null &$namespaceName
+     * @param string|null &$className
+     */
+    public function generateFromFile(
+        $sourceClassName,
+        $path,
+        &$namespaceName = null,
+        &$className = null
+    ) {
+        $this->typhoon->generateFromFile(func_get_args());
+
+        return $this->generateFromSource(
+            $sourceClassName,
+            $this->isolator->file_get_contents(
+                $path
+            ),
+            $namespaceName,
+            $className
+        );
+    }
+
+    /**
+     * @param ReflectionClass $class
+     * @param string|null &$namespaceName
+     * @param string|null &$className
+     */
+    public function generateFromClass(
+        ReflectionClass $class,
+        &$namespaceName = null,
+        &$className = null
+    ) {
+        $this->typhoon->generateFromClass(func_get_args());
+
+        return $this->generateFromFile(
+            $class->getName(),
+            $class->getFileName(),
+            $namespaceName,
+            $className
+        );
     }
 
     /**
@@ -248,5 +334,7 @@ EOD;
 
     private $parser;
     private $compiler;
+    private $classMapper;
+    private $isolator;
     private $typhoon;
 }
