@@ -56,16 +56,6 @@ class TyphoonTest extends PHPUnit_Framework_TestCase
         $this->assertSame($arguments, ExampleTyphoon::$arguments['validateConstructor']);
     }
 
-    public function testValidate()
-    {
-        $methodName = 'Eloquent\Typhoon\TestFixture\Example::foo';
-        $arguments = array(new stdClass);
-        $validator = Typhoon::validate($methodName, $arguments);
-
-        $this->assertTrue(array_key_exists('foo', ExampleTyphoon::$arguments));
-        $this->assertSame($arguments, ExampleTyphoon::$arguments['foo']);
-    }
-
     public function testInstall()
     {
         $className = 'Eloquent\Typhoon\TestFixture\Example';

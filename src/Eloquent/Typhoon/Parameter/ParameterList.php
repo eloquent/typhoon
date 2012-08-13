@@ -22,7 +22,7 @@ class ParameterList extends Host
      */
     public static function createUnrestricted()
     {
-        Typhoon::validate(__METHOD__, func_get_args());
+        Typhoon::get(__CLASS__)->createUnrestricted(func_get_args());
 
         return new ParameterList(
             array(

@@ -19,10 +19,5 @@ class ExampleTyphoon
         static::$arguments[__FUNCTION__] = $arguments;
     }
 
-    public function foo(array $arguments)
-    {
-        static::$arguments[__FUNCTION__] = $arguments;
-    }
-
     public static $arguments = array();
 }

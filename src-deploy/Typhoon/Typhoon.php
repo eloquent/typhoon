@@ -35,16 +35,6 @@ abstract class Typhoon
     }
 
     /**
-     * @param string $methodName
-     * @param array<integer,mixed> $arguments
-     */
-    public static function validate($methodName, array $arguments)
-    {
-        list($className, $classMethodName) = explode('::', $methodName);
-        static::get($className)->$classMethodName($arguments);
-    }
-
-    /**
      * @param string $className
      * @param object $validator
      */
