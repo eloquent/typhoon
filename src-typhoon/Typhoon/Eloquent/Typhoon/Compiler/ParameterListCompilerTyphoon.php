@@ -12,6 +12,10 @@
 
 namespace Typhoon\Eloquent\Typhoon\Compiler;
 
+use Typhoon\Exception\MissingArgumentException;
+use Typhoon\Exception\UnexpectedArgumentException;
+use Typhoon\Exception\UnexpectedArgumentValueException;
+
 class ParameterListCompilerTyphoon
 {
     public function validateConstructor(array $arguments)
@@ -24,7 +28,7 @@ class ParameterListCompilerTyphoon
                     return true;
                 };
                 if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'undefined' at index ".$index.".");
+                    throw new UnexpectedArgumentValueException('undefined', $index, $argument, 'Eloquent\\Typhax\\Type\\MixedType');
                 }
             };
             for ($i = 0; $i < $argumentCount; $i ++) {
@@ -36,7 +40,7 @@ class ParameterListCompilerTyphoon
     public function typhaxCompiler(array $arguments)
     {
         if (count($arguments) > 0) {
-            throw new \InvalidArgumentException("Unexpected argument at index 1.");
+            throw new UnexpectedArgumentException(0, $arguments[0]);
         }
     }
 
@@ -44,9 +48,9 @@ class ParameterListCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'parameter'.");
+            throw new MissingArgumentException('parameter', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -54,7 +58,7 @@ class ParameterListCompilerTyphoon
                 return $value instanceof \Eloquent\Typhoon\Parameter\Parameter;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'parameter' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('parameter', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
         };
         $check($arguments[0], 0);
@@ -64,9 +68,9 @@ class ParameterListCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'parameterList'.");
+            throw new MissingArgumentException('parameterList', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -74,7 +78,7 @@ class ParameterListCompilerTyphoon
                 return $value instanceof \Eloquent\Typhoon\Parameter\ParameterList;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'parameterList' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('parameterList', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
         };
         $check($arguments[0], 0);
@@ -85,11 +89,11 @@ class ParameterListCompilerTyphoon
         $argumentCount = count($arguments);
         if ($argumentCount < 2) {
             if ($argumentCount < 1) {
-                throw new \InvalidArgumentException("Missing argument for parameter 'parameters'.");
+                throw new MissingArgumentException('parameters', 0, 'Eloquent\\Typhax\\Type\\StringType');
             }
-            throw new \InvalidArgumentException("Missing argument for parameter 'content'.");
+            throw new MissingArgumentException('content', 1, 'Eloquent\\Typhax\\Type\\StringType');
         } elseif ($argumentCount > 2) {
-            throw new \InvalidArgumentException("Unexpected argument at index 3.");
+            throw new UnexpectedArgumentException(2, $arguments[2]);
         }
 
         $check = function($argument, $index) {
@@ -97,7 +101,7 @@ class ParameterListCompilerTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'parameters' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('parameters', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
             }
         };
         $check($arguments[0], 0);
@@ -107,7 +111,7 @@ class ParameterListCompilerTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'content' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('content', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
             }
         };
         $check($arguments[1], 1);
@@ -117,9 +121,9 @@ class ParameterListCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'content'.");
+            throw new MissingArgumentException('content', 0, 'Eloquent\\Typhax\\Type\\StringType');
         } elseif ($argumentCount > 2) {
-            throw new \InvalidArgumentException("Unexpected argument at index 3.");
+            throw new UnexpectedArgumentException(2, $arguments[2]);
         }
 
         $check = function($argument, $index) {
@@ -127,7 +131,7 @@ class ParameterListCompilerTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'content' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('content', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
             }
         };
         $check($arguments[0], 0);
@@ -138,7 +142,7 @@ class ParameterListCompilerTyphoon
                     return is_integer($value);
                 };
                 if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'depth' at index ".$index.".");
+                    throw new UnexpectedArgumentValueException('depth', $index, $argument, 'Eloquent\\Typhax\\Type\\IntegerType');
                 }
             };
             $check($arguments[1], 1);

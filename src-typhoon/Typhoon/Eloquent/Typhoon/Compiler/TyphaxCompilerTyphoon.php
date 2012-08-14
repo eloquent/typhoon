@@ -12,6 +12,10 @@
 
 namespace Typhoon\Eloquent\Typhoon\Compiler;
 
+use Typhoon\Exception\MissingArgumentException;
+use Typhoon\Exception\UnexpectedArgumentException;
+use Typhoon\Exception\UnexpectedArgumentValueException;
+
 class TyphaxCompilerTyphoon
 {
     public function validateConstructor(array $arguments)
@@ -24,7 +28,7 @@ class TyphaxCompilerTyphoon
                     return true;
                 };
                 if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'undefined' at index ".$index.".");
+                    throw new UnexpectedArgumentValueException('undefined', $index, $argument, 'Eloquent\\Typhax\\Type\\MixedType');
                 }
             };
             for ($i = 0; $i < $argumentCount; $i ++) {
@@ -37,9 +41,9 @@ class TyphaxCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'type'.");
+            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -47,7 +51,7 @@ class TyphaxCompilerTyphoon
                 return $value instanceof \Eloquent\Typhax\Type\AndType;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'type' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
         };
         $check($arguments[0], 0);
@@ -57,9 +61,9 @@ class TyphaxCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'type'.");
+            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -67,7 +71,7 @@ class TyphaxCompilerTyphoon
                 return $value instanceof \Eloquent\Typhax\Type\ArrayType;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'type' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
         };
         $check($arguments[0], 0);
@@ -77,9 +81,9 @@ class TyphaxCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'type'.");
+            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -87,7 +91,7 @@ class TyphaxCompilerTyphoon
                 return $value instanceof \Eloquent\Typhax\Type\BooleanType;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'type' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
         };
         $check($arguments[0], 0);
@@ -97,9 +101,9 @@ class TyphaxCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'type'.");
+            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -107,7 +111,7 @@ class TyphaxCompilerTyphoon
                 return $value instanceof \Eloquent\Typhax\Type\CallableType;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'type' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
         };
         $check($arguments[0], 0);
@@ -117,9 +121,9 @@ class TyphaxCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'type'.");
+            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -127,7 +131,7 @@ class TyphaxCompilerTyphoon
                 return $value instanceof \Eloquent\Typhax\Type\FloatType;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'type' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
         };
         $check($arguments[0], 0);
@@ -137,9 +141,9 @@ class TyphaxCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'type'.");
+            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -147,7 +151,7 @@ class TyphaxCompilerTyphoon
                 return $value instanceof \Eloquent\Typhax\Type\IntegerType;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'type' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
         };
         $check($arguments[0], 0);
@@ -157,9 +161,9 @@ class TyphaxCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'type'.");
+            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -167,7 +171,7 @@ class TyphaxCompilerTyphoon
                 return $value instanceof \Eloquent\Typhax\Type\MixedType;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'type' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
         };
         $check($arguments[0], 0);
@@ -177,9 +181,9 @@ class TyphaxCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'type'.");
+            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -187,7 +191,7 @@ class TyphaxCompilerTyphoon
                 return $value instanceof \Eloquent\Typhax\Type\NullType;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'type' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
         };
         $check($arguments[0], 0);
@@ -197,9 +201,9 @@ class TyphaxCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'type'.");
+            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -207,7 +211,7 @@ class TyphaxCompilerTyphoon
                 return $value instanceof \Eloquent\Typhax\Type\NumericType;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'type' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
         };
         $check($arguments[0], 0);
@@ -217,9 +221,9 @@ class TyphaxCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'type'.");
+            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -227,7 +231,7 @@ class TyphaxCompilerTyphoon
                 return $value instanceof \Eloquent\Typhax\Type\ObjectType;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'type' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
         };
         $check($arguments[0], 0);
@@ -237,9 +241,9 @@ class TyphaxCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'type'.");
+            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -247,7 +251,7 @@ class TyphaxCompilerTyphoon
                 return $value instanceof \Eloquent\Typhax\Type\OrType;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'type' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
         };
         $check($arguments[0], 0);
@@ -257,9 +261,9 @@ class TyphaxCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'type'.");
+            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -267,7 +271,7 @@ class TyphaxCompilerTyphoon
                 return $value instanceof \Eloquent\Typhax\Type\ResourceType;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'type' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
         };
         $check($arguments[0], 0);
@@ -277,9 +281,9 @@ class TyphaxCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'type'.");
+            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -287,7 +291,7 @@ class TyphaxCompilerTyphoon
                 return $value instanceof \Eloquent\Typhax\Type\StreamType;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'type' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
         };
         $check($arguments[0], 0);
@@ -297,9 +301,9 @@ class TyphaxCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'type'.");
+            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -307,7 +311,7 @@ class TyphaxCompilerTyphoon
                 return $value instanceof \Eloquent\Typhax\Type\StringType;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'type' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
         };
         $check($arguments[0], 0);
@@ -317,9 +321,9 @@ class TyphaxCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'type'.");
+            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -327,7 +331,7 @@ class TyphaxCompilerTyphoon
                 return $value instanceof \Eloquent\Typhax\Type\StringableType;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'type' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
         };
         $check($arguments[0], 0);
@@ -337,9 +341,9 @@ class TyphaxCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'type'.");
+            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -347,7 +351,7 @@ class TyphaxCompilerTyphoon
                 return $value instanceof \Eloquent\Typhax\Type\TraversableType;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'type' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
         };
         $check($arguments[0], 0);
@@ -357,9 +361,9 @@ class TyphaxCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'type'.");
+            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -367,7 +371,7 @@ class TyphaxCompilerTyphoon
                 return $value instanceof \Eloquent\Typhax\Type\TupleType;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'type' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
         };
         $check($arguments[0], 0);
@@ -377,9 +381,9 @@ class TyphaxCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'content'.");
+            throw new MissingArgumentException('content', 0, 'Eloquent\\Typhax\\Type\\StringType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -387,7 +391,7 @@ class TyphaxCompilerTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'content' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('content', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
             }
         };
         $check($arguments[0], 0);
@@ -397,9 +401,9 @@ class TyphaxCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'content'.");
+            throw new MissingArgumentException('content', 0, 'Eloquent\\Typhax\\Type\\StringType');
         } elseif ($argumentCount > 2) {
-            throw new \InvalidArgumentException("Unexpected argument at index 3.");
+            throw new UnexpectedArgumentException(2, $arguments[2]);
         }
 
         $check = function($argument, $index) {
@@ -407,7 +411,7 @@ class TyphaxCompilerTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'content' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('content', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
             }
         };
         $check($arguments[0], 0);
@@ -418,7 +422,7 @@ class TyphaxCompilerTyphoon
                     return is_integer($value);
                 };
                 if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'depth' at index ".$index.".");
+                    throw new UnexpectedArgumentValueException('depth', $index, $argument, 'Eloquent\\Typhax\\Type\\IntegerType');
                 }
             };
             $check($arguments[1], 1);

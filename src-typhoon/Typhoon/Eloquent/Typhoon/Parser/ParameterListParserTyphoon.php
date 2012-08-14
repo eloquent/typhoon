@@ -12,6 +12,10 @@
 
 namespace Typhoon\Eloquent\Typhoon\Parser;
 
+use Typhoon\Exception\MissingArgumentException;
+use Typhoon\Exception\UnexpectedArgumentException;
+use Typhoon\Exception\UnexpectedArgumentValueException;
+
 class ParameterListParserTyphoon
 {
     public function validateConstructor(array $arguments)
@@ -24,7 +28,7 @@ class ParameterListParserTyphoon
                     return true;
                 };
                 if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'undefined' at index ".$index.".");
+                    throw new UnexpectedArgumentValueException('undefined', $index, $argument, 'Eloquent\\Typhax\\Type\\MixedType');
                 }
             };
             for ($i = 0; $i < $argumentCount; $i ++) {
@@ -36,7 +40,7 @@ class ParameterListParserTyphoon
     public function typhaxParser(array $arguments)
     {
         if (count($arguments) > 0) {
-            throw new \InvalidArgumentException("Unexpected argument at index 1.");
+            throw new UnexpectedArgumentException(0, $arguments[0]);
         }
     }
 
@@ -44,9 +48,9 @@ class ParameterListParserTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'blockComment'.");
+            throw new MissingArgumentException('blockComment', 0, 'Eloquent\\Typhax\\Type\\StringType');
         } elseif ($argumentCount > 2) {
-            throw new \InvalidArgumentException("Unexpected argument at index 3.");
+            throw new UnexpectedArgumentException(2, $arguments[2]);
         }
 
         $check = function($argument, $index) {
@@ -54,7 +58,7 @@ class ParameterListParserTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'blockComment' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('blockComment', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
             }
         };
         $check($arguments[0], 0);
@@ -65,7 +69,7 @@ class ParameterListParserTyphoon
                     return $value instanceof \Eloquent\Blox\DocumentationBlockParser;
                 };
                 if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'documentationParser' at index ".$index.".");
+                    throw new UnexpectedArgumentValueException('documentationParser', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
                 }
             };
             $check($arguments[1], 1);
@@ -76,9 +80,9 @@ class ParameterListParserTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'documentationBlock'.");
+            throw new MissingArgumentException('documentationBlock', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -86,7 +90,7 @@ class ParameterListParserTyphoon
                 return $value instanceof \Eloquent\Blox\AST\DocumentationBlock;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'documentationBlock' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('documentationBlock', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
         };
         $check($arguments[0], 0);
@@ -96,9 +100,9 @@ class ParameterListParserTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'documentationTag'.");
+            throw new MissingArgumentException('documentationTag', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -106,7 +110,7 @@ class ParameterListParserTyphoon
                 return $value instanceof \Eloquent\Blox\AST\DocumentationTag;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'documentationTag' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('documentationTag', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
         };
         $check($arguments[0], 0);
@@ -117,11 +121,11 @@ class ParameterListParserTyphoon
         $argumentCount = count($arguments);
         if ($argumentCount < 2) {
             if ($argumentCount < 1) {
-                throw new \InvalidArgumentException("Missing argument for parameter 'content'.");
+                throw new MissingArgumentException('content', 0, 'Eloquent\\Typhax\\Type\\StringType');
             }
-            throw new \InvalidArgumentException("Missing argument for parameter 'position'.");
+            throw new MissingArgumentException('position', 1, 'Eloquent\\Typhax\\Type\\IntegerType');
         } elseif ($argumentCount > 2) {
-            throw new \InvalidArgumentException("Unexpected argument at index 3.");
+            throw new UnexpectedArgumentException(2, $arguments[2]);
         }
 
         $check = function($argument, $index) {
@@ -129,7 +133,7 @@ class ParameterListParserTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'content' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('content', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
             }
         };
         $check($arguments[0], 0);
@@ -139,7 +143,7 @@ class ParameterListParserTyphoon
                 return is_integer($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'position' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('position', $index, $argument, 'Eloquent\\Typhax\\Type\\IntegerType');
             }
         };
         $check($arguments[1], 1);
@@ -150,11 +154,11 @@ class ParameterListParserTyphoon
         $argumentCount = count($arguments);
         if ($argumentCount < 2) {
             if ($argumentCount < 1) {
-                throw new \InvalidArgumentException("Missing argument for parameter 'content'.");
+                throw new MissingArgumentException('content', 0, 'Eloquent\\Typhax\\Type\\StringType');
             }
-            throw new \InvalidArgumentException("Missing argument for parameter 'position'.");
+            throw new MissingArgumentException('position', 1, 'Eloquent\\Typhax\\Type\\IntegerType');
         } elseif ($argumentCount > 2) {
-            throw new \InvalidArgumentException("Unexpected argument at index 3.");
+            throw new UnexpectedArgumentException(2, $arguments[2]);
         }
 
         $check = function($argument, $index) {
@@ -162,7 +166,7 @@ class ParameterListParserTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'content' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('content', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
             }
         };
         $check($arguments[0], 0);
@@ -172,7 +176,7 @@ class ParameterListParserTyphoon
                 return is_integer($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'position' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('position', $index, $argument, 'Eloquent\\Typhax\\Type\\IntegerType');
             }
         };
         $check($arguments[1], 1);
@@ -183,11 +187,11 @@ class ParameterListParserTyphoon
         $argumentCount = count($arguments);
         if ($argumentCount < 2) {
             if ($argumentCount < 1) {
-                throw new \InvalidArgumentException("Missing argument for parameter 'content'.");
+                throw new MissingArgumentException('content', 0, 'Eloquent\\Typhax\\Type\\StringType');
             }
-            throw new \InvalidArgumentException("Missing argument for parameter 'position'.");
+            throw new MissingArgumentException('position', 1, 'Eloquent\\Typhax\\Type\\IntegerType');
         } elseif ($argumentCount > 2) {
-            throw new \InvalidArgumentException("Unexpected argument at index 3.");
+            throw new UnexpectedArgumentException(2, $arguments[2]);
         }
 
         $check = function($argument, $index) {
@@ -195,7 +199,7 @@ class ParameterListParserTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'content' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('content', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
             }
         };
         $check($arguments[0], 0);
@@ -205,7 +209,7 @@ class ParameterListParserTyphoon
                 return is_integer($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'position' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('position', $index, $argument, 'Eloquent\\Typhax\\Type\\IntegerType');
             }
         };
         $check($arguments[1], 1);
@@ -215,9 +219,9 @@ class ParameterListParserTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'content'.");
+            throw new MissingArgumentException('content', 0, 'Eloquent\\Typhax\\Type\\StringType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -225,7 +229,7 @@ class ParameterListParserTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'content' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('content', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
             }
         };
         $check($arguments[0], 0);
@@ -236,20 +240,20 @@ class ParameterListParserTyphoon
         $argumentCount = count($arguments);
         if ($argumentCount < 5) {
             if ($argumentCount < 1) {
-                throw new \InvalidArgumentException("Missing argument for parameter 'content'.");
+                throw new MissingArgumentException('content', 0, 'Eloquent\\Typhax\\Type\\StringType');
             }
             if ($argumentCount < 2) {
-                throw new \InvalidArgumentException("Missing argument for parameter 'position'.");
+                throw new MissingArgumentException('position', 1, 'Eloquent\\Typhax\\Type\\IntegerType');
             }
             if ($argumentCount < 3) {
-                throw new \InvalidArgumentException("Missing argument for parameter 'pattern'.");
+                throw new MissingArgumentException('pattern', 2, 'Eloquent\\Typhax\\Type\\StringType');
             }
             if ($argumentCount < 4) {
-                throw new \InvalidArgumentException("Missing argument for parameter 'optional'.");
+                throw new MissingArgumentException('optional', 3, 'Eloquent\\Typhax\\Type\\BooleanType');
             }
-            throw new \InvalidArgumentException("Missing argument for parameter 'type'.");
+            throw new MissingArgumentException('type', 4, 'Eloquent\\Typhax\\Type\\StringType');
         } elseif ($argumentCount > 5) {
-            throw new \InvalidArgumentException("Unexpected argument at index 6.");
+            throw new UnexpectedArgumentException(5, $arguments[5]);
         }
 
         $check = function($argument, $index) {
@@ -257,7 +261,7 @@ class ParameterListParserTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'content' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('content', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
             }
         };
         $check($arguments[0], 0);
@@ -267,7 +271,7 @@ class ParameterListParserTyphoon
                 return is_integer($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'position' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('position', $index, $argument, 'Eloquent\\Typhax\\Type\\IntegerType');
             }
         };
         $check($arguments[1], 1);
@@ -277,7 +281,7 @@ class ParameterListParserTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'pattern' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('pattern', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
             }
         };
         $check($arguments[2], 2);
@@ -287,7 +291,7 @@ class ParameterListParserTyphoon
                 return is_bool($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'optional' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('optional', $index, $argument, 'Eloquent\\Typhax\\Type\\BooleanType');
             }
         };
         $check($arguments[3], 3);
@@ -297,7 +301,7 @@ class ParameterListParserTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'type' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
             }
         };
         $check($arguments[4], 4);

@@ -29,7 +29,15 @@ class ParameterListCompilerTest extends PHPUnit_Framework_TestCase
 
     protected function validatorFixture(ParameterList $parameterList)
     {
-        eval('$check = function(array $arguments) {'.$parameterList->accept($this->_compiler).'};');
+        $contents = $parameterList->accept($this->_compiler);
+        eval(<<<EOD
+use Typhoon\Exception\MissingArgumentException;
+use Typhoon\Exception\UnexpectedArgumentException;
+use Typhoon\Exception\UnexpectedArgumentValueException;
+
+\$check = function(array \$arguments) {{$contents}};
+EOD
+);
 
         return $check;
     }
@@ -46,7 +54,7 @@ function($argument, $index) {
         return is_string($value);
     };
     if (!$check($argument)) {
-        throw new \InvalidArgumentException("Unexpected argument for parameter 'foo' at index ".$index.".");
+        throw new UnexpectedArgumentValueException('foo', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
     }
 }
 EOD;
@@ -74,14 +82,14 @@ EOD;
 $argumentCount = count($arguments);
 if ($argumentCount < 3) {
     if ($argumentCount < 1) {
-        throw new \InvalidArgumentException("Missing argument for parameter 'foo'.");
+        throw new MissingArgumentException('foo', 0, 'Eloquent\\Typhax\\Type\\StringType');
     }
     if ($argumentCount < 2) {
-        throw new \InvalidArgumentException("Missing argument for parameter 'bar'.");
+        throw new MissingArgumentException('bar', 1, 'Eloquent\\Typhax\\Type\\IntegerType');
     }
-    throw new \InvalidArgumentException("Missing argument for parameter 'baz'.");
+    throw new MissingArgumentException('baz', 2, 'Eloquent\\Typhax\\Type\\FloatType');
 } elseif ($argumentCount > 3) {
-    throw new \InvalidArgumentException("Unexpected argument at index 4.");
+    throw new UnexpectedArgumentException(3, $arguments[3]);
 }
 
 $check = function($argument, $index) {
@@ -89,7 +97,7 @@ $check = function($argument, $index) {
         return is_string($value);
     };
     if (!$check($argument)) {
-        throw new \InvalidArgumentException("Unexpected argument for parameter 'foo' at index ".$index.".");
+        throw new UnexpectedArgumentValueException('foo', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
     }
 };
 $check($arguments[0], 0);
@@ -99,7 +107,7 @@ $check = function($argument, $index) {
         return is_integer($value);
     };
     if (!$check($argument)) {
-        throw new \InvalidArgumentException("Unexpected argument for parameter 'bar' at index ".$index.".");
+        throw new UnexpectedArgumentValueException('bar', $index, $argument, 'Eloquent\\Typhax\\Type\\IntegerType');
     }
 };
 $check($arguments[1], 1);
@@ -109,7 +117,7 @@ $check = function($argument, $index) {
         return is_float($value);
     };
     if (!$check($argument)) {
-        throw new \InvalidArgumentException("Unexpected argument for parameter 'baz' at index ".$index.".");
+        throw new UnexpectedArgumentValueException('baz', $index, $argument, 'Eloquent\\Typhax\\Type\\FloatType');
     }
 };
 $check($arguments[2], 2);
@@ -139,9 +147,9 @@ EOD;
         $expected = <<<'EOD'
 $argumentCount = count($arguments);
 if ($argumentCount < 1) {
-    throw new \InvalidArgumentException("Missing argument for parameter 'foo'.");
+    throw new MissingArgumentException('foo', 0, 'Eloquent\\Typhax\\Type\\StringType');
 } elseif ($argumentCount > 3) {
-    throw new \InvalidArgumentException("Unexpected argument at index 4.");
+    throw new UnexpectedArgumentException(3, $arguments[3]);
 }
 
 $check = function($argument, $index) {
@@ -149,7 +157,7 @@ $check = function($argument, $index) {
         return is_string($value);
     };
     if (!$check($argument)) {
-        throw new \InvalidArgumentException("Unexpected argument for parameter 'foo' at index ".$index.".");
+        throw new UnexpectedArgumentValueException('foo', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
     }
 };
 $check($arguments[0], 0);
@@ -160,7 +168,7 @@ if ($argumentCount > 1) {
             return is_integer($value);
         };
         if (!$check($argument)) {
-            throw new \InvalidArgumentException("Unexpected argument for parameter 'bar' at index ".$index.".");
+            throw new UnexpectedArgumentValueException('bar', $index, $argument, 'Eloquent\\Typhax\\Type\\IntegerType');
         }
     };
     $check($arguments[1], 1);
@@ -172,7 +180,7 @@ if ($argumentCount > 2) {
             return is_float($value);
         };
         if (!$check($argument)) {
-            throw new \InvalidArgumentException("Unexpected argument for parameter 'baz' at index ".$index.".");
+            throw new UnexpectedArgumentValueException('baz', $index, $argument, 'Eloquent\\Typhax\\Type\\FloatType');
         }
     };
     $check($arguments[2], 2);
@@ -204,7 +212,7 @@ EOD;
         $expected = <<<'EOD'
 $argumentCount = count($arguments);
 if ($argumentCount > 3) {
-    throw new \InvalidArgumentException("Unexpected argument at index 4.");
+    throw new UnexpectedArgumentException(3, $arguments[3]);
 }
 
 if ($argumentCount > 0) {
@@ -213,7 +221,7 @@ if ($argumentCount > 0) {
             return is_string($value);
         };
         if (!$check($argument)) {
-            throw new \InvalidArgumentException("Unexpected argument for parameter 'foo' at index ".$index.".");
+            throw new UnexpectedArgumentValueException('foo', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
         }
     };
     $check($arguments[0], 0);
@@ -225,7 +233,7 @@ if ($argumentCount > 1) {
             return is_integer($value);
         };
         if (!$check($argument)) {
-            throw new \InvalidArgumentException("Unexpected argument for parameter 'bar' at index ".$index.".");
+            throw new UnexpectedArgumentValueException('bar', $index, $argument, 'Eloquent\\Typhax\\Type\\IntegerType');
         }
     };
     $check($arguments[1], 1);
@@ -237,7 +245,7 @@ if ($argumentCount > 2) {
             return is_float($value);
         };
         if (!$check($argument)) {
-            throw new \InvalidArgumentException("Unexpected argument for parameter 'baz' at index ".$index.".");
+            throw new UnexpectedArgumentValueException('baz', $index, $argument, 'Eloquent\\Typhax\\Type\\FloatType');
         }
     };
     $check($arguments[2], 2);
@@ -271,9 +279,9 @@ EOD;
 $argumentCount = count($arguments);
 if ($argumentCount < 2) {
     if ($argumentCount < 1) {
-        throw new \InvalidArgumentException("Missing argument for parameter 'foo'.");
+        throw new MissingArgumentException('foo', 0, 'Eloquent\\Typhax\\Type\\StringType');
     }
-    throw new \InvalidArgumentException("Missing argument for parameter 'bar'.");
+    throw new MissingArgumentException('bar', 1, 'Eloquent\\Typhax\\Type\\IntegerType');
 }
 
 $check = function($argument, $index) {
@@ -281,7 +289,7 @@ $check = function($argument, $index) {
         return is_string($value);
     };
     if (!$check($argument)) {
-        throw new \InvalidArgumentException("Unexpected argument for parameter 'foo' at index ".$index.".");
+        throw new UnexpectedArgumentValueException('foo', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
     }
 };
 $check($arguments[0], 0);
@@ -291,7 +299,7 @@ $check = function($argument, $index) {
         return is_integer($value);
     };
     if (!$check($argument)) {
-        throw new \InvalidArgumentException("Unexpected argument for parameter 'bar' at index ".$index.".");
+        throw new UnexpectedArgumentValueException('bar', $index, $argument, 'Eloquent\\Typhax\\Type\\IntegerType');
     }
 };
 $check($arguments[1], 1);
@@ -302,7 +310,7 @@ if ($argumentCount > 2) {
             return is_float($value);
         };
         if (!$check($argument)) {
-            throw new \InvalidArgumentException("Unexpected argument for parameter 'baz' at index ".$index.".");
+            throw new UnexpectedArgumentValueException('baz', $index, $argument, 'Eloquent\\Typhax\\Type\\FloatType');
         }
     };
     for ($i = 2; $i < $argumentCount; $i ++) {
@@ -327,7 +335,7 @@ if ($argumentCount > 0) {
             return true;
         };
         if (!$check($argument)) {
-            throw new \InvalidArgumentException("Unexpected argument for parameter 'undefined' at index ".$index.".");
+            throw new UnexpectedArgumentValueException('undefined', $index, $argument, 'Eloquent\\Typhax\\Type\\MixedType');
         }
     };
     for ($i = 0; $i < $argumentCount; $i ++) {
@@ -344,7 +352,7 @@ EOD;
         $list = new ParameterList;
         $expected = <<<'EOD'
 if (count($arguments) > 0) {
-    throw new \InvalidArgumentException("Unexpected argument at index 1.");
+    throw new UnexpectedArgumentException(0, $arguments[0]);
 }
 EOD;
 
@@ -472,8 +480,8 @@ EOD;
             ),
         ));
         $arguments = array('foo', 111);
-        $expected = 'InvalidArgumentException';
-        $expectedMessage = "Missing argument for parameter 'baz'.";
+        $expected = 'Typhoon\Exception\MissingArgumentException';
+        $expectedMessage = "Missing argument for parameter 'baz' at index 2. Expected 'Eloquent\Typhax\Type\FloatType'.";
         $data['Not enough arguments 1'] =
             array($expected, $expectedMessage, $list, $arguments)
         ;
@@ -493,8 +501,8 @@ EOD;
             ),
         ));
         $arguments = array('foo');
-        $expected = 'InvalidArgumentException';
-        $expectedMessage = "Missing argument for parameter 'bar'.";
+        $expected = 'Typhoon\Exception\MissingArgumentException';
+        $expectedMessage = "Missing argument for parameter 'bar' at index 1. Expected 'Eloquent\Typhax\Type\IntegerType'.";
         $data['Not enough arguments 2'] =
             array($expected, $expectedMessage, $list, $arguments)
         ;
@@ -514,8 +522,8 @@ EOD;
             ),
         ));
         $arguments = array();
-        $expected = 'InvalidArgumentException';
-        $expectedMessage = "Missing argument for parameter 'foo'.";
+        $expected = 'Typhoon\Exception\MissingArgumentException';
+        $expectedMessage = "Missing argument for parameter 'foo' at index 0. Expected 'Eloquent\Typhax\Type\StringType'.";
         $data['Not enough arguments 3'] =
             array($expected, $expectedMessage, $list, $arguments)
         ;
@@ -535,8 +543,8 @@ EOD;
             ),
         ));
         $arguments = array('foo', 111, 1.11, 2.22);
-        $expected = 'InvalidArgumentException';
-        $expectedMessage = "Unexpected argument at index 4.";
+        $expected = 'Typhoon\Exception\UnexpectedArgumentException';
+        $expectedMessage = "Unexpected argument of type 'double' at index 3.";
         $data['Too many arguments'] =
             array($expected, $expectedMessage, $list, $arguments)
         ;
@@ -556,8 +564,8 @@ EOD;
             ),
         ));
         $arguments = array('foo', 111, 'bar');
-        $expected = 'InvalidArgumentException';
-        $expectedMessage = "Unexpected argument for parameter 'baz' at index 2.";
+        $expected = 'Typhoon\Exception\UnexpectedArgumentValueException';
+        $expectedMessage = "Unexpected argument of type 'string' for parameter 'baz' at index 2. Expected 'Eloquent\Typhax\Type\FloatType'.";
         $data['Type mismatch 1'] =
             array($expected, $expectedMessage, $list, $arguments)
         ;
@@ -577,8 +585,8 @@ EOD;
             ),
         ));
         $arguments = array('foo', 'bar', 'baz');
-        $expected = 'InvalidArgumentException';
-        $expectedMessage = "Unexpected argument for parameter 'bar' at index 1.";
+        $expected = 'Typhoon\Exception\UnexpectedArgumentValueException';
+        $expectedMessage = "Unexpected argument of type 'string' for parameter 'bar' at index 1. Expected 'Eloquent\Typhax\Type\IntegerType'.";
         $data['Type mismatch 2'] =
             array($expected, $expectedMessage, $list, $arguments)
         ;
@@ -598,8 +606,8 @@ EOD;
             ),
         ));
         $arguments = array(111, 'bar', 'baz');
-        $expected = 'InvalidArgumentException';
-        $expectedMessage = "Unexpected argument for parameter 'foo' at index 0.";
+        $expected = 'Typhoon\Exception\UnexpectedArgumentValueException';
+        $expectedMessage = "Unexpected argument of type 'integer' for parameter 'foo' at index 0. Expected 'Eloquent\Typhax\Type\StringType'.";
         $data['Type mismatch 3'] =
             array($expected, $expectedMessage, $list, $arguments)
         ;
@@ -623,8 +631,8 @@ EOD;
             true
         );
         $arguments = array('foo', 111, 1.11, 2.22, 'bar', 3.33);
-        $expected = 'InvalidArgumentException';
-        $expectedMessage = "Unexpected argument for parameter 'baz' at index 4.";
+        $expected = 'Typhoon\Exception\UnexpectedArgumentValueException';
+        $expectedMessage = "Unexpected argument of type 'string' for parameter 'baz' at index 4. Expected 'Eloquent\Typhax\Type\FloatType'.";
         $data['Variable length type mismatch'] =
             array($expected, $expectedMessage, $list, $arguments)
         ;

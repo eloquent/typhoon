@@ -12,13 +12,17 @@
 
 namespace Typhoon\Eloquent\Typhoon\Deployment;
 
+use Typhoon\Exception\MissingArgumentException;
+use Typhoon\Exception\UnexpectedArgumentException;
+use Typhoon\Exception\UnexpectedArgumentValueException;
+
 class DeploymentManagerTyphoon
 {
     public function validateConstructor(array $arguments)
     {
         $argumentCount = count($arguments);
         if ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         if ($argumentCount > 0) {
@@ -41,7 +45,7 @@ class DeploymentManagerTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'isolator' at index ".$index.".");
+                    throw new UnexpectedArgumentValueException('isolator', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
                 }
             };
             $check($arguments[0], 0);
@@ -52,9 +56,9 @@ class DeploymentManagerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'path'.");
+            throw new MissingArgumentException('path', 0, 'Eloquent\\Typhax\\Type\\StringType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -62,7 +66,7 @@ class DeploymentManagerTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'path' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('path', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
             }
         };
         $check($arguments[0], 0);
@@ -73,11 +77,11 @@ class DeploymentManagerTyphoon
         $argumentCount = count($arguments);
         if ($argumentCount < 2) {
             if ($argumentCount < 1) {
-                throw new \InvalidArgumentException("Missing argument for parameter 'from'.");
+                throw new MissingArgumentException('from', 0, 'Eloquent\\Typhax\\Type\\StringType');
             }
-            throw new \InvalidArgumentException("Missing argument for parameter 'to'.");
+            throw new MissingArgumentException('to', 1, 'Eloquent\\Typhax\\Type\\StringType');
         } elseif ($argumentCount > 2) {
-            throw new \InvalidArgumentException("Unexpected argument at index 3.");
+            throw new UnexpectedArgumentException(2, $arguments[2]);
         }
 
         $check = function($argument, $index) {
@@ -85,7 +89,7 @@ class DeploymentManagerTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'from' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('from', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
             }
         };
         $check($arguments[0], 0);
@@ -95,7 +99,7 @@ class DeploymentManagerTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'to' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('to', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
             }
         };
         $check($arguments[1], 1);

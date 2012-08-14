@@ -12,13 +12,17 @@
 
 namespace Typhoon\Eloquent\Typhoon\ClassMapper;
 
+use Typhoon\Exception\MissingArgumentException;
+use Typhoon\Exception\UnexpectedArgumentException;
+use Typhoon\Exception\UnexpectedArgumentValueException;
+
 class ClassMapperTyphoon
 {
     public function validateConstructor(array $arguments)
     {
         $argumentCount = count($arguments);
         if ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         if ($argumentCount > 0) {
@@ -27,7 +31,7 @@ class ClassMapperTyphoon
                     return $value instanceof \Icecave\Isolator\Isolator;
                 };
                 if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'isolator' at index ".$index.".");
+                    throw new UnexpectedArgumentValueException('isolator', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
                 }
             };
             $check($arguments[0], 0);
@@ -38,9 +42,9 @@ class ClassMapperTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'directoryPath'.");
+            throw new MissingArgumentException('directoryPath', 0, 'Eloquent\\Typhax\\Type\\StringType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -48,7 +52,7 @@ class ClassMapperTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'directoryPath' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('directoryPath', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
             }
         };
         $check($arguments[0], 0);
@@ -58,9 +62,9 @@ class ClassMapperTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'filePath'.");
+            throw new MissingArgumentException('filePath', 0, 'Eloquent\\Typhax\\Type\\StringType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -68,7 +72,7 @@ class ClassMapperTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'filePath' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('filePath', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
             }
         };
         $check($arguments[0], 0);
@@ -78,9 +82,9 @@ class ClassMapperTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'source'.");
+            throw new MissingArgumentException('source', 0, 'Eloquent\\Typhax\\Type\\StringType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -88,7 +92,7 @@ class ClassMapperTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'source' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('source', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
             }
         };
         $check($arguments[0], 0);
@@ -99,11 +103,11 @@ class ClassMapperTyphoon
         $argumentCount = count($arguments);
         if ($argumentCount < 2) {
             if ($argumentCount < 1) {
-                throw new \InvalidArgumentException("Missing argument for parameter 'className'.");
+                throw new MissingArgumentException('className', 0, 'Eloquent\\Typhax\\Type\\StringType');
             }
-            throw new \InvalidArgumentException("Missing argument for parameter 'source'.");
+            throw new MissingArgumentException('source', 1, 'Eloquent\\Typhax\\Type\\StringType');
         } elseif ($argumentCount > 2) {
-            throw new \InvalidArgumentException("Unexpected argument at index 3.");
+            throw new UnexpectedArgumentException(2, $arguments[2]);
         }
 
         $check = function($argument, $index) {
@@ -111,7 +115,7 @@ class ClassMapperTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'className' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('className', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
             }
         };
         $check($arguments[0], 0);
@@ -121,7 +125,7 @@ class ClassMapperTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'source' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('source', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
             }
         };
         $check($arguments[1], 1);
@@ -131,9 +135,9 @@ class ClassMapperTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'tokens'.");
+            throw new MissingArgumentException('tokens', 0, 'Eloquent\\Typhax\\Type\\TraversableType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -177,7 +181,7 @@ class ClassMapperTyphoon
                 return true;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'tokens' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('tokens', $index, $argument, 'Eloquent\\Typhax\\Type\\TraversableType');
             }
         };
         $check($arguments[0], 0);
@@ -187,9 +191,9 @@ class ClassMapperTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'tokens'.");
+            throw new MissingArgumentException('tokens', 0, 'Eloquent\\Typhax\\Type\\TraversableType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -233,7 +237,7 @@ class ClassMapperTyphoon
                 return true;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'tokens' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('tokens', $index, $argument, 'Eloquent\\Typhax\\Type\\TraversableType');
             }
         };
         $check($arguments[0], 0);
@@ -243,9 +247,9 @@ class ClassMapperTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'tokens'.");
+            throw new MissingArgumentException('tokens', 0, 'Eloquent\\Typhax\\Type\\TraversableType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -289,7 +293,7 @@ class ClassMapperTyphoon
                 return true;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'tokens' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('tokens', $index, $argument, 'Eloquent\\Typhax\\Type\\TraversableType');
             }
         };
         $check($arguments[0], 0);
@@ -299,9 +303,9 @@ class ClassMapperTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'source'.");
+            throw new MissingArgumentException('source', 0, 'Eloquent\\Typhax\\Type\\StringType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -309,7 +313,7 @@ class ClassMapperTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'source' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('source', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
             }
         };
         $check($arguments[0], 0);
@@ -319,9 +323,9 @@ class ClassMapperTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'directoryPath'.");
+            throw new MissingArgumentException('directoryPath', 0, 'Eloquent\\Typhax\\Type\\StringType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -329,7 +333,7 @@ class ClassMapperTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'directoryPath' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('directoryPath', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
             }
         };
         $check($arguments[0], 0);

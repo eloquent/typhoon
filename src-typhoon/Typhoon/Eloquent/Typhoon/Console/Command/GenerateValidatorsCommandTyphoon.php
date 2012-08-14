@@ -12,13 +12,17 @@
 
 namespace Typhoon\Eloquent\Typhoon\Console\Command;
 
+use Typhoon\Exception\MissingArgumentException;
+use Typhoon\Exception\UnexpectedArgumentException;
+use Typhoon\Exception\UnexpectedArgumentValueException;
+
 class GenerateValidatorsCommandTyphoon
 {
     public function validateConstructor(array $arguments)
     {
         $argumentCount = count($arguments);
         if ($argumentCount > 3) {
-            throw new \InvalidArgumentException("Unexpected argument at index 4.");
+            throw new UnexpectedArgumentException(3, $arguments[3]);
         }
 
         if ($argumentCount > 0) {
@@ -41,7 +45,7 @@ class GenerateValidatorsCommandTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'generator' at index ".$index.".");
+                    throw new UnexpectedArgumentValueException('generator', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
                 }
             };
             $check($arguments[0], 0);
@@ -67,7 +71,7 @@ class GenerateValidatorsCommandTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'deploymentManager' at index ".$index.".");
+                    throw new UnexpectedArgumentValueException('deploymentManager', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
                 }
             };
             $check($arguments[1], 1);
@@ -93,7 +97,7 @@ class GenerateValidatorsCommandTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'isolator' at index ".$index.".");
+                    throw new UnexpectedArgumentValueException('isolator', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
                 }
             };
             $check($arguments[2], 2);
@@ -103,14 +107,14 @@ class GenerateValidatorsCommandTyphoon
     public function generator(array $arguments)
     {
         if (count($arguments) > 0) {
-            throw new \InvalidArgumentException("Unexpected argument at index 1.");
+            throw new UnexpectedArgumentException(0, $arguments[0]);
         }
     }
 
     public function deploymentManager(array $arguments)
     {
         if (count($arguments) > 0) {
-            throw new \InvalidArgumentException("Unexpected argument at index 1.");
+            throw new UnexpectedArgumentException(0, $arguments[0]);
         }
     }
 
@@ -124,7 +128,7 @@ class GenerateValidatorsCommandTyphoon
                     return true;
                 };
                 if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'undefined' at index ".$index.".");
+                    throw new UnexpectedArgumentValueException('undefined', $index, $argument, 'Eloquent\\Typhax\\Type\\MixedType');
                 }
             };
             for ($i = 0; $i < $argumentCount; $i ++) {
@@ -138,11 +142,11 @@ class GenerateValidatorsCommandTyphoon
         $argumentCount = count($arguments);
         if ($argumentCount < 2) {
             if ($argumentCount < 1) {
-                throw new \InvalidArgumentException("Missing argument for parameter 'input'.");
+                throw new MissingArgumentException('input', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
-            throw new \InvalidArgumentException("Missing argument for parameter 'output'.");
+            throw new MissingArgumentException('output', 1, 'Eloquent\\Typhax\\Type\\ObjectType');
         } elseif ($argumentCount > 2) {
-            throw new \InvalidArgumentException("Unexpected argument at index 3.");
+            throw new UnexpectedArgumentException(2, $arguments[2]);
         }
 
         $check = function($argument, $index) {
@@ -150,7 +154,7 @@ class GenerateValidatorsCommandTyphoon
                 return $value instanceof \Symfony\Component\Console\Input\InputInterface;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'input' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('input', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
         };
         $check($arguments[0], 0);
@@ -160,7 +164,7 @@ class GenerateValidatorsCommandTyphoon
                 return $value instanceof \Symfony\Component\Console\Output\OutputInterface;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'output' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('output', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
         };
         $check($arguments[1], 1);

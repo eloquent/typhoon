@@ -52,12 +52,21 @@ class ParameterListCompiler implements Visitor
             $this->typhaxCompiler()
         );
 
+        $parameterName = var_export(
+            $parameter->name(),
+            true
+        );
+        $expectedType = var_export(
+            get_class($parameter->type()),
+            true
+        );
+
         return $this->createCallback(
             '$argument, $index',
             <<<EOD
 \$check = $check;
 if (!\$check(\$argument)) {
-    throw new \InvalidArgumentException("Unexpected argument for parameter '{$parameter->name()}' at index ".\$index.".");
+    throw new UnexpectedArgumentValueException($parameterName, \$index, \$argument, $expectedType);
 }
 EOD
         );
@@ -78,7 +87,7 @@ EOD
         if ($parameterCount < 1) {
             return <<<EOD
 if (count(\$arguments) > 0) {
-    throw new \InvalidArgumentException("Unexpected argument at index 1.");
+    throw new UnexpectedArgumentException(0, \$arguments[0]);
 }
 EOD
             ;
@@ -92,18 +101,34 @@ EOD
         $missingParameterContent = '';
         if ($requiredParameterCount > 0) {
             for ($i = 1; $i < $requiredParameterCount; $i ++) {
-                $parameterName = var_export($parameters[$i - 1]->name(), true);
+                $parameterIndex = $i - 1;
+                $parameterName = var_export(
+                    $parameters[$parameterIndex]->name(),
+                    true
+                );
+                $expectedType = var_export(
+                    get_class($parameters[$parameterIndex]->type()),
+                    true
+                );
 
                 $missingParameterContent .= <<<EOD
     if (\$argumentCount < $i) {
-        throw new \InvalidArgumentException("Missing argument for parameter $parameterName.");
+        throw new MissingArgumentException($parameterName, $parameterIndex, $expectedType);
     }
 
 EOD;
             }
-            $parameterName = var_export($parameters[$requiredParameterCount - 1]->name(), true);
+            $parameterIndex = $requiredParameterCount - 1;
+            $parameterName = var_export(
+                $parameters[$parameterIndex]->name(),
+                true
+            );
+            $expectedType = var_export(
+                get_class($parameters[$parameterIndex]->type()),
+                true
+            );
             $missingParameterContent .= <<<EOD
-    throw new \InvalidArgumentException("Missing argument for parameter $parameterName.");
+    throw new MissingArgumentException($parameterName, $parameterIndex, $expectedType);
 EOD;
 
             $missingParameterContent = <<<EOD
@@ -118,7 +143,7 @@ EOD;
         if (!$parameterList->isVariableLength()) {
             $maxArgumentLengthCheck = <<<EOD
 (\$argumentCount > $parameterCount) {
-    throw new \InvalidArgumentException("Unexpected argument at index $parameterCountPlusOne.");
+    throw new UnexpectedArgumentException($parameterCount, \$arguments[$parameterCount]);
 }
 EOD;
             if ($requiredParameterCount > 0) {

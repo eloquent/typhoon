@@ -44,6 +44,22 @@ class DeploymentManager
             $this->deploySourcePath.'/Typhoon/DummyValidator.php',
             $path.'/Typhoon/DummyValidator.php'
         );
+        $this->copyFile(
+            $this->deploySourcePath.'/Typhoon/Exception/MissingArgumentException.php',
+            $path.'/Typhoon/Exception/MissingArgumentException.php'
+        );
+        $this->copyFile(
+            $this->deploySourcePath.'/Typhoon/Exception/UnexpectedArgumentException.php',
+            $path.'/Typhoon/Exception/UnexpectedArgumentException.php'
+        );
+        $this->copyFile(
+            $this->deploySourcePath.'/Typhoon/Exception/UnexpectedArgumentValueException.php',
+            $path.'/Typhoon/Exception/UnexpectedArgumentValueException.php'
+        );
+        $this->copyFile(
+            $this->deploySourcePath.'/Typhoon/Exception/UnexpectedInputException.php',
+            $path.'/Typhoon/Exception/UnexpectedInputException.php'
+        );
     }
 
     /**

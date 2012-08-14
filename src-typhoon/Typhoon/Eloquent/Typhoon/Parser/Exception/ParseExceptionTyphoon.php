@@ -12,6 +12,10 @@
 
 namespace Typhoon\Eloquent\Typhoon\Parser\Exception;
 
+use Typhoon\Exception\MissingArgumentException;
+use Typhoon\Exception\UnexpectedArgumentException;
+use Typhoon\Exception\UnexpectedArgumentValueException;
+
 class ParseExceptionTyphoon
 {
     public function validateConstructor(array $arguments)
@@ -19,11 +23,11 @@ class ParseExceptionTyphoon
         $argumentCount = count($arguments);
         if ($argumentCount < 2) {
             if ($argumentCount < 1) {
-                throw new \InvalidArgumentException("Missing argument for parameter 'message'.");
+                throw new MissingArgumentException('message', 0, 'Eloquent\\Typhax\\Type\\StringType');
             }
-            throw new \InvalidArgumentException("Missing argument for parameter 'position'.");
+            throw new MissingArgumentException('position', 1, 'Eloquent\\Typhax\\Type\\IntegerType');
         } elseif ($argumentCount > 3) {
-            throw new \InvalidArgumentException("Unexpected argument at index 4.");
+            throw new UnexpectedArgumentException(3, $arguments[3]);
         }
 
         $check = function($argument, $index) {
@@ -31,7 +35,7 @@ class ParseExceptionTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'message' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('message', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
             }
         };
         $check($arguments[0], 0);
@@ -41,7 +45,7 @@ class ParseExceptionTyphoon
                 return is_integer($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'position' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('position', $index, $argument, 'Eloquent\\Typhax\\Type\\IntegerType');
             }
         };
         $check($arguments[1], 1);
@@ -66,7 +70,7 @@ class ParseExceptionTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'previous' at index ".$index.".");
+                    throw new UnexpectedArgumentValueException('previous', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
                 }
             };
             $check($arguments[2], 2);
@@ -76,7 +80,7 @@ class ParseExceptionTyphoon
     public function position(array $arguments)
     {
         if (count($arguments) > 0) {
-            throw new \InvalidArgumentException("Unexpected argument at index 1.");
+            throw new UnexpectedArgumentException(0, $arguments[0]);
         }
     }
 }

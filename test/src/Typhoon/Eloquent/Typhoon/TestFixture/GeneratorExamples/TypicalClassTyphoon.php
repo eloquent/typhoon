@@ -12,6 +12,10 @@
 
 namespace Typhoon\Eloquent\Typhoon\TestFixture\GeneratorExamples;
 
+use Typhoon\Exception\MissingArgumentException;
+use Typhoon\Exception\UnexpectedArgumentException;
+use Typhoon\Exception\UnexpectedArgumentValueException;
+
 class TypicalClassTyphoon
 {
     public function validateConstructor(array $arguments)
@@ -19,11 +23,11 @@ class TypicalClassTyphoon
         $argumentCount = count($arguments);
         if ($argumentCount < 2) {
             if ($argumentCount < 1) {
-                throw new \InvalidArgumentException("Missing argument for parameter 'foo'.");
+                throw new MissingArgumentException('foo', 0, 'Eloquent\\Typhax\\Type\\StringType');
             }
-            throw new \InvalidArgumentException("Missing argument for parameter 'bar'.");
+            throw new MissingArgumentException('bar', 1, 'Eloquent\\Typhax\\Type\\IntegerType');
         } elseif ($argumentCount > 2) {
-            throw new \InvalidArgumentException("Unexpected argument at index 3.");
+            throw new UnexpectedArgumentException(2, $arguments[2]);
         }
 
         $check = function($argument, $index) {
@@ -31,7 +35,7 @@ class TypicalClassTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'foo' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('foo', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
             }
         };
         $check($arguments[0], 0);
@@ -41,7 +45,7 @@ class TypicalClassTyphoon
                 return is_integer($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'bar' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('bar', $index, $argument, 'Eloquent\\Typhax\\Type\\IntegerType');
             }
         };
         $check($arguments[1], 1);
@@ -51,7 +55,7 @@ class TypicalClassTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'foo'.");
+            throw new MissingArgumentException('foo', 0, 'Eloquent\\Typhax\\Type\\FloatType');
         }
 
         $check = function($argument, $index) {
@@ -59,7 +63,7 @@ class TypicalClassTyphoon
                 return is_float($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'foo' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('foo', $index, $argument, 'Eloquent\\Typhax\\Type\\FloatType');
             }
         };
         $check($arguments[0], 0);
@@ -84,7 +88,7 @@ class TypicalClassTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'bar' at index ".$index.".");
+                    throw new UnexpectedArgumentValueException('bar', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
                 }
             };
             $check($arguments[1], 1);
@@ -115,7 +119,7 @@ class TypicalClassTyphoon
                     return true;
                 };
                 if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'baz' at index ".$index.".");
+                    throw new UnexpectedArgumentValueException('baz', $index, $argument, 'Eloquent\\Typhax\\Type\\StreamType');
                 }
             };
             for ($i = 2; $i < $argumentCount; $i ++) {
@@ -134,7 +138,7 @@ class TypicalClassTyphoon
                     return true;
                 };
                 if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'undefined' at index ".$index.".");
+                    throw new UnexpectedArgumentValueException('undefined', $index, $argument, 'Eloquent\\Typhax\\Type\\MixedType');
                 }
             };
             for ($i = 0; $i < $argumentCount; $i ++) {

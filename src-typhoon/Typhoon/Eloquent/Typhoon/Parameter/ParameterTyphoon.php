@@ -12,6 +12,10 @@
 
 namespace Typhoon\Eloquent\Typhoon\Parameter;
 
+use Typhoon\Exception\MissingArgumentException;
+use Typhoon\Exception\UnexpectedArgumentException;
+use Typhoon\Exception\UnexpectedArgumentValueException;
+
 class ParameterTyphoon
 {
     public function validateConstructor(array $arguments)
@@ -19,11 +23,11 @@ class ParameterTyphoon
         $argumentCount = count($arguments);
         if ($argumentCount < 2) {
             if ($argumentCount < 1) {
-                throw new \InvalidArgumentException("Missing argument for parameter 'name'.");
+                throw new MissingArgumentException('name', 0, 'Eloquent\\Typhax\\Type\\StringType');
             }
-            throw new \InvalidArgumentException("Missing argument for parameter 'type'.");
+            throw new MissingArgumentException('type', 1, 'Eloquent\\Typhax\\Type\\ObjectType');
         } elseif ($argumentCount > 4) {
-            throw new \InvalidArgumentException("Unexpected argument at index 5.");
+            throw new UnexpectedArgumentException(4, $arguments[4]);
         }
 
         $check = function($argument, $index) {
@@ -31,7 +35,7 @@ class ParameterTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'name' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('name', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
             }
         };
         $check($arguments[0], 0);
@@ -41,7 +45,7 @@ class ParameterTyphoon
                 return $value instanceof \Eloquent\Typhax\Type\Type;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'type' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
         };
         $check($arguments[1], 1);
@@ -52,7 +56,7 @@ class ParameterTyphoon
                     return is_bool($value);
                 };
                 if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'optional' at index ".$index.".");
+                    throw new UnexpectedArgumentValueException('optional', $index, $argument, 'Eloquent\\Typhax\\Type\\BooleanType');
                 }
             };
             $check($arguments[2], 2);
@@ -78,7 +82,7 @@ class ParameterTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'description' at index ".$index.".");
+                    throw new UnexpectedArgumentValueException('description', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
                 }
             };
             $check($arguments[3], 3);
@@ -88,28 +92,28 @@ class ParameterTyphoon
     public function name(array $arguments)
     {
         if (count($arguments) > 0) {
-            throw new \InvalidArgumentException("Unexpected argument at index 1.");
+            throw new UnexpectedArgumentException(0, $arguments[0]);
         }
     }
 
     public function type(array $arguments)
     {
         if (count($arguments) > 0) {
-            throw new \InvalidArgumentException("Unexpected argument at index 1.");
+            throw new UnexpectedArgumentException(0, $arguments[0]);
         }
     }
 
     public function isOptional(array $arguments)
     {
         if (count($arguments) > 0) {
-            throw new \InvalidArgumentException("Unexpected argument at index 1.");
+            throw new UnexpectedArgumentException(0, $arguments[0]);
         }
     }
 
     public function description(array $arguments)
     {
         if (count($arguments) > 0) {
-            throw new \InvalidArgumentException("Unexpected argument at index 1.");
+            throw new UnexpectedArgumentException(0, $arguments[0]);
         }
     }
 }

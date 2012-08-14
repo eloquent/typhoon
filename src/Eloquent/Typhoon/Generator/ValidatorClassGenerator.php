@@ -135,6 +135,10 @@ class ValidatorClassGenerator
 
 namespace $namespaceName;
 
+use Typhoon\Exception\MissingArgumentException;
+use Typhoon\Exception\UnexpectedArgumentException;
+use Typhoon\Exception\UnexpectedArgumentValueException;
+
 class $className
 {{$methods}
 }

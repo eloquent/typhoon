@@ -12,6 +12,10 @@
 
 namespace Typhoon\Eloquent\Typhoon\TestFixture\GeneratorExamples;
 
+use Typhoon\Exception\MissingArgumentException;
+use Typhoon\Exception\UnexpectedArgumentException;
+use Typhoon\Exception\UnexpectedArgumentValueException;
+
 class EmptyClassTyphoon
 {
 }

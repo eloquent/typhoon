@@ -12,15 +12,19 @@
 
 namespace Typhoon\Eloquent\Typhoon\Resolver;
 
+use Typhoon\Exception\MissingArgumentException;
+use Typhoon\Exception\UnexpectedArgumentException;
+use Typhoon\Exception\UnexpectedArgumentValueException;
+
 class ParameterListClassNameResolverTyphoon
 {
     public function validateConstructor(array $arguments)
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'typeResolver'.");
+            throw new MissingArgumentException('typeResolver', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -28,7 +32,7 @@ class ParameterListClassNameResolverTyphoon
                 return $value instanceof \Eloquent\Typhax\Resolver\ObjectTypeClassNameResolver;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'typeResolver' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('typeResolver', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
         };
         $check($arguments[0], 0);
@@ -37,7 +41,7 @@ class ParameterListClassNameResolverTyphoon
     public function typeResolver(array $arguments)
     {
         if (count($arguments) > 0) {
-            throw new \InvalidArgumentException("Unexpected argument at index 1.");
+            throw new UnexpectedArgumentException(0, $arguments[0]);
         }
     }
 
@@ -45,9 +49,9 @@ class ParameterListClassNameResolverTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'parameter'.");
+            throw new MissingArgumentException('parameter', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -55,7 +59,7 @@ class ParameterListClassNameResolverTyphoon
                 return $value instanceof \Eloquent\Typhoon\Parameter\Parameter;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'parameter' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('parameter', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
         };
         $check($arguments[0], 0);
@@ -65,9 +69,9 @@ class ParameterListClassNameResolverTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'parameterList'.");
+            throw new MissingArgumentException('parameterList', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -75,7 +79,7 @@ class ParameterListClassNameResolverTyphoon
                 return $value instanceof \Eloquent\Typhoon\Parameter\ParameterList;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'parameterList' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('parameterList', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
         };
         $check($arguments[0], 0);

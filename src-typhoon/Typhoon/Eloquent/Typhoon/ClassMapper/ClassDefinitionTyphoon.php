@@ -12,15 +12,19 @@
 
 namespace Typhoon\Eloquent\Typhoon\ClassMapper;
 
+use Typhoon\Exception\MissingArgumentException;
+use Typhoon\Exception\UnexpectedArgumentException;
+use Typhoon\Exception\UnexpectedArgumentValueException;
+
 class ClassDefinitionTyphoon
 {
     public function validateConstructor(array $arguments)
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'className'.");
+            throw new MissingArgumentException('className', 0, 'Eloquent\\Typhax\\Type\\StringType');
         } elseif ($argumentCount > 3) {
-            throw new \InvalidArgumentException("Unexpected argument at index 4.");
+            throw new UnexpectedArgumentException(3, $arguments[3]);
         }
 
         $check = function($argument, $index) {
@@ -28,7 +32,7 @@ class ClassDefinitionTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'className' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('className', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
             }
         };
         $check($arguments[0], 0);
@@ -53,7 +57,7 @@ class ClassDefinitionTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'namespaceName' at index ".$index.".");
+                    throw new UnexpectedArgumentValueException('namespaceName', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
                 }
             };
             $check($arguments[1], 1);
@@ -101,7 +105,7 @@ class ClassDefinitionTyphoon
                     return true;
                 };
                 if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'usedClasses' at index ".$index.".");
+                    throw new UnexpectedArgumentValueException('usedClasses', $index, $argument, 'Eloquent\\Typhax\\Type\\TraversableType');
                 }
             };
             $check($arguments[2], 2);
@@ -111,35 +115,35 @@ class ClassDefinitionTyphoon
     public function className(array $arguments)
     {
         if (count($arguments) > 0) {
-            throw new \InvalidArgumentException("Unexpected argument at index 1.");
+            throw new UnexpectedArgumentException(0, $arguments[0]);
         }
     }
 
     public function canonicalClassName(array $arguments)
     {
         if (count($arguments) > 0) {
-            throw new \InvalidArgumentException("Unexpected argument at index 1.");
+            throw new UnexpectedArgumentException(0, $arguments[0]);
         }
     }
 
     public function namespaceName(array $arguments)
     {
         if (count($arguments) > 0) {
-            throw new \InvalidArgumentException("Unexpected argument at index 1.");
+            throw new UnexpectedArgumentException(0, $arguments[0]);
         }
     }
 
     public function usedClasses(array $arguments)
     {
         if (count($arguments) > 0) {
-            throw new \InvalidArgumentException("Unexpected argument at index 1.");
+            throw new UnexpectedArgumentException(0, $arguments[0]);
         }
     }
 
     public function classNameResolver(array $arguments)
     {
         if (count($arguments) > 0) {
-            throw new \InvalidArgumentException("Unexpected argument at index 1.");
+            throw new UnexpectedArgumentException(0, $arguments[0]);
         }
     }
 }

@@ -12,13 +12,17 @@
 
 namespace Typhoon\Eloquent\Typhoon\Generator;
 
+use Typhoon\Exception\MissingArgumentException;
+use Typhoon\Exception\UnexpectedArgumentException;
+use Typhoon\Exception\UnexpectedArgumentValueException;
+
 class ValidatorClassGeneratorTyphoon
 {
     public function validateConstructor(array $arguments)
     {
         $argumentCount = count($arguments);
         if ($argumentCount > 4) {
-            throw new \InvalidArgumentException("Unexpected argument at index 5.");
+            throw new UnexpectedArgumentException(4, $arguments[4]);
         }
 
         if ($argumentCount > 0) {
@@ -41,7 +45,7 @@ class ValidatorClassGeneratorTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'parser' at index ".$index.".");
+                    throw new UnexpectedArgumentValueException('parser', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
                 }
             };
             $check($arguments[0], 0);
@@ -67,7 +71,7 @@ class ValidatorClassGeneratorTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'compiler' at index ".$index.".");
+                    throw new UnexpectedArgumentValueException('compiler', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
                 }
             };
             $check($arguments[1], 1);
@@ -93,7 +97,7 @@ class ValidatorClassGeneratorTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'classMapper' at index ".$index.".");
+                    throw new UnexpectedArgumentValueException('classMapper', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
                 }
             };
             $check($arguments[2], 2);
@@ -119,7 +123,7 @@ class ValidatorClassGeneratorTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'isolator' at index ".$index.".");
+                    throw new UnexpectedArgumentValueException('isolator', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
                 }
             };
             $check($arguments[3], 3);
@@ -129,21 +133,21 @@ class ValidatorClassGeneratorTyphoon
     public function parser(array $arguments)
     {
         if (count($arguments) > 0) {
-            throw new \InvalidArgumentException("Unexpected argument at index 1.");
+            throw new UnexpectedArgumentException(0, $arguments[0]);
         }
     }
 
     public function compiler(array $arguments)
     {
         if (count($arguments) > 0) {
-            throw new \InvalidArgumentException("Unexpected argument at index 1.");
+            throw new UnexpectedArgumentException(0, $arguments[0]);
         }
     }
 
     public function classMapper(array $arguments)
     {
         if (count($arguments) > 0) {
-            throw new \InvalidArgumentException("Unexpected argument at index 1.");
+            throw new UnexpectedArgumentException(0, $arguments[0]);
         }
     }
 
@@ -151,9 +155,9 @@ class ValidatorClassGeneratorTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'classDefinition'.");
+            throw new MissingArgumentException('classDefinition', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
         } elseif ($argumentCount > 3) {
-            throw new \InvalidArgumentException("Unexpected argument at index 4.");
+            throw new UnexpectedArgumentException(3, $arguments[3]);
         }
 
         $check = function($argument, $index) {
@@ -161,7 +165,7 @@ class ValidatorClassGeneratorTyphoon
                 return $value instanceof \Eloquent\Typhoon\ClassMapper\ClassDefinition;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'classDefinition' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('classDefinition', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
         };
         $check($arguments[0], 0);
@@ -186,7 +190,7 @@ class ValidatorClassGeneratorTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'namespaceName' at index ".$index.".");
+                    throw new UnexpectedArgumentValueException('namespaceName', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
                 }
             };
             $check($arguments[1], 1);
@@ -212,7 +216,7 @@ class ValidatorClassGeneratorTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'className' at index ".$index.".");
+                    throw new UnexpectedArgumentValueException('className', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
                 }
             };
             $check($arguments[2], 2);
@@ -224,11 +228,11 @@ class ValidatorClassGeneratorTyphoon
         $argumentCount = count($arguments);
         if ($argumentCount < 2) {
             if ($argumentCount < 1) {
-                throw new \InvalidArgumentException("Missing argument for parameter 'sourceClassName'.");
+                throw new MissingArgumentException('sourceClassName', 0, 'Eloquent\\Typhax\\Type\\StringType');
             }
-            throw new \InvalidArgumentException("Missing argument for parameter 'source'.");
+            throw new MissingArgumentException('source', 1, 'Eloquent\\Typhax\\Type\\StringType');
         } elseif ($argumentCount > 4) {
-            throw new \InvalidArgumentException("Unexpected argument at index 5.");
+            throw new UnexpectedArgumentException(4, $arguments[4]);
         }
 
         $check = function($argument, $index) {
@@ -236,7 +240,7 @@ class ValidatorClassGeneratorTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'sourceClassName' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('sourceClassName', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
             }
         };
         $check($arguments[0], 0);
@@ -246,7 +250,7 @@ class ValidatorClassGeneratorTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'source' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('source', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
             }
         };
         $check($arguments[1], 1);
@@ -271,7 +275,7 @@ class ValidatorClassGeneratorTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'namespaceName' at index ".$index.".");
+                    throw new UnexpectedArgumentValueException('namespaceName', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
                 }
             };
             $check($arguments[2], 2);
@@ -297,7 +301,7 @@ class ValidatorClassGeneratorTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'className' at index ".$index.".");
+                    throw new UnexpectedArgumentValueException('className', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
                 }
             };
             $check($arguments[3], 3);
@@ -309,11 +313,11 @@ class ValidatorClassGeneratorTyphoon
         $argumentCount = count($arguments);
         if ($argumentCount < 2) {
             if ($argumentCount < 1) {
-                throw new \InvalidArgumentException("Missing argument for parameter 'sourceClassName'.");
+                throw new MissingArgumentException('sourceClassName', 0, 'Eloquent\\Typhax\\Type\\StringType');
             }
-            throw new \InvalidArgumentException("Missing argument for parameter 'path'.");
+            throw new MissingArgumentException('path', 1, 'Eloquent\\Typhax\\Type\\StringType');
         } elseif ($argumentCount > 4) {
-            throw new \InvalidArgumentException("Unexpected argument at index 5.");
+            throw new UnexpectedArgumentException(4, $arguments[4]);
         }
 
         $check = function($argument, $index) {
@@ -321,7 +325,7 @@ class ValidatorClassGeneratorTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'sourceClassName' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('sourceClassName', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
             }
         };
         $check($arguments[0], 0);
@@ -331,7 +335,7 @@ class ValidatorClassGeneratorTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'path' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('path', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
             }
         };
         $check($arguments[1], 1);
@@ -356,7 +360,7 @@ class ValidatorClassGeneratorTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'namespaceName' at index ".$index.".");
+                    throw new UnexpectedArgumentValueException('namespaceName', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
                 }
             };
             $check($arguments[2], 2);
@@ -382,7 +386,7 @@ class ValidatorClassGeneratorTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'className' at index ".$index.".");
+                    throw new UnexpectedArgumentValueException('className', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
                 }
             };
             $check($arguments[3], 3);
@@ -393,9 +397,9 @@ class ValidatorClassGeneratorTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'class'.");
+            throw new MissingArgumentException('class', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
         } elseif ($argumentCount > 3) {
-            throw new \InvalidArgumentException("Unexpected argument at index 4.");
+            throw new UnexpectedArgumentException(3, $arguments[3]);
         }
 
         $check = function($argument, $index) {
@@ -403,7 +407,7 @@ class ValidatorClassGeneratorTyphoon
                 return $value instanceof \ReflectionClass;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'class' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('class', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
         };
         $check($arguments[0], 0);
@@ -428,7 +432,7 @@ class ValidatorClassGeneratorTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'namespaceName' at index ".$index.".");
+                    throw new UnexpectedArgumentValueException('namespaceName', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
                 }
             };
             $check($arguments[1], 1);
@@ -454,7 +458,7 @@ class ValidatorClassGeneratorTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'className' at index ".$index.".");
+                    throw new UnexpectedArgumentValueException('className', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
                 }
             };
             $check($arguments[2], 2);
@@ -465,9 +469,9 @@ class ValidatorClassGeneratorTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'classDefinition'.");
+            throw new MissingArgumentException('classDefinition', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -475,7 +479,7 @@ class ValidatorClassGeneratorTyphoon
                 return $value instanceof \Eloquent\Typhoon\ClassMapper\ClassDefinition;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'classDefinition' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('classDefinition', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
         };
         $check($arguments[0], 0);
@@ -486,11 +490,11 @@ class ValidatorClassGeneratorTyphoon
         $argumentCount = count($arguments);
         if ($argumentCount < 2) {
             if ($argumentCount < 1) {
-                throw new \InvalidArgumentException("Missing argument for parameter 'method'.");
+                throw new MissingArgumentException('method', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
-            throw new \InvalidArgumentException("Missing argument for parameter 'classDefinition'.");
+            throw new MissingArgumentException('classDefinition', 1, 'Eloquent\\Typhax\\Type\\ObjectType');
         } elseif ($argumentCount > 2) {
-            throw new \InvalidArgumentException("Unexpected argument at index 3.");
+            throw new UnexpectedArgumentException(2, $arguments[2]);
         }
 
         $check = function($argument, $index) {
@@ -498,7 +502,7 @@ class ValidatorClassGeneratorTyphoon
                 return $value instanceof \ReflectionMethod;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'method' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('method', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
         };
         $check($arguments[0], 0);
@@ -508,7 +512,7 @@ class ValidatorClassGeneratorTyphoon
                 return $value instanceof \Eloquent\Typhoon\ClassMapper\ClassDefinition;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'classDefinition' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('classDefinition', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
         };
         $check($arguments[1], 1);
@@ -519,11 +523,11 @@ class ValidatorClassGeneratorTyphoon
         $argumentCount = count($arguments);
         if ($argumentCount < 2) {
             if ($argumentCount < 1) {
-                throw new \InvalidArgumentException("Missing argument for parameter 'method'.");
+                throw new MissingArgumentException('method', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
-            throw new \InvalidArgumentException("Missing argument for parameter 'classDefinition'.");
+            throw new MissingArgumentException('classDefinition', 1, 'Eloquent\\Typhax\\Type\\ObjectType');
         } elseif ($argumentCount > 2) {
-            throw new \InvalidArgumentException("Unexpected argument at index 3.");
+            throw new UnexpectedArgumentException(2, $arguments[2]);
         }
 
         $check = function($argument, $index) {
@@ -531,7 +535,7 @@ class ValidatorClassGeneratorTyphoon
                 return $value instanceof \ReflectionMethod;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'method' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('method', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
         };
         $check($arguments[0], 0);
@@ -541,7 +545,7 @@ class ValidatorClassGeneratorTyphoon
                 return $value instanceof \Eloquent\Typhoon\ClassMapper\ClassDefinition;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'classDefinition' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('classDefinition', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
         };
         $check($arguments[1], 1);
@@ -551,9 +555,9 @@ class ValidatorClassGeneratorTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'classDefinition'.");
+            throw new MissingArgumentException('classDefinition', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -561,7 +565,7 @@ class ValidatorClassGeneratorTyphoon
                 return $value instanceof \Eloquent\Typhoon\ClassMapper\ClassDefinition;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'classDefinition' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('classDefinition', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
         };
         $check($arguments[0], 0);
@@ -571,9 +575,9 @@ class ValidatorClassGeneratorTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'method'.");
+            throw new MissingArgumentException('method', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -581,7 +585,7 @@ class ValidatorClassGeneratorTyphoon
                 return $value instanceof \ReflectionMethod;
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'method' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('method', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
             }
         };
         $check($arguments[0], 0);
@@ -591,9 +595,9 @@ class ValidatorClassGeneratorTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'content'.");
+            throw new MissingArgumentException('content', 0, 'Eloquent\\Typhax\\Type\\StringType');
         } elseif ($argumentCount > 2) {
-            throw new \InvalidArgumentException("Unexpected argument at index 3.");
+            throw new UnexpectedArgumentException(2, $arguments[2]);
         }
 
         $check = function($argument, $index) {
@@ -601,7 +605,7 @@ class ValidatorClassGeneratorTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'content' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('content', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
             }
         };
         $check($arguments[0], 0);
@@ -612,7 +616,7 @@ class ValidatorClassGeneratorTyphoon
                     return is_integer($value);
                 };
                 if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'depth' at index ".$index.".");
+                    throw new UnexpectedArgumentValueException('depth', $index, $argument, 'Eloquent\\Typhax\\Type\\IntegerType');
                 }
             };
             $check($arguments[1], 1);

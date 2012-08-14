@@ -12,12 +12,16 @@
 
 namespace Typhoon\Eloquent\Typhoon\Parameter;
 
+use Typhoon\Exception\MissingArgumentException;
+use Typhoon\Exception\UnexpectedArgumentException;
+use Typhoon\Exception\UnexpectedArgumentValueException;
+
 class ParameterListTyphoon
 {
     public function createUnrestricted(array $arguments)
     {
         if (count($arguments) > 0) {
-            throw new \InvalidArgumentException("Unexpected argument at index 1.");
+            throw new UnexpectedArgumentException(0, $arguments[0]);
         }
     }
 
@@ -25,7 +29,7 @@ class ParameterListTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount > 2) {
-            throw new \InvalidArgumentException("Unexpected argument at index 3.");
+            throw new UnexpectedArgumentException(2, $arguments[2]);
         }
 
         if ($argumentCount > 0) {
@@ -56,7 +60,7 @@ class ParameterListTyphoon
                     return true;
                 };
                 if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'parameters' at index ".$index.".");
+                    throw new UnexpectedArgumentValueException('parameters', $index, $argument, 'Eloquent\\Typhax\\Type\\TraversableType');
                 }
             };
             $check($arguments[0], 0);
@@ -68,7 +72,7 @@ class ParameterListTyphoon
                     return is_bool($value);
                 };
                 if (!$check($argument)) {
-                    throw new \InvalidArgumentException("Unexpected argument for parameter 'variableLength' at index ".$index.".");
+                    throw new UnexpectedArgumentValueException('variableLength', $index, $argument, 'Eloquent\\Typhax\\Type\\BooleanType');
                 }
             };
             $check($arguments[1], 1);
@@ -78,7 +82,7 @@ class ParameterListTyphoon
     public function parameters(array $arguments)
     {
         if (count($arguments) > 0) {
-            throw new \InvalidArgumentException("Unexpected argument at index 1.");
+            throw new UnexpectedArgumentException(0, $arguments[0]);
         }
     }
 
@@ -86,9 +90,9 @@ class ParameterListTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new \InvalidArgumentException("Missing argument for parameter 'name'.");
+            throw new MissingArgumentException('name', 0, 'Eloquent\\Typhax\\Type\\StringType');
         } elseif ($argumentCount > 1) {
-            throw new \InvalidArgumentException("Unexpected argument at index 2.");
+            throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
@@ -96,7 +100,7 @@ class ParameterListTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new \InvalidArgumentException("Unexpected argument for parameter 'name' at index ".$index.".");
+                throw new UnexpectedArgumentValueException('name', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
             }
         };
         $check($arguments[0], 0);
@@ -105,14 +109,14 @@ class ParameterListTyphoon
     public function isVariableLength(array $arguments)
     {
         if (count($arguments) > 0) {
-            throw new \InvalidArgumentException("Unexpected argument at index 1.");
+            throw new UnexpectedArgumentException(0, $arguments[0]);
         }
     }
 
     public function requiredParameters(array $arguments)
     {
         if (count($arguments) > 0) {
-            throw new \InvalidArgumentException("Unexpected argument at index 1.");
+            throw new UnexpectedArgumentException(0, $arguments[0]);
         }
     }
 }
