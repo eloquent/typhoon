@@ -22,7 +22,7 @@ class ParameterListClassNameResolverTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('typeResolver', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
+            throw new MissingArgumentException('typeResolver', 0, 'Eloquent\\Typhax\\Resolver\\ObjectTypeClassNameResolver');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
@@ -32,7 +32,7 @@ class ParameterListClassNameResolverTyphoon
                 return $value instanceof \Eloquent\Typhax\Resolver\ObjectTypeClassNameResolver;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('typeResolver', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
+                throw new UnexpectedArgumentValueException('typeResolver', $index, $argument, 'Eloquent\\Typhax\\Resolver\\ObjectTypeClassNameResolver');
             }
         };
         $check($arguments[0], 0);
@@ -49,7 +49,7 @@ class ParameterListClassNameResolverTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('parameter', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
+            throw new MissingArgumentException('parameter', 0, 'Eloquent\\Typhoon\\Parameter\\Parameter');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
@@ -59,7 +59,7 @@ class ParameterListClassNameResolverTyphoon
                 return $value instanceof \Eloquent\Typhoon\Parameter\Parameter;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('parameter', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
+                throw new UnexpectedArgumentValueException('parameter', $index, $argument, 'Eloquent\\Typhoon\\Parameter\\Parameter');
             }
         };
         $check($arguments[0], 0);
@@ -69,7 +69,7 @@ class ParameterListClassNameResolverTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('parameterList', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
+            throw new MissingArgumentException('parameterList', 0, 'Eloquent\\Typhoon\\Parameter\\ParameterList');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
@@ -79,7 +79,7 @@ class ParameterListClassNameResolverTyphoon
                 return $value instanceof \Eloquent\Typhoon\Parameter\ParameterList;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('parameterList', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
+                throw new UnexpectedArgumentValueException('parameterList', $index, $argument, 'Eloquent\\Typhoon\\Parameter\\ParameterList');
             }
         };
         $check($arguments[0], 0);

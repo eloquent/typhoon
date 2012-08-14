@@ -23,9 +23,9 @@ class ParameterTyphoon
         $argumentCount = count($arguments);
         if ($argumentCount < 2) {
             if ($argumentCount < 1) {
-                throw new MissingArgumentException('name', 0, 'Eloquent\\Typhax\\Type\\StringType');
+                throw new MissingArgumentException('name', 0, 'string');
             }
-            throw new MissingArgumentException('type', 1, 'Eloquent\\Typhax\\Type\\ObjectType');
+            throw new MissingArgumentException('type', 1, 'Eloquent\\Typhax\\Type\\Type');
         } elseif ($argumentCount > 4) {
             throw new UnexpectedArgumentException(4, $arguments[4]);
         }
@@ -35,7 +35,7 @@ class ParameterTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('name', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
+                throw new UnexpectedArgumentValueException('name', $index, $argument, 'string');
             }
         };
         $check($arguments[0], 0);
@@ -45,7 +45,7 @@ class ParameterTyphoon
                 return $value instanceof \Eloquent\Typhax\Type\Type;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\Type');
             }
         };
         $check($arguments[1], 1);
@@ -56,7 +56,7 @@ class ParameterTyphoon
                     return is_bool($value);
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('optional', $index, $argument, 'Eloquent\\Typhax\\Type\\BooleanType');
+                    throw new UnexpectedArgumentValueException('optional', $index, $argument, 'boolean');
                 }
             };
             $check($arguments[2], 2);
@@ -82,7 +82,7 @@ class ParameterTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('description', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
+                    throw new UnexpectedArgumentValueException('description', $index, $argument, 'string|null');
                 }
             };
             $check($arguments[3], 3);

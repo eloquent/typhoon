@@ -23,9 +23,9 @@ class TypicalClassTyphoon
         $argumentCount = count($arguments);
         if ($argumentCount < 2) {
             if ($argumentCount < 1) {
-                throw new MissingArgumentException('foo', 0, 'Eloquent\\Typhax\\Type\\StringType');
+                throw new MissingArgumentException('foo', 0, 'string');
             }
-            throw new MissingArgumentException('bar', 1, 'Eloquent\\Typhax\\Type\\IntegerType');
+            throw new MissingArgumentException('bar', 1, 'integer');
         } elseif ($argumentCount > 2) {
             throw new UnexpectedArgumentException(2, $arguments[2]);
         }
@@ -35,7 +35,7 @@ class TypicalClassTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('foo', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
+                throw new UnexpectedArgumentValueException('foo', $index, $argument, 'string');
             }
         };
         $check($arguments[0], 0);
@@ -45,7 +45,7 @@ class TypicalClassTyphoon
                 return is_integer($value);
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('bar', $index, $argument, 'Eloquent\\Typhax\\Type\\IntegerType');
+                throw new UnexpectedArgumentValueException('bar', $index, $argument, 'integer');
             }
         };
         $check($arguments[1], 1);
@@ -55,7 +55,7 @@ class TypicalClassTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('foo', 0, 'Eloquent\\Typhax\\Type\\FloatType');
+            throw new MissingArgumentException('foo', 0, 'float');
         }
 
         $check = function($argument, $index) {
@@ -63,7 +63,7 @@ class TypicalClassTyphoon
                 return is_float($value);
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('foo', $index, $argument, 'Eloquent\\Typhax\\Type\\FloatType');
+                throw new UnexpectedArgumentValueException('foo', $index, $argument, 'float');
             }
         };
         $check($arguments[0], 0);
@@ -88,7 +88,7 @@ class TypicalClassTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('bar', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
+                    throw new UnexpectedArgumentValueException('bar', $index, $argument, 'mixed|null');
                 }
             };
             $check($arguments[1], 1);
@@ -119,7 +119,7 @@ class TypicalClassTyphoon
                     return true;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('baz', $index, $argument, 'Eloquent\\Typhax\\Type\\StreamType');
+                    throw new UnexpectedArgumentValueException('baz', $index, $argument, 'stream {writable: true}');
                 }
             };
             for ($i = 2; $i < $argumentCount; $i ++) {
@@ -138,7 +138,7 @@ class TypicalClassTyphoon
                     return true;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('undefined', $index, $argument, 'Eloquent\\Typhax\\Type\\MixedType');
+                    throw new UnexpectedArgumentValueException('undefined', $index, $argument, 'mixed');
                 }
             };
             for ($i = 0; $i < $argumentCount; $i ++) {

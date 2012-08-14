@@ -45,7 +45,7 @@ class DeploymentManagerTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('isolator', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
+                    throw new UnexpectedArgumentValueException('isolator', $index, $argument, 'Icecave\\Isolator\\Isolator|null');
                 }
             };
             $check($arguments[0], 0);
@@ -56,7 +56,7 @@ class DeploymentManagerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('path', 0, 'Eloquent\\Typhax\\Type\\StringType');
+            throw new MissingArgumentException('path', 0, 'string');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
@@ -66,7 +66,7 @@ class DeploymentManagerTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('path', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
+                throw new UnexpectedArgumentValueException('path', $index, $argument, 'string');
             }
         };
         $check($arguments[0], 0);
@@ -77,9 +77,9 @@ class DeploymentManagerTyphoon
         $argumentCount = count($arguments);
         if ($argumentCount < 2) {
             if ($argumentCount < 1) {
-                throw new MissingArgumentException('from', 0, 'Eloquent\\Typhax\\Type\\StringType');
+                throw new MissingArgumentException('from', 0, 'string');
             }
-            throw new MissingArgumentException('to', 1, 'Eloquent\\Typhax\\Type\\StringType');
+            throw new MissingArgumentException('to', 1, 'string');
         } elseif ($argumentCount > 2) {
             throw new UnexpectedArgumentException(2, $arguments[2]);
         }
@@ -89,7 +89,7 @@ class DeploymentManagerTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('from', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
+                throw new UnexpectedArgumentValueException('from', $index, $argument, 'string');
             }
         };
         $check($arguments[0], 0);
@@ -99,7 +99,7 @@ class DeploymentManagerTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('to', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
+                throw new UnexpectedArgumentValueException('to', $index, $argument, 'string');
             }
         };
         $check($arguments[1], 1);

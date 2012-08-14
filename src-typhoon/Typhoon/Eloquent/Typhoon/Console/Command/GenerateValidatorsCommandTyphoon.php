@@ -45,7 +45,7 @@ class GenerateValidatorsCommandTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('generator', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
+                    throw new UnexpectedArgumentValueException('generator', $index, $argument, 'Eloquent\\Typhoon\\Generator\\ProjectValidatorGenerator|null');
                 }
             };
             $check($arguments[0], 0);
@@ -71,7 +71,7 @@ class GenerateValidatorsCommandTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('deploymentManager', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
+                    throw new UnexpectedArgumentValueException('deploymentManager', $index, $argument, 'Eloquent\\Typhoon\\Deployment\\DeploymentManager|null');
                 }
             };
             $check($arguments[1], 1);
@@ -97,7 +97,7 @@ class GenerateValidatorsCommandTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('isolator', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
+                    throw new UnexpectedArgumentValueException('isolator', $index, $argument, 'Icecave\\Isolator\\Isolator|null');
                 }
             };
             $check($arguments[2], 2);
@@ -128,7 +128,7 @@ class GenerateValidatorsCommandTyphoon
                     return true;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('undefined', $index, $argument, 'Eloquent\\Typhax\\Type\\MixedType');
+                    throw new UnexpectedArgumentValueException('undefined', $index, $argument, 'mixed');
                 }
             };
             for ($i = 0; $i < $argumentCount; $i ++) {
@@ -142,9 +142,9 @@ class GenerateValidatorsCommandTyphoon
         $argumentCount = count($arguments);
         if ($argumentCount < 2) {
             if ($argumentCount < 1) {
-                throw new MissingArgumentException('input', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
+                throw new MissingArgumentException('input', 0, 'Symfony\\Component\\Console\\Input\\InputInterface');
             }
-            throw new MissingArgumentException('output', 1, 'Eloquent\\Typhax\\Type\\ObjectType');
+            throw new MissingArgumentException('output', 1, 'Symfony\\Component\\Console\\Output\\OutputInterface');
         } elseif ($argumentCount > 2) {
             throw new UnexpectedArgumentException(2, $arguments[2]);
         }
@@ -154,7 +154,7 @@ class GenerateValidatorsCommandTyphoon
                 return $value instanceof \Symfony\Component\Console\Input\InputInterface;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('input', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
+                throw new UnexpectedArgumentValueException('input', $index, $argument, 'Symfony\\Component\\Console\\Input\\InputInterface');
             }
         };
         $check($arguments[0], 0);
@@ -164,7 +164,7 @@ class GenerateValidatorsCommandTyphoon
                 return $value instanceof \Symfony\Component\Console\Output\OutputInterface;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('output', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
+                throw new UnexpectedArgumentValueException('output', $index, $argument, 'Symfony\\Component\\Console\\Output\\OutputInterface');
             }
         };
         $check($arguments[1], 1);

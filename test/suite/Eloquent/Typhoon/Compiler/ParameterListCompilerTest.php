@@ -11,11 +11,13 @@
 
 namespace Eloquent\Typhoon\Compiler;
 
+use Eloquent\Typhax\Renderer\TypeRenderer;
 use Eloquent\Typhax\Type\FloatType;
 use Eloquent\Typhax\Type\IntegerType;
 use Eloquent\Typhax\Type\StringType;
 use Eloquent\Typhoon\Parameter\Parameter;
 use Eloquent\Typhoon\Parameter\ParameterList;
+use Phake;
 use PHPUnit_Framework_TestCase;
 
 class ParameterListCompilerTest extends PHPUnit_Framework_TestCase
@@ -24,7 +26,12 @@ class ParameterListCompilerTest extends PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $this->_compiler = new ParameterListCompiler;
+        $this->_typhaxCompiler = new TyphaxCompiler;
+        $this->_typeRenderer = new TypeRenderer;
+        $this->_compiler = new ParameterListCompiler(
+            $this->_typhaxCompiler,
+            $this->_typeRenderer
+        );
     }
 
     protected function validatorFixture(ParameterList $parameterList)
@@ -42,6 +49,24 @@ EOD
         return $check;
     }
 
+    public function testConstructor()
+    {
+        $this->assertSame($this->_typhaxCompiler, $this->_compiler->typhaxCompiler());
+        $this->assertSame($this->_typeRenderer, $this->_compiler->typeRenderer());
+    }
+
+    public function testConstructorDefaults()
+    {
+        $this->assertInstanceOf(
+            __NAMESPACE__.'\TyphaxCompiler',
+            $this->_compiler->typhaxCompiler()
+        );
+        $this->assertInstanceOf(
+            'Eloquent\Typhax\Renderer\TypeRenderer',
+            $this->_compiler->typeRenderer()
+        );
+    }
+
     public function testVisitParameter()
     {
         $parameter = new Parameter(
@@ -54,7 +79,7 @@ function($argument, $index) {
         return is_string($value);
     };
     if (!$check($argument)) {
-        throw new UnexpectedArgumentValueException('foo', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
+        throw new UnexpectedArgumentValueException('foo', $index, $argument, 'string');
     }
 }
 EOD;
@@ -82,12 +107,12 @@ EOD;
 $argumentCount = count($arguments);
 if ($argumentCount < 3) {
     if ($argumentCount < 1) {
-        throw new MissingArgumentException('foo', 0, 'Eloquent\\Typhax\\Type\\StringType');
+        throw new MissingArgumentException('foo', 0, 'string');
     }
     if ($argumentCount < 2) {
-        throw new MissingArgumentException('bar', 1, 'Eloquent\\Typhax\\Type\\IntegerType');
+        throw new MissingArgumentException('bar', 1, 'integer');
     }
-    throw new MissingArgumentException('baz', 2, 'Eloquent\\Typhax\\Type\\FloatType');
+    throw new MissingArgumentException('baz', 2, 'float');
 } elseif ($argumentCount > 3) {
     throw new UnexpectedArgumentException(3, $arguments[3]);
 }
@@ -97,7 +122,7 @@ $check = function($argument, $index) {
         return is_string($value);
     };
     if (!$check($argument)) {
-        throw new UnexpectedArgumentValueException('foo', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
+        throw new UnexpectedArgumentValueException('foo', $index, $argument, 'string');
     }
 };
 $check($arguments[0], 0);
@@ -107,7 +132,7 @@ $check = function($argument, $index) {
         return is_integer($value);
     };
     if (!$check($argument)) {
-        throw new UnexpectedArgumentValueException('bar', $index, $argument, 'Eloquent\\Typhax\\Type\\IntegerType');
+        throw new UnexpectedArgumentValueException('bar', $index, $argument, 'integer');
     }
 };
 $check($arguments[1], 1);
@@ -117,7 +142,7 @@ $check = function($argument, $index) {
         return is_float($value);
     };
     if (!$check($argument)) {
-        throw new UnexpectedArgumentValueException('baz', $index, $argument, 'Eloquent\\Typhax\\Type\\FloatType');
+        throw new UnexpectedArgumentValueException('baz', $index, $argument, 'float');
     }
 };
 $check($arguments[2], 2);
@@ -147,7 +172,7 @@ EOD;
         $expected = <<<'EOD'
 $argumentCount = count($arguments);
 if ($argumentCount < 1) {
-    throw new MissingArgumentException('foo', 0, 'Eloquent\\Typhax\\Type\\StringType');
+    throw new MissingArgumentException('foo', 0, 'string');
 } elseif ($argumentCount > 3) {
     throw new UnexpectedArgumentException(3, $arguments[3]);
 }
@@ -157,7 +182,7 @@ $check = function($argument, $index) {
         return is_string($value);
     };
     if (!$check($argument)) {
-        throw new UnexpectedArgumentValueException('foo', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
+        throw new UnexpectedArgumentValueException('foo', $index, $argument, 'string');
     }
 };
 $check($arguments[0], 0);
@@ -168,7 +193,7 @@ if ($argumentCount > 1) {
             return is_integer($value);
         };
         if (!$check($argument)) {
-            throw new UnexpectedArgumentValueException('bar', $index, $argument, 'Eloquent\\Typhax\\Type\\IntegerType');
+            throw new UnexpectedArgumentValueException('bar', $index, $argument, 'integer');
         }
     };
     $check($arguments[1], 1);
@@ -180,7 +205,7 @@ if ($argumentCount > 2) {
             return is_float($value);
         };
         if (!$check($argument)) {
-            throw new UnexpectedArgumentValueException('baz', $index, $argument, 'Eloquent\\Typhax\\Type\\FloatType');
+            throw new UnexpectedArgumentValueException('baz', $index, $argument, 'float');
         }
     };
     $check($arguments[2], 2);
@@ -221,7 +246,7 @@ if ($argumentCount > 0) {
             return is_string($value);
         };
         if (!$check($argument)) {
-            throw new UnexpectedArgumentValueException('foo', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
+            throw new UnexpectedArgumentValueException('foo', $index, $argument, 'string');
         }
     };
     $check($arguments[0], 0);
@@ -233,7 +258,7 @@ if ($argumentCount > 1) {
             return is_integer($value);
         };
         if (!$check($argument)) {
-            throw new UnexpectedArgumentValueException('bar', $index, $argument, 'Eloquent\\Typhax\\Type\\IntegerType');
+            throw new UnexpectedArgumentValueException('bar', $index, $argument, 'integer');
         }
     };
     $check($arguments[1], 1);
@@ -245,7 +270,7 @@ if ($argumentCount > 2) {
             return is_float($value);
         };
         if (!$check($argument)) {
-            throw new UnexpectedArgumentValueException('baz', $index, $argument, 'Eloquent\\Typhax\\Type\\FloatType');
+            throw new UnexpectedArgumentValueException('baz', $index, $argument, 'float');
         }
     };
     $check($arguments[2], 2);
@@ -279,9 +304,9 @@ EOD;
 $argumentCount = count($arguments);
 if ($argumentCount < 2) {
     if ($argumentCount < 1) {
-        throw new MissingArgumentException('foo', 0, 'Eloquent\\Typhax\\Type\\StringType');
+        throw new MissingArgumentException('foo', 0, 'string');
     }
-    throw new MissingArgumentException('bar', 1, 'Eloquent\\Typhax\\Type\\IntegerType');
+    throw new MissingArgumentException('bar', 1, 'integer');
 }
 
 $check = function($argument, $index) {
@@ -289,7 +314,7 @@ $check = function($argument, $index) {
         return is_string($value);
     };
     if (!$check($argument)) {
-        throw new UnexpectedArgumentValueException('foo', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
+        throw new UnexpectedArgumentValueException('foo', $index, $argument, 'string');
     }
 };
 $check($arguments[0], 0);
@@ -299,7 +324,7 @@ $check = function($argument, $index) {
         return is_integer($value);
     };
     if (!$check($argument)) {
-        throw new UnexpectedArgumentValueException('bar', $index, $argument, 'Eloquent\\Typhax\\Type\\IntegerType');
+        throw new UnexpectedArgumentValueException('bar', $index, $argument, 'integer');
     }
 };
 $check($arguments[1], 1);
@@ -310,7 +335,7 @@ if ($argumentCount > 2) {
             return is_float($value);
         };
         if (!$check($argument)) {
-            throw new UnexpectedArgumentValueException('baz', $index, $argument, 'Eloquent\\Typhax\\Type\\FloatType');
+            throw new UnexpectedArgumentValueException('baz', $index, $argument, 'float');
         }
     };
     for ($i = 2; $i < $argumentCount; $i ++) {
@@ -335,7 +360,7 @@ if ($argumentCount > 0) {
             return true;
         };
         if (!$check($argument)) {
-            throw new UnexpectedArgumentValueException('undefined', $index, $argument, 'Eloquent\\Typhax\\Type\\MixedType');
+            throw new UnexpectedArgumentValueException('undefined', $index, $argument, 'mixed');
         }
     };
     for ($i = 0; $i < $argumentCount; $i ++) {
@@ -481,7 +506,7 @@ EOD;
         ));
         $arguments = array('foo', 111);
         $expected = 'Typhoon\Exception\MissingArgumentException';
-        $expectedMessage = "Missing argument for parameter 'baz' at index 2. Expected 'Eloquent\Typhax\Type\FloatType'.";
+        $expectedMessage = "Missing argument for parameter 'baz' at index 2. Expected 'float'.";
         $data['Not enough arguments 1'] =
             array($expected, $expectedMessage, $list, $arguments)
         ;
@@ -502,7 +527,7 @@ EOD;
         ));
         $arguments = array('foo');
         $expected = 'Typhoon\Exception\MissingArgumentException';
-        $expectedMessage = "Missing argument for parameter 'bar' at index 1. Expected 'Eloquent\Typhax\Type\IntegerType'.";
+        $expectedMessage = "Missing argument for parameter 'bar' at index 1. Expected 'integer'.";
         $data['Not enough arguments 2'] =
             array($expected, $expectedMessage, $list, $arguments)
         ;
@@ -523,7 +548,7 @@ EOD;
         ));
         $arguments = array();
         $expected = 'Typhoon\Exception\MissingArgumentException';
-        $expectedMessage = "Missing argument for parameter 'foo' at index 0. Expected 'Eloquent\Typhax\Type\StringType'.";
+        $expectedMessage = "Missing argument for parameter 'foo' at index 0. Expected 'string'.";
         $data['Not enough arguments 3'] =
             array($expected, $expectedMessage, $list, $arguments)
         ;
@@ -565,7 +590,7 @@ EOD;
         ));
         $arguments = array('foo', 111, 'bar');
         $expected = 'Typhoon\Exception\UnexpectedArgumentValueException';
-        $expectedMessage = "Unexpected argument of type 'string' for parameter 'baz' at index 2. Expected 'Eloquent\Typhax\Type\FloatType'.";
+        $expectedMessage = "Unexpected argument of type 'string' for parameter 'baz' at index 2. Expected 'float'.";
         $data['Type mismatch 1'] =
             array($expected, $expectedMessage, $list, $arguments)
         ;
@@ -586,7 +611,7 @@ EOD;
         ));
         $arguments = array('foo', 'bar', 'baz');
         $expected = 'Typhoon\Exception\UnexpectedArgumentValueException';
-        $expectedMessage = "Unexpected argument of type 'string' for parameter 'bar' at index 1. Expected 'Eloquent\Typhax\Type\IntegerType'.";
+        $expectedMessage = "Unexpected argument of type 'string' for parameter 'bar' at index 1. Expected 'integer'.";
         $data['Type mismatch 2'] =
             array($expected, $expectedMessage, $list, $arguments)
         ;
@@ -607,7 +632,7 @@ EOD;
         ));
         $arguments = array(111, 'bar', 'baz');
         $expected = 'Typhoon\Exception\UnexpectedArgumentValueException';
-        $expectedMessage = "Unexpected argument of type 'integer' for parameter 'foo' at index 0. Expected 'Eloquent\Typhax\Type\StringType'.";
+        $expectedMessage = "Unexpected argument of type 'integer' for parameter 'foo' at index 0. Expected 'string'.";
         $data['Type mismatch 3'] =
             array($expected, $expectedMessage, $list, $arguments)
         ;
@@ -632,7 +657,7 @@ EOD;
         );
         $arguments = array('foo', 111, 1.11, 2.22, 'bar', 3.33);
         $expected = 'Typhoon\Exception\UnexpectedArgumentValueException';
-        $expectedMessage = "Unexpected argument of type 'string' for parameter 'baz' at index 4. Expected 'Eloquent\Typhax\Type\FloatType'.";
+        $expectedMessage = "Unexpected argument of type 'string' for parameter 'baz' at index 4. Expected 'float'.";
         $data['Variable length type mismatch'] =
             array($expected, $expectedMessage, $list, $arguments)
         ;

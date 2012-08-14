@@ -23,9 +23,9 @@ class UnexpectedContentExceptionTyphoon
         $argumentCount = count($arguments);
         if ($argumentCount < 2) {
             if ($argumentCount < 1) {
-                throw new MissingArgumentException('expected', 0, 'Eloquent\\Typhax\\Type\\StringType');
+                throw new MissingArgumentException('expected', 0, 'string');
             }
-            throw new MissingArgumentException('position', 1, 'Eloquent\\Typhax\\Type\\IntegerType');
+            throw new MissingArgumentException('position', 1, 'integer');
         } elseif ($argumentCount > 3) {
             throw new UnexpectedArgumentException(3, $arguments[3]);
         }
@@ -35,7 +35,7 @@ class UnexpectedContentExceptionTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('expected', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
+                throw new UnexpectedArgumentValueException('expected', $index, $argument, 'string');
             }
         };
         $check($arguments[0], 0);
@@ -45,7 +45,7 @@ class UnexpectedContentExceptionTyphoon
                 return is_integer($value);
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('position', $index, $argument, 'Eloquent\\Typhax\\Type\\IntegerType');
+                throw new UnexpectedArgumentValueException('position', $index, $argument, 'integer');
             }
         };
         $check($arguments[1], 1);
@@ -70,7 +70,7 @@ class UnexpectedContentExceptionTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('previous', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
+                    throw new UnexpectedArgumentValueException('previous', $index, $argument, 'Exception|null');
                 }
             };
             $check($arguments[2], 2);

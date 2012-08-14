@@ -22,7 +22,7 @@ class UndefinedClassExceptionTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('className', 0, 'Eloquent\\Typhax\\Type\\StringType');
+            throw new MissingArgumentException('className', 0, 'string');
         } elseif ($argumentCount > 2) {
             throw new UnexpectedArgumentException(2, $arguments[2]);
         }
@@ -32,7 +32,7 @@ class UndefinedClassExceptionTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('className', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
+                throw new UnexpectedArgumentValueException('className', $index, $argument, 'string');
             }
         };
         $check($arguments[0], 0);
@@ -57,7 +57,7 @@ class UndefinedClassExceptionTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('previous', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
+                    throw new UnexpectedArgumentValueException('previous', $index, $argument, 'Exception|null');
                 }
             };
             $check($arguments[1], 1);

@@ -28,7 +28,7 @@ class TyphaxCompilerTyphoon
                     return true;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('undefined', $index, $argument, 'Eloquent\\Typhax\\Type\\MixedType');
+                    throw new UnexpectedArgumentValueException('undefined', $index, $argument, 'mixed');
                 }
             };
             for ($i = 0; $i < $argumentCount; $i ++) {
@@ -41,7 +41,7 @@ class TyphaxCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
+            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\AndType');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
@@ -51,7 +51,7 @@ class TyphaxCompilerTyphoon
                 return $value instanceof \Eloquent\Typhax\Type\AndType;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\AndType');
             }
         };
         $check($arguments[0], 0);
@@ -61,7 +61,7 @@ class TyphaxCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
+            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ArrayType');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
@@ -71,7 +71,7 @@ class TyphaxCompilerTyphoon
                 return $value instanceof \Eloquent\Typhax\Type\ArrayType;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ArrayType');
             }
         };
         $check($arguments[0], 0);
@@ -81,7 +81,7 @@ class TyphaxCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
+            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\BooleanType');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
@@ -91,7 +91,7 @@ class TyphaxCompilerTyphoon
                 return $value instanceof \Eloquent\Typhax\Type\BooleanType;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\BooleanType');
             }
         };
         $check($arguments[0], 0);
@@ -101,7 +101,7 @@ class TyphaxCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
+            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\CallableType');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
@@ -111,7 +111,7 @@ class TyphaxCompilerTyphoon
                 return $value instanceof \Eloquent\Typhax\Type\CallableType;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\CallableType');
             }
         };
         $check($arguments[0], 0);
@@ -121,7 +121,7 @@ class TyphaxCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
+            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\FloatType');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
@@ -131,7 +131,7 @@ class TyphaxCompilerTyphoon
                 return $value instanceof \Eloquent\Typhax\Type\FloatType;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\FloatType');
             }
         };
         $check($arguments[0], 0);
@@ -141,7 +141,7 @@ class TyphaxCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
+            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\IntegerType');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
@@ -151,7 +151,7 @@ class TyphaxCompilerTyphoon
                 return $value instanceof \Eloquent\Typhax\Type\IntegerType;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\IntegerType');
             }
         };
         $check($arguments[0], 0);
@@ -161,7 +161,7 @@ class TyphaxCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
+            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\MixedType');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
@@ -171,7 +171,7 @@ class TyphaxCompilerTyphoon
                 return $value instanceof \Eloquent\Typhax\Type\MixedType;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\MixedType');
             }
         };
         $check($arguments[0], 0);
@@ -181,7 +181,7 @@ class TyphaxCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
+            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\NullType');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
@@ -191,7 +191,7 @@ class TyphaxCompilerTyphoon
                 return $value instanceof \Eloquent\Typhax\Type\NullType;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\NullType');
             }
         };
         $check($arguments[0], 0);
@@ -201,7 +201,7 @@ class TyphaxCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
+            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\NumericType');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
@@ -211,7 +211,7 @@ class TyphaxCompilerTyphoon
                 return $value instanceof \Eloquent\Typhax\Type\NumericType;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\NumericType');
             }
         };
         $check($arguments[0], 0);
@@ -241,7 +241,7 @@ class TyphaxCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
+            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\OrType');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
@@ -251,7 +251,7 @@ class TyphaxCompilerTyphoon
                 return $value instanceof \Eloquent\Typhax\Type\OrType;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
             }
         };
         $check($arguments[0], 0);
@@ -261,7 +261,7 @@ class TyphaxCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
+            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ResourceType');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
@@ -271,7 +271,7 @@ class TyphaxCompilerTyphoon
                 return $value instanceof \Eloquent\Typhax\Type\ResourceType;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ResourceType');
             }
         };
         $check($arguments[0], 0);
@@ -281,7 +281,7 @@ class TyphaxCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
+            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\StreamType');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
@@ -291,7 +291,7 @@ class TyphaxCompilerTyphoon
                 return $value instanceof \Eloquent\Typhax\Type\StreamType;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\StreamType');
             }
         };
         $check($arguments[0], 0);
@@ -301,7 +301,7 @@ class TyphaxCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
+            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\StringType');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
@@ -311,7 +311,7 @@ class TyphaxCompilerTyphoon
                 return $value instanceof \Eloquent\Typhax\Type\StringType;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
             }
         };
         $check($arguments[0], 0);
@@ -321,7 +321,7 @@ class TyphaxCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
+            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\StringableType');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
@@ -331,7 +331,7 @@ class TyphaxCompilerTyphoon
                 return $value instanceof \Eloquent\Typhax\Type\StringableType;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\StringableType');
             }
         };
         $check($arguments[0], 0);
@@ -341,7 +341,7 @@ class TyphaxCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
+            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\TraversableType');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
@@ -351,7 +351,7 @@ class TyphaxCompilerTyphoon
                 return $value instanceof \Eloquent\Typhax\Type\TraversableType;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\TraversableType');
             }
         };
         $check($arguments[0], 0);
@@ -361,7 +361,7 @@ class TyphaxCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
+            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\TupleType');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
@@ -371,7 +371,7 @@ class TyphaxCompilerTyphoon
                 return $value instanceof \Eloquent\Typhax\Type\TupleType;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\TupleType');
             }
         };
         $check($arguments[0], 0);
@@ -381,7 +381,7 @@ class TyphaxCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('content', 0, 'Eloquent\\Typhax\\Type\\StringType');
+            throw new MissingArgumentException('content', 0, 'string');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
@@ -391,7 +391,7 @@ class TyphaxCompilerTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('content', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
+                throw new UnexpectedArgumentValueException('content', $index, $argument, 'string');
             }
         };
         $check($arguments[0], 0);
@@ -401,7 +401,7 @@ class TyphaxCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('content', 0, 'Eloquent\\Typhax\\Type\\StringType');
+            throw new MissingArgumentException('content', 0, 'string');
         } elseif ($argumentCount > 2) {
             throw new UnexpectedArgumentException(2, $arguments[2]);
         }
@@ -411,7 +411,7 @@ class TyphaxCompilerTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('content', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
+                throw new UnexpectedArgumentValueException('content', $index, $argument, 'string');
             }
         };
         $check($arguments[0], 0);
@@ -422,7 +422,7 @@ class TyphaxCompilerTyphoon
                     return is_integer($value);
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('depth', $index, $argument, 'Eloquent\\Typhax\\Type\\IntegerType');
+                    throw new UnexpectedArgumentValueException('depth', $index, $argument, 'integer');
                 }
             };
             $check($arguments[1], 1);

@@ -45,7 +45,7 @@ class ValidatorClassGeneratorTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('parser', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
+                    throw new UnexpectedArgumentValueException('parser', $index, $argument, 'Eloquent\\Typhoon\\Parser\\ParameterListParser|null');
                 }
             };
             $check($arguments[0], 0);
@@ -71,7 +71,7 @@ class ValidatorClassGeneratorTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('compiler', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
+                    throw new UnexpectedArgumentValueException('compiler', $index, $argument, 'Eloquent\\Typhoon\\Compiler\\ParameterListCompiler|null');
                 }
             };
             $check($arguments[1], 1);
@@ -97,7 +97,7 @@ class ValidatorClassGeneratorTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('classMapper', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
+                    throw new UnexpectedArgumentValueException('classMapper', $index, $argument, 'Eloquent\\Typhoon\\ClassMapper\\ClassMapper|null');
                 }
             };
             $check($arguments[2], 2);
@@ -123,7 +123,7 @@ class ValidatorClassGeneratorTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('isolator', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
+                    throw new UnexpectedArgumentValueException('isolator', $index, $argument, 'Icecave\\Isolator\\Isolator|null');
                 }
             };
             $check($arguments[3], 3);
@@ -155,7 +155,7 @@ class ValidatorClassGeneratorTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('classDefinition', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
+            throw new MissingArgumentException('classDefinition', 0, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition');
         } elseif ($argumentCount > 3) {
             throw new UnexpectedArgumentException(3, $arguments[3]);
         }
@@ -165,7 +165,7 @@ class ValidatorClassGeneratorTyphoon
                 return $value instanceof \Eloquent\Typhoon\ClassMapper\ClassDefinition;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('classDefinition', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
+                throw new UnexpectedArgumentValueException('classDefinition', $index, $argument, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition');
             }
         };
         $check($arguments[0], 0);
@@ -190,7 +190,7 @@ class ValidatorClassGeneratorTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('namespaceName', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
+                    throw new UnexpectedArgumentValueException('namespaceName', $index, $argument, 'string|null');
                 }
             };
             $check($arguments[1], 1);
@@ -216,7 +216,7 @@ class ValidatorClassGeneratorTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('className', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
+                    throw new UnexpectedArgumentValueException('className', $index, $argument, 'string|null');
                 }
             };
             $check($arguments[2], 2);
@@ -228,9 +228,9 @@ class ValidatorClassGeneratorTyphoon
         $argumentCount = count($arguments);
         if ($argumentCount < 2) {
             if ($argumentCount < 1) {
-                throw new MissingArgumentException('sourceClassName', 0, 'Eloquent\\Typhax\\Type\\StringType');
+                throw new MissingArgumentException('sourceClassName', 0, 'string');
             }
-            throw new MissingArgumentException('source', 1, 'Eloquent\\Typhax\\Type\\StringType');
+            throw new MissingArgumentException('source', 1, 'string');
         } elseif ($argumentCount > 4) {
             throw new UnexpectedArgumentException(4, $arguments[4]);
         }
@@ -240,7 +240,7 @@ class ValidatorClassGeneratorTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('sourceClassName', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
+                throw new UnexpectedArgumentValueException('sourceClassName', $index, $argument, 'string');
             }
         };
         $check($arguments[0], 0);
@@ -250,7 +250,7 @@ class ValidatorClassGeneratorTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('source', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
+                throw new UnexpectedArgumentValueException('source', $index, $argument, 'string');
             }
         };
         $check($arguments[1], 1);
@@ -275,7 +275,7 @@ class ValidatorClassGeneratorTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('namespaceName', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
+                    throw new UnexpectedArgumentValueException('namespaceName', $index, $argument, 'string|null');
                 }
             };
             $check($arguments[2], 2);
@@ -301,7 +301,7 @@ class ValidatorClassGeneratorTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('className', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
+                    throw new UnexpectedArgumentValueException('className', $index, $argument, 'string|null');
                 }
             };
             $check($arguments[3], 3);
@@ -313,9 +313,9 @@ class ValidatorClassGeneratorTyphoon
         $argumentCount = count($arguments);
         if ($argumentCount < 2) {
             if ($argumentCount < 1) {
-                throw new MissingArgumentException('sourceClassName', 0, 'Eloquent\\Typhax\\Type\\StringType');
+                throw new MissingArgumentException('sourceClassName', 0, 'string');
             }
-            throw new MissingArgumentException('path', 1, 'Eloquent\\Typhax\\Type\\StringType');
+            throw new MissingArgumentException('path', 1, 'string');
         } elseif ($argumentCount > 4) {
             throw new UnexpectedArgumentException(4, $arguments[4]);
         }
@@ -325,7 +325,7 @@ class ValidatorClassGeneratorTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('sourceClassName', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
+                throw new UnexpectedArgumentValueException('sourceClassName', $index, $argument, 'string');
             }
         };
         $check($arguments[0], 0);
@@ -335,7 +335,7 @@ class ValidatorClassGeneratorTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('path', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
+                throw new UnexpectedArgumentValueException('path', $index, $argument, 'string');
             }
         };
         $check($arguments[1], 1);
@@ -360,7 +360,7 @@ class ValidatorClassGeneratorTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('namespaceName', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
+                    throw new UnexpectedArgumentValueException('namespaceName', $index, $argument, 'string|null');
                 }
             };
             $check($arguments[2], 2);
@@ -386,7 +386,7 @@ class ValidatorClassGeneratorTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('className', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
+                    throw new UnexpectedArgumentValueException('className', $index, $argument, 'string|null');
                 }
             };
             $check($arguments[3], 3);
@@ -397,7 +397,7 @@ class ValidatorClassGeneratorTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('class', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
+            throw new MissingArgumentException('class', 0, 'ReflectionClass');
         } elseif ($argumentCount > 3) {
             throw new UnexpectedArgumentException(3, $arguments[3]);
         }
@@ -407,7 +407,7 @@ class ValidatorClassGeneratorTyphoon
                 return $value instanceof \ReflectionClass;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('class', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
+                throw new UnexpectedArgumentValueException('class', $index, $argument, 'ReflectionClass');
             }
         };
         $check($arguments[0], 0);
@@ -432,7 +432,7 @@ class ValidatorClassGeneratorTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('namespaceName', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
+                    throw new UnexpectedArgumentValueException('namespaceName', $index, $argument, 'string|null');
                 }
             };
             $check($arguments[1], 1);
@@ -458,7 +458,7 @@ class ValidatorClassGeneratorTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('className', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
+                    throw new UnexpectedArgumentValueException('className', $index, $argument, 'string|null');
                 }
             };
             $check($arguments[2], 2);
@@ -469,7 +469,7 @@ class ValidatorClassGeneratorTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('classDefinition', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
+            throw new MissingArgumentException('classDefinition', 0, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
@@ -479,7 +479,7 @@ class ValidatorClassGeneratorTyphoon
                 return $value instanceof \Eloquent\Typhoon\ClassMapper\ClassDefinition;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('classDefinition', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
+                throw new UnexpectedArgumentValueException('classDefinition', $index, $argument, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition');
             }
         };
         $check($arguments[0], 0);
@@ -490,9 +490,9 @@ class ValidatorClassGeneratorTyphoon
         $argumentCount = count($arguments);
         if ($argumentCount < 2) {
             if ($argumentCount < 1) {
-                throw new MissingArgumentException('method', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
+                throw new MissingArgumentException('method', 0, 'ReflectionMethod');
             }
-            throw new MissingArgumentException('classDefinition', 1, 'Eloquent\\Typhax\\Type\\ObjectType');
+            throw new MissingArgumentException('classDefinition', 1, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition');
         } elseif ($argumentCount > 2) {
             throw new UnexpectedArgumentException(2, $arguments[2]);
         }
@@ -502,7 +502,7 @@ class ValidatorClassGeneratorTyphoon
                 return $value instanceof \ReflectionMethod;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('method', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
+                throw new UnexpectedArgumentValueException('method', $index, $argument, 'ReflectionMethod');
             }
         };
         $check($arguments[0], 0);
@@ -512,7 +512,7 @@ class ValidatorClassGeneratorTyphoon
                 return $value instanceof \Eloquent\Typhoon\ClassMapper\ClassDefinition;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('classDefinition', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
+                throw new UnexpectedArgumentValueException('classDefinition', $index, $argument, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition');
             }
         };
         $check($arguments[1], 1);
@@ -523,9 +523,9 @@ class ValidatorClassGeneratorTyphoon
         $argumentCount = count($arguments);
         if ($argumentCount < 2) {
             if ($argumentCount < 1) {
-                throw new MissingArgumentException('method', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
+                throw new MissingArgumentException('method', 0, 'ReflectionMethod');
             }
-            throw new MissingArgumentException('classDefinition', 1, 'Eloquent\\Typhax\\Type\\ObjectType');
+            throw new MissingArgumentException('classDefinition', 1, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition');
         } elseif ($argumentCount > 2) {
             throw new UnexpectedArgumentException(2, $arguments[2]);
         }
@@ -535,7 +535,7 @@ class ValidatorClassGeneratorTyphoon
                 return $value instanceof \ReflectionMethod;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('method', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
+                throw new UnexpectedArgumentValueException('method', $index, $argument, 'ReflectionMethod');
             }
         };
         $check($arguments[0], 0);
@@ -545,7 +545,7 @@ class ValidatorClassGeneratorTyphoon
                 return $value instanceof \Eloquent\Typhoon\ClassMapper\ClassDefinition;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('classDefinition', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
+                throw new UnexpectedArgumentValueException('classDefinition', $index, $argument, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition');
             }
         };
         $check($arguments[1], 1);
@@ -555,7 +555,7 @@ class ValidatorClassGeneratorTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('classDefinition', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
+            throw new MissingArgumentException('classDefinition', 0, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
@@ -565,7 +565,7 @@ class ValidatorClassGeneratorTyphoon
                 return $value instanceof \Eloquent\Typhoon\ClassMapper\ClassDefinition;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('classDefinition', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
+                throw new UnexpectedArgumentValueException('classDefinition', $index, $argument, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition');
             }
         };
         $check($arguments[0], 0);
@@ -575,7 +575,7 @@ class ValidatorClassGeneratorTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('method', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
+            throw new MissingArgumentException('method', 0, 'ReflectionMethod');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
@@ -585,7 +585,7 @@ class ValidatorClassGeneratorTyphoon
                 return $value instanceof \ReflectionMethod;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('method', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
+                throw new UnexpectedArgumentValueException('method', $index, $argument, 'ReflectionMethod');
             }
         };
         $check($arguments[0], 0);
@@ -595,7 +595,7 @@ class ValidatorClassGeneratorTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('content', 0, 'Eloquent\\Typhax\\Type\\StringType');
+            throw new MissingArgumentException('content', 0, 'string');
         } elseif ($argumentCount > 2) {
             throw new UnexpectedArgumentException(2, $arguments[2]);
         }
@@ -605,7 +605,7 @@ class ValidatorClassGeneratorTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('content', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
+                throw new UnexpectedArgumentValueException('content', $index, $argument, 'string');
             }
         };
         $check($arguments[0], 0);
@@ -616,7 +616,7 @@ class ValidatorClassGeneratorTyphoon
                     return is_integer($value);
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('depth', $index, $argument, 'Eloquent\\Typhax\\Type\\IntegerType');
+                    throw new UnexpectedArgumentValueException('depth', $index, $argument, 'integer');
                 }
             };
             $check($arguments[1], 1);

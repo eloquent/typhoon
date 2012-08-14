@@ -28,7 +28,7 @@ class ApplicationTyphoon
                     return true;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('undefined', $index, $argument, 'Eloquent\\Typhax\\Type\\MixedType');
+                    throw new UnexpectedArgumentValueException('undefined', $index, $argument, 'mixed');
                 }
             };
             for ($i = 0; $i < $argumentCount; $i ++) {

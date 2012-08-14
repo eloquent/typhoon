@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Compiler;
 
+use Eloquent\Typhax\Renderer\TypeRenderer;
 use Eloquent\Typhoon\Parameter\Parameter;
 use Eloquent\Typhoon\Parameter\ParameterList;
 use Eloquent\Typhoon\Parameter\Visitor;
@@ -18,15 +19,24 @@ use Typhoon\Typhoon;
 
 class ParameterListCompiler implements Visitor
 {
+    /**
+     * @param TyphaxCompiler|null $typhaxCompiler
+     * @param TypeRenderer|null $typeRenderer
+     */
     public function __construct(
-        TyphaxCompiler $typhaxCompiler = null
+        TyphaxCompiler $typhaxCompiler = null,
+        TypeRenderer $typeRenderer = null
     ){
         $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
         if (null === $typhaxCompiler) {
             $typhaxCompiler = new TyphaxCompiler;
         }
+        if (null === $typeRenderer) {
+            $typeRenderer = new TypeRenderer;
+        }
 
         $this->typhaxCompiler = $typhaxCompiler;
+        $this->typeRenderer = $typeRenderer;
     }
 
     /**
@@ -37,6 +47,16 @@ class ParameterListCompiler implements Visitor
         $this->typhoon->typhaxCompiler(func_get_args());
 
         return $this->typhaxCompiler;
+    }
+
+    /**
+     * @return TypeRenderer
+     */
+    public function typeRenderer()
+    {
+        $this->typhoon->typeRenderer(func_get_args());
+
+        return $this->typeRenderer;
     }
 
     /**
@@ -57,7 +77,7 @@ class ParameterListCompiler implements Visitor
             true
         );
         $expectedType = var_export(
-            get_class($parameter->type()),
+            $parameter->type()->accept($this->typeRenderer()),
             true
         );
 
@@ -107,7 +127,10 @@ EOD
                     true
                 );
                 $expectedType = var_export(
-                    get_class($parameters[$parameterIndex]->type()),
+                    $parameters[$parameterIndex]
+                        ->type()
+                        ->accept($this->typeRenderer())
+                    ,
                     true
                 );
 
@@ -124,7 +147,10 @@ EOD;
                 true
             );
             $expectedType = var_export(
-                get_class($parameters[$parameterIndex]->type()),
+                $parameters[$parameterIndex]
+                    ->type()
+                    ->accept($this->typeRenderer())
+                ,
                 true
             );
             $missingParameterContent .= <<<EOD
@@ -240,5 +266,6 @@ EOD
     }
 
     private $typhaxCompiler;
+    private $typhaxRenderer;
     private $typhoon;
 }

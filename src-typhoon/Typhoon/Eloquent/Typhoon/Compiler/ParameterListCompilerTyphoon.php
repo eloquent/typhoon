@@ -21,19 +21,60 @@ class ParameterListCompilerTyphoon
     public function validateConstructor(array $arguments)
     {
         $argumentCount = count($arguments);
+        if ($argumentCount > 2) {
+            throw new UnexpectedArgumentException(2, $arguments[2]);
+        }
 
         if ($argumentCount > 0) {
             $check = function($argument, $index) {
                 $check = function($value) {
-                    return true;
+                    $check = function($value) {
+                        return $value instanceof \Eloquent\Typhoon\Compiler\TyphaxCompiler;
+                    };
+                    if ($check($value)) {
+                        return true;
+                    }
+
+                    $check = function($value) {
+                        return $value === null;
+                    };
+                    if ($check($value)) {
+                        return true;
+                    }
+
+                    return false;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('undefined', $index, $argument, 'Eloquent\\Typhax\\Type\\MixedType');
+                    throw new UnexpectedArgumentValueException('typhaxCompiler', $index, $argument, 'Eloquent\\Typhoon\\Compiler\\TyphaxCompiler|null');
                 }
             };
-            for ($i = 0; $i < $argumentCount; $i ++) {
-                $check($arguments[$i], $i);
-            }
+            $check($arguments[0], 0);
+        }
+
+        if ($argumentCount > 1) {
+            $check = function($argument, $index) {
+                $check = function($value) {
+                    $check = function($value) {
+                        return $value instanceof \Eloquent\Typhax\Renderer\TypeRenderer;
+                    };
+                    if ($check($value)) {
+                        return true;
+                    }
+
+                    $check = function($value) {
+                        return $value === null;
+                    };
+                    if ($check($value)) {
+                        return true;
+                    }
+
+                    return false;
+                };
+                if (!$check($argument)) {
+                    throw new UnexpectedArgumentValueException('typeRenderer', $index, $argument, 'Eloquent\\Typhax\\Renderer\\TypeRenderer|null');
+                }
+            };
+            $check($arguments[1], 1);
         }
     }
 
@@ -44,11 +85,18 @@ class ParameterListCompilerTyphoon
         }
     }
 
+    public function typeRenderer(array $arguments)
+    {
+        if (count($arguments) > 0) {
+            throw new UnexpectedArgumentException(0, $arguments[0]);
+        }
+    }
+
     public function visitParameter(array $arguments)
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('parameter', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
+            throw new MissingArgumentException('parameter', 0, 'Eloquent\\Typhoon\\Parameter\\Parameter');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
@@ -58,7 +106,7 @@ class ParameterListCompilerTyphoon
                 return $value instanceof \Eloquent\Typhoon\Parameter\Parameter;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('parameter', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
+                throw new UnexpectedArgumentValueException('parameter', $index, $argument, 'Eloquent\\Typhoon\\Parameter\\Parameter');
             }
         };
         $check($arguments[0], 0);
@@ -68,7 +116,7 @@ class ParameterListCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('parameterList', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
+            throw new MissingArgumentException('parameterList', 0, 'Eloquent\\Typhoon\\Parameter\\ParameterList');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
@@ -78,7 +126,7 @@ class ParameterListCompilerTyphoon
                 return $value instanceof \Eloquent\Typhoon\Parameter\ParameterList;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('parameterList', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
+                throw new UnexpectedArgumentValueException('parameterList', $index, $argument, 'Eloquent\\Typhoon\\Parameter\\ParameterList');
             }
         };
         $check($arguments[0], 0);
@@ -89,9 +137,9 @@ class ParameterListCompilerTyphoon
         $argumentCount = count($arguments);
         if ($argumentCount < 2) {
             if ($argumentCount < 1) {
-                throw new MissingArgumentException('parameters', 0, 'Eloquent\\Typhax\\Type\\StringType');
+                throw new MissingArgumentException('parameters', 0, 'string');
             }
-            throw new MissingArgumentException('content', 1, 'Eloquent\\Typhax\\Type\\StringType');
+            throw new MissingArgumentException('content', 1, 'string');
         } elseif ($argumentCount > 2) {
             throw new UnexpectedArgumentException(2, $arguments[2]);
         }
@@ -101,7 +149,7 @@ class ParameterListCompilerTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('parameters', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
+                throw new UnexpectedArgumentValueException('parameters', $index, $argument, 'string');
             }
         };
         $check($arguments[0], 0);
@@ -111,7 +159,7 @@ class ParameterListCompilerTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('content', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
+                throw new UnexpectedArgumentValueException('content', $index, $argument, 'string');
             }
         };
         $check($arguments[1], 1);
@@ -121,7 +169,7 @@ class ParameterListCompilerTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('content', 0, 'Eloquent\\Typhax\\Type\\StringType');
+            throw new MissingArgumentException('content', 0, 'string');
         } elseif ($argumentCount > 2) {
             throw new UnexpectedArgumentException(2, $arguments[2]);
         }
@@ -131,7 +179,7 @@ class ParameterListCompilerTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('content', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
+                throw new UnexpectedArgumentValueException('content', $index, $argument, 'string');
             }
         };
         $check($arguments[0], 0);
@@ -142,7 +190,7 @@ class ParameterListCompilerTyphoon
                     return is_integer($value);
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('depth', $index, $argument, 'Eloquent\\Typhax\\Type\\IntegerType');
+                    throw new UnexpectedArgumentValueException('depth', $index, $argument, 'integer');
                 }
             };
             $check($arguments[1], 1);

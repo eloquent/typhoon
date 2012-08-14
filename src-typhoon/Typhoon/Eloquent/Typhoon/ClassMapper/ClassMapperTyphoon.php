@@ -31,7 +31,7 @@ class ClassMapperTyphoon
                     return $value instanceof \Icecave\Isolator\Isolator;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('isolator', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
+                    throw new UnexpectedArgumentValueException('isolator', $index, $argument, 'Icecave\\Isolator\\Isolator');
                 }
             };
             $check($arguments[0], 0);
@@ -42,7 +42,7 @@ class ClassMapperTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('directoryPath', 0, 'Eloquent\\Typhax\\Type\\StringType');
+            throw new MissingArgumentException('directoryPath', 0, 'string');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
@@ -52,7 +52,7 @@ class ClassMapperTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('directoryPath', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
+                throw new UnexpectedArgumentValueException('directoryPath', $index, $argument, 'string');
             }
         };
         $check($arguments[0], 0);
@@ -62,7 +62,7 @@ class ClassMapperTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('filePath', 0, 'Eloquent\\Typhax\\Type\\StringType');
+            throw new MissingArgumentException('filePath', 0, 'string');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
@@ -72,7 +72,7 @@ class ClassMapperTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('filePath', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
+                throw new UnexpectedArgumentValueException('filePath', $index, $argument, 'string');
             }
         };
         $check($arguments[0], 0);
@@ -82,7 +82,7 @@ class ClassMapperTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('source', 0, 'Eloquent\\Typhax\\Type\\StringType');
+            throw new MissingArgumentException('source', 0, 'string');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
@@ -92,7 +92,7 @@ class ClassMapperTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('source', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
+                throw new UnexpectedArgumentValueException('source', $index, $argument, 'string');
             }
         };
         $check($arguments[0], 0);
@@ -103,9 +103,9 @@ class ClassMapperTyphoon
         $argumentCount = count($arguments);
         if ($argumentCount < 2) {
             if ($argumentCount < 1) {
-                throw new MissingArgumentException('className', 0, 'Eloquent\\Typhax\\Type\\StringType');
+                throw new MissingArgumentException('className', 0, 'string');
             }
-            throw new MissingArgumentException('source', 1, 'Eloquent\\Typhax\\Type\\StringType');
+            throw new MissingArgumentException('source', 1, 'string');
         } elseif ($argumentCount > 2) {
             throw new UnexpectedArgumentException(2, $arguments[2]);
         }
@@ -115,7 +115,7 @@ class ClassMapperTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('className', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
+                throw new UnexpectedArgumentValueException('className', $index, $argument, 'string');
             }
         };
         $check($arguments[0], 0);
@@ -125,7 +125,7 @@ class ClassMapperTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('source', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
+                throw new UnexpectedArgumentValueException('source', $index, $argument, 'string');
             }
         };
         $check($arguments[1], 1);
@@ -135,7 +135,7 @@ class ClassMapperTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('tokens', 0, 'Eloquent\\Typhax\\Type\\TraversableType');
+            throw new MissingArgumentException('tokens', 0, 'array<string|array>');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
@@ -181,7 +181,7 @@ class ClassMapperTyphoon
                 return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('tokens', $index, $argument, 'Eloquent\\Typhax\\Type\\TraversableType');
+                throw new UnexpectedArgumentValueException('tokens', $index, $argument, 'array<string|array>');
             }
         };
         $check($arguments[0], 0);
@@ -191,7 +191,7 @@ class ClassMapperTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('tokens', 0, 'Eloquent\\Typhax\\Type\\TraversableType');
+            throw new MissingArgumentException('tokens', 0, 'array<string|array>');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
@@ -237,7 +237,7 @@ class ClassMapperTyphoon
                 return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('tokens', $index, $argument, 'Eloquent\\Typhax\\Type\\TraversableType');
+                throw new UnexpectedArgumentValueException('tokens', $index, $argument, 'array<string|array>');
             }
         };
         $check($arguments[0], 0);
@@ -247,7 +247,7 @@ class ClassMapperTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('tokens', 0, 'Eloquent\\Typhax\\Type\\TraversableType');
+            throw new MissingArgumentException('tokens', 0, 'array<string|array>');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
@@ -293,7 +293,7 @@ class ClassMapperTyphoon
                 return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('tokens', $index, $argument, 'Eloquent\\Typhax\\Type\\TraversableType');
+                throw new UnexpectedArgumentValueException('tokens', $index, $argument, 'array<string|array>');
             }
         };
         $check($arguments[0], 0);
@@ -303,7 +303,7 @@ class ClassMapperTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('source', 0, 'Eloquent\\Typhax\\Type\\StringType');
+            throw new MissingArgumentException('source', 0, 'string');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
@@ -313,7 +313,7 @@ class ClassMapperTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('source', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
+                throw new UnexpectedArgumentValueException('source', $index, $argument, 'string');
             }
         };
         $check($arguments[0], 0);
@@ -323,7 +323,7 @@ class ClassMapperTyphoon
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('directoryPath', 0, 'Eloquent\\Typhax\\Type\\StringType');
+            throw new MissingArgumentException('directoryPath', 0, 'string');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
@@ -333,7 +333,7 @@ class ClassMapperTyphoon
                 return is_string($value);
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('directoryPath', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
+                throw new UnexpectedArgumentValueException('directoryPath', $index, $argument, 'string');
             }
         };
         $check($arguments[0], 0);
