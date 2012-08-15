@@ -569,7 +569,7 @@ EOD;
         ));
         $arguments = array('foo', 111, 1.11, 2.22);
         $expected = 'Typhoon\Exception\UnexpectedArgumentException';
-        $expectedMessage = "Unexpected argument of type 'double' at index 3.";
+        $expectedMessage = "Unexpected argument of type 'float' at index 3.";
         $data['Too many arguments'] =
             array($expected, $expectedMessage, $list, $arguments)
         ;

@@ -34,9 +34,9 @@ final class MissingArgumentException extends UnexpectedInputException
         parent::__construct(
             sprintf(
                 "Missing argument for parameter '%s' at index %d. Expected '%s'.",
-                $this->parameterName,
-                $this->index,
-                $this->expectedType
+                $this->parameterName(),
+                $this->index(),
+                $this->expectedType()
             ),
             $previous
         );

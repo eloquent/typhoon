@@ -28,15 +28,16 @@ class UnexpectedArgumentValueExceptionTest extends PHPUnit_Framework_TestCase
         );
 
         $this->assertSame(
-            "Unexpected argument of type 'double' for parameter 'foo' at index 111. Expected 'bar'.",
+            "Unexpected argument of type 'float' for parameter 'foo' at index 111. Expected 'bar'.",
             $exception->getMessage()
         );
         $this->assertSame('foo', $exception->parameterName());
         $this->assertSame(111, $exception->index());
         $this->assertSame(2.22, $exception->value());
         $this->assertSame('bar', $exception->expectedType());
-        $this->assertSame('double', $exception->unexpectedType());
+        $this->assertSame('float', $exception->unexpectedType());
         $this->assertSame(0, $exception->getCode());
         $this->assertSame($previous, $exception->getPrevious());
+        $this->assertInstanceOf('Typhoon\TypeInspector', $exception->typeInspector());
     }
 }
