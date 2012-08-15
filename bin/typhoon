@@ -3,5 +3,7 @@
 
 require __DIR__.'/../vendor/autoload.php';
 
+Eloquent\Asplode\Asplode::instance()->install();
+
 $application = new Eloquent\Typhoon\Console\Application;
 $application->run();

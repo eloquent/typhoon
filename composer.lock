@@ -1,6 +1,10 @@
 {
-    "hash": "6611f3161c665b26574a5cbb3cc1816f",
+    "hash": "a83e0f7e933f99b369c90128cdba3e81",
     "packages": [
+        {
+            "package": "eloquent/asplode",
+            "version": "1.0.4"
+        },
         {
             "package": "eloquent/blox",
             "version": "1.2.0"
