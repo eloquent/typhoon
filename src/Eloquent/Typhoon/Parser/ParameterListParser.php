@@ -104,29 +104,35 @@ class ParameterListParser implements Visitor
     public function visitDocumentationTag(DocumentationTag $documentationTag)
     {
         $this->typhoon->visitDocumentationTag(func_get_args());
+        $content = $documentationTag->content() ?: '';
 
         $position = 0;
         $type = $this->parseType(
-            $documentationTag->content() ?: '',
+            $content,
+            $position
+        );
+        $byReference = $this->parseByReference(
+            $content,
             $position
         );
         $name = $this->parseName(
-            $documentationTag->content(),
+            $content,
             $position
         );
         $description = $this->parseDescription(
-            $documentationTag->content(),
+            $content,
             $position
         );
         $optional = $this->parseOptional(
-            $documentationTag->content()
+            $content
         );
 
         return new Parameter(
             $name,
             $type,
             $description,
-            $optional
+            $optional,
+            $byReference
         );
     }
 
@@ -160,6 +166,25 @@ class ParameterListParser implements Visitor
      * @param string $content
      * @param integer &$position
      *
+     * @return boolean
+     */
+    protected function parseByReference($content, &$position)
+    {
+        $this->typhoon->parseByReference(func_get_args());
+
+        return null !== $this->parseContent(
+            $content,
+            $position,
+            '/^\s*(&)/',
+            true,
+            'byReference'
+        );
+    }
+
+    /**
+     * @param string $content
+     * @param integer &$position
+     *
      * @return string
      */
     protected function parseName($content, &$position)
@@ -169,7 +194,7 @@ class ParameterListParser implements Visitor
         return $this->parseContent(
             $content,
             $position,
-            '/^\s*&?\$(\w+)(?:,\.{3})?/',
+            '/^\s*\$(\w+)(?:,\.{3})?/',
             false,
             'name'
         );

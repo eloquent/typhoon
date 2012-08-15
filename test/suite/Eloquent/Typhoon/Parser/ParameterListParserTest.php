@@ -86,6 +86,7 @@ EOD;
             'foo',
             $fooType,
             'This is the foo parameter.',
+            false,
             false
         );
         $barType = new IntegerType;
@@ -93,7 +94,8 @@ EOD;
             'bar',
             $barType,
             'This is the bar parameter.',
-            false
+            false,
+            true
         );
         $bazType = new OrType(array(
             new FloatType,

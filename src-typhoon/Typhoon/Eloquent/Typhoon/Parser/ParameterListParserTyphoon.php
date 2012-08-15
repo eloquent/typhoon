@@ -149,6 +149,39 @@ class ParameterListParserTyphoon
         $check($arguments[1], 1);
     }
 
+    public function parseByReference(array $arguments)
+    {
+        $argumentCount = count($arguments);
+        if ($argumentCount < 2) {
+            if ($argumentCount < 1) {
+                throw new MissingArgumentException('content', 0, 'string');
+            }
+            throw new MissingArgumentException('position', 1, 'integer');
+        } elseif ($argumentCount > 2) {
+            throw new UnexpectedArgumentException(2, $arguments[2]);
+        }
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return is_string($value);
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('content', $index, $argument, 'string');
+            }
+        };
+        $check($arguments[0], 0);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return is_integer($value);
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('position', $index, $argument, 'integer');
+            }
+        };
+        $check($arguments[1], 1);
+    }
+
     public function parseName(array $arguments)
     {
         $argumentCount = count($arguments);
