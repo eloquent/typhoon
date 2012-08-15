@@ -85,15 +85,15 @@ EOD;
         $fooParameter = new Parameter(
             'foo',
             $fooType,
-            false,
-            'This is the foo parameter.'
+            'This is the foo parameter.',
+            false
         );
         $barType = new IntegerType;
         $barParameter = new Parameter(
             'bar',
             $barType,
-            false,
-            'This is the bar parameter.'
+            'This is the bar parameter.',
+            false
         );
         $bazType = new OrType(array(
             new FloatType,
@@ -135,8 +135,8 @@ EOD;
         $fooParameter = new Parameter(
             'foo',
             $fooType,
-            true,
-            'This is the foo parameter.'
+            'This is the foo parameter.',
+            true
         );
         $expected = new ParameterList(
             array(
@@ -165,6 +165,7 @@ EOD;
         $fooParameter = new Parameter(
             'foo',
             $fooType,
+            null,
             true
         );
         $expected = new ParameterList(

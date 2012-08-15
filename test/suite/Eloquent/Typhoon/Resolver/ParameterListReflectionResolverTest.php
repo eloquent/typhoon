@@ -34,28 +34,32 @@ class ParameterListReflectionResolverTest extends PHPUnit_Framework_TestCase
             new Parameter(
                 'foo',
                 new StringType,
+                'Foo description',
                 false,
-                'Foo description'
+                true
             ),
             new Parameter(
                 'bar',
                 new StringType,
+                'Bar description',
                 false,
-                'Bar description'
+                false
             ),
         ));
         $expected = new ParameterList(array(
             new Parameter(
                 'foo',
                 new StringType,
+                'Foo description',
                 false,
-                'Foo description'
+                true
             ),
             new Parameter(
                 'bar',
                 new StringType,
+                'Bar description',
                 true,
-                'Bar description'
+                false
             ),
         ));
 
@@ -74,28 +78,32 @@ class ParameterListReflectionResolverTest extends PHPUnit_Framework_TestCase
             new Parameter(
                 'foo',
                 new StringType,
+                'Foo description',
                 false,
-                'Foo description'
+                true
             ),
             new Parameter(
                 'bar',
                 new StringType,
+                'Bar description',
                 false,
-                'Bar description'
+                false
             ),
         ));
         $expected = new ParameterList(array(
             new Parameter(
                 'foo',
                 new StringType,
+                'Foo description',
                 false,
-                'Foo description'
+                true
             ),
             new Parameter(
                 'bar',
                 new StringType,
+                'Bar description',
                 false,
-                'Bar description'
+                false
             ),
         ));
 
@@ -115,14 +123,16 @@ class ParameterListReflectionResolverTest extends PHPUnit_Framework_TestCase
                 new Parameter(
                     'foo',
                     new StringType,
+                    'Foo description',
                     false,
-                    'Foo description'
+                    true
                 ),
                 new Parameter(
                     'bar',
                     new StringType,
+                    'Bar description',
                     false,
-                    'Bar description'
+                    false
                 ),
             ),
             true
@@ -132,14 +142,16 @@ class ParameterListReflectionResolverTest extends PHPUnit_Framework_TestCase
                 new Parameter(
                     'foo',
                     new StringType,
+                    'Foo description',
                     false,
-                    'Foo description'
+                    true
                 ),
                 new Parameter(
                     'bar',
                     new StringType,
+                    'Bar description',
                     false,
-                    'Bar description'
+                    false
                 ),
             ),
             true

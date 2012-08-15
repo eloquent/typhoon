@@ -125,8 +125,8 @@ class ParameterListParser implements Visitor
         return new Parameter(
             $name,
             $type,
-            $optional,
-            $description
+            $description,
+            $optional
         );
     }
 

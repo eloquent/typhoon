@@ -29,6 +29,7 @@ class ParameterList extends Host
                 new Parameter(
                     'undefined',
                     new MixedType,
+                    null,
                     true
                 ),
             ),

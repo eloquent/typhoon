@@ -26,8 +26,8 @@ class ParameterTyphoon
                 throw new MissingArgumentException('name', 0, 'string');
             }
             throw new MissingArgumentException('type', 1, 'Eloquent\\Typhax\\Type\\Type');
-        } elseif ($argumentCount > 4) {
-            throw new UnexpectedArgumentException(4, $arguments[4]);
+        } elseif ($argumentCount > 5) {
+            throw new UnexpectedArgumentException(5, $arguments[5]);
         }
 
         $check = function($argument, $index) {
@@ -53,18 +53,6 @@ class ParameterTyphoon
         if ($argumentCount > 2) {
             $check = function($argument, $index) {
                 $check = function($value) {
-                    return is_bool($value);
-                };
-                if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('optional', $index, $argument, 'boolean');
-                }
-            };
-            $check($arguments[2], 2);
-        }
-
-        if ($argumentCount > 3) {
-            $check = function($argument, $index) {
-                $check = function($value) {
                     $check = function($value) {
                         return is_string($value);
                     };
@@ -85,7 +73,31 @@ class ParameterTyphoon
                     throw new UnexpectedArgumentValueException('description', $index, $argument, 'string|null');
                 }
             };
+            $check($arguments[2], 2);
+        }
+
+        if ($argumentCount > 3) {
+            $check = function($argument, $index) {
+                $check = function($value) {
+                    return is_bool($value);
+                };
+                if (!$check($argument)) {
+                    throw new UnexpectedArgumentValueException('optional', $index, $argument, 'boolean');
+                }
+            };
             $check($arguments[3], 3);
+        }
+
+        if ($argumentCount > 4) {
+            $check = function($argument, $index) {
+                $check = function($value) {
+                    return is_bool($value);
+                };
+                if (!$check($argument)) {
+                    throw new UnexpectedArgumentValueException('byReference', $index, $argument, 'boolean');
+                }
+            };
+            $check($arguments[4], 4);
         }
     }
 
@@ -103,6 +115,13 @@ class ParameterTyphoon
         }
     }
 
+    public function description(array $arguments)
+    {
+        if (count($arguments) > 0) {
+            throw new UnexpectedArgumentException(0, $arguments[0]);
+        }
+    }
+
     public function isOptional(array $arguments)
     {
         if (count($arguments) > 0) {
@@ -110,7 +129,7 @@ class ParameterTyphoon
         }
     }
 
-    public function description(array $arguments)
+    public function isByReference(array $arguments)
     {
         if (count($arguments) > 0) {
             throw new UnexpectedArgumentException(0, $arguments[0]);

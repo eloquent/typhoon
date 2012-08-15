@@ -44,28 +44,32 @@ class ParameterListClassNameResolverTest extends PHPUnit_Framework_TestCase
             new Parameter(
                 'foo',
                 new ObjectType('Spam'),
+                'Foo description',
                 false,
-                'Foo description'
+                true
             ),
             new Parameter(
                 'bar',
                 new ObjectType('Pip'),
+                'Bar description',
                 true,
-                'Bar description'
+                false
             ),
         ));
         $expected = new ParameterList(array(
             new Parameter(
                 'foo',
                 new ObjectType('Foo\Bar\Baz\Spam'),
+                'Foo description',
                 false,
-                'Foo description'
+                true
             ),
             new Parameter(
                 'bar',
                 new ObjectType('Qux\Doom\Splat'),
+                'Bar description',
                 true,
-                'Bar description'
+                false
             ),
         ));
 
@@ -79,14 +83,16 @@ class ParameterListClassNameResolverTest extends PHPUnit_Framework_TestCase
                 new Parameter(
                     'foo',
                     new ObjectType('Spam'),
+                    'Foo description',
                     false,
-                    'Foo description'
+                    true
                 ),
                 new Parameter(
                     'bar',
                     new ObjectType('Pip'),
+                    'Bar description',
                     true,
-                    'Bar description'
+                    false
                 ),
             ),
             true
@@ -96,14 +102,16 @@ class ParameterListClassNameResolverTest extends PHPUnit_Framework_TestCase
                 new Parameter(
                     'foo',
                     new ObjectType('Foo\Bar\Baz\Spam'),
+                    'Foo description',
                     false,
-                    'Foo description'
+                    true
                 ),
                 new Parameter(
                     'bar',
                     new ObjectType('Qux\Doom\Splat'),
+                    'Bar description',
                     true,
-                    'Bar description'
+                    false
                 ),
             ),
             true

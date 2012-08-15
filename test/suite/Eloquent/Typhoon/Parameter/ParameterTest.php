@@ -23,14 +23,16 @@ class ParameterTest extends PHPUnit_Framework_TestCase
         $parameter = new Parameter(
             'foo',
             $type,
+            'bar',
             true,
-            'bar'
+            true
         );
 
         $this->assertSame('foo', $parameter->name());
         $this->assertSame($type, $parameter->type());
-        $this->assertTrue($parameter->isOptional());
         $this->assertSame('bar', $parameter->description());
+        $this->assertTrue($parameter->isOptional());
+        $this->assertTrue($parameter->isByReference());
     }
 
     public function testParameterOptionalParameters()
@@ -43,7 +45,8 @@ class ParameterTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame('foo', $parameter->name());
         $this->assertSame($type, $parameter->type());
-        $this->assertFalse($parameter->isOptional());
         $this->assertNull($parameter->description());
+        $this->assertFalse($parameter->isOptional());
+        $this->assertFalse($parameter->isByReference());
     }
 }

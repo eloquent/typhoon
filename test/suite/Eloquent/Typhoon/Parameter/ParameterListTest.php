@@ -61,9 +61,9 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
     public function testRequiredParameters()
     {
         $parameterFoo = new Parameter('foo', new MixedType);
-        $parameterBar = new Parameter('bar', new MixedType, true);
+        $parameterBar = new Parameter('bar', new MixedType, null, true);
         $parameterBaz = new Parameter('baz', new MixedType);
-        $parameterQux = new Parameter('qux', new MixedType, true);
+        $parameterQux = new Parameter('qux', new MixedType, null, true);
         $list = new ParameterList(array(
             $parameterFoo,
             $parameterBar,
@@ -86,6 +86,7 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
                 new Parameter(
                     'undefined',
                     new MixedType,
+                    null,
                     true
                 ),
             ),

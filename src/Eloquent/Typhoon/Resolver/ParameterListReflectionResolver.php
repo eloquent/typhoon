@@ -57,8 +57,9 @@ class ParameterListReflectionResolver implements Visitor
         return new Parameter(
             $parameter->name(),
             $parameter->type(),
+            $parameter->description(),
             $reflector->isOptional(),
-            $parameter->description()
+            $parameter->isByReference()
         );
     }
 

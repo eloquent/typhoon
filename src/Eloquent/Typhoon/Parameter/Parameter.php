@@ -20,20 +20,23 @@ class Parameter extends Host
     /**
      * @param string $name
      * @param Type $type
-     * @param boolean $optional
      * @param string|null $description
+     * @param boolean $optional
+     * @param boolean $byReference
      */
     public function __construct(
         $name,
         Type $type,
+        $description = null,
         $optional = false,
-        $description = null
+        $byReference = false
     ) {
         $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
         $this->name = $name;
         $this->type = $type;
-        $this->optional = $optional;
         $this->description = $description;
+        $this->optional = $optional;
+        $this->byReference = $byReference;
     }
 
     /**
@@ -57,6 +60,16 @@ class Parameter extends Host
     }
 
     /**
+     * @return string|null
+     */
+    public function description()
+    {
+        $this->typhoon->description(func_get_args());
+
+        return $this->description;
+    }
+
+    /**
      * @return boolean
      */
     public function isOptional()
@@ -67,18 +80,19 @@ class Parameter extends Host
     }
 
     /**
-     * @return string|null
+     * @return boolean
      */
-    public function description()
+    public function isByReference()
     {
-        $this->typhoon->description(func_get_args());
+        $this->typhoon->isByReference(func_get_args());
 
-        return $this->description;
+        return $this->byReference;
     }
 
     private $name;
     private $type;
-    private $optional;
     private $description;
+    private $optional;
+    private $byReference;
     private $typhoon;
 }

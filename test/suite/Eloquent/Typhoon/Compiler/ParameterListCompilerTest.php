@@ -161,11 +161,13 @@ EOD;
             new Parameter(
                 'bar',
                 new IntegerType,
+                null,
                 true
             ),
             new Parameter(
                 'baz',
                 new FloatType,
+                null,
                 true
             ),
         ));
@@ -221,16 +223,19 @@ EOD;
             new Parameter(
                 'foo',
                 new StringType,
+                null,
                 true
             ),
             new Parameter(
                 'bar',
                 new IntegerType,
+                null,
                 true
             ),
             new Parameter(
                 'baz',
                 new FloatType,
+                null,
                 true
             ),
         ));
@@ -295,6 +300,7 @@ EOD;
                 new Parameter(
                     'baz',
                     new FloatType,
+                    null,
                     true
                 ),
             ),
@@ -415,11 +421,13 @@ EOD;
             new Parameter(
                 'bar',
                 new IntegerType,
+                null,
                 true
             ),
             new Parameter(
                 'baz',
                 new FloatType,
+                null,
                 true
             ),
         )));
@@ -434,16 +442,19 @@ EOD;
             new Parameter(
                 'foo',
                 new StringType,
+                null,
                 true
             ),
             new Parameter(
                 'bar',
                 new IntegerType,
+                null,
                 true
             ),
             new Parameter(
                 'baz',
                 new FloatType,
+                null,
                 true
             ),
         )));
@@ -467,6 +478,7 @@ EOD;
                 new Parameter(
                     'baz',
                     new FloatType,
+                    null,
                     true
                 ),
             ),
@@ -650,6 +662,7 @@ EOD;
                 new Parameter(
                     'baz',
                     new FloatType,
+                    null,
                     true
                 ),
             ),
