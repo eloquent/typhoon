@@ -12,6 +12,7 @@
 namespace Typhoon\Exception;
 
 use Exception;
+use Typhoon\TypeInspector;
 
 final class UnexpectedArgumentValueException extends UnexpectedInputException
 {
@@ -21,28 +22,35 @@ final class UnexpectedArgumentValueException extends UnexpectedInputException
      * @param string $value
      * @param string $expectedType
      * @param Exception|null $previous
+     * @param TypeInspector|null $typeInspector
      */
     public function __construct(
         $parameterName,
         $index,
         $value,
         $expectedType,
-        Exception $previous = null
+        Exception $previous = null,
+        TypeInspector $typeInspector = null
     ) {
+        if (null === $typeInspector) {
+            $typeInspector = new TypeInspector;
+        }
+
         $this->parameterName = $parameterName;
         $this->index = $index;
         $this->value = $value;
         $this->expectedType = $expectedType;
+        $this->typeInspector = $typeInspector;
 
-        $this->unexpectedType = gettype($this->value);
+        $this->unexpectedType = $this->typeInspector()->type($this->value);
 
         parent::__construct(
             sprintf(
                 "Unexpected argument of type '%s' for parameter '%s' at index %d. Expected '%s'.",
-                $this->unexpectedType,
-                $this->parameterName,
-                $this->index,
-                $this->expectedType
+                $this->unexpectedType(),
+                $this->parameterName(),
+                $this->index(),
+                $this->expectedType()
             ),
             $previous
         );
@@ -81,6 +89,14 @@ final class UnexpectedArgumentValueException extends UnexpectedInputException
     }
 
     /**
+     * @return TypeInspector
+     */
+    public function typeInspector()
+    {
+        return $this->typeInspector;
+    }
+
+    /**
      * @return string
      */
     public function unexpectedType()
@@ -92,5 +108,6 @@ final class UnexpectedArgumentValueException extends UnexpectedInputException
     private $index;
     private $value;
     private $expectedType;
+    private $typeInspector;
     private $unexpectedType;
 }

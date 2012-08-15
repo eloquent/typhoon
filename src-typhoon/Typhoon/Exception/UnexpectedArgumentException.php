@@ -12,6 +12,7 @@
 namespace Typhoon\Exception;
 
 use Exception;
+use Typhoon\TypeInspector;
 
 final class UnexpectedArgumentException extends UnexpectedInputException
 {
@@ -19,19 +20,29 @@ final class UnexpectedArgumentException extends UnexpectedInputException
      * @param integer $index
      * @param mixed $value
      * @param Exception|null $previous
+     * @param TypeInspector|null $typeInspector
      */
-    public function __construct($index, $value, Exception $previous = null)
-    {
+    public function __construct(
+        $index,
+        $value,
+        Exception $previous = null,
+        TypeInspector $typeInspector = null
+    ) {
+        if (null === $typeInspector) {
+            $typeInspector = new TypeInspector;
+        }
+
         $this->index = $index;
         $this->value = $value;
+        $this->typeInspector = $typeInspector;
 
-        $this->unexpectedType = gettype($this->value);
+        $this->unexpectedType = $this->typeInspector()->type($this->value);
 
         parent::__construct(
             sprintf(
                 "Unexpected argument of type '%s' at index %d.",
-                $this->unexpectedType,
-                $this->index
+                $this->unexpectedType(),
+                $this->index()
             ),
             $previous
         );
@@ -54,6 +65,14 @@ final class UnexpectedArgumentException extends UnexpectedInputException
     }
 
     /**
+     * @return TypeInspector
+     */
+    public function typeInspector()
+    {
+        return $this->typeInspector;
+    }
+
+    /**
      * @return string
      */
     public function unexpectedType()
@@ -63,5 +82,6 @@ final class UnexpectedArgumentException extends UnexpectedInputException
 
     private $index;
     private $value;
+    private $typeInspector;
     private $unexpectedType;
 }
