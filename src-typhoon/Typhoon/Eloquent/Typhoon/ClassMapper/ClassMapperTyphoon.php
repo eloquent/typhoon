@@ -161,7 +161,29 @@ class ClassMapperTyphoon
                     }
 
                     $check = function($value) {
-                        return is_array($value);
+                        $primaryCheck = function($value) {
+                            return is_array($value);
+                        };
+                        if (!$primaryCheck($value)) {
+                            return false;
+                        }
+
+                        $keyCheck = function($value) {
+                            return true;
+                        };
+                        $valueCheck = function($value) {
+                            return true;
+                        };
+                        foreach ($value as $key => $subValue) {
+                            if (!$keyCheck($key)) {
+                                return false;
+                            }
+                            if (!$valueCheck($subValue)) {
+                                return false;
+                            }
+                        }
+
+                        return true;
                     };
                     if ($check($value)) {
                         return true;
@@ -217,7 +239,29 @@ class ClassMapperTyphoon
                     }
 
                     $check = function($value) {
-                        return is_array($value);
+                        $primaryCheck = function($value) {
+                            return is_array($value);
+                        };
+                        if (!$primaryCheck($value)) {
+                            return false;
+                        }
+
+                        $keyCheck = function($value) {
+                            return true;
+                        };
+                        $valueCheck = function($value) {
+                            return true;
+                        };
+                        foreach ($value as $key => $subValue) {
+                            if (!$keyCheck($key)) {
+                                return false;
+                            }
+                            if (!$valueCheck($subValue)) {
+                                return false;
+                            }
+                        }
+
+                        return true;
                     };
                     if ($check($value)) {
                         return true;
@@ -273,7 +317,29 @@ class ClassMapperTyphoon
                     }
 
                     $check = function($value) {
-                        return is_array($value);
+                        $primaryCheck = function($value) {
+                            return is_array($value);
+                        };
+                        if (!$primaryCheck($value)) {
+                            return false;
+                        }
+
+                        $keyCheck = function($value) {
+                            return true;
+                        };
+                        $valueCheck = function($value) {
+                            return true;
+                        };
+                        foreach ($value as $key => $subValue) {
+                            if (!$keyCheck($key)) {
+                                return false;
+                            }
+                            if (!$valueCheck($subValue)) {
+                                return false;
+                            }
+                        }
+
+                        return true;
                     };
                     if ($check($value)) {
                         return true;

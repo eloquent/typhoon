@@ -76,6 +76,66 @@ class ParameterListParserTyphoon
         }
     }
 
+    public function parseReflector(array $arguments)
+    {
+        $argumentCount = count($arguments);
+        if ($argumentCount < 1) {
+            throw new MissingArgumentException('reflector', 0, 'ReflectionFunctionAbstract');
+        } elseif ($argumentCount > 1) {
+            throw new UnexpectedArgumentException(1, $arguments[1]);
+        }
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return $value instanceof \ReflectionFunctionAbstract;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('reflector', $index, $argument, 'ReflectionFunctionAbstract');
+            }
+        };
+        $check($arguments[0], 0);
+    }
+
+    public function parseParameterReflector(array $arguments)
+    {
+        $argumentCount = count($arguments);
+        if ($argumentCount < 1) {
+            throw new MissingArgumentException('reflector', 0, 'ReflectionParameter');
+        } elseif ($argumentCount > 1) {
+            throw new UnexpectedArgumentException(1, $arguments[1]);
+        }
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return $value instanceof \ReflectionParameter;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('reflector', $index, $argument, 'ReflectionParameter');
+            }
+        };
+        $check($arguments[0], 0);
+    }
+
+    public function parseParameterReflectorString(array $arguments)
+    {
+        $argumentCount = count($arguments);
+        if ($argumentCount < 1) {
+            throw new MissingArgumentException('parameterString', 0, 'string');
+        } elseif ($argumentCount > 1) {
+            throw new UnexpectedArgumentException(1, $arguments[1]);
+        }
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return is_string($value);
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('parameterString', $index, $argument, 'string');
+            }
+        };
+        $check($arguments[0], 0);
+    }
+
     public function visitDocumentationBlock(array $arguments)
     {
         $argumentCount = count($arguments);
@@ -111,6 +171,26 @@ class ParameterListParserTyphoon
             };
             if (!$check($argument)) {
                 throw new UnexpectedArgumentValueException('documentationTag', $index, $argument, 'Eloquent\\Blox\\AST\\DocumentationTag');
+            }
+        };
+        $check($arguments[0], 0);
+    }
+
+    public function parseParameterReflectorTypeString(array $arguments)
+    {
+        $argumentCount = count($arguments);
+        if ($argumentCount < 1) {
+            throw new MissingArgumentException('typeString', 0, 'string');
+        } elseif ($argumentCount > 1) {
+            throw new UnexpectedArgumentException(1, $arguments[1]);
+        }
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return is_string($value);
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('typeString', $index, $argument, 'string');
             }
         };
         $check($arguments[0], 0);

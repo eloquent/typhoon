@@ -14,14 +14,19 @@ namespace Eloquent\Typhoon\Parser;
 use Eloquent\Blox\AST\DocumentationBlock;
 use Eloquent\Blox\AST\DocumentationTag;
 use Eloquent\Typhax\Parser\Parser as TyphaxParser;
+use Eloquent\Typhax\Type\ArrayType;
 use Eloquent\Typhax\Type\FloatType;
 use Eloquent\Typhax\Type\IntegerType;
+use Eloquent\Typhax\Type\MixedType;
 use Eloquent\Typhax\Type\NullType;
+use Eloquent\Typhax\Type\ObjectType;
 use Eloquent\Typhax\Type\OrType;
 use Eloquent\Typhax\Type\StringType;
+use Eloquent\Typhax\Type\TraversableType;
 use Eloquent\Typhoon\Parameter\ParameterList;
 use Eloquent\Typhoon\Parameter\Parameter;
 use PHPUnit_Framework_TestCase;
+use ReflectionMethod;
 
 class ParameterListParserTest extends PHPUnit_Framework_TestCase
 {
@@ -220,5 +225,108 @@ EOD;
             "Unexpected content at position 7. Expected 'name'."
         );
         $this->_parser->parseBlockComment($source);
+    }
+
+    protected function typicalMethod(
+        $foo,
+        array $bar,
+        Blargh $baz,
+        &$qux,
+        $doom = 1,
+        array $splat = array(),
+        array $ping = null,
+        Blargh $pong = null,
+        &$pang = 'peng'
+    ) {
+    }
+
+    public function testFromReflector()
+    {
+        $reflector = new ReflectionMethod($this, 'typicalMethod');
+        $expected = new ParameterList(array(
+            new Parameter(
+                'foo',
+                new MixedType,
+                null,
+                false,
+                false
+            ),
+            new Parameter(
+                'bar',
+                new TraversableType(
+                    new ArrayType,
+                    new MixedType,
+                    new MixedType
+                ),
+                null,
+                false,
+                false
+            ),
+            new Parameter(
+                'baz',
+                new ObjectType(__NAMESPACE__.'\Blargh'),
+                null,
+                false,
+                false
+            ),
+            new Parameter(
+                'qux',
+                new MixedType,
+                null,
+                false,
+                true
+            ),
+            new Parameter(
+                'doom',
+                new MixedType,
+                null,
+                true,
+                false
+            ),
+            new Parameter(
+            'splat',
+                new TraversableType(
+                    new ArrayType,
+                    new MixedType,
+                    new MixedType
+                ),
+                null,
+                true,
+                false
+            ),
+            new Parameter(
+                'ping',
+                new OrType(array(
+                    new TraversableType(
+                        new ArrayType,
+                        new MixedType,
+                        new MixedType
+                    ),
+                    new NullType,
+                )),
+                null,
+                true,
+                false
+            ),
+            new Parameter(
+                'pong',
+                new OrType(array(
+                    new ObjectType(__NAMESPACE__.'\Blargh'),
+                    new NullType,
+                )),
+                null,
+                true,
+                false
+            ),
+            new Parameter(
+                'pang',
+                new MixedType,
+                null,
+                true,
+                true
+            ),
+        ));
+
+        $this->assertEquals($expected, $this->_parser->parseReflector($reflector));
     }
 }
