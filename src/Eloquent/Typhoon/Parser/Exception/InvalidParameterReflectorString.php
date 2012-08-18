@@ -27,10 +27,10 @@ final class InvalidParameterReflectorString extends ParseException
 
         parent::__construct(
             sprintf(
-                "Unable to parse ReflectionParameter string '%'.",
+                "Unable to parse ReflectionParameter string '%s'.",
                 $this->parameterString()
             ),
-            $position,
+            0,
             $previous
         );
     }

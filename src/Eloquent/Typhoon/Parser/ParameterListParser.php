@@ -123,7 +123,7 @@ class ParameterListParser implements Visitor
     public function parseParameterReflectorString($parameterString)
     {
         $this->typhoon->parseParameterReflectorString(func_get_args());
-        $pattern = '/^Parameter #\d \[ <(?<optional>required|\optional)>(?: (?<type>.*))? (?<byReference>&)?\$(?<name>\w+)/';
+        $pattern = '/^Parameter #\d \[ <(?<optional>required|optional)>(?: (?<type>.*))? (?<byReference>&)?\$(?<name>\w+)/';
 
         if (!preg_match($pattern, $parameterString, $matches)) {
             throw new Exception\InvalidParameterReflectorString($parameterString);

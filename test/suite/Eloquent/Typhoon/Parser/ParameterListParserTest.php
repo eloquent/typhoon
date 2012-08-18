@@ -337,4 +337,16 @@ EOD;
 
         $this->assertEquals($expected, $this->_parser->parseReflector($reflector));
     }
+
+    public function testParseParameterReflectorStringFailureInvalidString()
+    {
+        $this->setExpectedException(__NAMESPACE__.'\Exception\InvalidParameterReflectorString');
+        $this->_parser->parseParameterReflectorString('foo');
+    }
+
+    public function testParseParameterReflectorStringFailureInvalidType()
+    {
+        $this->setExpectedException(__NAMESPACE__.'\Exception\InvalidParameterReflectorString');
+        $this->_parser->parseParameterReflectorString('Parameter #1 [ <required> string<mixed> $foo ]');
+    }
 }

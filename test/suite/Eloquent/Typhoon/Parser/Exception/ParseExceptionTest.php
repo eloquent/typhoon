@@ -28,6 +28,7 @@ class ParseExceptionTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame('foo', $exception->getMessage());
         $this->assertSame(111, $exception->position());
+        $this->assertSame(0, $exception->getCode());
         $this->assertSame($previous, $exception->getPrevious());
     }
 }

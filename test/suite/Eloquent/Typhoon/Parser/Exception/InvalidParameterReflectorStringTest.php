@@ -14,20 +14,18 @@ namespace Eloquent\Typhoon\Parser\Exception;
 use Phake;
 use PHPUnit_Framework_TestCase;
 
-class UnexpectedContentExceptionTest extends PHPUnit_Framework_TestCase
+class InvalidParameterReflectorStringTest extends PHPUnit_Framework_TestCase
 {
     public function testException()
     {
         $previous = Phake::mock('Exception');
-        $exception = new UnexpectedContentException(
+        $exception = new InvalidParameterReflectorString(
             'foo',
-            111,
             $previous
         );
 
-        $this->assertSame("Unexpected content at position 111. Expected 'foo'.", $exception->getMessage());
-        $this->assertSame('foo', $exception->expected());
-        $this->assertSame(111, $exception->position());
+        $this->assertSame("Unable to parse ReflectionParameter string 'foo'.", $exception->getMessage());
+        $this->assertSame('foo', $exception->parameterString());
         $this->assertSame(0, $exception->getCode());
         $this->assertSame($previous, $exception->getPrevious());
     }
