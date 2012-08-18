@@ -236,7 +236,8 @@ EOD;
         array $splat = array(),
         array $ping = null,
         Blargh $pong = null,
-        &$pang = 'peng'
+        &$pang = 'peng',
+        $pung = null
     ) {
     }
 
@@ -324,6 +325,13 @@ EOD;
                 null,
                 true,
                 true
+            ),
+            new Parameter(
+                'pung',
+                new MixedType,
+                null,
+                true,
+                false
             ),
         ));
 
