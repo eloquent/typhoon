@@ -326,8 +326,7 @@ class NativeParameterListMergeToolTest extends PHPUnit_Framework_TestCase
                 ),
             )
         );
-        // $expected = __NAMESPACE__.'\Exception\DocumentedParameterByReferenceMismatchException';
-        $expected = 'PHPUnit_Framework_Error_Warning';
+        $expected = __NAMESPACE__.'\Exception\DocumentedParameterByReferenceMismatchException';
         $expectedMessage = "Parameter 'bar' is documented as by-value but defined as by-reference in 'foo'.";
         $data['Parameter by-reference mismatch'] = array(
             $expected,
@@ -441,10 +440,15 @@ class NativeParameterListMergeToolTest extends PHPUnit_Framework_TestCase
         ParameterList $nativeParameterList
     ) {
         $this->setExpectedException($expected, $expectedMessage);
+        try {
         $this->_mergeTool->merge(
             'foo',
             $documentedParameterList,
             $nativeParameterList
         );
+        } catch (\PHPUnit_Framework_Error_Warning $e) {
+            echo $e;
+            throw $e;
+        }
     }
 }
