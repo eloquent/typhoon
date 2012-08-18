@@ -15,6 +15,7 @@ use Eloquent\Blox\AST\DocumentationBlock;
 use Eloquent\Blox\AST\DocumentationTag;
 use Eloquent\Typhax\Parser\Parser as TyphaxParser;
 use Eloquent\Typhax\Type\ArrayType;
+use Eloquent\Typhax\Type\CallableType;
 use Eloquent\Typhax\Type\FloatType;
 use Eloquent\Typhax\Type\IntegerType;
 use Eloquent\Typhax\Type\MixedType;
@@ -329,6 +330,39 @@ EOD;
             new Parameter(
                 'pung',
                 new MixedType,
+                null,
+                true,
+                false
+            ),
+        ));
+
+        $this->assertEquals($expected, $this->_parser->parseReflector($reflector));
+    }
+
+    public function testFromReflectorCallable()
+    {
+        if (version_compare(PHP_VERSION, '5.4', '<')) {
+            $this->markTestSkipped('Requires PHP >= 5.4.');
+        }
+
+        $reflector = new ReflectionMethod(
+            'Eloquent\Typhoon\TestFixture\PHP54Features',
+            'methodWithCallableTypeHints'
+        );
+        $expected = new ParameterList(array(
+            new Parameter(
+                'foo',
+                new CallableType,
+                null,
+                false,
+                false
+            ),
+            new Parameter(
+                'bar',
+                new OrType(array(
+                    new CallableType,
+                    new NullType,
+                )),
                 null,
                 true,
                 false
