@@ -439,11 +439,22 @@ class NativeParameterListMergeToolTest extends PHPUnit_Framework_TestCase
         ParameterList $documentedParameterList,
         ParameterList $nativeParameterList
     ) {
-        $this->setExpectedException($expected, $expectedMessage);
-        $this->_mergeTool->merge(
-            'foo',
-            $documentedParameterList,
-            $nativeParameterList
-        );
+        try {
+            $this->_mergeTool->merge(
+                'foo',
+                $documentedParameterList,
+                $nativeParameterList
+            );
+        } catch (\Exception $e) {
+            // I have no idea why this is necessary.
+            // WHAT THE FUCK TRAVIS!?
+            if ($e instanceof $expected) {
+                $this->setExpectedException($expected, $expectedMessage);
+            }
+
+            throw $e;
+        }
+
+        $this->fail('Something went horribly, horribly wrong, and it is now time to panic.');
     }
 }
