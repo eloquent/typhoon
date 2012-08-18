@@ -76,6 +76,12 @@ class GenerateValidatorsCommandTest extends PHPUnit_Framework_TestCase
                 './vendor/autoload.php',
             )
         ));
+        $expected->addOption(new InputOption(
+            'forgiving',
+            null,
+            InputOption::VALUE_NONE,
+            'Treat undocumented parameter lists as unrestricted.'
+        ));
 
         $this->assertEquals($expected, $this->_command->getDefinition());
     }
@@ -105,7 +111,43 @@ class GenerateValidatorsCommandTest extends PHPUnit_Framework_TestCase
                 array(
                     'qux',
                     'doom',
-                )
+                ),
+                true
+            ),
+            Phake::verify($output)->writeln('Deploying Typhoon...'),
+            Phake::verify($this->_deploymentManager)->deploy('baz'),
+            Phake::verify($output)->writeln('Done.')
+        );
+    }
+
+    public function testExecuteForgiving()
+    {
+        $input = Phake::mock('Symfony\Component\Console\Input\InputInterface');
+        Phake::when($input)->getOption('loader-path')->thenReturn(array(
+            'foo',
+            'bar',
+        ));
+        Phake::when($input)->getArgument('output-path')->thenReturn('baz');
+        Phake::when($input)->getArgument('class-path')->thenReturn(array(
+            'qux',
+            'doom',
+        ));
+        Phake::when($input)->getOption('forgiving')->thenReturn(true);
+        $output = Phake::mock('Symfony\Component\Console\Output\OutputInterface');
+        Liberator::liberate($this->_command)->execute($input, $output);
+
+        Phake::inOrder(
+            Phake::verify($output)->writeln('Including loaders...'),
+            Phake::verify($this->_isolator)->require('foo'),
+            Phake::verify($this->_isolator)->require('bar'),
+            Phake::verify($output)->writeln('Generating validator classes...'),
+            Phake::verify($this->_generator)->generate(
+                'baz',
+                array(
+                    'qux',
+                    'doom',
+                ),
+                false
             ),
             Phake::verify($output)->writeln('Deploying Typhoon...'),
             Phake::verify($this->_deploymentManager)->deploy('baz'),

@@ -97,6 +97,12 @@ class GenerateValidatorsCommand extends Command
                 './vendor/autoload.php',
             )
         );
+        $this->addOption(
+            'forgiving',
+            null,
+            InputOption::VALUE_NONE,
+            'Treat undocumented parameter lists as unrestricted.'
+        );
     }
 
     /**
@@ -117,7 +123,8 @@ class GenerateValidatorsCommand extends Command
         $output->writeln('Generating validator classes...');
         $this->generator->generate(
             $input->getArgument('output-path'),
-            $input->getArgument('class-path')
+            $input->getArgument('class-path'),
+            !$input->getOption('forgiving')
         );
 
         $output->writeln('Deploying Typhoon...');

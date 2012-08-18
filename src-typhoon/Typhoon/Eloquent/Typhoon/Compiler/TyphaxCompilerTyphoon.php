@@ -20,20 +20,8 @@ class TyphaxCompilerTyphoon
 {
     public function validateConstructor(array $arguments)
     {
-        $argumentCount = count($arguments);
-
-        if ($argumentCount > 0) {
-            $check = function($argument, $index) {
-                $check = function($value) {
-                    return true;
-                };
-                if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('undefined', $index, $argument, 'mixed');
-                }
-            };
-            for ($i = 0; $i < $argumentCount; $i ++) {
-                $check($arguments[$i], $i);
-            }
+        if (count($arguments) > 0) {
+            throw new UnexpectedArgumentException(0, $arguments[0]);
         }
     }
 

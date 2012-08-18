@@ -175,8 +175,8 @@ class ValidatorClassGeneratorTyphoon
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
             throw new MissingArgumentException('classDefinition', 0, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition');
-        } elseif ($argumentCount > 3) {
-            throw new UnexpectedArgumentException(3, $arguments[3]);
+        } elseif ($argumentCount > 4) {
+            throw new UnexpectedArgumentException(4, $arguments[4]);
         }
 
         $check = function($argument, $index) {
@@ -239,6 +239,18 @@ class ValidatorClassGeneratorTyphoon
                 }
             };
             $check($arguments[2], 2);
+        }
+
+        if ($argumentCount > 3) {
+            $check = function($argument, $index) {
+                $check = function($value) {
+                    return is_bool($value);
+                };
+                if (!$check($argument)) {
+                    throw new UnexpectedArgumentValueException('strict', $index, $argument, 'boolean');
+                }
+            };
+            $check($arguments[3], 3);
         }
     }
 
@@ -507,13 +519,16 @@ class ValidatorClassGeneratorTyphoon
     public function generateMethod(array $arguments)
     {
         $argumentCount = count($arguments);
-        if ($argumentCount < 2) {
+        if ($argumentCount < 3) {
             if ($argumentCount < 1) {
                 throw new MissingArgumentException('method', 0, 'ReflectionMethod');
             }
-            throw new MissingArgumentException('classDefinition', 1, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition');
-        } elseif ($argumentCount > 2) {
-            throw new UnexpectedArgumentException(2, $arguments[2]);
+            if ($argumentCount < 2) {
+                throw new MissingArgumentException('classDefinition', 1, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition');
+            }
+            throw new MissingArgumentException('strict', 2, 'boolean');
+        } elseif ($argumentCount > 3) {
+            throw new UnexpectedArgumentException(3, $arguments[3]);
         }
 
         $check = function($argument, $index) {
@@ -535,18 +550,31 @@ class ValidatorClassGeneratorTyphoon
             }
         };
         $check($arguments[1], 1);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return is_bool($value);
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('strict', $index, $argument, 'boolean');
+            }
+        };
+        $check($arguments[2], 2);
     }
 
     public function parameterList(array $arguments)
     {
         $argumentCount = count($arguments);
-        if ($argumentCount < 2) {
+        if ($argumentCount < 3) {
             if ($argumentCount < 1) {
                 throw new MissingArgumentException('method', 0, 'ReflectionMethod');
             }
-            throw new MissingArgumentException('classDefinition', 1, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition');
-        } elseif ($argumentCount > 2) {
-            throw new UnexpectedArgumentException(2, $arguments[2]);
+            if ($argumentCount < 2) {
+                throw new MissingArgumentException('classDefinition', 1, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition');
+            }
+            throw new MissingArgumentException('strict', 2, 'boolean');
+        } elseif ($argumentCount > 3) {
+            throw new UnexpectedArgumentException(3, $arguments[3]);
         }
 
         $check = function($argument, $index) {
@@ -568,6 +596,16 @@ class ValidatorClassGeneratorTyphoon
             }
         };
         $check($arguments[1], 1);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return is_bool($value);
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('strict', $index, $argument, 'boolean');
+            }
+        };
+        $check($arguments[2], 2);
     }
 
     public function classNameResolver(array $arguments)

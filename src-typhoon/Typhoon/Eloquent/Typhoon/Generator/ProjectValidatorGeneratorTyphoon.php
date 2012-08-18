@@ -126,8 +126,8 @@ class ProjectValidatorGeneratorTyphoon
                 throw new MissingArgumentException('outputPath', 0, 'string');
             }
             throw new MissingArgumentException('classPaths', 1, 'array<string>');
-        } elseif ($argumentCount > 2) {
-            throw new UnexpectedArgumentException(2, $arguments[2]);
+        } elseif ($argumentCount > 3) {
+            throw new UnexpectedArgumentException(3, $arguments[3]);
         }
 
         $check = function($argument, $index) {
@@ -171,6 +171,18 @@ class ProjectValidatorGeneratorTyphoon
             }
         };
         $check($arguments[1], 1);
+
+        if ($argumentCount > 2) {
+            $check = function($argument, $index) {
+                $check = function($value) {
+                    return is_bool($value);
+                };
+                if (!$check($argument)) {
+                    throw new UnexpectedArgumentValueException('strict', $index, $argument, 'boolean');
+                }
+            };
+            $check($arguments[2], 2);
+        }
     }
 
     public function buildClassMap(array $arguments)

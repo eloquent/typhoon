@@ -10,18 +10,12 @@
  * file that is distributed with Typhoon.
  */
 
-namespace Typhoon\Eloquent\Typhoon\Console;
+namespace Typhoon\Eloquent\Typhoon\TestFixture\GeneratorExamples;
 
 use Typhoon\Exception\MissingArgumentException;
 use Typhoon\Exception\UnexpectedArgumentException;
 use Typhoon\Exception\UnexpectedArgumentValueException;
 
-class ApplicationTyphoon
+class EmptyClassTyphoon
 {
-    public function validateConstructor(array $arguments)
-    {
-        if (count($arguments) > 0) {
-            throw new UnexpectedArgumentException(0, $arguments[0]);
-        }
-    }
 }

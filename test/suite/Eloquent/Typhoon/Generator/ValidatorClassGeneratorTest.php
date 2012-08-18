@@ -95,7 +95,7 @@ class ValidatorClassGeneratorTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider generateData
      */
-    public function testGenerate($className)
+    public function testGenerateStrict($className)
     {
         $classPath =
             __DIR__.
@@ -105,7 +105,7 @@ class ValidatorClassGeneratorTest extends PHPUnit_Framework_TestCase
         ;
         $expectedPath =
             __DIR__.
-            '/../../../../src/Typhoon/Eloquent/Typhoon/TestFixture/GeneratorExamples/'.
+            '/../../../../src/Typhoon/Eloquent/Typhoon/TestFixture/StrictGeneratorExamples/'.
             $className.
             'Typhoon.php'
         ;
@@ -114,6 +114,30 @@ class ValidatorClassGeneratorTest extends PHPUnit_Framework_TestCase
         $expected = file_get_contents($expectedPath);
 
         $this->assertSame($expected, $this->_generator->generate($classDefinition));
+    }
+
+    /**
+     * @dataProvider generateData
+     */
+    public function testGenerateNonStrict($className)
+    {
+        $classPath =
+            __DIR__.
+            '/../../../../src/Eloquent/Typhoon/TestFixture/GeneratorExamples/'.
+            $className.
+            '.php'
+        ;
+        $expectedPath =
+            __DIR__.
+            '/../../../../src/Typhoon/Eloquent/Typhoon/TestFixture/NonStrictGeneratorExamples/'.
+            $className.
+            'Typhoon.php'
+        ;
+        $classDefinitions = $this->_classMapper->classesByFile($classPath);
+        $classDefinition = array_pop($classDefinitions);
+        $expected = file_get_contents($expectedPath);
+
+        $this->assertSame($expected, $this->_generator->generate($classDefinition, $namespaceName, $className, false));
     }
 
     public function testGenerateFromSource()

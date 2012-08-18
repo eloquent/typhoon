@@ -53,7 +53,18 @@ class ProjectValidatorGeneratorTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testGenerate()
+    public function generateData()
+    {
+        return array(
+            'Strict generation' => array(true),
+            'Non-strict generation' => array(false),
+        );
+    }
+
+    /**
+     * @dataProvider generateData
+     */
+    public function testGenerate($strict)
     {
         $classDefinitionA = Phake::mock('Eloquent\Typhoon\ClassMapper\ClassDefinition');
         $classDefinitionB = Phake::mock('Eloquent\Typhoon\ClassMapper\ClassDefinition');
@@ -71,17 +82,19 @@ class ProjectValidatorGeneratorTest extends PHPUnit_Framework_TestCase
         ;
         Phake::when($this->_classGenerator)
             ->generate(
-                $this->identicalTo($classDefinitionA)
-                , Phake::setReference('Namespace\Name\A')
-                , Phake::setReference('Class_Name_A')
+                $this->identicalTo($classDefinitionA),
+                Phake::setReference('Namespace\Name\A'),
+                Phake::setReference('Class_Name_A'),
+                $strict
             )
             ->thenReturn('A source')
         ;
         Phake::when($this->_classGenerator)
             ->generate(
-                $this->identicalTo($classDefinitionB)
-                , Phake::setReference('Namespace\Name\B')
-                , Phake::setReference('Class_Name_B')
+                $this->identicalTo($classDefinitionB),
+                Phake::setReference('Namespace\Name\B'),
+                Phake::setReference('Class_Name_B'),
+                $strict
             )
             ->thenReturn('B source')
         ;
@@ -95,7 +108,8 @@ class ProjectValidatorGeneratorTest extends PHPUnit_Framework_TestCase
             array(
                 'bar',
                 'baz',
-            )
+            ),
+            $strict
         );
 
         Phake::inOrder(
@@ -103,7 +117,8 @@ class ProjectValidatorGeneratorTest extends PHPUnit_Framework_TestCase
             Phake::verify($this->_classGenerator)->generate(
                 $this->identicalTo($classDefinitionA),
                 null,
-                null
+                null,
+                $strict
             ),
             Phake::verify($this->_isolator)->is_dir('foo/Namespace/Name/A/Class/Name'),
             Phake::verify($this->_isolator)->file_put_contents(
@@ -113,7 +128,8 @@ class ProjectValidatorGeneratorTest extends PHPUnit_Framework_TestCase
             Phake::verify($this->_classGenerator)->generate(
                 $this->identicalTo($classDefinitionB),
                 null,
-                null
+                null,
+                $strict
             ),
             Phake::verify($this->_isolator)->is_dir('foo/Namespace/Name/B/Class/Name'),
             Phake::verify($this->_isolator)->mkdir(
