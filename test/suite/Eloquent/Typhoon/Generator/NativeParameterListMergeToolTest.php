@@ -440,15 +440,10 @@ class NativeParameterListMergeToolTest extends PHPUnit_Framework_TestCase
         ParameterList $nativeParameterList
     ) {
         $this->setExpectedException($expected, $expectedMessage);
-        try {
         $this->_mergeTool->merge(
             'foo',
             $documentedParameterList,
             $nativeParameterList
         );
-        } catch (\PHPUnit_Framework_Error_Warning $e) {
-            echo $e;
-            throw $e;
-        }
     }
 }
