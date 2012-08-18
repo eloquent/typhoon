@@ -32,9 +32,11 @@ use Typhoon\Typhoon;
 
 class ParameterListParser implements Visitor
 {
-    public function __construct(
-        TyphaxParser $typhaxParser = null
-    ) {
+    /**
+     * @param TyphaxParser|null $typhaxParser
+     */
+    public function __construct(TyphaxParser $typhaxParser = null)
+    {
         $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
         if (null === $typhaxParser) {
             $typhaxParser = new TyphaxParser;

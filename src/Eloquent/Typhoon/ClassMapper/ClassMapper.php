@@ -124,7 +124,7 @@ class ClassMapper
     }
 
     /**
-     * @param array<string|array> $tokens
+     * @param array<string|array> &$tokens
      *
      * @return string
      */
@@ -153,7 +153,7 @@ class ClassMapper
     }
 
     /**
-     * @param array<string|array> $tokens
+     * @param array<string|array> &$tokens
      *
      * @return tuple<string,string|null>|null
      */
@@ -200,7 +200,7 @@ class ClassMapper
     }
 
     /**
-     * @param array<string|array> $tokens
+     * @param array<string|array> &$tokens
      *
      * @return string
      */

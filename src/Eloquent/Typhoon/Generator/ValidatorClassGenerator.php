@@ -18,7 +18,6 @@ use Eloquent\Typhoon\Compiler\ParameterListCompiler;
 use Eloquent\Typhoon\Parameter\ParameterList;
 use Eloquent\Typhoon\Parser\ParameterListParser;
 use Eloquent\Typhoon\Resolver\ParameterListClassNameResolver;
-use Eloquent\Typhoon\Resolver\ParameterListReflectionResolver;
 use Icecave\Isolator\Isolator;
 use ReflectionClass;
 use ReflectionMethod;
@@ -30,12 +29,14 @@ class ValidatorClassGenerator
      * @param ParameterListParser|null $parser
      * @param ParameterListCompiler|null $compiler
      * @param ClassMapper|null $classMapper
+     * @param NativeParameterListMergeTool $nativeMergeTool
      * @param Isolator|null $isolator
      */
     public function __construct(
         ParameterListParser $parser = null,
         ParameterListCompiler $compiler = null,
         ClassMapper $classMapper = null,
+        NativeParameterListMergeTool $nativeMergeTool = null,
         Isolator $isolator = null
     ) {
         $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
@@ -48,10 +49,14 @@ class ValidatorClassGenerator
         if (null === $classMapper) {
             $classMapper = new ClassMapper;
         }
+        if (null === $nativeMergeTool) {
+            $nativeMergeTool = new NativeParameterListMergeTool;
+        }
 
         $this->parser = $parser;
         $this->compiler = $compiler;
         $this->classMapper = $classMapper;
+        $this->nativeMergeTool = $nativeMergeTool;
         $this->isolator = Isolator::get($isolator);
     }
 
@@ -83,6 +88,16 @@ class ValidatorClassGenerator
         $this->typhoon->classMapper(func_get_args());
 
         return $this->classMapper;
+    }
+
+    /**
+     * @return NativeParameterListMergeTool
+     */
+    public function nativeMergeTool()
+    {
+        $this->typhoon->nativeMergeTool(func_get_args());
+
+        return $this->nativeMergeTool;
     }
 
     /**
@@ -282,10 +297,17 @@ EOD;
             $parameterList = $this->parser()->parseBlockComment($blockComment);
         }
 
-        return $parameterList
-            ->accept($this->classNameResolver($classDefinition))
-            ->accept($this->reflectionResolver($method))
-        ;
+        return $this->nativeMergeTool()->merge(
+            sprintf(
+                '%s::%s',
+                $method->getDeclaringClass()->getName(),
+                $method->getName()
+            ),
+            $parameterList
+                ->accept($this->classNameResolver($classDefinition))
+            ,
+            $this->parser()->parseReflector($method)
+        );
     }
 
     /**
@@ -301,17 +323,6 @@ EOD;
                 $classDefinition->classNameResolver()
             )
         );
-    }
-
-    /**
-     * @param ReflectionMethod $method
-     *
-     * @return ParameterListClassNameResolver
-     */
-    protected function reflectionResolver(ReflectionMethod $method) {
-        $this->typhoon->reflectionResolver(func_get_args());
-
-        return new ParameterListReflectionResolver($method);
     }
 
     /**

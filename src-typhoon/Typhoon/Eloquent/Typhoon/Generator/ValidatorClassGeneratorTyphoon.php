@@ -21,8 +21,8 @@ class ValidatorClassGeneratorTyphoon
     public function validateConstructor(array $arguments)
     {
         $argumentCount = count($arguments);
-        if ($argumentCount > 4) {
-            throw new UnexpectedArgumentException(4, $arguments[4]);
+        if ($argumentCount > 5) {
+            throw new UnexpectedArgumentException(5, $arguments[5]);
         }
 
         if ($argumentCount > 0) {
@@ -106,6 +106,18 @@ class ValidatorClassGeneratorTyphoon
         if ($argumentCount > 3) {
             $check = function($argument, $index) {
                 $check = function($value) {
+                    return $value instanceof \Eloquent\Typhoon\Generator\NativeParameterListMergeTool;
+                };
+                if (!$check($argument)) {
+                    throw new UnexpectedArgumentValueException('nativeMergeTool', $index, $argument, 'Eloquent\\Typhoon\\Generator\\NativeParameterListMergeTool');
+                }
+            };
+            $check($arguments[3], 3);
+        }
+
+        if ($argumentCount > 4) {
+            $check = function($argument, $index) {
+                $check = function($value) {
                     $check = function($value) {
                         return $value instanceof \Icecave\Isolator\Isolator;
                     };
@@ -126,7 +138,7 @@ class ValidatorClassGeneratorTyphoon
                     throw new UnexpectedArgumentValueException('isolator', $index, $argument, 'Icecave\\Isolator\\Isolator|null');
                 }
             };
-            $check($arguments[3], 3);
+            $check($arguments[4], 4);
         }
     }
 
@@ -145,6 +157,13 @@ class ValidatorClassGeneratorTyphoon
     }
 
     public function classMapper(array $arguments)
+    {
+        if (count($arguments) > 0) {
+            throw new UnexpectedArgumentException(0, $arguments[0]);
+        }
+    }
+
+    public function nativeMergeTool(array $arguments)
     {
         if (count($arguments) > 0) {
             throw new UnexpectedArgumentException(0, $arguments[0]);
@@ -566,26 +585,6 @@ class ValidatorClassGeneratorTyphoon
             };
             if (!$check($argument)) {
                 throw new UnexpectedArgumentValueException('classDefinition', $index, $argument, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition');
-            }
-        };
-        $check($arguments[0], 0);
-    }
-
-    public function reflectionResolver(array $arguments)
-    {
-        $argumentCount = count($arguments);
-        if ($argumentCount < 1) {
-            throw new MissingArgumentException('method', 0, 'ReflectionMethod');
-        } elseif ($argumentCount > 1) {
-            throw new UnexpectedArgumentException(1, $arguments[1]);
-        }
-
-        $check = function($argument, $index) {
-            $check = function($value) {
-                return $value instanceof \ReflectionMethod;
-            };
-            if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('method', $index, $argument, 'ReflectionMethod');
             }
         };
         $check($arguments[0], 0);

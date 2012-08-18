@@ -32,12 +32,14 @@ class ValidatorClassGeneratorTest extends PHPUnit_Framework_TestCase
         $this->_classMapper = Phake::partialMock(
             'Eloquent\Typhoon\ClassMapper\ClassMapper'
         );
+        $this->_nativeMergeTool = new NativeParameterListMergeTool;
         $this->_isolator = Phake::mock('IceCave\Isolator\Isolator');
         $this->_generator = Phake::partialMock(
             __NAMESPACE__.'\ValidatorClassGenerator',
             $this->_parser,
             $this->_compiler,
             $this->_classMapper,
+            $this->_nativeMergeTool,
             $this->_isolator
         );
     }
@@ -47,6 +49,7 @@ class ValidatorClassGeneratorTest extends PHPUnit_Framework_TestCase
         $this->assertSame($this->_parser, $this->_generator->parser());
         $this->assertSame($this->_compiler, $this->_generator->compiler());
         $this->assertSame($this->_classMapper, $this->_generator->classMapper());
+        $this->assertSame($this->_nativeMergeTool, $this->_generator->nativeMergeTool());
     }
 
     public function testConstructorDefaults()
@@ -64,6 +67,10 @@ class ValidatorClassGeneratorTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf(
             'Eloquent\Typhoon\ClassMapper\ClassMapper',
             $generator->classMapper()
+        );
+        $this->assertInstanceOf(
+            __NAMESPACE__.'\NativeParameterListMergeTool',
+            $generator->nativeMergeTool()
         );
     }
 

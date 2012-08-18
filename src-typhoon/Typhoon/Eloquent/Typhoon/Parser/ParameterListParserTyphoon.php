@@ -21,19 +21,34 @@ class ParameterListParserTyphoon
     public function validateConstructor(array $arguments)
     {
         $argumentCount = count($arguments);
+        if ($argumentCount > 1) {
+            throw new UnexpectedArgumentException(1, $arguments[1]);
+        }
 
         if ($argumentCount > 0) {
             $check = function($argument, $index) {
                 $check = function($value) {
-                    return true;
+                    $check = function($value) {
+                        return $value instanceof \Eloquent\Typhax\Parser\Parser;
+                    };
+                    if ($check($value)) {
+                        return true;
+                    }
+
+                    $check = function($value) {
+                        return $value === null;
+                    };
+                    if ($check($value)) {
+                        return true;
+                    }
+
+                    return false;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('undefined', $index, $argument, 'mixed');
+                    throw new UnexpectedArgumentValueException('typhaxParser', $index, $argument, 'Eloquent\\Typhax\\Parser\\Parser|null');
                 }
             };
-            for ($i = 0; $i < $argumentCount; $i ++) {
-                $check($arguments[$i], $i);
-            }
+            $check($arguments[0], 0);
         }
     }
 
