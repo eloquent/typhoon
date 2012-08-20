@@ -16,7 +16,7 @@
         "eloquent/asplode": "1.*",
         "eloquent/blox": "1.*",
         "eloquent/cosmos": "1.*",
-        "eloquent/typhax": ">=0.5",
+        "eloquent/typhax": ">=0.6",
         "icecave/isolator": ">=2.1,<3",
         "icecave/visita": "0.1.*",
         "symfony/console": "2.*"
