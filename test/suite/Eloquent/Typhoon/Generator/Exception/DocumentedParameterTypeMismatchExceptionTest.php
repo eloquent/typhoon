@@ -31,6 +31,7 @@ class DocumentedParameterTypeMismatchExceptionTest extends PHPUnit_Framework_Tes
         $typeRenderer = new TypeRenderer;
         $exception = new DocumentedParameterTypeMismatchException(
             'foo',
+            'bar',
             $documentedType,
             $nativeType,
             $previous,
@@ -38,10 +39,11 @@ class DocumentedParameterTypeMismatchExceptionTest extends PHPUnit_Framework_Tes
         );
 
         $this->assertSame(
-            "Documented parameter type 'array' does not match defined parameter type 'array|null' in 'foo'.",
+            "Documented type 'array' is not compatible with defined type 'array|null' for parameter 'bar' in 'foo'.",
             $exception->getMessage()
         );
         $this->assertSame('foo', $exception->functionName());
+        $this->assertSame('bar', $exception->parameterName());
         $this->assertSame($documentedType, $exception->documentedType());
         $this->assertSame($nativeType, $exception->nativeType());
         $this->assertSame($typeRenderer, $exception->typeRenderer());
@@ -58,15 +60,17 @@ class DocumentedParameterTypeMismatchExceptionTest extends PHPUnit_Framework_Tes
         ));
         $exception = new DocumentedParameterTypeMismatchException(
             'foo',
+            'bar',
             $documentedType,
             $nativeType
         );
 
         $this->assertSame(
-            "Documented parameter type 'array' does not match defined parameter type 'array|null' in 'foo'.",
+            "Documented type 'array' is not compatible with defined type 'array|null' for parameter 'bar' in 'foo'.",
             $exception->getMessage()
         );
         $this->assertSame('foo', $exception->functionName());
+        $this->assertSame('bar', $exception->parameterName());
         $this->assertSame($documentedType, $exception->documentedType());
         $this->assertSame($nativeType, $exception->nativeType());
         $this->assertInstanceOf('Eloquent\Typhax\Renderer\TypeRenderer', $exception->typeRenderer());

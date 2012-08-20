@@ -21,6 +21,7 @@ final class DocumentedParameterTypeMismatchException extends LogicException
 {
     /**
      * @param string $functionName
+     * @param string $parameterName
      * @param Type $documentedType
      * @param Type $nativeType
      * @param Exception|null $previous
@@ -28,6 +29,7 @@ final class DocumentedParameterTypeMismatchException extends LogicException
      */
     public function __construct(
         $functionName,
+        $parameterName,
         Type $documentedType,
         Type $nativeType,
         Exception $previous = null,
@@ -39,15 +41,17 @@ final class DocumentedParameterTypeMismatchException extends LogicException
         }
 
         $this->functionName = $functionName;
+        $this->parameterName = $parameterName;
         $this->documentedType = $documentedType;
         $this->nativeType = $nativeType;
         $this->typeRenderer = $typeRenderer;
 
         parent::__construct(
             sprintf(
-                "Documented parameter type '%s' does not match defined parameter type '%s' in '%s'.",
+                "Documented type '%s' is not compatible with defined type '%s' for parameter '%s' in '%s'.",
                 $this->documentedType()->accept($this->typeRenderer()),
                 $this->nativeType()->accept($this->typeRenderer()),
+                $this->parameterName(),
                 $this->functionName()
             ),
             0,
@@ -63,6 +67,16 @@ final class DocumentedParameterTypeMismatchException extends LogicException
         $this->typhoon->functionName(func_get_args());
 
         return $this->functionName;
+    }
+
+    /**
+     * @return string
+     */
+    public function parameterName()
+    {
+        $this->typhoon->parameterName(func_get_args());
+
+        return $this->parameterName;
     }
 
     /**
@@ -96,6 +110,7 @@ final class DocumentedParameterTypeMismatchException extends LogicException
     }
 
     private $functionName;
+    private $parameterName;
     private $documentedType;
     private $nativeType;
     private $typeRenderer;
