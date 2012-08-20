@@ -72,7 +72,7 @@ class TypicalClassTyphoon
             $check = function($argument, $index) {
                 $check = function($value) {
                     $check = function($value) {
-                        return true;
+                        return $value instanceof \stdClass;
                     };
                     if ($check($value)) {
                         return true;
@@ -88,7 +88,7 @@ class TypicalClassTyphoon
                     return false;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('bar', $index, $argument, 'mixed|null');
+                    throw new UnexpectedArgumentValueException('bar', $index, $argument, 'stdClass|null');
                 }
             };
             $check($arguments[1], 1);

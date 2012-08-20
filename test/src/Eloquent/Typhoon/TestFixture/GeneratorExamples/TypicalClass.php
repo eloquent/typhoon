@@ -11,6 +11,8 @@
 
 namespace Eloquent\Typhoon\TestFixture\GeneratorExamples;
 
+use stdClass;
+
 class TypicalClass
 {
     /**
@@ -24,10 +26,10 @@ class TypicalClass
 
     /**
      * @param float $foo
-     * @param Object|null $bar
+     * @param stdClass|null $bar
      * @param stream {writable: true} &$baz,...
      */
-    protected function typicalMethod($foo, Object $bar = null)
+    protected function typicalMethod($foo, stdClass $bar = null)
     {
     }
 

@@ -27,7 +27,9 @@ use Eloquent\Typhax\Type\TraversableType;
 use Eloquent\Typhoon\Parameter\ParameterList;
 use Eloquent\Typhoon\Parameter\Parameter;
 use PHPUnit_Framework_TestCase;
+use ReflectionClass;
 use ReflectionMethod;
+use stdClass;
 
 class ParameterListParserTest extends PHPUnit_Framework_TestCase
 {
@@ -231,12 +233,12 @@ EOD;
     protected function typicalMethod(
         $foo,
         array $bar,
-        Blargh $baz,
+        stdClass $baz,
         &$qux,
         $doom = 1,
         array $splat = array(),
         array $ping = null,
-        Blargh $pong = null,
+        stdClass $pong = null,
         &$pang = 'peng',
         $pung = null
     ) {
@@ -266,7 +268,7 @@ EOD;
             ),
             new Parameter(
                 'baz',
-                new ObjectType(__NAMESPACE__.'\Blargh'),
+                new ObjectType('stdClass'),
                 null,
                 false,
                 false
@@ -313,7 +315,7 @@ EOD;
             new Parameter(
                 'pong',
                 new OrType(array(
-                    new ObjectType(__NAMESPACE__.'\Blargh'),
+                    new ObjectType('stdClass'),
                     new NullType,
                 )),
                 null,
@@ -341,8 +343,9 @@ EOD;
 
     public function testFromReflectorCallable()
     {
-        if (version_compare(PHP_VERSION, '5.4', '<')) {
-            $this->markTestSkipped('Requires PHP >= 5.4.');
+        $reflectorReflector = new ReflectionClass('ReflectionParameter');
+        if (!$reflectorReflector->hasMethod('isCallable')) {
+            $this->markTestSkipped('Requires ReflectionParameter::isCallable().');
         }
 
         $reflector = new ReflectionMethod(
@@ -370,17 +373,5 @@ EOD;
         ));
 
         $this->assertEquals($expected, $this->_parser->parseReflector($reflector));
-    }
-
-    public function testParseParameterReflectorStringFailureInvalidString()
-    {
-        $this->setExpectedException(__NAMESPACE__.'\Exception\InvalidParameterReflectorString');
-        $this->_parser->parseParameterReflectorString('foo');
-    }
-
-    public function testParseParameterReflectorStringFailureInvalidType()
-    {
-        $this->setExpectedException(__NAMESPACE__.'\Exception\InvalidParameterReflectorString');
-        $this->_parser->parseParameterReflectorString('Parameter #1 [ <required> string<mixed> $foo ]');
     }
 }

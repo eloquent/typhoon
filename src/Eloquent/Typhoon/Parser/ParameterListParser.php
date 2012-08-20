@@ -19,14 +19,17 @@ use Eloquent\Blox\DocumentationBlockParser;
 use Eloquent\Typhax\Parser\Parser as TyphaxParser;
 use Eloquent\Typhax\Parser\Exception\UnexpectedTokenException;
 use Eloquent\Typhax\Type\ArrayType;
+use Eloquent\Typhax\Type\CallableType;
 use Eloquent\Typhax\Type\MixedType;
 use Eloquent\Typhax\Type\NullType;
 use Eloquent\Typhax\Type\ObjectType;
+use Eloquent\Typhax\Type\OrType;
 use Eloquent\Typhax\Type\TraversableType;
 use Eloquent\Typhax\Type\Type;
 use Eloquent\Typhoon\Parameter\Parameter;
 use Eloquent\Typhoon\Parameter\ParameterList;
 use ReflectionFunctionAbstract;
+use ReflectionObject;
 use ReflectionParameter;
 use Typhoon\Typhoon;
 
@@ -104,44 +107,43 @@ class ParameterListParser implements Visitor
     {
         $this->typhoon->parseParameterReflector(func_get_args());
 
+        if ($class = $reflector->getClass()) {
+            $type = new ObjectType($class->getName());
+        } elseif ($reflector->isArray()) {
+            $type = new TraversableType(
+                new ArrayType,
+                new MixedType,
+                new MixedType
+            );
+        } else {
+            $reflectorReflector = new ReflectionObject($reflector);
+            if (
+                $reflectorReflector->hasMethod('isCallable') &&
+                $reflector->isCallable()
+            ) {
+                $type = new CallableType;
+            } else {
+                $type = new MixedType;
+            }
+        }
+
+        if (
+            !$type instanceof MixedType &&
+            $reflector->allowsNull()
+        ) {
+            $type = new OrType(array(
+                $type,
+                new NullType,
+            ));
+        }
+
         return new Parameter(
             $reflector->getName(),
-            $this->parseParameterReflectorString(
-                strval($reflector)
-            )->type(),
+            $type,
             null,
             $reflector->isOptional(),
             $reflector->isPassedByReference()
         );
-    }
-
-    /**
-     * @param string $parameterString
-     *
-     * @return Parameter
-     */
-    public function parseParameterReflectorString($parameterString)
-    {
-        $this->typhoon->parseParameterReflectorString(func_get_args());
-        $pattern = '/^Parameter #\d \[ <(?<optional>required|optional)>(?: (?<type>.*))? (?<byReference>&)?\$(?<name>\w+)/';
-
-        if (!preg_match($pattern, $parameterString, $matches)) {
-            throw new Exception\InvalidParameterReflectorString($parameterString);
-        }
-
-        try {
-            $parameter = new Parameter(
-                $matches['name'],
-                $this->parseParameterReflectorTypeString($matches['type']),
-                null,
-                'optional' === $matches['optional'],
-                '' !== $matches['byReference']
-            );
-        } catch (UnexpectedTokenException $e) {
-            throw new Exception\InvalidParameterReflectorString($parameterString, $e);
-        }
-
-        return $parameter;
     }
 
     /**
@@ -211,24 +213,6 @@ class ParameterListParser implements Visitor
     }
 
     const PATTERN_VARIABLE_LENGTH = '/^.*\s&?\$\w+,\.{3}(?:$|\s)/';
-
-    /**
-     * @param string $typeString
-     *
-     * @return Type
-     */
-    protected function parseParameterReflectorTypeString($typeString)
-    {
-        $this->typhoon->parseParameterReflectorTypeString(func_get_args());
-
-        if ('' === $typeString) {
-            return new MixedType;
-        }
-
-        return $this->typhaxParser()->parse(
-            str_replace(' or NULL', '|null', $typeString)
-        );
-    }
 
     /**
      * @param string $content
