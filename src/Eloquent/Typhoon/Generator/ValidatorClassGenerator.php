@@ -104,15 +104,13 @@ class ValidatorClassGenerator
      * @param ClassDefinition $classDefinition
      * @param string|null &$namespaceName
      * @param string|null &$className
-     * @param boolean $strict
      *
      * @return string
      */
     public function generate(
         ClassDefinition $classDefinition,
         &$namespaceName = null,
-        &$className = null,
-        $strict = true
+        &$className = null
     ) {
         $this->typhoon->generate(func_get_args());
 
@@ -133,8 +131,7 @@ class ValidatorClassGenerator
 
             $methods .= $this->generateMethod(
                 $method,
-                $classDefinition,
-                $strict
+                $classDefinition
             );
         }
 
@@ -255,12 +252,10 @@ EOD;
     /**
      * @param ReflectionMethod $method
      * @param ClassDefinition $classDefinition
-     * @param boolean $strict
      */
     protected function generateMethod(
         ReflectionMethod $method,
-        ClassDefinition $classDefinition,
-        $strict
+        ClassDefinition $classDefinition
     ) {
         $this->typhoon->generateMethod(func_get_args());
 
@@ -270,7 +265,7 @@ EOD;
         }
 
         $content = $this->indent(
-            $this->parameterList($method, $classDefinition, $strict)
+            $this->parameterList($method, $classDefinition)
                 ->accept($this->compiler())
             ,
             2
@@ -288,22 +283,16 @@ EOD;
     /**
      * @param ReflectionMethod $method
      * @param ClassDefinition $classDefinition
-     * @param boolean $strict
      */
     protected function parameterList(
         ReflectionMethod $method,
-        ClassDefinition $classDefinition,
-        $strict
+        ClassDefinition $classDefinition
     ) {
         $this->typhoon->parameterList(func_get_args());
 
         $blockComment = $method->getDocComment();
         if (false === $blockComment) {
-            if ($strict) {
-                $parameterList = new ParameterList;
-            } else {
-                $parameterList = ParameterList::createUnrestricted();
-            }
+            $parameterList = new ParameterList;
         } else {
             $parameterList = $this->parser()->parseBlockComment($blockComment);
         }

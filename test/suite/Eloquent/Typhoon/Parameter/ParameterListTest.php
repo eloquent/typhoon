@@ -78,21 +78,4 @@ class ParameterListTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame($expected, $list->requiredParameters());
     }
-
-    public function testCreateUnrestricted()
-    {
-        $expected = new ParameterList(
-            array(
-                new Parameter(
-                    'undefined',
-                    new MixedType,
-                    null,
-                    true
-                ),
-            ),
-            true
-        );
-
-        $this->assertEquals($expected, ParameterList::createUnrestricted());
-    }
 }

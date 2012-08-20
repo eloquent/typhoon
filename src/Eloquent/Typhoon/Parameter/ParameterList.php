@@ -18,26 +18,6 @@ use Typhoon\Typhoon;
 class ParameterList extends Host
 {
     /**
-     * @return ParameterList
-     */
-    public static function createUnrestricted()
-    {
-        Typhoon::get(__CLASS__)->createUnrestricted(func_get_args());
-
-        return new ParameterList(
-            array(
-                new Parameter(
-                    'undefined',
-                    new MixedType,
-                    null,
-                    true
-                ),
-            ),
-            true
-        );
-    }
-
-    /**
      * @param array<Parameter> $parameters
      * @param boolean $variableLength
      */

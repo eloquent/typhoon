@@ -63,12 +63,10 @@ class ProjectValidatorGenerator
     /**
      * @param string $outputPath
      * @param array<string> $classPaths
-     * @param boolean $strict
      */
     public function generate(
         $outputPath,
-        array $classPaths,
-        $strict = true
+        array $classPaths
     ) {
         $this->typhoon->generate(func_get_args());
 
@@ -78,8 +76,7 @@ class ProjectValidatorGenerator
             $source = $this->classGenerator()->generate(
                 $classDefinition,
                 $namespaceName,
-                $className,
-                $strict
+                $className
             );
 
             $path =

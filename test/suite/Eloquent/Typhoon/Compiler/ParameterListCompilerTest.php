@@ -14,6 +14,7 @@ namespace Eloquent\Typhoon\Compiler;
 use Eloquent\Typhax\Renderer\TypeRenderer;
 use Eloquent\Typhax\Type\FloatType;
 use Eloquent\Typhax\Type\IntegerType;
+use Eloquent\Typhax\Type\MixedType;
 use Eloquent\Typhax\Type\StringType;
 use Eloquent\Typhoon\Parameter\Parameter;
 use Eloquent\Typhoon\Parameter\ParameterList;
@@ -355,7 +356,18 @@ EOD;
 
     public function testVisitParameterListUnrestricted()
     {
-        $list = ParameterList::createUnrestricted();
+        $list = new ParameterList(
+            array(
+                new Parameter(
+                    'undefined',
+                    new MixedType,
+                    null,
+                    true,
+                    false
+                ),
+            ),
+            true
+        );
 
         $expected = <<<'EOD'
 $argumentCount = count($arguments);
