@@ -18,13 +18,6 @@ use Typhoon\Exception\UnexpectedArgumentValueException;
 
 class ParameterListTyphoon
 {
-    public function createUnrestricted(array $arguments)
-    {
-        if (count($arguments) > 0) {
-            throw new UnexpectedArgumentException(0, $arguments[0]);
-        }
-    }
-
     public function validateConstructor(array $arguments)
     {
         $argumentCount = count($arguments);
