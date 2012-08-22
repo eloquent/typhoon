@@ -59,12 +59,14 @@ class ParameterListParser implements Visitor
     }
 
     /**
+     * @param string $functionName
      * @param string $blockComment
      * @param DocumentationBlockParser|null $documentationParser
      *
      * @return ParameterList
      */
     public function parseBlockComment(
+        $functionName,
         $blockComment,
         DocumentationBlockParser $documentationParser = null
     ) {
@@ -74,11 +76,19 @@ class ParameterListParser implements Visitor
             $documentationParser = new BloxParser;
         }
 
-        return
-            $documentationParser
-            ->parseBlockComment($blockComment)
-            ->accept($this)
-        ;
+        try {
+            $parameterList =
+                $documentationParser
+                ->parseBlockComment($blockComment)
+                ->accept($this)
+            ;
+        } catch (Exception\ParseException $e) {
+            throw new Exception\InvalidFunctionDocumentationException(
+                $functionName
+            );
+        }
+
+        return $parameterList;
     }
 
     /**

@@ -294,19 +294,24 @@ EOD;
     ) {
         $this->typhoon->parameterList(func_get_args());
 
+        $methodName = sprintf(
+            '%s::%s',
+            $method->getDeclaringClass()->getName(),
+            $method->getName()
+        );
+
         $blockComment = $method->getDocComment();
         if (false === $blockComment) {
             $parameterList = new ParameterList;
         } else {
-            $parameterList = $this->parser()->parseBlockComment($blockComment);
+            $parameterList = $this->parser()->parseBlockComment(
+                $methodName,
+                $blockComment
+            );
         }
 
         return $this->nativeMergeTool()->merge(
-            sprintf(
-                '%s::%s',
-                $method->getDeclaringClass()->getName(),
-                $method->getName()
-            ),
+            $methodName,
             $parameterList
                 ->accept($this->classNameResolver($classDefinition))
             ,

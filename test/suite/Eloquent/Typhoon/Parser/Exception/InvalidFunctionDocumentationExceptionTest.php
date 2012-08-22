@@ -14,18 +14,18 @@ namespace Eloquent\Typhoon\Parser\Exception;
 use Phake;
 use PHPUnit_Framework_TestCase;
 
-class InvalidParameterReflectorStringTest extends PHPUnit_Framework_TestCase
+class InvalidFunctionDocumentationExceptionTest extends PHPUnit_Framework_TestCase
 {
     public function testException()
     {
         $previous = Phake::mock('Exception');
-        $exception = new InvalidParameterReflectorString(
+        $exception = new InvalidFunctionDocumentationException(
             'foo',
             $previous
         );
 
-        $this->assertSame("Unable to parse ReflectionParameter string 'foo'.", $exception->getMessage());
-        $this->assertSame('foo', $exception->parameterString());
+        $this->assertSame("Invalid param tags found in the documentation for foo().", $exception->getMessage());
+        $this->assertSame('foo', $exception->functionName());
         $this->assertSame(0, $exception->getCode());
         $this->assertSame($previous, $exception->getPrevious());
     }

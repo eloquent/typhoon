@@ -71,7 +71,7 @@ class ParameterListParserTest extends PHPUnit_Framework_TestCase
 EOD;
         $expected = new ParameterList;
 
-        $this->assertEquals($expected, $this->_parser->parseBlockComment($source));
+        $this->assertEquals($expected, $this->_parser->parseBlockComment('foo', $source));
     }
 
     public function testVisitParameterList()
@@ -118,7 +118,7 @@ EOD;
             $barParameter,
             $bazParameter,
         ));
-        $actual = $this->_parser->parseBlockComment($source);
+        $actual = $this->_parser->parseBlockComment('foo', $source);
 
         $this->assertEquals($expected, $actual);
         $this->assertInstanceOf(
@@ -155,7 +155,7 @@ EOD;
             true
         );
 
-        $this->assertEquals($expected, $this->_parser->parseBlockComment($source));
+        $this->assertEquals($expected, $this->_parser->parseBlockComment('foo', $source));
     }
 
     public function testVisitParameterListVariableLengthNoDescription()
@@ -185,7 +185,7 @@ EOD;
             true
         );
 
-        $this->assertEquals($expected, $this->_parser->parseBlockComment($source));
+        $this->assertEquals($expected, $this->_parser->parseBlockComment('foo', $source));
     }
 
     public function testVisitInvalidParameterTagFailureNoType()
@@ -203,10 +203,10 @@ EOD;
 EOD;
 
         $this->setExpectedException(
-            __NAMESPACE__.'\Exception\UnexpectedContentException',
-            "Unexpected content at position 0. Expected 'type'."
+            __NAMESPACE__.'\Exception\InvalidFunctionDocumentationException',
+            "Invalid param tags found in the documentation for foo()."
         );
-        $this->_parser->parseBlockComment($source);
+        $this->_parser->parseBlockComment('foo', $source);
     }
 
     public function testVisitInvalidParameterTagFailureNoName()
@@ -224,10 +224,10 @@ EOD;
 EOD;
 
         $this->setExpectedException(
-            __NAMESPACE__.'\Exception\UnexpectedContentException',
-            "Unexpected content at position 7. Expected 'name'."
+            __NAMESPACE__.'\Exception\InvalidFunctionDocumentationException',
+            "Invalid param tags found in the documentation for foo()."
         );
-        $this->_parser->parseBlockComment($source);
+        $this->_parser->parseBlockComment('foo', $source);
     }
 
     protected function typicalMethod(

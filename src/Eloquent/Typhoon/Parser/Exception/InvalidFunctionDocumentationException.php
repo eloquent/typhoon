@@ -12,23 +12,24 @@
 namespace Eloquent\Typhoon\Parser\Exception;
 
 use Exception;
+use LogicException;
 use Typhoon\Typhoon;
 
-final class InvalidParameterReflectorString extends ParseException
+final class InvalidFunctionDocumentationException extends LogicException
 {
     /**
-     * @param string $parameterString
+     * @param string $functionName
      * @param Exception|null $previous
      */
-    public function __construct($parameterString, Exception $previous = null)
+    public function __construct($functionName, Exception $previous = null)
     {
         $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
-        $this->parameterString = $parameterString;
+        $this->functionName = $functionName;
 
         parent::__construct(
             sprintf(
-                "Unable to parse ReflectionParameter string '%s'.",
-                $this->parameterString()
+                'Invalid param tags found in the documentation for %s().',
+                $this->functionName()
             ),
             0,
             $previous
@@ -38,13 +39,13 @@ final class InvalidParameterReflectorString extends ParseException
     /**
      * @return string
      */
-    public function parameterString()
+    public function functionName()
     {
-        $this->typhoon->parameterString(func_get_args());
+        $this->typhoon->functionName(func_get_args());
 
-        return $this->parameterString;
+        return $this->functionName;
     }
 
-    private $parameterString;
+    private $functionName;
     private $typhoon;
 }
