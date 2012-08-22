@@ -107,10 +107,24 @@ class ValidatorClassGeneratorTyphoon extends Validator
         if ($argumentCount > 3) {
             $check = function($argument, $index) {
                 $check = function($value) {
-                    return $value instanceof \Eloquent\Typhoon\Generator\NativeParameterListMergeTool;
+                    $check = function($value) {
+                        return $value instanceof \Eloquent\Typhoon\Generator\NativeParameterListMergeTool;
+                    };
+                    if ($check($value)) {
+                        return true;
+                    }
+
+                    $check = function($value) {
+                        return $value === null;
+                    };
+                    if ($check($value)) {
+                        return true;
+                    }
+
+                    return false;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('nativeMergeTool', $index, $argument, 'Eloquent\\Typhoon\\Generator\\NativeParameterListMergeTool');
+                    throw new UnexpectedArgumentValueException('nativeMergeTool', $index, $argument, 'Eloquent\\Typhoon\\Generator\\NativeParameterListMergeTool|null');
                 }
             };
             $check($arguments[3], 3);

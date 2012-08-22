@@ -82,10 +82,24 @@ class ParameterListParserTyphoon extends Validator
         if ($argumentCount > 1) {
             $check = function($argument, $index) {
                 $check = function($value) {
-                    return $value instanceof \Eloquent\Blox\DocumentationBlockParser;
+                    $check = function($value) {
+                        return $value instanceof \Eloquent\Blox\DocumentationBlockParser;
+                    };
+                    if ($check($value)) {
+                        return true;
+                    }
+
+                    $check = function($value) {
+                        return $value === null;
+                    };
+                    if ($check($value)) {
+                        return true;
+                    }
+
+                    return false;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('documentationParser', $index, $argument, 'Eloquent\\Blox\\DocumentationBlockParser');
+                    throw new UnexpectedArgumentValueException('documentationParser', $index, $argument, 'Eloquent\\Blox\\DocumentationBlockParser|null');
                 }
             };
             $check($arguments[1], 1);

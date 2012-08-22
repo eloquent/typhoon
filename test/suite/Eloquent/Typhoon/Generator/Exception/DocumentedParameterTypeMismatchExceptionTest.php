@@ -39,7 +39,7 @@ class DocumentedParameterTypeMismatchExceptionTest extends PHPUnit_Framework_Tes
         );
 
         $this->assertSame(
-            "Documented type 'array' is not compatible with defined type 'array|null' for parameter 'bar' in 'foo'.",
+            "Documented type 'array' is not correct for defined type 'array|null' for parameter 'bar' in 'foo'.",
             $exception->getMessage()
         );
         $this->assertSame('foo', $exception->functionName());
@@ -66,7 +66,7 @@ class DocumentedParameterTypeMismatchExceptionTest extends PHPUnit_Framework_Tes
         );
 
         $this->assertSame(
-            "Documented type 'array' is not compatible with defined type 'array|null' for parameter 'bar' in 'foo'.",
+            "Documented type 'array' is not correct for defined type 'array|null' for parameter 'bar' in 'foo'.",
             $exception->getMessage()
         );
         $this->assertSame('foo', $exception->functionName());

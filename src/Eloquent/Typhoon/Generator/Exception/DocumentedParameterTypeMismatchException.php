@@ -48,7 +48,7 @@ final class DocumentedParameterTypeMismatchException extends LogicException
 
         parent::__construct(
             sprintf(
-                "Documented type '%s' is not compatible with defined type '%s' for parameter '%s' in '%s'.",
+                "Documented type '%s' is not correct for defined type '%s' for parameter '%s' in '%s'.",
                 $this->documentedType()->accept($this->typeRenderer()),
                 $this->nativeType()->accept($this->typeRenderer()),
                 $this->parameterName(),

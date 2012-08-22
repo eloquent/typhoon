@@ -11,10 +11,22 @@
 
 namespace Eloquent\Typhoon\Generator;
 
+use Eloquent\Liberator\Liberator;
+use Eloquent\Typhax\Type\AndType;
+use Eloquent\Typhax\Type\ArrayType;
+use Eloquent\Typhax\Type\CallableType;
+use Eloquent\Typhax\Type\FloatType;
 use Eloquent\Typhax\Type\MixedType;
+use Eloquent\Typhax\Type\NullType;
+use Eloquent\Typhax\Type\ObjectType;
+use Eloquent\Typhax\Type\OrType;
+use Eloquent\Typhax\Type\StringType;
+use Eloquent\Typhax\Type\TraversableType;
+use Eloquent\Typhax\Type\Type;
 use Eloquent\Typhoon\Parameter\Parameter;
 use Eloquent\Typhoon\Parameter\ParameterList;
 use PHPUnit_Framework_TestCase;
+use ReflectionClass;
 
 class NativeParameterListMergeToolTest extends PHPUnit_Framework_TestCase
 {
@@ -456,5 +468,391 @@ class NativeParameterListMergeToolTest extends PHPUnit_Framework_TestCase
         }
 
         $this->fail('Something went horribly, horribly wrong, and it is now time to panic.');
+    }
+
+    public function mergeTypeData()
+    {
+        $data = array();
+        $reflectionParameterClass = new ReflectionClass('ReflectionParameter');
+        $callableHintsAvailable = $reflectionParameterClass->hasMethod('isCallable');
+
+        $documentedType = new TraversableType(
+            new ArrayType,
+            new StringType,
+            new ObjectType
+        );
+        $nativeType = new TraversableType(
+            new ArrayType,
+            new MixedType,
+            new MixedType
+        );
+        $expected = $documentedType;
+        $data['Both types documented as array'] = array(
+            $expected,
+            $documentedType,
+            $nativeType,
+        );
+
+        $documentedType = new OrType(array(
+            new ObjectType('Exception'),
+            new NullType,
+        ));
+        $nativeType = $documentedType;
+        $expected = $documentedType;
+        $data['Both types documented Exception|null'] = array(
+            $expected,
+            $documentedType,
+            $nativeType,
+        );
+
+        $documentedType = new OrType(array(
+            new FloatType,
+            new NullType,
+        ));
+        $nativeType = new MixedType;
+        $expected = $documentedType;
+        $data['Documented type is not hintable and defined type is mixed'] = array(
+            $expected,
+            $documentedType,
+            $nativeType,
+        );
+
+        $documentedType = new ObjectType('RecursiveDirectoryIterator');
+        $nativeType = new ObjectType('FilesystemIterator');
+        $expected = $documentedType;
+        $data['Native type is a parent class of documented class'] = array(
+            $expected,
+            $documentedType,
+            $nativeType,
+        );
+
+        $documentedType = new AndType(array(
+            new ObjectType('Iterator'),
+            new ObjectType('Countable'),
+        ));
+        $nativeType = new ObjectType('Traversable');
+        $expected = $documentedType;
+        $data['Native type is compatible with all types in AND composite'] = array(
+            $expected,
+            $documentedType,
+            $nativeType,
+        );
+
+        return $data;
+    }
+
+    /**
+     * @dataProvider mergeTypeData
+     */
+    public function testMergeType(
+        Type $expected,
+        Type $documentedType,
+        Type $nativeType
+    ) {
+        $actual = Liberator::liberate($this->_mergeTool)->mergeType(
+            'foo',
+            'bar',
+            $documentedType,
+            $nativeType
+        );
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function mergeTypeFailureData()
+    {
+        $data = array();
+        $reflectionParameterClass = new ReflectionClass('ReflectionParameter');
+        $callableHintsAvailable = $reflectionParameterClass->hasMethod('isCallable');
+
+        // arrays
+        $documentedType = new TraversableType(
+            new ArrayType,
+            new StringType,
+            new ObjectType
+        );
+        $nativeType = new MixedType;
+        $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
+        $expectedMessage = "Documented type 'array<string, object>' is not correct for defined type 'mixed' for parameter 'bar' in 'foo'.";
+        $data['Error when native is mixed and documented is array'] = array(
+            $expected,
+            $expectedMessage,
+            $documentedType,
+            $nativeType,
+        );
+
+        $documentedType = new MixedType;
+        $nativeType = new TraversableType(
+            new ArrayType,
+            new MixedType,
+            new MixedType
+        );
+        $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
+        $expectedMessage = "Documented type 'mixed' is not correct for defined type 'array' for parameter 'bar' in 'foo'.";
+        $data['Error when native is array and documented is mixed'] = array(
+            $expected,
+            $expectedMessage,
+            $documentedType,
+            $nativeType,
+        );
+
+        $documentedType = new OrType(array(
+            new TraversableType(
+                new ArrayType,
+                new MixedType,
+                new MixedType
+            ),
+            new NullType,
+        ));
+        $nativeType = new TraversableType(
+            new ArrayType,
+            new MixedType,
+            new MixedType
+        );
+        $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
+        $expectedMessage = "Documented type 'array|null' is not correct for defined type 'array' for parameter 'bar' in 'foo'.";
+        $data['Error when native is array and documented is array or null'] = array(
+            $expected,
+            $expectedMessage,
+            $documentedType,
+            $nativeType,
+        );
+
+        $documentedType = new TraversableType(
+            new ArrayType,
+            new MixedType,
+            new MixedType
+        );
+        $nativeType = new OrType(array(
+            new TraversableType(
+                new ArrayType,
+                new MixedType,
+                new MixedType
+            ),
+            new NullType,
+        ));
+        $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
+        $expectedMessage = "Documented type 'array' is not correct for defined type 'array|null' for parameter 'bar' in 'foo'.";
+        $data['Error when native is array or null and documented is array'] = array(
+            $expected,
+            $expectedMessage,
+            $documentedType,
+            $nativeType,
+        );
+
+        $documentedType = new OrType(array(
+            new TraversableType(
+                new ArrayType,
+                new MixedType,
+                new MixedType
+            ),
+            new NullType,
+        ));
+        $nativeType = new MixedType;
+        $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
+        $expectedMessage = "Documented type 'array|null' is not correct for defined type 'mixed' for parameter 'bar' in 'foo'.";
+        $data['Error when native is mixed and documented is array or null'] = array(
+            $expected,
+            $expectedMessage,
+            $documentedType,
+            $nativeType,
+        );
+
+        // objects
+        $documentedType = new ObjectType('Baz');
+        $nativeType = new MixedType;
+        $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
+        $expectedMessage = "Documented type 'Baz' is not correct for defined type 'mixed' for parameter 'bar' in 'foo'.";
+        $data['Error when native is mixed and documented is object of type'] = array(
+            $expected,
+            $expectedMessage,
+            $documentedType,
+            $nativeType,
+        );
+
+        $documentedType = new MixedType;
+        $nativeType = new ObjectType('Baz');
+        $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
+        $expectedMessage = "Documented type 'mixed' is not correct for defined type 'Baz' for parameter 'bar' in 'foo'.";
+        $data['Error when native is object of type and documented is mixed'] = array(
+            $expected,
+            $expectedMessage,
+            $documentedType,
+            $nativeType,
+        );
+
+        $documentedType = new OrType(array(
+            new ObjectType('Baz'),
+            new NullType,
+        ));
+        $nativeType = new ObjectType('Baz');
+        $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
+        $expectedMessage = "Documented type 'Baz|null' is not correct for defined type 'Baz' for parameter 'bar' in 'foo'.";
+        $data['Error when native is object of type and documented is object of type or null'] = array(
+            $expected,
+            $expectedMessage,
+            $documentedType,
+            $nativeType,
+        );
+
+        $documentedType = new ObjectType('Baz');
+        $nativeType = new OrType(array(
+            new ObjectType('Baz'),
+            new NullType,
+        ));
+        $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
+        $expectedMessage = "Documented type 'Baz' is not correct for defined type 'Baz|null' for parameter 'bar' in 'foo'.";
+        $data['Error when native is object of type or null and documented is object of type'] = array(
+            $expected,
+            $expectedMessage,
+            $documentedType,
+            $nativeType,
+        );
+
+        $documentedType = new OrType(array(
+            new ObjectType('Baz'),
+            new NullType,
+        ));
+        $nativeType = new MixedType;
+        $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
+        $expectedMessage = "Documented type 'Baz|null' is not correct for defined type 'mixed' for parameter 'bar' in 'foo'.";
+        $data['Error when native is mixed and documented is object of type or null'] = array(
+            $expected,
+            $expectedMessage,
+            $documentedType,
+            $nativeType,
+        );
+
+        $documentedType = new ObjectType('stdClass');
+        $nativeType = new ObjectType('Iterator');
+        $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
+        $expectedMessage = "Documented type 'stdClass' is not correct for defined type 'Iterator' for parameter 'bar' in 'foo'.";
+        $data['Error when native is a class and documented is an incompatible class'] = array(
+            $expected,
+            $expectedMessage,
+            $documentedType,
+            $nativeType,
+        );
+
+        // or composites
+        $documentedType = new OrType(array(
+            new ObjectType('Baz'),
+            new FloatType,
+            new NullType,
+        ));
+        $nativeType = new OrType(array(
+            new ObjectType('Baz'),
+            new NullType,
+        ));
+        $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
+        $expectedMessage = "Documented type 'Baz|float|null' is not correct for defined type 'Baz|null' for parameter 'bar' in 'foo'.";
+        $data['Error when documented and native are both or composites, and one of the documented types is incompatible'] = array(
+            $expected,
+            $expectedMessage,
+            $documentedType,
+            $nativeType,
+        );
+
+        // and composites
+        $documentedType = new AndType(array(
+            new ObjectType('Traversable'),
+            new ObjectType('Serializable'),
+        ));
+        $nativeType = new ObjectType('Iterator');
+        $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
+        $expectedMessage = "Documented type 'Traversable+Serializable' is not correct for defined type 'Iterator' for parameter 'bar' in 'foo'.";
+        $data['Error when native is not compatible with all types in AND composite'] = array(
+            $expected,
+            $expectedMessage,
+            $documentedType,
+            $nativeType,
+        );
+
+        // callables
+        if ($callableHintsAvailable) {
+            $documentedType = new CallableType;
+            $nativeType = new MixedType;
+            $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
+            $expectedMessage = "Documented type 'callable' is not correct for defined type 'mixed' for parameter 'bar' in 'foo'.";
+            $data['Error when native is mixed and documented is callable'] = array(
+                $expected,
+                $expectedMessage,
+                $documentedType,
+                $nativeType,
+            );
+
+            $documentedType = new MixedType;
+            $nativeType = new CallableType;
+            $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
+            $expectedMessage = "Documented type 'mixed' is not correct for defined type 'callable' for parameter 'bar' in 'foo'.";
+            $data['Error when native is callable and documented is mixed'] = array(
+                $expected,
+                $expectedMessage,
+                $documentedType,
+                $nativeType,
+            );
+
+            $documentedType = new OrType(array(
+                new CallableType,
+                new NullType,
+            ));
+            $nativeType = new CallableType;
+            $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
+            $expectedMessage = "Documented type 'callable|null' is not correct for defined type 'callable' for parameter 'bar' in 'foo'.";
+            $data['Error when native is callable and documented is callable or null'] = array(
+                $expected,
+                $expectedMessage,
+                $documentedType,
+                $nativeType,
+            );
+
+            $documentedType = new CallableType;
+            $nativeType = new OrType(array(
+                new CallableType,
+                new NullType,
+            ));
+            $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
+            $expectedMessage = "Documented type 'callable' is not correct for defined type 'callable|null' for parameter 'bar' in 'foo'.";
+            $data['Error when native is callable or null and documented is callable'] = array(
+                $expected,
+                $expectedMessage,
+                $documentedType,
+                $nativeType,
+            );
+
+            $documentedType = new OrType(array(
+                new CallableType,
+                new NullType,
+            ));
+            $nativeType = new MixedType;
+            $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
+            $expectedMessage = "Documented type 'callable|null' is not correct for defined type 'mixed' for parameter 'bar' in 'foo'.";
+            $data['Error when native is mixed and documented is callable or null'] = array(
+                $expected,
+                $expectedMessage,
+                $documentedType,
+                $nativeType,
+            );
+        }
+
+        return $data;
+    }
+
+    /**
+     * @dataProvider mergeTypeFailureData
+     */
+    public function testMergeTypeFailure(
+        $expected,
+        $expectedMessage,
+        Type $documentedType,
+        Type $nativeType
+    ) {
+        $this->setExpectedException($expected, $expectedMessage);
+        Liberator::liberate($this->_mergeTool)->mergeType(
+            'foo',
+            'bar',
+            $documentedType,
+            $nativeType
+        );
     }
 }

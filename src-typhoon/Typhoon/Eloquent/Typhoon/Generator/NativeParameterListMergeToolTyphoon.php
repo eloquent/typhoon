@@ -117,4 +117,96 @@ class NativeParameterListMergeToolTyphoon extends Validator
         };
         $check($arguments[2], 2);
     }
+
+    public function mergeType(array $arguments)
+    {
+        $argumentCount = count($arguments);
+        if ($argumentCount < 4) {
+            if ($argumentCount < 1) {
+                throw new MissingArgumentException('functionName', 0, 'string');
+            }
+            if ($argumentCount < 2) {
+                throw new MissingArgumentException('parameterName', 1, 'string');
+            }
+            if ($argumentCount < 3) {
+                throw new MissingArgumentException('documentedType', 2, 'Eloquent\\Typhax\\Type\\Type');
+            }
+            throw new MissingArgumentException('nativeType', 3, 'Eloquent\\Typhax\\Type\\Type');
+        } elseif ($argumentCount > 4) {
+            throw new UnexpectedArgumentException(4, $arguments[4]);
+        }
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return is_string($value);
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('functionName', $index, $argument, 'string');
+            }
+        };
+        $check($arguments[0], 0);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return is_string($value);
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('parameterName', $index, $argument, 'string');
+            }
+        };
+        $check($arguments[1], 1);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return $value instanceof \Eloquent\Typhax\Type\Type;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('documentedType', $index, $argument, 'Eloquent\\Typhax\\Type\\Type');
+            }
+        };
+        $check($arguments[2], 2);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return $value instanceof \Eloquent\Typhax\Type\Type;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('nativeType', $index, $argument, 'Eloquent\\Typhax\\Type\\Type');
+            }
+        };
+        $check($arguments[3], 3);
+    }
+
+    public function typeIsCompatible(array $arguments)
+    {
+        $argumentCount = count($arguments);
+        if ($argumentCount < 2) {
+            if ($argumentCount < 1) {
+                throw new MissingArgumentException('documentedType', 0, 'Eloquent\\Typhax\\Type\\Type');
+            }
+            throw new MissingArgumentException('nativeType', 1, 'Eloquent\\Typhax\\Type\\Type');
+        } elseif ($argumentCount > 2) {
+            throw new UnexpectedArgumentException(2, $arguments[2]);
+        }
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return $value instanceof \Eloquent\Typhax\Type\Type;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('documentedType', $index, $argument, 'Eloquent\\Typhax\\Type\\Type');
+            }
+        };
+        $check($arguments[0], 0);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return $value instanceof \Eloquent\Typhax\Type\Type;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('nativeType', $index, $argument, 'Eloquent\\Typhax\\Type\\Type');
+            }
+        };
+        $check($arguments[1], 1);
+    }
 }
