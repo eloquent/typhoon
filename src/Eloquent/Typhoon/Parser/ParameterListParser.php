@@ -60,7 +60,7 @@ class ParameterListParser implements Visitor
 
     /**
      * @param string $blockComment
-     * @param DocumentationBlockParser $documentationParser
+     * @param DocumentationBlockParser|null $documentationParser
      *
      * @return ParameterList
      */

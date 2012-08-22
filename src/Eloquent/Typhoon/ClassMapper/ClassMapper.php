@@ -20,7 +20,7 @@ use Typhoon\Typhoon;
 class ClassMapper
 {
     /**
-     * @param Isolator $isolator
+     * @param Isolator|null $isolator
      */
     public function __construct(Isolator $isolator = null)
     {

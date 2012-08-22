@@ -29,7 +29,7 @@ class ValidatorClassGenerator
      * @param ParameterListParser|null $parser
      * @param ParameterListCompiler|null $compiler
      * @param ClassMapper|null $classMapper
-     * @param NativeParameterListMergeTool $nativeMergeTool
+     * @param NativeParameterListMergeTool|null $nativeMergeTool
      * @param Isolator|null $isolator
      */
     public function __construct(
