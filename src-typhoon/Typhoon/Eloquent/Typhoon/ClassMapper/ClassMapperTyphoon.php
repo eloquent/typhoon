@@ -29,24 +29,10 @@ class ClassMapperTyphoon extends Validator
         if ($argumentCount > 0) {
             $check = function($argument, $index) {
                 $check = function($value) {
-                    $check = function($value) {
-                        return $value instanceof \Icecave\Isolator\Isolator;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    $check = function($value) {
-                        return $value === null;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    return false;
+                    return true;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('isolator', $index, $argument, 'Icecave\\Isolator\\Isolator|null');
+                    throw new UnexpectedArgumentValueException('isolator', $index, $argument, 'mixed');
                 }
             };
             $check($arguments[0], 0);

@@ -72,24 +72,10 @@ class TypicalClassTyphoon extends Validator
         if ($argumentCount > 1) {
             $check = function($argument, $index) {
                 $check = function($value) {
-                    $check = function($value) {
-                        return $value instanceof \stdClass;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    $check = function($value) {
-                        return $value === null;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    return false;
+                    return true;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('bar', $index, $argument, 'stdClass|null');
+                    throw new UnexpectedArgumentValueException('bar', $index, $argument, 'mixed');
                 }
             };
             $check($arguments[1], 1);

@@ -26,7 +26,7 @@ class ParameterTyphoon extends Validator
             if ($argumentCount < 1) {
                 throw new MissingArgumentException('name', 0, 'string');
             }
-            throw new MissingArgumentException('type', 1, 'Eloquent\\Typhax\\Type\\Type');
+            throw new MissingArgumentException('type', 1, 'mixed');
         } elseif ($argumentCount > 5) {
             throw new UnexpectedArgumentException(5, $arguments[5]);
         }
@@ -43,10 +43,10 @@ class ParameterTyphoon extends Validator
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhax\Type\Type;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\Type');
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'mixed');
             }
         };
         $check($arguments[1], 1);

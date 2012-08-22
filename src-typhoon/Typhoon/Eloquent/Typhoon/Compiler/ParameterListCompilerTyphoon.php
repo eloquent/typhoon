@@ -29,24 +29,10 @@ class ParameterListCompilerTyphoon extends Validator
         if ($argumentCount > 0) {
             $check = function($argument, $index) {
                 $check = function($value) {
-                    $check = function($value) {
-                        return $value instanceof \Eloquent\Typhoon\Compiler\TyphaxCompiler;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    $check = function($value) {
-                        return $value === null;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    return false;
+                    return true;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('typhaxCompiler', $index, $argument, 'Eloquent\\Typhoon\\Compiler\\TyphaxCompiler|null');
+                    throw new UnexpectedArgumentValueException('typhaxCompiler', $index, $argument, 'mixed');
                 }
             };
             $check($arguments[0], 0);
@@ -55,24 +41,10 @@ class ParameterListCompilerTyphoon extends Validator
         if ($argumentCount > 1) {
             $check = function($argument, $index) {
                 $check = function($value) {
-                    $check = function($value) {
-                        return $value instanceof \Eloquent\Typhax\Renderer\TypeRenderer;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    $check = function($value) {
-                        return $value === null;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    return false;
+                    return true;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('typeRenderer', $index, $argument, 'Eloquent\\Typhax\\Renderer\\TypeRenderer|null');
+                    throw new UnexpectedArgumentValueException('typeRenderer', $index, $argument, 'mixed');
                 }
             };
             $check($arguments[1], 1);
@@ -97,17 +69,17 @@ class ParameterListCompilerTyphoon extends Validator
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('parameter', 0, 'Eloquent\\Typhoon\\Parameter\\Parameter');
+            throw new MissingArgumentException('parameter', 0, 'mixed');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhoon\Parameter\Parameter;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('parameter', $index, $argument, 'Eloquent\\Typhoon\\Parameter\\Parameter');
+                throw new UnexpectedArgumentValueException('parameter', $index, $argument, 'mixed');
             }
         };
         $check($arguments[0], 0);
@@ -117,17 +89,17 @@ class ParameterListCompilerTyphoon extends Validator
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('parameterList', 0, 'Eloquent\\Typhoon\\Parameter\\ParameterList');
+            throw new MissingArgumentException('parameterList', 0, 'mixed');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhoon\Parameter\ParameterList;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('parameterList', $index, $argument, 'Eloquent\\Typhoon\\Parameter\\ParameterList');
+                throw new UnexpectedArgumentValueException('parameterList', $index, $argument, 'mixed');
             }
         };
         $check($arguments[0], 0);

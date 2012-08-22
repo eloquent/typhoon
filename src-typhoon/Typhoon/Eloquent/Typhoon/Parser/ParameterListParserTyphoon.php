@@ -29,24 +29,10 @@ class ParameterListParserTyphoon extends Validator
         if ($argumentCount > 0) {
             $check = function($argument, $index) {
                 $check = function($value) {
-                    $check = function($value) {
-                        return $value instanceof \Eloquent\Typhax\Parser\Parser;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    $check = function($value) {
-                        return $value === null;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    return false;
+                    return true;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('typhaxParser', $index, $argument, 'Eloquent\\Typhax\\Parser\\Parser|null');
+                    throw new UnexpectedArgumentValueException('typhaxParser', $index, $argument, 'mixed');
                 }
             };
             $check($arguments[0], 0);
@@ -82,24 +68,10 @@ class ParameterListParserTyphoon extends Validator
         if ($argumentCount > 1) {
             $check = function($argument, $index) {
                 $check = function($value) {
-                    $check = function($value) {
-                        return $value instanceof \Eloquent\Blox\DocumentationBlockParser;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    $check = function($value) {
-                        return $value === null;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    return false;
+                    return true;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('documentationParser', $index, $argument, 'Eloquent\\Blox\\DocumentationBlockParser|null');
+                    throw new UnexpectedArgumentValueException('documentationParser', $index, $argument, 'mixed');
                 }
             };
             $check($arguments[1], 1);
@@ -110,17 +82,17 @@ class ParameterListParserTyphoon extends Validator
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('reflector', 0, 'ReflectionFunctionAbstract');
+            throw new MissingArgumentException('reflector', 0, 'mixed');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \ReflectionFunctionAbstract;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('reflector', $index, $argument, 'ReflectionFunctionAbstract');
+                throw new UnexpectedArgumentValueException('reflector', $index, $argument, 'mixed');
             }
         };
         $check($arguments[0], 0);
@@ -130,17 +102,17 @@ class ParameterListParserTyphoon extends Validator
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('reflector', 0, 'ReflectionParameter');
+            throw new MissingArgumentException('reflector', 0, 'mixed');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \ReflectionParameter;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('reflector', $index, $argument, 'ReflectionParameter');
+                throw new UnexpectedArgumentValueException('reflector', $index, $argument, 'mixed');
             }
         };
         $check($arguments[0], 0);
@@ -150,17 +122,17 @@ class ParameterListParserTyphoon extends Validator
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('documentationBlock', 0, 'Eloquent\\Blox\\AST\\DocumentationBlock');
+            throw new MissingArgumentException('documentationBlock', 0, 'mixed');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Blox\AST\DocumentationBlock;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('documentationBlock', $index, $argument, 'Eloquent\\Blox\\AST\\DocumentationBlock');
+                throw new UnexpectedArgumentValueException('documentationBlock', $index, $argument, 'mixed');
             }
         };
         $check($arguments[0], 0);
@@ -170,17 +142,17 @@ class ParameterListParserTyphoon extends Validator
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('documentationTag', 0, 'Eloquent\\Blox\\AST\\DocumentationTag');
+            throw new MissingArgumentException('documentationTag', 0, 'mixed');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Blox\AST\DocumentationTag;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('documentationTag', $index, $argument, 'Eloquent\\Blox\\AST\\DocumentationTag');
+                throw new UnexpectedArgumentValueException('documentationTag', $index, $argument, 'mixed');
             }
         };
         $check($arguments[0], 0);

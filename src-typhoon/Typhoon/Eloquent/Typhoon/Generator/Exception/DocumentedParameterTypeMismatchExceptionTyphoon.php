@@ -30,9 +30,9 @@ class DocumentedParameterTypeMismatchExceptionTyphoon extends Validator
                 throw new MissingArgumentException('parameterName', 1, 'string');
             }
             if ($argumentCount < 3) {
-                throw new MissingArgumentException('documentedType', 2, 'Eloquent\\Typhax\\Type\\Type');
+                throw new MissingArgumentException('documentedType', 2, 'mixed');
             }
-            throw new MissingArgumentException('nativeType', 3, 'Eloquent\\Typhax\\Type\\Type');
+            throw new MissingArgumentException('nativeType', 3, 'mixed');
         } elseif ($argumentCount > 6) {
             throw new UnexpectedArgumentException(6, $arguments[6]);
         }
@@ -59,20 +59,20 @@ class DocumentedParameterTypeMismatchExceptionTyphoon extends Validator
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhax\Type\Type;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('documentedType', $index, $argument, 'Eloquent\\Typhax\\Type\\Type');
+                throw new UnexpectedArgumentValueException('documentedType', $index, $argument, 'mixed');
             }
         };
         $check($arguments[2], 2);
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhax\Type\Type;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('nativeType', $index, $argument, 'Eloquent\\Typhax\\Type\\Type');
+                throw new UnexpectedArgumentValueException('nativeType', $index, $argument, 'mixed');
             }
         };
         $check($arguments[3], 3);
@@ -80,24 +80,10 @@ class DocumentedParameterTypeMismatchExceptionTyphoon extends Validator
         if ($argumentCount > 4) {
             $check = function($argument, $index) {
                 $check = function($value) {
-                    $check = function($value) {
-                        return $value instanceof \Exception;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    $check = function($value) {
-                        return $value === null;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    return false;
+                    return true;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('previous', $index, $argument, 'Exception|null');
+                    throw new UnexpectedArgumentValueException('previous', $index, $argument, 'mixed');
                 }
             };
             $check($arguments[4], 4);
@@ -106,24 +92,10 @@ class DocumentedParameterTypeMismatchExceptionTyphoon extends Validator
         if ($argumentCount > 5) {
             $check = function($argument, $index) {
                 $check = function($value) {
-                    $check = function($value) {
-                        return $value instanceof \Eloquent\Typhax\Renderer\TypeRenderer;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    $check = function($value) {
-                        return $value === null;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    return false;
+                    return true;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('typeRenderer', $index, $argument, 'Eloquent\\Typhax\\Renderer\\TypeRenderer|null');
+                    throw new UnexpectedArgumentValueException('typeRenderer', $index, $argument, 'mixed');
                 }
             };
             $check($arguments[5], 5);

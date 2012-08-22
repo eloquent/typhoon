@@ -13,6 +13,7 @@ namespace Eloquent\Typhoon\Generator;
 
 use Eloquent\Liberator\Liberator;
 use Eloquent\Typhax\Type\AndType;
+use Eloquent\Typhax\Type\BooleanType;
 use Eloquent\Typhax\Type\ArrayType;
 use Eloquent\Typhax\Type\CallableType;
 use Eloquent\Typhax\Type\FloatType;
@@ -478,6 +479,23 @@ class NativeParameterListMergeToolTest extends PHPUnit_Framework_TestCase
 
         $documentedType = new TraversableType(
             new ArrayType,
+            new MixedType,
+            new MixedType
+        );
+        $nativeType = new TraversableType(
+            new ArrayType,
+            new MixedType,
+            new MixedType
+        );
+        $expected = new MixedType;
+        $data['Both types documented as array'] = array(
+            $expected,
+            $documentedType,
+            $nativeType,
+        );
+
+        $documentedType = new TraversableType(
+            new ArrayType,
             new StringType,
             new ObjectType
         );
@@ -487,7 +505,7 @@ class NativeParameterListMergeToolTest extends PHPUnit_Framework_TestCase
             new MixedType
         );
         $expected = $documentedType;
-        $data['Both types documented as array'] = array(
+        $data['Both types documented as array, but documented specifies subtypes'] = array(
             $expected,
             $documentedType,
             $nativeType,
@@ -498,7 +516,7 @@ class NativeParameterListMergeToolTest extends PHPUnit_Framework_TestCase
             new NullType,
         ));
         $nativeType = $documentedType;
-        $expected = $documentedType;
+        $expected = new MixedType;
         $data['Both types documented Exception|null'] = array(
             $expected,
             $documentedType,
@@ -521,6 +539,15 @@ class NativeParameterListMergeToolTest extends PHPUnit_Framework_TestCase
         $nativeType = new ObjectType('FilesystemIterator');
         $expected = $documentedType;
         $data['Native type is a parent class of documented class'] = array(
+            $expected,
+            $documentedType,
+            $nativeType,
+        );
+
+        $documentedType = new BooleanType;
+        $nativeType = new MixedType;
+        $expected = $documentedType;
+        $data["Don't clobber basic types"] = array(
             $expected,
             $documentedType,
             $nativeType,

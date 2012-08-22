@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Generator;
 
+use Eloquent\Typhax\Comparator\TypeEquivalenceComparator;
 use Eloquent\Typhax\Type\AndType;
 use Eloquent\Typhax\Type\ArrayType;
 use Eloquent\Typhax\Type\CallableType;
@@ -164,6 +165,13 @@ class NativeParameterListMergeTool
                 $documentedType,
                 $nativeType
             );
+        }
+
+        if (TypeEquivalenceComparator::equivalent(
+            $documentedType,
+            $nativeType
+        )) {
+            return new MixedType;
         }
 
         return $documentedType;

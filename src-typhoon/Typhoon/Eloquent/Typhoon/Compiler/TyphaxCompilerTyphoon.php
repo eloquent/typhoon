@@ -30,17 +30,17 @@ class TyphaxCompilerTyphoon extends Validator
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\AndType');
+            throw new MissingArgumentException('type', 0, 'mixed');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhax\Type\AndType;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\AndType');
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'mixed');
             }
         };
         $check($arguments[0], 0);
@@ -50,17 +50,17 @@ class TyphaxCompilerTyphoon extends Validator
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ArrayType');
+            throw new MissingArgumentException('type', 0, 'mixed');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhax\Type\ArrayType;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ArrayType');
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'mixed');
             }
         };
         $check($arguments[0], 0);
@@ -70,17 +70,17 @@ class TyphaxCompilerTyphoon extends Validator
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\BooleanType');
+            throw new MissingArgumentException('type', 0, 'mixed');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhax\Type\BooleanType;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\BooleanType');
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'mixed');
             }
         };
         $check($arguments[0], 0);
@@ -90,17 +90,17 @@ class TyphaxCompilerTyphoon extends Validator
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\CallableType');
+            throw new MissingArgumentException('type', 0, 'mixed');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhax\Type\CallableType;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\CallableType');
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'mixed');
             }
         };
         $check($arguments[0], 0);
@@ -110,17 +110,17 @@ class TyphaxCompilerTyphoon extends Validator
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\FloatType');
+            throw new MissingArgumentException('type', 0, 'mixed');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhax\Type\FloatType;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\FloatType');
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'mixed');
             }
         };
         $check($arguments[0], 0);
@@ -130,17 +130,17 @@ class TyphaxCompilerTyphoon extends Validator
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\IntegerType');
+            throw new MissingArgumentException('type', 0, 'mixed');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhax\Type\IntegerType;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\IntegerType');
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'mixed');
             }
         };
         $check($arguments[0], 0);
@@ -150,17 +150,17 @@ class TyphaxCompilerTyphoon extends Validator
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\MixedType');
+            throw new MissingArgumentException('type', 0, 'mixed');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhax\Type\MixedType;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\MixedType');
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'mixed');
             }
         };
         $check($arguments[0], 0);
@@ -170,17 +170,17 @@ class TyphaxCompilerTyphoon extends Validator
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\NullType');
+            throw new MissingArgumentException('type', 0, 'mixed');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhax\Type\NullType;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\NullType');
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'mixed');
             }
         };
         $check($arguments[0], 0);
@@ -190,17 +190,17 @@ class TyphaxCompilerTyphoon extends Validator
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\NumericType');
+            throw new MissingArgumentException('type', 0, 'mixed');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhax\Type\NumericType;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\NumericType');
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'mixed');
             }
         };
         $check($arguments[0], 0);
@@ -210,17 +210,17 @@ class TyphaxCompilerTyphoon extends Validator
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ObjectType');
+            throw new MissingArgumentException('type', 0, 'mixed');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhax\Type\ObjectType;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ObjectType');
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'mixed');
             }
         };
         $check($arguments[0], 0);
@@ -230,17 +230,17 @@ class TyphaxCompilerTyphoon extends Validator
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\OrType');
+            throw new MissingArgumentException('type', 0, 'mixed');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhax\Type\OrType;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\OrType');
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'mixed');
             }
         };
         $check($arguments[0], 0);
@@ -250,17 +250,17 @@ class TyphaxCompilerTyphoon extends Validator
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ResourceType');
+            throw new MissingArgumentException('type', 0, 'mixed');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhax\Type\ResourceType;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\ResourceType');
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'mixed');
             }
         };
         $check($arguments[0], 0);
@@ -270,17 +270,17 @@ class TyphaxCompilerTyphoon extends Validator
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\StreamType');
+            throw new MissingArgumentException('type', 0, 'mixed');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhax\Type\StreamType;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\StreamType');
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'mixed');
             }
         };
         $check($arguments[0], 0);
@@ -290,17 +290,17 @@ class TyphaxCompilerTyphoon extends Validator
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\StringType');
+            throw new MissingArgumentException('type', 0, 'mixed');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhax\Type\StringType;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\StringType');
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'mixed');
             }
         };
         $check($arguments[0], 0);
@@ -310,17 +310,17 @@ class TyphaxCompilerTyphoon extends Validator
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\StringableType');
+            throw new MissingArgumentException('type', 0, 'mixed');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhax\Type\StringableType;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\StringableType');
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'mixed');
             }
         };
         $check($arguments[0], 0);
@@ -330,17 +330,17 @@ class TyphaxCompilerTyphoon extends Validator
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\TraversableType');
+            throw new MissingArgumentException('type', 0, 'mixed');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhax\Type\TraversableType;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\TraversableType');
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'mixed');
             }
         };
         $check($arguments[0], 0);
@@ -350,17 +350,17 @@ class TyphaxCompilerTyphoon extends Validator
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\TupleType');
+            throw new MissingArgumentException('type', 0, 'mixed');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhax\Type\TupleType;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('type', $index, $argument, 'Eloquent\\Typhax\\Type\\TupleType');
+                throw new UnexpectedArgumentValueException('type', $index, $argument, 'mixed');
             }
         };
         $check($arguments[0], 0);

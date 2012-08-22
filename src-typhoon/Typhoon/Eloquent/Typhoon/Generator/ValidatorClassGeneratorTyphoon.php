@@ -29,24 +29,10 @@ class ValidatorClassGeneratorTyphoon extends Validator
         if ($argumentCount > 0) {
             $check = function($argument, $index) {
                 $check = function($value) {
-                    $check = function($value) {
-                        return $value instanceof \Eloquent\Typhoon\Parser\ParameterListParser;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    $check = function($value) {
-                        return $value === null;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    return false;
+                    return true;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('parser', $index, $argument, 'Eloquent\\Typhoon\\Parser\\ParameterListParser|null');
+                    throw new UnexpectedArgumentValueException('parser', $index, $argument, 'mixed');
                 }
             };
             $check($arguments[0], 0);
@@ -55,24 +41,10 @@ class ValidatorClassGeneratorTyphoon extends Validator
         if ($argumentCount > 1) {
             $check = function($argument, $index) {
                 $check = function($value) {
-                    $check = function($value) {
-                        return $value instanceof \Eloquent\Typhoon\Compiler\ParameterListCompiler;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    $check = function($value) {
-                        return $value === null;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    return false;
+                    return true;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('compiler', $index, $argument, 'Eloquent\\Typhoon\\Compiler\\ParameterListCompiler|null');
+                    throw new UnexpectedArgumentValueException('compiler', $index, $argument, 'mixed');
                 }
             };
             $check($arguments[1], 1);
@@ -81,24 +53,10 @@ class ValidatorClassGeneratorTyphoon extends Validator
         if ($argumentCount > 2) {
             $check = function($argument, $index) {
                 $check = function($value) {
-                    $check = function($value) {
-                        return $value instanceof \Eloquent\Typhoon\ClassMapper\ClassMapper;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    $check = function($value) {
-                        return $value === null;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    return false;
+                    return true;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('classMapper', $index, $argument, 'Eloquent\\Typhoon\\ClassMapper\\ClassMapper|null');
+                    throw new UnexpectedArgumentValueException('classMapper', $index, $argument, 'mixed');
                 }
             };
             $check($arguments[2], 2);
@@ -107,24 +65,10 @@ class ValidatorClassGeneratorTyphoon extends Validator
         if ($argumentCount > 3) {
             $check = function($argument, $index) {
                 $check = function($value) {
-                    $check = function($value) {
-                        return $value instanceof \Eloquent\Typhoon\Generator\NativeParameterListMergeTool;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    $check = function($value) {
-                        return $value === null;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    return false;
+                    return true;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('nativeMergeTool', $index, $argument, 'Eloquent\\Typhoon\\Generator\\NativeParameterListMergeTool|null');
+                    throw new UnexpectedArgumentValueException('nativeMergeTool', $index, $argument, 'mixed');
                 }
             };
             $check($arguments[3], 3);
@@ -133,24 +77,10 @@ class ValidatorClassGeneratorTyphoon extends Validator
         if ($argumentCount > 4) {
             $check = function($argument, $index) {
                 $check = function($value) {
-                    $check = function($value) {
-                        return $value instanceof \Icecave\Isolator\Isolator;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    $check = function($value) {
-                        return $value === null;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    return false;
+                    return true;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('isolator', $index, $argument, 'Icecave\\Isolator\\Isolator|null');
+                    throw new UnexpectedArgumentValueException('isolator', $index, $argument, 'mixed');
                 }
             };
             $check($arguments[4], 4);
@@ -189,17 +119,17 @@ class ValidatorClassGeneratorTyphoon extends Validator
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('classDefinition', 0, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition');
+            throw new MissingArgumentException('classDefinition', 0, 'mixed');
         } elseif ($argumentCount > 3) {
             throw new UnexpectedArgumentException(3, $arguments[3]);
         }
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhoon\ClassMapper\ClassDefinition;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('classDefinition', $index, $argument, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition');
+                throw new UnexpectedArgumentValueException('classDefinition', $index, $argument, 'mixed');
             }
         };
         $check($arguments[0], 0);
@@ -431,17 +361,17 @@ class ValidatorClassGeneratorTyphoon extends Validator
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('class', 0, 'ReflectionClass');
+            throw new MissingArgumentException('class', 0, 'mixed');
         } elseif ($argumentCount > 3) {
             throw new UnexpectedArgumentException(3, $arguments[3]);
         }
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \ReflectionClass;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('class', $index, $argument, 'ReflectionClass');
+                throw new UnexpectedArgumentValueException('class', $index, $argument, 'mixed');
             }
         };
         $check($arguments[0], 0);
@@ -503,17 +433,17 @@ class ValidatorClassGeneratorTyphoon extends Validator
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('classDefinition', 0, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition');
+            throw new MissingArgumentException('classDefinition', 0, 'mixed');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhoon\ClassMapper\ClassDefinition;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('classDefinition', $index, $argument, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition');
+                throw new UnexpectedArgumentValueException('classDefinition', $index, $argument, 'mixed');
             }
         };
         $check($arguments[0], 0);
@@ -524,29 +454,29 @@ class ValidatorClassGeneratorTyphoon extends Validator
         $argumentCount = count($arguments);
         if ($argumentCount < 2) {
             if ($argumentCount < 1) {
-                throw new MissingArgumentException('method', 0, 'ReflectionMethod');
+                throw new MissingArgumentException('method', 0, 'mixed');
             }
-            throw new MissingArgumentException('classDefinition', 1, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition');
+            throw new MissingArgumentException('classDefinition', 1, 'mixed');
         } elseif ($argumentCount > 2) {
             throw new UnexpectedArgumentException(2, $arguments[2]);
         }
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \ReflectionMethod;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('method', $index, $argument, 'ReflectionMethod');
+                throw new UnexpectedArgumentValueException('method', $index, $argument, 'mixed');
             }
         };
         $check($arguments[0], 0);
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhoon\ClassMapper\ClassDefinition;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('classDefinition', $index, $argument, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition');
+                throw new UnexpectedArgumentValueException('classDefinition', $index, $argument, 'mixed');
             }
         };
         $check($arguments[1], 1);
@@ -557,29 +487,29 @@ class ValidatorClassGeneratorTyphoon extends Validator
         $argumentCount = count($arguments);
         if ($argumentCount < 2) {
             if ($argumentCount < 1) {
-                throw new MissingArgumentException('method', 0, 'ReflectionMethod');
+                throw new MissingArgumentException('method', 0, 'mixed');
             }
-            throw new MissingArgumentException('classDefinition', 1, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition');
+            throw new MissingArgumentException('classDefinition', 1, 'mixed');
         } elseif ($argumentCount > 2) {
             throw new UnexpectedArgumentException(2, $arguments[2]);
         }
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \ReflectionMethod;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('method', $index, $argument, 'ReflectionMethod');
+                throw new UnexpectedArgumentValueException('method', $index, $argument, 'mixed');
             }
         };
         $check($arguments[0], 0);
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhoon\ClassMapper\ClassDefinition;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('classDefinition', $index, $argument, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition');
+                throw new UnexpectedArgumentValueException('classDefinition', $index, $argument, 'mixed');
             }
         };
         $check($arguments[1], 1);
@@ -589,17 +519,17 @@ class ValidatorClassGeneratorTyphoon extends Validator
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('classDefinition', 0, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition');
+            throw new MissingArgumentException('classDefinition', 0, 'mixed');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhoon\ClassMapper\ClassDefinition;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('classDefinition', $index, $argument, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition');
+                throw new UnexpectedArgumentValueException('classDefinition', $index, $argument, 'mixed');
             }
         };
         $check($arguments[0], 0);

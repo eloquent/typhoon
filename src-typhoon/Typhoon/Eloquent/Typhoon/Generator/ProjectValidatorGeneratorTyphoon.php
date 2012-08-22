@@ -29,24 +29,10 @@ class ProjectValidatorGeneratorTyphoon extends Validator
         if ($argumentCount > 0) {
             $check = function($argument, $index) {
                 $check = function($value) {
-                    $check = function($value) {
-                        return $value instanceof \Eloquent\Typhoon\ClassMapper\ClassMapper;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    $check = function($value) {
-                        return $value === null;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    return false;
+                    return true;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('classMapper', $index, $argument, 'Eloquent\\Typhoon\\ClassMapper\\ClassMapper|null');
+                    throw new UnexpectedArgumentValueException('classMapper', $index, $argument, 'mixed');
                 }
             };
             $check($arguments[0], 0);
@@ -55,24 +41,10 @@ class ProjectValidatorGeneratorTyphoon extends Validator
         if ($argumentCount > 1) {
             $check = function($argument, $index) {
                 $check = function($value) {
-                    $check = function($value) {
-                        return $value instanceof \Eloquent\Typhoon\Generator\ValidatorClassGenerator;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    $check = function($value) {
-                        return $value === null;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    return false;
+                    return true;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('classGenerator', $index, $argument, 'Eloquent\\Typhoon\\Generator\\ValidatorClassGenerator|null');
+                    throw new UnexpectedArgumentValueException('classGenerator', $index, $argument, 'mixed');
                 }
             };
             $check($arguments[1], 1);
@@ -81,24 +53,10 @@ class ProjectValidatorGeneratorTyphoon extends Validator
         if ($argumentCount > 2) {
             $check = function($argument, $index) {
                 $check = function($value) {
-                    $check = function($value) {
-                        return $value instanceof \Icecave\Isolator\Isolator;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    $check = function($value) {
-                        return $value === null;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    return false;
+                    return true;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('isolator', $index, $argument, 'Icecave\\Isolator\\Isolator|null');
+                    throw new UnexpectedArgumentValueException('isolator', $index, $argument, 'mixed');
                 }
             };
             $check($arguments[2], 2);

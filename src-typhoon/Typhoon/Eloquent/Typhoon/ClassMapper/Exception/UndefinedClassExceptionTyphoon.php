@@ -41,24 +41,10 @@ class UndefinedClassExceptionTyphoon extends Validator
         if ($argumentCount > 1) {
             $check = function($argument, $index) {
                 $check = function($value) {
-                    $check = function($value) {
-                        return $value instanceof \Exception;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    $check = function($value) {
-                        return $value === null;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    return false;
+                    return true;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('previous', $index, $argument, 'Exception|null');
+                    throw new UnexpectedArgumentValueException('previous', $index, $argument, 'mixed');
                 }
             };
             $check($arguments[1], 1);

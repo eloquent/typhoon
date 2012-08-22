@@ -34,9 +34,9 @@ class NativeParameterListMergeToolTyphoon extends Validator
                 throw new MissingArgumentException('functionName', 0, 'string');
             }
             if ($argumentCount < 2) {
-                throw new MissingArgumentException('documentedParameterList', 1, 'Eloquent\\Typhoon\\Parameter\\ParameterList');
+                throw new MissingArgumentException('documentedParameterList', 1, 'mixed');
             }
-            throw new MissingArgumentException('nativeParameterList', 2, 'Eloquent\\Typhoon\\Parameter\\ParameterList');
+            throw new MissingArgumentException('nativeParameterList', 2, 'mixed');
         } elseif ($argumentCount > 3) {
             throw new UnexpectedArgumentException(3, $arguments[3]);
         }
@@ -53,20 +53,20 @@ class NativeParameterListMergeToolTyphoon extends Validator
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhoon\Parameter\ParameterList;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('documentedParameterList', $index, $argument, 'Eloquent\\Typhoon\\Parameter\\ParameterList');
+                throw new UnexpectedArgumentValueException('documentedParameterList', $index, $argument, 'mixed');
             }
         };
         $check($arguments[1], 1);
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhoon\Parameter\ParameterList;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('nativeParameterList', $index, $argument, 'Eloquent\\Typhoon\\Parameter\\ParameterList');
+                throw new UnexpectedArgumentValueException('nativeParameterList', $index, $argument, 'mixed');
             }
         };
         $check($arguments[2], 2);
@@ -80,9 +80,9 @@ class NativeParameterListMergeToolTyphoon extends Validator
                 throw new MissingArgumentException('functionName', 0, 'string');
             }
             if ($argumentCount < 2) {
-                throw new MissingArgumentException('documentedParameter', 1, 'Eloquent\\Typhoon\\Parameter\\Parameter');
+                throw new MissingArgumentException('documentedParameter', 1, 'mixed');
             }
-            throw new MissingArgumentException('nativeParameter', 2, 'Eloquent\\Typhoon\\Parameter\\Parameter');
+            throw new MissingArgumentException('nativeParameter', 2, 'mixed');
         } elseif ($argumentCount > 3) {
             throw new UnexpectedArgumentException(3, $arguments[3]);
         }
@@ -99,20 +99,20 @@ class NativeParameterListMergeToolTyphoon extends Validator
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhoon\Parameter\Parameter;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('documentedParameter', $index, $argument, 'Eloquent\\Typhoon\\Parameter\\Parameter');
+                throw new UnexpectedArgumentValueException('documentedParameter', $index, $argument, 'mixed');
             }
         };
         $check($arguments[1], 1);
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhoon\Parameter\Parameter;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('nativeParameter', $index, $argument, 'Eloquent\\Typhoon\\Parameter\\Parameter');
+                throw new UnexpectedArgumentValueException('nativeParameter', $index, $argument, 'mixed');
             }
         };
         $check($arguments[2], 2);
@@ -129,9 +129,9 @@ class NativeParameterListMergeToolTyphoon extends Validator
                 throw new MissingArgumentException('parameterName', 1, 'string');
             }
             if ($argumentCount < 3) {
-                throw new MissingArgumentException('documentedType', 2, 'Eloquent\\Typhax\\Type\\Type');
+                throw new MissingArgumentException('documentedType', 2, 'mixed');
             }
-            throw new MissingArgumentException('nativeType', 3, 'Eloquent\\Typhax\\Type\\Type');
+            throw new MissingArgumentException('nativeType', 3, 'mixed');
         } elseif ($argumentCount > 4) {
             throw new UnexpectedArgumentException(4, $arguments[4]);
         }
@@ -158,20 +158,20 @@ class NativeParameterListMergeToolTyphoon extends Validator
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhax\Type\Type;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('documentedType', $index, $argument, 'Eloquent\\Typhax\\Type\\Type');
+                throw new UnexpectedArgumentValueException('documentedType', $index, $argument, 'mixed');
             }
         };
         $check($arguments[2], 2);
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhax\Type\Type;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('nativeType', $index, $argument, 'Eloquent\\Typhax\\Type\\Type');
+                throw new UnexpectedArgumentValueException('nativeType', $index, $argument, 'mixed');
             }
         };
         $check($arguments[3], 3);
@@ -182,29 +182,29 @@ class NativeParameterListMergeToolTyphoon extends Validator
         $argumentCount = count($arguments);
         if ($argumentCount < 2) {
             if ($argumentCount < 1) {
-                throw new MissingArgumentException('documentedType', 0, 'Eloquent\\Typhax\\Type\\Type');
+                throw new MissingArgumentException('documentedType', 0, 'mixed');
             }
-            throw new MissingArgumentException('nativeType', 1, 'Eloquent\\Typhax\\Type\\Type');
+            throw new MissingArgumentException('nativeType', 1, 'mixed');
         } elseif ($argumentCount > 2) {
             throw new UnexpectedArgumentException(2, $arguments[2]);
         }
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhax\Type\Type;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('documentedType', $index, $argument, 'Eloquent\\Typhax\\Type\\Type');
+                throw new UnexpectedArgumentValueException('documentedType', $index, $argument, 'mixed');
             }
         };
         $check($arguments[0], 0);
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhax\Type\Type;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('nativeType', $index, $argument, 'Eloquent\\Typhax\\Type\\Type');
+                throw new UnexpectedArgumentValueException('nativeType', $index, $argument, 'mixed');
             }
         };
         $check($arguments[1], 1);

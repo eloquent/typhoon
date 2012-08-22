@@ -23,17 +23,17 @@ class ParameterListClassNameResolverTyphoon extends Validator
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('typeResolver', 0, 'Eloquent\\Typhax\\Resolver\\ObjectTypeClassNameResolver');
+            throw new MissingArgumentException('typeResolver', 0, 'mixed');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhax\Resolver\ObjectTypeClassNameResolver;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('typeResolver', $index, $argument, 'Eloquent\\Typhax\\Resolver\\ObjectTypeClassNameResolver');
+                throw new UnexpectedArgumentValueException('typeResolver', $index, $argument, 'mixed');
             }
         };
         $check($arguments[0], 0);
@@ -50,17 +50,17 @@ class ParameterListClassNameResolverTyphoon extends Validator
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('parameter', 0, 'Eloquent\\Typhoon\\Parameter\\Parameter');
+            throw new MissingArgumentException('parameter', 0, 'mixed');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhoon\Parameter\Parameter;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('parameter', $index, $argument, 'Eloquent\\Typhoon\\Parameter\\Parameter');
+                throw new UnexpectedArgumentValueException('parameter', $index, $argument, 'mixed');
             }
         };
         $check($arguments[0], 0);
@@ -70,17 +70,17 @@ class ParameterListClassNameResolverTyphoon extends Validator
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {
-            throw new MissingArgumentException('parameterList', 0, 'Eloquent\\Typhoon\\Parameter\\ParameterList');
+            throw new MissingArgumentException('parameterList', 0, 'mixed');
         } elseif ($argumentCount > 1) {
             throw new UnexpectedArgumentException(1, $arguments[1]);
         }
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhoon\Parameter\ParameterList;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('parameterList', $index, $argument, 'Eloquent\\Typhoon\\Parameter\\ParameterList');
+                throw new UnexpectedArgumentValueException('parameterList', $index, $argument, 'mixed');
             }
         };
         $check($arguments[0], 0);

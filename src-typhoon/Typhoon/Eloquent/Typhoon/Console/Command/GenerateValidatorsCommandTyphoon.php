@@ -29,24 +29,10 @@ class GenerateValidatorsCommandTyphoon extends Validator
         if ($argumentCount > 0) {
             $check = function($argument, $index) {
                 $check = function($value) {
-                    $check = function($value) {
-                        return $value instanceof \Eloquent\Typhoon\Generator\ProjectValidatorGenerator;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    $check = function($value) {
-                        return $value === null;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    return false;
+                    return true;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('generator', $index, $argument, 'Eloquent\\Typhoon\\Generator\\ProjectValidatorGenerator|null');
+                    throw new UnexpectedArgumentValueException('generator', $index, $argument, 'mixed');
                 }
             };
             $check($arguments[0], 0);
@@ -55,24 +41,10 @@ class GenerateValidatorsCommandTyphoon extends Validator
         if ($argumentCount > 1) {
             $check = function($argument, $index) {
                 $check = function($value) {
-                    $check = function($value) {
-                        return $value instanceof \Eloquent\Typhoon\Deployment\DeploymentManager;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    $check = function($value) {
-                        return $value === null;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    return false;
+                    return true;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('deploymentManager', $index, $argument, 'Eloquent\\Typhoon\\Deployment\\DeploymentManager|null');
+                    throw new UnexpectedArgumentValueException('deploymentManager', $index, $argument, 'mixed');
                 }
             };
             $check($arguments[1], 1);
@@ -81,24 +53,10 @@ class GenerateValidatorsCommandTyphoon extends Validator
         if ($argumentCount > 2) {
             $check = function($argument, $index) {
                 $check = function($value) {
-                    $check = function($value) {
-                        return $value instanceof \Icecave\Isolator\Isolator;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    $check = function($value) {
-                        return $value === null;
-                    };
-                    if ($check($value)) {
-                        return true;
-                    }
-
-                    return false;
+                    return true;
                 };
                 if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('isolator', $index, $argument, 'Icecave\\Isolator\\Isolator|null');
+                    throw new UnexpectedArgumentValueException('isolator', $index, $argument, 'mixed');
                 }
             };
             $check($arguments[2], 2);
@@ -131,29 +89,29 @@ class GenerateValidatorsCommandTyphoon extends Validator
         $argumentCount = count($arguments);
         if ($argumentCount < 2) {
             if ($argumentCount < 1) {
-                throw new MissingArgumentException('input', 0, 'Symfony\\Component\\Console\\Input\\InputInterface');
+                throw new MissingArgumentException('input', 0, 'mixed');
             }
-            throw new MissingArgumentException('output', 1, 'Symfony\\Component\\Console\\Output\\OutputInterface');
+            throw new MissingArgumentException('output', 1, 'mixed');
         } elseif ($argumentCount > 2) {
             throw new UnexpectedArgumentException(2, $arguments[2]);
         }
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Symfony\Component\Console\Input\InputInterface;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('input', $index, $argument, 'Symfony\\Component\\Console\\Input\\InputInterface');
+                throw new UnexpectedArgumentValueException('input', $index, $argument, 'mixed');
             }
         };
         $check($arguments[0], 0);
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Symfony\Component\Console\Output\OutputInterface;
+                return true;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('output', $index, $argument, 'Symfony\\Component\\Console\\Output\\OutputInterface');
+                throw new UnexpectedArgumentValueException('output', $index, $argument, 'mixed');
             }
         };
         $check($arguments[1], 1);
