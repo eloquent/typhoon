@@ -153,8 +153,9 @@ namespace $namespaceName;
 use Typhoon\Exception\MissingArgumentException;
 use Typhoon\Exception\UnexpectedArgumentException;
 use Typhoon\Exception\UnexpectedArgumentValueException;
+use Typhoon\Validator;
 
-class $className
+class $className extends Validator
 {{$methods}
 }
 

@@ -9,15 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Typhoon;
+namespace Eloquent\Typhoon\TestFixture;
 
-class DummyValidator extends Validator
+use Typhoon\Validator;
+
+class ExampleValidator extends Validator
 {
-    /**
-     * @param string $name
-     * @param array $arguments
-     */
-    public function __call($name, array $arguments)
+    public function validateFoo(array $arguments)
+    {
+    }
+
+    public function validateBar(array $arguments)
     {
     }
 }

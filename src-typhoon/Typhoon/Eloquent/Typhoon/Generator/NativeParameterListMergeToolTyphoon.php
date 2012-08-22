@@ -15,8 +15,9 @@ namespace Typhoon\Eloquent\Typhoon\Generator;
 use Typhoon\Exception\MissingArgumentException;
 use Typhoon\Exception\UnexpectedArgumentException;
 use Typhoon\Exception\UnexpectedArgumentValueException;
+use Typhoon\Validator;
 
-class NativeParameterListMergeToolTyphoon
+class NativeParameterListMergeToolTyphoon extends Validator
 {
     public function validateConstructor(array $arguments)
     {
@@ -115,38 +116,5 @@ class NativeParameterListMergeToolTyphoon
             }
         };
         $check($arguments[2], 2);
-    }
-
-    public function checkTypeCompatibility(array $arguments)
-    {
-        $argumentCount = count($arguments);
-        if ($argumentCount < 2) {
-            if ($argumentCount < 1) {
-                throw new MissingArgumentException('documentedType', 0, 'Eloquent\\Typhax\\Type\\Type');
-            }
-            throw new MissingArgumentException('nativeType', 1, 'Eloquent\\Typhax\\Type\\Type');
-        } elseif ($argumentCount > 2) {
-            throw new UnexpectedArgumentException(2, $arguments[2]);
-        }
-
-        $check = function($argument, $index) {
-            $check = function($value) {
-                return $value instanceof \Eloquent\Typhax\Type\Type;
-            };
-            if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('documentedType', $index, $argument, 'Eloquent\\Typhax\\Type\\Type');
-            }
-        };
-        $check($arguments[0], 0);
-
-        $check = function($argument, $index) {
-            $check = function($value) {
-                return $value instanceof \Eloquent\Typhax\Type\Type;
-            };
-            if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('nativeType', $index, $argument, 'Eloquent\\Typhax\\Type\\Type');
-            }
-        };
-        $check($arguments[1], 1);
     }
 }

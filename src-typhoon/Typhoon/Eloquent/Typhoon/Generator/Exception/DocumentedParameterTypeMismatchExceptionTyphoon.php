@@ -15,22 +15,26 @@ namespace Typhoon\Eloquent\Typhoon\Generator\Exception;
 use Typhoon\Exception\MissingArgumentException;
 use Typhoon\Exception\UnexpectedArgumentException;
 use Typhoon\Exception\UnexpectedArgumentValueException;
+use Typhoon\Validator;
 
-class DocumentedParameterTypeMismatchExceptionTyphoon
+class DocumentedParameterTypeMismatchExceptionTyphoon extends Validator
 {
     public function validateConstructor(array $arguments)
     {
         $argumentCount = count($arguments);
-        if ($argumentCount < 3) {
+        if ($argumentCount < 4) {
             if ($argumentCount < 1) {
                 throw new MissingArgumentException('functionName', 0, 'string');
             }
             if ($argumentCount < 2) {
-                throw new MissingArgumentException('documentedType', 1, 'Eloquent\\Typhax\\Type\\Type');
+                throw new MissingArgumentException('parameterName', 1, 'string');
             }
-            throw new MissingArgumentException('nativeType', 2, 'Eloquent\\Typhax\\Type\\Type');
-        } elseif ($argumentCount > 5) {
-            throw new UnexpectedArgumentException(5, $arguments[5]);
+            if ($argumentCount < 3) {
+                throw new MissingArgumentException('documentedType', 2, 'Eloquent\\Typhax\\Type\\Type');
+            }
+            throw new MissingArgumentException('nativeType', 3, 'Eloquent\\Typhax\\Type\\Type');
+        } elseif ($argumentCount > 6) {
+            throw new UnexpectedArgumentException(6, $arguments[6]);
         }
 
         $check = function($argument, $index) {
@@ -45,10 +49,10 @@ class DocumentedParameterTypeMismatchExceptionTyphoon
 
         $check = function($argument, $index) {
             $check = function($value) {
-                return $value instanceof \Eloquent\Typhax\Type\Type;
+                return is_string($value);
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('documentedType', $index, $argument, 'Eloquent\\Typhax\\Type\\Type');
+                throw new UnexpectedArgumentValueException('parameterName', $index, $argument, 'string');
             }
         };
         $check($arguments[1], 1);
@@ -58,12 +62,22 @@ class DocumentedParameterTypeMismatchExceptionTyphoon
                 return $value instanceof \Eloquent\Typhax\Type\Type;
             };
             if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('nativeType', $index, $argument, 'Eloquent\\Typhax\\Type\\Type');
+                throw new UnexpectedArgumentValueException('documentedType', $index, $argument, 'Eloquent\\Typhax\\Type\\Type');
             }
         };
         $check($arguments[2], 2);
 
-        if ($argumentCount > 3) {
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return $value instanceof \Eloquent\Typhax\Type\Type;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('nativeType', $index, $argument, 'Eloquent\\Typhax\\Type\\Type');
+            }
+        };
+        $check($arguments[3], 3);
+
+        if ($argumentCount > 4) {
             $check = function($argument, $index) {
                 $check = function($value) {
                     $check = function($value) {
@@ -86,10 +100,10 @@ class DocumentedParameterTypeMismatchExceptionTyphoon
                     throw new UnexpectedArgumentValueException('previous', $index, $argument, 'Exception|null');
                 }
             };
-            $check($arguments[3], 3);
+            $check($arguments[4], 4);
         }
 
-        if ($argumentCount > 4) {
+        if ($argumentCount > 5) {
             $check = function($argument, $index) {
                 $check = function($value) {
                     $check = function($value) {
@@ -112,11 +126,18 @@ class DocumentedParameterTypeMismatchExceptionTyphoon
                     throw new UnexpectedArgumentValueException('typeRenderer', $index, $argument, 'Eloquent\\Typhax\\Renderer\\TypeRenderer|null');
                 }
             };
-            $check($arguments[4], 4);
+            $check($arguments[5], 5);
         }
     }
 
     public function functionName(array $arguments)
+    {
+        if (count($arguments) > 0) {
+            throw new UnexpectedArgumentException(0, $arguments[0]);
+        }
+    }
+
+    public function parameterName(array $arguments)
     {
         if (count($arguments) > 0) {
             throw new UnexpectedArgumentException(0, $arguments[0]);

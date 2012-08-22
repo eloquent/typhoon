@@ -15,8 +15,9 @@ namespace Typhoon\Eloquent\Typhoon\Resolver;
 use Typhoon\Exception\MissingArgumentException;
 use Typhoon\Exception\UnexpectedArgumentException;
 use Typhoon\Exception\UnexpectedArgumentValueException;
+use Typhoon\Validator;
 
-class ParameterListClassNameResolverTyphoon
+class ParameterListClassNameResolverTyphoon extends Validator
 {
     public function validateConstructor(array $arguments)
     {

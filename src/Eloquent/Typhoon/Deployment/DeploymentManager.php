@@ -37,12 +37,20 @@ class DeploymentManager
         $this->typhoon->deploy(func_get_args());
 
         $this->copyFile(
+            $this->deploySourcePath.'/Typhoon/DummyValidator.php',
+            $path.'/Typhoon/DummyValidator.php'
+        );
+        $this->copyFile(
+            $this->deploySourcePath.'/Typhoon/TypeInspector.php',
+            $path.'/Typhoon/TypeInspector.php'
+        );
+        $this->copyFile(
             $this->deploySourcePath.'/Typhoon/Typhoon.php',
             $path.'/Typhoon/Typhoon.php'
         );
         $this->copyFile(
-            $this->deploySourcePath.'/Typhoon/DummyValidator.php',
-            $path.'/Typhoon/DummyValidator.php'
+            $this->deploySourcePath.'/Typhoon/Validator.php',
+            $path.'/Typhoon/Validator.php'
         );
         $this->copyFile(
             $this->deploySourcePath.'/Typhoon/Exception/MissingArgumentException.php',

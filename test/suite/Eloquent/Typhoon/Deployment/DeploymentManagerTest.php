@@ -34,7 +34,7 @@ class DeploymentManagerTest extends PHPUnit_Framework_TestCase
 
 
         $manager->deploy('foo');
-        $isDirVerificationTyphoon = Phake::verify($isolator, Phake::times(2))
+        $isDirVerificationTyphoon = Phake::verify($isolator, Phake::times(4))
             ->is_dir('foo/Typhoon')
         ;
         $isDirVerificationException = Phake::verify($isolator, Phake::times(4))
@@ -43,13 +43,23 @@ class DeploymentManagerTest extends PHPUnit_Framework_TestCase
         Phake::inOrder(
             $isDirVerificationTyphoon,
             Phake::verify($isolator)->copy(
+                $this->_deploySourcePath.'/Typhoon/DummyValidator.php',
+                'foo/Typhoon/DummyValidator.php'
+            ),
+            $isDirVerificationTyphoon,
+            Phake::verify($isolator)->copy(
+                $this->_deploySourcePath.'/Typhoon/TypeInspector.php',
+                'foo/Typhoon/TypeInspector.php'
+            ),
+            $isDirVerificationTyphoon,
+            Phake::verify($isolator)->copy(
                 $this->_deploySourcePath.'/Typhoon/Typhoon.php',
                 'foo/Typhoon/Typhoon.php'
             ),
             $isDirVerificationTyphoon,
             Phake::verify($isolator)->copy(
-                $this->_deploySourcePath.'/Typhoon/DummyValidator.php',
-                'foo/Typhoon/DummyValidator.php'
+                $this->_deploySourcePath.'/Typhoon/Validator.php',
+                'foo/Typhoon/Validator.php'
             ),
             $isDirVerificationException,
             Phake::verify($isolator)->copy(
@@ -85,7 +95,7 @@ class DeploymentManagerTest extends PHPUnit_Framework_TestCase
 
 
         $manager->deploy('foo');
-        $isDirVerificationTyphoon = Phake::verify($isolator, Phake::times(2))
+        $isDirVerificationTyphoon = Phake::verify($isolator, Phake::times(4))
             ->is_dir('foo/Typhoon')
         ;
         Phake::inOrder(
