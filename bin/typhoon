@@ -1,7 +1,19 @@
 #!/usr/bin/env php
 <?php
 
-require __DIR__.'/../vendor/autoload.php';
+$standaloneAutoloadPath = dirname(__DIR__).'/vendor/autoload.php';
+$dependencyAutoloadPath = __DIR__.'/../../../autoload.php';
+
+if (is_file($standaloneAutoloadPath)) {
+    require $standaloneAutoloadPath;
+} elseif (is_file($dependencyAutoloadPath)) {
+    require $dependencyAutoloadPath;
+} else {
+    throw new LogicException(sprintf(
+        "No autoloader found at '%s'. Try installing Composer dependencies?",
+        $standaloneAutoloadPath
+    ));
+}
 
 Eloquent\Asplode\Asplode::instance()->install();
 
