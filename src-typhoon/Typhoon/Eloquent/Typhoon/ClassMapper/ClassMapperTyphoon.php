@@ -19,7 +19,7 @@ use Typhoon\Validator;
 
 class ClassMapperTyphoon extends Validator
 {
-    public function validateConstructor(array $arguments)
+    public function validateConstruct(array $arguments)
     {
         $argumentCount = count($arguments);
         if ($argumentCount > 1) {

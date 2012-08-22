@@ -19,7 +19,7 @@ use Typhoon\Validator;
 
 class DocumentedParameterNameMismatchExceptionTyphoon extends Validator
 {
-    public function validateConstructor(array $arguments)
+    public function validateConstruct(array $arguments)
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 3) {

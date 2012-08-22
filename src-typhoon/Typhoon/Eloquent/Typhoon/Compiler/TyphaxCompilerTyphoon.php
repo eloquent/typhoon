@@ -19,7 +19,7 @@ use Typhoon\Validator;
 
 class TyphaxCompilerTyphoon extends Validator
 {
-    public function validateConstructor(array $arguments)
+    public function validateConstruct(array $arguments)
     {
         if (count($arguments) > 0) {
             throw new UnexpectedArgumentException(0, $arguments[0]);

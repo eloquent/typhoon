@@ -19,7 +19,7 @@ use Typhoon\Validator;
 
 class ExampleClassTyphoon extends Validator
 {
-    public function validateConstructor(array $arguments)
+    public function validateConstruct(array $arguments)
     {
         static::$arguments[__FUNCTION__] = $arguments;
     }

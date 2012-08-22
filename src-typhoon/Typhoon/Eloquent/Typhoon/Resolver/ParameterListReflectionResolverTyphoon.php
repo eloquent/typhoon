@@ -18,7 +18,7 @@ use Typhoon\Exception\UnexpectedArgumentValueException;
 
 class ParameterListReflectionResolverTyphoon
 {
-    public function validateConstructor(array $arguments)
+    public function validateConstruct(array $arguments)
     {
         $argumentCount = count($arguments);
         if ($argumentCount < 1) {

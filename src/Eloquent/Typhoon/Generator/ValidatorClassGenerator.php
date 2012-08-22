@@ -261,8 +261,11 @@ EOD;
         $this->typhoon->generateMethod(func_get_args());
 
         $methodName = $method->getName();
-        if ('__construct' === $methodName) {
-            $methodName = 'validateConstructor';
+        if ('__' === substr($methodName, 0, 2)) {
+            $methodName = sprintf(
+                'validate%s',
+                ucfirst(substr($methodName, 2))
+            );
         }
 
         $content = $this->indent(

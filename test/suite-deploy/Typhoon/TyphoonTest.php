@@ -48,7 +48,7 @@ class TyphoonTest extends PHPUnit_Framework_TestCase
             $validator
         );
         $this->assertSame($validator, Typhoon::get($className));
-        $this->assertFalse(array_key_exists('validateConstructor', ExampleClassTyphoon::$arguments));
+        $this->assertFalse(array_key_exists('validateConstruct', ExampleClassTyphoon::$arguments));
     }
 
     public function testGetWithArguments()
@@ -62,8 +62,8 @@ class TyphoonTest extends PHPUnit_Framework_TestCase
             $validator
         );
         $this->assertSame($validator, Typhoon::get($className));
-        $this->assertTrue(array_key_exists('validateConstructor', ExampleClassTyphoon::$arguments));
-        $this->assertSame($arguments, ExampleClassTyphoon::$arguments['validateConstructor']);
+        $this->assertTrue(array_key_exists('validateConstruct', ExampleClassTyphoon::$arguments));
+        $this->assertSame($arguments, ExampleClassTyphoon::$arguments['validateConstruct']);
     }
 
     public function testRuntimeGeneration()
