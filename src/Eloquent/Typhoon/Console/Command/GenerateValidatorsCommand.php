@@ -97,6 +97,12 @@ class GenerateValidatorsCommand extends Command
                 './vendor/autoload.php',
             )
         );
+        $this->addOption(
+            'no-native-callable',
+            null,
+            InputOption::VALUE_NONE,
+            "Do not enforce use of the native 'callable' type hint."
+        );
     }
 
     /**
@@ -115,13 +121,21 @@ class GenerateValidatorsCommand extends Command
         }
 
         $output->writeln('Generating validator classes...');
-        $this->generator->generate(
+        $this
+            ->generator()
+            ->classGenerator()
+            ->nativeMergeTool()
+            ->setUseNativeCallable(
+                !$input->getOption('no-native-callable')
+            )
+        ;
+        $this->generator()->generate(
             $input->getArgument('output-path'),
             $input->getArgument('class-path')
         );
 
         $output->writeln('Deploying Typhoon...');
-        $this->deploymentManager->deploy(
+        $this->deploymentManager()->deploy(
             $input->getArgument('output-path')
         );
 

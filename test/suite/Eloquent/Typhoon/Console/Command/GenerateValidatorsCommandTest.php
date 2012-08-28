@@ -25,6 +25,10 @@ class GenerateValidatorsCommandTest extends PHPUnit_Framework_TestCase
         parent::setUp();
 
         $this->_generator = Phake::mock('Eloquent\Typhoon\Generator\ProjectValidatorGenerator');
+        $this->_classGenerator = Phake::mock('Eloquent\Typhoon\Generator\ValidatorClassGenerator');
+        Phake::when($this->_generator)->classGenerator()->thenReturn($this->_classGenerator);
+        $this->_nativeMergeTool = Phake::mock('Eloquent\Typhoon\Generator\NativeParameterListMergeTool');
+        Phake::when($this->_classGenerator)->nativeMergeTool()->thenReturn($this->_nativeMergeTool);
         $this->_deploymentManager = Phake::mock('Eloquent\Typhoon\Deployment\DeploymentManager');
         $this->_isolator = Phake::mock('Icecave\Isolator\Isolator');
         $this->_command = new GenerateValidatorsCommand(
@@ -76,6 +80,12 @@ class GenerateValidatorsCommandTest extends PHPUnit_Framework_TestCase
                 './vendor/autoload.php',
             )
         ));
+        $expected->addOption(new InputOption(
+            'no-native-callable',
+            null,
+            InputOption::VALUE_NONE,
+            "Do not enforce use of the native 'callable' type hint."
+        ));
 
         $this->assertEquals($expected, $this->_command->getDefinition());
     }
@@ -87,6 +97,9 @@ class GenerateValidatorsCommandTest extends PHPUnit_Framework_TestCase
             'foo',
             'bar',
         ));
+        Phake::when($input)->getOption('no-native-callable')->thenReturn(
+            false
+        );
         Phake::when($input)->getArgument('output-path')->thenReturn('baz');
         Phake::when($input)->getArgument('class-path')->thenReturn(array(
             'qux',
@@ -100,6 +113,7 @@ class GenerateValidatorsCommandTest extends PHPUnit_Framework_TestCase
             Phake::verify($this->_isolator)->require('foo'),
             Phake::verify($this->_isolator)->require('bar'),
             Phake::verify($output)->writeln('Generating validator classes...'),
+            Phake::verify($this->_nativeMergeTool)->setUseNativeCallable(true),
             Phake::verify($this->_generator)->generate(
                 'baz',
                 array(
@@ -111,5 +125,24 @@ class GenerateValidatorsCommandTest extends PHPUnit_Framework_TestCase
             Phake::verify($this->_deploymentManager)->deploy('baz'),
             Phake::verify($output)->writeln('Done.')
         );
+    }
+
+    public function testExecuteNoNativeCallable()
+    {
+        $input = Phake::mock('Symfony\Component\Console\Input\InputInterface');
+        Phake::when($input)->getOption('loader-path')->thenReturn(array(
+            'foo',
+        ));
+        Phake::when($input)->getOption('no-native-callable')->thenReturn(
+            true
+        );
+        Phake::when($input)->getArgument('output-path')->thenReturn('bar');
+        Phake::when($input)->getArgument('class-path')->thenReturn(array(
+            'baz',
+        ));
+        $output = Phake::mock('Symfony\Component\Console\Output\OutputInterface');
+        Liberator::liberate($this->_command)->execute($input, $output);
+
+        Phake::verify($this->_nativeMergeTool)->setUseNativeCallable(false);
     }
 }
