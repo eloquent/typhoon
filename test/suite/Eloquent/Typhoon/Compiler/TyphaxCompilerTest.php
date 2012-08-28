@@ -938,7 +938,7 @@ EOD;
         $this->assertFalse($validator(stream_context_create()));
     }
 
-    public function testVisitTraversableType()
+    public function testVisitTraversableTypeArrayPrimary()
     {
         $type = new TraversableType(
             new ArrayType,
@@ -976,7 +976,94 @@ EOD;
         $this->assertSame($expected, $type->accept($this->_compiler));
     }
 
-    public function testVisitTraversableTypeLogic()
+    public function testVisitTraversableTypeObjectPrimary()
+    {
+        $type = new TraversableType(
+            new ObjectType('Foo'),
+            new MixedType,
+            new MixedType
+        );
+        $expected = <<<'EOD'
+function($value) {
+    if (!$value instanceof \Traversable) {
+        return false;
+    }
+
+    $primaryCheck = function($value) {
+        return $value instanceof \Foo;
+    };
+    if (!$primaryCheck($value)) {
+        return false;
+    }
+
+    $keyCheck = function($value) {
+        return true;
+    };
+    $valueCheck = function($value) {
+        return true;
+    };
+    foreach ($value as $key => $subValue) {
+        if (!$keyCheck($key)) {
+            return false;
+        }
+        if (!$valueCheck($subValue)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+EOD;
+
+        $this->assertSame($expected, $type->accept($this->_compiler));
+    }
+
+    public function testVisitTraversableTypeMixedPrimary()
+    {
+        $type = new TraversableType(
+            new MixedType,
+            new MixedType,
+            new MixedType
+        );
+        $expected = <<<'EOD'
+function($value) {
+    if (
+        !is_array($value) &&
+        !$value instanceof \Traversable
+    ) {
+        return false;
+    }
+
+    $primaryCheck = function($value) {
+        return true;
+    };
+    if (!$primaryCheck($value)) {
+        return false;
+    }
+
+    $keyCheck = function($value) {
+        return true;
+    };
+    $valueCheck = function($value) {
+        return true;
+    };
+    foreach ($value as $key => $subValue) {
+        if (!$keyCheck($key)) {
+            return false;
+        }
+        if (!$valueCheck($subValue)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+EOD;
+
+        $this->assertSame($expected, $type->accept($this->_compiler));
+    }
+
+    public function testVisitTraversableTypeLogicArrayPrimary()
     {
         $validator = $this->validatorFixture(new TraversableType(
             new ArrayType,
@@ -987,11 +1074,11 @@ EOD;
             'foo' => 111,
             'bar' => 222,
         );
-        $partiallyValidArrayValues = array(
+        $partiallyValidValues = array(
             'foo' => 111,
             'bar' => 2.22,
         );
-        $partiallyValidArrayKeys = array(
+        $partiallyValidKeys = array(
             'foo' => 111,
             222 => 333,
         );
@@ -1003,9 +1090,104 @@ EOD;
         $this->assertTrue($validator($validArray));
         $this->assertTrue($validator(array()));
 
-        $this->assertFalse($validator($partiallyValidArrayValues));
-        $this->assertFalse($validator($partiallyValidArrayKeys));
+        $this->assertFalse($validator($partiallyValidValues));
+        $this->assertFalse($validator($partiallyValidKeys));
         $this->assertFalse($validator($invalidPrimaryType));
+        $this->assertFalse($validator(null));
+        $this->assertFalse($validator(true));
+        $this->assertFalse($validator(false));
+        $this->assertFalse($validator(111));
+        $this->assertFalse($validator(1.11));
+        $this->assertFalse($validator('foo'));
+        $this->assertFalse($validator(new stdClass));
+        $this->assertFalse($validator(stream_context_create()));
+    }
+
+    public function testVisitTraversableTypeLogicObjectPrimary()
+    {
+        $validator = $this->validatorFixture(new TraversableType(
+            new ObjectType('ArrayIterator'),
+            new StringType,
+            new IntegerType
+        ));
+        $validObject = new ArrayIterator(array(
+            'foo' => 111,
+            'bar' => 222,
+        ));
+        $partiallyValidValues = new ArrayIterator(array(
+            'foo' => 111,
+            'bar' => 2.22,
+        ));
+        $partiallyValidKeys = new ArrayIterator(array(
+            'foo' => 111,
+            222 => 333,
+        ));
+        $invalidPrimaryType = array(
+            'foo' => 111,
+            'bar' => 222,
+        );
+
+        $this->assertTrue($validator($validObject));
+        $this->assertTrue($validator(new ArrayIterator));
+
+        $this->assertFalse($validator($partiallyValidValues));
+        $this->assertFalse($validator($partiallyValidKeys));
+        $this->assertFalse($validator($invalidPrimaryType));
+        $this->assertFalse($validator(null));
+        $this->assertFalse($validator(true));
+        $this->assertFalse($validator(false));
+        $this->assertFalse($validator(111));
+        $this->assertFalse($validator(1.11));
+        $this->assertFalse($validator('foo'));
+        $this->assertFalse($validator(new stdClass));
+        $this->assertFalse($validator(stream_context_create()));
+    }
+
+    public function testVisitTraversableTypeLogicMixedPrimary()
+    {
+        $validator = $this->validatorFixture(new TraversableType(
+            new MixedType,
+            new StringType,
+            new IntegerType
+        ));
+        $validArray = array(
+            'foo' => 111,
+            'bar' => 222,
+        );
+        $validObject = new ArrayIterator(array(
+            'foo' => 111,
+            'bar' => 222,
+        ));
+        $validObject = new ArrayIterator(array(
+            'foo' => 111,
+            'bar' => 222,
+        ));
+        $partiallyValidValuesArray = array(
+            'foo' => 111,
+            'bar' => 2.22,
+        );
+        $partiallyValidValuesObject = new ArrayIterator(array(
+            'foo' => 111,
+            'bar' => 2.22,
+        ));
+        $partiallyValidKeysArray = array(
+            'foo' => 111,
+            222 => 333,
+        );
+        $partiallyValidKeysObject = new ArrayIterator(array(
+            'foo' => 111,
+            222 => 333,
+        ));
+
+        $this->assertTrue($validator($validArray));
+        $this->assertTrue($validator(array()));
+        $this->assertTrue($validator($validObject));
+        $this->assertTrue($validator(new ArrayIterator));
+
+        $this->assertFalse($validator($partiallyValidValuesArray));
+        $this->assertFalse($validator($partiallyValidKeysArray));
+        $this->assertFalse($validator($partiallyValidValuesObject));
+        $this->assertFalse($validator($partiallyValidKeysObject));
         $this->assertFalse($validator(null));
         $this->assertFalse($validator(true));
         $this->assertFalse($validator(false));

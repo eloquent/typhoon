@@ -428,12 +428,35 @@ EOD
     {
         $this->typhoon->visitTraversableType(func_get_args());
 
+        if ($type->primaryType() instanceof ArrayType) {
+            $traversableCheck = '';
+        } elseif ($type->primaryType() instanceof ObjectType) {
+            $traversableCheck = <<<'EOD'
+if (!$value instanceof \Traversable) {
+    return false;
+}
+
+
+EOD;
+        } else {
+            $traversableCheck = <<<'EOD'
+if (
+    !is_array($value) &&
+    !$value instanceof \Traversable
+) {
+    return false;
+}
+
+
+EOD;
+        }
+
         $primaryCheck = $type->primaryType()->accept($this);
         $keyCheck = $type->keyType()->accept($this);
         $valueCheck = $type->valueType()->accept($this);
 
         return $this->createCallback(<<<EOD
-\$primaryCheck = $primaryCheck;
+$traversableCheck\$primaryCheck = $primaryCheck;
 if (!\$primaryCheck(\$value)) {
     return false;
 }
