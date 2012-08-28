@@ -633,6 +633,7 @@ class NativeParameterListMergeToolTest extends PHPUnit_Framework_TestCase
     public function testMergeTypeCallableMixed()
     {
         $mergeTool = new NativeParameterListMergeTool;
+        $mergeTool->setUseNativeCallable(false);
         $documentedType = new CallableType;
         $nativeType = new MixedType;
         $actual = Liberator::liberate($mergeTool)->mergeType(
@@ -648,6 +649,7 @@ class NativeParameterListMergeToolTest extends PHPUnit_Framework_TestCase
     public function testMergeTypeCallableOrNullMixed()
     {
         $mergeTool = new NativeParameterListMergeTool;
+        $mergeTool->setUseNativeCallable(false);
         $documentedType = new OrType(array(
             new CallableType,
             new NullType,
