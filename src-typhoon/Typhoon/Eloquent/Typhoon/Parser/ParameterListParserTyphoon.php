@@ -49,11 +49,24 @@ class ParameterListParserTyphoon extends Validator
     public function parseBlockComment(array $arguments)
     {
         $argumentCount = count($arguments);
-        if ($argumentCount < 1) {
-            throw new MissingArgumentException('blockComment', 0, 'string');
-        } elseif ($argumentCount > 2) {
-            throw new UnexpectedArgumentException(2, $arguments[2]);
+        if ($argumentCount < 2) {
+            if ($argumentCount < 1) {
+                throw new MissingArgumentException('functionName', 0, 'string');
+            }
+            throw new MissingArgumentException('blockComment', 1, 'string');
+        } elseif ($argumentCount > 3) {
+            throw new UnexpectedArgumentException(3, $arguments[3]);
         }
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return is_string($value);
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('functionName', $index, $argument, 'string');
+            }
+        };
+        $check($arguments[0], 0);
 
         $check = function($argument, $index) {
             $check = function($value) {
@@ -63,9 +76,9 @@ class ParameterListParserTyphoon extends Validator
                 throw new UnexpectedArgumentValueException('blockComment', $index, $argument, 'string');
             }
         };
-        $check($arguments[0], 0);
+        $check($arguments[1], 1);
 
-        if ($argumentCount > 1) {
+        if ($argumentCount > 2) {
             $check = function($argument, $index) {
                 $check = function($value) {
                     return true;
@@ -74,7 +87,7 @@ class ParameterListParserTyphoon extends Validator
                     throw new UnexpectedArgumentValueException('documentationParser', $index, $argument, 'mixed');
                 }
             };
-            $check($arguments[1], 1);
+            $check($arguments[2], 2);
         }
     }
 

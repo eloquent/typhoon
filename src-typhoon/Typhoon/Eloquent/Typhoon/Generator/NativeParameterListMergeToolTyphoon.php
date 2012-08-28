@@ -26,6 +26,40 @@ class NativeParameterListMergeToolTyphoon extends Validator
         }
     }
 
+    public function nativeCallableAvailable(array $arguments)
+    {
+        if (count($arguments) > 0) {
+            throw new UnexpectedArgumentException(0, $arguments[0]);
+        }
+    }
+
+    public function setUseNativeCallable(array $arguments)
+    {
+        $argumentCount = count($arguments);
+        if ($argumentCount < 1) {
+            throw new MissingArgumentException('useNativeCallable', 0, 'boolean');
+        } elseif ($argumentCount > 1) {
+            throw new UnexpectedArgumentException(1, $arguments[1]);
+        }
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return is_bool($value);
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('useNativeCallable', $index, $argument, 'boolean');
+            }
+        };
+        $check($arguments[0], 0);
+    }
+
+    public function useNativeCallable(array $arguments)
+    {
+        if (count($arguments) > 0) {
+            throw new UnexpectedArgumentException(0, $arguments[0]);
+        }
+    }
+
     public function merge(array $arguments)
     {
         $argumentCount = count($arguments);

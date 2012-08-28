@@ -33,8 +33,41 @@ class NativeParameterListMergeTool
         $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
 
         $reflectionParameterClass = new ReflectionClass('ReflectionParameter');
-        $this->callableHintsAvailable =
+        $this->nativeCallableAvailable =
             $reflectionParameterClass->hasMethod('isCallable')
+        ;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function nativeCallableAvailable()
+    {
+        $this->typhoon->nativeCallableAvailable(func_get_args());
+
+        return $this->nativeCallableAvailable;
+    }
+
+    /**
+     * @param boolean $useNativeCallable
+     */
+    public function setUseNativeCallable($useNativeCallable)
+    {
+        $this->typhoon->setUseNativeCallable(func_get_args());
+
+        $this->useNativeCallable = $useNativeCallable;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function useNativeCallable()
+    {
+        $this->typhoon->useNativeCallable(func_get_args());
+
+        return
+            $this->useNativeCallable &&
+            $this->nativeCallableAvailable()
         ;
     }
 
@@ -191,7 +224,7 @@ class NativeParameterListMergeTool
 
         // callable
         if (
-            $this->callableHintsAvailable &&
+            $this->useNativeCallable() &&
             $documentedType instanceof CallableType
         ) {
             return $nativeType instanceof CallableType;
@@ -283,7 +316,7 @@ class NativeParameterListMergeTool
             }
 
             return
-                (!$this->callableHintsAvailable && $hasCallable) ||
+                (!$this->useNativeCallable() && $hasCallable) ||
                 ($hasArray && $hasCallable) ||
                 ($hasArray && $hasObjectOfType) ||
                 ($hasCallable && $hasObjectOfType)
@@ -308,6 +341,7 @@ class NativeParameterListMergeTool
         return $nativeType instanceof MixedType;
     }
 
-    protected $callableHintsAvailable;
+    private $nativeCallableAvailable;
+    private $useNativeCallable = true;
     private $typhoon;
 }

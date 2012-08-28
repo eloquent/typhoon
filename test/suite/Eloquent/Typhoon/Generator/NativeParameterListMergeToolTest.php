@@ -26,16 +26,62 @@ use Eloquent\Typhax\Type\TraversableType;
 use Eloquent\Typhax\Type\Type;
 use Eloquent\Typhoon\Parameter\Parameter;
 use Eloquent\Typhoon\Parameter\ParameterList;
+use Phake;
 use PHPUnit_Framework_TestCase;
 use ReflectionClass;
 
 class NativeParameterListMergeToolTest extends PHPUnit_Framework_TestCase
 {
+    public function __construct($name = null, array $data = array(), $dataName = '')
+    {
+        $reflectionParameterClass = new ReflectionClass('ReflectionParameter');
+        $this->_nativeCallableAvailable = $reflectionParameterClass->hasMethod('isCallable');
+
+        parent::__construct($name, $data, $dataName);
+    }
+
     protected function setUp()
     {
         parent::setUp();
 
         $this->_mergeTool = new NativeParameterListMergeTool;
+    }
+
+    public function testNativeCallableAvailable()
+    {
+        $this->assertSame(
+            $this->_nativeCallableAvailable,
+            $this->_mergeTool->nativeCallableAvailable()
+        );
+    }
+
+    public function testUseNativeCallableManualOff()
+    {
+        $mergeTool = Phake::partialMock(__NAMESPACE__.'\NativeParameterListMergeTool');
+        $mergeTool->setUseNativeCallable(false);
+
+        $this->assertFalse($mergeTool->useNativeCallable());
+        Phake::verify($mergeTool, Phake::never())->nativeCallableAvailable();
+    }
+
+    public function testUseNativeCallableNotAvailable()
+    {
+        $mergeTool = Phake::partialMock(__NAMESPACE__.'\NativeParameterListMergeTool');
+        $mergeTool->setUseNativeCallable(true);
+        Phake::when($mergeTool)->nativeCallableAvailable()->thenReturn(false);
+
+        $this->assertFalse($mergeTool->useNativeCallable());
+        Phake::verify($mergeTool)->nativeCallableAvailable();
+    }
+
+    public function testUseNativeCallableOn()
+    {
+        $mergeTool = Phake::partialMock(__NAMESPACE__.'\NativeParameterListMergeTool');
+        $mergeTool->setUseNativeCallable(true);
+        Phake::when($mergeTool)->nativeCallableAvailable()->thenReturn(true);
+
+        $this->assertTrue($mergeTool->useNativeCallable());
+        Phake::verify($mergeTool)->nativeCallableAvailable();
     }
 
     public function mergeData()
@@ -474,8 +520,6 @@ class NativeParameterListMergeToolTest extends PHPUnit_Framework_TestCase
     public function mergeTypeData()
     {
         $data = array();
-        $reflectionParameterClass = new ReflectionClass('ReflectionParameter');
-        $callableHintsAvailable = $reflectionParameterClass->hasMethod('isCallable');
 
         $documentedType = new TraversableType(
             new ArrayType,
@@ -586,12 +630,42 @@ class NativeParameterListMergeToolTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $actual);
     }
 
+    public function testMergeTypeCallableMixed()
+    {
+        $mergeTool = new NativeParameterListMergeTool;
+        $documentedType = new CallableType;
+        $nativeType = new MixedType;
+        $actual = Liberator::liberate($mergeTool)->mergeType(
+            'foo',
+            'bar',
+            $documentedType,
+            $nativeType
+        );
+
+        $this->assertEquals($documentedType, $actual);
+    }
+
+    public function testMergeTypeCallableOrNullMixed()
+    {
+        $mergeTool = new NativeParameterListMergeTool;
+        $documentedType = new OrType(array(
+            new CallableType,
+            new NullType,
+        ));
+        $nativeType = new MixedType;
+        $actual = Liberator::liberate($mergeTool)->mergeType(
+            'foo',
+            'bar',
+            $documentedType,
+            $nativeType
+        );
+
+        $this->assertEquals($documentedType, $actual);
+    }
+
     public function mergeTypeFailureData()
     {
         $data = array();
-        $reflectionParameterClass = new ReflectionClass('ReflectionParameter');
-        $callableHintsAvailable = $reflectionParameterClass->hasMethod('isCallable');
-
         // arrays
         $documentedType = new TraversableType(
             new ArrayType,
@@ -796,7 +870,7 @@ class NativeParameterListMergeToolTest extends PHPUnit_Framework_TestCase
         );
 
         // callables
-        if ($callableHintsAvailable) {
+        if ($this->_nativeCallableAvailable) {
             $documentedType = new CallableType;
             $nativeType = new MixedType;
             $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
