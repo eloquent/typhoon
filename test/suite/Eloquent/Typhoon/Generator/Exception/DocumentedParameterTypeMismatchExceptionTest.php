@@ -15,10 +15,10 @@ use Eloquent\Typhax\Renderer\TypeRenderer;
 use Eloquent\Typhax\Type\ArrayType;
 use Eloquent\Typhax\Type\NullType;
 use Eloquent\Typhax\Type\OrType;
+use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Phake;
-use PHPUnit_Framework_TestCase;
 
-class DocumentedParameterTypeMismatchExceptionTest extends PHPUnit_Framework_TestCase
+class DocumentedParameterTypeMismatchExceptionTest extends MultiGenerationTestCase
 {
     public function testException()
     {

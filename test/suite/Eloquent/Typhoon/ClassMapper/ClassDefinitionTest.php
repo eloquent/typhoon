@@ -12,10 +12,10 @@
 namespace Eloquent\Typhoon\ClassMapper;
 
 use Eloquent\Cosmos\ClassNameResolver;
+use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Phake;
-use PHPUnit_Framework_TestCase;
 
-class ClassDefinitionTest extends PHPUnit_Framework_TestCase
+class ClassDefinitionTest extends MultiGenerationTestCase
 {
     public function testDefinition()
     {

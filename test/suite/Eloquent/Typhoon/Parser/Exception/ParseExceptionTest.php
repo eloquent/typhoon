@@ -11,10 +11,10 @@
 
 namespace Eloquent\Typhoon\Parser\Exception;
 
+use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Phake;
-use PHPUnit_Framework_TestCase;
 
-class ParseExceptionTest extends PHPUnit_Framework_TestCase
+class ParseExceptionTest extends MultiGenerationTestCase
 {
     public function testException()
     {

@@ -26,11 +26,11 @@ use Eloquent\Typhax\Type\TraversableType;
 use Eloquent\Typhax\Type\Type;
 use Eloquent\Typhoon\Parameter\Parameter;
 use Eloquent\Typhoon\Parameter\ParameterList;
+use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Phake;
-use PHPUnit_Framework_TestCase;
 use ReflectionClass;
 
-class NativeParameterListMergeToolTest extends PHPUnit_Framework_TestCase
+class NativeParameterListMergeToolTest extends MultiGenerationTestCase
 {
     public function __construct($name = null, array $data = array(), $dataName = '')
     {

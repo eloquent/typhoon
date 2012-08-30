@@ -12,10 +12,10 @@
 namespace Eloquent\Typhoon\Parameter;
 
 use Eloquent\Typhax\Type\StringType;
+use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Phake;
-use PHPUnit_Framework_TestCase;
 
-class ParameterTest extends PHPUnit_Framework_TestCase
+class ParameterTest extends MultiGenerationTestCase
 {
     public function testParameter()
     {

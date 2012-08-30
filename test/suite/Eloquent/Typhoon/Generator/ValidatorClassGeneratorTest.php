@@ -15,13 +15,13 @@ use Eloquent\Typhoon\ClassMapper\ClassDefinition;
 use Eloquent\Typhoon\ClassMapper\ClassMapper;
 use Eloquent\Typhoon\Compiler\ParameterListCompiler;
 use Eloquent\Typhoon\Parser\ParameterListParser;
+use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use FilesystemIterator;
 use Phake;
-use PHPUnit_Framework_TestCase;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
-class ValidatorClassGeneratorTest extends PHPUnit_Framework_TestCase
+class ValidatorClassGeneratorTest extends MultiGenerationTestCase
 {
     protected function setUp()
     {

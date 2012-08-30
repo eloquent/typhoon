@@ -14,13 +14,13 @@ namespace Eloquent\Typhoon\ClassMapper;
 use ArrayIterator;
 use Closure;
 use Eloquent\Liberator\Liberator;
+use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use FilesystemIterator;
 use Phake;
-use PHPUnit_Framework_TestCase;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
-class ClassMapperTest extends PHPUnit_Framework_TestCase
+class ClassMapperTest extends MultiGenerationTestCase
 {
     protected function setUp()
     {

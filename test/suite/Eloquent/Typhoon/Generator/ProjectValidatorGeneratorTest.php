@@ -13,10 +13,10 @@ namespace Eloquent\Typhoon\Generator;
 
 use Eloquent\Liberator\Liberator;
 use Eloquent\Typhoon\ClassMapper\ClassDefinition;
+use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Phake;
-use PHPUnit_Framework_TestCase;
 
-class ProjectValidatorGeneratorTest extends PHPUnit_Framework_TestCase
+class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
 {
     protected function setUp()
     {

@@ -11,10 +11,10 @@
 
 namespace Eloquent\Typhoon\Deployment;
 
+use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Phake;
-use PHPUnit_Framework_TestCase;
 
-class DeploymentManagerTest extends PHPUnit_Framework_TestCase
+class DeploymentManagerTest extends MultiGenerationTestCase
 {
     protected function setUp()
     {

@@ -12,9 +12,9 @@
 namespace Eloquent\Typhoon\Parameter;
 
 use Eloquent\Typhax\Type\MixedType;
-use PHPUnit_Framework_TestCase;
+use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 
-class ParameterListTest extends PHPUnit_Framework_TestCase
+class ParameterListTest extends MultiGenerationTestCase
 {
     public function testParameterList()
     {

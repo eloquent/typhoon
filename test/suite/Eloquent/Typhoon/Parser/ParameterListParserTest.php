@@ -26,12 +26,12 @@ use Eloquent\Typhax\Type\StringType;
 use Eloquent\Typhax\Type\TraversableType;
 use Eloquent\Typhoon\Parameter\ParameterList;
 use Eloquent\Typhoon\Parameter\Parameter;
-use PHPUnit_Framework_TestCase;
+use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use ReflectionClass;
 use ReflectionMethod;
 use stdClass;
 
-class ParameterListParserTest extends PHPUnit_Framework_TestCase
+class ParameterListParserTest extends MultiGenerationTestCase
 {
     protected function setUp()
     {

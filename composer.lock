@@ -1,5 +1,5 @@
 {
-    "hash": "9d868da54bd38ffa255a19b27ed0ec30",
+    "hash": "95bc7b73ca145415cd101aded02cd8c3",
     "packages": [
         {
             "package": "eloquent/asplode",
@@ -15,7 +15,7 @@
         },
         {
             "package": "eloquent/typhax",
-            "version": "0.6.0"
+            "version": "0.6.2"
         },
         {
             "package": "icecave/isolator",
@@ -27,7 +27,7 @@
         },
         {
             "package": "symfony/console",
-            "version": "v2.0.16"
+            "version": "v2.0.17"
         }
     ],
     "packages-dev": [
@@ -38,6 +38,10 @@
         {
             "package": "eloquent/pops",
             "version": "3.1.0"
+        },
+        {
+            "package": "ezzatron/phpunit-extensions",
+            "version": "1.0.0"
         },
         {
             "package": "phake/phake",

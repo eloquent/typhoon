@@ -11,10 +11,10 @@
 
 namespace Eloquent\Typhoon\Generator\Exception;
 
+use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Phake;
-use PHPUnit_Framework_TestCase;
 
-class DocumentedParameterByReferenceMismatchExceptionTest extends PHPUnit_Framework_TestCase
+class DocumentedParameterByReferenceMismatchExceptionTest extends MultiGenerationTestCase
 {
     public function testExceptionDocumentedByReference()
     {

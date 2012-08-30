@@ -11,9 +11,9 @@
 
 namespace Eloquent\Typhoon\Console;
 
-use PHPUnit_Framework_TestCase;
+use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 
-class ApplicationTest extends PHPUnit_Framework_TestCase
+class ApplicationTest extends MultiGenerationTestCase
 {
     public function testConstructor()
     {

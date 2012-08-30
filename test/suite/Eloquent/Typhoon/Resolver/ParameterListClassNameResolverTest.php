@@ -16,9 +16,9 @@ use Eloquent\Typhax\Resolver\ObjectTypeClassNameResolver;
 use Eloquent\Typhax\Type\ObjectType;
 use Eloquent\Typhoon\Parameter\Parameter;
 use Eloquent\Typhoon\Parameter\ParameterList;
-use PHPUnit_Framework_TestCase;
+use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 
-class ParameterListClassNameResolverTest extends PHPUnit_Framework_TestCase
+class ParameterListClassNameResolverTest extends MultiGenerationTestCase
 {
     protected function setUp()
     {

@@ -11,10 +11,10 @@
 
 namespace Eloquent\Typhoon\ClassMapper\Exception;
 
+use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Phake;
-use PHPUnit_Framework_TestCase;
 
-class UndefinedClassExceptionTest extends PHPUnit_Framework_TestCase
+class UndefinedClassExceptionTest extends MultiGenerationTestCase
 {
     public function testException()
     {

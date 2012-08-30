@@ -18,10 +18,10 @@ use Eloquent\Typhax\Type\MixedType;
 use Eloquent\Typhax\Type\StringType;
 use Eloquent\Typhoon\Parameter\Parameter;
 use Eloquent\Typhoon\Parameter\ParameterList;
+use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Phake;
-use PHPUnit_Framework_TestCase;
 
-class ParameterListCompilerTest extends PHPUnit_Framework_TestCase
+class ParameterListCompilerTest extends MultiGenerationTestCase
 {
     protected function setUp()
     {
