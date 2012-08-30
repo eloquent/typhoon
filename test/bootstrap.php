@@ -7,4 +7,5 @@ $autoloader->add('Eloquent\Typhoon\TestCase', __DIR__.'/src');
 $autoloader->add('Eloquent\Typhoon\TestFixture', __DIR__.'/src');
 $autoloader->add('Typhoon\Eloquent\Typhoon\TestFixture', __DIR__.'/src');
 
+Eloquent\Asplode\Asplode::instance()->install();
 Phake::setClient(Phake::CLIENT_PHPUNIT);

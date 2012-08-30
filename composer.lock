@@ -1,5 +1,5 @@
 {
-    "hash": "95bc7b73ca145415cd101aded02cd8c3",
+    "hash": "0edc6a511303b30ea70bc64c77c82534",
     "packages": [
         {
             "package": "eloquent/asplode",
@@ -41,7 +41,7 @@
         },
         {
             "package": "ezzatron/phpunit-extensions",
-            "version": "1.0.0"
+            "version": "1.0.1"
         },
         {
             "package": "phake/phake",
