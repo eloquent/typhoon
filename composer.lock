@@ -28,8 +28,8 @@
         {
             "package": "icecave/pasta-ast",
             "version": "dev-master",
-            "source-reference": "54ad5fd16da9d0ea627ab4b352a4a816366e67e5",
-            "commit-date": "1345467338"
+            "source-reference": "e57c307fb98d96b5c034b5110d62dea6737d7dfe",
+            "commit-date": "1346479968"
         },
         {
             "package": "icecave/rasta",
