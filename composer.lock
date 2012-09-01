@@ -1,5 +1,5 @@
 {
-    "hash": "0edc6a511303b30ea70bc64c77c82534",
+    "hash": "b093e2cc7a5ccf2c013be591fece5627",
     "packages": [
         {
             "package": "eloquent/asplode",
@@ -14,12 +14,28 @@
             "version": "1.0.1"
         },
         {
+            "package": "eloquent/enumeration",
+            "version": "2.1.2"
+        },
+        {
             "package": "eloquent/typhax",
             "version": "0.6.2"
         },
         {
             "package": "icecave/isolator",
             "version": "2.1.0"
+        },
+        {
+            "package": "icecave/pasta-ast",
+            "version": "dev-master",
+            "source-reference": "54ad5fd16da9d0ea627ab4b352a4a816366e67e5",
+            "commit-date": "1345467338"
+        },
+        {
+            "package": "icecave/rasta",
+            "version": "dev-master",
+            "source-reference": "009cc966975f938fa265a9da3a29cc77ad8d6c75",
+            "commit-date": "1345470598"
         },
         {
             "package": "icecave/visita",
@@ -52,7 +68,8 @@
 
     ],
     "minimum-stability": "stable",
-    "stability-flags": [
-
-    ]
+    "stability-flags": {
+        "icecave/pasta-ast": 20,
+        "icecave/rasta": 20
+    }
 }
