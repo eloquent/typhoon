@@ -697,28 +697,64 @@ class TyphaxASTGenerator implements Visitor
             $sequentialKeyExpression
         );
 
-        $closure = new Closure;
-        $closure->addParameter(new Parameter($this->valueIdentifier()));
-
-        $containsClosure = false;
-        $checkVariable = new Variable(new Identifier('check'));
+        $closures = array();
+        $closureCalls = array();
         foreach ($type->types() as $index => $subType) {
             $this->valueIndex = $index;
 
             $expression = $subType->accept($this);
             if ($expression instanceof Closure) {
-                $containsClosure = true;
-                $closure->add(new Assign(
-                    $checkVariable,
-                    $expression
-                ));
+                $closures[] = $expression;
                 $checkCall = new Call($checkVariable);
                 $checkCall->add($this->valueExpression());
-                $closure->add($checkCall);
+                $closureCalls[] = $checkCall;
             } else {
                 $expressions[] = $expression;
             }
         }
+
+        $tupleExpression = null;
+        foreach ($expressions as $expression) {
+            if ($tupleExpression) {
+                $tupleExpression->add($expression);
+            } else {
+                $tupleExpression = new LogicalAnd($expression);
+            }
+        }
+
+        $numClosures = count($closures);
+        if ($numClosures < 1) {
+            return $tupleExpression;
+        }
+
+        $closure = new Closure;
+        $closure->addParameter(new Parameter($this->valueIdentifier()));
+
+        $closure->add(new IfStatement(
+            new LogicalNot($tupleExpression),
+            new ReturnStatement(new Literal(false))
+        ));
+
+        $checkVariable = new Variable(new Identifier('check'));
+        $lastClosureIndex = $numClosures - 1;
+        for ($i = 0; $i < $lastClosureIndex; $i ++) {
+            $closure->add(new Assign(
+                $checkVariable,
+                $closures[$i]
+            ));
+            $closure->add(new IfStatement(
+                new LogicalNot($closureCalls[$i]),
+                new ReturnStatement(new Literal(false))
+            ));
+        }
+
+        $closure->add(new Assign(
+            $checkVariable,
+            $closures[$lastClosureIndex]
+        ));
+        $closure->add(new ReturnStatement($closureCalls[$lastClosureIndex]));
+
+        return $closure;
     }
 
     /**
