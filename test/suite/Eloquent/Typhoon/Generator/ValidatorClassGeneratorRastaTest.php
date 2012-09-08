@@ -25,6 +25,11 @@ use Icecave\Pasta\AST\Type\ConcreteMethod;
 use Icecave\Rasta\Renderer;
 use Phake;
 
+/**
+ * @covers Eloquent\Typhoon\Generator\ValidatorClassGeneratorRasta
+ * @covers Eloquent\Typhoon\Generator\ParameterListGenerator
+ * @covers Eloquent\Typhoon\Generator\TyphaxASTGenerator
+ */
 class ValidatorClassGeneratorRastaTest extends MultiGenerationTestCase
 {
     protected function setUp()

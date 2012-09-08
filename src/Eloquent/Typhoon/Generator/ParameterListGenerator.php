@@ -119,10 +119,11 @@ class ParameterListGenerator implements Visitor
         $newExceptionCall->add(new Literal(
             $parameter->type()->accept($this->typeRenderer())
         ));
-        $expressions[] = new IfStatement(
-            new LogicalNot($conditionExpression),
+        $ifStatement = new IfStatement(new LogicalNot($conditionExpression));
+        $ifStatement->trueBranch()->add(
             new ThrowStatement(new NewOperator($newExceptionCall))
         );
+        $expressions[] = $ifStatement;
 
         return $expressions;
     }
@@ -154,10 +155,11 @@ class ParameterListGenerator implements Visitor
                 $argumentsVariable,
                 $zeroLiteral
             ));
-            $expressions[] = new IfStatement(
-                new Greater($countCall, $zeroLiteral),
+            $ifStatement = new IfStatement(new Greater($countCall, $zeroLiteral));
+            $ifStatement->trueBranch()->add(
                 new ThrowStatement(new NewOperator($newExceptionCall))
             );
+            $expressions[] = $ifStatement;
 
             return $this->wrapExpressions($expressions);
         }
@@ -187,12 +189,13 @@ class ParameterListGenerator implements Visitor
                 $newExceptionCall->add(new Literal(
                     $parameters[$i]->type()->accept($this->typeRenderer())
                 ));
-                $missingParametersStatement->trueBranch()->add(
-                    new IfStatement(
-                        new Less($argumentCountVariable, new Literal($i + 1)),
-                        new ThrowStatement(new NewOperator($newExceptionCall))
-                    )
+                $ifStatement = new IfStatement(
+                    new Less($argumentCountVariable, new Literal($i + 1))
                 );
+                $ifStatement->trueBranch()->add(
+                    new ThrowStatement(new NewOperator($newExceptionCall))
+                );
+                $missingParametersStatement->trueBranch()->add($ifStatement);
             }
             $newExceptionCall = new Call(QualifiedIdentifier::fromString(
                 '\Typhoon\Exception\MissingArgumentException'
@@ -223,7 +226,9 @@ class ParameterListGenerator implements Visitor
                 $parameterCountLiteral
             ));
             $tooManyParametersStatement = new IfStatement(
-                new Greater($argumentCountVariable, $parameterCountLiteral),
+                new Greater($argumentCountVariable, $parameterCountLiteral)
+            );
+            $tooManyParametersStatement->trueBranch()->add(
                 new ThrowStatement(new NewOperator($newExceptionCall))
             );
 
@@ -255,16 +260,21 @@ class ParameterListGenerator implements Visitor
                 );
             }
 
-            $parameterExpressions = array(
+            $parameterExpressions = $parameter->accept($this);
+            if (count($parameterExpressions) < 1) {
+                $this->argumentExpression = $oldArgumentExpression;
+                $this->indexExpression = $oldIndexExpression;
+
+                continue;
+            }
+            array_unshift(
+                $parameterExpressions,
                 new ExpressionStatement(new Assign(
                     new Variable(new Identifier('value')),
                     $this->argumentExpression
-                )),
+                ))
             );
-            $parameterExpressions = $this->wrapExpressions(array_merge(
-                $parameterExpressions,
-                $parameter->accept($this)
-            ));
+            $parameterExpressions = $this->wrapExpressions($parameterExpressions);
 
             // wrap variable length in loop
             if ($isVariableLength) {

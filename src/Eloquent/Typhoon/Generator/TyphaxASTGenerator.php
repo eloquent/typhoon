@@ -125,10 +125,13 @@ class TyphaxASTGenerator implements Visitor
                 $condition = $expressions[$i];
             }
 
-            $closure->statementBlock()->add(new IfStatement(
-                new LogicalNot($expressions[$i]),
+            $ifStatement = new IfStatement(
+                new LogicalNot($expressions[$i])
+            );
+            $ifStatement->trueBranch()->add(
                 new ReturnStatement(new Literal(false))
-            ));
+            );
+            $closure->statementBlock()->add($ifStatement);
         }
 
         if ($expressions[$lastExpressionIndex] instanceof Closure) {
@@ -341,10 +344,11 @@ class TyphaxASTGenerator implements Visitor
                 $condition = $expressions[$i];
             }
 
-            $closure->statementBlock()->add(new IfStatement(
-                $expressions[$i],
+            $ifStatement = new IfStatement($expressions[$i]);
+            $ifStatement->trueBranch()->add(
                 new ReturnStatement(new Literal(true))
-            ));
+            );
+            $closure->statementBlock()->add($ifStatement);
         }
 
         if ($expressions[$lastExpressionIndex] instanceof Closure) {
@@ -419,10 +423,11 @@ class TyphaxASTGenerator implements Visitor
         $closure = new Closure;
         $closure->addParameter(new Parameter(new Identifier('value')));
 
-        $closure->statementBlock()->add(new IfStatement(
-            new LogicalNot($isStreamExpression),
+        $ifStatement = new IfStatement(new LogicalNot($isStreamExpression));
+        $ifStatement->trueBranch()->add(
             new ReturnStatement(new Literal(false))
-        ));
+        );
+        $closure->statementBlock()->add($ifStatement);
 
         $streamMetaDataVariable = new Variable(new Identifier('streamMetaData'));
         $streamModeExpression = new Subscript(
@@ -452,15 +457,17 @@ class TyphaxASTGenerator implements Visitor
                 }
             } else {
                 if ($type->readable()) {
-                    $closure->statementBlock()->add(new IfStatement(
-                        new LogicalNot($isReadableCall),
+                    $ifStatement = new IfStatement(new LogicalNot($isReadableCall));
+                    $ifStatement->trueBranch()->add(
                         new ReturnStatement(new Literal(false))
-                    ));
+                    );
+                    $closure->statementBlock()->add($ifStatement);
                 } else {
-                    $closure->statementBlock()->add(new IfStatement(
-                        $isReadableCall,
+                    $ifStatement = new IfStatement($isReadableCall);
+                    $ifStatement->trueBranch()->add(
                         new ReturnStatement(new Literal(false))
-                    ));
+                    );
+                    $closure->statementBlock()->add($ifStatement);
                 }
             }
         }
@@ -478,15 +485,17 @@ class TyphaxASTGenerator implements Visitor
                 }
             } else {
                 if ($type->writable()) {
-                    $closure->statementBlock()->add(new IfStatement(
-                        new LogicalNot($isWritableCall),
+                    $ifStatement = new IfStatement(new LogicalNot($isWritableCall));
+                    $ifStatement->trueBranch()->add(
                         new ReturnStatement(new Literal(false))
-                    ));
+                    );
+                    $closure->statementBlock()->add($ifStatement);
                 } else {
-                    $closure->statementBlock()->add(new IfStatement(
-                        $isWritableCall,
+                    $ifStatement = new IfStatement($isWritableCall);
+                    $ifStatement->trueBranch()->add(
                         new ReturnStatement(new Literal(false))
-                    ));
+                    );
+                    $closure->statementBlock()->add($ifStatement);
                 }
             }
         }
@@ -540,17 +549,19 @@ class TyphaxASTGenerator implements Visitor
             $isIntCall
         );
         $stringablePrimitiveExpression->add($isFloatCall);
-        $closure->statementBlock()->add(new IfStatement(
-            $stringablePrimitiveExpression,
+        $ifStatement = new IfStatement($stringablePrimitiveExpression);
+        $ifStatement->trueBranch()->add(
             new ReturnStatement(new Literal(true))
-        ));
+        );
+        $closure->statementBlock()->add($ifStatement);
 
         $isObjectCall = new Call(QualifiedIdentifier::fromString('\is_object'));
         $isObjectCall->add($valueVariable);
-        $closure->statementBlock()->add(new IfStatement(
-            new LogicalNot($isObjectCall),
+        $ifStatement = new IfStatement(new LogicalNot($isObjectCall));
+        $ifStatement->trueBranch()->add(
             new ReturnStatement(new Literal(false))
-        ));
+        );
+        $closure->statementBlock()->add($ifStatement);
 
         $newReflectorCall = new Call(QualifiedIdentifier::fromString('\ReflectionObject'));
         $newReflectorCall->add($valueVariable);
@@ -610,10 +621,11 @@ class TyphaxASTGenerator implements Visitor
                 $notTraversableExpression
             );
         }
-        $closure->statementBlock()->add(new IfStatement(
-            $notTraversableExpression,
+        $ifStatement = new IfStatement($notTraversableExpression);
+        $ifStatement->trueBranch()->add(
             new ReturnStatement(new Literal(false))
-        ));
+        );
+        $closure->statementBlock()->add($ifStatement);
 
         $keyIdentifier = new Identifier('key');
         $subValueIdentifier = new Identifier('subValue');
@@ -639,10 +651,11 @@ class TyphaxASTGenerator implements Visitor
             $keyExpression->add($keyVariable);
         }
         if (null !== $keyExpression) {
-            $loop->add(new IfStatement(
-                new LogicalNot($keyExpression),
+            $ifStatement = new IfStatement(new LogicalNot($keyExpression));
+            $ifStatement->trueBranch()->add(
                 new ReturnStatement(new Literal(false))
-            ));
+            );
+            $loop->add($ifStatement);
         }
 
         $subValueVariable = new Variable($subValueIdentifier);
@@ -660,10 +673,11 @@ class TyphaxASTGenerator implements Visitor
             $valueExpression->add($subValueVariable);
         }
         if (null !== $valueExpression) {
-            $loop->add(new IfStatement(
-                new LogicalNot($valueExpression),
+            $ifStatement = new IfStatement(new LogicalNot($valueExpression));
+            $ifStatement->trueBranch()->add(
                 new ReturnStatement(new Literal(false))
-            ));
+            );
+            $loop->add($ifStatement);
         }
 
         $closure->statementBlock()->add($loop);
@@ -731,10 +745,11 @@ class TyphaxASTGenerator implements Visitor
         $closure = new Closure;
         $closure->addParameter(new Parameter($this->valueIdentifier()));
 
-        $closure->statementBlock()->add(new IfStatement(
-            new LogicalNot($tupleExpression),
+        $ifStatement = new IfStatement(new LogicalNot($tupleExpression));
+        $ifStatement->trueBranch()->add(
             new ReturnStatement(new Literal(false))
-        ));
+        );
+        $closure->statementBlock()->add($ifStatement);
 
         $checkVariable = new Variable(new Identifier('check'));
         $lastClosureIndex = $numClosures - 1;
@@ -743,10 +758,11 @@ class TyphaxASTGenerator implements Visitor
                 $checkVariable,
                 $closures[$i]
             )));
-            $closure->statementBlock()->add(new IfStatement(
-                new LogicalNot($closureCalls[$i]),
+            $ifStatement = new IfStatement(new LogicalNot($closureCalls[$i]));
+            $ifStatement->trueBranch()->add(
                 new ReturnStatement(new Literal(false))
-            ));
+            );
+            $closure->statementBlock()->add($ifStatement);
         }
 
         $closure->statementBlock()->add(new ExpressionStatement(new Assign(
