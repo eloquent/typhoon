@@ -41,11 +41,12 @@ use Icecave\Pasta\AST\Expr\Member;
 use Icecave\Pasta\AST\Expr\NewOperator;
 use Icecave\Pasta\AST\Expr\QualifiedIdentifier;
 use Icecave\Pasta\AST\Expr\StrictEquals;
+use Icecave\Pasta\AST\Expr\Subscript;
 use Icecave\Pasta\AST\Expr\Variable;
 use Icecave\Pasta\AST\Func\Closure;
 use Icecave\Pasta\AST\Func\Parameter;
-use Icecave\Pasta\AST\Func\Subscript;
 use Icecave\Pasta\AST\Identifier;
+use Icecave\Pasta\AST\Stmt\ExpressionStatement;
 use Icecave\Pasta\AST\Stmt\ForeachStatement;
 use Icecave\Pasta\AST\Stmt\IfStatement;
 use Icecave\Pasta\AST\Stmt\ReturnStatement;
@@ -112,10 +113,10 @@ class TyphaxASTGenerator implements Visitor
         for ($i = 0; $i < $lastExpressionIndex; $i ++) {
             if ($expressions[$i] instanceof Closure) {
                 $checkVariable = new Variable(new Identifier('check'));
-                $closure->add(new Assign(
+                $closure->statementBlock()->add(new ExpressionStatement(new Assign(
                     $checkVariable,
                     $expressions[$i]
-                ));
+                )));
                 $condition = new Call(
                     $checkVariable,
                     new Variable(new Identifier('value'))
@@ -124,7 +125,7 @@ class TyphaxASTGenerator implements Visitor
                 $condition = $expressions[$i];
             }
 
-            $closure->add(new IfStatement(
+            $closure->statementBlock()->add(new IfStatement(
                 new LogicalNot($expressions[$i]),
                 new ReturnStatement(new Literal(false))
             ));
@@ -132,10 +133,10 @@ class TyphaxASTGenerator implements Visitor
 
         if ($expressions[$lastExpressionIndex] instanceof Closure) {
             foreach ($expressions[$lastExpressionIndex]->statementBlock()->children() as $statement) {
-                $closure->add($statement);
+                $closure->statementBlock()->add($statement);
             }
         } else {
-            $closure->add(new ReturnStatement(
+            $closure->statementBlock()->add(new ReturnStatement(
                 $expressions[$lastExpressionIndex]
             ));
         }
@@ -328,10 +329,10 @@ class TyphaxASTGenerator implements Visitor
         for ($i = 0; $i < $lastExpressionIndex; $i ++) {
             if ($expressions[$i] instanceof Closure) {
                 $checkVariable = new Variable(new Identifier('check'));
-                $closure->add(new Assign(
+                $closure->statementBlock()->add(new ExpressionStatement(new Assign(
                     $checkVariable,
                     $expressions[$i]
-                ));
+                )));
                 $condition = new Call(
                     $checkVariable,
                     new Variable(new Identifier('value'))
@@ -340,7 +341,7 @@ class TyphaxASTGenerator implements Visitor
                 $condition = $expressions[$i];
             }
 
-            $closure->add(new IfStatement(
+            $closure->statementBlock()->add(new IfStatement(
                 $expressions[$i],
                 new ReturnStatement(new Literal(true))
             ));
@@ -348,10 +349,10 @@ class TyphaxASTGenerator implements Visitor
 
         if ($expressions[$lastExpressionIndex] instanceof Closure) {
             foreach ($expressions[$lastExpressionIndex]->statementBlock()->children() as $statement) {
-                $closure->add($statement);
+                $closure->statementBlock()->add($statement);
             }
         } else {
-            $closure->add(new ReturnStatement(
+            $closure->statementBlock()->add(new ReturnStatement(
                 $expressions[$lastExpressionIndex]
             ));
         }
@@ -418,12 +419,12 @@ class TyphaxASTGenerator implements Visitor
         $closure = new Closure;
         $closure->addParameter(new Parameter(new Identifier('value')));
 
-        $closure->add(new IfStatement(
+        $closure->statementBlock()->add(new IfStatement(
             new LogicalNot($isStreamExpression),
             new ReturnStatement(new Literal(false))
         ));
 
-        $streamMetaDataVariable = new Variable(new Literal('streamMetaData'));
+        $streamMetaDataVariable = new Variable(new Identifier('streamMetaData'));
         $streamModeExpression = new Subscript(
             $streamMetaDataVariable,
             new Literal('mode')
@@ -433,10 +434,10 @@ class TyphaxASTGenerator implements Visitor
             QualifiedIdentifier::fromString('stream_get_meta_data')
         );
         $streamGetMetaDataCall->add($this->valueExpression());
-        $closure->add(new Assign(
+        $closure->statementBlock()->add(new ExpressionStatement(new Assign(
             $streamMetaDataVariable,
             $streamGetMetaDataCall
-        ));
+        )));
 
         if (null !== $type->readable()) {
             $isReadableCall = new Call(QualifiedIdentifier::fromString('\preg_match'));
@@ -445,18 +446,18 @@ class TyphaxASTGenerator implements Visitor
 
             if (null === $type->readable()) {
                 if ($type->readable()) {
-                    $closure->add(new ReturnStatement($isReadableCall));
+                    $closure->statementBlock()->add(new ReturnStatement($isReadableCall));
                 } else {
-                    $closure->add(new ReturnStatement(new LogicalNot($isReadableCall)));
+                    $closure->statementBlock()->add(new ReturnStatement(new LogicalNot($isReadableCall)));
                 }
             } else {
                 if ($type->readable()) {
-                    $closure->add(new IfStatement(
+                    $closure->statementBlock()->add(new IfStatement(
                         new LogicalNot($isReadableCall),
                         new ReturnStatement(new Literal(false))
                     ));
                 } else {
-                    $closure->add(new IfStatement(
+                    $closure->statementBlock()->add(new IfStatement(
                         $isReadableCall,
                         new ReturnStatement(new Literal(false))
                     ));
@@ -471,18 +472,18 @@ class TyphaxASTGenerator implements Visitor
 
             if (null === $type->writable()) {
                 if ($type->writable()) {
-                    $closure->add(new ReturnStatement($isWritableCall));
+                    $closure->statementBlock()->add(new ReturnStatement($isWritableCall));
                 } else {
-                    $closure->add(new ReturnStatement(new LogicalNot($isWritableCall)));
+                    $closure->statementBlock()->add(new ReturnStatement(new LogicalNot($isWritableCall)));
                 }
             } else {
                 if ($type->writable()) {
-                    $closure->add(new IfStatement(
+                    $closure->statementBlock()->add(new IfStatement(
                         new LogicalNot($isWritableCall),
                         new ReturnStatement(new Literal(false))
                     ));
                 } else {
-                    $closure->add(new IfStatement(
+                    $closure->statementBlock()->add(new IfStatement(
                         $isWritableCall,
                         new ReturnStatement(new Literal(false))
                     ));
@@ -494,7 +495,7 @@ class TyphaxASTGenerator implements Visitor
             null !== $type->readable() &&
             null !== $type->writable()
         ) {
-            $closure->add(new ReturnStatement(new Literal(true)));
+            $closure->statementBlock()->add(new ReturnStatement(new Literal(true)));
         }
 
         return $closure;
@@ -539,14 +540,14 @@ class TyphaxASTGenerator implements Visitor
             $isIntCall
         );
         $stringablePrimitiveExpression->add($isFloatCall);
-        $closure->add(new IfStatement(
+        $closure->statementBlock()->add(new IfStatement(
             $stringablePrimitiveExpression,
             new ReturnStatement(new Literal(true))
         ));
 
         $isObjectCall = new Call(QualifiedIdentifier::fromString('\is_object'));
         $isObjectCall->add($valueVariable);
-        $closure->add(new IfStatement(
+        $closure->statementBlock()->add(new IfStatement(
             new LogicalNot($isObjectCall),
             new ReturnStatement(new Literal(false))
         ));
@@ -555,10 +556,10 @@ class TyphaxASTGenerator implements Visitor
         $newReflectorCall->add($valueVariable);
         $newReflector = new NewOperator($newReflectorCall);
         $reflectorVariable = new Variable(new Identifier('reflector'));
-        $closure->add(new Assign(
+        $closure->statementBlock()->add(new ExpressionStatement(new Assign(
             $reflectorVariable,
             $newReflector
-        ));
+        )));
 
         $hasMethodCall = new Call(
             new Member(
@@ -567,7 +568,7 @@ class TyphaxASTGenerator implements Visitor
             )
         );
         $hasMethodCall->add(new Literal('__toString'));
-        $closure->add($hasMethodCall);
+        $closure->statementBlock()->add($hasMethodCall);
 
         return $closure;
     }
@@ -609,7 +610,7 @@ class TyphaxASTGenerator implements Visitor
                 $notTraversableExpression
             );
         }
-        $closure->add(new IfStatement(
+        $closure->statementBlock()->add(new IfStatement(
             $notTraversableExpression,
             new ReturnStatement(new Literal(false))
         ));
@@ -630,10 +631,10 @@ class TyphaxASTGenerator implements Visitor
         $this->valueIdentifier = $oldValueIdentifier;
         if ($keyExpression instanceof Closure) {
             $keyCheckVariable = new Variable(new Identifier('keyCheck'));
-            $closure->add(new Assign(
+            $closure->statementBlock()->add(new ExpressionStatement(new Assign(
                 $keyCheckVariable,
                 $keyExpression
-            ));
+            )));
             $keyExpression = new Call($keyCheckVariable);
             $keyExpression->add($keyVariable);
         }
@@ -651,10 +652,10 @@ class TyphaxASTGenerator implements Visitor
         $this->valueIdentifier = $oldValueIdentifier;
         if ($valueExpression instanceof Closure) {
             $valueCheckVariable = new Variable(new Identifier('valueCheck'));
-            $closure->add(new Assign(
+            $closure->statementBlock()->add(new ExpressionStatement(new Assign(
                 $valueCheckVariable,
                 $valueExpression
-            ));
+            )));
             $valueExpression = new Call($valueCheckVariable);
             $valueExpression->add($subValueVariable);
         }
@@ -665,8 +666,8 @@ class TyphaxASTGenerator implements Visitor
             ));
         }
 
-        $closure->add($loop);
-        $closure->add(new ReturnStatement(new Literal(true)));
+        $closure->statementBlock()->add($loop);
+        $closure->statementBlock()->add(new ReturnStatement(new Literal(true)));
 
         return $closure;
     }
@@ -730,7 +731,7 @@ class TyphaxASTGenerator implements Visitor
         $closure = new Closure;
         $closure->addParameter(new Parameter($this->valueIdentifier()));
 
-        $closure->add(new IfStatement(
+        $closure->statementBlock()->add(new IfStatement(
             new LogicalNot($tupleExpression),
             new ReturnStatement(new Literal(false))
         ));
@@ -738,21 +739,21 @@ class TyphaxASTGenerator implements Visitor
         $checkVariable = new Variable(new Identifier('check'));
         $lastClosureIndex = $numClosures - 1;
         for ($i = 0; $i < $lastClosureIndex; $i ++) {
-            $closure->add(new Assign(
+            $closure->statementBlock()->add(new ExpressionStatement(new Assign(
                 $checkVariable,
                 $closures[$i]
-            ));
-            $closure->add(new IfStatement(
+            )));
+            $closure->statementBlock()->add(new IfStatement(
                 new LogicalNot($closureCalls[$i]),
                 new ReturnStatement(new Literal(false))
             ));
         }
 
-        $closure->add(new Assign(
+        $closure->statementBlock()->add(new ExpressionStatement(new Assign(
             $checkVariable,
             $closures[$lastClosureIndex]
-        ));
-        $closure->add(new ReturnStatement($closureCalls[$lastClosureIndex]));
+        )));
+        $closure->statementBlock()->add(new ReturnStatement($closureCalls[$lastClosureIndex]));
 
         return $closure;
     }

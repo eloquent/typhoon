@@ -19,16 +19,19 @@ use Icecave\Pasta\AST\Expr\Assign;
 use Icecave\Pasta\AST\Expr\Call;
 use Icecave\Pasta\AST\Expr\Greater;
 use Icecave\Pasta\AST\Expr\Less;
+use Icecave\Pasta\AST\Expr\Literal;
 use Icecave\Pasta\AST\Expr\LogicalNot;
 use Icecave\Pasta\AST\Expr\NewOperator;
 use Icecave\Pasta\AST\Expr\PostfixIncrement;
 use Icecave\Pasta\AST\Expr\QualifiedIdentifier;
+use Icecave\Pasta\AST\Expr\Subscript;
 use Icecave\Pasta\AST\Expr\Variable;
 use Icecave\Pasta\AST\Func\Closure;
-use Icecave\Pasta\AST\Func\Parameter;
-use Icecave\Pasta\AST\Func\Subscript;
+use Icecave\Pasta\AST\Func\Parameter as ParameterASTNode;
+use Icecave\Pasta\AST\Stmt\ExpressionStatement;
 use Icecave\Pasta\AST\Stmt\ForStatement;
 use Icecave\Pasta\AST\Stmt\IfStatement;
+use Icecave\Pasta\AST\Stmt\IStatement;
 use Icecave\Pasta\AST\Stmt\StatementBlock;
 use Icecave\Pasta\AST\Stmt\ThrowStatement;
 use Icecave\Pasta\AST\Identifier;
@@ -83,21 +86,24 @@ class ParameterListGenerator implements Visitor
     /**
      * @param Parameter $parameter
      *
-     * @return array<integer,IfStatement|Assign>
+     * @return array<integer,IStatement>
      */
     public function visitParameter(Parameter $parameter)
     {
         $this->typhoon->visitParameter(func_get_args());
 
-        $expressions = array();
         $typeExpression = $parameter->type()->accept($this->typeGenerator());
+        if (null === $typeExpression) {
+            return array();
+        }
 
+        $expressions = array();
         if ($typeExpression instanceof Closure) {
             $checkVariable = new Variable(new Identifier('check'));
-            $expressions[] = new Assign(
+            $expressions[] = new ExpressionStatement(new Assign(
                 $checkVariable,
                 $typeExpression
-            );
+            ));
             $conditionExpression = new Call($checkVariable);
             $conditionExpression->add($this->argumentExpression);
         } else {
@@ -124,7 +130,7 @@ class ParameterListGenerator implements Visitor
     /**
      * @param ParameterList $parameterList
      *
-     * @return array<integer,IfStatement|Assign>
+     * @return array<integer,IStatement>
      */
     public function visitParameterList(ParameterList $parameterList)
     {
@@ -153,7 +159,7 @@ class ParameterListGenerator implements Visitor
                 new ThrowStatement(new NewOperator($newExceptionCall))
             );
 
-            return $expressions;
+            return $this->wrapExpressions($expressions);
         }
 
         $argumentCountVariable = new Variable(new Identifier('argumentCount'));
@@ -169,7 +175,9 @@ class ParameterListGenerator implements Visitor
         $lastRequiredParameterIndex = $requiredParameterCount - 1;
         $missingParametersStatement = null;
         if ($requiredParameterCount > 0) {
-            $missingParametersStatement = new IfStatement;
+            $missingParametersStatement = new IfStatement(
+                new Less($argumentCountVariable, new Literal($requiredParameterCount))
+            );
             for ($i = 0; $i < $lastRequiredParameterIndex; $i ++) {
                 $newExceptionCall = new Call(QualifiedIdentifier::fromString(
                     '\Typhoon\Exception\MissingArgumentException'
@@ -205,16 +213,17 @@ class ParameterListGenerator implements Visitor
 
         // unexpected arguments check
         if (!$parameterList->isVariableLength()) {
+            $parameterCountLiteral = new Literal($parameterCount);
             $newExceptionCall = new Call(QualifiedIdentifier::fromString(
                 '\Typhoon\Exception\UnexpectedArgumentException'
             ));
-            $newExceptionCall->add($parameterCount);
+            $newExceptionCall->add($parameterCountLiteral);
             $newExceptionCall->add(new Subscript(
                 $argumentsVariable,
-                $parameterCount
+                $parameterCountLiteral
             ));
             $tooManyParametersStatement = new IfStatement(
-                new Greater($argumentCountVariable, new Literal($parameterCount)),
+                new Greater($argumentCountVariable, $parameterCountLiteral),
                 new ThrowStatement(new NewOperator($newExceptionCall))
             );
 
@@ -247,23 +256,23 @@ class ParameterListGenerator implements Visitor
             }
 
             $parameterExpressions = array(
-                new Assign(
+                new ExpressionStatement(new Assign(
                     new Variable(new Identifier('value')),
                     $this->argumentExpression
-                );
+                )),
             );
-            $parameterExpressions = array_merge(
+            $parameterExpressions = $this->wrapExpressions(array_merge(
                 $parameterExpressions,
-                $parameter->accept($this);
-            );
+                $parameter->accept($this)
+            ));
 
             // wrap variable length in loop
             if ($isVariableLength) {
                 $closure = new Closure;
-                $closure->addParameter(new Parameter(new Identifier('argument')));
-                $closure->addParameter(new Parameter(new Identifier('index')));
+                $closure->addParameter(new ParameterASTNode(new Identifier('argument')));
+                $closure->addParameter(new ParameterASTNode(new Identifier('index')));
                 foreach ($parameterExpressions as $expression) {
-                    $closure->add($expression);
+                    $closure->statementBlock()->add($expression);
                 }
 
                 $checkVariable = new Variable(new Identifier('check'));
@@ -271,17 +280,17 @@ class ParameterListGenerator implements Visitor
                 $checkCall = new Call($checkVariable);
                 $checkCall->add(new Subscript($argumentsVariable, $indexVariable));
                 $checkCall->add($indexVariable);
-
-                $loop = new ForStatement(
-                    new Assign($indexVariable, $indexLiteral),
-                    new Less($indexVariable, $argumentCountVariable),
-                    new PostfixIncrement($indexVariable)
-                );
-                $loop->add($checkCall);
+                $loopContents = new StatementBlock;
+                $loopContents->add(new ExpressionStatement($checkCall));
 
                 $parameterExpressions = array(
-                    new Assign($checkVariable, $closure),
-                    $loop,
+                    new ExpressionStatement(new Assign($checkVariable, $closure)),
+                    new ForStatement(
+                        new Assign($indexVariable, $indexLiteral),
+                        new Less($indexVariable, $argumentCountVariable),
+                        new PostfixIncrement($indexVariable),
+                        $loopContents
+                    ),
                 );
             }
 
@@ -289,7 +298,7 @@ class ParameterListGenerator implements Visitor
             if ($parameter->isOptional()) {
                 $if = new IfStatement(new Greater($argumentCountVariable, $indexLiteral));
                 foreach ($parameterExpressions as $expression) {
-                    $if->add($expression);
+                    $if->trueBranch()->add($expression);
                 }
                 $parameterExpressions = array($if);
             }
@@ -300,6 +309,22 @@ class ParameterListGenerator implements Visitor
 
             $this->argumentExpression = $oldArgumentExpression;
             $this->indexExpression = $oldIndexExpression;
+        }
+
+        return $this->wrapExpressions($expressions);
+    }
+
+    /**
+     * @param array $expressions
+     *
+     * @return array<integer,IStatement>
+     */
+    protected function wrapExpressions(array $expressions)
+    {
+        foreach ($expressions as $index => $expression) {
+            if (!$expression instanceof IStatement) {
+                $expressions[$index] = new ExpressionStatement($expression);
+            }
         }
 
         return $expressions;

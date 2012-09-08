@@ -38,7 +38,7 @@ class ValidatorClassGeneratorRasta
     /**
      * @param Renderer|null $renderer
      * @param ParameterListParser|null $parser
-     * @param ParameterListCompiler|null $compiler
+     * @param ParameterListGenerator|null $generator
      * @param ClassMapper|null $classMapper
      * @param NativeParameterListMergeTool|null $nativeMergeTool
      * @param Isolator|null $isolator
@@ -46,7 +46,7 @@ class ValidatorClassGeneratorRasta
     public function __construct(
         Renderer $renderer = null,
         ParameterListParser $parser = null,
-        ParameterListCompiler $compiler = null,
+        ParameterListGenerator $generator = null,
         ClassMapper $classMapper = null,
         NativeParameterListMergeTool $nativeMergeTool = null,
         Isolator $isolator = null
@@ -59,8 +59,8 @@ class ValidatorClassGeneratorRasta
         if (null === $parser) {
             $parser = new ParameterListParser;
         }
-        if (null === $compiler) {
-            $compiler = new ParameterListCompiler;
+        if (null === $generator) {
+            $generator = new ParameterListGenerator;
         }
         if (null === $classMapper) {
             $classMapper = new ClassMapper;
@@ -71,7 +71,7 @@ class ValidatorClassGeneratorRasta
 
         $this->renderer = $renderer;
         $this->parser = $parser;
-        $this->compiler = $compiler;
+        $this->generator = $generator;
         $this->classMapper = $classMapper;
         $this->nativeMergeTool = $nativeMergeTool;
         $this->isolator = Isolator::get($isolator);
@@ -98,13 +98,13 @@ class ValidatorClassGeneratorRasta
     }
 
     /**
-     * @return ParameterListCompiler
+     * @return ParameterListGenerator
      */
-    public function compiler()
+    public function generator()
     {
-        $this->typhoon->compiler(func_get_args());
+        $this->typhoon->generator(func_get_args());
 
-        return $this->compiler;
+        return $this->generator;
     }
 
     /**
@@ -247,7 +247,7 @@ class ValidatorClassGeneratorRasta
         );
         foreach ($this->methods($classDefinition) as $method) {
             $classDefinitionASTNode->add(
-                $this->generateMethod($method)
+                $this->generateMethod($method, $classDefinition)
             );
         }
 
@@ -265,11 +265,14 @@ class ValidatorClassGeneratorRasta
 
     /**
      * @param ReflectionMethod $method
+     * @param ClassDefinition $classDefinition
      *
      * @return ConcreteMethod
      */
-    protected function generateMethod(ReflectionMethod $method)
-    {
+    protected function generateMethod(
+        ReflectionMethod $method,
+        ClassDefinition $classDefinition
+    ) {
         $this->typhoon->generateMethod(func_get_args());
 
         $typhoonMethod = new ConcreteMethod(
@@ -281,6 +284,13 @@ class ValidatorClassGeneratorRasta
             new Identifier('arguments'),
             new ArrayTypeHint
         ));
+
+        $expressions = $this->parameterList($method, $classDefinition)
+            ->accept($this->generator())
+        ;
+        foreach ($expressions as $expression) {
+            $typhoonMethod->statementBlock()->add($expression);
+        }
 
         return $typhoonMethod;
     }
@@ -409,7 +419,7 @@ class ValidatorClassGeneratorRasta
 
     private $renderer;
     private $parser;
-    private $compiler;
+    private $generator;
     private $classMapper;
     private $isolator;
     private $typhoon;

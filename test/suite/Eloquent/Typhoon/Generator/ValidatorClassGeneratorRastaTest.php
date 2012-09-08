@@ -13,7 +13,6 @@ namespace Eloquent\Typhoon\Generator;
 
 use Eloquent\Typhoon\ClassMapper\ClassDefinition;
 use Eloquent\Typhoon\ClassMapper\ClassMapper;
-use Eloquent\Typhoon\Compiler\ParameterListCompiler;
 use Eloquent\Typhoon\Parser\ParameterListParser;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Icecave\Pasta\AST\Expr\QualifiedIdentifier;
@@ -34,7 +33,7 @@ class ValidatorClassGeneratorRastaTest extends MultiGenerationTestCase
 
         $this->_renderer = new Renderer;
         $this->_parser = new ParameterListParser;
-        $this->_compiler = new ParameterListCompiler;
+        $this->_parameterListGenerator = new ParameterListGenerator;
         $this->_classMapper = Phake::partialMock(
             'Eloquent\Typhoon\ClassMapper\ClassMapper'
         );
@@ -44,7 +43,7 @@ class ValidatorClassGeneratorRastaTest extends MultiGenerationTestCase
             __NAMESPACE__.'\ValidatorClassGeneratorRasta',
             $this->_renderer,
             $this->_parser,
-            $this->_compiler,
+            $this->_parameterListGenerator,
             $this->_classMapper,
             $this->_nativeMergeTool,
             $this->_isolator
