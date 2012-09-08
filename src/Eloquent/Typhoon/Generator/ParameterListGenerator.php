@@ -18,6 +18,7 @@ use Eloquent\Typhoon\Parameter\Visitor;
 use Icecave\Pasta\AST\Expr\Assign;
 use Icecave\Pasta\AST\Expr\Call;
 use Icecave\Pasta\AST\Expr\Greater;
+use Icecave\Pasta\AST\Expr\Less;
 use Icecave\Pasta\AST\Expr\LogicalNot;
 use Icecave\Pasta\AST\Expr\NewOperator;
 use Icecave\Pasta\AST\Expr\QualifiedIdentifier;
@@ -118,7 +119,7 @@ class ParameterListGenerator implements Visitor
     /**
      * @param ParameterList $parameterList
      *
-     * @return array<integer,IfStatement>
+     * @return array<integer,IfStatement|Assign>
      */
     public function visitParameterList(ParameterList $parameterList)
     {
@@ -129,6 +130,7 @@ class ParameterListGenerator implements Visitor
         $parameterCount = count($parameters);
         $argumentsVariable = new Variable(new Identifier('arguments'));
 
+        // empty parameter list
         if ($parameterCount < 1) {
             $zeroLiteral = new Literal(0);
             $countCall = new Call(QualifiedIdentifier::fromString('\count'));
@@ -149,9 +151,75 @@ class ParameterListGenerator implements Visitor
             return $expressions;
         }
 
-        $requiredParameterCount = count($parameterList->requiredParameters());
-        if ($requiredParameterCount > 0) {
+        $argumentCountVariable = new Variable(new Identifier('argumentCount'));
+        $argumentCountCall = new Call(QualifiedIdentifier::fromString('\count'));
+        $argumentCountCall->add($argumentsVariable);
+        $expressions[] = new Assign(
+            $argumentCountVariable,
+            $argumentCountCall
+        );
 
+        // missing parameter checks
+        $requiredParameterCount = count($parameterList->requiredParameters());
+        $lastRequiredParameterIndex = $requiredParameterCount - 1;
+        $missingParametersStatement = null;
+        if ($requiredParameterCount > 0) {
+            $missingParametersStatement = new IfStatement;
+            for ($i = 0; $i < $lastRequiredParameterIndex; $i ++) {
+                $newExceptionCall = new Call(QualifiedIdentifier::fromString(
+                    '\Typhoon\Exception\MissingArgumentException'
+                ));
+                $newExceptionCall->add(new Literal($parameters[$i]->name()));
+                $newExceptionCall->add(new Literal($i));
+                $newExceptionCall->add(new Literal(
+                    $parameters[$i]->type()->accept($this->typeRenderer())
+                ));
+                $missingParametersStatement->trueBranch()->add(
+                    new IfStatement(
+                        new Less($argumentCountVariable, new Literal($i + 1)),
+                        new ThrowStatement(new NewOperator($newExceptionCall))
+                    )
+                );
+            }
+            $newExceptionCall = new Call(QualifiedIdentifier::fromString(
+                '\Typhoon\Exception\MissingArgumentException'
+            ));
+            $newExceptionCall->add(new Literal(
+                $parameters[$lastRequiredParameterIndex]->name()
+            ));
+            $newExceptionCall->add(new Literal(
+                $lastRequiredParameterIndex
+            ));
+            $newExceptionCall->add(new Literal(
+                $parameters[$lastRequiredParameterIndex]->type()->accept($this->typeRenderer())
+            ));
+            $missingParametersStatement->trueBranch()->add(
+                new ThrowStatement(new NewOperator($newExceptionCall))
+            );
+        }
+
+        // unexpected arguments check
+        if (!$parameterList->isVariableLength()) {
+            $newExceptionCall = new Call(QualifiedIdentifier::fromString(
+                '\Typhoon\Exception\UnexpectedArgumentException'
+            ));
+            $newExceptionCall->add($parameterCount);
+            $newExceptionCall->add(new Subscript(
+                $argumentsVariable,
+                $parameterCount
+            ));
+            $tooManyParametersStatement = new IfStatement(
+                new Greater($argumentCountVariable, new Literal($parameterCount)),
+                new ThrowStatement(new NewOperator($newExceptionCall))
+            );
+
+            if ($missingParametersStatement) {
+                $missingParametersStatement->setFalseBranch(
+                    $tooManyParametersStatement
+                );
+            } else {
+                $expressions[] = $tooManyParametersStatement;
+            }
         }
 
         return $expressions;

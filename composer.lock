@@ -43,7 +43,7 @@
         },
         {
             "package": "symfony/console",
-            "version": "v2.0.17"
+            "version": "v2.1.0"
         }
     ],
     "packages-dev": [
