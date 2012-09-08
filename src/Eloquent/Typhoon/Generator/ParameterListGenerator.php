@@ -21,10 +21,13 @@ use Icecave\Pasta\AST\Expr\Greater;
 use Icecave\Pasta\AST\Expr\Less;
 use Icecave\Pasta\AST\Expr\LogicalNot;
 use Icecave\Pasta\AST\Expr\NewOperator;
+use Icecave\Pasta\AST\Expr\PostfixIncrement;
 use Icecave\Pasta\AST\Expr\QualifiedIdentifier;
 use Icecave\Pasta\AST\Expr\Variable;
 use Icecave\Pasta\AST\Func\Closure;
+use Icecave\Pasta\AST\Func\Parameter;
 use Icecave\Pasta\AST\Func\Subscript;
+use Icecave\Pasta\AST\Stmt\ForStatement;
 use Icecave\Pasta\AST\Stmt\IfStatement;
 use Icecave\Pasta\AST\Stmt\StatementBlock;
 use Icecave\Pasta\AST\Stmt\ThrowStatement;
@@ -52,6 +55,9 @@ class ParameterListGenerator implements Visitor
 
         $this->typeGenerator = $typeGenerator;
         $this->typeRenderer = $typeRenderer;
+
+        $this->argumentExpression = new Variable(new Identifier('argument'));
+        $this->indexExpression = new Variable(new Identifier('index'));
     }
 
     /**
@@ -85,7 +91,6 @@ class ParameterListGenerator implements Visitor
 
         $expressions = array();
         $typeExpression = $parameter->type()->accept($this->typeGenerator());
-        $argumentVariable = new Variable(new Identifier('argument'));
 
         if ($typeExpression instanceof Closure) {
             $checkVariable = new Variable(new Identifier('check'));
@@ -94,7 +99,7 @@ class ParameterListGenerator implements Visitor
                 $typeExpression
             );
             $conditionExpression = new Call($checkVariable);
-            $conditionExpression->add($argumentVariable);
+            $conditionExpression->add($this->argumentExpression);
         } else {
             $conditionExpression = $typeExpression;
         }
@@ -103,8 +108,8 @@ class ParameterListGenerator implements Visitor
             '\Typhoon\Exception\UnexpectedArgumentValueException'
         ));
         $newExceptionCall->add(new Literal($parameter->name()));
-        $newExceptionCall->add(new Variable(new Identifier('index')));
-        $newExceptionCall->add($argumentVariable);
+        $newExceptionCall->add($this->indexExpression);
+        $newExceptionCall->add($this->argumentExpression);
         $newExceptionCall->add(new Literal(
             $parameter->type()->accept($this->typeRenderer())
         ));
@@ -222,10 +227,87 @@ class ParameterListGenerator implements Visitor
             }
         }
 
+        // type checks
+        foreach ($parameters as $index => $parameter) {
+            $isVariableLength =
+                $parameterList->isVariableLength() &&
+                $index === $parameterCount - 1
+            ;
+
+            $indexLiteral = new Literal($index);
+            $oldArgumentExpression = $this->argumentExpression;
+            $oldIndexExpression = $this->indexExpression;
+
+            if (!$isVariableLength) {
+                $this->indexExpression = $indexLiteral;
+                $this->argumentExpression = new Subscript(
+                    $argumentsVariable,
+                    $this->indexExpression
+                );
+            }
+
+            $parameterExpressions = array(
+                new Assign(
+                    new Variable(new Identifier('value')),
+                    $this->argumentExpression
+                );
+            );
+            $parameterExpressions = array_merge(
+                $parameterExpressions,
+                $parameter->accept($this);
+            );
+
+            // wrap variable length in loop
+            if ($isVariableLength) {
+                $closure = new Closure;
+                $closure->addParameter(new Parameter(new Identifier('argument')));
+                $closure->addParameter(new Parameter(new Identifier('index')));
+                foreach ($parameterExpressions as $expression) {
+                    $closure->add($expression);
+                }
+
+                $checkVariable = new Variable(new Identifier('check'));
+                $indexVariable = new Variable(new Identifier('index'));
+                $checkCall = new Call($checkVariable);
+                $checkCall->add(new Subscript($argumentsVariable, $indexVariable));
+                $checkCall->add($indexVariable);
+
+                $loop = new ForStatement(
+                    new Assign($indexVariable, $indexLiteral),
+                    new Less($indexVariable, $argumentCountVariable),
+                    new PostfixIncrement($indexVariable)
+                );
+                $loop->add($checkCall);
+
+                $parameterExpressions = array(
+                    new Assign($checkVariable, $closure),
+                    $loop,
+                );
+            }
+
+            // wrap optional in if statement
+            if ($parameter->isOptional()) {
+                $if = new IfStatement(new Greater($argumentCountVariable, $indexLiteral));
+                foreach ($parameterExpressions as $expression) {
+                    $if->add($expression);
+                }
+                $parameterExpressions = array($if);
+            }
+
+            foreach ($parameterExpressions as $expression) {
+                $expressions[] = $expression;
+            }
+
+            $this->argumentExpression = $oldArgumentExpression;
+            $this->indexExpression = $oldIndexExpression;
+        }
+
         return $expressions;
     }
 
     private $typeGenerator;
     private $typeRenderer;
+    private $argumentExpression;
+    private $indexExpression;
     private $typhoon;
 }
