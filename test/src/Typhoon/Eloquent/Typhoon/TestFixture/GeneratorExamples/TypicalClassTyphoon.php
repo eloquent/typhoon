@@ -21,97 +21,15 @@ class TypicalClassTyphoon extends Validator
 {
     public function validateConstruct(array $arguments)
     {
-        $argumentCount = count($arguments);
-        if ($argumentCount < 2) {
-            if ($argumentCount < 1) {
-                throw new MissingArgumentException('foo', 0, 'string');
-            }
-            throw new MissingArgumentException('bar', 1, 'integer');
-        } elseif ($argumentCount > 2) {
-            throw new UnexpectedArgumentException(2, $arguments[2]);
+        if (count($arguments) > 0) {
+            throw new UnexpectedArgumentException(0, $arguments[0]);
         }
-
-        $check = function($argument, $index) {
-            $check = function($value) {
-                return is_string($value);
-            };
-            if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('foo', $index, $argument, 'string');
-            }
-        };
-        $check($arguments[0], 0);
-
-        $check = function($argument, $index) {
-            $check = function($value) {
-                return is_integer($value);
-            };
-            if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('bar', $index, $argument, 'integer');
-            }
-        };
-        $check($arguments[1], 1);
     }
 
-    public function typicalMethod(array $arguments)
+    public function validateToString(array $arguments)
     {
-        $argumentCount = count($arguments);
-        if ($argumentCount < 1) {
-            throw new MissingArgumentException('foo', 0, 'float');
-        }
-
-        $check = function($argument, $index) {
-            $check = function($value) {
-                return is_float($value);
-            };
-            if (!$check($argument)) {
-                throw new UnexpectedArgumentValueException('foo', $index, $argument, 'float');
-            }
-        };
-        $check($arguments[0], 0);
-
-        if ($argumentCount > 1) {
-            $check = function($argument, $index) {
-                $check = function($value) {
-                    return true;
-                };
-                if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('bar', $index, $argument, 'mixed');
-                }
-            };
-            $check($arguments[1], 1);
-        }
-
-        if ($argumentCount > 2) {
-            $check = function($argument, $index) {
-                $check = function($value) {
-                    if (
-                        !is_resource($value) ||
-                        'stream' !== get_resource_type($value)
-                    ) {
-                        return false;
-                    }
-
-                    $streamMetaData = stream_get_meta_data($value);
-
-                    if (
-                        false === strpos($streamMetaData['mode'], 'w') &&
-                        false === strpos($streamMetaData['mode'], 'a') &&
-                        false === strpos($streamMetaData['mode'], 'x') &&
-                        false === strpos($streamMetaData['mode'], 'c') &&
-                        false === strpos($streamMetaData['mode'], '+')
-                    ) {
-                        return false;
-                    }
-
-                    return true;
-                };
-                if (!$check($argument)) {
-                    throw new UnexpectedArgumentValueException('baz', $index, $argument, 'stream {writable: true}');
-                }
-            };
-            for ($i = 2; $i < $argumentCount; $i ++) {
-                $check($arguments[$i], $i);
-            }
+        if (count($arguments) > 0) {
+            throw new UnexpectedArgumentException(0, $arguments[0]);
         }
     }
 
@@ -120,5 +38,1512 @@ class TypicalClassTyphoon extends Validator
         if (count($arguments) > 0) {
             throw new UnexpectedArgumentException(0, $arguments[0]);
         }
+    }
+
+    public function simpleTypes(array $arguments)
+    {
+        $argumentCount = count($arguments);
+        if ($argumentCount < 6) {
+            if ($argumentCount < 1) {
+                throw new MissingArgumentException('boolean', 0, 'boolean');
+            }
+            if ($argumentCount < 2) {
+                throw new MissingArgumentException('float', 1, 'float');
+            }
+            if ($argumentCount < 3) {
+                throw new MissingArgumentException('integer', 2, 'integer');
+            }
+            if ($argumentCount < 4) {
+                throw new MissingArgumentException('mixed', 3, 'mixed');
+            }
+            if ($argumentCount < 5) {
+                throw new MissingArgumentException('numeric', 4, 'numeric');
+            }
+            throw new MissingArgumentException('string', 5, 'string');
+        } elseif ($argumentCount > 6) {
+            throw new UnexpectedArgumentException(6, $arguments[6]);
+        }
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return is_bool($value);
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('boolean', $index, $argument, 'boolean');
+            }
+        };
+        $check($arguments[0], 0);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return is_float($value);
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('float', $index, $argument, 'float');
+            }
+        };
+        $check($arguments[1], 1);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return is_integer($value);
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('integer', $index, $argument, 'integer');
+            }
+        };
+        $check($arguments[2], 2);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return true;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('mixed', $index, $argument, 'mixed');
+            }
+        };
+        $check($arguments[3], 3);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return is_numeric($value);
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('numeric', $index, $argument, 'numeric');
+            }
+        };
+        $check($arguments[4], 4);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return is_string($value);
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('string', $index, $argument, 'string');
+            }
+        };
+        $check($arguments[5], 5);
+    }
+
+    public function objectType(array $arguments)
+    {
+        $argumentCount = count($arguments);
+        if ($argumentCount < 3) {
+            if ($argumentCount < 1) {
+                throw new MissingArgumentException('foo', 0, 'object');
+            }
+            if ($argumentCount < 2) {
+                throw new MissingArgumentException('bar', 1, 'mixed');
+            }
+            throw new MissingArgumentException('baz', 2, 'array<stdClass>');
+        } elseif ($argumentCount > 3) {
+            throw new UnexpectedArgumentException(3, $arguments[3]);
+        }
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return is_object($value);
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('foo', $index, $argument, 'object');
+            }
+        };
+        $check($arguments[0], 0);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return true;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('bar', $index, $argument, 'mixed');
+            }
+        };
+        $check($arguments[1], 1);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                $primaryCheck = function($value) {
+                    return is_array($value);
+                };
+                if (!$primaryCheck($value)) {
+                    return false;
+                }
+
+                $keyCheck = function($value) {
+                    return true;
+                };
+                $valueCheck = function($value) {
+                    return $value instanceof \stdClass;
+                };
+                foreach ($value as $key => $subValue) {
+                    if (!$keyCheck($key)) {
+                        return false;
+                    }
+                    if (!$valueCheck($subValue)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('baz', $index, $argument, 'array<stdClass>');
+            }
+        };
+        $check($arguments[2], 2);
+    }
+
+    public function resourceType(array $arguments)
+    {
+        $argumentCount = count($arguments);
+        if ($argumentCount < 2) {
+            if ($argumentCount < 1) {
+                throw new MissingArgumentException('foo', 0, 'resource');
+            }
+            throw new MissingArgumentException('bar', 1, 'resource {ofType: \'stream\'}');
+        } elseif ($argumentCount > 2) {
+            throw new UnexpectedArgumentException(2, $arguments[2]);
+        }
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return is_resource($value);
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('foo', $index, $argument, 'resource');
+            }
+        };
+        $check($arguments[0], 0);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return
+                    is_resource($value) &&
+                    get_resource_type($value) === 'stream'
+                ;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('bar', $index, $argument, 'resource {ofType: \'stream\'}');
+            }
+        };
+        $check($arguments[1], 1);
+    }
+
+    public function streamType(array $arguments)
+    {
+        $argumentCount = count($arguments);
+        if ($argumentCount < 7) {
+            if ($argumentCount < 1) {
+                throw new MissingArgumentException('foo', 0, 'stream');
+            }
+            if ($argumentCount < 2) {
+                throw new MissingArgumentException('bar', 1, 'stream {readable: true}');
+            }
+            if ($argumentCount < 3) {
+                throw new MissingArgumentException('baz', 2, 'stream {readable: false}');
+            }
+            if ($argumentCount < 4) {
+                throw new MissingArgumentException('qux', 3, 'stream {writable: true}');
+            }
+            if ($argumentCount < 5) {
+                throw new MissingArgumentException('doom', 4, 'stream {writable: false}');
+            }
+            if ($argumentCount < 6) {
+                throw new MissingArgumentException('splat', 5, 'stream {readable: true, writable: true}');
+            }
+            throw new MissingArgumentException('ping', 6, 'stream {readable: false, writable: true}');
+        } elseif ($argumentCount > 7) {
+            throw new UnexpectedArgumentException(7, $arguments[7]);
+        }
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                if (
+                    !is_resource($value) ||
+                    'stream' !== get_resource_type($value)
+                ) {
+                    return false;
+                }
+
+                return true;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('foo', $index, $argument, 'stream');
+            }
+        };
+        $check($arguments[0], 0);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                if (
+                    !is_resource($value) ||
+                    'stream' !== get_resource_type($value)
+                ) {
+                    return false;
+                }
+
+                $streamMetaData = stream_get_meta_data($value);
+
+                if (
+                    false === strpos($streamMetaData['mode'], 'r') &&
+                    false === strpos($streamMetaData['mode'], '+')
+                ) {
+                    return false;
+                }
+
+                return true;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('bar', $index, $argument, 'stream {readable: true}');
+            }
+        };
+        $check($arguments[1], 1);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                if (
+                    !is_resource($value) ||
+                    'stream' !== get_resource_type($value)
+                ) {
+                    return false;
+                }
+
+                $streamMetaData = stream_get_meta_data($value);
+
+                if (
+                    false !== strpos($streamMetaData['mode'], 'r') ||
+                    false !== strpos($streamMetaData['mode'], '+')
+                ) {
+                    return false;
+                }
+
+                return true;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('baz', $index, $argument, 'stream {readable: false}');
+            }
+        };
+        $check($arguments[2], 2);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                if (
+                    !is_resource($value) ||
+                    'stream' !== get_resource_type($value)
+                ) {
+                    return false;
+                }
+
+                $streamMetaData = stream_get_meta_data($value);
+
+                if (
+                    false === strpos($streamMetaData['mode'], 'w') &&
+                    false === strpos($streamMetaData['mode'], 'a') &&
+                    false === strpos($streamMetaData['mode'], 'x') &&
+                    false === strpos($streamMetaData['mode'], 'c') &&
+                    false === strpos($streamMetaData['mode'], '+')
+                ) {
+                    return false;
+                }
+
+                return true;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('qux', $index, $argument, 'stream {writable: true}');
+            }
+        };
+        $check($arguments[3], 3);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                if (
+                    !is_resource($value) ||
+                    'stream' !== get_resource_type($value)
+                ) {
+                    return false;
+                }
+
+                $streamMetaData = stream_get_meta_data($value);
+
+                if (
+                    false !== strpos($streamMetaData['mode'], 'w') ||
+                    false !== strpos($streamMetaData['mode'], 'a') ||
+                    false !== strpos($streamMetaData['mode'], 'x') ||
+                    false !== strpos($streamMetaData['mode'], 'c') ||
+                    false !== strpos($streamMetaData['mode'], '+')
+                ) {
+                    return false;
+                }
+
+                return true;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('doom', $index, $argument, 'stream {writable: false}');
+            }
+        };
+        $check($arguments[4], 4);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                if (
+                    !is_resource($value) ||
+                    'stream' !== get_resource_type($value)
+                ) {
+                    return false;
+                }
+
+                $streamMetaData = stream_get_meta_data($value);
+
+                if (
+                    false === strpos($streamMetaData['mode'], 'r') &&
+                    false === strpos($streamMetaData['mode'], '+')
+                ) {
+                    return false;
+                }
+
+                if (
+                    false === strpos($streamMetaData['mode'], 'w') &&
+                    false === strpos($streamMetaData['mode'], 'a') &&
+                    false === strpos($streamMetaData['mode'], 'x') &&
+                    false === strpos($streamMetaData['mode'], 'c') &&
+                    false === strpos($streamMetaData['mode'], '+')
+                ) {
+                    return false;
+                }
+
+                return true;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('splat', $index, $argument, 'stream {readable: true, writable: true}');
+            }
+        };
+        $check($arguments[5], 5);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                if (
+                    !is_resource($value) ||
+                    'stream' !== get_resource_type($value)
+                ) {
+                    return false;
+                }
+
+                $streamMetaData = stream_get_meta_data($value);
+
+                if (
+                    false !== strpos($streamMetaData['mode'], 'r') ||
+                    false !== strpos($streamMetaData['mode'], '+')
+                ) {
+                    return false;
+                }
+
+                if (
+                    false === strpos($streamMetaData['mode'], 'w') &&
+                    false === strpos($streamMetaData['mode'], 'a') &&
+                    false === strpos($streamMetaData['mode'], 'x') &&
+                    false === strpos($streamMetaData['mode'], 'c') &&
+                    false === strpos($streamMetaData['mode'], '+')
+                ) {
+                    return false;
+                }
+
+                return true;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('ping', $index, $argument, 'stream {readable: false, writable: true}');
+            }
+        };
+        $check($arguments[6], 6);
+    }
+
+    public function stringableType(array $arguments)
+    {
+        $argumentCount = count($arguments);
+        if ($argumentCount < 1) {
+            throw new MissingArgumentException('foo', 0, 'stringable');
+        } elseif ($argumentCount > 1) {
+            throw new UnexpectedArgumentException(1, $arguments[1]);
+        }
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                if (
+                    is_string($value) ||
+                    is_integer($value) ||
+                    is_float($value)
+                ) {
+                    return true;
+                }
+
+                if (!is_object($value)) {
+                    return false;
+                }
+
+                $reflector = new \ReflectionObject($value);
+
+                return $reflector->hasMethod('__toString');
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('foo', $index, $argument, 'stringable');
+            }
+        };
+        $check($arguments[0], 0);
+    }
+
+    public function callableType(array $arguments)
+    {
+        $argumentCount = count($arguments);
+        if ($argumentCount < 1) {
+            throw new MissingArgumentException('foo', 0, 'array<callable>');
+        } elseif ($argumentCount > 1) {
+            throw new UnexpectedArgumentException(1, $arguments[1]);
+        }
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                $primaryCheck = function($value) {
+                    return is_array($value);
+                };
+                if (!$primaryCheck($value)) {
+                    return false;
+                }
+
+                $keyCheck = function($value) {
+                    return true;
+                };
+                $valueCheck = function($value) {
+                    return is_callable($value);
+                };
+                foreach ($value as $key => $subValue) {
+                    if (!$keyCheck($key)) {
+                        return false;
+                    }
+                    if (!$valueCheck($subValue)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('foo', $index, $argument, 'array<callable>');
+            }
+        };
+        $check($arguments[0], 0);
+    }
+
+    public function nullType(array $arguments)
+    {
+        $argumentCount = count($arguments);
+        if ($argumentCount < 1) {
+            throw new MissingArgumentException('foo', 0, 'array<null>');
+        } elseif ($argumentCount > 1) {
+            throw new UnexpectedArgumentException(1, $arguments[1]);
+        }
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                $primaryCheck = function($value) {
+                    return is_array($value);
+                };
+                if (!$primaryCheck($value)) {
+                    return false;
+                }
+
+                $keyCheck = function($value) {
+                    return true;
+                };
+                $valueCheck = function($value) {
+                    return $value === null;
+                };
+                foreach ($value as $key => $subValue) {
+                    if (!$keyCheck($key)) {
+                        return false;
+                    }
+                    if (!$valueCheck($subValue)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('foo', $index, $argument, 'array<null>');
+            }
+        };
+        $check($arguments[0], 0);
+    }
+
+    public function andType(array $arguments)
+    {
+        $argumentCount = count($arguments);
+        if ($argumentCount < 4) {
+            if ($argumentCount < 1) {
+                throw new MissingArgumentException('foo', 0, 'stdClass+Iterator');
+            }
+            if ($argumentCount < 2) {
+                throw new MissingArgumentException('bar', 1, 'object+stringable');
+            }
+            if ($argumentCount < 3) {
+                throw new MissingArgumentException('baz', 2, 'stringable+object');
+            }
+            throw new MissingArgumentException('qux', 3, 'mixed+mixed');
+        } elseif ($argumentCount > 4) {
+            throw new UnexpectedArgumentException(4, $arguments[4]);
+        }
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                $check0 = function($value) {
+                    return $value instanceof \stdClass;
+                };
+                $check1 = function($value) {
+                    return $value instanceof \Iterator;
+                };
+
+                return
+                    $check0($value) &&
+                    $check1($value)
+                ;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('foo', $index, $argument, 'stdClass+Iterator');
+            }
+        };
+        $check($arguments[0], 0);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                $check0 = function($value) {
+                    return is_object($value);
+                };
+                $check1 = function($value) {
+                    if (
+                        is_string($value) ||
+                        is_integer($value) ||
+                        is_float($value)
+                    ) {
+                        return true;
+                    }
+
+                    if (!is_object($value)) {
+                        return false;
+                    }
+
+                    $reflector = new \ReflectionObject($value);
+
+                    return $reflector->hasMethod('__toString');
+                };
+
+                return
+                    $check0($value) &&
+                    $check1($value)
+                ;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('bar', $index, $argument, 'object+stringable');
+            }
+        };
+        $check($arguments[1], 1);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                $check0 = function($value) {
+                    if (
+                        is_string($value) ||
+                        is_integer($value) ||
+                        is_float($value)
+                    ) {
+                        return true;
+                    }
+
+                    if (!is_object($value)) {
+                        return false;
+                    }
+
+                    $reflector = new \ReflectionObject($value);
+
+                    return $reflector->hasMethod('__toString');
+                };
+                $check1 = function($value) {
+                    return is_object($value);
+                };
+
+                return
+                    $check0($value) &&
+                    $check1($value)
+                ;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('baz', $index, $argument, 'stringable+object');
+            }
+        };
+        $check($arguments[2], 2);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                $check0 = function($value) {
+                    return true;
+                };
+                $check1 = function($value) {
+                    return true;
+                };
+
+                return
+                    $check0($value) &&
+                    $check1($value)
+                ;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('qux', $index, $argument, 'mixed+mixed');
+            }
+        };
+        $check($arguments[3], 3);
+    }
+
+    public function orType(array $arguments)
+    {
+        $argumentCount = count($arguments);
+        if ($argumentCount < 4) {
+            if ($argumentCount < 1) {
+                throw new MissingArgumentException('foo', 0, 'integer|string');
+            }
+            if ($argumentCount < 2) {
+                throw new MissingArgumentException('bar', 1, 'integer|stringable');
+            }
+            if ($argumentCount < 3) {
+                throw new MissingArgumentException('baz', 2, 'stringable|integer');
+            }
+            throw new MissingArgumentException('qux', 3, 'mixed|mixed');
+        } elseif ($argumentCount > 4) {
+            throw new UnexpectedArgumentException(4, $arguments[4]);
+        }
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                $check = function($value) {
+                    return is_integer($value);
+                };
+                if ($check($value)) {
+                    return true;
+                }
+
+                $check = function($value) {
+                    return is_string($value);
+                };
+                if ($check($value)) {
+                    return true;
+                }
+
+                return false;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('foo', $index, $argument, 'integer|string');
+            }
+        };
+        $check($arguments[0], 0);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                $check = function($value) {
+                    return is_integer($value);
+                };
+                if ($check($value)) {
+                    return true;
+                }
+
+                $check = function($value) {
+                    if (
+                        is_string($value) ||
+                        is_integer($value) ||
+                        is_float($value)
+                    ) {
+                        return true;
+                    }
+
+                    if (!is_object($value)) {
+                        return false;
+                    }
+
+                    $reflector = new \ReflectionObject($value);
+
+                    return $reflector->hasMethod('__toString');
+                };
+                if ($check($value)) {
+                    return true;
+                }
+
+                return false;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('bar', $index, $argument, 'integer|stringable');
+            }
+        };
+        $check($arguments[1], 1);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                $check = function($value) {
+                    if (
+                        is_string($value) ||
+                        is_integer($value) ||
+                        is_float($value)
+                    ) {
+                        return true;
+                    }
+
+                    if (!is_object($value)) {
+                        return false;
+                    }
+
+                    $reflector = new \ReflectionObject($value);
+
+                    return $reflector->hasMethod('__toString');
+                };
+                if ($check($value)) {
+                    return true;
+                }
+
+                $check = function($value) {
+                    return is_integer($value);
+                };
+                if ($check($value)) {
+                    return true;
+                }
+
+                return false;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('baz', $index, $argument, 'stringable|integer');
+            }
+        };
+        $check($arguments[2], 2);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                $check = function($value) {
+                    return true;
+                };
+                if ($check($value)) {
+                    return true;
+                }
+
+                $check = function($value) {
+                    return true;
+                };
+                if ($check($value)) {
+                    return true;
+                }
+
+                return false;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('qux', $index, $argument, 'mixed|mixed');
+            }
+        };
+        $check($arguments[3], 3);
+    }
+
+    public function tupleType(array $arguments)
+    {
+        $argumentCount = count($arguments);
+        if ($argumentCount < 2) {
+            if ($argumentCount < 1) {
+                throw new MissingArgumentException('foo', 0, 'tuple<integer, string>');
+            }
+            throw new MissingArgumentException('bar', 1, 'tuple<integer, stringable, stringable>');
+        } elseif ($argumentCount > 2) {
+            throw new UnexpectedArgumentException(2, $arguments[2]);
+        }
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                if (
+                    !is_array($value) ||
+                    array_keys($value) !== range(0, 1)
+                ) {
+                    return false;
+                }
+
+                $check0 = function($value) {
+                    return is_integer($value);
+                };
+                $check1 = function($value) {
+                    return is_string($value);
+                };
+
+                return
+                    $check0($value[0]) &&
+                    $check1($value[1])
+                ;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('foo', $index, $argument, 'tuple<integer, string>');
+            }
+        };
+        $check($arguments[0], 0);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                if (
+                    !is_array($value) ||
+                    array_keys($value) !== range(0, 2)
+                ) {
+                    return false;
+                }
+
+                $check0 = function($value) {
+                    return is_integer($value);
+                };
+                $check1 = function($value) {
+                    if (
+                        is_string($value) ||
+                        is_integer($value) ||
+                        is_float($value)
+                    ) {
+                        return true;
+                    }
+
+                    if (!is_object($value)) {
+                        return false;
+                    }
+
+                    $reflector = new \ReflectionObject($value);
+
+                    return $reflector->hasMethod('__toString');
+                };
+                $check2 = function($value) {
+                    if (
+                        is_string($value) ||
+                        is_integer($value) ||
+                        is_float($value)
+                    ) {
+                        return true;
+                    }
+
+                    if (!is_object($value)) {
+                        return false;
+                    }
+
+                    $reflector = new \ReflectionObject($value);
+
+                    return $reflector->hasMethod('__toString');
+                };
+
+                return
+                    $check0($value[0]) &&
+                    $check1($value[1]) &&
+                    $check2($value[2])
+                ;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('bar', $index, $argument, 'tuple<integer, stringable, stringable>');
+            }
+        };
+        $check($arguments[1], 1);
+    }
+
+    public function traversableArray(array $arguments)
+    {
+        $argumentCount = count($arguments);
+        if ($argumentCount < 5) {
+            if ($argumentCount < 1) {
+                throw new MissingArgumentException('foo', 0, 'mixed');
+            }
+            if ($argumentCount < 2) {
+                throw new MissingArgumentException('bar', 1, 'array<array>');
+            }
+            if ($argumentCount < 3) {
+                throw new MissingArgumentException('baz', 2, 'array<integer, string>');
+            }
+            if ($argumentCount < 4) {
+                throw new MissingArgumentException('qux', 3, 'array<integer, stringable>');
+            }
+            throw new MissingArgumentException('doom', 4, 'array<stringable, integer>');
+        } elseif ($argumentCount > 5) {
+            throw new UnexpectedArgumentException(5, $arguments[5]);
+        }
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return true;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('foo', $index, $argument, 'mixed');
+            }
+        };
+        $check($arguments[0], 0);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                $primaryCheck = function($value) {
+                    return is_array($value);
+                };
+                if (!$primaryCheck($value)) {
+                    return false;
+                }
+
+                $keyCheck = function($value) {
+                    return true;
+                };
+                $valueCheck = function($value) {
+                    $primaryCheck = function($value) {
+                        return is_array($value);
+                    };
+                    if (!$primaryCheck($value)) {
+                        return false;
+                    }
+
+                    $keyCheck = function($value) {
+                        return true;
+                    };
+                    $valueCheck = function($value) {
+                        return true;
+                    };
+                    foreach ($value as $key => $subValue) {
+                        if (!$keyCheck($key)) {
+                            return false;
+                        }
+                        if (!$valueCheck($subValue)) {
+                            return false;
+                        }
+                    }
+
+                    return true;
+                };
+                foreach ($value as $key => $subValue) {
+                    if (!$keyCheck($key)) {
+                        return false;
+                    }
+                    if (!$valueCheck($subValue)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('bar', $index, $argument, 'array<array>');
+            }
+        };
+        $check($arguments[1], 1);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                $primaryCheck = function($value) {
+                    return is_array($value);
+                };
+                if (!$primaryCheck($value)) {
+                    return false;
+                }
+
+                $keyCheck = function($value) {
+                    return is_integer($value);
+                };
+                $valueCheck = function($value) {
+                    return is_string($value);
+                };
+                foreach ($value as $key => $subValue) {
+                    if (!$keyCheck($key)) {
+                        return false;
+                    }
+                    if (!$valueCheck($subValue)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('baz', $index, $argument, 'array<integer, string>');
+            }
+        };
+        $check($arguments[2], 2);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                $primaryCheck = function($value) {
+                    return is_array($value);
+                };
+                if (!$primaryCheck($value)) {
+                    return false;
+                }
+
+                $keyCheck = function($value) {
+                    return is_integer($value);
+                };
+                $valueCheck = function($value) {
+                    if (
+                        is_string($value) ||
+                        is_integer($value) ||
+                        is_float($value)
+                    ) {
+                        return true;
+                    }
+
+                    if (!is_object($value)) {
+                        return false;
+                    }
+
+                    $reflector = new \ReflectionObject($value);
+
+                    return $reflector->hasMethod('__toString');
+                };
+                foreach ($value as $key => $subValue) {
+                    if (!$keyCheck($key)) {
+                        return false;
+                    }
+                    if (!$valueCheck($subValue)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('qux', $index, $argument, 'array<integer, stringable>');
+            }
+        };
+        $check($arguments[3], 3);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                $primaryCheck = function($value) {
+                    return is_array($value);
+                };
+                if (!$primaryCheck($value)) {
+                    return false;
+                }
+
+                $keyCheck = function($value) {
+                    if (
+                        is_string($value) ||
+                        is_integer($value) ||
+                        is_float($value)
+                    ) {
+                        return true;
+                    }
+
+                    if (!is_object($value)) {
+                        return false;
+                    }
+
+                    $reflector = new \ReflectionObject($value);
+
+                    return $reflector->hasMethod('__toString');
+                };
+                $valueCheck = function($value) {
+                    return is_integer($value);
+                };
+                foreach ($value as $key => $subValue) {
+                    if (!$keyCheck($key)) {
+                        return false;
+                    }
+                    if (!$valueCheck($subValue)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('doom', $index, $argument, 'array<stringable, integer>');
+            }
+        };
+        $check($arguments[4], 4);
+    }
+
+    public function traversableObject(array $arguments)
+    {
+        $argumentCount = count($arguments);
+        if ($argumentCount < 4) {
+            if ($argumentCount < 1) {
+                throw new MissingArgumentException('foo', 0, 'Iterator<string>');
+            }
+            if ($argumentCount < 2) {
+                throw new MissingArgumentException('bar', 1, 'Iterator<integer, string>');
+            }
+            if ($argumentCount < 3) {
+                throw new MissingArgumentException('baz', 2, 'Iterator<integer, stringable>');
+            }
+            throw new MissingArgumentException('qux', 3, 'Iterator<stringable, integer>');
+        } elseif ($argumentCount > 4) {
+            throw new UnexpectedArgumentException(4, $arguments[4]);
+        }
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                if (!$value instanceof \Traversable) {
+                    return false;
+                }
+
+                $primaryCheck = function($value) {
+                    return $value instanceof \Iterator;
+                };
+                if (!$primaryCheck($value)) {
+                    return false;
+                }
+
+                $keyCheck = function($value) {
+                    return true;
+                };
+                $valueCheck = function($value) {
+                    return is_string($value);
+                };
+                foreach ($value as $key => $subValue) {
+                    if (!$keyCheck($key)) {
+                        return false;
+                    }
+                    if (!$valueCheck($subValue)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('foo', $index, $argument, 'Iterator<string>');
+            }
+        };
+        $check($arguments[0], 0);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                if (!$value instanceof \Traversable) {
+                    return false;
+                }
+
+                $primaryCheck = function($value) {
+                    return $value instanceof \Iterator;
+                };
+                if (!$primaryCheck($value)) {
+                    return false;
+                }
+
+                $keyCheck = function($value) {
+                    return is_integer($value);
+                };
+                $valueCheck = function($value) {
+                    return is_string($value);
+                };
+                foreach ($value as $key => $subValue) {
+                    if (!$keyCheck($key)) {
+                        return false;
+                    }
+                    if (!$valueCheck($subValue)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('bar', $index, $argument, 'Iterator<integer, string>');
+            }
+        };
+        $check($arguments[1], 1);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                if (!$value instanceof \Traversable) {
+                    return false;
+                }
+
+                $primaryCheck = function($value) {
+                    return $value instanceof \Iterator;
+                };
+                if (!$primaryCheck($value)) {
+                    return false;
+                }
+
+                $keyCheck = function($value) {
+                    return is_integer($value);
+                };
+                $valueCheck = function($value) {
+                    if (
+                        is_string($value) ||
+                        is_integer($value) ||
+                        is_float($value)
+                    ) {
+                        return true;
+                    }
+
+                    if (!is_object($value)) {
+                        return false;
+                    }
+
+                    $reflector = new \ReflectionObject($value);
+
+                    return $reflector->hasMethod('__toString');
+                };
+                foreach ($value as $key => $subValue) {
+                    if (!$keyCheck($key)) {
+                        return false;
+                    }
+                    if (!$valueCheck($subValue)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('baz', $index, $argument, 'Iterator<integer, stringable>');
+            }
+        };
+        $check($arguments[2], 2);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                if (!$value instanceof \Traversable) {
+                    return false;
+                }
+
+                $primaryCheck = function($value) {
+                    return $value instanceof \Iterator;
+                };
+                if (!$primaryCheck($value)) {
+                    return false;
+                }
+
+                $keyCheck = function($value) {
+                    if (
+                        is_string($value) ||
+                        is_integer($value) ||
+                        is_float($value)
+                    ) {
+                        return true;
+                    }
+
+                    if (!is_object($value)) {
+                        return false;
+                    }
+
+                    $reflector = new \ReflectionObject($value);
+
+                    return $reflector->hasMethod('__toString');
+                };
+                $valueCheck = function($value) {
+                    return is_integer($value);
+                };
+                foreach ($value as $key => $subValue) {
+                    if (!$keyCheck($key)) {
+                        return false;
+                    }
+                    if (!$valueCheck($subValue)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('qux', $index, $argument, 'Iterator<stringable, integer>');
+            }
+        };
+        $check($arguments[3], 3);
+    }
+
+    public function traversableMixed(array $arguments)
+    {
+        $argumentCount = count($arguments);
+        if ($argumentCount < 4) {
+            if ($argumentCount < 1) {
+                throw new MissingArgumentException('foo', 0, 'mixed<string>');
+            }
+            if ($argumentCount < 2) {
+                throw new MissingArgumentException('bar', 1, 'mixed<integer, string>');
+            }
+            if ($argumentCount < 3) {
+                throw new MissingArgumentException('baz', 2, 'mixed<integer, stringable>');
+            }
+            throw new MissingArgumentException('qux', 3, 'mixed<stringable, integer>');
+        } elseif ($argumentCount > 4) {
+            throw new UnexpectedArgumentException(4, $arguments[4]);
+        }
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                if (
+                    !is_array($value) &&
+                    !$value instanceof \Traversable
+                ) {
+                    return false;
+                }
+
+                $primaryCheck = function($value) {
+                    return true;
+                };
+                if (!$primaryCheck($value)) {
+                    return false;
+                }
+
+                $keyCheck = function($value) {
+                    return true;
+                };
+                $valueCheck = function($value) {
+                    return is_string($value);
+                };
+                foreach ($value as $key => $subValue) {
+                    if (!$keyCheck($key)) {
+                        return false;
+                    }
+                    if (!$valueCheck($subValue)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('foo', $index, $argument, 'mixed<string>');
+            }
+        };
+        $check($arguments[0], 0);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                if (
+                    !is_array($value) &&
+                    !$value instanceof \Traversable
+                ) {
+                    return false;
+                }
+
+                $primaryCheck = function($value) {
+                    return true;
+                };
+                if (!$primaryCheck($value)) {
+                    return false;
+                }
+
+                $keyCheck = function($value) {
+                    return is_integer($value);
+                };
+                $valueCheck = function($value) {
+                    return is_string($value);
+                };
+                foreach ($value as $key => $subValue) {
+                    if (!$keyCheck($key)) {
+                        return false;
+                    }
+                    if (!$valueCheck($subValue)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('bar', $index, $argument, 'mixed<integer, string>');
+            }
+        };
+        $check($arguments[1], 1);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                if (
+                    !is_array($value) &&
+                    !$value instanceof \Traversable
+                ) {
+                    return false;
+                }
+
+                $primaryCheck = function($value) {
+                    return true;
+                };
+                if (!$primaryCheck($value)) {
+                    return false;
+                }
+
+                $keyCheck = function($value) {
+                    return is_integer($value);
+                };
+                $valueCheck = function($value) {
+                    if (
+                        is_string($value) ||
+                        is_integer($value) ||
+                        is_float($value)
+                    ) {
+                        return true;
+                    }
+
+                    if (!is_object($value)) {
+                        return false;
+                    }
+
+                    $reflector = new \ReflectionObject($value);
+
+                    return $reflector->hasMethod('__toString');
+                };
+                foreach ($value as $key => $subValue) {
+                    if (!$keyCheck($key)) {
+                        return false;
+                    }
+                    if (!$valueCheck($subValue)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('baz', $index, $argument, 'mixed<integer, stringable>');
+            }
+        };
+        $check($arguments[2], 2);
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                if (
+                    !is_array($value) &&
+                    !$value instanceof \Traversable
+                ) {
+                    return false;
+                }
+
+                $primaryCheck = function($value) {
+                    return true;
+                };
+                if (!$primaryCheck($value)) {
+                    return false;
+                }
+
+                $keyCheck = function($value) {
+                    if (
+                        is_string($value) ||
+                        is_integer($value) ||
+                        is_float($value)
+                    ) {
+                        return true;
+                    }
+
+                    if (!is_object($value)) {
+                        return false;
+                    }
+
+                    $reflector = new \ReflectionObject($value);
+
+                    return $reflector->hasMethod('__toString');
+                };
+                $valueCheck = function($value) {
+                    return is_integer($value);
+                };
+                foreach ($value as $key => $subValue) {
+                    if (!$keyCheck($key)) {
+                        return false;
+                    }
+                    if (!$valueCheck($subValue)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('qux', $index, $argument, 'mixed<stringable, integer>');
+            }
+        };
+        $check($arguments[3], 3);
     }
 }
