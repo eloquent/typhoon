@@ -171,4 +171,27 @@ class TypicalClass
     private function traversableMixed($foo, $bar, $baz, $qux)
     {
     }
+
+    /**
+     * @param string $foo
+     * @param string $bar
+     */
+    private function optionalParameter($foo, $bar = 'baz')
+    {
+    }
+
+    /**
+     * @param string $foo
+     */
+    private function onlyOptional($foo = 'bar')
+    {
+    }
+
+    /**
+     * @param string $foo
+     * @param string $bar,...
+     */
+    private function variableLength($foo)
+    {
+    }
 }

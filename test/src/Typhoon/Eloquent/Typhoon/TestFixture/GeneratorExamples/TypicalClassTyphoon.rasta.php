@@ -1286,4 +1286,99 @@ class TypicalClassTyphoon extends Typhoon\Validator
             ));
         }
     }
+    public function optionalParameter(array $arguments)
+    {
+        ($argumentCount = \count($arguments));
+        if (($argumentCount < 1))
+        {
+            throw (new \Typhoon\Exception\MissingArgumentException('foo', 0, 'string'));
+        }
+        elseif (($argumentCount > 2))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(2, $arguments[2]));
+        }
+        ($value = $arguments[0]);
+        if ((!\is_string($value)))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+                'foo',
+                0,
+                $arguments[0],
+                'string'
+            ));
+        }
+        if (($argumentCount > 1))
+        {
+            ($value = $arguments[1]);
+            if ((!\is_string($value)))
+            {
+                throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+                    'bar',
+                    1,
+                    $arguments[1],
+                    'string'
+                ));
+            }
+        }
+    }
+    public function onlyOptional(array $arguments)
+    {
+        ($argumentCount = \count($arguments));
+        if (($argumentCount > 1))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(1, $arguments[1]));
+        }
+        if (($argumentCount > 0))
+        {
+            ($value = $arguments[0]);
+            if ((!\is_string($value)))
+            {
+                throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+                    'foo',
+                    0,
+                    $arguments[0],
+                    'string'
+                ));
+            }
+        }
+    }
+    public function variableLength(array $arguments)
+    {
+        ($argumentCount = \count($arguments));
+        if (($argumentCount < 1))
+        {
+            throw (new \Typhoon\Exception\MissingArgumentException('foo', 0, 'string'));
+        }
+        ($value = $arguments[0]);
+        if ((!\is_string($value)))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+                'foo',
+                0,
+                $arguments[0],
+                'string'
+            ));
+        }
+        if (($argumentCount > 1))
+        {
+            ($check =             function ($argument, $index)
+                        {
+                            ($value = $argument);
+                            if ((!\is_string($value)))
+                            {
+                                throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+                                    'bar',
+                                    $index,
+                                    $argument,
+                                    'string'
+                                ));
+                            }
+                        }
+            );
+            for (($index = 1); ($index < $argumentCount); ($index++))
+            {
+                $check($arguments[$index], $index);
+            }
+        }
+    }
 }

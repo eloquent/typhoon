@@ -1546,4 +1546,88 @@ class TypicalClassTyphoon extends Validator
         };
         $check($arguments[3], 3);
     }
+
+    public function optionalParameter(array $arguments)
+    {
+        $argumentCount = count($arguments);
+        if ($argumentCount < 1) {
+            throw new MissingArgumentException('foo', 0, 'string');
+        } elseif ($argumentCount > 2) {
+            throw new UnexpectedArgumentException(2, $arguments[2]);
+        }
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return is_string($value);
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('foo', $index, $argument, 'string');
+            }
+        };
+        $check($arguments[0], 0);
+
+        if ($argumentCount > 1) {
+            $check = function($argument, $index) {
+                $check = function($value) {
+                    return is_string($value);
+                };
+                if (!$check($argument)) {
+                    throw new UnexpectedArgumentValueException('bar', $index, $argument, 'string');
+                }
+            };
+            $check($arguments[1], 1);
+        }
+    }
+
+    public function onlyOptional(array $arguments)
+    {
+        $argumentCount = count($arguments);
+        if ($argumentCount > 1) {
+            throw new UnexpectedArgumentException(1, $arguments[1]);
+        }
+
+        if ($argumentCount > 0) {
+            $check = function($argument, $index) {
+                $check = function($value) {
+                    return is_string($value);
+                };
+                if (!$check($argument)) {
+                    throw new UnexpectedArgumentValueException('foo', $index, $argument, 'string');
+                }
+            };
+            $check($arguments[0], 0);
+        }
+    }
+
+    public function variableLength(array $arguments)
+    {
+        $argumentCount = count($arguments);
+        if ($argumentCount < 1) {
+            throw new MissingArgumentException('foo', 0, 'string');
+        }
+
+        $check = function($argument, $index) {
+            $check = function($value) {
+                return is_string($value);
+            };
+            if (!$check($argument)) {
+                throw new UnexpectedArgumentValueException('foo', $index, $argument, 'string');
+            }
+        };
+        $check($arguments[0], 0);
+
+        if ($argumentCount > 1) {
+            $check = function($argument, $index) {
+                $check = function($value) {
+                    return is_string($value);
+                };
+                if (!$check($argument)) {
+                    throw new UnexpectedArgumentValueException('bar', $index, $argument, 'string');
+                }
+            };
+            for ($i = 1; $i < $argumentCount; $i ++) {
+                $check($arguments[$i], $i);
+            }
+        }
+    }
 }
