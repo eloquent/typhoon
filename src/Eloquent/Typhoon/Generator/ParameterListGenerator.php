@@ -241,6 +241,10 @@ class ParameterListGenerator implements Visitor
             }
         }
 
+        if ($missingParametersStatement) {
+            $expressions[] = $missingParametersStatement;
+        }
+
         // type checks
         foreach ($parameters as $index => $parameter) {
             $isVariableLength =
