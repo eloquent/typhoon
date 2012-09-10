@@ -1,5 +1,5 @@
 {
-    "hash": "b093e2cc7a5ccf2c013be591fece5627",
+    "hash": "193c00f4808dcf64b5a4e6bd34e87289",
     "packages": [
         {
             "package": "eloquent/asplode",
@@ -19,7 +19,7 @@
         },
         {
             "package": "eloquent/typhax",
-            "version": "0.6.2"
+            "version": "0.7.0"
         },
         {
             "package": "icecave/isolator",
