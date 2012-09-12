@@ -41,6 +41,7 @@ use Icecave\Pasta\AST\Expr\Member;
 use Icecave\Pasta\AST\Expr\NewOperator;
 use Icecave\Pasta\AST\Expr\QualifiedIdentifier;
 use Icecave\Pasta\AST\Expr\StrictEquals;
+use Icecave\Pasta\AST\Expr\StrictNotEquals;
 use Icecave\Pasta\AST\Expr\Subscript;
 use Icecave\Pasta\AST\Expr\Variable;
 use Icecave\Pasta\AST\Func\Closure;
@@ -442,24 +443,28 @@ class TyphaxASTGenerator implements Visitor
         )));
 
         if (null !== $type->readable()) {
-            $isReadableCall = new Call(QualifiedIdentifier::fromString('\preg_match'));
-            $isReadableCall->add(new Literal('/[r+]/'));
-            $isReadableCall->add($streamModeExpression);
+            $strpbrkCall = new Call(QualifiedIdentifier::fromString('\strpbrk'));
+            $strpbrkCall->add($streamModeExpression);
+            $strpbrkCall->add(new Literal('r+'));
+            $isReadableExpression = new StrictNotEquals(
+                $strpbrkCall,
+                new Literal(false)
+            );
 
             if (null === $type->writable()) {
                 if ($type->readable()) {
-                    $closure->statementBlock()->add(new ReturnStatement($isReadableCall));
+                    $closure->statementBlock()->add(new ReturnStatement($isReadableExpression));
                 } else {
-                    $closure->statementBlock()->add(new ReturnStatement(new LogicalNot($isReadableCall)));
+                    $closure->statementBlock()->add(new ReturnStatement(new LogicalNot($isReadableExpression)));
                 }
             } else {
                 if ($type->readable()) {
-                    $ifStatement = new IfStatement(new LogicalNot($isReadableCall));
+                    $ifStatement = new IfStatement(new LogicalNot($isReadableExpression));
                     $ifStatement->trueBranch()->add(
                         new ReturnStatement(new Literal(false))
                     );
                 } else {
-                    $ifStatement = new IfStatement($isReadableCall);
+                    $ifStatement = new IfStatement($isReadableExpression);
                     $ifStatement->trueBranch()->add(
                         new ReturnStatement(new Literal(false))
                     );
@@ -469,14 +474,18 @@ class TyphaxASTGenerator implements Visitor
         }
 
         if (null !== $type->writable()) {
-            $isWritableCall = new Call(QualifiedIdentifier::fromString('\preg_match'));
-            $isWritableCall->add(new Literal('/[waxc+]/'));
-            $isWritableCall->add($streamModeExpression);
+            $strpbrkCall = new Call(QualifiedIdentifier::fromString('\strpbrk'));
+            $strpbrkCall->add($streamModeExpression);
+            $strpbrkCall->add(new Literal('waxc+'));
+            $isWritableExpression = new StrictNotEquals(
+                $strpbrkCall,
+                new Literal(false)
+            );
 
             if ($type->writable()) {
-                $closure->statementBlock()->add(new ReturnStatement($isWritableCall));
+                $closure->statementBlock()->add(new ReturnStatement($isWritableExpression));
             } else {
-                $closure->statementBlock()->add(new ReturnStatement(new LogicalNot($isWritableCall)));
+                $closure->statementBlock()->add(new ReturnStatement(new LogicalNot($isWritableExpression)));
             }
         }
 

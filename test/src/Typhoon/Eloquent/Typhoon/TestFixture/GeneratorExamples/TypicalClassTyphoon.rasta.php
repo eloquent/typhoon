@@ -252,7 +252,7 @@ class TypicalClassTyphoon extends Typhoon\Validator
                         return false;
                     }
                     ($streamMetaData = stream_get_meta_data($value));
-                    return \preg_match('/[r+]/', $streamMetaData['mode']);
+                    return (\strpbrk($streamMetaData['mode'], 'r+') !== false);
                 }
         );
         if ((!$check($arguments[1])))
@@ -272,7 +272,7 @@ class TypicalClassTyphoon extends Typhoon\Validator
                         return false;
                     }
                     ($streamMetaData = stream_get_meta_data($value));
-                    return (!\preg_match('/[r+]/', $streamMetaData['mode']));
+                    return (!(\strpbrk($streamMetaData['mode'], 'r+') !== false));
                 }
         );
         if ((!$check($arguments[2])))
@@ -292,7 +292,7 @@ class TypicalClassTyphoon extends Typhoon\Validator
                         return false;
                     }
                     ($streamMetaData = stream_get_meta_data($value));
-                    return \preg_match('/[waxc+]/', $streamMetaData['mode']);
+                    return (\strpbrk($streamMetaData['mode'], 'waxc+') !== false);
                 }
         );
         if ((!$check($arguments[3])))
@@ -312,7 +312,7 @@ class TypicalClassTyphoon extends Typhoon\Validator
                         return false;
                     }
                     ($streamMetaData = stream_get_meta_data($value));
-                    return (!\preg_match('/[waxc+]/', $streamMetaData['mode']));
+                    return (!(\strpbrk($streamMetaData['mode'], 'waxc+') !== false));
                 }
         );
         if ((!$check($arguments[4])))
@@ -332,11 +332,11 @@ class TypicalClassTyphoon extends Typhoon\Validator
                         return false;
                     }
                     ($streamMetaData = stream_get_meta_data($value));
-                    if ((!\preg_match('/[r+]/', $streamMetaData['mode'])))
+                    if ((!(\strpbrk($streamMetaData['mode'], 'r+') !== false)))
                     {
                         return false;
                     }
-                    return \preg_match('/[waxc+]/', $streamMetaData['mode']);
+                    return (\strpbrk($streamMetaData['mode'], 'waxc+') !== false);
                 }
         );
         if ((!$check($arguments[5])))
@@ -356,11 +356,11 @@ class TypicalClassTyphoon extends Typhoon\Validator
                         return false;
                     }
                     ($streamMetaData = stream_get_meta_data($value));
-                    if (\preg_match('/[r+]/', $streamMetaData['mode']))
+                    if ((\strpbrk($streamMetaData['mode'], 'r+') !== false))
                     {
                         return false;
                     }
-                    return \preg_match('/[waxc+]/', $streamMetaData['mode']);
+                    return (\strpbrk($streamMetaData['mode'], 'waxc+') !== false);
                 }
         );
         if ((!$check($arguments[6])))
