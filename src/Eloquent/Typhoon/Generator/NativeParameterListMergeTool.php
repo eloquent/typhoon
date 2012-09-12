@@ -214,12 +214,14 @@ class NativeParameterListMergeTool
     /**
      * @param Type $documentedType
      * @param Type $nativeType
+     * @param integer $depth
      *
      * @return boolean
      */
     protected function typeIsCompatible(
         Type $documentedType,
-        Type $nativeType
+        Type $nativeType,
+        $depth = 0
     ) {
         $this->typhoon->typeIsCompatible(func_get_args());
 
@@ -233,6 +235,10 @@ class NativeParameterListMergeTool
 
         // null
         if ($documentedType instanceof NullType) {
+            if ($depth < 1) {
+                return $nativeType instanceof MixedType;
+            }
+
             return $nativeType instanceof NullType;
         }
 
@@ -278,7 +284,8 @@ class NativeParameterListMergeTool
                     foreach ($nativeType->types() as $nativeSubType) {
                         $compatible = $this->typeIsCompatible(
                             $documentedSubType,
-                            $nativeSubType
+                            $nativeSubType,
+                            $depth + 1
                         );
                         if ($compatible) {
                             break;
@@ -334,7 +341,8 @@ class NativeParameterListMergeTool
             foreach ($documentedType->types() as $documentedSubType) {
                 $compatible = $this->typeIsCompatible(
                     $documentedSubType,
-                    $nativeType
+                    $nativeType,
+                    $depth + 1
                 );
                 if ($compatible) {
                     return true;

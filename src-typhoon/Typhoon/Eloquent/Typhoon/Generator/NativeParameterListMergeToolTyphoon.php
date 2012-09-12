@@ -162,9 +162,22 @@ class NativeParameterListMergeToolTyphoon extends \Typhoon\Validator
             }
             throw (new \Typhoon\Exception\MissingArgumentException('nativeType', 1, 'mixed'));
         }
-        elseif (($argumentCount > 2))
+        elseif (($argumentCount > 3))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(2, $arguments[2]));
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(3, $arguments[3]));
+        }
+        if (($argumentCount > 2))
+        {
+            ($value = $arguments[2]);
+            if ((!\is_int($value)))
+            {
+                throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+                    'depth',
+                    2,
+                    $arguments[2],
+                    'integer'
+                ));
+            }
         }
     }
 }

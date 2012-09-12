@@ -23,6 +23,7 @@ use Eloquent\Typhax\Type\ObjectType;
 use Eloquent\Typhax\Type\OrType;
 use Eloquent\Typhax\Type\StringType;
 use Eloquent\Typhax\Type\TraversableType;
+use Eloquent\Typhax\Type\TupleType;
 use Eloquent\Typhax\Type\Type;
 use Eloquent\Typhoon\Parameter\Parameter;
 use Eloquent\Typhoon\Parameter\ParameterList;
@@ -221,13 +222,23 @@ class NativeParameterListMergeToolTest extends MultiGenerationTestCase
                 new Parameter(
                     'bar',
                     new MixedType,
+                    null,
+                    true,
+                    false
+                ),
+            )
+        );
+        $expected = new ParameterList(
+            array(
+                new Parameter(
+                    'bar',
+                    new MixedType,
                     'Bar description.',
                     true,
                     false
                 ),
             )
         );
-        $expected = $nativeParameterList;
         $data['Copy isOptional from native'] = array(
             $expected,
             $documentedParameterList,
@@ -579,6 +590,15 @@ class NativeParameterListMergeToolTest extends MultiGenerationTestCase
             $nativeType,
         );
 
+        $documentedType = new NullType;
+        $nativeType = new MixedType;
+        $expected = $documentedType;
+        $data['Documented type is null, and native is mixed'] = array(
+            $expected,
+            $documentedType,
+            $nativeType,
+        );
+
         $documentedType = new ObjectType('RecursiveDirectoryIterator');
         $nativeType = new ObjectType('FilesystemIterator');
         $expected = $documentedType;
@@ -604,6 +624,22 @@ class NativeParameterListMergeToolTest extends MultiGenerationTestCase
         $nativeType = new ObjectType('Traversable');
         $expected = $documentedType;
         $data['Native type is compatible with all types in AND composite'] = array(
+            $expected,
+            $documentedType,
+            $nativeType,
+        );
+
+        $documentedType = new TupleType(array(
+            new StringType,
+            new FloatType,
+        ));
+        $nativeType = new TraversableType(
+            new ArrayType,
+            new MixedType,
+            new MixedType
+        );
+        $expected = $documentedType;
+        $data['Documented type is tuple, and native is array'] = array(
             $expected,
             $documentedType,
             $nativeType,
@@ -668,6 +704,7 @@ class NativeParameterListMergeToolTest extends MultiGenerationTestCase
     public function mergeTypeFailureData()
     {
         $data = array();
+
         // arrays
         $documentedType = new TraversableType(
             new ArrayType,

@@ -28,7 +28,7 @@ class ClassDefinitionTyphoon extends \Typhoon\Validator
         if (($argumentCount > 1))
         {
             ($value = $arguments[1]);
-            if ((!(\is_string($value) || \is_null($value))))
+            if ((!(\is_string($value) || ($value === null))))
             {
                 throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
                     'namespaceName',
@@ -53,7 +53,7 @@ class ClassDefinitionTyphoon extends \Typhoon\Validator
                                 {
                                     return false;
                                 }
-                                if ((!(\is_string($subValue) || \is_null($subValue))))
+                                if ((!(\is_string($subValue) || ($subValue === null))))
                                 {
                                     return false;
                                 }

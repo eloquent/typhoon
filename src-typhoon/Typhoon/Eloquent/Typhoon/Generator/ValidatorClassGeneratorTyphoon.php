@@ -61,7 +61,7 @@ class ValidatorClassGeneratorTyphoon extends \Typhoon\Validator
         if (($argumentCount > 1))
         {
             ($value = $arguments[1]);
-            if ((!(\is_string($value) || \is_null($value))))
+            if ((!(\is_string($value) || ($value === null))))
             {
                 throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
                     'namespaceName',
@@ -74,7 +74,7 @@ class ValidatorClassGeneratorTyphoon extends \Typhoon\Validator
         if (($argumentCount > 2))
         {
             ($value = $arguments[2]);
-            if ((!(\is_string($value) || \is_null($value))))
+            if ((!(\is_string($value) || ($value === null))))
             {
                 throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
                     'className',
@@ -123,7 +123,7 @@ class ValidatorClassGeneratorTyphoon extends \Typhoon\Validator
         if (($argumentCount > 2))
         {
             ($value = $arguments[2]);
-            if ((!(\is_string($value) || \is_null($value))))
+            if ((!(\is_string($value) || ($value === null))))
             {
                 throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
                     'namespaceName',
@@ -136,7 +136,7 @@ class ValidatorClassGeneratorTyphoon extends \Typhoon\Validator
         if (($argumentCount > 3))
         {
             ($value = $arguments[3]);
-            if ((!(\is_string($value) || \is_null($value))))
+            if ((!(\is_string($value) || ($value === null))))
             {
                 throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
                     'className',
@@ -185,7 +185,7 @@ class ValidatorClassGeneratorTyphoon extends \Typhoon\Validator
         if (($argumentCount > 2))
         {
             ($value = $arguments[2]);
-            if ((!(\is_string($value) || \is_null($value))))
+            if ((!(\is_string($value) || ($value === null))))
             {
                 throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
                     'namespaceName',
@@ -198,7 +198,7 @@ class ValidatorClassGeneratorTyphoon extends \Typhoon\Validator
         if (($argumentCount > 3))
         {
             ($value = $arguments[3]);
-            if ((!(\is_string($value) || \is_null($value))))
+            if ((!(\is_string($value) || ($value === null))))
             {
                 throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
                     'className',
@@ -223,7 +223,7 @@ class ValidatorClassGeneratorTyphoon extends \Typhoon\Validator
         if (($argumentCount > 1))
         {
             ($value = $arguments[1]);
-            if ((!(\is_string($value) || \is_null($value))))
+            if ((!(\is_string($value) || ($value === null))))
             {
                 throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
                     'namespaceName',
@@ -236,7 +236,7 @@ class ValidatorClassGeneratorTyphoon extends \Typhoon\Validator
         if (($argumentCount > 2))
         {
             ($value = $arguments[2]);
-            if ((!(\is_string($value) || \is_null($value))))
+            if ((!(\is_string($value) || ($value === null))))
             {
                 throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
                     'className',
@@ -261,7 +261,7 @@ class ValidatorClassGeneratorTyphoon extends \Typhoon\Validator
         if (($argumentCount > 1))
         {
             ($value = $arguments[1]);
-            if ((!(\is_string($value) || \is_null($value))))
+            if ((!(\is_string($value) || ($value === null))))
             {
                 throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
                     'namespaceName',
@@ -274,7 +274,7 @@ class ValidatorClassGeneratorTyphoon extends \Typhoon\Validator
         if (($argumentCount > 2))
         {
             ($value = $arguments[2]);
-            if ((!(\is_string($value) || \is_null($value))))
+            if ((!(\is_string($value) || ($value === null))))
             {
                 throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
                     'className',
@@ -327,7 +327,7 @@ class ValidatorClassGeneratorTyphoon extends \Typhoon\Validator
         if (($argumentCount > 1))
         {
             ($value = $arguments[1]);
-            if ((!(\is_string($value) || \is_null($value))))
+            if ((!(\is_string($value) || ($value === null))))
             {
                 throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
                     'namespaceName',
@@ -340,7 +340,7 @@ class ValidatorClassGeneratorTyphoon extends \Typhoon\Validator
         if (($argumentCount > 2))
         {
             ($value = $arguments[2]);
-            if ((!(\is_string($value) || \is_null($value))))
+            if ((!(\is_string($value) || ($value === null))))
             {
                 throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
                     'className',

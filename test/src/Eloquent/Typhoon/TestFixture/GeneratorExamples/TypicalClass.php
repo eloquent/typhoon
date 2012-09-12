@@ -33,6 +33,7 @@ class TypicalClass
      * @param float $float
      * @param integer $integer
      * @param mixed $mixed
+     * @param null $null
      * @param numeric $numeric
      * @param string $string
      */
@@ -41,6 +42,7 @@ class TypicalClass
         $float,
         $integer,
         $mixed,
+        $null,
         $numeric,
         $string
     ) {
@@ -94,13 +96,6 @@ class TypicalClass
      * @param array<callable> $foo
      */
     private function callableType(array $foo)
-    {
-    }
-
-    /**
-     * @param array<null> $foo
-     */
-    private function nullType(array $foo)
     {
     }
 

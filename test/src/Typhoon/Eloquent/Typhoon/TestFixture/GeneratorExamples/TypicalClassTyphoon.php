@@ -28,7 +28,7 @@ class TypicalClassTyphoon extends \Typhoon\Validator
     public function simpleTypes(array $arguments)
     {
         ($argumentCount = \count($arguments));
-        if (($argumentCount < 6))
+        if (($argumentCount < 7))
         {
             if (($argumentCount < 1))
             {
@@ -48,13 +48,17 @@ class TypicalClassTyphoon extends \Typhoon\Validator
             }
             if (($argumentCount < 5))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('numeric', 4, 'numeric'));
+                throw (new \Typhoon\Exception\MissingArgumentException('null', 4, 'null'));
             }
-            throw (new \Typhoon\Exception\MissingArgumentException('string', 5, 'string'));
+            if (($argumentCount < 6))
+            {
+                throw (new \Typhoon\Exception\MissingArgumentException('numeric', 5, 'numeric'));
+            }
+            throw (new \Typhoon\Exception\MissingArgumentException('string', 6, 'string'));
         }
-        elseif (($argumentCount > 6))
+        elseif (($argumentCount > 7))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(6, $arguments[6]));
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(7, $arguments[7]));
         }
         ($value = $arguments[0]);
         if ((!\is_bool($value)))
@@ -87,22 +91,32 @@ class TypicalClassTyphoon extends \Typhoon\Validator
             ));
         }
         ($value = $arguments[4]);
+        if ((!($value === null)))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+                'null',
+                4,
+                $arguments[4],
+                'null'
+            ));
+        }
+        ($value = $arguments[5]);
         if ((!\is_numeric($value)))
         {
             throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
                 'numeric',
-                4,
-                $arguments[4],
+                5,
+                $arguments[5],
                 'numeric'
             ));
         }
-        ($value = $arguments[5]);
+        ($value = $arguments[6]);
         if ((!\is_string($value)))
         {
             throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
                 'string',
-                5,
-                $arguments[5],
+                6,
+                $arguments[6],
                 'string'
             ));
         }
@@ -444,44 +458,6 @@ class TypicalClassTyphoon extends \Typhoon\Validator
                 0,
                 $arguments[0],
                 'array<callable>'
-            ));
-        }
-    }
-    public function nullType(array $arguments)
-    {
-        ($argumentCount = \count($arguments));
-        if (($argumentCount < 1))
-        {
-            throw (new \Typhoon\Exception\MissingArgumentException('foo', 0, 'array<null>'));
-        }
-        elseif (($argumentCount > 1))
-        {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(1, $arguments[1]));
-        }
-        ($value = $arguments[0]);
-        ($check =         function ($value)
-                {
-                    if ((!\is_array($value)))
-                    {
-                        return false;
-                    }
-                    foreach ($value as $key => $subValue)
-                    {
-                        if ((!\is_null($subValue)))
-                        {
-                            return false;
-                        }
-                    }
-                    return true;
-                }
-        );
-        if ((!$check($arguments[0])))
-        {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
-                'foo',
-                0,
-                $arguments[0],
-                'array<null>'
             ));
         }
     }

@@ -239,16 +239,16 @@ class TyphaxASTGenerator implements Visitor
     /**
      * @param NullType $type
      *
-     * @return Call
+     * @return StrictEquals
      */
     public function visitNullType(NullType $type)
     {
         $this->typhoon->visitNullType(func_get_args());
 
-        $call = new Call(QualifiedIdentifier::fromString('\is_null'));
-        $call->add($this->valueExpression());
-
-        return $call;
+        return new StrictEquals(
+            $this->valueExpression(),
+            new Literal(null)
+        );
     }
 
     /**
