@@ -1,5 +1,5 @@
 {
-    "hash": "0edc6a511303b30ea70bc64c77c82534",
+    "hash": "193c00f4808dcf64b5a4e6bd34e87289",
     "packages": [
         {
             "package": "eloquent/asplode",
@@ -14,12 +14,28 @@
             "version": "1.0.1"
         },
         {
+            "package": "eloquent/enumeration",
+            "version": "2.1.2"
+        },
+        {
             "package": "eloquent/typhax",
-            "version": "0.6.2"
+            "version": "0.7.0"
         },
         {
             "package": "icecave/isolator",
             "version": "2.1.0"
+        },
+        {
+            "package": "icecave/pasta-ast",
+            "version": "dev-master",
+            "source-reference": "e76e2336492c3fc82050a8fcfeaa7c12b6666351",
+            "commit-date": "1346496581"
+        },
+        {
+            "package": "icecave/rasta",
+            "version": "dev-master",
+            "source-reference": "2ebedcc3fb5c10e5b4a522439c846a7555624160",
+            "commit-date": "1346496930"
         },
         {
             "package": "icecave/visita",
@@ -27,7 +43,7 @@
         },
         {
             "package": "symfony/console",
-            "version": "v2.0.17"
+            "version": "v2.1.0"
         }
     ],
     "packages-dev": [
@@ -52,7 +68,8 @@
 
     ],
     "minimum-stability": "stable",
-    "stability-flags": [
-
-    ]
+    "stability-flags": {
+        "icecave/pasta-ast": 20,
+        "icecave/rasta": 20
+    }
 }

@@ -20,6 +20,7 @@ use Eloquent\Typhax\Type\NullType;
 use Eloquent\Typhax\Type\ObjectType;
 use Eloquent\Typhax\Type\OrType;
 use Eloquent\Typhax\Type\TraversableType;
+use Eloquent\Typhax\Type\TupleType;
 use Eloquent\Typhax\Type\Type;
 use Eloquent\Typhoon\Parameter\Parameter;
 use Eloquent\Typhoon\Parameter\ParameterList;
@@ -241,6 +242,11 @@ class NativeParameterListMergeTool
                 !$documentedType->primaryType() instanceof ArrayType ||
                 $nativeType instanceof TraversableType
             ;
+        }
+
+        // tuple
+        if ($documentedType instanceof TupleType) {
+            return $nativeType instanceof TraversableType;
         }
 
         // object of type
