@@ -335,6 +335,8 @@ class ParameterListGenerator implements Visitor
      */
     protected function wrapExpressions(array $expressions)
     {
+        $this->typhoon->wrapExpressions(func_get_args());
+
         foreach ($expressions as $index => $expression) {
             if (!$expression instanceof IStatement) {
                 $expressions[$index] = new ExpressionStatement($expression);
