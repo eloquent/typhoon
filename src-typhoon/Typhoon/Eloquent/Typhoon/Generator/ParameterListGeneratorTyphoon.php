@@ -1,22 +1,25 @@
 <?php
-namespace Typhoon\Eloquent\Typhoon\Resolver;
+namespace Typhoon\Eloquent\Typhoon\Generator;
 
 
-class ParameterListClassNameResolverTyphoon extends \Typhoon\Validator
+class ParameterListGeneratorTyphoon extends \Typhoon\Validator
 {
     public function validateConstruct(array $arguments)
     {
         ($argumentCount = \count($arguments));
-        if (($argumentCount < 1))
+        if (($argumentCount > 2))
         {
-            throw (new \Typhoon\Exception\MissingArgumentException('typeResolver', 0, 'mixed'));
-        }
-        elseif (($argumentCount > 1))
-        {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(1, $arguments[1]));
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(2, $arguments[2]));
         }
     }
-    public function typeResolver(array $arguments)
+    public function typeGenerator(array $arguments)
+    {
+        if ((\count($arguments) > 0))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(0, $arguments[0]));
+        }
+    }
+    public function typeRenderer(array $arguments)
     {
         if ((\count($arguments) > 0))
         {
@@ -41,6 +44,18 @@ class ParameterListClassNameResolverTyphoon extends \Typhoon\Validator
         if (($argumentCount < 1))
         {
             throw (new \Typhoon\Exception\MissingArgumentException('parameterList', 0, 'mixed'));
+        }
+        elseif (($argumentCount > 1))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(1, $arguments[1]));
+        }
+    }
+    public function wrapExpressions(array $arguments)
+    {
+        ($argumentCount = \count($arguments));
+        if (($argumentCount < 1))
+        {
+            throw (new \Typhoon\Exception\MissingArgumentException('expressions', 0, 'mixed'));
         }
         elseif (($argumentCount > 1))
         {
