@@ -13,20 +13,21 @@
     ],
     "require": {
         "php": ">=5.3.0",
-        "eloquent/asplode": "1.*",
-        "eloquent/blox": "1.*",
-        "eloquent/cosmos": "1.*",
-        "eloquent/typhax": "0.7.*",
-        "icecave/isolator": ">=2.1,<3",
+        "eloquent/asplode": "*",
+        "eloquent/blox": "*",
+        "eloquent/cosmos": "*",
+        "eloquent/typhax": "*",
+        "icecave/isolator": "*",
         "icecave/pasta-ast": "dev-master@dev",
         "icecave/rasta": "dev-master@dev",
-        "icecave/visita": "0.1.*",
-        "symfony/console": "2.*"
+        "icecave/visita": "*",
+        "justinrainbow/json-schema": "*",
+        "symfony/console": "*"
     },
     "require-dev": {
-        "phake/phake": "1.*",
-        "eloquent/liberator": "1.*",
-        "ezzatron/phpunit-extensions": ">=1.0.1,<2"
+        "phake/phake": "*",
+        "eloquent/liberator": "*",
+        "ezzatron/phpunit-extensions": "*"
     },
     "suggest": {
         "ext-sockets": "*"

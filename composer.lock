@@ -1,5 +1,5 @@
 {
-    "hash": "193c00f4808dcf64b5a4e6bd34e87289",
+    "hash": "4e5036684e2590fc3a38e67ea77affd6",
     "packages": [
         {
             "package": "eloquent/asplode",
@@ -42,8 +42,12 @@
             "version": "0.1.0"
         },
         {
+            "package": "justinrainbow/json-schema",
+            "version": "1.2.1"
+        },
+        {
             "package": "symfony/console",
-            "version": "v2.1.0"
+            "version": "v2.1.1"
         }
     ],
     "packages-dev": [

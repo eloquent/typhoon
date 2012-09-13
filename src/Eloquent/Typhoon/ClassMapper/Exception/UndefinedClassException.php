@@ -47,4 +47,5 @@ final class UndefinedClassException extends LogicException
     }
 
     private $className;
+    private $typhoon;
 }
