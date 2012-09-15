@@ -9,6 +9,10 @@
     verbose="true"
     colors="true"
 >
+    <php>
+        <ini name="xdebug.max_nesting_level" value="103"/>
+    </php>
+
     <testsuites>
         <testsuite>
             <directory>test/suite</directory>

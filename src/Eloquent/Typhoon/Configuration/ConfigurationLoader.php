@@ -55,6 +55,8 @@ class ConfigurationLoader
     {
         $this->typhoon->load(func_get_args());
 
+        $workingPath = $this->workingPath($workingPath);
+
         $standalonePath = sprintf(
             '%s/typhoon.json',
             $workingPath
@@ -84,7 +86,7 @@ class ConfigurationLoader
     {
         $this->typhoon->loadStandalone(func_get_args());
 
-        return $this->build(
+        return $this->buildFromData(
             $this->loadJSONFile($path),
             $workingPath
         );
@@ -110,7 +112,44 @@ class ConfigurationLoader
             return null;
         }
 
-        return $this->build($configuration->extra->typhoon, $workingPath);
+        return $this->buildFromData(
+            $configuration->extra->typhoon,
+            $workingPath
+        );
+    }
+
+    /**
+     * @param string $outputPath
+     * @param array<string> $sourcePaths
+     * @param array<string>|null $loaderPaths
+     * @param boolean|null $useNativeCallable
+     * @param string|null $workingPath
+     *
+     * @return Configuration
+     */
+    public function buildConfiguration(
+        $outputPath,
+        array $sourcePaths,
+        array $loaderPaths = null,
+        $useNativeCallable = null,
+        $workingPath = null
+    ) {
+        $this->typhoon->buildConfiguration(func_get_args());
+
+        $workingPath = $this->workingPath($workingPath);
+        if (null === $loaderPaths) {
+            $loaderPaths = $this->defaultLoaderPaths($workingPath);
+        }
+        if (null === $useNativeCallable) {
+            $useNativeCallable = true;
+        }
+
+        return new Configuration(
+            $outputPath,
+            $sourcePaths,
+            $loaderPaths,
+            $useNativeCallable
+        );
     }
 
     /**
@@ -140,35 +179,46 @@ class ConfigurationLoader
      *
      * @return Configuration
      */
-    protected function build($data, $workingPath = null)
+    protected function buildFromData($data, $workingPath = null)
     {
-        $this->typhoon->build(func_get_args());
-        if (null === $workingPath) {
-            $workingPath = $this->isolator->getcwd();
-        }
+        $this->typhoon->buildFromData(func_get_args());
 
         $this->validator()->validate($data);
 
-        // loaderPaths
         if ($this->objectHasProperty($data, 'loaderPaths')) {
             $loaderPaths = $data->loaderPaths;
         } else {
-            $loaderPaths = $this->defaultLoaderPaths($workingPath);
+            $loaderPaths = null;
         }
 
-        // useNativeCallable
         if ($this->objectHasProperty($data, 'useNativeCallable')) {
             $useNativeCallable = $data->useNativeCallable;
         } else {
-            $useNativeCallable = true;
+            $useNativeCallable = null;
         }
 
-        return new Configuration(
+        return $this->buildConfiguration(
             $data->outputPath,
             $data->sourcePaths,
             $loaderPaths,
             $useNativeCallable
         );
+    }
+
+    /**
+     * @param string|null $workingPath
+     *
+     * @return string
+     */
+    protected function workingPath($workingPath)
+    {
+        $this->typhoon->workingPath(func_get_args());
+
+        if (null === $workingPath) {
+            $workingPath = $this->isolator->getcwd();
+        }
+
+        return $workingPath;
     }
 
     /**

@@ -41,5 +41,12 @@
     },
     "bin": [
         "bin/typhoon"
-    ]
+    ],
+    "extra": {
+        "typhoon": {
+            "outputPath": "src-typhoon",
+            "sourcePaths": ["src"],
+            "useNativeCallable": false
+        }
+    }
 }

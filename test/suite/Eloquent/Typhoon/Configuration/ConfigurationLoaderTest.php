@@ -131,7 +131,7 @@ class ConfigurationLoaderTest extends MultiGenerationTestCase
         ;
         $configuration = Phake::mock(__NAMESPACE__.'\Configuration');
         Phake::when($this->_loader)
-            ->build(Phake::anyParameters())
+            ->buildFromData(Phake::anyParameters())
             ->thenReturn($configuration)
         ;
 
@@ -141,7 +141,7 @@ class ConfigurationLoaderTest extends MultiGenerationTestCase
         );
         Phake::inOrder(
             Phake::verify($this->_loader)->loadJSONFile('foo'),
-            Phake::verify($this->_loader)->build(
+            Phake::verify($this->_loader)->buildFromData(
                 $this->identicalTo($jsonData),
                 'bar'
             )
@@ -160,7 +160,7 @@ class ConfigurationLoaderTest extends MultiGenerationTestCase
         ;
         $configuration = Phake::mock(__NAMESPACE__.'\Configuration');
         Phake::when($this->_loader)
-            ->build(Phake::anyParameters())
+            ->buildFromData(Phake::anyParameters())
             ->thenReturn($configuration)
         ;
 
@@ -170,7 +170,7 @@ class ConfigurationLoaderTest extends MultiGenerationTestCase
         );
         Phake::inOrder(
             Phake::verify($this->_loader)->loadJSONFile('foo'),
-            Phake::verify($this->_loader)->build(
+            Phake::verify($this->_loader)->buildFromData(
                 $this->identicalTo($typhoonData),
                 'bar'
             )
@@ -189,8 +189,52 @@ class ConfigurationLoaderTest extends MultiGenerationTestCase
         $this->assertNull($this->_loader->loadComposer('foo', 'bar'));
         Phake::verify($this->_loader)->loadJSONFile('foo');
         Phake::verify($this->_loader, Phake::never())
-            ->build(Phake::anyParameters())
+            ->buildFromData(Phake::anyParameters())
         ;
+    }
+
+    public function testBuildConfiguration()
+    {
+        Phake::when($this->_isolator)->getcwd(Phake::anyParameters())
+            ->thenReturn('foo')
+        ;
+        $expected = new Configuration(
+            'bar',
+            array('baz', 'qux'),
+            array('foo/vendor/autoload.php'),
+            true
+        );
+
+        $this->assertEquals(
+            $expected,
+            $this->_loader->buildConfiguration(
+                'bar',
+                array('baz', 'qux')
+            )
+        );
+    }
+
+    public function testBuildConfigurationWithAllOptions()
+    {
+        Phake::when($this->_isolator)->getcwd(Phake::anyParameters())
+            ->thenReturn('foo')
+        ;
+        $expected = new Configuration(
+            'bar',
+            array('baz', 'qux'),
+            array('doom', 'splat'),
+            false
+        );
+
+        $this->assertEquals(
+            $expected,
+            $this->_loader->buildConfiguration(
+                'bar',
+                array('baz', 'qux'),
+                array('doom', 'splat'),
+                false
+            )
+        );
     }
 
     public function testLoadJSONFile()
@@ -231,7 +275,7 @@ class ConfigurationLoaderTest extends MultiGenerationTestCase
         Liberator::liberate($this->_loader)->loadJSONFile('foo');
     }
 
-    public function testBuild()
+    public function testBuildFromData()
     {
         Phake::when($this->_isolator)->getcwd(Phake::anyParameters())
             ->thenReturn('foo')
@@ -248,14 +292,14 @@ class ConfigurationLoaderTest extends MultiGenerationTestCase
 
         $this->assertEquals(
             $expected,
-            Liberator::liberate($this->_loader)->build($data)
+            Liberator::liberate($this->_loader)->buildFromData($data)
         );
         Phake::verify($this->_validator)->validate(
             $this->identicalTo($data)
         );
     }
 
-    public function testBuildWithAllOptions()
+    public function testBuildFromDataWithAllOptions()
     {
         Phake::when($this->_isolator)->getcwd(Phake::anyParameters())
             ->thenReturn('foo')
@@ -274,7 +318,7 @@ class ConfigurationLoaderTest extends MultiGenerationTestCase
 
         $this->assertEquals(
             $expected,
-            Liberator::liberate($this->_loader)->build($data)
+            Liberator::liberate($this->_loader)->buildFromData($data)
         );
         Phake::verify($this->_validator)->validate(
             $this->identicalTo($data)
