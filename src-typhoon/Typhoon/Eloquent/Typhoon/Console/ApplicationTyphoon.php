@@ -12,7 +12,7 @@ class ApplicationTyphoon extends \Typhoon\Validator
             throw (new \Typhoon\Exception\UnexpectedArgumentException(1, $arguments[1]));
         }
     }
-    public function configurationLoader(array $arguments)
+    public function configurationReader(array $arguments)
     {
         if ((\count($arguments) > 0))
         {

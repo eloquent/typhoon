@@ -11,24 +11,24 @@
 
 namespace Eloquent\Typhoon\Console;
 
-use Eloquent\Typhoon\Configuration\ConfigurationLoader;
+use Eloquent\Typhoon\Configuration\ConfigurationReader;
 use Symfony\Component\Console\Application as SymfonyApplication;
 use Typhoon\Typhoon;
 
 class Application extends SymfonyApplication
 {
     /**
-     * @param ConfigurationLoader|null $configurationLoader
+     * @param ConfigurationReader|null $configurationReader
      */
     public function __construct(
-        ConfigurationLoader $configurationLoader = null
+        ConfigurationReader $configurationReader = null
     ) {
         $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
-        if (null === $configurationLoader) {
-            $configurationLoader = new ConfigurationLoader;
+        if (null === $configurationReader) {
+            $configurationReader = new ConfigurationReader;
         }
 
-        $this->configurationLoader = $configurationLoader;
+        $this->configurationReader = $configurationReader;
 
         parent::__construct('Typhoon', 'DEV');
 
@@ -36,15 +36,15 @@ class Application extends SymfonyApplication
     }
 
     /**
-     * @return ConfigurationLoader
+     * @return ConfigurationReader
      */
-    public function configurationLoader()
+    public function configurationReader()
     {
-        $this->typhoon->configurationLoader(func_get_args());
+        $this->typhoon->configurationReader(func_get_args());
 
-        return $this->configurationLoader;
+        return $this->configurationReader;
     }
 
-    private $configurationLoader;
+    private $configurationReader;
     private $typhoon;
 }

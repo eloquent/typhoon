@@ -28,6 +28,13 @@ class Configuration
         $useNativeCallable
     ) {
         $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
+
+        if (count($sourcePaths) < 1) {
+            throw new Exception\InvalidConfigurationException(
+                "'sourcePaths' must not be empty."
+            );
+        }
+
         $this->outputPath = $outputPath;
         $this->sourcePaths = $sourcePaths;
         $this->loaderPaths = $loaderPaths;

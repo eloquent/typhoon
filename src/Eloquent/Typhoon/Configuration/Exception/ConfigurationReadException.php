@@ -31,7 +31,7 @@ final class ConfigurationReadException extends RuntimeException
         parent::__construct(
             sprintf(
                 "Unable to read configuration from '%s'.",
-                $this->path
+                $this->path()
             ),
             0,
             $previous

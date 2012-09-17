@@ -16,12 +16,12 @@
         "eloquent/asplode": "*",
         "eloquent/blox": "*",
         "eloquent/cosmos": "*",
+        "eloquent/enumeration": "*",
         "eloquent/typhax": "*",
         "icecave/isolator": "*",
         "icecave/pasta-ast": "dev-master@dev",
         "icecave/rasta": "dev-master@dev",
         "icecave/visita": "*",
-        "justinrainbow/json-schema": "*",
         "symfony/console": "*"
     },
     "require-dev": {

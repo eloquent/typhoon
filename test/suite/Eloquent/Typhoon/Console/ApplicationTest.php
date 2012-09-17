@@ -20,19 +20,19 @@ class ApplicationTest extends MultiGenerationTestCase
     {
         parent::setUp();
 
-        $this->_configurationLoader = Phake::mock(
-            'Eloquent\Typhoon\Configuration\ConfigurationLoader'
+        $this->_configurationReader = Phake::mock(
+            'Eloquent\Typhoon\Configuration\ConfigurationReader'
         );
         $this->_application = new Application(
-            $this->_configurationLoader
+            $this->_configurationReader
         );
     }
 
     public function testConstructor()
     {
         $this->assertSame(
-            $this->_configurationLoader,
-            $this->_application->configurationLoader()
+            $this->_configurationReader,
+            $this->_application->configurationReader()
         );
         $this->assertSame('Typhoon', $this->_application->getName());
         $this->assertSame('DEV', $this->_application->getVersion());
@@ -47,8 +47,8 @@ class ApplicationTest extends MultiGenerationTestCase
         $application = new Application;
 
         $this->assertInstanceOf(
-            'Eloquent\Typhoon\Configuration\ConfigurationLoader',
-            $this->_application->configurationLoader()
+            'Eloquent\Typhoon\Configuration\ConfigurationReader',
+            $this->_application->configurationReader()
         );
     }
 }

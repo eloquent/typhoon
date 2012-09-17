@@ -1,5 +1,5 @@
 {
-    "hash": "4e5036684e2590fc3a38e67ea77affd6",
+    "hash": "b662e50c9858e302d18e96ac22a7d3dd",
     "packages": [
         {
             "package": "eloquent/asplode",
@@ -15,7 +15,7 @@
         },
         {
             "package": "eloquent/enumeration",
-            "version": "2.1.2"
+            "version": "3.0.1"
         },
         {
             "package": "eloquent/typhax",
@@ -28,8 +28,8 @@
         {
             "package": "icecave/pasta-ast",
             "version": "dev-master",
-            "source-reference": "e76e2336492c3fc82050a8fcfeaa7c12b6666351",
-            "commit-date": "1346496581"
+            "source-reference": "618ef103a64e138d2e52720b440f885f742a354d",
+            "commit-date": "1347876041"
         },
         {
             "package": "icecave/rasta",
@@ -40,10 +40,6 @@
         {
             "package": "icecave/visita",
             "version": "0.1.0"
-        },
-        {
-            "package": "justinrainbow/json-schema",
-            "version": "1.2.1"
         },
         {
             "package": "symfony/console",

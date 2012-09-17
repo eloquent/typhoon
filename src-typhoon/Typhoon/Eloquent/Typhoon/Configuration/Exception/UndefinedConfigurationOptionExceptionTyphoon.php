@@ -2,14 +2,14 @@
 namespace Typhoon\Eloquent\Typhoon\Configuration\Exception;
 
 
-class InvalidConfigurationExceptionTyphoon extends \Typhoon\Validator
+class UndefinedConfigurationOptionExceptionTyphoon extends \Typhoon\Validator
 {
     public function validateConstruct(array $arguments)
     {
         ($argumentCount = \count($arguments));
         if (($argumentCount < 1))
         {
-            throw (new \Typhoon\Exception\MissingArgumentException('reason', 0, 'string'));
+            throw (new \Typhoon\Exception\MissingArgumentException('optionName', 0, 'string'));
         }
         elseif (($argumentCount > 2))
         {
@@ -19,14 +19,14 @@ class InvalidConfigurationExceptionTyphoon extends \Typhoon\Validator
         if ((!\is_string($value)))
         {
             throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
-                'reason',
+                'optionName',
                 0,
                 $arguments[0],
                 'string'
             ));
         }
     }
-    public function reason(array $arguments)
+    public function optionName(array $arguments)
     {
         if ((\count($arguments) > 0))
         {

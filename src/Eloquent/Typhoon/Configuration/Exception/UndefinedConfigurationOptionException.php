@@ -12,26 +12,25 @@
 namespace Eloquent\Typhoon\Configuration\Exception;
 
 use Exception;
-use RuntimeException;
 use Typhoon\Typhoon;
 
-final class InvalidConfigurationException extends Exception
+final class UndefinedConfigurationOptionException extends Exception
 {
     /**
-     * @param string $reason
+     * @param string $optionName
      * @param Exception|null $previous
      */
     public function __construct(
-        $reason,
+        $optionName,
         Exception $previous = null
     ) {
         $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
-        $this->reason = $reason;
+        $this->optionName = $optionName;
 
         parent::__construct(
             sprintf(
-                "Invalid configuration. %s",
-                $this->reason()
+                "Undefined configuration option '%s'.",
+                $this->optionName()
             ),
             0,
             $previous
@@ -41,13 +40,13 @@ final class InvalidConfigurationException extends Exception
     /**
      * @return string
      */
-    public function reason()
+    public function optionName()
     {
-        $this->typhoon->reason(func_get_args());
+        $this->typhoon->optionName(func_get_args());
 
-        return $this->reason;
+        return $this->optionName;
     }
 
-    private $reason;
+    private $optionName;
     private $typhoon;
 }
