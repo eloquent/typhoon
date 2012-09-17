@@ -29,4 +29,18 @@ class ConfigurationTest extends MultiGenerationTestCase
         $this->assertSame(array('qux', 'doom'), $configuration->loaderPaths());
         $this->assertTrue($configuration->useNativeCallable());
     }
+
+    public function testConfigurationFailureEmptySourcePaths()
+    {
+        $this->setExpectedException(
+            __NAMESPACE__.'\Exception\InvalidConfigurationException',
+            "Invalid configuration. 'sourcePaths' must not be empty."
+        );
+        new Configuration(
+            'foo',
+            array(),
+            array(),
+            true
+        );
+    }
 }

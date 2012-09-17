@@ -12,7 +12,7 @@
 namespace Eloquent\Typhoon\Configuration;
 
 use Eloquent\Enumeration\Enumeration;
-use Exception;
+use Exception as NativeException;
 
 final class ConfigurationOption extends Enumeration
 {
@@ -25,7 +25,7 @@ final class ConfigurationOption extends Enumeration
      * @param string $className
      * @param string $property
      * @param mixed $value
-     * @param Exception|null $previous
+     * @param NativeException|null $previous
      *
      * @return Exception\UndefinedConfigurationOptionException
      */
@@ -33,7 +33,7 @@ final class ConfigurationOption extends Enumeration
         $className,
         $property,
         $value,
-        Exception $previous = null
+        NativeException $previous = null
     ) {
         return new Exception\UndefinedConfigurationOptionException($value, $previous);
     }
