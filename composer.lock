@@ -1,5 +1,5 @@
 {
-    "hash": "df37de7faa033165676ea0a3f22e422b",
+    "hash": "2a5d3e1b4249200cc8ebed25f3c6dbd7",
     "packages": [
         {
             "package": "eloquent/asplode",
@@ -43,6 +43,10 @@
         },
         {
             "package": "symfony/console",
+            "version": "v2.1.1"
+        },
+        {
+            "package": "symfony/filesystem",
             "version": "v2.1.1"
         }
     ],

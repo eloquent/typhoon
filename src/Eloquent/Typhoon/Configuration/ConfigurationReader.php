@@ -13,6 +13,7 @@ namespace Eloquent\Typhoon\Configuration;
 
 use ErrorException;
 use Icecave\Isolator\Isolator;
+use Symfony\Component\Filesystem\Filesystem;
 use Typhoon\Typhoon;
 
 class ConfigurationReader
@@ -23,6 +24,8 @@ class ConfigurationReader
     public function __construct(Isolator $isolator = null)
     {
         $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
+
+        $this->filesystemHelper = new Filesystem;
         $this->isolator = Isolator::get($isolator);
     }
 
@@ -38,11 +41,10 @@ class ConfigurationReader
             $path = $this->isolator->getcwd();
         }
 
-        $data = array_merge(
+        $data = $this->finalizeData(array_merge(
             $this->readComposer($path),
             $this->readTyphoon($path)
-        );
-        $this->finalizeConfigurationData($data);
+        ));
 
         return new Configuration(
             $data['outputPath'],
@@ -89,8 +91,6 @@ class ConfigurationReader
             return $typhoonData;
         }
 
-        $typhoonData['sourcePaths'] = array();
-
         if (
             array_key_exists('autoload', $data) &&
             is_array($data['autoload'])
@@ -103,10 +103,10 @@ class ConfigurationReader
                 foreach ($data['autoload']['psr-0'] as $sourcePath) {
                     if (is_array($sourcePath)) {
                         foreach ($sourcePath as $subSourcePath) {
-                            $typhoonData['sourcePaths'][] = $subSourcePath;
+                            $sourcePaths[] = $subSourcePath;
                         }
                     } else {
-                        $typhoonData['sourcePaths'][] = $sourcePath;
+                        $sourcePaths[] = $sourcePath;
                     }
                 }
             }
@@ -138,6 +138,17 @@ class ConfigurationReader
             is_array($data['include-path'])
         ) {
             foreach ($data['include-path'] as $sourcePath) {
+                $sourcePaths[] = $sourcePath;
+            }
+        }
+
+        $typhoonData['sourcePaths'] = array();
+        foreach ($sourcePaths as $sourcePath) {
+            if (!$this->pathIsDescandantOrEqual(
+                $path,
+                $typhoonData['outputPath'],
+                $sourcePath
+            )) {
                 $typhoonData['sourcePaths'][] = $sourcePath;
             }
         }
@@ -202,11 +213,13 @@ class ConfigurationReader
     }
 
     /**
-     * @param mixed &$data
+     * @param mixed $data
+     *
+     * @return array<string,mixed>
      */
-    protected function finalizeConfigurationData(&$data)
+    protected function finalizeData($data)
     {
-        $this->typhoon->finalizeConfigurationData(func_get_args());
+        $this->typhoon->finalizeData(func_get_args());
 
         if (!is_array($data)) {
             throw new Exception\InvalidConfigurationException(
@@ -276,8 +289,55 @@ class ConfigurationReader
         } else {
             $data['useNativeCallable'] = true;
         }
+
+        return $data;
     }
 
+    /**
+     * @param string $workingPath
+     * @param string $ancestor
+     * @param string $descendant
+     *
+     * @return boolean
+     */
+    protected function pathIsDescandantOrEqual(
+        $workingPath,
+        $ancestor,
+        $descendant
+    ) {
+        $ancestor = $this->normalizePath($workingPath, $ancestor);
+        $descendant = $this->normalizePath($workingPath, $descendant);
+
+        return 0 === strpos($descendant, $ancestor);
+    }
+
+    /**
+     * @param string $workingPath
+     * @param string $path
+     *
+     * @return string
+     */
+    protected function normalizePath($workingPath, $path)
+    {
+        if ($this->filesystemHelper->isAbsolutePath($path)) {
+            $path = $this->filesystemHelper->makePathRelative(
+                $path,
+                $workingPath
+            );
+        }
+
+        return implode(
+            '/',
+            array_filter(
+                explode('/', str_replace('\\', '/', $path)),
+                function ($atom) {
+                    return '.' !== $atom;
+                }
+            )
+        );
+    }
+
+    private $filesystemHelper;
     private $isolator;
     private $typhoon;
 }

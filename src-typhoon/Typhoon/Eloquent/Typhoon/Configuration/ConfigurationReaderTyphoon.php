@@ -121,7 +121,7 @@ class ConfigurationReaderTyphoon extends \Typhoon\Validator
             ));
         }
     }
-    public function finalizeConfigurationData(array $arguments)
+    public function finalizeData(array $arguments)
     {
         ($argumentCount = \count($arguments));
         if (($argumentCount < 1))

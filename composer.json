@@ -22,7 +22,8 @@
         "icecave/pasta-ast": "dev-master@dev",
         "icecave/rasta": "dev-master@dev",
         "icecave/visita": "*",
-        "symfony/console": "*"
+        "symfony/console": "*",
+        "symfony/filesystem": "*"
     },
     "require-dev": {
         "phake/phake": "*",
