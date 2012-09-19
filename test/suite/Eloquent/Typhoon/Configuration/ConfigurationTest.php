@@ -15,22 +15,25 @@ use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 
 class ConfigurationTest extends MultiGenerationTestCase
 {
-    public function testConfiguration()
+    protected function setUp()
     {
-        $configuration = new Configuration(
-            'foo',
-            array('bar', 'baz'),
-            array('qux', 'doom'),
-            true
-        );
+        parent::setUp();
 
-        $this->assertSame('foo', $configuration->outputPath());
-        $this->assertSame(array('bar', 'baz'), $configuration->sourcePaths());
-        $this->assertSame(array('qux', 'doom'), $configuration->loaderPaths());
-        $this->assertTrue($configuration->useNativeCallable());
+        $this->_configuration = new Configuration(
+            'foo',
+            array('bar', 'baz')
+        );
     }
 
-    public function testConfigurationFailureEmptySourcePaths()
+    public function testConstructor()
+    {
+        $this->assertSame('foo', $this->_configuration->outputPath());
+        $this->assertSame(array('bar', 'baz'), $this->_configuration->sourcePaths());
+        $this->assertSame(array('vendor/autoload.php'), $this->_configuration->loaderPaths());
+        $this->assertTrue($this->_configuration->useNativeCallable());
+    }
+
+    public function testConstructorFailureEmptySourcePaths()
     {
         $this->setExpectedException(
             __NAMESPACE__.'\Exception\InvalidConfigurationException',
@@ -38,9 +41,52 @@ class ConfigurationTest extends MultiGenerationTestCase
         );
         new Configuration(
             'foo',
-            array(),
-            array(),
-            true
+            array()
         );
+    }
+
+    public function testOutputPath()
+    {
+        $this->assertSame('foo', $this->_configuration->outputPath());
+
+        $this->_configuration->setOutputPath('qux');
+
+        $this->assertSame('qux', $this->_configuration->outputPath());
+    }
+
+    public function testSourcePaths()
+    {
+        $this->assertSame(array('bar', 'baz'), $this->_configuration->sourcePaths());
+
+        $this->_configuration->setSourcePaths(array('qux'));
+
+        $this->assertSame(array('qux'), $this->_configuration->sourcePaths());
+    }
+
+    public function testSourcePathsFailureEmptySourcePaths()
+    {
+        $this->setExpectedException(
+            __NAMESPACE__.'\Exception\InvalidConfigurationException',
+            "Invalid configuration. 'sourcePaths' must not be empty."
+        );
+        $this->_configuration->setSourcePaths(array());
+    }
+
+    public function testLoaderPaths()
+    {
+        $this->assertSame(array('vendor/autoload.php'), $this->_configuration->loaderPaths());
+
+        $this->_configuration->setLoaderPaths(array('qux'));
+
+        $this->assertSame(array('qux'), $this->_configuration->loaderPaths());
+    }
+
+    public function testUseNativeCallable()
+    {
+        $this->assertTrue($this->_configuration->useNativeCallable());
+
+        $this->_configuration->setUseNativeCallable(false);
+
+        $this->assertFalse($this->_configuration->useNativeCallable());
     }
 }

@@ -18,27 +18,27 @@ class Configuration
     /**
      * @param string $outputPath
      * @param array<string> $sourcePaths
-     * @param array<string> $loaderPaths
-     * @param boolean $useNativeCallable
      */
     public function __construct(
         $outputPath,
-        array $sourcePaths,
-        array $loaderPaths,
-        $useNativeCallable
+        array $sourcePaths
     ) {
         $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
 
-        if (count($sourcePaths) < 1) {
-            throw new Exception\InvalidConfigurationException(
-                "'sourcePaths' must not be empty."
-            );
-        }
+        $this->setOutputPath($outputPath);
+        $this->setSourcePaths($sourcePaths);
+        $this->loaderPaths = array('vendor/autoload.php');
+        $this->useNativeCallable = true;
+    }
+
+    /**
+     * @param string $outputPath
+     */
+    public function setOutputPath($outputPath)
+    {
+        $this->typhoon->setOutputPath(func_get_args());
 
         $this->outputPath = $outputPath;
-        $this->sourcePaths = $sourcePaths;
-        $this->loaderPaths = $loaderPaths;
-        $this->useNativeCallable = $useNativeCallable;
     }
 
     /**
@@ -52,6 +52,21 @@ class Configuration
     }
 
     /**
+     * @param array<string> $sourcePaths
+     */
+    public function setSourcePaths(array $sourcePaths)
+    {
+        $this->typhoon->setSourcePaths(func_get_args());
+
+        if (count($sourcePaths) < 1) {
+            throw new Exception\InvalidConfigurationException(
+                "'sourcePaths' must not be empty."
+            );
+        }
+        $this->sourcePaths = $sourcePaths;
+    }
+
+    /**
      * @return array<string>
      */
     public function sourcePaths()
@@ -62,6 +77,16 @@ class Configuration
     }
 
     /**
+     * @param array<string> $loaderPaths
+     */
+    public function setLoaderPaths(array $loaderPaths)
+    {
+        $this->typhoon->setLoaderPaths(func_get_args());
+
+        $this->loaderPaths = $loaderPaths;
+    }
+
+    /**
      * @return array<string>
      */
     public function loaderPaths()
@@ -69,6 +94,16 @@ class Configuration
         $this->typhoon->loaderPaths(func_get_args());
 
         return $this->loaderPaths;
+    }
+
+    /**
+     * @param boolean $useNativeCallable
+     */
+    public function setUseNativeCallable($useNativeCallable)
+    {
+        $this->typhoon->setUseNativeCallable(func_get_args());
+
+        $this->useNativeCallable = $useNativeCallable;
     }
 
     /**

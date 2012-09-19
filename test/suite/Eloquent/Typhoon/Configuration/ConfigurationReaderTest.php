@@ -15,6 +15,7 @@ use Eloquent\Liberator\Liberator;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use ErrorException;
 use Phake;
+use stdClass;
 
 class ConfigurationReaderTest extends MultiGenerationTestCase
 {
@@ -29,83 +30,149 @@ class ConfigurationReaderTest extends MultiGenerationTestCase
         );
     }
 
-    public function testRead()
+    public function testReadWithTyphoon()
     {
-        $composerData = array(
-            'outputPath' => 'foo',
-            'loaderPaths' => array('qux', 'doom'),
-        );
-        Phake::when($this->_reader)
-            ->readComposer(Phake::anyParameters())
-            ->thenReturn($composerData)
-        ;
-        $typhoonData = array(
-            'sourcePaths' => array('bar', 'baz'),
-            'useNativeCallable' => false,
-        );
+        $configuration = Phake::mock(__NAMESPACE__.'\Configuration');
         Phake::when($this->_reader)
             ->readTyphoon(Phake::anyParameters())
-            ->thenReturn($typhoonData)
+            ->thenReturn($configuration)
         ;
-        $mergedData = array(
-            'outputPath' => 'foo',
-            'loaderPaths' => array('qux', 'doom'),
-            'sourcePaths' => array('bar', 'baz'),
-            'useNativeCallable' => false,
-        );
-        $expected = new Configuration(
-            'foo',
-            array('bar', 'baz'),
-            array('qux', 'doom'),
-            false
-        );
 
-        $this->assertEquals($expected, $this->_reader->read('splat'));
+        $this->assertSame($configuration, $this->_reader->read('foo'));
+        Phake::verify($this->_reader)->readTyphoon('foo');
+        Phake::verify($this->_reader, Phake::never())
+            ->readComposer(Phake::anyParameters())
+        ;
+    }
+
+    public function testReadWithComposer()
+    {
+        Phake::when($this->_reader)
+            ->readTyphoon(Phake::anyParameters())
+            ->thenReturn(null)
+        ;
+        $configuration = Phake::mock(__NAMESPACE__.'\Configuration');
+        Phake::when($this->_reader)
+            ->readComposer(Phake::anyParameters())
+            ->thenReturn($configuration)
+        ;
+
+        $this->assertSame($configuration, $this->_reader->read('foo'));
         Phake::inOrder(
-            Phake::verify($this->_reader)->readComposer('splat'),
-            Phake::verify($this->_reader)->readTyphoon('splat'),
-            Phake::verify($this->_reader)->finalizeData($mergedData)
+            Phake::verify($this->_reader)->readTyphoon('foo'),
+            Phake::verify($this->_reader)->readComposer('foo')
+        );
+    }
+
+    public function testReadWithNeither()
+    {
+        Phake::when($this->_reader)
+            ->readTyphoon(Phake::anyParameters())
+            ->thenReturn(null)
+        ;
+        Phake::when($this->_reader)
+            ->readComposer(Phake::anyParameters())
+            ->thenReturn(null)
+        ;
+
+        $this->assertNull($this->_reader->read('foo'));
+        Phake::inOrder(
+            Phake::verify($this->_reader)->readTyphoon('foo'),
+            Phake::verify($this->_reader)->readComposer('foo')
         );
     }
 
     public function testReadDefaultPath()
     {
-        Phake::when($this->_isolator)->getcwd()->thenReturn('ping');
-        $composerData = array(
-            'sourcePaths' => array('bar', 'baz'),
-            'useNativeCallable' => false,
-        );
-        Phake::when($this->_reader)
-            ->readComposer(Phake::anyParameters())
-            ->thenReturn($composerData)
-        ;
-        $typhoonData = array(
-            'outputPath' => 'foo',
-            'loaderPaths' => array('qux', 'doom'),
-        );
+        Phake::when($this->_isolator)->getcwd()->thenReturn('bar');
         Phake::when($this->_reader)
             ->readTyphoon(Phake::anyParameters())
-            ->thenReturn($typhoonData)
+            ->thenReturn(null)
         ;
-        $mergedData = array(
-            'sourcePaths' => array('bar', 'baz'),
-            'useNativeCallable' => false,
-            'outputPath' => 'foo',
-            'loaderPaths' => array('qux', 'doom'),
+        Phake::when($this->_reader)
+            ->readComposer(Phake::anyParameters())
+            ->thenReturn(null)
+        ;
+
+        $this->assertNull($this->_reader->read());
+        Phake::inOrder(
+            Phake::verify($this->_reader)->readTyphoon('bar'),
+            Phake::verify($this->_reader)->readComposer('bar')
         );
+    }
+
+    public function testReadTyphoon()
+    {
+        Phake::when($this->_isolator)
+            ->is_file(Phake::anyParameters())
+            ->thenReturn(true)
+        ;
+        $data = new stdClass;
+        $data->outputPath = 'foo';
+        $data->sourcePaths = array('bar', 'baz');
+        Phake::when($this->_reader)
+            ->loadJSON(Phake::anyParameters())
+            ->thenReturn($data)
+        ;
         $expected = new Configuration(
             'foo',
-            array('bar', 'baz'),
-            array('qux', 'doom'),
-            false
+            array('bar', 'baz')
         );
 
-        $this->assertEquals($expected, $this->_reader->read());
-        Phake::inOrder(
-            Phake::verify($this->_reader)->readComposer('ping'),
-            Phake::verify($this->_reader)->readTyphoon('ping'),
-            Phake::verify($this->_reader)->finalizeData($mergedData)
+        $this->assertEquals(
+            $expected,
+            Liberator::liberate($this->_reader)->readTyphoon('doom')
         );
+        Phake::inOrder(
+            Phake::verify($this->_isolator)->is_file('doom/typhoon.json'),
+            Phake::verify($this->_reader)->loadJSON('doom/typhoon.json')
+        );
+    }
+
+    public function testReadTyphoonAllProperties()
+    {
+        Phake::when($this->_isolator)
+            ->is_file(Phake::anyParameters())
+            ->thenReturn(true)
+        ;
+        $data = new stdClass;
+        $data->outputPath = 'foo';
+        $data->sourcePaths = array('bar', 'baz');
+        $data->loaderPaths = array('qux', 'doom');
+        $data->useNativeCallable = false;
+        Phake::when($this->_reader)
+            ->loadJSON(Phake::anyParameters())
+            ->thenReturn($data)
+        ;
+        $expected = new Configuration(
+            'foo',
+            array('bar', 'baz')
+        );
+        $expected->setLoaderPaths(array('qux', 'doom'));
+        $expected->setUseNativeCallable(false);
+
+        $this->assertEquals(
+            $expected,
+            Liberator::liberate($this->_reader)->readTyphoon('splat')
+        );
+        Phake::inOrder(
+            Phake::verify($this->_isolator)->is_file('splat/typhoon.json'),
+            Phake::verify($this->_reader)->loadJSON('splat/typhoon.json')
+        );
+    }
+
+    public function testReadTyphoonNotFound()
+    {
+        Phake::when($this->_isolator)
+            ->is_file(Phake::anyParameters())
+            ->thenReturn(false)
+        ;
+
+        $this->assertNull(
+            Liberator::liberate($this->_reader)->readTyphoon('doom')
+        );
+        Phake::verify($this->_isolator)->is_file('doom/typhoon.json');
+        Phake::verify($this->_reader, Phake::never())->loadJSON('doom/typhoon.json');
     }
 
     public function testReadComposer()
@@ -114,21 +181,21 @@ class ConfigurationReaderTest extends MultiGenerationTestCase
             ->is_file(Phake::anyParameters())
             ->thenReturn(true)
         ;
-        $data = array(
-            'extra' => array(
-                'typhoon' => array(
-                    'outputPath' => 'foo',
-                    'sourcePaths' => array('bar', 'baz'),
-                ),
-            ),
-        );
+        $data = new stdClass;
+        $data->extra = new stdClass;
+        $data->extra->typhoon = new stdClass;
+        $data->extra->typhoon->outputPath = 'foo';
+        $data->extra->typhoon->sourcePaths = array('bar', 'baz');
         Phake::when($this->_reader)
             ->loadJSON(Phake::anyParameters())
             ->thenReturn($data)
         ;
-        $expected = $data['extra']['typhoon'];
+        $expected = new Configuration(
+            'foo',
+            array('bar', 'baz')
+        );
 
-        $this->assertSame(
+        $this->assertEquals(
             $expected,
             Liberator::liberate($this->_reader)->readComposer('doom')
         );
@@ -145,8 +212,7 @@ class ConfigurationReaderTest extends MultiGenerationTestCase
             ->thenReturn(false)
         ;
 
-        $this->assertSame(
-            array(),
+        $this->assertNull(
             Liberator::liberate($this->_reader)->readComposer('doom')
         );
         Phake::verify($this->_isolator)->is_file('doom/composer.json');
@@ -159,14 +225,13 @@ class ConfigurationReaderTest extends MultiGenerationTestCase
             ->is_file(Phake::anyParameters())
             ->thenReturn(true)
         ;
-        $data = array();
+        $data = new stdClass;
         Phake::when($this->_reader)
             ->loadJSON(Phake::anyParameters())
             ->thenReturn($data)
         ;
 
-        $this->assertSame(
-            array(),
+        $this->assertNull(
             Liberator::liberate($this->_reader)->readComposer('doom')
         );
         Phake::inOrder(
@@ -181,30 +246,25 @@ class ConfigurationReaderTest extends MultiGenerationTestCase
             ->is_file(Phake::anyParameters())
             ->thenReturn(true)
         ;
-        $data = array(
-            'autoload' => array(
-                'psr-0' => array(
-                    'Foo' => 'foo',
-                    'Bar' => array('bar', 'baz', 'excludeMe/foo'),
-                    'Baz' => 'excludeMe',
-                ),
-                'classmap' => array('qux', 'excludeMe/bar', 'doom'),
-                'files' => array('excludeMe/baz', 'splat', 'ping'),
-            ),
-            'include-path' => array('pong', 'pang', 'excludeMe'),
-            'extra' => array(
-                'typhoon' => array(
-                    'outputPath' => 'excludeMe',
-                ),
-            ),
-        );
+        $data = new stdClass;
+        $data->autoload = new stdClass;
+        $data->autoload->{'psr-0'} = new stdClass;
+        $data->autoload->{'psr-0'}->Foo = 'foo';
+        $data->autoload->{'psr-0'}->Bar = array('bar', 'baz', 'excludeMe/foo');
+        $data->autoload->{'psr-0'}->Baz = 'excludeMe';
+        $data->autoload->classmap = array('qux', 'excludeMe/bar', 'doom');
+        $data->autoload->files = array('excludeMe/baz', 'splat', 'ping');
+        $data->{'include-path'} = array('pong', 'pang', 'excludeMe');
+        $data->extra = new stdClass;
+        $data->extra->typhoon = new stdClass;
+        $data->extra->typhoon->outputPath = 'excludeMe';
         Phake::when($this->_reader)
             ->loadJSON(Phake::anyParameters())
             ->thenReturn($data)
         ;
-        $expected = array(
-            'outputPath' => 'excludeMe',
-            'sourcePaths' => array(
+        $expected = new Configuration(
+            'excludeMe',
+            array(
                 'foo',
                 'bar',
                 'baz',
@@ -214,10 +274,10 @@ class ConfigurationReaderTest extends MultiGenerationTestCase
                 'ping',
                 'pong',
                 'pang',
-            ),
+            )
         );
 
-        $this->assertSame(
+        $this->assertEquals(
             $expected,
             Liberator::liberate($this->_reader)->readComposer('doom')
         );
@@ -233,11 +293,9 @@ class ConfigurationReaderTest extends MultiGenerationTestCase
             ->is_file(Phake::anyParameters())
             ->thenReturn(true)
         ;
-        $data = array(
-            'extra' => array(
-                'typhoon' => array(),
-            ),
-        );
+        $data = new stdClass;
+        $data->extra = new stdClass;
+        $data->extra->typhoon = new stdClass;
         Phake::when($this->_reader)
             ->loadJSON(Phake::anyParameters())
             ->thenReturn($data)
@@ -250,55 +308,21 @@ class ConfigurationReaderTest extends MultiGenerationTestCase
         Liberator::liberate($this->_reader)->readComposer('doom');
     }
 
-    public function testReadTyphoon()
-    {
-        Phake::when($this->_isolator)
-            ->is_file(Phake::anyParameters())
-            ->thenReturn(true)
-        ;
-        $data = array('foo' => 'bar', 'baz' => 'qux');
-        Phake::when($this->_reader)
-            ->loadJSON(Phake::anyParameters())
-            ->thenReturn($data)
-        ;
-
-        $this->assertSame(
-            $data,
-            Liberator::liberate($this->_reader)->readTyphoon('doom')
-        );
-        Phake::inOrder(
-            Phake::verify($this->_isolator)->is_file('doom/typhoon.json'),
-            Phake::verify($this->_reader)->loadJSON('doom/typhoon.json')
-        );
-    }
-
-    public function testReadTyphoonNotFound()
-    {
-        Phake::when($this->_isolator)
-            ->is_file(Phake::anyParameters())
-            ->thenReturn(false)
-        ;
-
-        $this->assertSame(
-            array(),
-            Liberator::liberate($this->_reader)->readTyphoon('doom')
-        );
-        Phake::verify($this->_isolator)->is_file('doom/typhoon.json');
-        Phake::verify($this->_reader, Phake::never())->loadJSON('doom/typhoon.json');
-    }
-
     public function testLoadJSON()
     {
         Phake::when($this->_reader)
             ->load(Phake::anyParameters())
             ->thenReturn('{"foo": "bar", "baz": "qux"}')
         ;
+        $expected = new stdClass;
+        $expected->foo = 'bar';
+        $expected->baz = 'qux';
 
-        $this->assertSame(
-            array('foo' => 'bar', 'baz' => 'qux'),
-            Liberator::liberate($this->_reader)->loadJSON('bar')
+        $this->assertEquals(
+            $expected,
+            Liberator::liberate($this->_reader)->loadJSON('doom')
         );
-        Phake::verify($this->_reader)->load('bar');
+        Phake::verify($this->_reader)->load('doom');
     }
 
     public function testLoadJSONFailureInvalidJSON()
@@ -342,131 +366,112 @@ class ConfigurationReaderTest extends MultiGenerationTestCase
         Liberator::liberate($this->_reader)->load('bar');
     }
 
-    public function testFinalizeDataDefaults()
-    {
-        $data = array(
-            'outputPath' => 'foo',
-            'sourcePaths' => array('bar', 'baz'),
-        );
-        $expected = array(
-            'outputPath' => 'foo',
-            'sourcePaths' => array('bar', 'baz'),
-            'loaderPaths' => array('vendor/autoload.php'),
-            'useNativeCallable' => true,
-        );
-
-        $this->assertSame(
-            $expected,
-            Liberator::liberate($this->_reader)->finalizeData($data)
-        );
-    }
-
-    public function finalizeDataFailureData()
+    public function validateDataFailureData()
     {
         $data = array();
 
         $data['Wrong type for main entry'] = array(
             __NAMESPACE__.'\Exception\InvalidConfigurationException',
-            "Invalid type for Typhoon configuration data.",
+            "Typhoon configuration data must be an object.",
             'foo',
         );
 
+        $jsonData = new stdClass;
+        $jsonData->sourcePaths = array('bar', 'baz');
+        $jsonData->loaderPaths = array('qux', 'doom');
+        $jsonData->useNativeCallable = false;
         $data['Missing outputPath'] = array(
             __NAMESPACE__.'\Exception\InvalidConfigurationException',
             "Invalid configuration. 'outputPath' is required.",
-            array(
-                'sourcePaths' => array('bar', 'baz'),
-                'loaderPaths' => array('qux', 'doom'),
-                'useNativeCallable' => false,
-            ),
+            $jsonData,
         );
 
+        $jsonData = new stdClass;
+        $jsonData->outputPath = array('foo');
+        $jsonData->sourcePaths = array('bar', 'baz');
+        $jsonData->loaderPaths = array('qux', 'doom');
+        $jsonData->useNativeCallable = false;
         $data['Wrong type for outputPath'] = array(
             __NAMESPACE__.'\Exception\InvalidConfigurationException',
             "Invalid configuration. 'outputPath' must be a string.",
-            array(
-                'outputPath' => array('foo'),
-                'sourcePaths' => array('bar', 'baz'),
-                'loaderPaths' => array('qux', 'doom'),
-                'useNativeCallable' => false,
-            ),
+            $jsonData,
         );
 
+        $jsonData = new stdClass;
+        $jsonData->outputPath = 'foo';
+        $jsonData->loaderPaths = array('qux', 'doom');
+        $jsonData->useNativeCallable = false;
         $data['Missing sourcePaths'] = array(
             __NAMESPACE__.'\Exception\InvalidConfigurationException',
             "Invalid configuration. 'sourcePaths' is required.",
-            array(
-                'outputPath' => 'foo',
-                'loaderPaths' => array('qux', 'doom'),
-                'useNativeCallable' => false,
-            ),
+            $jsonData,
         );
 
+        $jsonData = new stdClass;
+        $jsonData->outputPath = 'foo';
+        $jsonData->sourcePaths = 'bar';
+        $jsonData->loaderPaths = array('qux', 'doom');
+        $jsonData->useNativeCallable = false;
         $data['Wrong type for sourcePaths'] = array(
             __NAMESPACE__.'\Exception\InvalidConfigurationException',
             "Invalid configuration. 'sourcePaths' must be an array.",
-            array(
-                'outputPath' => 'foo',
-                'sourcePaths' => 'bar',
-                'loaderPaths' => array('qux', 'doom'),
-                'useNativeCallable' => false,
-            ),
+            $jsonData,
         );
 
+        $jsonData = new stdClass;
+        $jsonData->outputPath = 'foo';
+        $jsonData->sourcePaths = array('bar', 111);
+        $jsonData->loaderPaths = array('qux', 'doom');
+        $jsonData->useNativeCallable = false;
         $data['Wrong type for sourcePaths entry'] = array(
             __NAMESPACE__.'\Exception\InvalidConfigurationException',
             "Invalid configuration. Entries in 'sourcePaths' must be strings.",
-            array(
-                'outputPath' => 'foo',
-                'sourcePaths' => array('bar', 111),
-                'loaderPaths' => array('qux', 'doom'),
-                'useNativeCallable' => false,
-            ),
+            $jsonData,
         );
 
+        $jsonData = new stdClass;
+        $jsonData->outputPath = 'foo';
+        $jsonData->sourcePaths = array('bar', 'baz');
+        $jsonData->loaderPaths = 'qux';
+        $jsonData->useNativeCallable = false;
         $data['Wrong type for loaderPaths'] = array(
             __NAMESPACE__.'\Exception\InvalidConfigurationException',
             "Invalid configuration. 'loaderPaths' must be an array.",
-            array(
-                'outputPath' => 'foo',
-                'sourcePaths' => array('bar', 'baz'),
-                'loaderPaths' => 'qux',
-                'useNativeCallable' => false,
-            ),
+            $jsonData,
         );
 
+        $jsonData = new stdClass;
+        $jsonData->outputPath = 'foo';
+        $jsonData->sourcePaths = array('bar', 'baz');
+        $jsonData->loaderPaths = array('qux', 111);
+        $jsonData->useNativeCallable = false;
         $data['Wrong type for loaderPaths entry'] = array(
             __NAMESPACE__.'\Exception\InvalidConfigurationException',
             "Invalid configuration. Entries in 'loaderPaths' must be strings.",
-            array(
-                'outputPath' => 'foo',
-                'sourcePaths' => array('bar', 'baz'),
-                'loaderPaths' => array('qux', 111),
-                'useNativeCallable' => false,
-            ),
+            $jsonData,
         );
 
+        $jsonData = new stdClass;
+        $jsonData->outputPath = 'foo';
+        $jsonData->sourcePaths = array('bar', 'baz');
+        $jsonData->loaderPaths = array('qux', 'doom');
+        $jsonData->useNativeCallable = 'splat';
         $data['Wrong type for useNativeCallable'] = array(
             __NAMESPACE__.'\Exception\InvalidConfigurationException',
             "Invalid configuration. 'useNativeCallable' must be a boolean.",
-            array(
-                'outputPath' => 'foo',
-                'sourcePaths' => array('bar', 'baz'),
-                'loaderPaths' => array('qux', 'doom'),
-                'useNativeCallable' => 'foo',
-            ),
+            $jsonData,
         );
 
         return $data;
     }
 
     /**
-     * @dataProvider finalizeDataFailureData
+     * @dataProvider validateDataFailureData
      */
-    public function testFinalizeDataFailure($expected, $expectedMessage, $data)
+    public function testValidateDataFailure($expected, $expectedMessage, $data)
     {
         $this->setExpectedException($expected, $expectedMessage);
-        Liberator::liberate($this->_reader)->finalizeData($data);
+        Liberator::liberate($this->_reader)->validateData($data);
     }
 
     public function pathIsDescandantOrEqualData()

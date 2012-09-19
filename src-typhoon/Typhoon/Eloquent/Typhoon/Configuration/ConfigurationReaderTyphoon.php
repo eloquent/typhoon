@@ -33,6 +33,28 @@ class ConfigurationReaderTyphoon extends \Typhoon\Validator
             }
         }
     }
+    public function readTyphoon(array $arguments)
+    {
+        ($argumentCount = \count($arguments));
+        if (($argumentCount < 1))
+        {
+            throw (new \Typhoon\Exception\MissingArgumentException('path', 0, 'string'));
+        }
+        elseif (($argumentCount > 1))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(1, $arguments[1]));
+        }
+        ($value = $arguments[0]);
+        if ((!\is_string($value)))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+                'path',
+                0,
+                $arguments[0],
+                'string'
+            ));
+        }
+    }
     public function readComposer(array $arguments)
     {
         ($argumentCount = \count($arguments));
@@ -55,26 +77,16 @@ class ConfigurationReaderTyphoon extends \Typhoon\Validator
             ));
         }
     }
-    public function readTyphoon(array $arguments)
+    public function buildConfiguration(array $arguments)
     {
         ($argumentCount = \count($arguments));
         if (($argumentCount < 1))
         {
-            throw (new \Typhoon\Exception\MissingArgumentException('path', 0, 'string'));
+            throw (new \Typhoon\Exception\MissingArgumentException('data', 0, 'mixed'));
         }
         elseif (($argumentCount > 1))
         {
             throw (new \Typhoon\Exception\UnexpectedArgumentException(1, $arguments[1]));
-        }
-        ($value = $arguments[0]);
-        if ((!\is_string($value)))
-        {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
-                'path',
-                0,
-                $arguments[0],
-                'string'
-            ));
         }
     }
     public function loadJSON(array $arguments)
@@ -121,7 +133,7 @@ class ConfigurationReaderTyphoon extends \Typhoon\Validator
             ));
         }
     }
-    public function finalizeData(array $arguments)
+    public function validateData(array $arguments)
     {
         ($argumentCount = \count($arguments));
         if (($argumentCount < 1))
@@ -131,6 +143,92 @@ class ConfigurationReaderTyphoon extends \Typhoon\Validator
         elseif (($argumentCount > 1))
         {
             throw (new \Typhoon\Exception\UnexpectedArgumentException(1, $arguments[1]));
+        }
+    }
+    public function pathIsDescandantOrEqual(array $arguments)
+    {
+        ($argumentCount = \count($arguments));
+        if (($argumentCount < 3))
+        {
+            if (($argumentCount < 1))
+            {
+                throw (new \Typhoon\Exception\MissingArgumentException('workingPath', 0, 'string'));
+            }
+            if (($argumentCount < 2))
+            {
+                throw (new \Typhoon\Exception\MissingArgumentException('ancestor', 1, 'string'));
+            }
+            throw (new \Typhoon\Exception\MissingArgumentException('descendant', 2, 'string'));
+        }
+        elseif (($argumentCount > 3))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(3, $arguments[3]));
+        }
+        ($value = $arguments[0]);
+        if ((!\is_string($value)))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+                'workingPath',
+                0,
+                $arguments[0],
+                'string'
+            ));
+        }
+        ($value = $arguments[1]);
+        if ((!\is_string($value)))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+                'ancestor',
+                1,
+                $arguments[1],
+                'string'
+            ));
+        }
+        ($value = $arguments[2]);
+        if ((!\is_string($value)))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+                'descendant',
+                2,
+                $arguments[2],
+                'string'
+            ));
+        }
+    }
+    public function normalizePath(array $arguments)
+    {
+        ($argumentCount = \count($arguments));
+        if (($argumentCount < 2))
+        {
+            if (($argumentCount < 1))
+            {
+                throw (new \Typhoon\Exception\MissingArgumentException('workingPath', 0, 'string'));
+            }
+            throw (new \Typhoon\Exception\MissingArgumentException('path', 1, 'string'));
+        }
+        elseif (($argumentCount > 2))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(2, $arguments[2]));
+        }
+        ($value = $arguments[0]);
+        if ((!\is_string($value)))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+                'workingPath',
+                0,
+                $arguments[0],
+                'string'
+            ));
+        }
+        ($value = $arguments[1]);
+        if ((!\is_string($value)))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+                'path',
+                1,
+                $arguments[1],
+                'string'
+            ));
         }
     }
 }
