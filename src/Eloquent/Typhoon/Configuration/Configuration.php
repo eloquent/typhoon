@@ -13,7 +13,7 @@ namespace Eloquent\Typhoon\Configuration;
 
 use Typhoon\Typhoon;
 
-class Configuration
+class Configuration extends RuntimeConfiguration
 {
     /**
      * @param string $outputPath
@@ -25,10 +25,11 @@ class Configuration
     ) {
         $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
 
+        parent::__construct();
+
         $this->setOutputPath($outputPath);
         $this->setSourcePaths($sourcePaths);
         $this->loaderPaths = array('vendor/autoload.php');
-        $this->useNativeCallable = true;
     }
 
     /**
@@ -96,29 +97,8 @@ class Configuration
         return $this->loaderPaths;
     }
 
-    /**
-     * @param boolean $useNativeCallable
-     */
-    public function setUseNativeCallable($useNativeCallable)
-    {
-        $this->typhoon->setUseNativeCallable(func_get_args());
-
-        $this->useNativeCallable = $useNativeCallable;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function useNativeCallable()
-    {
-        $this->typhoon->useNativeCallable(func_get_args());
-
-        return $this->useNativeCallable;
-    }
-
     private $outputPath;
     private $sourcePaths;
     private $loaderPaths;
-    private $useNativeCallable;
     private $typhoon;
 }
