@@ -22,6 +22,19 @@ class RuntimeConfigurationTest extends MultiGenerationTestCase
         $this->_configuration = new RuntimeConfiguration;
     }
 
+    public function testConstructor()
+    {
+        $this->assertTrue($this->_configuration->useNativeCallable());
+
+        $configuration = new RuntimeConfiguration(false);
+
+        $this->assertFalse($configuration->useNativeCallable());
+
+        $configuration = new RuntimeConfiguration(true);
+
+        $this->assertTrue($configuration->useNativeCallable());
+    }
+
     public function testUseNativeCallable()
     {
         $this->assertTrue($this->_configuration->useNativeCallable());

@@ -15,10 +15,17 @@ use Typhoon\Typhoon;
 
 class RuntimeConfiguration
 {
-    public function __construct()
+    /**
+     * @param boolean|null $useNativeCallable
+     */
+    public function __construct($useNativeCallable = null)
     {
         $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
-        $this->useNativeCallable = true;
+        if (null === $useNativeCallable) {
+            $useNativeCallable = true;
+        }
+
+        $this->useNativeCallable = $useNativeCallable;
     }
 
     /**
