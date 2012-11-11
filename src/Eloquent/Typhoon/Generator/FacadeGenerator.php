@@ -12,14 +12,23 @@
 namespace Eloquent\Typhoon\Generator;
 
 use Eloquent\Typhoon\Configuration\RuntimeConfiguration;
+use Icecave\Pasta\AST\Expr\Assign;
 use Icecave\Pasta\AST\Expr\Call;
+use Icecave\Pasta\AST\Expr\Constant;
 use Icecave\Pasta\AST\Expr\Literal;
+use Icecave\Pasta\AST\Expr\LogicalNot;
+use Icecave\Pasta\AST\Expr\Member;
 use Icecave\Pasta\AST\Expr\NewOperator;
 use Icecave\Pasta\AST\Expr\QualifiedIdentifier;
+use Icecave\Pasta\AST\Expr\StaticMember;
+use Icecave\Pasta\AST\Expr\StrictNotEquals;
+use Icecave\Pasta\AST\Expr\Subscript;
+use Icecave\Pasta\AST\Expr\Variable;
 use Icecave\Pasta\AST\Func\ArrayTypeHint;
 use Icecave\Pasta\AST\Func\Parameter;
 use Icecave\Pasta\AST\Identifier;
 use Icecave\Pasta\AST\PhpBlock;
+use Icecave\Pasta\AST\Stmt\ExpressionStatement;
 use Icecave\Pasta\AST\Stmt\IfStatement;
 use Icecave\Pasta\AST\Stmt\NamespaceStatement;
 use Icecave\Pasta\AST\Stmt\ReturnStatement;
@@ -157,22 +166,82 @@ class FacadeGenerator
      */
     protected function generateGetMethod()
     {
+        $staticKeyword = new Constant(new Identifier('static'));
+        $classNameIdentifier = new Identifier('className');
+        $classNameVariable = new Variable($classNameIdentifier);
+        $argumentsIdentifier = new Identifier('arguments');
+        $argumentsVariable = new Variable($argumentsIdentifier);
+        $staticInstances = new StaticMember(
+            $staticKeyword,
+            new Variable(new Identifier('instances'))
+        );
+
         $method = new ConcreteMethod(new Identifier('get'), true);
         $method->addParameter(new Parameter(
-            new Identifier('className')
+            $classNameIdentifier
         ));
         $argumentsParameter = new Parameter(
-            new Identifier('arguments'),
+            $argumentsIdentifier,
             new ArrayTypeHint
         );
         $argumentsParameter->setDefaultValue(new Literal(null));
         $method->addParameter($argumentsParameter);
 
+        $dummyModeIf = new IfStatement(
+            new StaticMember(
+                $staticKeyword,
+                new Variable(new Identifier('dummyMode'))
+            )
+        );
         $newDummyCall = new Call(QualifiedIdentifier::fromString('DummyValidator'));
         $newDummy = new NewOperator($newDummyCall);
-        $dummyModeIf = new IfStatement($newDummyCall);
         $dummyModeIf->trueBranch()->add(new ReturnStatement($newDummy));
         $method->statementBlock()->add($dummyModeIf);
+
+        $existsCall = new Call(QualifiedIdentifier::fromString('\array_key_exists'));
+        $existsCall->addMany(array(
+            $classNameVariable,
+            $staticInstances,
+        ));
+        $nonExistantIf = new IfStatement(new LogicalNot($existsCall));
+        $installCall = new Call(new StaticMember(
+            $staticKeyword,
+            new Constant(new Identifier('install'))
+        ));
+        $installCall->add($classNameVariable);
+        $createValidatorCall = new Call(new StaticMember(
+            $staticKeyword,
+            new Constant(new Identifier('createValidator'))
+        ));
+        $createValidatorCall->add($classNameVariable);
+        $installCall->add($createValidatorCall);
+        $nonExistantIf->trueBranch()->add(new ExpressionStatement($installCall));
+        $method->statementBlock()->add($nonExistantIf);
+
+        $validatorVariable = new Variable(new Identifier('validator'));
+        $method->statementBlock()->add(new ExpressionStatement(new Assign(
+            $validatorVariable,
+            new Subscript(
+                $staticInstances,
+                $classNameVariable
+            )
+        )));
+
+        $nonNullArgumentsIf = new IfStatement(new StrictNotEquals(
+            new Literal(null),
+            $argumentsVariable
+        ));
+        $validateConstructCall = new Call(new Member(
+            $validatorVariable,
+            new Constant(new Identifier('validateConstruct'))
+        ));
+        $validateConstructCall->add($argumentsVariable);
+        $nonNullArgumentsIf->trueBranch()->add(new ExpressionStatement(
+            $validateConstructCall
+        ));
+        $method->statementBlock()->add($nonNullArgumentsIf);
+
+        $method->statementBlock()->add(new ReturnStatement($validatorVariable));
 
         return $method;
     }
