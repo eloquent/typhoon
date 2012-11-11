@@ -13,6 +13,7 @@ namespace Eloquent\Typhoon\Generator;
 
 use Eloquent\Typhoon\Configuration\RuntimeConfiguration;
 use Icecave\Pasta\AST\Expr\Call;
+use Icecave\Pasta\AST\Expr\Literal;
 use Icecave\Pasta\AST\Expr\NewOperator;
 use Icecave\Pasta\AST\Expr\QualifiedIdentifier;
 use Icecave\Pasta\AST\Func\ArrayTypeHint;
@@ -164,7 +165,7 @@ class FacadeGenerator
             new Identifier('arguments'),
             new ArrayTypeHint
         );
-        $argumentsParameter->setDefaultValue(null);
+        $argumentsParameter->setDefaultValue(new Literal(null));
         $method->addParameter($argumentsParameter);
 
         $newDummyCall = new Call(QualifiedIdentifier::fromString('DummyValidator'));

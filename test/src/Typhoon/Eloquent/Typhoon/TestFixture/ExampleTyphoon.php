@@ -4,7 +4,7 @@ namespace Typhoon;
 
 class Typhoon
 {
-    public static function get($className, array $arguments = NULL)
+    public static function get($className, array $arguments = null)
     {
         if (DummyValidator())
         {
