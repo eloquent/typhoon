@@ -125,9 +125,8 @@ class FacadeGenerator
         $classDefinition = new ClassDefinition(
             new Identifier($className)
         );
-        $classDefinition->addMany(array(
-            $this->generateGetMethod(),
-        ));
+        $classDefinition->add($this->generateGetMethod());
+        $classDefinition->add($this->generateInstallMethod());
 
         $primaryBlock = new PhpBlock;
         $primaryBlock->add(new NamespaceStatement(
@@ -177,9 +176,7 @@ class FacadeGenerator
         );
 
         $method = new ConcreteMethod(new Identifier('get'), true);
-        $method->addParameter(new Parameter(
-            $classNameIdentifier
-        ));
+        $method->addParameter(new Parameter($classNameIdentifier));
         $argumentsParameter = new Parameter(
             $argumentsIdentifier,
             new ArrayTypeHint
@@ -242,6 +239,34 @@ class FacadeGenerator
         $method->statementBlock()->add($nonNullArgumentsIf);
 
         $method->statementBlock()->add(new ReturnStatement($validatorVariable));
+
+        return $method;
+    }
+
+    /**
+     * @return ConcreteMethod
+     */
+    protected function generateInstallMethod()
+    {
+        $classNameIdentifier = new Identifier('className');
+        $validatorIdentifier = new Identifier('validator');
+
+        $method = new ConcreteMethod(new Identifier('install'), true);
+        $method->addParameter(new Parameter($classNameIdentifier));
+        $method->addParameter(new Parameter($validatorIdentifier));
+
+        $method->statementBlock()->add(new ExpressionStatement(
+            new Assign(
+                new Subscript(
+                    new StaticMember(
+                        new Constant(new Identifier('static')),
+                        new Variable(new Identifier('instances'))
+                    ),
+                    new Variable($classNameIdentifier)
+                ),
+                new Variable($validatorIdentifier)
+            )
+        ));
 
         return $method;
     }

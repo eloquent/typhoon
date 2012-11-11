@@ -21,4 +21,8 @@ class Typhoon
         }
         return $validator;
     }
+    public static function install($className, $validator)
+    {
+        (static::$instances[$className] = $validator);
+    }
 }
