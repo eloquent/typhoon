@@ -33,6 +33,7 @@ use Icecave\Pasta\AST\Stmt\IfStatement;
 use Icecave\Pasta\AST\Stmt\NamespaceStatement;
 use Icecave\Pasta\AST\Stmt\ReturnStatement;
 use Icecave\Pasta\AST\SyntaxTree;
+use Icecave\Pasta\AST\Type\AccessModifier;
 use Icecave\Pasta\AST\Type\ClassDefinition;
 use Icecave\Pasta\AST\Type\ConcreteMethod;
 use Icecave\Rasta\Renderer;
@@ -127,6 +128,9 @@ class FacadeGenerator
         );
         $classDefinition->add($this->generateGetMethod());
         $classDefinition->add($this->generateInstallMethod());
+        $classDefinition->add($this->generateConfigurationMethod(
+            $configuration
+        ));
 
         $primaryBlock = new PhpBlock;
         $primaryBlock->add(new NamespaceStatement(
@@ -266,6 +270,24 @@ class FacadeGenerator
                 ),
                 new Variable($validatorIdentifier)
             )
+        ));
+
+        return $method;
+    }
+
+    /**
+     * @param RuntimeConfiguration $configuration
+     *
+     * @return ConcreteMethod
+     */
+    protected function generateConfigurationMethod(
+        RuntimeConfiguration $configuration
+    ) {
+        $method = new ConcreteMethod(new Identifier('configuration'), true);
+        $method->setAccessModifier(AccessModifier::PROTECTED_());
+
+        $method->statementBlock()->add(new ReturnStatement(
+            $this->configurationGenerator()->generate($configuration)
         ));
 
         return $method;

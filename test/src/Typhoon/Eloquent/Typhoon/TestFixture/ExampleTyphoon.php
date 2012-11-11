@@ -25,4 +25,8 @@ class Typhoon
     {
         (static::$instances[$className] = $validator);
     }
+    protected static function configuration()
+    {
+        return (new \Eloquent\Typhoon\Configuration\RuntimeConfiguration(false));
+    }
 }
