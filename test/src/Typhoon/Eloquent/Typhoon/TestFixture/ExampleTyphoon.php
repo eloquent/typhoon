@@ -27,6 +27,10 @@ class Typhoon
     }
     protected static function configuration()
     {
-        return (new \Eloquent\Typhoon\Configuration\RuntimeConfiguration(false));
+        if ((null === static::$configuration))
+        {
+            (static::$configuration = (new \Eloquent\Typhoon\Configuration\RuntimeConfiguration(false, true)));
+        }
+        return static::$configuration;
     }
 }

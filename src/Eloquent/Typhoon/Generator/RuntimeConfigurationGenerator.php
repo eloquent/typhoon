@@ -41,6 +41,9 @@ class RuntimeConfigurationGenerator
         $newConfigurationCall->add(
             new Literal($configuration->useNativeCallable())
         );
+        $newConfigurationCall->add(
+            new Literal($configuration->runtimeGeneration())
+        );
 
         return new NewOperator($newConfigurationCall);
     }

@@ -21,6 +21,7 @@ use Icecave\Pasta\AST\Expr\Member;
 use Icecave\Pasta\AST\Expr\NewOperator;
 use Icecave\Pasta\AST\Expr\QualifiedIdentifier;
 use Icecave\Pasta\AST\Expr\StaticMember;
+use Icecave\Pasta\AST\Expr\StrictEquals;
 use Icecave\Pasta\AST\Expr\StrictNotEquals;
 use Icecave\Pasta\AST\Expr\Subscript;
 use Icecave\Pasta\AST\Expr\Variable;
@@ -286,8 +287,23 @@ class FacadeGenerator
         $method = new ConcreteMethod(new Identifier('configuration'), true);
         $method->setAccessModifier(AccessModifier::PROTECTED_());
 
-        $method->statementBlock()->add(new ReturnStatement(
+        $staticConfiguration = new StaticMember(
+            new Constant(new Identifier('static')),
+            new Variable(new Identifier('configuration'))
+        );
+
+        $nonExistantIf = new IfStatement(new StrictEquals(
+            new Literal(null),
+            $staticConfiguration
+        ));
+        $nonExistantIf->trueBranch()->add(new ExpressionStatement(new Assign(
+            $staticConfiguration,
             $this->configurationGenerator()->generate($configuration)
+        )));
+        $method->statementBlock()->add($nonExistantIf);
+
+        $method->statementBlock()->add(new ReturnStatement(
+            $staticConfiguration
         ));
 
         return $method;
