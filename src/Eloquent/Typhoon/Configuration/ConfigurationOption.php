@@ -18,6 +18,7 @@ final class ConfigurationOption extends Enumeration
 {
     const LOADER_PATHS = 'loaderPaths';
     const OUTPUT_PATH = 'outputPath';
+    const RUNTIME_GENERATION = 'runtimeGeneration';
     const SOURCE_PATHS = 'sourcePaths';
     const USE_NATIVE_CALLABLE = 'useNativeCallable';
 

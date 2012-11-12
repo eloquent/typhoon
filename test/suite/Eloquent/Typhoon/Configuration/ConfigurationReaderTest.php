@@ -140,6 +140,7 @@ class ConfigurationReaderTest extends MultiGenerationTestCase
         $data->sourcePaths = array('bar', 'baz');
         $data->loaderPaths = array('qux', 'doom');
         $data->useNativeCallable = false;
+        $data->runtimeGeneration = true;
         Phake::when($this->_reader)
             ->loadJSON(Phake::anyParameters())
             ->thenReturn($data)
@@ -150,6 +151,7 @@ class ConfigurationReaderTest extends MultiGenerationTestCase
         );
         $expected->setLoaderPaths(array('qux', 'doom'));
         $expected->setUseNativeCallable(false);
+        $expected->setRuntimeGeneration(true);
 
         $this->assertEquals(
             $expected,
@@ -380,6 +382,7 @@ class ConfigurationReaderTest extends MultiGenerationTestCase
         $jsonData->sourcePaths = array('bar', 'baz');
         $jsonData->loaderPaths = array('qux', 'doom');
         $jsonData->useNativeCallable = false;
+        $jsonData->runtimeGeneration = true;
         $data['Missing outputPath'] = array(
             __NAMESPACE__.'\Exception\InvalidConfigurationException',
             "Invalid configuration. 'outputPath' is required.",
@@ -391,6 +394,7 @@ class ConfigurationReaderTest extends MultiGenerationTestCase
         $jsonData->sourcePaths = array('bar', 'baz');
         $jsonData->loaderPaths = array('qux', 'doom');
         $jsonData->useNativeCallable = false;
+        $jsonData->runtimeGeneration = true;
         $data['Wrong type for outputPath'] = array(
             __NAMESPACE__.'\Exception\InvalidConfigurationException',
             "Invalid configuration. 'outputPath' must be a string.",
@@ -401,6 +405,7 @@ class ConfigurationReaderTest extends MultiGenerationTestCase
         $jsonData->outputPath = 'foo';
         $jsonData->loaderPaths = array('qux', 'doom');
         $jsonData->useNativeCallable = false;
+        $jsonData->runtimeGeneration = true;
         $data['Missing sourcePaths'] = array(
             __NAMESPACE__.'\Exception\InvalidConfigurationException',
             "Invalid configuration. 'sourcePaths' is required.",
@@ -412,6 +417,7 @@ class ConfigurationReaderTest extends MultiGenerationTestCase
         $jsonData->sourcePaths = 'bar';
         $jsonData->loaderPaths = array('qux', 'doom');
         $jsonData->useNativeCallable = false;
+        $jsonData->runtimeGeneration = true;
         $data['Wrong type for sourcePaths'] = array(
             __NAMESPACE__.'\Exception\InvalidConfigurationException',
             "Invalid configuration. 'sourcePaths' must be an array.",
@@ -423,6 +429,7 @@ class ConfigurationReaderTest extends MultiGenerationTestCase
         $jsonData->sourcePaths = array('bar', 111);
         $jsonData->loaderPaths = array('qux', 'doom');
         $jsonData->useNativeCallable = false;
+        $jsonData->runtimeGeneration = true;
         $data['Wrong type for sourcePaths entry'] = array(
             __NAMESPACE__.'\Exception\InvalidConfigurationException',
             "Invalid configuration. Entries in 'sourcePaths' must be strings.",
@@ -434,6 +441,7 @@ class ConfigurationReaderTest extends MultiGenerationTestCase
         $jsonData->sourcePaths = array('bar', 'baz');
         $jsonData->loaderPaths = 'qux';
         $jsonData->useNativeCallable = false;
+        $jsonData->runtimeGeneration = true;
         $data['Wrong type for loaderPaths'] = array(
             __NAMESPACE__.'\Exception\InvalidConfigurationException',
             "Invalid configuration. 'loaderPaths' must be an array.",
@@ -445,6 +453,7 @@ class ConfigurationReaderTest extends MultiGenerationTestCase
         $jsonData->sourcePaths = array('bar', 'baz');
         $jsonData->loaderPaths = array('qux', 111);
         $jsonData->useNativeCallable = false;
+        $jsonData->runtimeGeneration = true;
         $data['Wrong type for loaderPaths entry'] = array(
             __NAMESPACE__.'\Exception\InvalidConfigurationException',
             "Invalid configuration. Entries in 'loaderPaths' must be strings.",
@@ -456,9 +465,22 @@ class ConfigurationReaderTest extends MultiGenerationTestCase
         $jsonData->sourcePaths = array('bar', 'baz');
         $jsonData->loaderPaths = array('qux', 'doom');
         $jsonData->useNativeCallable = 'splat';
+        $jsonData->runtimeGeneration = true;
         $data['Wrong type for useNativeCallable'] = array(
             __NAMESPACE__.'\Exception\InvalidConfigurationException',
             "Invalid configuration. 'useNativeCallable' must be a boolean.",
+            $jsonData,
+        );
+
+        $jsonData = new stdClass;
+        $jsonData->outputPath = 'foo';
+        $jsonData->sourcePaths = array('bar', 'baz');
+        $jsonData->loaderPaths = array('qux', 'doom');
+        $jsonData->useNativeCallable = false;
+        $jsonData->runtimeGeneration = 'splat';
+        $data['Wrong type for runtimeGeneration'] = array(
+            __NAMESPACE__.'\Exception\InvalidConfigurationException',
+            "Invalid configuration. 'runtimeGeneration' must be a boolean.",
             $jsonData,
         );
 
