@@ -33,4 +33,7 @@ class Typhoon
         }
         return static::$configuration;
     }
+    private static $instances = array();
+    private static $dummyMode = false;
+    private static $configuration;
 }

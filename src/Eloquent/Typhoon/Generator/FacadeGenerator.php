@@ -37,6 +37,7 @@ use Icecave\Pasta\AST\SyntaxTree;
 use Icecave\Pasta\AST\Type\AccessModifier;
 use Icecave\Pasta\AST\Type\ClassDefinition;
 use Icecave\Pasta\AST\Type\ConcreteMethod;
+use Icecave\Pasta\AST\Type\Property;
 use Icecave\Rasta\Renderer;
 use Typhoon\Typhoon;
 
@@ -133,6 +134,30 @@ class FacadeGenerator
             $configuration
         ));
 
+        $instancesProperty = new Property(
+            new Identifier('instances'),
+            AccessModifier::PRIVATE_(),
+            true
+        );
+        $instancesProperty->setDefaultValue(
+            new Call(QualifiedIdentifier::fromString('array'))
+        );
+        $classDefinition->add($instancesProperty);
+
+        $dummyModeProperty = new Property(
+            new Identifier('dummyMode'),
+            AccessModifier::PRIVATE_(),
+            true
+        );
+        $dummyModeProperty->setDefaultValue(new Literal(false));
+        $classDefinition->add($dummyModeProperty);
+
+        $classDefinition->add(new Property(
+            new Identifier('configuration'),
+            AccessModifier::PRIVATE_(),
+            true
+        ));
+
         $primaryBlock = new PhpBlock;
         $primaryBlock->add(new NamespaceStatement(
             QualifiedIdentifier::fromString($namespaceName)
@@ -180,7 +205,11 @@ class FacadeGenerator
             new Variable(new Identifier('instances'))
         );
 
-        $method = new ConcreteMethod(new Identifier('get'), true);
+        $method = new ConcreteMethod(
+            new Identifier('get'),
+            AccessModifier::PUBLIC_(),
+            true
+        );
         $method->addParameter(new Parameter($classNameIdentifier));
         $argumentsParameter = new Parameter(
             $argumentsIdentifier,
@@ -256,7 +285,11 @@ class FacadeGenerator
         $classNameIdentifier = new Identifier('className');
         $validatorIdentifier = new Identifier('validator');
 
-        $method = new ConcreteMethod(new Identifier('install'), true);
+        $method = new ConcreteMethod(
+            new Identifier('install'),
+            AccessModifier::PUBLIC_(),
+            true
+        );
         $method->addParameter(new Parameter($classNameIdentifier));
         $method->addParameter(new Parameter($validatorIdentifier));
 
@@ -284,8 +317,11 @@ class FacadeGenerator
     protected function generateConfigurationMethod(
         RuntimeConfiguration $configuration
     ) {
-        $method = new ConcreteMethod(new Identifier('configuration'), true);
-        $method->setAccessModifier(AccessModifier::PROTECTED_());
+        $method = new ConcreteMethod(
+            new Identifier('configuration'),
+            AccessModifier::PROTECTED_(),
+            true
+        );
 
         $staticConfiguration = new StaticMember(
             new Constant(new Identifier('static')),
