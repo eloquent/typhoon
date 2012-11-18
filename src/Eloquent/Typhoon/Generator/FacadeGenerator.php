@@ -12,6 +12,7 @@
 namespace Eloquent\Typhoon\Generator;
 
 use Eloquent\Typhoon\Configuration\RuntimeConfiguration;
+use Icecave\Pasta\AST\Expr\ArrayLiteral;
 use Icecave\Pasta\AST\Expr\Assign;
 use Icecave\Pasta\AST\Expr\Call;
 use Icecave\Pasta\AST\Expr\Constant;
@@ -140,7 +141,7 @@ class FacadeGenerator
             true
         );
         $instancesProperty->setDefaultValue(
-            new Call(QualifiedIdentifier::fromString('array'))
+            new ArrayLiteral
         );
         $classDefinition->add($instancesProperty);
 
