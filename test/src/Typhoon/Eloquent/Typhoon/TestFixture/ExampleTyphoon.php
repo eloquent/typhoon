@@ -33,6 +33,17 @@ class Typhoon
     {
         return static::$runtimeGeneration;
     }
+    public static function createValidator($className)
+    {
+        ($validatorClassName = \sprintf('Typhoon\\%sTyphoon', $className));
+        if ((static::runtimeGeneration() && (!\class_exists($validatorClassName))))
+        {
+            (static::dummyMode = true);
+            static::defineValidator($className);
+            (static::dummyMode = false);
+        }
+        return (new $validatorClassName);
+    }
     protected static function configuration()
     {
         if ((null === static::$configuration))

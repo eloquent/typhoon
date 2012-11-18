@@ -17,6 +17,7 @@ use Icecave\Pasta\AST\Expr\Assign;
 use Icecave\Pasta\AST\Expr\Call;
 use Icecave\Pasta\AST\Expr\Constant;
 use Icecave\Pasta\AST\Expr\Literal;
+use Icecave\Pasta\AST\Expr\LogicalAnd;
 use Icecave\Pasta\AST\Expr\LogicalNot;
 use Icecave\Pasta\AST\Expr\Member;
 use Icecave\Pasta\AST\Expr\NewOperator;
@@ -133,6 +134,7 @@ class FacadeGenerator
         $classDefinition->add($this->generateInstallMethod());
         $classDefinition->add($this->generateSetRuntimeGenerationMethod());
         $classDefinition->add($this->generateRuntimeGenerationMethod());
+        $classDefinition->add($this->generateCreateValidatorMethod());
         $classDefinition->add($this->generateConfigurationMethod(
             $configuration
         ));
@@ -208,13 +210,13 @@ class FacadeGenerator
     {
         $this->typhoon->generateGetMethod(func_get_args());
 
-        $staticKeyword = new Constant(new Identifier('static'));
+        $staticConstant = new Constant(new Identifier('static'));
         $classNameIdentifier = new Identifier('className');
         $classNameVariable = new Variable($classNameIdentifier);
         $argumentsIdentifier = new Identifier('arguments');
         $argumentsVariable = new Variable($argumentsIdentifier);
         $staticInstances = new StaticMember(
-            $staticKeyword,
+            $staticConstant,
             new Variable(new Identifier('instances'))
         );
 
@@ -233,7 +235,7 @@ class FacadeGenerator
 
         $dummyModeIf = new IfStatement(
             new StaticMember(
-                $staticKeyword,
+                $staticConstant,
                 new Variable(new Identifier('dummyMode'))
             )
         );
@@ -249,12 +251,12 @@ class FacadeGenerator
         ));
         $nonExistantIf = new IfStatement(new LogicalNot($existsCall));
         $installCall = new Call(new StaticMember(
-            $staticKeyword,
+            $staticConstant,
             new Constant(new Identifier('install'))
         ));
         $installCall->add($classNameVariable);
         $createValidatorCall = new Call(new StaticMember(
-            $staticKeyword,
+            $staticConstant,
             new Constant(new Identifier('createValidator'))
         ));
         $createValidatorCall->add($classNameVariable);
@@ -372,6 +374,76 @@ class FacadeGenerator
                 new Constant(new Identifier('static')),
                 new Variable(new Identifier('runtimeGeneration'))
             )
+        ));
+
+        return $method;
+    }
+
+    /**
+     * @return ConcreteMethod
+     */
+    protected function generateCreateValidatorMethod()
+    {
+        $this->typhoon->generateCreateValidatorMethod(func_get_args());
+
+        $classNameIdentifier = new Identifier('className');
+        $classNameVariable = new Variable($classNameIdentifier);
+        $validatorClassNameVariable = new Variable(new Identifier('validatorClassName'));
+
+        $method = new ConcreteMethod(
+            new Identifier('createValidator'),
+            AccessModifier::PUBLIC_(),
+            true
+        );
+        $method->addParameter(new Parameter($classNameIdentifier));
+
+        $sprintfCall = new Call(QualifiedIdentifier::fromString('\sprintf'));
+        $sprintfCall->add(new Literal('Typhoon\\%sTyphoon'));
+        $sprintfCall->add($classNameVariable);
+        $method->statementBlock()->add(new ExpressionStatement(new Assign(
+            $validatorClassNameVariable,
+            $sprintfCall
+        )));
+
+        $staticConstant = new Constant(new Identifier('static'));
+        $runtimeGenerationCall = new Call(new StaticMember(
+            $staticConstant,
+            new Constant(new Identifier('runtimeGeneration'))
+        ));
+        $classExistsCall = new Call(QualifiedIdentifier::fromString('\class_exists'));
+        $classExistsCall->add($validatorClassNameVariable);
+        $runtimeGenerationIf = new IfStatement(new LogicalAnd(
+            $runtimeGenerationCall,
+            new LogicalNot($classExistsCall)
+        ));
+        $staticDummyModeVariable = new StaticMember(
+            $staticConstant,
+            new Constant(new Identifier('dummyMode'))
+        );
+        $runtimeGenerationIf->trueBranch()->add(
+            new ExpressionStatement(new Assign(
+                $staticDummyModeVariable,
+                new Literal(true)
+            ))
+        );
+        $defineValidatorCall = new Call(new StaticMember(
+            $staticConstant,
+            new Constant(new Identifier('defineValidator'))
+        ));
+        $defineValidatorCall->add($classNameVariable);
+        $runtimeGenerationIf->trueBranch()->add(
+            new ExpressionStatement($defineValidatorCall)
+        );
+        $runtimeGenerationIf->trueBranch()->add(
+            new ExpressionStatement(new Assign(
+                $staticDummyModeVariable,
+                new Literal(false)
+            ))
+        );
+        $method->statementBlock()->add($runtimeGenerationIf);
+
+        $method->statementBlock()->add(new ReturnStatement(
+            new NewOperator($validatorClassNameVariable)
         ));
 
         return $method;
