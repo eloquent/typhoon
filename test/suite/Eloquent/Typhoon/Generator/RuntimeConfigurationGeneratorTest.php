@@ -32,23 +32,21 @@ class RuntimeConfigurationGeneratorTest extends MultiGenerationTestCase
     {
         $data = array();
 
-        $configuration = new RuntimeConfiguration(true, false);
+        $configuration = new RuntimeConfiguration(true);
         $newConfigurationCall = new Call(QualifiedIdentifier::fromString(
             '\Eloquent\Typhoon\Configuration\RuntimeConfiguration'
         ));
         $newConfigurationCall->add(new Literal(true));
-        $newConfigurationCall->add(new Literal(false));
         $expected = new NewOperator($newConfigurationCall);
-        $data["Use native callable, runtime generation off"] = array($expected, $configuration);
+        $data["Use native callable"] = array($expected, $configuration);
 
-        $configuration = new RuntimeConfiguration(false, true);
+        $configuration = new RuntimeConfiguration(false);
         $newConfigurationCall = new Call(QualifiedIdentifier::fromString(
             '\Eloquent\Typhoon\Configuration\RuntimeConfiguration'
         ));
         $newConfigurationCall->add(new Literal(false));
-        $newConfigurationCall->add(new Literal(true));
         $expected = new NewOperator($newConfigurationCall);
-        $data["Don't use native callable, runtime generation on"] = array($expected, $configuration);
+        $data["Don't use native callable"] = array($expected, $configuration);
 
         return $data;
     }

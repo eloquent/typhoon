@@ -29,7 +29,7 @@ class Typhoon
     {
         if ((null === static::$configuration))
         {
-            (static::$configuration = (new \Eloquent\Typhoon\Configuration\RuntimeConfiguration(false, true)));
+            (static::$configuration = (new \Eloquent\Typhoon\Configuration\RuntimeConfiguration(false)));
         }
         return static::$configuration;
     }

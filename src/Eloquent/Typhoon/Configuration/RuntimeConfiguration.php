@@ -17,22 +17,16 @@ class RuntimeConfiguration
 {
     /**
      * @param boolean|null $useNativeCallable
-     * @param boolean|null $runtimeGeneration
      */
     public function __construct(
-        $useNativeCallable = null,
-        $runtimeGeneration = null
+        $useNativeCallable = null
     ) {
         $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
         if (null === $useNativeCallable) {
             $useNativeCallable = true;
         }
-        if (null === $runtimeGeneration) {
-            $runtimeGeneration = false;
-        }
 
         $this->useNativeCallable = $useNativeCallable;
-        $this->runtimeGeneration = $runtimeGeneration;
     }
 
     /**
@@ -55,27 +49,6 @@ class RuntimeConfiguration
         return $this->useNativeCallable;
     }
 
-    /**
-     * @param boolean $runtimeGeneration
-     */
-    public function setRuntimeGeneration($runtimeGeneration)
-    {
-        $this->typhoon->setRuntimeGeneration(func_get_args());
-
-        $this->runtimeGeneration = $runtimeGeneration;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function runtimeGeneration()
-    {
-        $this->typhoon->runtimeGeneration(func_get_args());
-
-        return $this->runtimeGeneration;
-    }
-
     private $useNativeCallable;
-    private $runtimeGeneration;
     private $typhoon;
 }
