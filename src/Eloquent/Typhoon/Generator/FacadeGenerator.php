@@ -15,6 +15,7 @@ use Eloquent\Typhoon\Configuration\RuntimeConfiguration;
 use Icecave\Pasta\AST\Expr\ArrayLiteral;
 use Icecave\Pasta\AST\Expr\Assign;
 use Icecave\Pasta\AST\Expr\Call;
+use Icecave\Pasta\AST\Expr\Concat;
 use Icecave\Pasta\AST\Expr\Constant;
 use Icecave\Pasta\AST\Expr\Literal;
 use Icecave\Pasta\AST\Expr\LogicalAnd;
@@ -28,6 +29,7 @@ use Icecave\Pasta\AST\Expr\StrictNotEquals;
 use Icecave\Pasta\AST\Expr\Subscript;
 use Icecave\Pasta\AST\Expr\Variable;
 use Icecave\Pasta\AST\Func\ArrayTypeHint;
+use Icecave\Pasta\AST\Func\ObjectTypeHint;
 use Icecave\Pasta\AST\Func\Parameter;
 use Icecave\Pasta\AST\Identifier;
 use Icecave\Pasta\AST\PhpBlock;
@@ -135,6 +137,9 @@ class FacadeGenerator
         $classDefinition->add($this->generateSetRuntimeGenerationMethod());
         $classDefinition->add($this->generateRuntimeGenerationMethod());
         $classDefinition->add($this->generateCreateValidatorMethod());
+        $classDefinition->add($this->generateDefineValidatorMethod(
+            $configuration
+        ));
         $classDefinition->add($this->generateConfigurationMethod(
             $configuration
         ));
@@ -392,17 +397,19 @@ class FacadeGenerator
 
         $method = new ConcreteMethod(
             new Identifier('createValidator'),
-            AccessModifier::PUBLIC_(),
+            AccessModifier::PROTECTED_(),
             true
         );
         $method->addParameter(new Parameter($classNameIdentifier));
 
-        $sprintfCall = new Call(QualifiedIdentifier::fromString('\sprintf'));
-        $sprintfCall->add(new Literal('Typhoon\\%sTyphoon'));
-        $sprintfCall->add($classNameVariable);
+        $validatorClassNameConcatenation = new Concat(
+            new Literal('Typhoon\\'),
+            $classNameVariable
+        );
+        $validatorClassNameConcatenation->add(new Literal('Typhoon'));
         $method->statementBlock()->add(new ExpressionStatement(new Assign(
             $validatorClassNameVariable,
-            $sprintfCall
+            $validatorClassNameConcatenation
         )));
 
         $staticConstant = new Constant(new Identifier('static'));
@@ -445,6 +452,69 @@ class FacadeGenerator
         $method->statementBlock()->add(new ReturnStatement(
             new NewOperator($validatorClassNameVariable)
         ));
+
+        return $method;
+    }
+
+    /**
+     * @param RuntimeConfiguration $configuration
+     *
+     * @return ConcreteMethod
+     */
+    protected function generateDefineValidatorMethod(
+        RuntimeConfiguration $configuration
+    ) {
+        $this->typhoon->generateDefineValidatorMethod(func_get_args());
+
+        $classNameIdentifier = new Identifier('className');
+        $classNameVariable = new Variable($classNameIdentifier);
+        $classGeneratorIdentifier = new Identifier('classGenerator');
+        $classGeneratorVariable = new Variable($classGeneratorIdentifier);
+        $classGeneratorClassIdentifier = QualifiedIdentifier::fromString(
+            '\Eloquent\Typhoon\Generator\ValidatorClassGenerator'
+        );
+
+        $method = new ConcreteMethod(
+            new Identifier('defineValidator'),
+            AccessModifier::PROTECTED_(),
+            true
+        );
+        $method->addParameter(new Parameter($classNameIdentifier));
+        $classGeneratorParameter = new Parameter(
+            $classGeneratorIdentifier,
+            new ObjectTypeHint($classGeneratorClassIdentifier)
+        );
+        $classGeneratorParameter->setDefaultValue(new Literal(null));
+        $method->addParameter($classGeneratorParameter);
+
+        $nullClassGeneratorIf = new IfStatement(new StrictEquals(
+            new Literal(null),
+            $classGeneratorVariable
+        ));
+        $nullClassGeneratorIf->trueBranch()->add(new ExpressionStatement(
+            new Assign(
+                $classGeneratorVariable,
+                new NewOperator($classGeneratorClassIdentifier)
+            )
+        ));
+        $method->statementBlock()->add($nullClassGeneratorIf);
+
+        $evalCall = new Call(QualifiedIdentifier::fromString('\eval'));
+        $generateFromClassCall = new Call(new Member(
+            $classGeneratorVariable,
+            new Constant(new Identifier('generateFromClass'))
+        ));
+        $newReflectorCall = new Call(
+            QualifiedIdentifier::fromString('\ReflectionClass')
+        );
+        $newReflectorCall->add($classNameVariable);
+        $newReflector = new NewOperator($newReflectorCall);
+        $generateFromClassCall->add($newReflector);
+        $evalCall->add(new Concat(
+            new Literal('?>'),
+            $generateFromClassCall
+        ));
+        $method->statementBlock()->add(new ExpressionStatement($evalCall));
 
         return $method;
     }

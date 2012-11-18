@@ -33,9 +33,9 @@ class Typhoon
     {
         return static::$runtimeGeneration;
     }
-    public static function createValidator($className)
+    protected static function createValidator($className)
     {
-        ($validatorClassName = \sprintf('Typhoon\\%sTyphoon', $className));
+        ($validatorClassName = ('Typhoon\\' . $className . 'Typhoon'));
         if ((static::runtimeGeneration() && (!\class_exists($validatorClassName))))
         {
             (static::dummyMode = true);
@@ -43,6 +43,14 @@ class Typhoon
             (static::dummyMode = false);
         }
         return (new $validatorClassName);
+    }
+    protected static function defineValidator($className, \Eloquent\Typhoon\Generator\ValidatorClassGenerator $classGenerator = null)
+    {
+        if ((null === $classGenerator))
+        {
+            ($classGenerator = (new \Eloquent\Typhoon\Generator\ValidatorClassGenerator));
+        }
+        \eval(('?>' . $classGenerator->generateFromClass((new \ReflectionClass($className)))));
     }
     protected static function configuration()
     {
