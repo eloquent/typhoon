@@ -131,6 +131,8 @@ class FacadeGenerator
         );
         $classDefinition->add($this->generateGetMethod());
         $classDefinition->add($this->generateInstallMethod());
+        $classDefinition->add($this->generateSetRuntimeGenerationMethod());
+        $classDefinition->add($this->generateRuntimeGenerationMethod());
         $classDefinition->add($this->generateConfigurationMethod(
             $configuration
         ));
@@ -152,6 +154,14 @@ class FacadeGenerator
         );
         $dummyModeProperty->setDefaultValue(new Literal(false));
         $classDefinition->add($dummyModeProperty);
+
+        $runtimeGenerationProperty = new Property(
+            new Identifier('runtimeGeneration'),
+            AccessModifier::PRIVATE_(),
+            true
+        );
+        $runtimeGenerationProperty->setDefaultValue(new Literal(false));
+        $classDefinition->add($runtimeGenerationProperty);
 
         $classDefinition->add(new Property(
             new Identifier('configuration'),
@@ -196,6 +206,8 @@ class FacadeGenerator
      */
     protected function generateGetMethod()
     {
+        $this->typhoon->generateGetMethod(func_get_args());
+
         $staticKeyword = new Constant(new Identifier('static'));
         $classNameIdentifier = new Identifier('className');
         $classNameVariable = new Variable($classNameIdentifier);
@@ -283,6 +295,8 @@ class FacadeGenerator
      */
     protected function generateInstallMethod()
     {
+        $this->typhoon->generateInstallMethod(func_get_args());
+
         $classNameIdentifier = new Identifier('className');
         $validatorIdentifier = new Identifier('validator');
 
@@ -311,6 +325,59 @@ class FacadeGenerator
     }
 
     /**
+     * @return ConcreteMethod
+     */
+    protected function generateSetRuntimeGenerationMethod()
+    {
+        $this->typhoon->generateSetRuntimeGenerationMethod(func_get_args());
+
+        $runtimeGenerationIdentifier = new Identifier('runtimeGeneration');
+        $runtimeGenerationVariable = new Variable($runtimeGenerationIdentifier);
+
+        $method = new ConcreteMethod(
+            new Identifier('setRuntimeGeneration'),
+            AccessModifier::PUBLIC_(),
+            true
+        );
+        $method->addParameter(new Parameter($runtimeGenerationIdentifier));
+
+        $method->statementBlock()->add(new ExpressionStatement(
+            new Assign(
+                new StaticMember(
+                    new Constant(new Identifier('static')),
+                    $runtimeGenerationVariable
+                ),
+                $runtimeGenerationVariable
+            )
+        ));
+
+        return $method;
+    }
+
+    /**
+     * @return ConcreteMethod
+     */
+    protected function generateRuntimeGenerationMethod()
+    {
+        $this->typhoon->generateRuntimeGenerationMethod(func_get_args());
+
+        $method = new ConcreteMethod(
+            new Identifier('runtimeGeneration'),
+            AccessModifier::PUBLIC_(),
+            true
+        );
+
+        $method->statementBlock()->add(new ReturnStatement(
+            new StaticMember(
+                new Constant(new Identifier('static')),
+                new Variable(new Identifier('runtimeGeneration'))
+            )
+        ));
+
+        return $method;
+    }
+
+    /**
      * @param RuntimeConfiguration $configuration
      *
      * @return ConcreteMethod
@@ -318,6 +385,8 @@ class FacadeGenerator
     protected function generateConfigurationMethod(
         RuntimeConfiguration $configuration
     ) {
+        $this->typhoon->generateConfigurationMethod(func_get_args());
+
         $method = new ConcreteMethod(
             new Identifier('configuration'),
             AccessModifier::PROTECTED_(),

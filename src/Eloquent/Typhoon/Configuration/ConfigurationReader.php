@@ -196,9 +196,6 @@ class ConfigurationReader
         if (property_exists($data, 'useNativeCallable')) {
             $configuration->setUseNativeCallable($data->useNativeCallable);
         }
-        if (property_exists($data, 'runtimeGeneration')) {
-            $configuration->setRuntimeGeneration($data->runtimeGeneration);
-        }
 
         return $configuration;
     }
@@ -307,15 +304,6 @@ class ConfigurationReader
             if (!is_bool($data->useNativeCallable)) {
                 throw new Exception\InvalidConfigurationException(
                     "'useNativeCallable' must be a boolean."
-                );
-            }
-        }
-
-        // runtimeGeneration
-        if (property_exists($data, 'runtimeGeneration')) {
-            if (!is_bool($data->runtimeGeneration)) {
-                throw new Exception\InvalidConfigurationException(
-                    "'runtimeGeneration' must be a boolean."
                 );
             }
         }

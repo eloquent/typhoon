@@ -154,6 +154,20 @@ class FacadeGeneratorTyphoon extends \Typhoon\Validator
             throw (new \Typhoon\Exception\UnexpectedArgumentException(0, $arguments[0]));
         }
     }
+    public function generateSetRuntimeGenerationMethod(array $arguments)
+    {
+        if ((\count($arguments) > 0))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(0, $arguments[0]));
+        }
+    }
+    public function generateRuntimeGenerationMethod(array $arguments)
+    {
+        if ((\count($arguments) > 0))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(0, $arguments[0]));
+        }
+    }
     public function generateConfigurationMethod(array $arguments)
     {
         ($argumentCount = \count($arguments));

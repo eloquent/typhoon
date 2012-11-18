@@ -25,6 +25,14 @@ class Typhoon
     {
         (static::$instances[$className] = $validator);
     }
+    public static function setRuntimeGeneration($runtimeGeneration)
+    {
+        (static::$runtimeGeneration = $runtimeGeneration);
+    }
+    public static function runtimeGeneration()
+    {
+        return static::$runtimeGeneration;
+    }
     protected static function configuration()
     {
         if ((null === static::$configuration))
@@ -35,5 +43,6 @@ class Typhoon
     }
     private static $instances = array();
     private static $dummyMode = false;
+    private static $runtimeGeneration = false;
     private static $configuration;
 }

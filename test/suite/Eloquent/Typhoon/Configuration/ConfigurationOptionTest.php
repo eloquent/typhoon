@@ -20,7 +20,6 @@ class ConfigurationOptionTest extends MultiGenerationTestCase
         $expected = array(
             'LOADER_PATHS' => ConfigurationOption::LOADER_PATHS(),
             'OUTPUT_PATH' => ConfigurationOption::OUTPUT_PATH(),
-            'RUNTIME_GENERATION' => ConfigurationOption::RUNTIME_GENERATION(),
             'SOURCE_PATHS' => ConfigurationOption::SOURCE_PATHS(),
             'USE_NATIVE_CALLABLE' => ConfigurationOption::USE_NATIVE_CALLABLE(),
         );
