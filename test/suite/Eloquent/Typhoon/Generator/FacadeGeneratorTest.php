@@ -23,18 +23,15 @@ class FacadeGeneratorTest extends MultiGenerationTestCase
         parent::setUp();
 
         $this->_renderer = new Renderer;
-        $this->_configurationGenerator = new RuntimeConfigurationGenerator;
         $this->_generator = Phake::partialMock(
             __NAMESPACE__.'\FacadeGenerator',
-            $this->_renderer,
-            $this->_configurationGenerator
+            $this->_renderer
         );
     }
 
     public function testConstructor()
     {
         $this->assertSame($this->_renderer, $this->_generator->renderer());
-        $this->assertSame($this->_configurationGenerator, $this->_generator->configurationGenerator());
     }
 
     public function testConstructorDefaults()
@@ -45,36 +42,25 @@ class FacadeGeneratorTest extends MultiGenerationTestCase
             'Icecave\Rasta\Renderer',
             $this->_generator->renderer()
         );
-        $this->assertInstanceOf(
-            __NAMESPACE__.'\RuntimeConfigurationGenerator',
-            $this->_generator->configurationGenerator()
-        );
-    }
-
-    public function generateData()
-    {
-        $exampleClassesPath =
-            __DIR__.
-            '/../../../../src/Eloquent/Typhoon/TestFixture/GeneratorExamples/'
-        ;
-
-        $data = array();
-        foreach (scandir($exampleClassesPath) as $item) {
-            if ('.' !== substr($item, 0, 1)) {
-                $className = pathinfo($item, PATHINFO_FILENAME);
-                $data[$className] = array($className);
-            }
-        }
-
-        return $data;
     }
 
     public function testGenerate()
     {
-        $configuration = new RuntimeConfiguration(false);
+        $configuration = new RuntimeConfiguration(true);
         $expected = file_get_contents(
             __DIR__.
             '/../../../../src/Typhoon/Eloquent/Typhoon/TestFixture/ExampleTyphoon.php'
+        );
+
+        $this->assertSame($expected, $this->_generator->generate($configuration));
+    }
+
+    public function testGenerateNoCallable()
+    {
+        $configuration = new RuntimeConfiguration(false);
+        $expected = file_get_contents(
+            __DIR__.
+            '/../../../../src/Typhoon/Eloquent/Typhoon/TestFixture/ExampleTyphoonNoCallable.php'
         );
 
         $this->assertSame($expected, $this->_generator->generate($configuration));

@@ -49,6 +49,7 @@ class Typhoon
         if ((null === $classGenerator))
         {
             ($classGenerator = (new \Eloquent\Typhoon\Generator\ValidatorClassGenerator));
+            $classGenerator->nativeMergeTool()->setUseNativeCallable(false);
         }
         eval(('?>' . $classGenerator->generateFromClass((new \ReflectionClass($className)))));
     }
