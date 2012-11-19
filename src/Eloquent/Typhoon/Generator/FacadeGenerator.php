@@ -40,6 +40,7 @@ use Icecave\Pasta\AST\Stmt\ReturnStatement;
 use Icecave\Pasta\AST\SyntaxTree;
 use Icecave\Pasta\AST\Type\AccessModifier;
 use Icecave\Pasta\AST\Type\ClassDefinition;
+use Icecave\Pasta\AST\Type\ClassModifier;
 use Icecave\Pasta\AST\Type\ConcreteMethod;
 use Icecave\Pasta\AST\Type\Property;
 use Icecave\Rasta\Renderer;
@@ -114,7 +115,8 @@ class FacadeGenerator
         );
 
         $classDefinition = new ClassDefinition(
-            new Identifier($className)
+            new Identifier($className),
+            ClassModifier::ABSTRACT_()
         );
         $classDefinition->add($this->generateGetMethod());
         $classDefinition->add($this->generateInstallMethod());

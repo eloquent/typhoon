@@ -2,7 +2,7 @@
 namespace Typhoon;
 
 
-class Typhoon
+abstract class Typhoon
 {
     public static function get($className, array $arguments = null)
     {
