@@ -38,9 +38,9 @@ class Typhoon
         ($validatorClassName = ('Typhoon\\' . $className . 'Typhoon'));
         if ((static::runtimeGeneration() && (!\class_exists($validatorClassName))))
         {
-            (static::dummyMode = true);
+            (static::$dummyMode = true);
             static::defineValidator($className);
-            (static::dummyMode = false);
+            (static::$dummyMode = false);
         }
         return (new $validatorClassName);
     }
@@ -50,18 +50,13 @@ class Typhoon
         {
             ($classGenerator = (new \Eloquent\Typhoon\Generator\ValidatorClassGenerator));
         }
-        \eval(('?>' . $classGenerator->generateFromClass((new \ReflectionClass($className)))));
+        eval(('?>' . $classGenerator->generateFromClass((new \ReflectionClass($className)))));
     }
     protected static function configuration()
     {
-        if ((null === static::$configuration))
-        {
-            (static::$configuration = (new \Eloquent\Typhoon\Configuration\RuntimeConfiguration(false)));
-        }
-        return static::$configuration;
+        return (new \Eloquent\Typhoon\Configuration\RuntimeConfiguration(false));
     }
     private static $instances = array();
     private static $dummyMode = false;
     private static $runtimeGeneration = false;
-    private static $configuration;
 }

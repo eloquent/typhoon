@@ -170,12 +170,6 @@ class FacadeGenerator
         $runtimeGenerationProperty->setDefaultValue(new Literal(false));
         $classDefinition->add($runtimeGenerationProperty);
 
-        $classDefinition->add(new Property(
-            new Identifier('configuration'),
-            AccessModifier::PRIVATE_(),
-            true
-        ));
-
         $primaryBlock = new PhpBlock;
         $primaryBlock->add(new NamespaceStatement(
             QualifiedIdentifier::fromString($namespaceName)
@@ -425,7 +419,7 @@ class FacadeGenerator
         ));
         $staticDummyModeVariable = new StaticMember(
             $staticConstant,
-            new Constant(new Identifier('dummyMode'))
+            new Variable(new Identifier('dummyMode'))
         );
         $runtimeGenerationIf->trueBranch()->add(
             new ExpressionStatement(new Assign(
@@ -499,7 +493,7 @@ class FacadeGenerator
         ));
         $method->statementBlock()->add($nullClassGeneratorIf);
 
-        $evalCall = new Call(QualifiedIdentifier::fromString('\eval'));
+        $evalCall = new Call(QualifiedIdentifier::fromString('eval'));
         $generateFromClassCall = new Call(new Member(
             $classGeneratorVariable,
             new Constant(new Identifier('generateFromClass'))
@@ -535,23 +529,8 @@ class FacadeGenerator
             true
         );
 
-        $staticConfiguration = new StaticMember(
-            new Constant(new Identifier('static')),
-            new Variable(new Identifier('configuration'))
-        );
-
-        $nonExistantIf = new IfStatement(new StrictEquals(
-            new Literal(null),
-            $staticConfiguration
-        ));
-        $nonExistantIf->trueBranch()->add(new ExpressionStatement(new Assign(
-            $staticConfiguration,
-            $this->configurationGenerator()->generate($configuration)
-        )));
-        $method->statementBlock()->add($nonExistantIf);
-
         $method->statementBlock()->add(new ReturnStatement(
-            $staticConfiguration
+            $this->configurationGenerator()->generate($configuration)
         ));
 
         return $method;
