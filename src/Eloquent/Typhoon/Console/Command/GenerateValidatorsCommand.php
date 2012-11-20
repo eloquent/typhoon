@@ -84,7 +84,7 @@ class GenerateValidatorsCommand extends Command
             'The path in which to create the validator classes.'
         );
         $this->addArgument(
-            'class-path',
+            'source-path',
             InputArgument::REQUIRED | InputArgument::IS_ARRAY,
             'One or more paths containing the source classes.'
         );
@@ -122,18 +122,7 @@ class GenerateValidatorsCommand extends Command
         }
 
         $output->writeln('Generating validator classes...');
-        $this
-            ->generator()
-            ->classGenerator()
-            ->nativeMergeTool()
-            ->setUseNativeCallable(
-                !$input->getOption('no-native-callable')
-            )
-        ;
-        $this->generator()->generate(new Configuration(
-            $input->getArgument('output-path'),
-            $input->getArgument('class-path')
-        ));
+        $this->generator()->generate($this->createConfiguration($input));
 
         $output->writeln('Deploying Typhoon...');
         $this->deploymentManager()->deploy(
@@ -141,6 +130,24 @@ class GenerateValidatorsCommand extends Command
         );
 
         $output->writeln('Done.');
+    }
+
+    /**
+     * @param InputInterface $input
+     *
+     * @return Configuration
+     */
+    protected function createConfiguration(InputInterface $input)
+    {
+        $configuration = new Configuration(
+            $input->getArgument('output-path'),
+            $input->getArgument('source-path')
+        );
+        $configuration->setUseNativeCallable(
+            !$input->getOption('no-native-callable')
+        );
+
+        return $configuration;
     }
 
     private $generator;

@@ -73,6 +73,7 @@ class ProjectValidatorGenerator
             $namespaceName = null;
             $className = null;
             $source = $this->classGenerator()->generate(
+                $configuration,
                 $classDefinition,
                 $namespaceName,
                 $className

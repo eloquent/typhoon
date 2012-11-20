@@ -56,6 +56,13 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
 
     public function testGenerate()
     {
+        $configuration = new Configuration(
+            'foo',
+            array(
+                'bar',
+                'baz',
+            )
+        );
         $classDefinitionA = Phake::mock('Eloquent\Typhoon\ClassMapper\ClassDefinition');
         $classDefinitionB = Phake::mock('Eloquent\Typhoon\ClassMapper\ClassDefinition');
         $classMap = array(
@@ -72,6 +79,7 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
         ;
         Phake::when($this->_classGenerator)
             ->generate(
+                $this->identicalTo($configuration),
                 $this->identicalTo($classDefinitionA),
                 Phake::setReference('Namespace\Name\A'),
                 Phake::setReference('Class_Name_A')
@@ -80,6 +88,7 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
         ;
         Phake::when($this->_classGenerator)
             ->generate(
+                $this->identicalTo($configuration),
                 $this->identicalTo($classDefinitionB),
                 Phake::setReference('Namespace\Name\B'),
                 Phake::setReference('Class_Name_B')
@@ -91,18 +100,12 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
             ->thenReturn(true)
             ->thenReturn(false)
         ;
-        $configuration = new Configuration(
-            'foo',
-            array(
-                'bar',
-                'baz',
-            )
-        );
         $this->_generator->generate($configuration);
 
         Phake::inOrder(
             Phake::verify($this->_generator)->buildClassMap(array('bar', 'baz')),
             Phake::verify($this->_classGenerator)->generate(
+                $this->identicalTo($configuration),
                 $this->identicalTo($classDefinitionA),
                 null,
                 null
@@ -113,6 +116,7 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
                 'A source'
             ),
             Phake::verify($this->_classGenerator)->generate(
+                $this->identicalTo($configuration),
                 $this->identicalTo($classDefinitionB),
                 null,
                 null

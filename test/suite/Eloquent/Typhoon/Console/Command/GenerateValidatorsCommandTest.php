@@ -68,7 +68,7 @@ class GenerateValidatorsCommandTest extends MultiGenerationTestCase
             'The path in which to create the validator classes.'
         ));
         $expected->addArgument(new InputArgument(
-            'class-path',
+            'source-path',
             InputArgument::REQUIRED | InputArgument::IS_ARRAY,
             'One or more paths containing the source classes.'
         ));
@@ -102,11 +102,18 @@ class GenerateValidatorsCommandTest extends MultiGenerationTestCase
             false
         );
         Phake::when($input)->getArgument('output-path')->thenReturn('baz');
-        Phake::when($input)->getArgument('class-path')->thenReturn(array(
+        Phake::when($input)->getArgument('source-path')->thenReturn(array(
             'qux',
             'doom',
         ));
         $output = Phake::mock('Symfony\Component\Console\Output\OutputInterface');
+        $expectedConfiguration = new Configuration(
+            'baz',
+            array(
+                'qux',
+                'doom',
+            )
+        );
         Liberator::liberate($this->_command)->execute($input, $output);
 
         Phake::inOrder(
@@ -114,14 +121,7 @@ class GenerateValidatorsCommandTest extends MultiGenerationTestCase
             Phake::verify($this->_isolator)->require('foo'),
             Phake::verify($this->_isolator)->require('bar'),
             Phake::verify($output)->writeln('Generating validator classes...'),
-            Phake::verify($this->_nativeMergeTool)->setUseNativeCallable(true),
-            Phake::verify($this->_generator)->generate(new Configuration(
-                'baz',
-                array(
-                    'qux',
-                    'doom',
-                )
-            )),
+            Phake::verify($this->_generator)->generate($expectedConfiguration),
             Phake::verify($output)->writeln('Deploying Typhoon...'),
             Phake::verify($this->_deploymentManager)->deploy('baz'),
             Phake::verify($output)->writeln('Done.')
@@ -138,12 +138,19 @@ class GenerateValidatorsCommandTest extends MultiGenerationTestCase
             true
         );
         Phake::when($input)->getArgument('output-path')->thenReturn('bar');
-        Phake::when($input)->getArgument('class-path')->thenReturn(array(
+        Phake::when($input)->getArgument('source-path')->thenReturn(array(
             'baz',
         ));
         $output = Phake::mock('Symfony\Component\Console\Output\OutputInterface');
+        $expectedConfiguration = new Configuration(
+            'bar',
+            array(
+                'baz',
+            )
+        );
+        $expectedConfiguration->setUseNativeCallable(false);
         Liberator::liberate($this->_command)->execute($input, $output);
 
-        Phake::verify($this->_nativeMergeTool)->setUseNativeCallable(false);
+        Phake::verify($this->_generator)->generate($expectedConfiguration);
     }
 }

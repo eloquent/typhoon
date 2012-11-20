@@ -49,9 +49,12 @@ abstract class Typhoon
         if ((null === $classGenerator))
         {
             ($classGenerator = (new \Eloquent\Typhoon\Generator\ValidatorClassGenerator));
-            $classGenerator->nativeMergeTool()->setUseNativeCallable(false);
         }
-        eval(('?>' . $classGenerator->generateFromClass((new \ReflectionClass($className)))));
+        eval(('?>' . $classGenerator->generateFromClass(static::configuration(), (new \ReflectionClass($className)))));
+    }
+    protected static function configuration()
+    {
+        return (new \Eloquent\Typhoon\Configuration\RuntimeConfiguration(false));
     }
     private static $instances = array();
     private static $dummyMode = false;

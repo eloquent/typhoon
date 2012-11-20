@@ -18,61 +18,48 @@ class NativeParameterListMergeToolTyphoon extends \Typhoon\Validator
             throw (new \Typhoon\Exception\UnexpectedArgumentException(0, $arguments[0]));
         }
     }
-    public function setUseNativeCallable(array $arguments)
+    public function useNativeCallable(array $arguments)
     {
         ($argumentCount = \count($arguments));
         if (($argumentCount < 1))
         {
-            throw (new \Typhoon\Exception\MissingArgumentException('useNativeCallable', 0, 'boolean'));
+            throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
         }
         elseif (($argumentCount > 1))
         {
             throw (new \Typhoon\Exception\UnexpectedArgumentException(1, $arguments[1]));
         }
-        ($value = $arguments[0]);
-        if ((!\is_bool($value)))
-        {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
-                'useNativeCallable',
-                0,
-                $arguments[0],
-                'boolean'
-            ));
-        }
-    }
-    public function useNativeCallable(array $arguments)
-    {
-        if ((\count($arguments) > 0))
-        {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(0, $arguments[0]));
-        }
     }
     public function merge(array $arguments)
     {
         ($argumentCount = \count($arguments));
-        if (($argumentCount < 3))
+        if (($argumentCount < 4))
         {
             if (($argumentCount < 1))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('functionName', 0, 'string'));
+                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
             }
             if (($argumentCount < 2))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('documentedParameterList', 1, 'mixed'));
+                throw (new \Typhoon\Exception\MissingArgumentException('functionName', 1, 'string'));
             }
-            throw (new \Typhoon\Exception\MissingArgumentException('nativeParameterList', 2, 'mixed'));
+            if (($argumentCount < 3))
+            {
+                throw (new \Typhoon\Exception\MissingArgumentException('documentedParameterList', 2, 'mixed'));
+            }
+            throw (new \Typhoon\Exception\MissingArgumentException('nativeParameterList', 3, 'mixed'));
         }
-        elseif (($argumentCount > 3))
+        elseif (($argumentCount > 4))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(3, $arguments[3]));
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(4, $arguments[4]));
         }
-        ($value = $arguments[0]);
+        ($value = $arguments[1]);
         if ((!\is_string($value)))
         {
             throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
                 'functionName',
-                0,
-                $arguments[0],
+                1,
+                $arguments[1],
                 'string'
             ));
         }
@@ -80,29 +67,33 @@ class NativeParameterListMergeToolTyphoon extends \Typhoon\Validator
     public function mergeParameter(array $arguments)
     {
         ($argumentCount = \count($arguments));
-        if (($argumentCount < 3))
+        if (($argumentCount < 4))
         {
             if (($argumentCount < 1))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('functionName', 0, 'string'));
+                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
             }
             if (($argumentCount < 2))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('documentedParameter', 1, 'mixed'));
+                throw (new \Typhoon\Exception\MissingArgumentException('functionName', 1, 'string'));
             }
-            throw (new \Typhoon\Exception\MissingArgumentException('nativeParameter', 2, 'mixed'));
+            if (($argumentCount < 3))
+            {
+                throw (new \Typhoon\Exception\MissingArgumentException('documentedParameter', 2, 'mixed'));
+            }
+            throw (new \Typhoon\Exception\MissingArgumentException('nativeParameter', 3, 'mixed'));
         }
-        elseif (($argumentCount > 3))
+        elseif (($argumentCount > 4))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(3, $arguments[3]));
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(4, $arguments[4]));
         }
-        ($value = $arguments[0]);
+        ($value = $arguments[1]);
         if ((!\is_string($value)))
         {
             throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
                 'functionName',
-                0,
-                $arguments[0],
+                1,
+                $arguments[1],
                 'string'
             ));
         }
@@ -110,43 +101,47 @@ class NativeParameterListMergeToolTyphoon extends \Typhoon\Validator
     public function mergeType(array $arguments)
     {
         ($argumentCount = \count($arguments));
-        if (($argumentCount < 4))
+        if (($argumentCount < 5))
         {
             if (($argumentCount < 1))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('functionName', 0, 'string'));
+                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
             }
             if (($argumentCount < 2))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('parameterName', 1, 'string'));
+                throw (new \Typhoon\Exception\MissingArgumentException('functionName', 1, 'string'));
             }
             if (($argumentCount < 3))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('documentedType', 2, 'mixed'));
+                throw (new \Typhoon\Exception\MissingArgumentException('parameterName', 2, 'string'));
             }
-            throw (new \Typhoon\Exception\MissingArgumentException('nativeType', 3, 'mixed'));
+            if (($argumentCount < 4))
+            {
+                throw (new \Typhoon\Exception\MissingArgumentException('documentedType', 3, 'mixed'));
+            }
+            throw (new \Typhoon\Exception\MissingArgumentException('nativeType', 4, 'mixed'));
         }
-        elseif (($argumentCount > 4))
+        elseif (($argumentCount > 5))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(4, $arguments[4]));
-        }
-        ($value = $arguments[0]);
-        if ((!\is_string($value)))
-        {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
-                'functionName',
-                0,
-                $arguments[0],
-                'string'
-            ));
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(5, $arguments[5]));
         }
         ($value = $arguments[1]);
         if ((!\is_string($value)))
         {
             throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
-                'parameterName',
+                'functionName',
                 1,
                 $arguments[1],
+                'string'
+            ));
+        }
+        ($value = $arguments[2]);
+        if ((!\is_string($value)))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+                'parameterName',
+                2,
+                $arguments[2],
                 'string'
             ));
         }
@@ -154,27 +149,31 @@ class NativeParameterListMergeToolTyphoon extends \Typhoon\Validator
     public function typeIsCompatible(array $arguments)
     {
         ($argumentCount = \count($arguments));
-        if (($argumentCount < 2))
+        if (($argumentCount < 3))
         {
             if (($argumentCount < 1))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('documentedType', 0, 'mixed'));
+                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
             }
-            throw (new \Typhoon\Exception\MissingArgumentException('nativeType', 1, 'mixed'));
+            if (($argumentCount < 2))
+            {
+                throw (new \Typhoon\Exception\MissingArgumentException('documentedType', 1, 'mixed'));
+            }
+            throw (new \Typhoon\Exception\MissingArgumentException('nativeType', 2, 'mixed'));
         }
-        elseif (($argumentCount > 3))
+        elseif (($argumentCount > 4))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(3, $arguments[3]));
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(4, $arguments[4]));
         }
-        if (($argumentCount > 2))
+        if (($argumentCount > 3))
         {
-            ($value = $arguments[2]);
+            ($value = $arguments[3]);
             if ((!\is_int($value)))
             {
                 throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
                     'depth',
-                    2,
-                    $arguments[2],
+                    3,
+                    $arguments[3],
                     'integer'
                 ));
             }

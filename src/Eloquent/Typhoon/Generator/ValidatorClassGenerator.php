@@ -14,6 +14,7 @@ namespace Eloquent\Typhoon\Generator;
 use Eloquent\Typhax\Resolver\ObjectTypeClassNameResolver;
 use Eloquent\Typhoon\ClassMapper\ClassDefinition;
 use Eloquent\Typhoon\ClassMapper\ClassMapper;
+use Eloquent\Typhoon\Configuration\RuntimeConfiguration;
 use Eloquent\Typhoon\Parameter\ParameterList;
 use Eloquent\Typhoon\Parser\ParameterListParser;
 use Eloquent\Typhoon\Resolver\ParameterListClassNameResolver;
@@ -127,6 +128,7 @@ class ValidatorClassGenerator
     }
 
     /**
+     * @param RuntimeConfiguration $configuration
      * @param ClassDefinition $classDefinition
      * @param string|null &$namespaceName
      * @param string|null &$className
@@ -134,6 +136,7 @@ class ValidatorClassGenerator
      * @return string
      */
     public function generate(
+        RuntimeConfiguration $configuration,
         ClassDefinition $classDefinition,
         &$namespaceName = null,
         &$className = null
@@ -141,6 +144,7 @@ class ValidatorClassGenerator
         $this->typhoon->generate(func_get_args());
 
         return $this->generateSyntaxTree(
+            $configuration,
             $classDefinition,
             $namespaceName,
             $className
@@ -148,6 +152,7 @@ class ValidatorClassGenerator
     }
 
     /**
+     * @param RuntimeConfiguration $configuration
      * @param string $sourceClassName
      * @param string $source
      * @param string|null &$namespaceName
@@ -156,6 +161,7 @@ class ValidatorClassGenerator
      * @return string
      */
     public function generateFromSource(
+        RuntimeConfiguration $configuration,
         $sourceClassName,
         $source,
         &$namespaceName = null,
@@ -164,6 +170,7 @@ class ValidatorClassGenerator
         $this->typhoon->generateFromSource(func_get_args());
 
         return $this->generate(
+            $configuration,
             $this->classMapper()->classBySource($sourceClassName, $source),
             $namespaceName,
             $className
@@ -171,6 +178,7 @@ class ValidatorClassGenerator
     }
 
     /**
+     * @param RuntimeConfiguration $configuration
      * @param string $sourceClassName
      * @param string $path
      * @param string|null &$namespaceName
@@ -179,6 +187,7 @@ class ValidatorClassGenerator
      * @return string
      */
     public function generateFromFile(
+        RuntimeConfiguration $configuration,
         $sourceClassName,
         $path,
         &$namespaceName = null,
@@ -187,6 +196,7 @@ class ValidatorClassGenerator
         $this->typhoon->generateFromFile(func_get_args());
 
         return $this->generateFromSource(
+            $configuration,
             $sourceClassName,
             $this->isolator->file_get_contents(
                 $path
@@ -197,6 +207,7 @@ class ValidatorClassGenerator
     }
 
     /**
+     * @param RuntimeConfiguration $configuration
      * @param ReflectionClass $class
      * @param string|null &$namespaceName
      * @param string|null &$className
@@ -204,6 +215,7 @@ class ValidatorClassGenerator
      * @return string
      */
     public function generateFromClass(
+        RuntimeConfiguration $configuration,
         ReflectionClass $class,
         &$namespaceName = null,
         &$className = null
@@ -211,6 +223,7 @@ class ValidatorClassGenerator
         $this->typhoon->generateFromClass(func_get_args());
 
         return $this->generateFromFile(
+            $configuration,
             $class->getName(),
             $class->getFileName(),
             $namespaceName,
@@ -219,6 +232,7 @@ class ValidatorClassGenerator
     }
 
     /**
+     * @param RuntimeConfiguration $configuration
      * @param ClassDefinition $classDefinition
      * @param string|null &$namespaceName
      * @param string|null &$className
@@ -226,6 +240,7 @@ class ValidatorClassGenerator
      * @return SyntaxTree
      */
     public function generateSyntaxTree(
+        RuntimeConfiguration $configuration,
         ClassDefinition $classDefinition,
         &$namespaceName = null,
         &$className = null
@@ -246,7 +261,7 @@ class ValidatorClassGenerator
         );
         foreach ($this->methods($classDefinition) as $method) {
             $classDefinitionASTNode->add(
-                $this->generateMethod($method, $classDefinition)
+                $this->generateMethod($configuration, $method, $classDefinition)
             );
         }
 
@@ -263,12 +278,14 @@ class ValidatorClassGenerator
     }
 
     /**
+     * @param RuntimeConfiguration $configuration
      * @param ReflectionMethod $method
      * @param ClassDefinition $classDefinition
      *
      * @return ConcreteMethod
      */
     protected function generateMethod(
+        RuntimeConfiguration $configuration,
         ReflectionMethod $method,
         ClassDefinition $classDefinition
     ) {
@@ -284,7 +301,7 @@ class ValidatorClassGenerator
             new ArrayTypeHint
         ));
 
-        $expressions = $this->parameterList($method, $classDefinition)
+        $expressions = $this->parameterList($configuration, $method, $classDefinition)
             ->accept($this->generator())
         ;
         foreach ($expressions as $expression) {
@@ -365,12 +382,14 @@ class ValidatorClassGenerator
     }
 
     /**
+     * @param RuntimeConfiguration $configuration
      * @param ReflectionMethod $method
      * @param ClassDefinition $classDefinition
      *
      * @return ParameterList
      */
     protected function parameterList(
+        RuntimeConfiguration $configuration,
         ReflectionMethod $method,
         ClassDefinition $classDefinition
     ) {
@@ -393,6 +412,7 @@ class ValidatorClassGenerator
         }
 
         return $this->nativeMergeTool()->merge(
+            $configuration,
             $methodName,
             $parameterList
                 ->accept($this->classNameResolver($classDefinition))

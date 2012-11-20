@@ -50,17 +50,23 @@ class FacadeGenerator
 {
     /**
      * @param Renderer|null $renderer
+     * @param RuntimeConfigurationGenerator|null $configurationGenerator
      */
     public function __construct(
-        Renderer $renderer = null
+        Renderer $renderer = null,
+        RuntimeConfigurationGenerator $configurationGenerator = null
     ) {
         $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
 
         if (null === $renderer) {
             $renderer = new Renderer;
         }
+        if (null === $configurationGenerator) {
+            $configurationGenerator = new RuntimeConfigurationGenerator;
+        }
 
         $this->renderer = $renderer;
+        $this->configurationGenerator = $configurationGenerator;
     }
 
     /**
@@ -71,6 +77,16 @@ class FacadeGenerator
         $this->typhoon->renderer(func_get_args());
 
         return $this->renderer;
+    }
+
+    /**
+     * @return RuntimeConfigurationGenerator
+     */
+    public function configurationGenerator()
+    {
+        $this->typhoon->configurationGenerator(func_get_args());
+
+        return $this->configurationGenerator;
     }
 
     /**
@@ -124,6 +140,9 @@ class FacadeGenerator
         $classDefinition->add($this->generateRuntimeGenerationMethod());
         $classDefinition->add($this->generateCreateValidatorMethod());
         $classDefinition->add($this->generateDefineValidatorMethod(
+            $configuration
+        ));
+        $classDefinition->add($this->generateConfigurationMethod(
             $configuration
         ));
 
@@ -474,19 +493,6 @@ class FacadeGenerator
                 new NewOperator($classGeneratorClassIdentifier)
             )
         ));
-        if (!$configuration->useNativeCallable()) {
-            $setUseNativeCallableCall = new Call(new Member(
-                new Call(new Member(
-                    $classGeneratorVariable,
-                    new Constant(new Identifier('nativeMergeTool'))
-                )),
-                new Constant(new Identifier('setUseNativeCallable'))
-            ));
-            $setUseNativeCallableCall->add(new Literal(false));
-            $nullClassGeneratorIf->trueBranch()->add(new ExpressionStatement(
-                $setUseNativeCallableCall
-            ));
-        }
         $method->statementBlock()->add($nullClassGeneratorIf);
 
         $evalCall = new Call(QualifiedIdentifier::fromString('eval'));
@@ -494,6 +500,10 @@ class FacadeGenerator
             $classGeneratorVariable,
             new Constant(new Identifier('generateFromClass'))
         ));
+        $generateFromClassCall->add(new Call(new StaticMember(
+            new Constant(new Identifier('static')),
+            new Constant(new Identifier('configuration'))
+        )));
         $newReflectorCall = new Call(
             QualifiedIdentifier::fromString('\ReflectionClass')
         );
@@ -509,6 +519,30 @@ class FacadeGenerator
         return $method;
     }
 
+    /**
+     * @param RuntimeConfiguration $configuration
+     *
+     * @return ConcreteMethod
+     */
+    protected function generateConfigurationMethod(
+        RuntimeConfiguration $configuration
+    ) {
+        $this->typhoon->generateConfigurationMethod(func_get_args());
+
+        $method = new ConcreteMethod(
+            new Identifier('configuration'),
+            AccessModifier::PROTECTED_(),
+            true
+        );
+
+        $method->statementBlock()->add(new ReturnStatement(
+            $this->configurationGenerator()->generate($configuration)
+        ));
+
+        return $method;
+    }
+
     private $renderer;
+    private $configurationGenerator;
     private $typhoon;
 }

@@ -50,7 +50,11 @@ abstract class Typhoon
         {
             ($classGenerator = (new \Eloquent\Typhoon\Generator\ValidatorClassGenerator));
         }
-        eval(('?>' . $classGenerator->generateFromClass((new \ReflectionClass($className)))));
+        eval(('?>' . $classGenerator->generateFromClass(static::configuration(), (new \ReflectionClass($className)))));
+    }
+    protected static function configuration()
+    {
+        return (new \Eloquent\Typhoon\Configuration\RuntimeConfiguration(true));
     }
     private static $instances = array();
     private static $dummyMode = false;

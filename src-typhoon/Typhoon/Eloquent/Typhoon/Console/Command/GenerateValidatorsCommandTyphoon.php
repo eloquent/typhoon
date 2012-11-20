@@ -49,4 +49,16 @@ class GenerateValidatorsCommandTyphoon extends \Typhoon\Validator
             throw (new \Typhoon\Exception\UnexpectedArgumentException(2, $arguments[2]));
         }
     }
+    public function createConfiguration(array $arguments)
+    {
+        ($argumentCount = \count($arguments));
+        if (($argumentCount < 1))
+        {
+            throw (new \Typhoon\Exception\MissingArgumentException('input', 0, 'mixed'));
+        }
+        elseif (($argumentCount > 1))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(1, $arguments[1]));
+        }
+    }
 }
