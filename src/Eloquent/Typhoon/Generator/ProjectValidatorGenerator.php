@@ -12,6 +12,7 @@
 namespace Eloquent\Typhoon\Generator;
 
 use Eloquent\Typhoon\ClassMapper\ClassMapper;
+use Eloquent\Typhoon\Configuration\Configuration;
 use Icecave\Isolator\Isolator;
 use Typhoon\Typhoon;
 
@@ -61,16 +62,14 @@ class ProjectValidatorGenerator
     }
 
     /**
-     * @param string $outputPath
-     * @param array<string> $classPaths
+     * @param Configuration $configuration
      */
-    public function generate(
-        $outputPath,
-        array $classPaths
-    ) {
+    public function generate(Configuration $configuration)
+    {
         $this->typhoon->generate(func_get_args());
 
-        foreach ($this->buildClassMap($classPaths) as $classDefinition) {
+        $sourcePaths = $configuration->sourcePaths();
+        foreach ($this->buildClassMap($sourcePaths) as $classDefinition) {
             $namespaceName = null;
             $className = null;
             $source = $this->classGenerator()->generate(
@@ -79,10 +78,11 @@ class ProjectValidatorGenerator
                 $className
             );
 
-            $path =
-                $outputPath.'/'.
+            $path = sprintf(
+                '%s/%s',
+                $configuration->outputPath(),
                 $this->PSRPath($namespaceName, $className)
-            ;
+            );
 
             $parentPath = dirname($path);
             if (!$this->isolator->is_dir($parentPath)) {

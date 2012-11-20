@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Console\Command;
 
+use Eloquent\Typhoon\Configuration\Configuration;
 use Eloquent\Typhoon\Deployment\DeploymentManager;
 use Eloquent\Typhoon\Generator\ProjectValidatorGenerator;
 use Icecave\Isolator\Isolator;
@@ -129,10 +130,10 @@ class GenerateValidatorsCommand extends Command
                 !$input->getOption('no-native-callable')
             )
         ;
-        $this->generator()->generate(
+        $this->generator()->generate(new Configuration(
             $input->getArgument('output-path'),
             $input->getArgument('class-path')
-        );
+        ));
 
         $output->writeln('Deploying Typhoon...');
         $this->deploymentManager()->deploy(

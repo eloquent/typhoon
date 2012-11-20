@@ -29,53 +29,13 @@ class ProjectValidatorGeneratorTyphoon extends \Typhoon\Validator
     public function generate(array $arguments)
     {
         ($argumentCount = \count($arguments));
-        if (($argumentCount < 2))
+        if (($argumentCount < 1))
         {
-            if (($argumentCount < 1))
-            {
-                throw (new \Typhoon\Exception\MissingArgumentException('outputPath', 0, 'string'));
-            }
-            throw (new \Typhoon\Exception\MissingArgumentException('classPaths', 1, 'array<string>'));
+            throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
         }
-        elseif (($argumentCount > 2))
+        elseif (($argumentCount > 1))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(2, $arguments[2]));
-        }
-        ($value = $arguments[0]);
-        if ((!\is_string($value)))
-        {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
-                'outputPath',
-                0,
-                $arguments[0],
-                'string'
-            ));
-        }
-        ($value = $arguments[1]);
-        ($check =         function ($value)
-                {
-                    if ((!\is_array($value)))
-                    {
-                        return false;
-                    }
-                    foreach ($value as $key => $subValue)
-                    {
-                        if ((!\is_string($subValue)))
-                        {
-                            return false;
-                        }
-                    }
-                    return true;
-                }
-        );
-        if ((!$check($arguments[1])))
-        {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
-                'classPaths',
-                1,
-                $arguments[1],
-                'array<string>'
-            ));
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(1, $arguments[1]));
         }
     }
     public function buildClassMap(array $arguments)

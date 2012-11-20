@@ -12,6 +12,7 @@
 namespace Eloquent\Typhoon\Console\Command;
 
 use Eloquent\Liberator\Liberator;
+use Eloquent\Typhoon\Configuration\Configuration;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Phake;
 use Symfony\Component\Console\Input\InputArgument;
@@ -114,13 +115,13 @@ class GenerateValidatorsCommandTest extends MultiGenerationTestCase
             Phake::verify($this->_isolator)->require('bar'),
             Phake::verify($output)->writeln('Generating validator classes...'),
             Phake::verify($this->_nativeMergeTool)->setUseNativeCallable(true),
-            Phake::verify($this->_generator)->generate(
+            Phake::verify($this->_generator)->generate(new Configuration(
                 'baz',
                 array(
                     'qux',
                     'doom',
                 )
-            ),
+            )),
             Phake::verify($output)->writeln('Deploying Typhoon...'),
             Phake::verify($this->_deploymentManager)->deploy('baz'),
             Phake::verify($output)->writeln('Done.')

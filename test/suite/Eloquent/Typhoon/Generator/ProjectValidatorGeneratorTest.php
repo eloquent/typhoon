@@ -13,6 +13,7 @@ namespace Eloquent\Typhoon\Generator;
 
 use Eloquent\Liberator\Liberator;
 use Eloquent\Typhoon\ClassMapper\ClassDefinition;
+use Eloquent\Typhoon\Configuration\Configuration;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Phake;
 
@@ -90,13 +91,14 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
             ->thenReturn(true)
             ->thenReturn(false)
         ;
-        $this->_generator->generate(
+        $configuration = new Configuration(
             'foo',
             array(
                 'bar',
                 'baz',
             )
         );
+        $this->_generator->generate($configuration);
 
         Phake::inOrder(
             Phake::verify($this->_generator)->buildClassMap(array('bar', 'baz')),
