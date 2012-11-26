@@ -21,7 +21,7 @@ abstract class MultiGenerationTestCase extends ParameterizedTestCase
     {
         return array(
             array('runtime'),
-            array('pre-generated'),
+            // array('pre-generated'),
         );
     }
 
