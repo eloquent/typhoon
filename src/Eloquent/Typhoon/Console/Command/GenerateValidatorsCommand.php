@@ -76,33 +76,6 @@ class GenerateValidatorsCommand extends Command
         $this->setDescription(
             'Generates Typhoon validator classes for a given directory.'
         );
-
-        $this->addArgument(
-            'output-path',
-            InputArgument::REQUIRED,
-            'The path in which to create the validator classes.'
-        );
-        $this->addArgument(
-            'class-path',
-            InputArgument::REQUIRED | InputArgument::IS_ARRAY,
-            'One or more paths containing the source classes.'
-        );
-
-        $this->addOption(
-            'loader-path',
-            'l',
-            InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
-            'Path to one or more scripts used to load the source classes in the given path.',
-            array(
-                './vendor/autoload.php',
-            )
-        );
-        $this->addOption(
-            'no-native-callable',
-            null,
-            InputOption::VALUE_NONE,
-            "Do not enforce use of the native 'callable' type hint."
-        );
     }
 
     /**
@@ -114,29 +87,22 @@ class GenerateValidatorsCommand extends Command
         $this->typhoon->execute(func_get_args());
 
         $output->setVerbosity(OutputInterface::VERBOSITY_VERBOSE);
+        $configuration = $this->getApplication()->configurationReader()->read(
+            null,
+            true
+        );
 
         $output->writeln('Including loaders...');
-        foreach ($input->getOption('loader-path') as $path){
+        foreach ($configuration->loaderPaths() as $path){
             $this->isolator->require($path);
         }
 
         $output->writeln('Generating validator classes...');
-        $this
-            ->generator()
-            ->classGenerator()
-            ->nativeMergeTool()
-            ->setUseNativeCallable(
-                !$input->getOption('no-native-callable')
-            )
-        ;
-        $this->generator()->generate(
-            $input->getArgument('output-path'),
-            $input->getArgument('class-path')
-        );
+        $this->generator()->generate($configuration);
 
         $output->writeln('Deploying Typhoon...');
         $this->deploymentManager()->deploy(
-            $input->getArgument('output-path')
+            $configuration->outputPath()
         );
 
         $output->writeln('Done.');

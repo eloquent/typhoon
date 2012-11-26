@@ -50,26 +50,17 @@ class ValidatorClassGeneratorTyphoon extends \Typhoon\Validator
     public function generate(array $arguments)
     {
         ($argumentCount = \count($arguments));
-        if (($argumentCount < 1))
+        if (($argumentCount < 2))
         {
-            throw (new \Typhoon\Exception\MissingArgumentException('classDefinition', 0, 'mixed'));
-        }
-        elseif (($argumentCount > 3))
-        {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(3, $arguments[3]));
-        }
-        if (($argumentCount > 1))
-        {
-            ($value = $arguments[1]);
-            if ((!(\is_string($value) || ($value === null))))
+            if (($argumentCount < 1))
             {
-                throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
-                    'namespaceName',
-                    1,
-                    $arguments[1],
-                    'string|null'
-                ));
+                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
             }
+            throw (new \Typhoon\Exception\MissingArgumentException('classDefinition', 1, 'mixed'));
+        }
+        elseif (($argumentCount > 4))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(4, $arguments[4]));
         }
         if (($argumentCount > 2))
         {
@@ -77,9 +68,22 @@ class ValidatorClassGeneratorTyphoon extends \Typhoon\Validator
             if ((!(\is_string($value) || ($value === null))))
             {
                 throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
-                    'className',
+                    'namespaceName',
                     2,
                     $arguments[2],
+                    'string|null'
+                ));
+            }
+        }
+        if (($argumentCount > 3))
+        {
+            ($value = $arguments[3]);
+            if ((!(\is_string($value) || ($value === null))))
+            {
+                throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+                    'className',
+                    3,
+                    $arguments[3],
                     'string|null'
                 ));
             }
@@ -88,50 +92,41 @@ class ValidatorClassGeneratorTyphoon extends \Typhoon\Validator
     public function generateFromSource(array $arguments)
     {
         ($argumentCount = \count($arguments));
-        if (($argumentCount < 2))
+        if (($argumentCount < 3))
         {
             if (($argumentCount < 1))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('sourceClassName', 0, 'string'));
+                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
             }
-            throw (new \Typhoon\Exception\MissingArgumentException('source', 1, 'string'));
+            if (($argumentCount < 2))
+            {
+                throw (new \Typhoon\Exception\MissingArgumentException('sourceClassName', 1, 'string'));
+            }
+            throw (new \Typhoon\Exception\MissingArgumentException('source', 2, 'string'));
         }
-        elseif (($argumentCount > 4))
+        elseif (($argumentCount > 5))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(4, $arguments[4]));
-        }
-        ($value = $arguments[0]);
-        if ((!\is_string($value)))
-        {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
-                'sourceClassName',
-                0,
-                $arguments[0],
-                'string'
-            ));
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(5, $arguments[5]));
         }
         ($value = $arguments[1]);
         if ((!\is_string($value)))
         {
             throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
-                'source',
+                'sourceClassName',
                 1,
                 $arguments[1],
                 'string'
             ));
         }
-        if (($argumentCount > 2))
+        ($value = $arguments[2]);
+        if ((!\is_string($value)))
         {
-            ($value = $arguments[2]);
-            if ((!(\is_string($value) || ($value === null))))
-            {
-                throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
-                    'namespaceName',
-                    2,
-                    $arguments[2],
-                    'string|null'
-                ));
-            }
+            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+                'source',
+                2,
+                $arguments[2],
+                'string'
+            ));
         }
         if (($argumentCount > 3))
         {
@@ -139,9 +134,22 @@ class ValidatorClassGeneratorTyphoon extends \Typhoon\Validator
             if ((!(\is_string($value) || ($value === null))))
             {
                 throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
-                    'className',
+                    'namespaceName',
                     3,
                     $arguments[3],
+                    'string|null'
+                ));
+            }
+        }
+        if (($argumentCount > 4))
+        {
+            ($value = $arguments[4]);
+            if ((!(\is_string($value) || ($value === null))))
+            {
+                throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+                    'className',
+                    4,
+                    $arguments[4],
                     'string|null'
                 ));
             }
@@ -150,37 +158,83 @@ class ValidatorClassGeneratorTyphoon extends \Typhoon\Validator
     public function generateFromFile(array $arguments)
     {
         ($argumentCount = \count($arguments));
-        if (($argumentCount < 2))
+        if (($argumentCount < 3))
         {
             if (($argumentCount < 1))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('sourceClassName', 0, 'string'));
+                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
             }
-            throw (new \Typhoon\Exception\MissingArgumentException('path', 1, 'string'));
+            if (($argumentCount < 2))
+            {
+                throw (new \Typhoon\Exception\MissingArgumentException('sourceClassName', 1, 'string'));
+            }
+            throw (new \Typhoon\Exception\MissingArgumentException('path', 2, 'string'));
         }
-        elseif (($argumentCount > 4))
+        elseif (($argumentCount > 5))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(4, $arguments[4]));
-        }
-        ($value = $arguments[0]);
-        if ((!\is_string($value)))
-        {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
-                'sourceClassName',
-                0,
-                $arguments[0],
-                'string'
-            ));
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(5, $arguments[5]));
         }
         ($value = $arguments[1]);
         if ((!\is_string($value)))
         {
             throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
-                'path',
+                'sourceClassName',
                 1,
                 $arguments[1],
                 'string'
             ));
+        }
+        ($value = $arguments[2]);
+        if ((!\is_string($value)))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+                'path',
+                2,
+                $arguments[2],
+                'string'
+            ));
+        }
+        if (($argumentCount > 3))
+        {
+            ($value = $arguments[3]);
+            if ((!(\is_string($value) || ($value === null))))
+            {
+                throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+                    'namespaceName',
+                    3,
+                    $arguments[3],
+                    'string|null'
+                ));
+            }
+        }
+        if (($argumentCount > 4))
+        {
+            ($value = $arguments[4]);
+            if ((!(\is_string($value) || ($value === null))))
+            {
+                throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+                    'className',
+                    4,
+                    $arguments[4],
+                    'string|null'
+                ));
+            }
+        }
+    }
+    public function generateFromClass(array $arguments)
+    {
+        ($argumentCount = \count($arguments));
+        if (($argumentCount < 2))
+        {
+            if (($argumentCount < 1))
+            {
+                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
+            }
+            throw (new \Typhoon\Exception\MissingArgumentException('class', 1, 'mixed'));
+        }
+        elseif (($argumentCount > 4))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(4, $arguments[4]));
         }
         if (($argumentCount > 2))
         {
@@ -209,67 +263,20 @@ class ValidatorClassGeneratorTyphoon extends \Typhoon\Validator
             }
         }
     }
-    public function generateFromClass(array $arguments)
-    {
-        ($argumentCount = \count($arguments));
-        if (($argumentCount < 1))
-        {
-            throw (new \Typhoon\Exception\MissingArgumentException('class', 0, 'mixed'));
-        }
-        elseif (($argumentCount > 3))
-        {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(3, $arguments[3]));
-        }
-        if (($argumentCount > 1))
-        {
-            ($value = $arguments[1]);
-            if ((!(\is_string($value) || ($value === null))))
-            {
-                throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
-                    'namespaceName',
-                    1,
-                    $arguments[1],
-                    'string|null'
-                ));
-            }
-        }
-        if (($argumentCount > 2))
-        {
-            ($value = $arguments[2]);
-            if ((!(\is_string($value) || ($value === null))))
-            {
-                throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
-                    'className',
-                    2,
-                    $arguments[2],
-                    'string|null'
-                ));
-            }
-        }
-    }
     public function generateSyntaxTree(array $arguments)
     {
         ($argumentCount = \count($arguments));
-        if (($argumentCount < 1))
+        if (($argumentCount < 2))
         {
-            throw (new \Typhoon\Exception\MissingArgumentException('classDefinition', 0, 'mixed'));
-        }
-        elseif (($argumentCount > 3))
-        {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(3, $arguments[3]));
-        }
-        if (($argumentCount > 1))
-        {
-            ($value = $arguments[1]);
-            if ((!(\is_string($value) || ($value === null))))
+            if (($argumentCount < 1))
             {
-                throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
-                    'namespaceName',
-                    1,
-                    $arguments[1],
-                    'string|null'
-                ));
+                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
             }
+            throw (new \Typhoon\Exception\MissingArgumentException('classDefinition', 1, 'mixed'));
+        }
+        elseif (($argumentCount > 4))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(4, $arguments[4]));
         }
         if (($argumentCount > 2))
         {
@@ -277,9 +284,22 @@ class ValidatorClassGeneratorTyphoon extends \Typhoon\Validator
             if ((!(\is_string($value) || ($value === null))))
             {
                 throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
-                    'className',
+                    'namespaceName',
                     2,
                     $arguments[2],
+                    'string|null'
+                ));
+            }
+        }
+        if (($argumentCount > 3))
+        {
+            ($value = $arguments[3]);
+            if ((!(\is_string($value) || ($value === null))))
+            {
+                throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+                    'className',
+                    3,
+                    $arguments[3],
                     'string|null'
                 ));
             }
@@ -288,17 +308,21 @@ class ValidatorClassGeneratorTyphoon extends \Typhoon\Validator
     public function generateMethod(array $arguments)
     {
         ($argumentCount = \count($arguments));
-        if (($argumentCount < 2))
+        if (($argumentCount < 3))
         {
             if (($argumentCount < 1))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('method', 0, 'mixed'));
+                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
             }
-            throw (new \Typhoon\Exception\MissingArgumentException('classDefinition', 1, 'mixed'));
+            if (($argumentCount < 2))
+            {
+                throw (new \Typhoon\Exception\MissingArgumentException('method', 1, 'mixed'));
+            }
+            throw (new \Typhoon\Exception\MissingArgumentException('classDefinition', 2, 'mixed'));
         }
-        elseif (($argumentCount > 2))
+        elseif (($argumentCount > 3))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(2, $arguments[2]));
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(3, $arguments[3]));
         }
     }
     public function methods(array $arguments)
@@ -366,17 +390,21 @@ class ValidatorClassGeneratorTyphoon extends \Typhoon\Validator
     public function parameterList(array $arguments)
     {
         ($argumentCount = \count($arguments));
-        if (($argumentCount < 2))
+        if (($argumentCount < 3))
         {
             if (($argumentCount < 1))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('method', 0, 'mixed'));
+                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
             }
-            throw (new \Typhoon\Exception\MissingArgumentException('classDefinition', 1, 'mixed'));
+            if (($argumentCount < 2))
+            {
+                throw (new \Typhoon\Exception\MissingArgumentException('method', 1, 'mixed'));
+            }
+            throw (new \Typhoon\Exception\MissingArgumentException('classDefinition', 2, 'mixed'));
         }
-        elseif (($argumentCount > 2))
+        elseif (($argumentCount > 3))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(2, $arguments[2]));
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(3, $arguments[3]));
         }
     }
     public function classNameResolver(array $arguments)

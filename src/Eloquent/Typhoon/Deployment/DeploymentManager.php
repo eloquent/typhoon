@@ -45,10 +45,6 @@ class DeploymentManager
             $path.'/Typhoon/TypeInspector.php'
         );
         $this->copyFile(
-            $this->deploySourcePath.'/Typhoon/Typhoon.php',
-            $path.'/Typhoon/Typhoon.php'
-        );
-        $this->copyFile(
             $this->deploySourcePath.'/Typhoon/Validator.php',
             $path.'/Typhoon/Validator.php'
         );

@@ -22,6 +22,7 @@ use Eloquent\Typhax\Type\OrType;
 use Eloquent\Typhax\Type\TraversableType;
 use Eloquent\Typhax\Type\TupleType;
 use Eloquent\Typhax\Type\Type;
+use Eloquent\Typhoon\Configuration\RuntimeConfiguration;
 use Eloquent\Typhoon\Parameter\Parameter;
 use Eloquent\Typhoon\Parameter\ParameterList;
 use Typhoon\Typhoon;
@@ -50,34 +51,28 @@ class NativeParameterListMergeTool
     }
 
     /**
-     * @param boolean $useNativeCallable
-     */
-    public function setUseNativeCallable($useNativeCallable)
-    {
-        $this->typhoon->setUseNativeCallable(func_get_args());
-
-        $this->useNativeCallable = $useNativeCallable;
-    }
-
-    /**
+     * @param RuntimeConfiguration $configuration
+     *
      * @return boolean
      */
-    public function useNativeCallable()
+    public function useNativeCallable(RuntimeConfiguration $configuration)
     {
         $this->typhoon->useNativeCallable(func_get_args());
 
         return
-            $this->useNativeCallable &&
+            $configuration->useNativeCallable() &&
             $this->nativeCallableAvailable()
         ;
     }
 
     /**
+     * @param RuntimeConfiguration $configuration
      * @param string $functionName
      * @param ParameterList $documentedParameterList
      * @param ParameterList $nativeParameterList
      */
     public function merge(
+        RuntimeConfiguration $configuration,
         $functionName,
         ParameterList $documentedParameterList,
         ParameterList $nativeParameterList
@@ -97,6 +92,7 @@ class NativeParameterListMergeTool
             }
 
             $parameters[] = $this->mergeParameter(
+                $configuration,
                 $functionName,
                 $documentedParameters[$index],
                 $nativeParameter
@@ -134,11 +130,13 @@ class NativeParameterListMergeTool
     }
 
     /**
+     * @param RuntimeConfiguration $configuration
      * @param string $functionName
      * @param Parameter $documentedParameter
      * @param Parameter $nativeParameter
      */
     protected function mergeParameter(
+        RuntimeConfiguration $configuration,
         $functionName,
         Parameter $documentedParameter,
         Parameter $nativeParameter
@@ -165,6 +163,7 @@ class NativeParameterListMergeTool
         return new Parameter(
             $documentedParameter->name(),
             $this->mergeType(
+                $configuration,
                 $functionName,
                 $documentedParameter->name(),
                 $documentedParameter->type(),
@@ -177,6 +176,7 @@ class NativeParameterListMergeTool
     }
 
     /**
+     * @param RuntimeConfiguration $configuration
      * @param string $functionName
      * @param string $parameterName
      * @param Type $documentedType
@@ -185,6 +185,7 @@ class NativeParameterListMergeTool
      * @return Type
      */
     protected function mergeType(
+        RuntimeConfiguration $configuration,
         $functionName,
         $parameterName,
         Type $documentedType,
@@ -192,7 +193,11 @@ class NativeParameterListMergeTool
     ) {
         $this->typhoon->mergeType(func_get_args());
 
-        if (!$this->typeIsCompatible($documentedType, $nativeType)) {
+        if (!$this->typeIsCompatible(
+            $configuration,
+            $documentedType,
+            $nativeType
+        )) {
             throw new Exception\DocumentedParameterTypeMismatchException(
                 $functionName,
                 $parameterName,
@@ -212,6 +217,7 @@ class NativeParameterListMergeTool
     }
 
     /**
+     * @param RuntimeConfiguration $configuration
      * @param Type $documentedType
      * @param Type $nativeType
      * @param integer $depth
@@ -219,6 +225,7 @@ class NativeParameterListMergeTool
      * @return boolean
      */
     protected function typeIsCompatible(
+        RuntimeConfiguration $configuration,
         Type $documentedType,
         Type $nativeType,
         $depth = 0
@@ -227,7 +234,7 @@ class NativeParameterListMergeTool
 
         // callable
         if (
-            $this->useNativeCallable() &&
+            $this->useNativeCallable($configuration) &&
             $documentedType instanceof CallableType
         ) {
             return $nativeType instanceof CallableType;
@@ -283,6 +290,7 @@ class NativeParameterListMergeTool
                     $compatible = false;
                     foreach ($nativeType->types() as $nativeSubType) {
                         $compatible = $this->typeIsCompatible(
+                            $configuration,
                             $documentedSubType,
                             $nativeSubType,
                             $depth + 1
@@ -329,7 +337,7 @@ class NativeParameterListMergeTool
             }
 
             return
-                (!$this->useNativeCallable() && $hasCallable) ||
+                (!$this->useNativeCallable($configuration) && $hasCallable) ||
                 ($hasArray && $hasCallable) ||
                 ($hasArray && $hasObjectOfType) ||
                 ($hasCallable && $hasObjectOfType)
@@ -340,6 +348,7 @@ class NativeParameterListMergeTool
         if ($documentedType instanceof AndType) {
             foreach ($documentedType->types() as $documentedSubType) {
                 $compatible = $this->typeIsCompatible(
+                    $configuration,
                     $documentedSubType,
                     $nativeType,
                     $depth + 1
@@ -356,6 +365,5 @@ class NativeParameterListMergeTool
     }
 
     private $nativeCallableAvailable;
-    private $useNativeCallable = true;
     private $typhoon;
 }

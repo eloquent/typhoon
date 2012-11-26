@@ -32,6 +32,7 @@ use Eloquent\Typhax\Type\TupleType;
 use Eloquent\Typhax\Type\Visitor;
 use Icecave\Pasta\AST\Expr\Assign;
 use Icecave\Pasta\AST\Expr\Call;
+use Icecave\Pasta\AST\Expr\Constant;
 use Icecave\Pasta\AST\Expr\InstanceOfType;
 use Icecave\Pasta\AST\Expr\Literal;
 use Icecave\Pasta\AST\Expr\LogicalAnd;
@@ -557,7 +558,7 @@ class TyphaxASTGenerator implements Visitor
         $hasMethodCall = new Call(
             new Member(
                 $reflectorVariable,
-                new Identifier('hasMethod')
+                new Constant(new Identifier('hasMethod'))
             )
         );
         $hasMethodCall->add(new Literal('__toString'));

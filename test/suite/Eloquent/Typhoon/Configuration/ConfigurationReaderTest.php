@@ -82,6 +82,23 @@ class ConfigurationReaderTest extends MultiGenerationTestCase
         );
     }
 
+    public function testReadWithNeitherThrow()
+    {
+        Phake::when($this->_reader)
+            ->readTyphoon(Phake::anyParameters())
+            ->thenReturn(null)
+        ;
+        Phake::when($this->_reader)
+            ->readComposer(Phake::anyParameters())
+            ->thenReturn(null)
+        ;
+
+        $this->setExpectedException(
+            __NAMESPACE__.'\Exception\ConfigurationReadException'
+        );
+        $this->_reader->read('foo', true);
+    }
+
     public function testReadDefaultPath()
     {
         Phake::when($this->_isolator)->getcwd()->thenReturn('bar');
