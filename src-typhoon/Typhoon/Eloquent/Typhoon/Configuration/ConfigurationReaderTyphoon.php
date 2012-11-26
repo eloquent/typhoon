@@ -15,9 +15,9 @@ class ConfigurationReaderTyphoon extends \Typhoon\Validator
     public function read(array $arguments)
     {
         ($argumentCount = \count($arguments));
-        if (($argumentCount > 1))
+        if (($argumentCount > 2))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(1, $arguments[1]));
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(2, $arguments[2]));
         }
         if (($argumentCount > 0))
         {
@@ -31,6 +31,63 @@ class ConfigurationReaderTyphoon extends \Typhoon\Validator
                     'string|null'
                 ));
             }
+        }
+        if (($argumentCount > 1))
+        {
+            ($value = $arguments[1]);
+            if ((!\is_bool($value)))
+            {
+                throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+                    'throwOnFailure',
+                    1,
+                    $arguments[1],
+                    'boolean'
+                ));
+            }
+        }
+    }
+    public function typhoonPath(array $arguments)
+    {
+        ($argumentCount = \count($arguments));
+        if (($argumentCount < 1))
+        {
+            throw (new \Typhoon\Exception\MissingArgumentException('path', 0, 'string'));
+        }
+        elseif (($argumentCount > 1))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(1, $arguments[1]));
+        }
+        ($value = $arguments[0]);
+        if ((!\is_string($value)))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+                'path',
+                0,
+                $arguments[0],
+                'string'
+            ));
+        }
+    }
+    public function composerPath(array $arguments)
+    {
+        ($argumentCount = \count($arguments));
+        if (($argumentCount < 1))
+        {
+            throw (new \Typhoon\Exception\MissingArgumentException('path', 0, 'string'));
+        }
+        elseif (($argumentCount > 1))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(1, $arguments[1]));
+        }
+        ($value = $arguments[0]);
+        if ((!\is_string($value)))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+                'path',
+                0,
+                $arguments[0],
+                'string'
+            ));
         }
     }
     public function readTyphoon(array $arguments)

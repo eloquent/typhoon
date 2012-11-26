@@ -32,10 +32,11 @@ class ConfigurationReader
 
     /**
      * @param string|null $path
+     * @param boolean $throwOnFailure
      *
      * @return Configuration|null
      */
-    public function read($path = null)
+    public function read($path = null, $throwOnFailure = false)
     {
         $this->typhoon->read(func_get_args());
         if (null === $path) {
@@ -49,7 +50,41 @@ class ConfigurationReader
             return $configuration;
         }
 
+        if ($throwOnFailure) {
+            throw new Exception\ConfigurationReadException($this->typhoonPath($path));
+        }
+
         return null;
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return string
+     */
+    protected function typhoonPath($path)
+    {
+        $this->typhoon->typhoonPath(func_get_args());
+
+        return sprintf(
+            '%s/typhoon.json',
+            $path
+        );
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return string
+     */
+    protected function composerPath($path)
+    {
+        $this->typhoon->composerPath(func_get_args());
+
+        return sprintf(
+            '%s/composer.json',
+            $path
+        );
     }
 
     /**
@@ -61,10 +96,7 @@ class ConfigurationReader
     {
         $this->typhoon->readTyphoon(func_get_args());
 
-        $typhoonPath = sprintf(
-            '%s/typhoon.json',
-            $path
-        );
+        $typhoonPath = $this->typhoonPath($path);
         if (!$this->isolator->is_file($typhoonPath)) {
             return null;
         }
@@ -83,10 +115,7 @@ class ConfigurationReader
     {
         $this->typhoon->readComposer(func_get_args());
 
-        $composerPath = sprintf(
-            '%s/composer.json',
-            $path
-        );
+        $composerPath = $this->composerPath($path);
         if (!$this->isolator->is_file($composerPath)) {
             return null;
         }

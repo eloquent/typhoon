@@ -13,6 +13,7 @@ namespace Eloquent\Typhoon\Generator;
 
 use Eloquent\Liberator\Liberator;
 use Eloquent\Typhoon\ClassMapper\ClassDefinition;
+use Eloquent\Typhoon\Configuration\Configuration;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Phake;
 
@@ -24,11 +25,13 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
 
         $this->_classMapper = Phake::mock('Eloquent\Typhoon\ClassMapper\ClassMapper');
         $this->_classGenerator = Phake::mock(__NAMESPACE__.'\ValidatorClassGenerator');
+        $this->_facadeGenerator = Phake::mock(__NAMESPACE__.'\FacadeGenerator');
         $this->_isolator = Phake::mock('Icecave\Isolator\Isolator');
         $this->_generator = Phake::partialMock(
             __NAMESPACE__.'\ProjectValidatorGenerator',
             $this->_classMapper,
             $this->_classGenerator,
+            $this->_facadeGenerator,
             $this->_isolator
         );
     }
@@ -37,6 +40,7 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
     {
         $this->assertSame($this->_classMapper, $this->_generator->classMapper());
         $this->assertSame($this->_classGenerator, $this->_generator->classGenerator());
+        $this->assertSame($this->_facadeGenerator, $this->_generator->facadeGenerator());
     }
 
     public function testConstructorDefaults()
@@ -51,10 +55,21 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
             __NAMESPACE__.'\ValidatorClassGenerator',
             $generator->classGenerator()
         );
+        $this->assertInstanceOf(
+            __NAMESPACE__.'\FacadeGenerator',
+            $generator->facadeGenerator()
+        );
     }
 
     public function testGenerate()
     {
+        $configuration = new Configuration(
+            'foo',
+            array(
+                'bar',
+                'baz',
+            )
+        );
         $classDefinitionA = Phake::mock('Eloquent\Typhoon\ClassMapper\ClassDefinition');
         $classDefinitionB = Phake::mock('Eloquent\Typhoon\ClassMapper\ClassDefinition');
         $classMap = array(
@@ -71,6 +86,7 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
         ;
         Phake::when($this->_classGenerator)
             ->generate(
+                $this->identicalTo($configuration),
                 $this->identicalTo($classDefinitionA),
                 Phake::setReference('Namespace\Name\A'),
                 Phake::setReference('Class_Name_A')
@@ -79,28 +95,32 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
         ;
         Phake::when($this->_classGenerator)
             ->generate(
+                $this->identicalTo($configuration),
                 $this->identicalTo($classDefinitionB),
                 Phake::setReference('Namespace\Name\B'),
                 Phake::setReference('Class_Name_B')
             )
             ->thenReturn('B source')
         ;
+        Phake::when($this->_facadeGenerator)
+            ->generate(
+                $this->identicalTo($configuration),
+                Phake::setReference('Namespace\Name'),
+                Phake::setReference('Facade_Class_Name')
+            )
+            ->thenReturn('Facade source')
+        ;
         Phake::when($this->_isolator)
             ->is_dir(Phake::anyParameters())
             ->thenReturn(true)
             ->thenReturn(false)
         ;
-        $this->_generator->generate(
-            'foo',
-            array(
-                'bar',
-                'baz',
-            )
-        );
+        $this->_generator->generate($configuration);
 
         Phake::inOrder(
             Phake::verify($this->_generator)->buildClassMap(array('bar', 'baz')),
             Phake::verify($this->_classGenerator)->generate(
+                $this->identicalTo($configuration),
                 $this->identicalTo($classDefinitionA),
                 null,
                 null
@@ -111,6 +131,7 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
                 'A source'
             ),
             Phake::verify($this->_classGenerator)->generate(
+                $this->identicalTo($configuration),
                 $this->identicalTo($classDefinitionB),
                 null,
                 null
@@ -124,6 +145,16 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
             Phake::verify($this->_isolator)->file_put_contents(
                 'foo/Namespace/Name/B/Class/Name/B.php',
                 'B source'
+            ),
+            Phake::verify($this->_isolator)->is_dir('foo/Namespace/Name/Facade/Class'),
+            Phake::verify($this->_isolator)->mkdir(
+                'foo/Namespace/Name/Facade/Class',
+                0777,
+                true
+            ),
+            Phake::verify($this->_isolator)->file_put_contents(
+                'foo/Namespace/Name/Facade/Class/Name.php',
+                'Facade source'
             )
         );
         Phake::verify($this->_isolator, Phake::never())->mkdir(

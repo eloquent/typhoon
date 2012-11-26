@@ -18,8 +18,9 @@ class RuntimeConfiguration
     /**
      * @param boolean|null $useNativeCallable
      */
-    public function __construct($useNativeCallable = null)
-    {
+    public function __construct(
+        $useNativeCallable = null
+    ) {
         $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
         if (null === $useNativeCallable) {
             $useNativeCallable = true;
