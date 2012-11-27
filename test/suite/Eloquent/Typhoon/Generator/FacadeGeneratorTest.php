@@ -14,7 +14,6 @@ namespace Eloquent\Typhoon\Generator;
 use Eloquent\Typhoon\Configuration\RuntimeConfiguration;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Icecave\Rasta\Renderer;
-use Phake;
 
 class FacadeGeneratorTest extends MultiGenerationTestCase
 {
@@ -23,15 +22,20 @@ class FacadeGeneratorTest extends MultiGenerationTestCase
         parent::setUp();
 
         $this->_renderer = new Renderer;
-        $this->_generator = Phake::partialMock(
-            __NAMESPACE__.'\FacadeGenerator',
-            $this->_renderer
+        $this->_configurationGenerator = new RuntimeConfigurationGenerator;
+        $this->_generator = new FacadeGenerator(
+            $this->_renderer,
+            $this->_configurationGenerator
         );
     }
 
     public function testConstructor()
     {
         $this->assertSame($this->_renderer, $this->_generator->renderer());
+        $this->assertSame(
+            $this->_configurationGenerator,
+            $this->_generator->configurationGenerator()
+        );
     }
 
     public function testConstructorDefaults()
@@ -41,6 +45,10 @@ class FacadeGeneratorTest extends MultiGenerationTestCase
         $this->assertInstanceOf(
             'Icecave\Rasta\Renderer',
             $this->_generator->renderer()
+        );
+        $this->assertInstanceOf(
+            __NAMESPACE__.'\RuntimeConfigurationGenerator',
+            $this->_generator->configurationGenerator()
         );
     }
 
