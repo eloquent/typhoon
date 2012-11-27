@@ -12,7 +12,6 @@
 namespace Eloquent\Typhoon\Generator;
 
 use Eloquent\Typhoon\Configuration\RuntimeConfiguration;
-use Icecave\Pasta\AST\Expr\Assign;
 use Icecave\Pasta\AST\Expr\Call;
 use Icecave\Pasta\AST\Expr\Literal;
 use Icecave\Pasta\AST\Expr\NewOperator;

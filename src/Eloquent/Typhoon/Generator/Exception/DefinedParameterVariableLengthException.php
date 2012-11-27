@@ -18,8 +18,8 @@ use Typhoon\Typhoon;
 final class DefinedParameterVariableLengthException extends LogicException
 {
     /**
-     * @param string $functionName
-     * @param string $parameterName
+     * @param string         $functionName
+     * @param string         $parameterName
      * @param Exception|null $previous
      */
     public function __construct(

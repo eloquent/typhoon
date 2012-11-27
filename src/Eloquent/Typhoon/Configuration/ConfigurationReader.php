@@ -32,7 +32,7 @@ class ConfigurationReader
 
     /**
      * @param string|null $path
-     * @param boolean $throwOnFailure
+     * @param boolean     $throwOnFailure
      *
      * @return Configuration|null
      */

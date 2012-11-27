@@ -32,7 +32,6 @@ class DeploymentManagerTest extends MultiGenerationTestCase
         Phake::when($isolator)->is_dir(Phake::anyParameters())->thenReturn(true);
         $manager = new DeploymentManager($isolator);
 
-
         $manager->deploy('foo');
         $isDirVerificationTyphoon = Phake::verify($isolator, Phake::times(3))
             ->is_dir('foo/Typhoon')
@@ -87,7 +86,6 @@ class DeploymentManagerTest extends MultiGenerationTestCase
             ->thenReturn(true)
         ;
         $manager = new DeploymentManager($isolator);
-
 
         $manager->deploy('foo');
         $isDirVerificationTyphoon = Phake::verify($isolator, Phake::times(3))

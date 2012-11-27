@@ -18,7 +18,7 @@ use Typhoon\Typhoon;
 final class UndefinedClassException extends LogicException
 {
     /**
-     * @param string $className
+     * @param string         $className
      * @param Exception|null $previous
      */
     public function __construct($className, Exception $previous = null)

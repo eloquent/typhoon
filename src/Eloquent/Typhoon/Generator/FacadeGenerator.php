@@ -49,7 +49,7 @@ use Typhoon\Typhoon;
 class FacadeGenerator
 {
     /**
-     * @param Renderer|null $renderer
+     * @param Renderer|null                      $renderer
      * @param RuntimeConfigurationGenerator|null $configurationGenerator
      */
     public function __construct(
@@ -186,8 +186,8 @@ class FacadeGenerator
 
     /**
      * @param RuntimeConfiguration $configuration
-     * @param string|null $namespaceName
-     * @param string|null $className
+     * @param string|null          $namespaceName
+     * @param string|null          $className
      *
      * @return tuple<string, string>
      */

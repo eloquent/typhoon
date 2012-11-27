@@ -38,7 +38,8 @@ class TypeInspectorTest extends PHPUnit_Framework_TestCase
         }
     }
 
-    protected function streamFixture($mode) {
+    protected function streamFixture($mode)
+    {
         $this->_files[] = $file = $path = sys_get_temp_dir().'/'.uniqid('typhoon-');
         touch($file);
         $this->_streams[] = $stream = fopen($file, $mode);

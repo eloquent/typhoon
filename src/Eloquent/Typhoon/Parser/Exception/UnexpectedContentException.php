@@ -17,8 +17,8 @@ use Typhoon\Typhoon;
 final class UnexpectedContentException extends ParseException
 {
     /**
-     * @param string $expected
-     * @param integer $position
+     * @param string         $expected
+     * @param integer        $position
      * @param Exception|null $previous
      */
     public function __construct($expected, $position, Exception $previous = null)

@@ -18,11 +18,11 @@ use Typhoon\Typhoon;
 class Parameter extends Host
 {
     /**
-     * @param string $name
-     * @param Type $type
+     * @param string      $name
+     * @param Type        $type
      * @param string|null $description
-     * @param boolean $optional
-     * @param boolean $byReference
+     * @param boolean     $optional
+     * @param boolean     $byReference
      */
     public function __construct(
         $name,

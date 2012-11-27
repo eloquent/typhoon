@@ -12,7 +12,6 @@
 namespace Eloquent\Typhoon\ClassMapper;
 
 use ArrayIterator;
-use Closure;
 use Eloquent\Liberator\Liberator;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use FilesystemIterator;
@@ -223,10 +222,10 @@ EOD
 <?php
 class Foo
 {
-    function bar()
+    public function bar()
     {
         $baz = null;
-        $qux = function() use($baz) {};
+        $qux = function() use ($baz) {};
         foreach (array() as $doom) {}
     }
 }

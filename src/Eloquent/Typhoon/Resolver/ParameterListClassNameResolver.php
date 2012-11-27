@@ -66,8 +66,7 @@ class ParameterListClassNameResolver implements Visitor
         $this->typhoon->visitParameterList(func_get_args());
 
         $parameters = array();
-        foreach ($parameterList->parameters() as $parameter)
-        {
+        foreach ($parameterList->parameters() as $parameter) {
             $parameters[] = $parameter->accept($this);
         }
 

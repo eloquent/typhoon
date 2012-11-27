@@ -22,9 +22,9 @@ final class ConfigurationOption extends Enumeration
     const USE_NATIVE_CALLABLE = 'useNativeCallable';
 
     /**
-     * @param string $className
-     * @param string $property
-     * @param mixed $value
+     * @param string               $className
+     * @param string               $property
+     * @param mixed                $value
      * @param NativeException|null $previous
      *
      * @return Exception\UndefinedConfigurationOptionException

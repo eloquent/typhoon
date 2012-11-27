@@ -20,11 +20,11 @@ use Typhoon\Typhoon;
 final class DocumentedParameterTypeMismatchException extends LogicException
 {
     /**
-     * @param string $functionName
-     * @param string $parameterName
-     * @param Type $documentedType
-     * @param Type $nativeType
-     * @param Exception|null $previous
+     * @param string            $functionName
+     * @param string            $parameterName
+     * @param Type              $documentedType
+     * @param Type              $nativeType
+     * @param Exception|null    $previous
      * @param TypeRenderer|null $typeRenderer
      */
     public function __construct(

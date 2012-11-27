@@ -17,7 +17,7 @@ use Typhoon\Typhoon;
 final class UndefinedConfigurationOptionException extends Exception
 {
     /**
-     * @param string $optionName
+     * @param string         $optionName
      * @param Exception|null $previous
      */
     public function __construct(

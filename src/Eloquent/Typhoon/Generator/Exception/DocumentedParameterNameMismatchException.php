@@ -18,9 +18,9 @@ use Typhoon\Typhoon;
 final class DocumentedParameterNameMismatchException extends LogicException
 {
     /**
-     * @param string $functionName
-     * @param string $documentedParameterName
-     * @param string $nativeParameterName
+     * @param string         $functionName
+     * @param string         $documentedParameterName
+     * @param string         $nativeParameterName
      * @param Exception|null $previous
      */
     public function __construct(

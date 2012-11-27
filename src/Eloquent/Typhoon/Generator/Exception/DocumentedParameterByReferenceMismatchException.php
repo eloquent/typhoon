@@ -18,10 +18,10 @@ use Typhoon\Typhoon;
 final class DocumentedParameterByReferenceMismatchException extends LogicException
 {
     /**
-     * @param string $functionName
-     * @param string $parameterName
-     * @param boolean $documentedIsByReference
-     * @param boolean $nativeIsByReference
+     * @param string         $functionName
+     * @param string         $parameterName
+     * @param boolean        $documentedIsByReference
+     * @param boolean        $nativeIsByReference
      * @param Exception|null $previous
      */
     public function __construct(

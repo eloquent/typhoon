@@ -18,7 +18,7 @@ use Typhoon\Typhoon;
 final class InvalidFunctionDocumentationException extends LogicException
 {
     /**
-     * @param string $functionName
+     * @param string         $functionName
      * @param Exception|null $previous
      */
     public function __construct($functionName, Exception $previous = null)

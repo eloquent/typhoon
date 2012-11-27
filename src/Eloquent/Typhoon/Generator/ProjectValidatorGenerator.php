@@ -19,10 +19,10 @@ use Typhoon\Typhoon;
 class ProjectValidatorGenerator
 {
     /**
-     * @param ClassMapper|null $classMapper
+     * @param ClassMapper|null             $classMapper
      * @param ValidatorClassGenerator|null $classGenerator
-     * @param FacadeGenerator|null $facadeGenerator
-     * @param Isolator|null $isolator
+     * @param FacadeGenerator|null         $facadeGenerator
+     * @param Isolator|null                $isolator
      */
     public function __construct(
         ClassMapper $classMapper = null,
@@ -164,8 +164,8 @@ class ProjectValidatorGenerator
 
     /**
      * @param Configuration $configuration
-     * @param string $namespaceName
-     * @param string $className
+     * @param string        $namespaceName
+     * @param string        $className
      *
      * @return string
      */
@@ -187,8 +187,8 @@ class ProjectValidatorGenerator
 
     /**
      * @param Configuration $configuration
-     * @param string $namespaceName
-     * @param string $className
+     * @param string        $namespaceName
+     * @param string        $className
      *
      * @return string
      */

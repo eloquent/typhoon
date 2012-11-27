@@ -41,7 +41,7 @@ class ParameterListGenerator implements Visitor
 {
     /**
      * @param TyphaxASTGenerator|null $typeGenerator
-     * @param TypeRenderer|null $typeRenderer
+     * @param TypeRenderer|null       $typeRenderer
      */
     public function __construct(
         TyphaxASTGenerator $typeGenerator = null,

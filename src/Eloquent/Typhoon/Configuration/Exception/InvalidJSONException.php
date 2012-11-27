@@ -18,8 +18,8 @@ use Typhoon\Typhoon;
 final class InvalidJSONException extends RuntimeException
 {
     /**
-     * @param integer $jsonErrorCode
-     * @param string $path
+     * @param integer        $jsonErrorCode
+     * @param string         $path
      * @param Exception|null $previous
      */
     public function __construct(

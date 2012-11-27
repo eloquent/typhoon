@@ -67,9 +67,9 @@ class NativeParameterListMergeTool
 
     /**
      * @param RuntimeConfiguration $configuration
-     * @param string $functionName
-     * @param ParameterList $documentedParameterList
-     * @param ParameterList $nativeParameterList
+     * @param string               $functionName
+     * @param ParameterList        $documentedParameterList
+     * @param ParameterList        $nativeParameterList
      */
     public function merge(
         RuntimeConfiguration $configuration,
@@ -131,9 +131,9 @@ class NativeParameterListMergeTool
 
     /**
      * @param RuntimeConfiguration $configuration
-     * @param string $functionName
-     * @param Parameter $documentedParameter
-     * @param Parameter $nativeParameter
+     * @param string               $functionName
+     * @param Parameter            $documentedParameter
+     * @param Parameter            $nativeParameter
      */
     protected function mergeParameter(
         RuntimeConfiguration $configuration,
@@ -177,10 +177,10 @@ class NativeParameterListMergeTool
 
     /**
      * @param RuntimeConfiguration $configuration
-     * @param string $functionName
-     * @param string $parameterName
-     * @param Type $documentedType
-     * @param Type $nativeType
+     * @param string               $functionName
+     * @param string               $parameterName
+     * @param Type                 $documentedType
+     * @param Type                 $nativeType
      *
      * @return Type
      */
@@ -218,9 +218,9 @@ class NativeParameterListMergeTool
 
     /**
      * @param RuntimeConfiguration $configuration
-     * @param Type $documentedType
-     * @param Type $nativeType
-     * @param integer $depth
+     * @param Type                 $documentedType
+     * @param Type                 $nativeType
+     * @param integer              $depth
      *
      * @return boolean
      */

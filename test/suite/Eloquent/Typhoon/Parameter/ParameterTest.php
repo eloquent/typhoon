@@ -13,7 +13,6 @@ namespace Eloquent\Typhoon\Parameter;
 
 use Eloquent\Typhax\Type\StringType;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
-use Phake;
 
 class ParameterTest extends MultiGenerationTestCase
 {

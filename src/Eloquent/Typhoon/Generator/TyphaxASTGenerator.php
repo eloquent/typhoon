@@ -15,7 +15,6 @@ use Eloquent\Typhax\Type\AndType;
 use Eloquent\Typhax\Type\ArrayType;
 use Eloquent\Typhax\Type\BooleanType;
 use Eloquent\Typhax\Type\CallableType;
-use Eloquent\Typhax\Type\CompositeType;
 use Eloquent\Typhax\Type\FloatType;
 use Eloquent\Typhax\Type\IntegerType;
 use Eloquent\Typhax\Type\MixedType;
@@ -618,7 +617,6 @@ class TyphaxASTGenerator implements Visitor
         $keyIdentifier = new Identifier('key');
         $subValueIdentifier = new Identifier('subValue');
         $loopStatement = new StatementBlock;
-
 
         $keyVariable = new Variable($keyIdentifier);
         $oldValueIdentifier = $this->valueIdentifier;

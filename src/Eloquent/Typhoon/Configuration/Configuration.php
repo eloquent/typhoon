@@ -16,7 +16,7 @@ use Typhoon\Typhoon;
 class Configuration extends RuntimeConfiguration
 {
     /**
-     * @param string $outputPath
+     * @param string        $outputPath
      * @param array<string> $sourcePaths
      */
     public function __construct(

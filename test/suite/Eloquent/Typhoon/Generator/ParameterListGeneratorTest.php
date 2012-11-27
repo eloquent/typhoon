@@ -13,7 +13,6 @@ namespace Eloquent\Typhoon\Generator;
 
 use Eloquent\Typhax\Type\FloatType;
 use Eloquent\Typhax\Type\IntegerType;
-use Eloquent\Typhax\Type\MixedType;
 use Eloquent\Typhax\Type\StringType;
 use Eloquent\Typhoon\Parameter\Parameter;
 use Eloquent\Typhoon\Parameter\ParameterList;

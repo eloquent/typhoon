@@ -16,13 +16,6 @@ use Eloquent\Typhoon\ClassMapper\ClassMapper;
 use Eloquent\Typhoon\Configuration\RuntimeConfiguration;
 use Eloquent\Typhoon\Parser\ParameterListParser;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
-use Icecave\Pasta\AST\Expr\QualifiedIdentifier;
-use Icecave\Pasta\AST\Identifier;
-use Icecave\Pasta\AST\PhpBlock;
-use Icecave\Pasta\AST\Stmt\NamespaceStatement;
-use Icecave\Pasta\AST\SyntaxTree;
-use Icecave\Pasta\AST\Type\ClassDefinition as ClassDefinitionASTNode;
-use Icecave\Pasta\AST\Type\ConcreteMethod;
 use Icecave\Rasta\Renderer;
 use Phake;
 

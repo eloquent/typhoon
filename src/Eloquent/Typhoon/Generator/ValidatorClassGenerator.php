@@ -36,12 +36,12 @@ use Typhoon\Typhoon;
 class ValidatorClassGenerator
 {
     /**
-     * @param Renderer|null $renderer
-     * @param ParameterListParser|null $parser
-     * @param ParameterListGenerator|null $generator
-     * @param ClassMapper|null $classMapper
+     * @param Renderer|null                     $renderer
+     * @param ParameterListParser|null          $parser
+     * @param ParameterListGenerator|null       $generator
+     * @param ClassMapper|null                  $classMapper
      * @param NativeParameterListMergeTool|null $nativeMergeTool
-     * @param Isolator|null $isolator
+     * @param Isolator|null                     $isolator
      */
     public function __construct(
         Renderer $renderer = null,
@@ -129,7 +129,7 @@ class ValidatorClassGenerator
 
     /**
      * @param RuntimeConfiguration $configuration
-     * @param ClassDefinition $classDefinition
+     * @param ClassDefinition      $classDefinition
      * @param string|null &$namespaceName
      * @param string|null &$className
      *
@@ -153,8 +153,8 @@ class ValidatorClassGenerator
 
     /**
      * @param RuntimeConfiguration $configuration
-     * @param string $sourceClassName
-     * @param string $source
+     * @param string               $sourceClassName
+     * @param string               $source
      * @param string|null &$namespaceName
      * @param string|null &$className
      *
@@ -179,8 +179,8 @@ class ValidatorClassGenerator
 
     /**
      * @param RuntimeConfiguration $configuration
-     * @param string $sourceClassName
-     * @param string $path
+     * @param string               $sourceClassName
+     * @param string               $path
      * @param string|null &$namespaceName
      * @param string|null &$className
      *
@@ -208,7 +208,7 @@ class ValidatorClassGenerator
 
     /**
      * @param RuntimeConfiguration $configuration
-     * @param ReflectionClass $class
+     * @param ReflectionClass      $class
      * @param string|null &$namespaceName
      * @param string|null &$className
      *
@@ -233,7 +233,7 @@ class ValidatorClassGenerator
 
     /**
      * @param RuntimeConfiguration $configuration
-     * @param ClassDefinition $classDefinition
+     * @param ClassDefinition      $classDefinition
      * @param string|null &$namespaceName
      * @param string|null &$className
      *
@@ -279,8 +279,8 @@ class ValidatorClassGenerator
 
     /**
      * @param RuntimeConfiguration $configuration
-     * @param ReflectionMethod $method
-     * @param ClassDefinition $classDefinition
+     * @param ReflectionMethod     $method
+     * @param ClassDefinition      $classDefinition
      *
      * @return ConcreteMethod
      */
@@ -336,8 +336,8 @@ class ValidatorClassGenerator
 
     /**
      * @param ClassDefinition $classDefinition
-     * @param string|null $namespaceName
-     * @param string|null $className
+     * @param string|null     $namespaceName
+     * @param string|null     $className
      *
      * @return tuple<string, string>
      */
@@ -383,8 +383,8 @@ class ValidatorClassGenerator
 
     /**
      * @param RuntimeConfiguration $configuration
-     * @param ReflectionMethod $method
-     * @param ClassDefinition $classDefinition
+     * @param ReflectionMethod     $method
+     * @param ClassDefinition      $classDefinition
      *
      * @return ParameterList
      */

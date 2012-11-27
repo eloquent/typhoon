@@ -17,8 +17,8 @@ use Typhoon\Typhoon;
 class ClassDefinition
 {
     /**
-     * @param string $className
-     * @param string|null $namespaceName
+     * @param string                    $className
+     * @param string|null               $namespaceName
      * @param array<string,string|null> $usedClasses
      */
     public function __construct(

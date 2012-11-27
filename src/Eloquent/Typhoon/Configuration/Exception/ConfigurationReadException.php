@@ -18,7 +18,7 @@ use Typhoon\Typhoon;
 final class ConfigurationReadException extends RuntimeException
 {
     /**
-     * @param string $path
+     * @param string         $path
      * @param Exception|null $previous
      */
     public function __construct(

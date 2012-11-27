@@ -12,13 +12,12 @@
 namespace Eloquent\Typhoon\Configuration\Exception;
 
 use Exception;
-use RuntimeException;
 use Typhoon\Typhoon;
 
 final class InvalidConfigurationException extends Exception
 {
     /**
-     * @param string $reason
+     * @param string         $reason
      * @param Exception|null $previous
      */
     public function __construct(

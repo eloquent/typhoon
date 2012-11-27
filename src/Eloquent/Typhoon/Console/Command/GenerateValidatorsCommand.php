@@ -15,9 +15,7 @@ use Eloquent\Typhoon\Deployment\DeploymentManager;
 use Eloquent\Typhoon\Generator\ProjectValidatorGenerator;
 use Icecave\Isolator\Isolator;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Typhoon\Typhoon;
 
@@ -25,8 +23,8 @@ class GenerateValidatorsCommand extends Command
 {
     /**
      * @param ProjectValidatorGenerator|null $generator
-     * @param DeploymentManager|null $deploymentManager
-     * @param Isolator|null $isolator
+     * @param DeploymentManager|null         $deploymentManager
+     * @param Isolator|null                  $isolator
      */
     public function __construct(
         ProjectValidatorGenerator $generator = null,
@@ -79,7 +77,7 @@ class GenerateValidatorsCommand extends Command
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -93,7 +91,7 @@ class GenerateValidatorsCommand extends Command
         );
 
         $output->writeln('Including loaders...');
-        foreach ($configuration->loaderPaths() as $path){
+        foreach ($configuration->loaderPaths() as $path) {
             $this->isolator->require($path);
         }
 

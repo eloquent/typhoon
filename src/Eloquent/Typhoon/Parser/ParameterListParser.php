@@ -59,8 +59,8 @@ class ParameterListParser implements Visitor
     }
 
     /**
-     * @param string $functionName
-     * @param string $blockComment
+     * @param string                        $functionName
+     * @param string                        $blockComment
      * @param DocumentationBlockParser|null $documentationParser
      *
      * @return ParameterList
@@ -324,9 +324,9 @@ class ParameterListParser implements Visitor
     /**
      * @param string $content
      * @param integer &$position
-     * @param string $pattern
+     * @param string  $pattern
      * @param boolean $optional
-     * @param string $type
+     * @param string  $type
      *
      * @return string|null
      */

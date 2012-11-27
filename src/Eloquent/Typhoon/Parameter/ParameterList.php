@@ -11,7 +11,6 @@
 
 namespace Eloquent\Typhoon\Parameter;
 
-use Eloquent\Typhax\Type\MixedType;
 use Icecave\Visita\Host;
 use Typhoon\Typhoon;
 
@@ -19,7 +18,7 @@ class ParameterList extends Host
 {
     /**
      * @param array<Parameter> $parameters
-     * @param boolean $variableLength
+     * @param boolean          $variableLength
      */
     public function __construct(
         array $parameters = array(),

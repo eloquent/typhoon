@@ -15,9 +15,7 @@ use Eloquent\Liberator\Liberator;
 use Eloquent\Typhoon\Configuration\Configuration;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Phake;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
-use Symfony\Component\Console\Input\InputOption;
 
 class GenerateValidatorsCommandTest extends MultiGenerationTestCase
 {

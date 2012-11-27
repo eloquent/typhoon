@@ -11,8 +11,6 @@
 
 namespace Eloquent\Typhoon\Parser;
 
-use Eloquent\Blox\AST\DocumentationBlock;
-use Eloquent\Blox\AST\DocumentationTag;
 use Eloquent\Typhax\Parser\Parser as TyphaxParser;
 use Eloquent\Typhax\Type\ArrayType;
 use Eloquent\Typhax\Type\CallableType;
