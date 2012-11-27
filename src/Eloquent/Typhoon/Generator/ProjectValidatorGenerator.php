@@ -19,31 +19,37 @@ use Typhoon\Typhoon;
 class ProjectValidatorGenerator
 {
     /**
-     * @param ClassMapper|null             $classMapper
-     * @param ValidatorClassGenerator|null $classGenerator
-     * @param FacadeGenerator|null         $facadeGenerator
-     * @param Isolator|null                $isolator
+     * @param ClassMapper|null                $classMapper
+     * @param ValidatorClassGenerator|null    $validatorClassGenerator
+     * @param FacadeGenerator|null            $facadeGenerator
+     * @param AbstractValidatorGenerator|null $abstractValidatorGenerator
+     * @param Isolator|null                   $isolator
      */
     public function __construct(
         ClassMapper $classMapper = null,
-        ValidatorClassGenerator $classGenerator = null,
+        ValidatorClassGenerator $validatorClassGenerator = null,
         FacadeGenerator $facadeGenerator = null,
+        AbstractValidatorGenerator $abstractValidatorGenerator = null,
         Isolator $isolator = null
     ) {
         $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
         if (null === $classMapper) {
             $classMapper = new ClassMapper;
         }
-        if (null === $classGenerator) {
-            $classGenerator = new ValidatorClassGenerator;
+        if (null === $validatorClassGenerator) {
+            $validatorClassGenerator = new ValidatorClassGenerator;
         }
         if (null === $facadeGenerator) {
             $facadeGenerator = new FacadeGenerator;
         }
+        if (null === $abstractValidatorGenerator) {
+            $abstractValidatorGenerator = new AbstractValidatorGenerator;
+        }
 
         $this->classMapper = $classMapper;
-        $this->classGenerator = $classGenerator;
+        $this->validatorClassGenerator = $validatorClassGenerator;
         $this->facadeGenerator = $facadeGenerator;
+        $this->abstractValidatorGenerator = $abstractValidatorGenerator;
         $this->isolator = Isolator::get($isolator);
     }
 
@@ -60,11 +66,11 @@ class ProjectValidatorGenerator
     /**
      * @return ClassGenerator
      */
-    public function classGenerator()
+    public function validatorClassGenerator()
     {
-        $this->typhoon->classGenerator(func_get_args());
+        $this->typhoon->validatorClassGenerator(func_get_args());
 
-        return $this->classGenerator;
+        return $this->validatorClassGenerator;
     }
 
     /**
@@ -78,6 +84,16 @@ class ProjectValidatorGenerator
     }
 
     /**
+     * @return AbstractValidatorGenerator
+     */
+    public function abstractValidatorGenerator()
+    {
+        $this->typhoon->abstractValidatorGenerator(func_get_args());
+
+        return $this->abstractValidatorGenerator;
+    }
+
+    /**
      * @param Configuration $configuration
      */
     public function generate(Configuration $configuration)
@@ -86,6 +102,7 @@ class ProjectValidatorGenerator
 
         $this->generateClassValidators($configuration);
         $this->generateFacade($configuration);
+        $this->generateAbstractValidator($configuration);
     }
 
     /**
@@ -99,7 +116,7 @@ class ProjectValidatorGenerator
         foreach ($this->buildClassMap($sourcePaths) as $classDefinition) {
             $namespaceName = null;
             $className = null;
-            $source = $this->classGenerator()->generate(
+            $source = $this->validatorClassGenerator()->generate(
                 $configuration,
                 $classDefinition,
                 $namespaceName,
@@ -125,6 +142,29 @@ class ProjectValidatorGenerator
         $this->typhoon->generateFacade(func_get_args());
 
         $source = $this->facadeGenerator()->generate(
+            $configuration,
+            $namespaceName,
+            $className
+        );
+
+        $this->isolator->file_put_contents(
+            $this->prepareOutputPath(
+                $configuration,
+                $namespaceName,
+                $className
+            ),
+            $source
+        );
+    }
+
+    /**
+     * @param Configuration $configuration
+     */
+    protected function generateAbstractValidator(Configuration $configuration)
+    {
+        $this->typhoon->generateAbstractValidator(func_get_args());
+
+        $source = $this->abstractValidatorGenerator()->generate(
             $configuration,
             $namespaceName,
             $className
@@ -225,8 +265,9 @@ class ProjectValidatorGenerator
     }
 
     private $classMapper;
-    private $classGenerator;
+    private $validatorClassGenerator;
     private $facadeGenerator;
+    private $abstractValidatorGenerator;
     private $isolator;
     private $typhoon;
 }

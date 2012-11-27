@@ -33,7 +33,7 @@ class DeploymentManagerTest extends MultiGenerationTestCase
         $manager = new DeploymentManager($isolator);
 
         $manager->deploy('foo');
-        $isDirVerificationTyphoon = Phake::verify($isolator, Phake::times(3))
+        $isDirVerificationTyphoon = Phake::verify($isolator, Phake::times(2))
             ->is_dir('foo/Typhoon')
         ;
         $isDirVerificationException = Phake::verify($isolator, Phake::times(4))
@@ -49,11 +49,6 @@ class DeploymentManagerTest extends MultiGenerationTestCase
             Phake::verify($isolator)->copy(
                 $this->_deploySourcePath.'/Typhoon/TypeInspector.php',
                 'foo/Typhoon/TypeInspector.php'
-            ),
-            $isDirVerificationTyphoon,
-            Phake::verify($isolator)->copy(
-                $this->_deploySourcePath.'/Typhoon/Validator.php',
-                'foo/Typhoon/Validator.php'
             ),
             $isDirVerificationException,
             Phake::verify($isolator)->copy(
@@ -88,7 +83,7 @@ class DeploymentManagerTest extends MultiGenerationTestCase
         $manager = new DeploymentManager($isolator);
 
         $manager->deploy('foo');
-        $isDirVerificationTyphoon = Phake::verify($isolator, Phake::times(3))
+        $isDirVerificationTyphoon = Phake::verify($isolator, Phake::times(2))
             ->is_dir('foo/Typhoon')
         ;
         Phake::inOrder(

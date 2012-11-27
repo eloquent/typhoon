@@ -7,9 +7,9 @@ class ProjectValidatorGeneratorTyphoon extends \Typhoon\Validator
     public function validateConstruct(array $arguments)
     {
         ($argumentCount = \count($arguments));
-        if (($argumentCount > 4))
+        if (($argumentCount > 5))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(4, $arguments[4]));
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(5, $arguments[5]));
         }
     }
     public function classMapper(array $arguments)
@@ -19,7 +19,7 @@ class ProjectValidatorGeneratorTyphoon extends \Typhoon\Validator
             throw (new \Typhoon\Exception\UnexpectedArgumentException(0, $arguments[0]));
         }
     }
-    public function classGenerator(array $arguments)
+    public function validatorClassGenerator(array $arguments)
     {
         if ((\count($arguments) > 0))
         {
@@ -27,6 +27,13 @@ class ProjectValidatorGeneratorTyphoon extends \Typhoon\Validator
         }
     }
     public function facadeGenerator(array $arguments)
+    {
+        if ((\count($arguments) > 0))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(0, $arguments[0]));
+        }
+    }
+    public function abstractValidatorGenerator(array $arguments)
     {
         if ((\count($arguments) > 0))
         {
@@ -58,6 +65,18 @@ class ProjectValidatorGeneratorTyphoon extends \Typhoon\Validator
         }
     }
     public function generateFacade(array $arguments)
+    {
+        ($argumentCount = \count($arguments));
+        if (($argumentCount < 1))
+        {
+            throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
+        }
+        elseif (($argumentCount > 1))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(1, $arguments[1]));
+        }
+    }
+    public function generateAbstractValidator(array $arguments)
     {
         ($argumentCount = \count($arguments));
         if (($argumentCount < 1))

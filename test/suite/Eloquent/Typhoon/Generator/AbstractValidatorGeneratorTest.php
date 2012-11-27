@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Generator;
 
+use Eloquent\Typhoon\Configuration\RuntimeConfiguration;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Icecave\Rasta\Renderer;
 
@@ -43,11 +44,18 @@ class AbstractValidatorGeneratorTest extends MultiGenerationTestCase
 
     public function testGenerate()
     {
+        $configuration = new RuntimeConfiguration;
         $expected = file_get_contents(
             __DIR__.
             '/../../../../src/Typhoon/Eloquent/Typhoon/TestFixture/ExampleValidator.php'
         );
 
-        $this->assertSame($expected, $this->_generator->generate());
+        $this->assertSame($expected, $this->_generator->generate(
+            $configuration,
+            $namespaceName,
+            $className
+        ));
+        $this->assertSame('Typhoon', $namespaceName);
+        $this->assertSame('Validator', $className);
     }
 }

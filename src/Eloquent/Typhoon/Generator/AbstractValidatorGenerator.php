@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Generator;
 
+use Eloquent\Typhoon\Configuration\RuntimeConfiguration;
 use Icecave\Pasta\AST\Expr\Assign;
 use Icecave\Pasta\AST\Expr\Call;
 use Icecave\Pasta\AST\Expr\Constant;
@@ -65,24 +66,45 @@ class AbstractValidatorGenerator
     }
 
     /**
+     * @param RuntimeConfiguration $configuration
+     * @param string|null &$namespaceName
+     * @param string|null &$className
+     *
      * @return string
      */
-    public function generate()
-    {
+    public function generate(
+        RuntimeConfiguration $configuration,
+        &$namespaceName = null,
+        &$className = null
+    ) {
         $this->typhoon->generate(func_get_args());
 
-        return $this->generateSyntaxTree()->accept($this->renderer());
+        return $this->generateSyntaxTree(
+            $configuration,
+            $namespaceName,
+            $className
+        )->accept($this->renderer());
     }
 
     /**
+     * @param RuntimeConfiguration $configuration
+     * @param string|null &$namespaceName
+     * @param string|null &$className
+     *
      * @return SyntaxTree
      */
-    public function generateSyntaxTree()
-    {
+    public function generateSyntaxTree(
+        RuntimeConfiguration $configuration,
+        &$namespaceName = null,
+        &$className = null
+    ) {
         $this->typhoon->generateSyntaxTree(func_get_args());
 
+        $namespaceName = 'Typhoon';
+        $className = 'Validator';
+
         $classDefinition = new ClassDefinition(
-            new Identifier('Validator'),
+            new Identifier($className),
             ClassModifier::ABSTRACT_()
         );
         $classDefinition->add($this->generateConstructor());
@@ -92,7 +114,7 @@ class AbstractValidatorGenerator
 
         $primaryBlock = new PhpBlock;
         $primaryBlock->add(new NamespaceStatement(
-            QualifiedIdentifier::fromString('Typhoon')
+            QualifiedIdentifier::fromString($namespaceName)
         ));
         $primaryBlock->add($classDefinition);
 

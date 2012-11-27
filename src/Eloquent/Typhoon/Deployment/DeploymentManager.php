@@ -45,10 +45,6 @@ class DeploymentManager
             $path.'/Typhoon/TypeInspector.php'
         );
         $this->copyFile(
-            $this->deploySourcePath.'/Typhoon/Validator.php',
-            $path.'/Typhoon/Validator.php'
-        );
-        $this->copyFile(
             $this->deploySourcePath.'/Typhoon/Exception/MissingArgumentException.php',
             $path.'/Typhoon/Exception/MissingArgumentException.php'
         );

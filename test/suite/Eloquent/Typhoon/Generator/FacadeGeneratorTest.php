@@ -60,7 +60,13 @@ class FacadeGeneratorTest extends MultiGenerationTestCase
             '/../../../../src/Typhoon/Eloquent/Typhoon/TestFixture/ExampleTyphoon.php'
         );
 
-        $this->assertSame($expected, $this->_generator->generate($configuration));
+        $this->assertSame($expected, $this->_generator->generate(
+            $configuration,
+            $namespaceName,
+            $className
+        ));
+        $this->assertSame('Typhoon', $namespaceName);
+        $this->assertSame('Typhoon', $className);
     }
 
     public function testGenerateNoCallable()
@@ -71,6 +77,12 @@ class FacadeGeneratorTest extends MultiGenerationTestCase
             '/../../../../src/Typhoon/Eloquent/Typhoon/TestFixture/ExampleTyphoonNoCallable.php'
         );
 
-        $this->assertSame($expected, $this->_generator->generate($configuration));
+        $this->assertSame($expected, $this->_generator->generate(
+            $configuration,
+            $namespaceName,
+            $className
+        ));
+        $this->assertSame('Typhoon', $namespaceName);
+        $this->assertSame('Typhoon', $className);
     }
 }
