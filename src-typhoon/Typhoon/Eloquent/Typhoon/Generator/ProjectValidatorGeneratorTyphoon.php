@@ -7,9 +7,9 @@ class ProjectValidatorGeneratorTyphoon extends \Typhoon\Validator
     public function validateConstruct(array $arguments)
     {
         ($argumentCount = \count($arguments));
-        if (($argumentCount > 5))
+        if (($argumentCount > 6))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(5, $arguments[5]));
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(6, $arguments[6]));
         }
     }
     public function classMapper(array $arguments)
@@ -34,6 +34,13 @@ class ProjectValidatorGeneratorTyphoon extends \Typhoon\Validator
         }
     }
     public function abstractValidatorGenerator(array $arguments)
+    {
+        if ((\count($arguments) > 0))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(0, $arguments[0]));
+        }
+    }
+    public function dummyValidatorGenerator(array $arguments)
     {
         if ((\count($arguments) > 0))
         {
@@ -77,6 +84,18 @@ class ProjectValidatorGeneratorTyphoon extends \Typhoon\Validator
         }
     }
     public function generateAbstractValidator(array $arguments)
+    {
+        ($argumentCount = \count($arguments));
+        if (($argumentCount < 1))
+        {
+            throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
+        }
+        elseif (($argumentCount > 1))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(1, $arguments[1]));
+        }
+    }
+    public function generateDummyValidator(array $arguments)
     {
         ($argumentCount = \count($arguments));
         if (($argumentCount < 1))

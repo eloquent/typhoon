@@ -33,19 +33,11 @@ class DeploymentManagerTest extends MultiGenerationTestCase
         $manager = new DeploymentManager($isolator);
 
         $manager->deploy('foo');
-        $isDirVerificationTyphoon = Phake::verify($isolator, Phake::times(2))
-            ->is_dir('foo/Typhoon')
-        ;
         $isDirVerificationException = Phake::verify($isolator, Phake::times(4))
             ->is_dir('foo/Typhoon/Exception')
         ;
         Phake::inOrder(
-            $isDirVerificationTyphoon,
-            Phake::verify($isolator)->copy(
-                $this->_deploySourcePath.'/Typhoon/DummyValidator.php',
-                'foo/Typhoon/DummyValidator.php'
-            ),
-            $isDirVerificationTyphoon,
+            Phake::verify($isolator)->is_dir('foo/Typhoon'),
             Phake::verify($isolator)->copy(
                 $this->_deploySourcePath.'/Typhoon/TypeInspector.php',
                 'foo/Typhoon/TypeInspector.php'
@@ -83,17 +75,9 @@ class DeploymentManagerTest extends MultiGenerationTestCase
         $manager = new DeploymentManager($isolator);
 
         $manager->deploy('foo');
-        $isDirVerificationTyphoon = Phake::verify($isolator, Phake::times(2))
-            ->is_dir('foo/Typhoon')
-        ;
         Phake::inOrder(
-            $isDirVerificationTyphoon,
-            Phake::verify($isolator)->mkdir('foo/Typhoon', 0777, true),
-            Phake::verify($isolator)->copy(
-                $this->_deploySourcePath.'/Typhoon/DummyValidator.php',
-                'foo/Typhoon/DummyValidator.php'
-            ),
-            $isDirVerificationTyphoon
+            Phake::verify($isolator)->is_dir('foo/Typhoon'),
+            Phake::verify($isolator)->mkdir('foo/Typhoon', 0777, true)
         );
     }
 }

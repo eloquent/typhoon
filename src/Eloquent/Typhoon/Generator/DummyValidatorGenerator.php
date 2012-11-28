@@ -12,30 +12,16 @@
 namespace Eloquent\Typhoon\Generator;
 
 use Eloquent\Typhoon\Configuration\RuntimeConfiguration;
-use Icecave\Pasta\AST\Expr\Assign;
-use Icecave\Pasta\AST\Expr\Call;
-use Icecave\Pasta\AST\Expr\Constant;
-use Icecave\Pasta\AST\Expr\Literal;
-use Icecave\Pasta\AST\Expr\LogicalNot;
-use Icecave\Pasta\AST\Expr\Member;
-use Icecave\Pasta\AST\Expr\NewOperator;
 use Icecave\Pasta\AST\Expr\QualifiedIdentifier;
-use Icecave\Pasta\AST\Expr\Variable;
 use Icecave\Pasta\AST\Func\ArrayTypeHint;
 use Icecave\Pasta\AST\Func\Parameter;
 use Icecave\Pasta\AST\Identifier;
 use Icecave\Pasta\AST\PhpBlock;
-use Icecave\Pasta\AST\Stmt\ExpressionStatement;
-use Icecave\Pasta\AST\Stmt\IfStatement;
 use Icecave\Pasta\AST\Stmt\NamespaceStatement;
-use Icecave\Pasta\AST\Stmt\ReturnStatement;
-use Icecave\Pasta\AST\Stmt\ThrowStatement;
 use Icecave\Pasta\AST\SyntaxTree;
 use Icecave\Pasta\AST\Type\AccessModifier;
 use Icecave\Pasta\AST\Type\ClassDefinition;
-use Icecave\Pasta\AST\Type\ClassModifier;
 use Icecave\Pasta\AST\Type\ConcreteMethod;
-use Icecave\Pasta\AST\Type\Property;
 use Icecave\Rasta\Renderer;
 use Typhoon\Typhoon;
 
