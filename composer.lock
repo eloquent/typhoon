@@ -304,12 +304,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/IcecaveStudios/pasta-ast.git",
-                "reference": "7bc1ba6f5d3018f8139148f3f59ce7cf4ffce202"
+                "reference": "e60498ac26189a50990b190d34a61b3677a14a69"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/IcecaveStudios/pasta-ast/archive/7bc1ba6f5d3018f8139148f3f59ce7cf4ffce202.zip",
-                "reference": "7bc1ba6f5d3018f8139148f3f59ce7cf4ffce202",
+                "url": "https://github.com/IcecaveStudios/pasta-ast/archive/e60498ac26189a50990b190d34a61b3677a14a69.zip",
+                "reference": "e60498ac26189a50990b190d34a61b3677a14a69",
                 "shasum": ""
             },
             "require": {
@@ -319,7 +319,7 @@
             "require-dev": {
                 "phake/phake": "1.*"
             },
-            "time": "1353129762",
+            "time": "1354104039",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -352,12 +352,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/IcecaveStudios/rasta.git",
-                "reference": "cdb2690f227215969a2d270dc7e70044528c176d"
+                "reference": "7a87be08edf1a11f296bb9ff3b0858335406f74e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/IcecaveStudios/rasta/archive/cdb2690f227215969a2d270dc7e70044528c176d.zip",
-                "reference": "cdb2690f227215969a2d270dc7e70044528c176d",
+                "url": "https://github.com/IcecaveStudios/rasta/archive/7a87be08edf1a11f296bb9ff3b0858335406f74e.zip",
+                "reference": "7a87be08edf1a11f296bb9ff3b0858335406f74e",
                 "shasum": ""
             },
             "require": {
@@ -367,7 +367,7 @@
             "require-dev": {
                 "phake/phake": "1.*"
             },
-            "time": "1353224171",
+            "time": "1354104883",
             "type": "library",
             "installation-source": "source",
             "autoload": {
