@@ -40,7 +40,7 @@ use Icecave\Pasta\AST\Type\Property;
 use Icecave\Rasta\Renderer;
 use Typhoon\Typhoon;
 
-class UnexpectedArgumentExceptionGenerator
+class UnexpectedArgumentValueExceptionGenerator
 {
     /**
      * @param Renderer|null $renderer
@@ -102,7 +102,7 @@ class UnexpectedArgumentExceptionGenerator
         $this->typhoon->generateSyntaxTree(func_get_args());
 
         $namespaceName = 'Typhoon\Exception';
-        $className = 'UnexpectedArgumentException';
+        $className = 'UnexpectedArgumentValueException';
 
         $classDefinition = new ClassDefinition(
             new Identifier($className),
@@ -112,17 +112,27 @@ class UnexpectedArgumentExceptionGenerator
             QualifiedIdentifier::fromString('UnexpectedInputException')
         );
         $classDefinition->add($this->generateConstructor());
+        $classDefinition->add($this->generateParameterNameMethod());
         $classDefinition->add($this->generateIndexMethod());
         $classDefinition->add($this->generateValueMethod());
+        $classDefinition->add($this->generateExpectedTypeMethod());
         $classDefinition->add($this->generateTypeInspectorMethod());
         $classDefinition->add($this->generateUnexpectedTypeMethod());
 
+        $classDefinition->add(new Property(
+            new Identifier('parameterName'),
+            AccessModifier::PRIVATE_()
+        ));
         $classDefinition->add(new Property(
             new Identifier('index'),
             AccessModifier::PRIVATE_()
         ));
         $classDefinition->add(new Property(
             new Identifier('value'),
+            AccessModifier::PRIVATE_()
+        ));
+        $classDefinition->add(new Property(
+            new Identifier('expectedValue'),
             AccessModifier::PRIVATE_()
         ));
         $classDefinition->add(new Property(
@@ -153,15 +163,23 @@ class UnexpectedArgumentExceptionGenerator
     {
         $this->typhoon->generateConstructor(func_get_args());
 
+        $parameterNameIdentifier = new Identifier('parameterName');
+        $parameterNameVariable = new Variable($parameterNameIdentifier);
         $indexIdentifier = new Identifier('index');
         $indexVariable = new Variable($indexIdentifier);
         $valueIdentifier = new Identifier('value');
         $valueVariable = new Variable($valueIdentifier);
+        $expectedTypeIdentifier = new Identifier('expectedType');
+        $expectedTypeVariable = new Variable($expectedTypeIdentifier);
         $previousIdentifier = new Identifier('previous');
         $previousVariable = new Variable($previousIdentifier);
         $typeInspectorIdentifier = new Identifier('typeInspector');
         $typeInspectorVariable = new Variable($typeInspectorIdentifier);
         $thisVariable = new Variable(new Identifier('this'));
+        $thisParameterNameMember = new Member(
+            $thisVariable,
+            new Constant($parameterNameIdentifier)
+        );
         $thisIndexMember = new Member(
             $thisVariable,
             new Constant($indexIdentifier)
@@ -169,6 +187,10 @@ class UnexpectedArgumentExceptionGenerator
         $thisValueMember = new Member(
             $thisVariable,
             new Constant($valueIdentifier)
+        );
+        $thisExpectedTypeMember = new Member(
+            $thisVariable,
+            new Constant($expectedTypeIdentifier)
         );
         $thisTypeInspectorMember = new Member(
             $thisVariable,
@@ -183,8 +205,10 @@ class UnexpectedArgumentExceptionGenerator
             new Identifier('__construct'),
             AccessModifier::PUBLIC_()
         );
+        $method->addParameter(new Parameter($parameterNameIdentifier));
         $method->addParameter(new Parameter($indexIdentifier));
         $method->addParameter(new Parameter($valueIdentifier));
+        $method->addParameter(new Parameter($expectedTypeIdentifier));
         $previousParameter = new Parameter(
             $previousIdentifier,
             new ObjectTypeHint(QualifiedIdentifier::fromString('\Exception'))
@@ -213,12 +237,20 @@ class UnexpectedArgumentExceptionGenerator
         $method->statementBlock()->add($nullTypeInspectorIf);
 
         $method->statementBlock()->add(new ExpressionStatement(new Assign(
+            $thisParameterNameMember,
+            $parameterNameVariable
+        )));
+        $method->statementBlock()->add(new ExpressionStatement(new Assign(
             $thisIndexMember,
             $indexVariable
         )));
         $method->statementBlock()->add(new ExpressionStatement(new Assign(
             $thisValueMember,
             $valueVariable
+        )));
+        $method->statementBlock()->add(new ExpressionStatement(new Assign(
+            $thisExpectedTypeMember,
+            $expectedTypeVariable
         )));
         $method->statementBlock()->add(new ExpressionStatement(new Assign(
             $thisTypeInspectorMember,
@@ -236,11 +268,13 @@ class UnexpectedArgumentExceptionGenerator
         )));
 
         $sprintfCall = new Call(QualifiedIdentifier::fromString('\sprintf'));
-        $sprintfCall->add(
-            new Literal("Unexpected argument of type '%s' at index %d.")
-        );
+        $sprintfCall->add(new Literal(
+            "Unexpected argument of type '%s' for parameter '%s' at index %d. Expected '%s'."
+        ));
         $sprintfCall->add($thisUnexpectedTypeMember);
+        $sprintfCall->add($parameterNameVariable);
         $sprintfCall->add($indexVariable);
+        $sprintfCall->add($expectedTypeVariable);
         $parentConstructCall = new Call(new StaticMember(
             new Constant(new Identifier('parent')),
             new Constant(new Identifier('__construct'))
@@ -250,6 +284,26 @@ class UnexpectedArgumentExceptionGenerator
         $method->statementBlock()->add(new ExpressionStatement(
             $parentConstructCall
         ));
+
+        return $method;
+    }
+
+    /**
+     * @return ConcreteMethod
+     */
+    protected function generateParameterNameMethod()
+    {
+        $this->typhoon->generateParameterNameMethod(func_get_args());
+
+        $parameterNameIdentifier = new Identifier('parameterName');
+        $method = new ConcreteMethod(
+            $parameterNameIdentifier,
+            AccessModifier::PUBLIC_()
+        );
+        $method->statementBlock()->add(new ReturnStatement(new Member(
+            new Variable(new Identifier('this')),
+            new Constant($parameterNameIdentifier)
+        )));
 
         return $method;
     }
@@ -289,6 +343,26 @@ class UnexpectedArgumentExceptionGenerator
         $method->statementBlock()->add(new ReturnStatement(new Member(
             new Variable(new Identifier('this')),
             new Constant($valueIdentifier)
+        )));
+
+        return $method;
+    }
+
+    /**
+     * @return ConcreteMethod
+     */
+    protected function generateExpectedTypeMethod()
+    {
+        $this->typhoon->generateExpectedTypeMethod(func_get_args());
+
+        $expectedTypeIdentifier = new Identifier('expectedType');
+        $method = new ConcreteMethod(
+            $expectedTypeIdentifier,
+            AccessModifier::PUBLIC_()
+        );
+        $method->statementBlock()->add(new ReturnStatement(new Member(
+            new Variable(new Identifier('this')),
+            new Constant($expectedTypeIdentifier)
         )));
 
         return $method;
