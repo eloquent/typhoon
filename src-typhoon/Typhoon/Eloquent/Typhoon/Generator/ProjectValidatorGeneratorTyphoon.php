@@ -7,9 +7,9 @@ class ProjectValidatorGeneratorTyphoon extends \Typhoon\Validator
     public function validateConstruct(array $arguments)
     {
         ($argumentCount = \count($arguments));
-        if (($argumentCount > 7))
+        if (($argumentCount > 11))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(7, $arguments[7]));
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(11, $arguments[11]));
         }
     }
     public function classMapper(array $arguments)
@@ -48,6 +48,34 @@ class ProjectValidatorGeneratorTyphoon extends \Typhoon\Validator
         }
     }
     public function typeInspectorGenerator(array $arguments)
+    {
+        if ((\count($arguments) > 0))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(0, $arguments[0]));
+        }
+    }
+    public function unexpectedInputExceptionGenerator(array $arguments)
+    {
+        if ((\count($arguments) > 0))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(0, $arguments[0]));
+        }
+    }
+    public function missingArgumentExceptionGenerator(array $arguments)
+    {
+        if ((\count($arguments) > 0))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(0, $arguments[0]));
+        }
+    }
+    public function unexpectedArgumentExceptionGenerator(array $arguments)
+    {
+        if ((\count($arguments) > 0))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(0, $arguments[0]));
+        }
+    }
+    public function unexpectedArgumentValueExceptionGenerator(array $arguments)
     {
         if ((\count($arguments) > 0))
         {
@@ -115,6 +143,54 @@ class ProjectValidatorGeneratorTyphoon extends \Typhoon\Validator
         }
     }
     public function generateTypeInspector(array $arguments)
+    {
+        ($argumentCount = \count($arguments));
+        if (($argumentCount < 1))
+        {
+            throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
+        }
+        elseif (($argumentCount > 1))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(1, $arguments[1]));
+        }
+    }
+    public function generateUnexpectedInputException(array $arguments)
+    {
+        ($argumentCount = \count($arguments));
+        if (($argumentCount < 1))
+        {
+            throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
+        }
+        elseif (($argumentCount > 1))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(1, $arguments[1]));
+        }
+    }
+    public function generateMissingArgumentException(array $arguments)
+    {
+        ($argumentCount = \count($arguments));
+        if (($argumentCount < 1))
+        {
+            throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
+        }
+        elseif (($argumentCount > 1))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(1, $arguments[1]));
+        }
+    }
+    public function generateUnexpectedArgumentException(array $arguments)
+    {
+        ($argumentCount = \count($arguments));
+        if (($argumentCount < 1))
+        {
+            throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
+        }
+        elseif (($argumentCount > 1))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(1, $arguments[1]));
+        }
+    }
+    public function generateUnexpectedArgumentValueException(array $arguments)
     {
         ($argumentCount = \count($arguments));
         if (($argumentCount < 1))

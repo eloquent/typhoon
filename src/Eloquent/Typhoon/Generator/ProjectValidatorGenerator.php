@@ -13,19 +13,27 @@ namespace Eloquent\Typhoon\Generator;
 
 use Eloquent\Typhoon\ClassMapper\ClassMapper;
 use Eloquent\Typhoon\Configuration\Configuration;
+use Eloquent\Typhoon\Generator\ExceptionGenerator\MissingArgumentExceptionGenerator;
+use Eloquent\Typhoon\Generator\ExceptionGenerator\UnexpectedArgumentExceptionGenerator;
+use Eloquent\Typhoon\Generator\ExceptionGenerator\UnexpectedArgumentValueExceptionGenerator;
+use Eloquent\Typhoon\Generator\ExceptionGenerator\UnexpectedInputExceptionGenerator;
 use Icecave\Isolator\Isolator;
 use Typhoon\Typhoon;
 
 class ProjectValidatorGenerator
 {
     /**
-     * @param ClassMapper|null                $classMapper
-     * @param ValidatorClassGenerator|null    $validatorClassGenerator
-     * @param FacadeGenerator|null            $facadeGenerator
-     * @param AbstractValidatorGenerator|null $abstractValidatorGenerator
-     * @param DummyValidatorGenerator|null    $dummyValidatorGenerator
-     * @param TypeInspectorGenerator|null     $typeInspectorGenerator
-     * @param Isolator|null                   $isolator
+     * @param ClassMapper|null                               $classMapper
+     * @param ValidatorClassGenerator|null                   $validatorClassGenerator
+     * @param FacadeGenerator|null                           $facadeGenerator
+     * @param AbstractValidatorGenerator|null                $abstractValidatorGenerator
+     * @param DummyValidatorGenerator|null                   $dummyValidatorGenerator
+     * @param TypeInspectorGenerator|null                    $typeInspectorGenerator
+     * @param UnexpectedInputExceptionGenerator|null         $unexpectedInputExceptionGenerator
+     * @param MissingArgumentExceptionGenerator|null         $missingArgumentExceptionGenerator
+     * @param UnexpectedArgumentExceptionGenerator|null      $unexpectedArgumentExceptionGenerator
+     * @param UnexpectedArgumentValueExceptionGenerator|null $unexpectedArgumentValueExceptionGenerator
+     * @param Isolator|null                                  $isolator
      */
     public function __construct(
         ClassMapper $classMapper = null,
@@ -34,6 +42,10 @@ class ProjectValidatorGenerator
         AbstractValidatorGenerator $abstractValidatorGenerator = null,
         DummyValidatorGenerator $dummyValidatorGenerator = null,
         TypeInspectorGenerator $typeInspectorGenerator = null,
+        UnexpectedInputExceptionGenerator $unexpectedInputExceptionGenerator = null,
+        MissingArgumentExceptionGenerator $missingArgumentExceptionGenerator = null,
+        UnexpectedArgumentExceptionGenerator $unexpectedArgumentExceptionGenerator = null,
+        UnexpectedArgumentValueExceptionGenerator $unexpectedArgumentValueExceptionGenerator = null,
         Isolator $isolator = null
     ) {
         $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
@@ -55,6 +67,18 @@ class ProjectValidatorGenerator
         if (null === $typeInspectorGenerator) {
             $typeInspectorGenerator = new TypeInspectorGenerator;
         }
+        if (null === $unexpectedInputExceptionGenerator) {
+            $unexpectedInputExceptionGenerator = new UnexpectedInputExceptionGenerator;
+        }
+        if (null === $missingArgumentExceptionGenerator) {
+            $missingArgumentExceptionGenerator = new MissingArgumentExceptionGenerator;
+        }
+        if (null === $unexpectedArgumentExceptionGenerator) {
+            $unexpectedArgumentExceptionGenerator = new UnexpectedArgumentExceptionGenerator;
+        }
+        if (null === $unexpectedArgumentValueExceptionGenerator) {
+            $unexpectedArgumentValueExceptionGenerator = new UnexpectedArgumentValueExceptionGenerator;
+        }
 
         $this->classMapper = $classMapper;
         $this->validatorClassGenerator = $validatorClassGenerator;
@@ -62,6 +86,10 @@ class ProjectValidatorGenerator
         $this->abstractValidatorGenerator = $abstractValidatorGenerator;
         $this->dummyValidatorGenerator = $dummyValidatorGenerator;
         $this->typeInspectorGenerator = $typeInspectorGenerator;
+        $this->unexpectedInputExceptionGenerator = $unexpectedInputExceptionGenerator;
+        $this->missingArgumentExceptionGenerator = $missingArgumentExceptionGenerator;
+        $this->unexpectedArgumentExceptionGenerator = $unexpectedArgumentExceptionGenerator;
+        $this->unexpectedArgumentValueExceptionGenerator = $unexpectedArgumentValueExceptionGenerator;
         $this->isolator = Isolator::get($isolator);
     }
 
@@ -126,6 +154,46 @@ class ProjectValidatorGenerator
     }
 
     /**
+     * @return UnexpectedInputExceptionGenerator
+     */
+    public function unexpectedInputExceptionGenerator()
+    {
+        $this->typhoon->unexpectedInputExceptionGenerator(func_get_args());
+
+        return $this->unexpectedInputExceptionGenerator;
+    }
+
+    /**
+     * @return MissingArgumentExceptionGenerator
+     */
+    public function missingArgumentExceptionGenerator()
+    {
+        $this->typhoon->missingArgumentExceptionGenerator(func_get_args());
+
+        return $this->missingArgumentExceptionGenerator;
+    }
+
+    /**
+     * @return UnexpectedArgumentExceptionGenerator
+     */
+    public function unexpectedArgumentExceptionGenerator()
+    {
+        $this->typhoon->unexpectedArgumentExceptionGenerator(func_get_args());
+
+        return $this->unexpectedArgumentExceptionGenerator;
+    }
+
+    /**
+     * @return UnexpectedArgumentValueExceptionGenerator
+     */
+    public function unexpectedArgumentValueExceptionGenerator()
+    {
+        $this->typhoon->unexpectedArgumentValueExceptionGenerator(func_get_args());
+
+        return $this->unexpectedArgumentValueExceptionGenerator;
+    }
+
+    /**
      * @param Configuration $configuration
      */
     public function generate(Configuration $configuration)
@@ -137,6 +205,10 @@ class ProjectValidatorGenerator
         $this->generateAbstractValidator($configuration);
         $this->generateDummyValidator($configuration);
         $this->generateTypeInspector($configuration);
+        $this->generateUnexpectedInputException($configuration);
+        $this->generateMissingArgumentException($configuration);
+        $this->generateUnexpectedArgumentException($configuration);
+        $this->generateUnexpectedArgumentValueException($configuration);
     }
 
     /**
@@ -261,6 +333,98 @@ class ProjectValidatorGenerator
     }
 
     /**
+     * @param Configuration $configuration
+     */
+    protected function generateUnexpectedInputException(Configuration $configuration)
+    {
+        $this->typhoon->generateUnexpectedInputException(func_get_args());
+
+        $source = $this->unexpectedInputExceptionGenerator()->generate(
+            $configuration,
+            $namespaceName,
+            $className
+        );
+
+        $this->isolator->file_put_contents(
+            $this->prepareOutputPath(
+                $configuration,
+                $namespaceName,
+                $className
+            ),
+            $source
+        );
+    }
+
+    /**
+     * @param Configuration $configuration
+     */
+    protected function generateMissingArgumentException(Configuration $configuration)
+    {
+        $this->typhoon->generateMissingArgumentException(func_get_args());
+
+        $source = $this->missingArgumentExceptionGenerator()->generate(
+            $configuration,
+            $namespaceName,
+            $className
+        );
+
+        $this->isolator->file_put_contents(
+            $this->prepareOutputPath(
+                $configuration,
+                $namespaceName,
+                $className
+            ),
+            $source
+        );
+    }
+
+    /**
+     * @param Configuration $configuration
+     */
+    protected function generateUnexpectedArgumentException(Configuration $configuration)
+    {
+        $this->typhoon->generateUnexpectedArgumentException(func_get_args());
+
+        $source = $this->unexpectedArgumentExceptionGenerator()->generate(
+            $configuration,
+            $namespaceName,
+            $className
+        );
+
+        $this->isolator->file_put_contents(
+            $this->prepareOutputPath(
+                $configuration,
+                $namespaceName,
+                $className
+            ),
+            $source
+        );
+    }
+
+    /**
+     * @param Configuration $configuration
+     */
+    protected function generateUnexpectedArgumentValueException(Configuration $configuration)
+    {
+        $this->typhoon->generateUnexpectedArgumentValueException(func_get_args());
+
+        $source = $this->unexpectedArgumentValueExceptionGenerator()->generate(
+            $configuration,
+            $namespaceName,
+            $className
+        );
+
+        $this->isolator->file_put_contents(
+            $this->prepareOutputPath(
+                $configuration,
+                $namespaceName,
+                $className
+            ),
+            $source
+        );
+    }
+
+    /**
      * @param array<string> $classPaths
      *
      * @return array<ClassDefinition>
@@ -349,6 +513,11 @@ class ProjectValidatorGenerator
     private $facadeGenerator;
     private $abstractValidatorGenerator;
     private $dummyValidatorGenerator;
+    private $typeInspectorGenerator;
+    private $unexpectedInputExceptionGenerator;
+    private $missingArgumentExceptionGenerator;
+    private $unexpectedArgumentExceptionGenerator;
+    private $unexpectedArgumentValueExceptionGenerator;
     private $isolator;
     private $typhoon;
 }

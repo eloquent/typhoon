@@ -29,6 +29,18 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
         $this->_abstractValidatorGenerator = Phake::mock(__NAMESPACE__.'\AbstractValidatorGenerator');
         $this->_dummyValidatorGenerator = Phake::mock(__NAMESPACE__.'\DummyValidatorGenerator');
         $this->_typeInspectorGenerator = Phake::mock(__NAMESPACE__.'\TypeInspectorGenerator');
+        $this->_unexpectedInputExceptionGenerator = Phake::mock(
+            __NAMESPACE__.'\ExceptionGenerator\UnexpectedInputExceptionGenerator'
+        );
+        $this->_missingArgumentExceptionGenerator = Phake::mock(
+            __NAMESPACE__.'\ExceptionGenerator\MissingArgumentExceptionGenerator'
+        );
+        $this->_unexpectedArgumentExceptionGenerator = Phake::mock(
+            __NAMESPACE__.'\ExceptionGenerator\UnexpectedArgumentExceptionGenerator'
+        );
+        $this->_unexpectedArgumentValueExceptionGenerator = Phake::mock(
+            __NAMESPACE__.'\ExceptionGenerator\UnexpectedArgumentValueExceptionGenerator'
+        );
         $this->_isolator = Phake::mock('Icecave\Isolator\Isolator');
         $this->_generator = Phake::partialMock(
             __NAMESPACE__.'\ProjectValidatorGenerator',
@@ -38,6 +50,10 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
             $this->_abstractValidatorGenerator,
             $this->_dummyValidatorGenerator,
             $this->_typeInspectorGenerator,
+            $this->_unexpectedInputExceptionGenerator,
+            $this->_missingArgumentExceptionGenerator,
+            $this->_unexpectedArgumentExceptionGenerator,
+            $this->_unexpectedArgumentValueExceptionGenerator,
             $this->_isolator
         );
     }
@@ -50,6 +66,22 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
         $this->assertSame($this->_abstractValidatorGenerator, $this->_generator->abstractValidatorGenerator());
         $this->assertSame($this->_dummyValidatorGenerator, $this->_generator->dummyValidatorGenerator());
         $this->assertSame($this->_typeInspectorGenerator, $this->_generator->typeInspectorGenerator());
+        $this->assertSame(
+            $this->_unexpectedInputExceptionGenerator,
+            $this->_generator->unexpectedInputExceptionGenerator()
+        );
+        $this->assertSame(
+            $this->_missingArgumentExceptionGenerator,
+            $this->_generator->missingArgumentExceptionGenerator()
+        );
+        $this->assertSame(
+            $this->_unexpectedArgumentExceptionGenerator,
+            $this->_generator->unexpectedArgumentExceptionGenerator()
+        );
+        $this->assertSame(
+            $this->_unexpectedArgumentValueExceptionGenerator,
+            $this->_generator->unexpectedArgumentValueExceptionGenerator()
+        );
     }
 
     public function testConstructorDefaults()
@@ -79,6 +111,22 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
         $this->assertInstanceOf(
             __NAMESPACE__.'\TypeInspectorGenerator',
             $generator->typeInspectorGenerator()
+        );
+        $this->assertInstanceOf(
+            __NAMESPACE__.'\ExceptionGenerator\UnexpectedInputExceptionGenerator',
+            $generator->unexpectedInputExceptionGenerator()
+        );
+        $this->assertInstanceOf(
+            __NAMESPACE__.'\ExceptionGenerator\MissingArgumentExceptionGenerator',
+            $generator->missingArgumentExceptionGenerator()
+        );
+        $this->assertInstanceOf(
+            __NAMESPACE__.'\ExceptionGenerator\UnexpectedArgumentExceptionGenerator',
+            $generator->unexpectedArgumentExceptionGenerator()
+        );
+        $this->assertInstanceOf(
+            __NAMESPACE__.'\ExceptionGenerator\UnexpectedArgumentValueExceptionGenerator',
+            $generator->unexpectedArgumentValueExceptionGenerator()
         );
     }
 
@@ -155,13 +203,56 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
             )
             ->thenReturn('Type inspector source')
         ;
+        Phake::when($this->_unexpectedInputExceptionGenerator)
+            ->generate(
+                $this->identicalTo($configuration),
+                Phake::setReference('Typhoon\Exception'),
+                Phake::setReference('UnexpectedInputException')
+            )
+            ->thenReturn('UnexpectedInputException source')
+        ;
+        Phake::when($this->_missingArgumentExceptionGenerator)
+            ->generate(
+                $this->identicalTo($configuration),
+                Phake::setReference('Typhoon\Exception'),
+                Phake::setReference('MissingArgumentException')
+            )
+            ->thenReturn('MissingArgumentException source')
+        ;
+        Phake::when($this->_unexpectedArgumentExceptionGenerator)
+            ->generate(
+                $this->identicalTo($configuration),
+                Phake::setReference('Typhoon\Exception'),
+                Phake::setReference('UnexpectedArgumentException')
+            )
+            ->thenReturn('UnexpectedArgumentException source')
+        ;
+        Phake::when($this->_unexpectedArgumentValueExceptionGenerator)
+            ->generate(
+                $this->identicalTo($configuration),
+                Phake::setReference('Typhoon\Exception'),
+                Phake::setReference('UnexpectedArgumentValueException')
+            )
+            ->thenReturn('UnexpectedArgumentValueException source')
+        ;
         Phake::when($this->_isolator)
             ->is_dir(Phake::anyParameters())
             ->thenReturn(true)
             ->thenReturn(false)
+            ->thenReturn(false)
+            ->thenReturn(false)
+            ->thenReturn(false)
+            ->thenReturn(false)
+            ->thenReturn(false)
+            ->thenReturn(true)
+            ->thenReturn(true)
+            ->thenReturn(true)
         ;
         $this->_generator->generate($configuration);
 
+        $exceptionIsDirVerification = Phake::verify($this->_isolator, Phake::times(4))
+            ->is_dir('foo/Typhoon/Exception')
+        ;
         Phake::inOrder(
             Phake::verify($this->_generator)->buildClassMap(array('bar', 'baz')),
             Phake::verify($this->_validatorClassGenerator)->generate(
@@ -230,6 +321,31 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
             Phake::verify($this->_isolator)->file_put_contents(
                 'foo/Namespace/Name/Type/Inspector/Class/Name.php',
                 'Type inspector source'
+            ),
+            $exceptionIsDirVerification,
+            Phake::verify($this->_isolator)->mkdir(
+                'foo/Typhoon/Exception',
+                0777,
+                true
+            ),
+            Phake::verify($this->_isolator)->file_put_contents(
+                'foo/Typhoon/Exception/UnexpectedInputException.php',
+                'UnexpectedInputException source'
+            ),
+            $exceptionIsDirVerification,
+            Phake::verify($this->_isolator)->file_put_contents(
+                'foo/Typhoon/Exception/MissingArgumentException.php',
+                'MissingArgumentException source'
+            ),
+            $exceptionIsDirVerification,
+            Phake::verify($this->_isolator)->file_put_contents(
+                'foo/Typhoon/Exception/UnexpectedArgumentException.php',
+                'UnexpectedArgumentException source'
+            ),
+            $exceptionIsDirVerification,
+            Phake::verify($this->_isolator)->file_put_contents(
+                'foo/Typhoon/Exception/UnexpectedArgumentValueException.php',
+                'UnexpectedArgumentValueException source'
             )
         );
         Phake::verify($this->_isolator, Phake::never())->mkdir(
