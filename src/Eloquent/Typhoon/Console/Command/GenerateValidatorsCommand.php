@@ -11,7 +11,6 @@
 
 namespace Eloquent\Typhoon\Console\Command;
 
-use Eloquent\Typhoon\Deployment\DeploymentManager;
 use Eloquent\Typhoon\Generator\ProjectValidatorGenerator;
 use Icecave\Isolator\Isolator;
 use Symfony\Component\Console\Command\Command;
@@ -23,24 +22,18 @@ class GenerateValidatorsCommand extends Command
 {
     /**
      * @param ProjectValidatorGenerator|null $generator
-     * @param DeploymentManager|null         $deploymentManager
      * @param Isolator|null                  $isolator
      */
     public function __construct(
         ProjectValidatorGenerator $generator = null,
-        DeploymentManager $deploymentManager = null,
         Isolator $isolator = null
     ) {
         $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
         if (null === $generator) {
             $generator = new ProjectValidatorGenerator;
         }
-        if (null === $deploymentManager) {
-            $deploymentManager = new DeploymentManager;
-        }
 
         $this->generator = $generator;
-        $this->deploymentManager = $deploymentManager;
         $this->isolator = Isolator::get($isolator);
 
         parent::__construct();
@@ -54,16 +47,6 @@ class GenerateValidatorsCommand extends Command
         $this->typhoon->generator(func_get_args());
 
         return $this->generator;
-    }
-
-    /**
-     * @return DeploymentManager
-     */
-    public function deploymentManager()
-    {
-        $this->typhoon->deploymentManager(func_get_args());
-
-        return $this->deploymentManager;
     }
 
     protected function configure()
@@ -98,16 +81,10 @@ class GenerateValidatorsCommand extends Command
         $output->writeln('Generating validator classes...');
         $this->generator()->generate($configuration);
 
-        $output->writeln('Deploying Typhoon...');
-        $this->deploymentManager()->deploy(
-            $configuration->outputPath()
-        );
-
         $output->writeln('Done.');
     }
 
     private $generator;
-    private $deploymentManager;
     private $isolator;
     private $typhoon;
 }

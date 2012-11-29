@@ -41,12 +41,10 @@ class GenerateValidatorsCommandTest extends MultiGenerationTestCase
         $this->_generator = Phake::mock('Eloquent\Typhoon\Generator\ProjectValidatorGenerator');
         $this->_classGenerator = Phake::mock('Eloquent\Typhoon\Generator\ValidatorClassGenerator');
         Phake::when($this->_generator)->classGenerator()->thenReturn($this->_classGenerator);
-        $this->_deploymentManager = Phake::mock('Eloquent\Typhoon\Deployment\DeploymentManager');
         $this->_isolator = Phake::mock('Icecave\Isolator\Isolator');
         $this->_command = Phake::partialMock(
             __NAMESPACE__.'\GenerateValidatorsCommand',
             $this->_generator,
-            $this->_deploymentManager,
             $this->_isolator
         );
         Phake::when($this->_command)->getApplication()->thenReturn($this->_application);
@@ -55,7 +53,6 @@ class GenerateValidatorsCommandTest extends MultiGenerationTestCase
     public function testConstructor()
     {
         $this->assertSame($this->_generator, $this->_command->generator());
-        $this->assertSame($this->_deploymentManager, $this->_command->deploymentManager());
     }
 
     public function testConstructorDefaults()
@@ -65,10 +62,6 @@ class GenerateValidatorsCommandTest extends MultiGenerationTestCase
         $this->assertInstanceOf(
             'Eloquent\Typhoon\Generator\ProjectValidatorGenerator',
             $command->generator()
-        );
-        $this->assertInstanceOf(
-            'Eloquent\Typhoon\Deployment\DeploymentManager',
-            $command->deploymentManager()
         );
     }
 
@@ -96,8 +89,6 @@ class GenerateValidatorsCommandTest extends MultiGenerationTestCase
             Phake::verify($this->_generator)->generate(
                 $this->identicalTo($this->_configuration)
             ),
-            Phake::verify($output)->writeln('Deploying Typhoon...'),
-            Phake::verify($this->_deploymentManager)->deploy('baz'),
             Phake::verify($output)->writeln('Done.')
         );
     }
