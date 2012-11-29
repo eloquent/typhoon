@@ -37,11 +37,6 @@ class DeploymentManagerTest extends MultiGenerationTestCase
             ->is_dir('foo/Typhoon/Exception')
         ;
         Phake::inOrder(
-            Phake::verify($isolator)->is_dir('foo/Typhoon'),
-            Phake::verify($isolator)->copy(
-                $this->_deploySourcePath.'/Typhoon/TypeInspector.php',
-                'foo/Typhoon/TypeInspector.php'
-            ),
             $isDirVerificationException,
             Phake::verify($isolator)->copy(
                 $this->_deploySourcePath.'/Typhoon/Exception/MissingArgumentException.php',
@@ -76,8 +71,7 @@ class DeploymentManagerTest extends MultiGenerationTestCase
 
         $manager->deploy('foo');
         Phake::inOrder(
-            Phake::verify($isolator)->is_dir('foo/Typhoon'),
-            Phake::verify($isolator)->mkdir('foo/Typhoon', 0777, true)
+            Phake::verify($isolator)->mkdir('foo/Typhoon/Exception', 0777, true)
         );
     }
 }

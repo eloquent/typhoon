@@ -24,6 +24,7 @@ class ProjectValidatorGenerator
      * @param FacadeGenerator|null            $facadeGenerator
      * @param AbstractValidatorGenerator|null $abstractValidatorGenerator
      * @param DummyValidatorGenerator|null    $dummyValidatorGenerator
+     * @param TypeInspectorGenerator|null     $typeInspectorGenerator
      * @param Isolator|null                   $isolator
      */
     public function __construct(
@@ -32,6 +33,7 @@ class ProjectValidatorGenerator
         FacadeGenerator $facadeGenerator = null,
         AbstractValidatorGenerator $abstractValidatorGenerator = null,
         DummyValidatorGenerator $dummyValidatorGenerator = null,
+        TypeInspectorGenerator $typeInspectorGenerator = null,
         Isolator $isolator = null
     ) {
         $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
@@ -50,12 +52,16 @@ class ProjectValidatorGenerator
         if (null === $dummyValidatorGenerator) {
             $dummyValidatorGenerator = new DummyValidatorGenerator;
         }
+        if (null === $typeInspectorGenerator) {
+            $typeInspectorGenerator = new TypeInspectorGenerator;
+        }
 
         $this->classMapper = $classMapper;
         $this->validatorClassGenerator = $validatorClassGenerator;
         $this->facadeGenerator = $facadeGenerator;
         $this->abstractValidatorGenerator = $abstractValidatorGenerator;
         $this->dummyValidatorGenerator = $dummyValidatorGenerator;
+        $this->typeInspectorGenerator = $typeInspectorGenerator;
         $this->isolator = Isolator::get($isolator);
     }
 
@@ -110,6 +116,16 @@ class ProjectValidatorGenerator
     }
 
     /**
+     * @return TypeInspectorGenerator
+     */
+    public function typeInspectorGenerator()
+    {
+        $this->typhoon->typeInspectorGenerator(func_get_args());
+
+        return $this->typeInspectorGenerator;
+    }
+
+    /**
      * @param Configuration $configuration
      */
     public function generate(Configuration $configuration)
@@ -120,6 +136,7 @@ class ProjectValidatorGenerator
         $this->generateFacade($configuration);
         $this->generateAbstractValidator($configuration);
         $this->generateDummyValidator($configuration);
+        $this->generateTypeInspector($configuration);
     }
 
     /**
@@ -205,6 +222,29 @@ class ProjectValidatorGenerator
         $this->typhoon->generateDummyValidator(func_get_args());
 
         $source = $this->dummyValidatorGenerator()->generate(
+            $configuration,
+            $namespaceName,
+            $className
+        );
+
+        $this->isolator->file_put_contents(
+            $this->prepareOutputPath(
+                $configuration,
+                $namespaceName,
+                $className
+            ),
+            $source
+        );
+    }
+
+    /**
+     * @param Configuration $configuration
+     */
+    protected function generateTypeInspector(Configuration $configuration)
+    {
+        $this->typhoon->generateTypeInspector(func_get_args());
+
+        $source = $this->typeInspectorGenerator()->generate(
             $configuration,
             $namespaceName,
             $className

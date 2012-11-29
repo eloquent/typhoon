@@ -37,10 +37,6 @@ class DeploymentManager
         $this->typhoon->deploy(func_get_args());
 
         $this->copyFile(
-            $this->deploySourcePath.'/Typhoon/TypeInspector.php',
-            $path.'/Typhoon/TypeInspector.php'
-        );
-        $this->copyFile(
             $this->deploySourcePath.'/Typhoon/Exception/MissingArgumentException.php',
             $path.'/Typhoon/Exception/MissingArgumentException.php'
         );

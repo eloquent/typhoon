@@ -28,6 +28,7 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
         $this->_facadeGenerator = Phake::mock(__NAMESPACE__.'\FacadeGenerator');
         $this->_abstractValidatorGenerator = Phake::mock(__NAMESPACE__.'\AbstractValidatorGenerator');
         $this->_dummyValidatorGenerator = Phake::mock(__NAMESPACE__.'\DummyValidatorGenerator');
+        $this->_typeInspectorGenerator = Phake::mock(__NAMESPACE__.'\TypeInspectorGenerator');
         $this->_isolator = Phake::mock('Icecave\Isolator\Isolator');
         $this->_generator = Phake::partialMock(
             __NAMESPACE__.'\ProjectValidatorGenerator',
@@ -36,6 +37,7 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
             $this->_facadeGenerator,
             $this->_abstractValidatorGenerator,
             $this->_dummyValidatorGenerator,
+            $this->_typeInspectorGenerator,
             $this->_isolator
         );
     }
@@ -47,6 +49,7 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
         $this->assertSame($this->_facadeGenerator, $this->_generator->facadeGenerator());
         $this->assertSame($this->_abstractValidatorGenerator, $this->_generator->abstractValidatorGenerator());
         $this->assertSame($this->_dummyValidatorGenerator, $this->_generator->dummyValidatorGenerator());
+        $this->assertSame($this->_typeInspectorGenerator, $this->_generator->typeInspectorGenerator());
     }
 
     public function testConstructorDefaults()
@@ -72,6 +75,10 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
         $this->assertInstanceOf(
             __NAMESPACE__.'\DummyValidatorGenerator',
             $generator->dummyValidatorGenerator()
+        );
+        $this->assertInstanceOf(
+            __NAMESPACE__.'\TypeInspectorGenerator',
+            $generator->typeInspectorGenerator()
         );
     }
 
@@ -140,6 +147,14 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
             )
             ->thenReturn('Dummy validator source')
         ;
+        Phake::when($this->_typeInspectorGenerator)
+            ->generate(
+                $this->identicalTo($configuration),
+                Phake::setReference('Namespace\Name'),
+                Phake::setReference('Type_Inspector_Class_Name')
+            )
+            ->thenReturn('Type inspector source')
+        ;
         Phake::when($this->_isolator)
             ->is_dir(Phake::anyParameters())
             ->thenReturn(true)
@@ -205,6 +220,16 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
             Phake::verify($this->_isolator)->file_put_contents(
                 'foo/Namespace/Name/Dummy/Validator/Class/Name.php',
                 'Dummy validator source'
+            ),
+            Phake::verify($this->_isolator)->is_dir('foo/Namespace/Name/Type/Inspector/Class'),
+            Phake::verify($this->_isolator)->mkdir(
+                'foo/Namespace/Name/Type/Inspector/Class',
+                0777,
+                true
+            ),
+            Phake::verify($this->_isolator)->file_put_contents(
+                'foo/Namespace/Name/Type/Inspector/Class/Name.php',
+                'Type inspector source'
             )
         );
         Phake::verify($this->_isolator, Phake::never())->mkdir(
