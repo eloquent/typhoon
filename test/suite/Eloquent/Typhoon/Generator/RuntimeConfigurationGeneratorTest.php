@@ -31,18 +31,20 @@ class RuntimeConfigurationGeneratorTest extends MultiGenerationTestCase
     {
         $data = array();
 
-        $configuration = new RuntimeConfiguration(true);
+        $configuration = new RuntimeConfiguration('foo', true);
         $newConfigurationCall = new Call(QualifiedIdentifier::fromString(
             '\Eloquent\Typhoon\Configuration\RuntimeConfiguration'
         ));
+        $newConfigurationCall->add(new Literal('foo'));
         $newConfigurationCall->add(new Literal(true));
         $expected = new NewOperator($newConfigurationCall);
         $data["Use native callable"] = array($expected, $configuration);
 
-        $configuration = new RuntimeConfiguration(false);
+        $configuration = new RuntimeConfiguration('bar', false);
         $newConfigurationCall = new Call(QualifiedIdentifier::fromString(
             '\Eloquent\Typhoon\Configuration\RuntimeConfiguration'
         ));
+        $newConfigurationCall->add(new Literal('bar'));
         $newConfigurationCall->add(new Literal(false));
         $expected = new NewOperator($newConfigurationCall);
         $data["Don't use native callable"] = array($expected, $configuration);

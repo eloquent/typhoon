@@ -54,7 +54,7 @@ class FacadeGeneratorTest extends MultiGenerationTestCase
 
     public function testGenerate()
     {
-        $configuration = new RuntimeConfiguration(true);
+        $configuration = new RuntimeConfiguration('foo', true);
         $expected = file_get_contents(
             __DIR__.
             '/../../../../src/Typhoon/Eloquent/Typhoon/TestFixture/ExampleTyphoon.php'
@@ -71,7 +71,7 @@ class FacadeGeneratorTest extends MultiGenerationTestCase
 
     public function testGenerateNoCallable()
     {
-        $configuration = new RuntimeConfiguration(false);
+        $configuration = new RuntimeConfiguration('foo', false);
         $expected = file_get_contents(
             __DIR__.
             '/../../../../src/Typhoon/Eloquent/Typhoon/TestFixture/ExampleTyphoonNoCallable.php'

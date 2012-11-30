@@ -60,7 +60,7 @@ class NativeParameterListMergeToolTest extends MultiGenerationTestCase
     public function testUseNativeCallableManualOff()
     {
         $mergeTool = Phake::partialMock(__NAMESPACE__.'\NativeParameterListMergeTool');
-        $configuration = new RuntimeConfiguration(false);
+        $configuration = new RuntimeConfiguration('foo', false);
 
         $this->assertFalse($mergeTool->useNativeCallable($configuration));
         Phake::verify($mergeTool, Phake::never())->nativeCallableAvailable();
@@ -70,7 +70,7 @@ class NativeParameterListMergeToolTest extends MultiGenerationTestCase
     {
         $mergeTool = Phake::partialMock(__NAMESPACE__.'\NativeParameterListMergeTool');
         Phake::when($mergeTool)->nativeCallableAvailable()->thenReturn(false);
-        $configuration = new RuntimeConfiguration(true);
+        $configuration = new RuntimeConfiguration('foo', true);
 
         $this->assertFalse($mergeTool->useNativeCallable($configuration));
         Phake::verify($mergeTool)->nativeCallableAvailable();
@@ -80,7 +80,7 @@ class NativeParameterListMergeToolTest extends MultiGenerationTestCase
     {
         $mergeTool = Phake::partialMock(__NAMESPACE__.'\NativeParameterListMergeTool');
         Phake::when($mergeTool)->nativeCallableAvailable()->thenReturn(true);
-        $configuration = new RuntimeConfiguration(true);
+        $configuration = new RuntimeConfiguration('foo', true);
 
         $this->assertTrue($mergeTool->useNativeCallable($configuration));
         Phake::verify($mergeTool)->nativeCallableAvailable();
@@ -674,7 +674,7 @@ class NativeParameterListMergeToolTest extends MultiGenerationTestCase
     {
         $documentedType = new CallableType;
         $nativeType = new MixedType;
-        $configuration = new RuntimeConfiguration(false);
+        $configuration = new RuntimeConfiguration('foo', false);
         $actual = Liberator::liberate($this->_mergeTool)->mergeType(
             $configuration,
             'foo',
@@ -693,7 +693,7 @@ class NativeParameterListMergeToolTest extends MultiGenerationTestCase
             new NullType,
         ));
         $nativeType = new MixedType;
-        $configuration = new RuntimeConfiguration(false);
+        $configuration = new RuntimeConfiguration('foo', false);
         $actual = Liberator::liberate($this->_mergeTool)->mergeType(
             $configuration,
             'foo',

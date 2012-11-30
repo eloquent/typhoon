@@ -38,6 +38,9 @@ class RuntimeConfigurationGenerator
             '\Eloquent\Typhoon\Configuration\RuntimeConfiguration'
         ));
         $newConfigurationCall->add(
+            new Literal($configuration->validatorNamespace())
+        );
+        $newConfigurationCall->add(
             new Literal($configuration->useNativeCallable())
         );
 

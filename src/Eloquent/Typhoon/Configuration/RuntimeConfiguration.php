@@ -16,17 +16,43 @@ use Typhoon\Typhoon;
 class RuntimeConfiguration
 {
     /**
+     * @param string|null  $validatorNamespace
      * @param boolean|null $useNativeCallable
      */
     public function __construct(
+        $validatorNamespace = null,
         $useNativeCallable = null
     ) {
         $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
+        if (null === $validatorNamespace) {
+            $validatorNamespace = 'Typhoon';
+        }
         if (null === $useNativeCallable) {
             $useNativeCallable = true;
         }
 
+        $this->validatorNamespace = $validatorNamespace;
         $this->useNativeCallable = $useNativeCallable;
+    }
+
+    /**
+     * @param string $validatorNamespace
+     */
+    public function setValidatorNamespace($validatorNamespace)
+    {
+        $this->typhoon->setValidatorNamespace(func_get_args());
+
+        $this->validatorNamespace = $validatorNamespace;
+    }
+
+    /**
+     * @return string
+     */
+    public function validatorNamespace()
+    {
+        $this->typhoon->validatorNamespace(func_get_args());
+
+        return $this->validatorNamespace;
     }
 
     /**
@@ -49,6 +75,7 @@ class RuntimeConfiguration
         return $this->useNativeCallable;
     }
 
+    private $validatorNamespace;
     private $useNativeCallable;
     private $typhoon;
 }
