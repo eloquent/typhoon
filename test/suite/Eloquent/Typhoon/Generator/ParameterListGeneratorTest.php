@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Generator;
 
+use Eloquent\Typhax\Renderer\TypeRenderer;
 use Eloquent\Typhax\Type\FloatType;
 use Eloquent\Typhax\Type\IntegerType;
 use Eloquent\Typhax\Type\StringType;
@@ -29,7 +30,12 @@ class ParameterListGeneratorTest extends MultiGenerationTestCase
     {
         parent::setUp();
 
-        $this->_generator = new ParameterListGenerator;
+        $this->_typeGenerator = new TyphaxASTGenerator;
+        $this->_typeRenderer = new TypeRenderer;
+        $this->_generator = new ParameterListGenerator(
+            $this->_typeGenerator,
+            $this->_typeRenderer
+        );
         $this->_renderer = new Renderer;
     }
 
@@ -53,6 +59,34 @@ class ParameterListGeneratorTest extends MultiGenerationTestCase
         eval($source);
 
         return $check;
+    }
+
+    public function testConstructor()
+    {
+        $this->assertSame($this->_typeGenerator, $this->_generator->typeGenerator());
+        $this->assertSame($this->_typeRenderer, $this->_generator->typeRenderer());
+        $this->assertSame('Typhoon', $this->_generator->validatorNamespace());
+    }
+
+    public function testConstructorDefaults()
+    {
+        $this->_generator = new ParameterListGenerator;
+
+        $this->assertInstanceOf(
+            __NAMESPACE__.'\TyphaxASTGenerator',
+            $this->_generator->typeGenerator()
+        );
+        $this->assertInstanceOf(
+            'Eloquent\Typhax\Renderer\TypeRenderer',
+            $this->_generator->typeRenderer()
+        );
+    }
+
+    public function testSetValidatorNamespace()
+    {
+        $this->_generator->setValidatorNamespace('foo');
+
+        $this->assertSame('foo', $this->_generator->validatorNamespace());
     }
 
     public function testVisitParameterListLogic()

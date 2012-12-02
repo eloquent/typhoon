@@ -65,7 +65,7 @@ class FacadeGeneratorTest extends MultiGenerationTestCase
             $namespaceName,
             $className
         ));
-        $this->assertSame('Typhoon', $namespaceName);
+        $this->assertSame('foo', $namespaceName);
         $this->assertSame('Typhoon', $className);
     }
 
@@ -82,7 +82,7 @@ class FacadeGeneratorTest extends MultiGenerationTestCase
             $namespaceName,
             $className
         ));
-        $this->assertSame('Typhoon', $namespaceName);
+        $this->assertSame('foo', $namespaceName);
         $this->assertSame('Typhoon', $className);
     }
 }

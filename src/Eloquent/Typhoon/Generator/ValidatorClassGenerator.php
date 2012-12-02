@@ -248,6 +248,7 @@ class ValidatorClassGenerator
         $this->typhoon->generateSyntaxTree(func_get_args());
 
         list($namespaceName, $className) = $this->validatorClassName(
+            $configuration,
             $classDefinition,
             $namespaceName,
             $className
@@ -256,9 +257,9 @@ class ValidatorClassGenerator
         $classDefinitionASTNode = new ClassDefinitionASTNode(
             new Identifier($className)
         );
-        $classDefinitionASTNode->setParentName(
-            QualifiedIdentifier::fromString('\Typhoon\Validator')
-        );
+        $classDefinitionASTNode->setParentName(QualifiedIdentifier::fromString(
+            sprintf('\%s\Validator', $configuration->validatorNamespace())
+        ));
         foreach ($this->methods($classDefinition) as $method) {
             $classDefinitionASTNode->add(
                 $this->generateMethod($configuration, $method, $classDefinition)
@@ -335,6 +336,7 @@ class ValidatorClassGenerator
     }
 
     /**
+     * @param RuntimeConfiguration $configuration
      * @param ClassDefinition $classDefinition
      * @param string|null     $namespaceName
      * @param string|null     $className
@@ -342,6 +344,7 @@ class ValidatorClassGenerator
      * @return tuple<string, string>
      */
     protected function validatorClassName(
+        RuntimeConfiguration $configuration,
         ClassDefinition $classDefinition,
         $namespaceName = null,
         $className = null
@@ -349,7 +352,7 @@ class ValidatorClassGenerator
         $this->typhoon->validatorClassName(func_get_args());
 
         $namespaceNameParts = array(
-            'Typhoon',
+            $configuration->validatorNamespace(),
         );
         if (null !== $classDefinition->namespaceName()) {
             $namespaceNameParts[] = $classDefinition->namespaceName();

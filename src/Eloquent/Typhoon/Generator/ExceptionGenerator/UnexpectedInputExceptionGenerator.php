@@ -94,7 +94,7 @@ class UnexpectedInputExceptionGenerator
     ) {
         $this->typhoon->generateSyntaxTree(func_get_args());
 
-        $namespaceName = 'Typhoon\Exception';
+        $namespaceName = sprintf('%s\Exception', $configuration->validatorNamespace());
         $className = 'UnexpectedInputException';
 
         $classDefinition = new ClassDefinition(

@@ -26,6 +26,35 @@ class ParameterListGeneratorTyphoon extends \Typhoon\Validator
             throw (new \Typhoon\Exception\UnexpectedArgumentException(0, $arguments[0]));
         }
     }
+    public function setValidatorNamespace(array $arguments)
+    {
+        ($argumentCount = \count($arguments));
+        if (($argumentCount < 1))
+        {
+            throw (new \Typhoon\Exception\MissingArgumentException('validatorNamespace', 0, 'string'));
+        }
+        elseif (($argumentCount > 1))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(1, $arguments[1]));
+        }
+        ($value = $arguments[0]);
+        if ((!\is_string($value)))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+                'validatorNamespace',
+                0,
+                $arguments[0],
+                'string'
+            ));
+        }
+    }
+    public function validatorNamespace(array $arguments)
+    {
+        if ((\count($arguments) > 0))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(0, $arguments[0]));
+        }
+    }
     public function visitParameter(array $arguments)
     {
         ($argumentCount = \count($arguments));

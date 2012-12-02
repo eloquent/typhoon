@@ -61,6 +61,7 @@ class ParameterListGenerator implements Visitor
 
         $this->argumentExpression = new Variable(new Identifier('argument'));
         $this->indexExpression = new Variable(new Identifier('index'));
+        $this->validatorNamespace = 'Typhoon';
     }
 
     /**
@@ -81,6 +82,26 @@ class ParameterListGenerator implements Visitor
         $this->typhoon->typeRenderer(func_get_args());
 
         return $this->typeRenderer;
+    }
+
+    /**
+     * @param string $validatorNamespace
+     */
+    public function setValidatorNamespace($validatorNamespace)
+    {
+        $this->typhoon->setValidatorNamespace(func_get_args());
+
+        $this->validatorNamespace = $validatorNamespace;
+    }
+
+    /**
+     * @return string
+     */
+    public function validatorNamespace()
+    {
+        $this->typhoon->validatorNamespace(func_get_args());
+
+        return $this->validatorNamespace;
     }
 
     /**
@@ -110,9 +131,10 @@ class ParameterListGenerator implements Visitor
             $conditionExpression = $typeExpression;
         }
 
-        $newExceptionCall = new Call(QualifiedIdentifier::fromString(
-            '\Typhoon\Exception\UnexpectedArgumentValueException'
-        ));
+        $newExceptionCall = new Call(QualifiedIdentifier::fromString(sprintf(
+            '\%s\Exception\UnexpectedArgumentValueException',
+            $this->validatorNamespace()
+        )));
         $newExceptionCall->add(new Literal($parameter->name()));
         $newExceptionCall->add($this->indexExpression);
         $newExceptionCall->add($this->argumentExpression);
@@ -147,9 +169,10 @@ class ParameterListGenerator implements Visitor
             $zeroLiteral = new Literal(0);
             $countCall = new Call(QualifiedIdentifier::fromString('\count'));
             $countCall->add($argumentsVariable);
-            $newExceptionCall = new Call(QualifiedIdentifier::fromString(
-                '\Typhoon\Exception\UnexpectedArgumentException'
-            ));
+            $newExceptionCall = new Call(QualifiedIdentifier::fromString(sprintf(
+                '\%s\Exception\UnexpectedArgumentException',
+                $this->validatorNamespace()
+            )));
             $newExceptionCall->add($zeroLiteral);
             $newExceptionCall->add(new Subscript(
                 $argumentsVariable,
@@ -181,9 +204,10 @@ class ParameterListGenerator implements Visitor
                 new Less($argumentCountVariable, new Literal($requiredParameterCount))
             );
             for ($i = 0; $i < $lastRequiredParameterIndex; $i ++) {
-                $newExceptionCall = new Call(QualifiedIdentifier::fromString(
-                    '\Typhoon\Exception\MissingArgumentException'
-                ));
+                $newExceptionCall = new Call(QualifiedIdentifier::fromString(sprintf(
+                    '\%s\Exception\MissingArgumentException',
+                    $this->validatorNamespace()
+                )));
                 $newExceptionCall->add(new Literal($parameters[$i]->name()));
                 $newExceptionCall->add(new Literal($i));
                 $newExceptionCall->add(new Literal(
@@ -197,9 +221,10 @@ class ParameterListGenerator implements Visitor
                 );
                 $missingParametersStatement->trueBranch()->add($ifStatement);
             }
-            $newExceptionCall = new Call(QualifiedIdentifier::fromString(
-                '\Typhoon\Exception\MissingArgumentException'
-            ));
+            $newExceptionCall = new Call(QualifiedIdentifier::fromString(sprintf(
+                '\%s\Exception\MissingArgumentException',
+                $this->validatorNamespace()
+            )));
             $newExceptionCall->add(new Literal(
                 $parameters[$lastRequiredParameterIndex]->name()
             ));
@@ -217,9 +242,10 @@ class ParameterListGenerator implements Visitor
         // unexpected arguments check
         if (!$parameterList->isVariableLength()) {
             $parameterCountLiteral = new Literal($parameterCount);
-            $newExceptionCall = new Call(QualifiedIdentifier::fromString(
-                '\Typhoon\Exception\UnexpectedArgumentException'
-            ));
+            $newExceptionCall = new Call(QualifiedIdentifier::fromString(sprintf(
+                '\%s\Exception\UnexpectedArgumentException',
+                $this->validatorNamespace()
+            )));
             $newExceptionCall->add($parameterCountLiteral);
             $newExceptionCall->add(new Subscript(
                 $argumentsVariable,
@@ -350,5 +376,6 @@ class ParameterListGenerator implements Visitor
     private $typeRenderer;
     private $argumentExpression;
     private $indexExpression;
+    private $validatorNamespace;
     private $typhoon;
 }

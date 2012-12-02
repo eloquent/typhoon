@@ -124,11 +124,8 @@ class FacadeGenerator
     ) {
         $this->typhoon->generateSyntaxTree(func_get_args());
 
-        list($namespaceName, $className) = $this->facadeClassName(
-            $configuration,
-            $namespaceName,
-            $className
-        );
+        $namespaceName = $configuration->validatorNamespace();
+        $className = 'Typhoon';
 
         $classDefinition = new ClassDefinition(
             new Identifier($className),
@@ -138,7 +135,9 @@ class FacadeGenerator
         $classDefinition->add($this->generateInstallMethod());
         $classDefinition->add($this->generateSetRuntimeGenerationMethod());
         $classDefinition->add($this->generateRuntimeGenerationMethod());
-        $classDefinition->add($this->generateCreateValidatorMethod());
+        $classDefinition->add($this->generateCreateValidatorMethod(
+            $configuration
+        ));
         $classDefinition->add($this->generateDefineValidatorMethod(
             $configuration
         ));
@@ -182,26 +181,6 @@ class FacadeGenerator
         $syntaxTree->add($primaryBlock);
 
         return $syntaxTree;
-    }
-
-    /**
-     * @param RuntimeConfiguration $configuration
-     * @param string|null          $namespaceName
-     * @param string|null          $className
-     *
-     * @return tuple<string, string>
-     */
-    protected function facadeClassName(
-        RuntimeConfiguration $configuration,
-        $namespaceName = null,
-        $className = null
-    ) {
-        $this->typhoon->facadeClassName(func_get_args());
-
-        return array(
-            'Typhoon',
-            'Typhoon',
-        );
     }
 
     /**
@@ -381,10 +360,13 @@ class FacadeGenerator
     }
 
     /**
+     * @param RuntimeConfiguration $configuration
+     *
      * @return ConcreteMethod
      */
-    protected function generateCreateValidatorMethod()
-    {
+    protected function generateCreateValidatorMethod(
+        RuntimeConfiguration $configuration
+    ) {
         $this->typhoon->generateCreateValidatorMethod(func_get_args());
 
         $classNameIdentifier = new Identifier('className');
@@ -399,7 +381,7 @@ class FacadeGenerator
         $method->addParameter(new Parameter($classNameIdentifier));
 
         $validatorClassNameConcatenation = new Concat(
-            new Literal('Typhoon\\'),
+            new Literal(sprintf('%s\\', $configuration->validatorNamespace())),
             $classNameVariable
         );
         $validatorClassNameConcatenation->add(new Literal('Typhoon'));

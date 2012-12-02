@@ -106,7 +106,7 @@ class TypeInspectorGenerator
     ) {
         $this->typhoon->generateSyntaxTree(func_get_args());
 
-        $namespaceName = 'Typhoon';
+        $namespaceName = $configuration->validatorNamespace();
         $className = 'TypeInspector';
 
         $classDefinition = new ClassDefinition(

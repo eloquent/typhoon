@@ -97,9 +97,14 @@ class UnexpectedArgumentExceptionGeneratorTyphoon extends \Typhoon\Validator
     }
     public function generateConstructor(array $arguments)
     {
-        if ((\count($arguments) > 0))
+        ($argumentCount = \count($arguments));
+        if (($argumentCount < 1))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(0, $arguments[0]));
+            throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
+        }
+        elseif (($argumentCount > 1))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(1, $arguments[1]));
         }
     }
     public function generateIndexMethod(array $arguments)

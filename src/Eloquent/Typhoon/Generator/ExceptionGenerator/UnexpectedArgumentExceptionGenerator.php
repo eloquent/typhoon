@@ -101,7 +101,7 @@ class UnexpectedArgumentExceptionGenerator
     ) {
         $this->typhoon->generateSyntaxTree(func_get_args());
 
-        $namespaceName = 'Typhoon\Exception';
+        $namespaceName = sprintf('%s\Exception', $configuration->validatorNamespace());
         $className = 'UnexpectedArgumentException';
 
         $classDefinition = new ClassDefinition(
@@ -111,7 +111,7 @@ class UnexpectedArgumentExceptionGenerator
         $classDefinition->setParentName(
             QualifiedIdentifier::fromString('UnexpectedInputException')
         );
-        $classDefinition->add($this->generateConstructor());
+        $classDefinition->add($this->generateConstructor($configuration));
         $classDefinition->add($this->generateIndexMethod());
         $classDefinition->add($this->generateValueMethod());
         $classDefinition->add($this->generateTypeInspectorMethod());
@@ -147,9 +147,11 @@ class UnexpectedArgumentExceptionGenerator
     }
 
     /**
+     * @param RuntimeConfiguration $configuration
+     *
      * @return ConcreteMethod
      */
-    protected function generateConstructor()
+    protected function generateConstructor(RuntimeConfiguration $configuration)
     {
         $this->typhoon->generateConstructor(func_get_args());
 
@@ -178,6 +180,10 @@ class UnexpectedArgumentExceptionGenerator
             $thisVariable,
             new Constant(new Identifier('unexpectedType'))
         );
+        $typeInspectorClassName = QualifiedIdentifier::fromString(sprintf(
+            '\%s\TypeInspector',
+            $configuration->validatorNamespace()
+        ));
 
         $method = new ConcreteMethod(
             new Identifier('__construct'),
@@ -193,7 +199,7 @@ class UnexpectedArgumentExceptionGenerator
         $method->addParameter($previousParameter);
         $typeInspectorParameter = new Parameter(
             $typeInspectorIdentifier,
-            new ObjectTypeHint(QualifiedIdentifier::fromString('\Typhoon\TypeInspector'))
+            new ObjectTypeHint($typeInspectorClassName)
         );
         $typeInspectorParameter->setDefaultValue(new Literal(null));
         $method->addParameter($typeInspectorParameter);
@@ -205,9 +211,7 @@ class UnexpectedArgumentExceptionGenerator
         $nullTypeInspectorIf->trueBranch()->add(new ExpressionStatement(
             new Assign(
                 $typeInspectorVariable,
-                new NewOperator(new Call(
-                    QualifiedIdentifier::fromString('\Typhoon\TypeInspector')
-                ))
+                new NewOperator(new Call($typeInspectorClassName))
             )
         ));
         $method->statementBlock()->add($nullTypeInspectorIf);

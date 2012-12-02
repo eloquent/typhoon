@@ -98,7 +98,7 @@ class MissingArgumentExceptionGenerator
     ) {
         $this->typhoon->generateSyntaxTree(func_get_args());
 
-        $namespaceName = 'Typhoon\Exception';
+        $namespaceName = sprintf('%s\Exception', $configuration->validatorNamespace());
         $className = 'MissingArgumentException';
 
         $classDefinition = new ClassDefinition(

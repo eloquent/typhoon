@@ -100,7 +100,7 @@ class AbstractValidatorGenerator
     ) {
         $this->typhoon->generateSyntaxTree(func_get_args());
 
-        $namespaceName = 'Typhoon';
+        $namespaceName = $configuration->validatorNamespace();
         $className = 'Validator';
 
         $classDefinition = new ClassDefinition(

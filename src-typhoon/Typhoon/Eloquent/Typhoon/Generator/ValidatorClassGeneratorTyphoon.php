@@ -340,26 +340,17 @@ class ValidatorClassGeneratorTyphoon extends \Typhoon\Validator
     public function validatorClassName(array $arguments)
     {
         ($argumentCount = \count($arguments));
-        if (($argumentCount < 1))
+        if (($argumentCount < 2))
         {
-            throw (new \Typhoon\Exception\MissingArgumentException('classDefinition', 0, 'mixed'));
-        }
-        elseif (($argumentCount > 3))
-        {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(3, $arguments[3]));
-        }
-        if (($argumentCount > 1))
-        {
-            ($value = $arguments[1]);
-            if ((!(\is_string($value) || ($value === null))))
+            if (($argumentCount < 1))
             {
-                throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
-                    'namespaceName',
-                    1,
-                    $arguments[1],
-                    'string|null'
-                ));
+                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
             }
+            throw (new \Typhoon\Exception\MissingArgumentException('classDefinition', 1, 'mixed'));
+        }
+        elseif (($argumentCount > 4))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(4, $arguments[4]));
         }
         if (($argumentCount > 2))
         {
@@ -367,9 +358,22 @@ class ValidatorClassGeneratorTyphoon extends \Typhoon\Validator
             if ((!(\is_string($value) || ($value === null))))
             {
                 throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
-                    'className',
+                    'namespaceName',
                     2,
                     $arguments[2],
+                    'string|null'
+                ));
+            }
+        }
+        if (($argumentCount > 3))
+        {
+            ($value = $arguments[3]);
+            if ((!(\is_string($value) || ($value === null))))
+            {
+                throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+                    'className',
+                    3,
+                    $arguments[3],
                     'string|null'
                 ));
             }
