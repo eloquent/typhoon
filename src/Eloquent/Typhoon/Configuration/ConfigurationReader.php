@@ -222,6 +222,9 @@ class ConfigurationReader
         if (property_exists($data, 'loaderPaths')) {
             $configuration->setLoaderPaths($data->loaderPaths);
         }
+        if (property_exists($data, 'validatorNamespace')) {
+            $configuration->setValidatorNamespace($data->validatorNamespace);
+        }
         if (property_exists($data, 'useNativeCallable')) {
             $configuration->setUseNativeCallable($data->useNativeCallable);
         }
@@ -325,6 +328,15 @@ class ConfigurationReader
                         "Entries in 'loaderPaths' must be strings."
                     );
                 }
+            }
+        }
+
+        // validatorNamespace
+        if (property_exists($data, 'validatorNamespace')) {
+            if (!is_string($data->validatorNamespace)) {
+                throw new Exception\InvalidConfigurationException(
+                    "'validatorNamespace' must be a string."
+                );
             }
         }
 

@@ -22,6 +22,7 @@ class ConfigurationOptionTest extends MultiGenerationTestCase
             'OUTPUT_PATH' => ConfigurationOption::OUTPUT_PATH(),
             'SOURCE_PATHS' => ConfigurationOption::SOURCE_PATHS(),
             'USE_NATIVE_CALLABLE' => ConfigurationOption::USE_NATIVE_CALLABLE(),
+            'VALIDATOR_NAMESPACE' => ConfigurationOption::VALIDATOR_NAMESPACE(),
         );
 
         $this->assertSame($expected, ConfigurationOption::multitonInstances());

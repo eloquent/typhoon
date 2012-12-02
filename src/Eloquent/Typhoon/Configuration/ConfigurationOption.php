@@ -20,6 +20,7 @@ final class ConfigurationOption extends Enumeration
     const OUTPUT_PATH = 'outputPath';
     const SOURCE_PATHS = 'sourcePaths';
     const USE_NATIVE_CALLABLE = 'useNativeCallable';
+    const VALIDATOR_NAMESPACE = 'validatorNamespace';
 
     /**
      * @param string               $className

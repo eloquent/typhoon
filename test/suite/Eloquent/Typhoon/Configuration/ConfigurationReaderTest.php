@@ -156,6 +156,7 @@ class ConfigurationReaderTest extends MultiGenerationTestCase
         $data->outputPath = 'foo';
         $data->sourcePaths = array('bar', 'baz');
         $data->loaderPaths = array('qux', 'doom');
+        $data->validatorNamespace = 'splat';
         $data->useNativeCallable = false;
         Phake::when($this->_reader)
             ->loadJSON(Phake::anyParameters())
@@ -166,6 +167,7 @@ class ConfigurationReaderTest extends MultiGenerationTestCase
             array('bar', 'baz')
         );
         $expected->setLoaderPaths(array('qux', 'doom'));
+        $expected->setValidatorNamespace('splat');
         $expected->setUseNativeCallable(false);
 
         $this->assertEquals(
@@ -396,6 +398,7 @@ class ConfigurationReaderTest extends MultiGenerationTestCase
         $jsonData = new stdClass;
         $jsonData->sourcePaths = array('bar', 'baz');
         $jsonData->loaderPaths = array('qux', 'doom');
+        $jsonData->validatorNamespace = 'splat';
         $jsonData->useNativeCallable = false;
         $data['Missing outputPath'] = array(
             __NAMESPACE__.'\Exception\InvalidConfigurationException',
@@ -407,6 +410,7 @@ class ConfigurationReaderTest extends MultiGenerationTestCase
         $jsonData->outputPath = array('foo');
         $jsonData->sourcePaths = array('bar', 'baz');
         $jsonData->loaderPaths = array('qux', 'doom');
+        $jsonData->validatorNamespace = 'splat';
         $jsonData->useNativeCallable = false;
         $data['Wrong type for outputPath'] = array(
             __NAMESPACE__.'\Exception\InvalidConfigurationException',
@@ -417,6 +421,7 @@ class ConfigurationReaderTest extends MultiGenerationTestCase
         $jsonData = new stdClass;
         $jsonData->outputPath = 'foo';
         $jsonData->loaderPaths = array('qux', 'doom');
+        $jsonData->validatorNamespace = 'splat';
         $jsonData->useNativeCallable = false;
         $data['Missing sourcePaths'] = array(
             __NAMESPACE__.'\Exception\InvalidConfigurationException',
@@ -428,6 +433,7 @@ class ConfigurationReaderTest extends MultiGenerationTestCase
         $jsonData->outputPath = 'foo';
         $jsonData->sourcePaths = 'bar';
         $jsonData->loaderPaths = array('qux', 'doom');
+        $jsonData->validatorNamespace = 'splat';
         $jsonData->useNativeCallable = false;
         $data['Wrong type for sourcePaths'] = array(
             __NAMESPACE__.'\Exception\InvalidConfigurationException',
@@ -439,6 +445,7 @@ class ConfigurationReaderTest extends MultiGenerationTestCase
         $jsonData->outputPath = 'foo';
         $jsonData->sourcePaths = array('bar', 111);
         $jsonData->loaderPaths = array('qux', 'doom');
+        $jsonData->validatorNamespace = 'splat';
         $jsonData->useNativeCallable = false;
         $data['Wrong type for sourcePaths entry'] = array(
             __NAMESPACE__.'\Exception\InvalidConfigurationException',
@@ -450,6 +457,7 @@ class ConfigurationReaderTest extends MultiGenerationTestCase
         $jsonData->outputPath = 'foo';
         $jsonData->sourcePaths = array('bar', 'baz');
         $jsonData->loaderPaths = 'qux';
+        $jsonData->validatorNamespace = 'doom';
         $jsonData->useNativeCallable = false;
         $data['Wrong type for loaderPaths'] = array(
             __NAMESPACE__.'\Exception\InvalidConfigurationException',
@@ -461,6 +469,7 @@ class ConfigurationReaderTest extends MultiGenerationTestCase
         $jsonData->outputPath = 'foo';
         $jsonData->sourcePaths = array('bar', 'baz');
         $jsonData->loaderPaths = array('qux', 111);
+        $jsonData->validatorNamespace = 'doom';
         $jsonData->useNativeCallable = false;
         $data['Wrong type for loaderPaths entry'] = array(
             __NAMESPACE__.'\Exception\InvalidConfigurationException',
@@ -472,7 +481,20 @@ class ConfigurationReaderTest extends MultiGenerationTestCase
         $jsonData->outputPath = 'foo';
         $jsonData->sourcePaths = array('bar', 'baz');
         $jsonData->loaderPaths = array('qux', 'doom');
-        $jsonData->useNativeCallable = 'splat';
+        $jsonData->validatorNamespace =true;
+        $jsonData->useNativeCallable = 'ping';
+        $data['Wrong type for validatorNamespace'] = array(
+            __NAMESPACE__.'\Exception\InvalidConfigurationException',
+            "Invalid configuration. 'validatorNamespace' must be a string.",
+            $jsonData,
+        );
+
+        $jsonData = new stdClass;
+        $jsonData->outputPath = 'foo';
+        $jsonData->sourcePaths = array('bar', 'baz');
+        $jsonData->loaderPaths = array('qux', 'doom');
+        $jsonData->validatorNamespace = 'splat';
+        $jsonData->useNativeCallable = 'ping';
         $data['Wrong type for useNativeCallable'] = array(
             __NAMESPACE__.'\Exception\InvalidConfigurationException',
             "Invalid configuration. 'useNativeCallable' must be a boolean.",
