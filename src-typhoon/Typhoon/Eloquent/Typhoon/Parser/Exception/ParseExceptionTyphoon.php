@@ -2,7 +2,7 @@
 namespace Typhoon\Eloquent\Typhoon\Parser\Exception;
 
 
-class ParseExceptionTyphoon extends \Typhoon\Validator
+class ParseExceptionTyphoon extends \Typhoon\AbstractValidator
 {
     public function validateConstruct(array $arguments)
     {

@@ -2,7 +2,7 @@
 namespace Typhoon\Eloquent\Typhoon\Configuration;
 
 
-class ConfigurationOptionTyphoon extends \Typhoon\Validator
+class ConfigurationOptionTyphoon extends \Typhoon\AbstractValidator
 {
     public function createUndefinedInstanceException(array $arguments)
     {

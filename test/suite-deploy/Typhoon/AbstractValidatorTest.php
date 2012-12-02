@@ -15,7 +15,7 @@ use Eloquent\Typhoon\TestFixture\ExampleValidator;
 use Phake;
 use PHPUnit_Framework_TestCase;
 
-class ValidatorTest extends PHPUnit_Framework_TestCase
+class AbstractValidatorTest extends PHPUnit_Framework_TestCase
 {
     public function testCall()
     {
@@ -35,7 +35,7 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
     {
         $validator = new ExampleValidator;
 
-        $this->setExpectedException('BadMethodCallException', 'Call to undefined method Typhoon\Validator::baz().');
+        $this->setExpectedException('BadMethodCallException', 'Call to undefined method Typhoon\AbstractValidator::baz().');
         $validator->baz(array());
     }
 }

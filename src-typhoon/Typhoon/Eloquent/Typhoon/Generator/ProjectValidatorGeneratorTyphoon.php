@@ -2,7 +2,7 @@
 namespace Typhoon\Eloquent\Typhoon\Generator;
 
 
-class ProjectValidatorGeneratorTyphoon extends \Typhoon\Validator
+class ProjectValidatorGeneratorTyphoon extends \Typhoon\AbstractValidator
 {
     public function validateConstruct(array $arguments)
     {

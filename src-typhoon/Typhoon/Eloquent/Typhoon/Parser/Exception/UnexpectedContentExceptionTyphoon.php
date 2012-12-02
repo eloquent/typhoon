@@ -2,7 +2,7 @@
 namespace Typhoon\Eloquent\Typhoon\Parser\Exception;
 
 
-class UnexpectedContentExceptionTyphoon extends \Typhoon\Validator
+class UnexpectedContentExceptionTyphoon extends \Typhoon\AbstractValidator
 {
     public function validateConstruct(array $arguments)
     {

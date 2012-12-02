@@ -101,7 +101,7 @@ class AbstractValidatorGenerator implements StaticClassGenerator
         $this->typhoon->generateSyntaxTree(func_get_args());
 
         $namespaceName = $configuration->validatorNamespace();
-        $className = 'Validator';
+        $className = 'AbstractValidator';
 
         $classDefinition = new ClassDefinition(
             new Identifier($className),

@@ -2,7 +2,7 @@
 namespace Typhoon\Eloquent\Typhoon\Generator\Exception;
 
 
-class DefinedParameterVariableLengthExceptionTyphoon extends \Typhoon\Validator
+class DefinedParameterVariableLengthExceptionTyphoon extends \Typhoon\AbstractValidator
 {
     public function validateConstruct(array $arguments)
     {

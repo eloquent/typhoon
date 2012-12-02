@@ -11,9 +11,9 @@
 
 namespace Eloquent\Typhoon\TestFixture;
 
-use Typhoon\Validator;
+use Typhoon\AbstractValidator;
 
-class ExampleValidator extends Validator
+class ExampleValidator extends AbstractValidator
 {
     public function validateFoo(array $arguments)
     {

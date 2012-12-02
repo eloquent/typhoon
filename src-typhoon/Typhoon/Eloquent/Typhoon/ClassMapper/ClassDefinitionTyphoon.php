@@ -2,7 +2,7 @@
 namespace Typhoon\Eloquent\Typhoon\ClassMapper;
 
 
-class ClassDefinitionTyphoon extends \Typhoon\Validator
+class ClassDefinitionTyphoon extends \Typhoon\AbstractValidator
 {
     public function validateConstruct(array $arguments)
     {

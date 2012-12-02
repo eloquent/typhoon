@@ -2,7 +2,7 @@
 namespace Typhoon\Eloquent\Typhoon\Generator\Exception;
 
 
-class DocumentedParameterTypeMismatchExceptionTyphoon extends \Typhoon\Validator
+class DocumentedParameterTypeMismatchExceptionTyphoon extends \Typhoon\AbstractValidator
 {
     public function validateConstruct(array $arguments)
     {

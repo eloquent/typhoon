@@ -258,7 +258,7 @@ class ValidatorClassGenerator
             new Identifier($className)
         );
         $classDefinitionASTNode->setParentName(QualifiedIdentifier::fromString(
-            sprintf('\%s\Validator', $configuration->validatorNamespace())
+            sprintf('\%s\AbstractValidator', $configuration->validatorNamespace())
         ));
         foreach ($this->methods($classDefinition) as $method) {
             $classDefinitionASTNode->add(

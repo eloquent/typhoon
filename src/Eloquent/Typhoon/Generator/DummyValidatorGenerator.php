@@ -93,7 +93,7 @@ class DummyValidatorGenerator implements StaticClassGenerator
             new Identifier($className)
         );
         $classDefinition->setParentName(
-            QualifiedIdentifier::fromString('Validator')
+            QualifiedIdentifier::fromString('AbstractValidator')
         );
         $classDefinition->add($this->generateCallMethod());
 

@@ -2,7 +2,7 @@
 namespace Typhoon\Eloquent\Typhoon\Generator;
 
 
-class NativeParameterListMergeToolTyphoon extends \Typhoon\Validator
+class NativeParameterListMergeToolTyphoon extends \Typhoon\AbstractValidator
 {
     public function validateConstruct(array $arguments)
     {

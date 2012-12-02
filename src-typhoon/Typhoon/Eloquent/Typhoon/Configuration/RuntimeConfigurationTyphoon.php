@@ -2,7 +2,7 @@
 namespace Typhoon\Eloquent\Typhoon\Configuration;
 
 
-class RuntimeConfigurationTyphoon extends \Typhoon\Validator
+class RuntimeConfigurationTyphoon extends \Typhoon\AbstractValidator
 {
     public function validateConstruct(array $arguments)
     {

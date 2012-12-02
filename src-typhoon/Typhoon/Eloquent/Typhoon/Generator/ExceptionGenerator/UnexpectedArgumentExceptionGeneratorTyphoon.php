@@ -2,7 +2,7 @@
 namespace Typhoon\Eloquent\Typhoon\Generator\ExceptionGenerator;
 
 
-class UnexpectedArgumentExceptionGeneratorTyphoon extends \Typhoon\Validator
+class UnexpectedArgumentExceptionGeneratorTyphoon extends \Typhoon\AbstractValidator
 {
     public function validateConstruct(array $arguments)
     {

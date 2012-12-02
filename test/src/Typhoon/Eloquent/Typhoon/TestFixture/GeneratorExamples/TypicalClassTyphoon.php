@@ -2,7 +2,7 @@
 namespace Typhoon\Eloquent\Typhoon\TestFixture\GeneratorExamples;
 
 
-class TypicalClassTyphoon extends \Typhoon\Validator
+class TypicalClassTyphoon extends \Typhoon\AbstractValidator
 {
     public function validateConstruct(array $arguments)
     {

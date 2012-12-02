@@ -2,7 +2,7 @@
 namespace Typhoon\Eloquent\Typhoon\Generator\Exception;
 
 
-class DocumentedParameterUndefinedExceptionTyphoon extends \Typhoon\Validator
+class DocumentedParameterUndefinedExceptionTyphoon extends \Typhoon\AbstractValidator
 {
     public function validateConstruct(array $arguments)
     {

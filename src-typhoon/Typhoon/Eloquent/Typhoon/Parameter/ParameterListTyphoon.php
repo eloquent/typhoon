@@ -2,7 +2,7 @@
 namespace Typhoon\Eloquent\Typhoon\Parameter;
 
 
-class ParameterListTyphoon extends \Typhoon\Validator
+class ParameterListTyphoon extends \Typhoon\AbstractValidator
 {
     public function validateConstruct(array $arguments)
     {

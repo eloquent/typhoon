@@ -2,7 +2,7 @@
 namespace Typhoon;
 
 
-abstract class Validator
+abstract class AbstractValidator
 {
     public function __construct()
     {

@@ -2,7 +2,7 @@
 namespace Typhoon\Eloquent\Typhoon\Generator\ExceptionGenerator;
 
 
-class MissingArgumentExceptionGeneratorTyphoon extends \Typhoon\Validator
+class MissingArgumentExceptionGeneratorTyphoon extends \Typhoon\AbstractValidator
 {
     public function validateConstruct(array $arguments)
     {

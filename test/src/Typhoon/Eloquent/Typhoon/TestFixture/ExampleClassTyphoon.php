@@ -15,9 +15,9 @@ namespace Typhoon\Eloquent\Typhoon\TestFixture;
 use Typhoon\Exception\MissingArgumentException;
 use Typhoon\Exception\UnexpectedArgumentException;
 use Typhoon\Exception\UnexpectedArgumentValueException;
-use Typhoon\Validator;
+use Typhoon\AbstractValidator;
 
-class ExampleClassTyphoon extends Validator
+class ExampleClassTyphoon extends AbstractValidator
 {
     public function validateConstruct(array $arguments)
     {
