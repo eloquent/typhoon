@@ -46,7 +46,7 @@ use Icecave\Pasta\AST\Type\Property;
 use Icecave\Rasta\Renderer;
 use Typhoon\Typhoon;
 
-class FacadeGenerator
+class FacadeGenerator implements StaticClassGenerator
 {
     /**
      * @param Renderer|null                      $renderer

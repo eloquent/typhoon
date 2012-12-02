@@ -7,9 +7,62 @@ class ProjectValidatorGeneratorTyphoon extends \Typhoon\Validator
     public function validateConstruct(array $arguments)
     {
         ($argumentCount = \count($arguments));
-        if (($argumentCount > 11))
+        if (($argumentCount > 4))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(11, $arguments[11]));
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(4, $arguments[4]));
+        }
+        if (($argumentCount > 2))
+        {
+            ($value = $arguments[2]);
+            ($check =             function ($value)
+                        {
+                            ($check =                 function ($value)
+                                            {
+                                                if ((!\is_array($value)))
+                                                {
+                                                    return false;
+                                                }
+                                                foreach ($value as $key => $subValue)
+                                                {
+                                                    if ((!($subValue instanceof \Eloquent\Typhoon\Generator\StaticClassGenerator)))
+                                                    {
+                                                        return false;
+                                                    }
+                                                }
+                                                return true;
+                                            }
+                            );
+                            if (                function ($value)
+                                            {
+                                                if ((!\is_array($value)))
+                                                {
+                                                    return false;
+                                                }
+                                                foreach ($value as $key => $subValue)
+                                                {
+                                                    if ((!($subValue instanceof \Eloquent\Typhoon\Generator\StaticClassGenerator)))
+                                                    {
+                                                        return false;
+                                                    }
+                                                }
+                                                return true;
+                                            }
+                            )
+                            {
+                                return true;
+                            }
+                            return ($value === null);
+                        }
+            );
+            if ((!$check($arguments[2])))
+            {
+                throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+                    'staticClassGenerators',
+                    2,
+                    $arguments[2],
+                    'array<Eloquent\\Typhoon\\Generator\\StaticClassGenerator>|null'
+                ));
+            }
         }
     }
     public function classMapper(array $arguments)
@@ -26,56 +79,7 @@ class ProjectValidatorGeneratorTyphoon extends \Typhoon\Validator
             throw (new \Typhoon\Exception\UnexpectedArgumentException(0, $arguments[0]));
         }
     }
-    public function facadeGenerator(array $arguments)
-    {
-        if ((\count($arguments) > 0))
-        {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(0, $arguments[0]));
-        }
-    }
-    public function abstractValidatorGenerator(array $arguments)
-    {
-        if ((\count($arguments) > 0))
-        {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(0, $arguments[0]));
-        }
-    }
-    public function dummyValidatorGenerator(array $arguments)
-    {
-        if ((\count($arguments) > 0))
-        {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(0, $arguments[0]));
-        }
-    }
-    public function typeInspectorGenerator(array $arguments)
-    {
-        if ((\count($arguments) > 0))
-        {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(0, $arguments[0]));
-        }
-    }
-    public function unexpectedInputExceptionGenerator(array $arguments)
-    {
-        if ((\count($arguments) > 0))
-        {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(0, $arguments[0]));
-        }
-    }
-    public function missingArgumentExceptionGenerator(array $arguments)
-    {
-        if ((\count($arguments) > 0))
-        {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(0, $arguments[0]));
-        }
-    }
-    public function unexpectedArgumentExceptionGenerator(array $arguments)
-    {
-        if ((\count($arguments) > 0))
-        {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(0, $arguments[0]));
-        }
-    }
-    public function unexpectedArgumentValueExceptionGenerator(array $arguments)
+    public function staticClassGenerators(array $arguments)
     {
         if ((\count($arguments) > 0))
         {
@@ -106,91 +110,7 @@ class ProjectValidatorGeneratorTyphoon extends \Typhoon\Validator
             throw (new \Typhoon\Exception\UnexpectedArgumentException(1, $arguments[1]));
         }
     }
-    public function generateFacade(array $arguments)
-    {
-        ($argumentCount = \count($arguments));
-        if (($argumentCount < 1))
-        {
-            throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
-        }
-        elseif (($argumentCount > 1))
-        {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(1, $arguments[1]));
-        }
-    }
-    public function generateAbstractValidator(array $arguments)
-    {
-        ($argumentCount = \count($arguments));
-        if (($argumentCount < 1))
-        {
-            throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
-        }
-        elseif (($argumentCount > 1))
-        {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(1, $arguments[1]));
-        }
-    }
-    public function generateDummyValidator(array $arguments)
-    {
-        ($argumentCount = \count($arguments));
-        if (($argumentCount < 1))
-        {
-            throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
-        }
-        elseif (($argumentCount > 1))
-        {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(1, $arguments[1]));
-        }
-    }
-    public function generateTypeInspector(array $arguments)
-    {
-        ($argumentCount = \count($arguments));
-        if (($argumentCount < 1))
-        {
-            throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
-        }
-        elseif (($argumentCount > 1))
-        {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(1, $arguments[1]));
-        }
-    }
-    public function generateUnexpectedInputException(array $arguments)
-    {
-        ($argumentCount = \count($arguments));
-        if (($argumentCount < 1))
-        {
-            throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
-        }
-        elseif (($argumentCount > 1))
-        {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(1, $arguments[1]));
-        }
-    }
-    public function generateMissingArgumentException(array $arguments)
-    {
-        ($argumentCount = \count($arguments));
-        if (($argumentCount < 1))
-        {
-            throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
-        }
-        elseif (($argumentCount > 1))
-        {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(1, $arguments[1]));
-        }
-    }
-    public function generateUnexpectedArgumentException(array $arguments)
-    {
-        ($argumentCount = \count($arguments));
-        if (($argumentCount < 1))
-        {
-            throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
-        }
-        elseif (($argumentCount > 1))
-        {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(1, $arguments[1]));
-        }
-    }
-    public function generateUnexpectedArgumentValueException(array $arguments)
+    public function generateStaticClasses(array $arguments)
     {
         ($argumentCount = \count($arguments));
         if (($argumentCount < 1))

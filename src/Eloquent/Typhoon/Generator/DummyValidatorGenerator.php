@@ -25,7 +25,7 @@ use Icecave\Pasta\AST\Type\ConcreteMethod;
 use Icecave\Rasta\Renderer;
 use Typhoon\Typhoon;
 
-class DummyValidatorGenerator
+class DummyValidatorGenerator implements StaticClassGenerator
 {
     /**
      * @param Renderer|null $renderer

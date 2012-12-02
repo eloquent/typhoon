@@ -12,6 +12,7 @@
 namespace Eloquent\Typhoon\Generator\ExceptionGenerator;
 
 use Eloquent\Typhoon\Configuration\RuntimeConfiguration;
+use Eloquent\Typhoon\Generator\StaticClassGenerator;
 use Icecave\Pasta\AST\Expr\Assign;
 use Icecave\Pasta\AST\Expr\Call;
 use Icecave\Pasta\AST\Expr\Constant;
@@ -40,7 +41,7 @@ use Icecave\Pasta\AST\Type\Property;
 use Icecave\Rasta\Renderer;
 use Typhoon\Typhoon;
 
-class UnexpectedArgumentValueExceptionGenerator
+class UnexpectedArgumentValueExceptionGenerator implements StaticClassGenerator
 {
     /**
      * @param Renderer|null $renderer

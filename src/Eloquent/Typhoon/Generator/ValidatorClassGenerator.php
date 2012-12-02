@@ -337,9 +337,9 @@ class ValidatorClassGenerator
 
     /**
      * @param RuntimeConfiguration $configuration
-     * @param ClassDefinition $classDefinition
-     * @param string|null     $namespaceName
-     * @param string|null     $className
+     * @param ClassDefinition      $classDefinition
+     * @param string|null          $namespaceName
+     * @param string|null          $className
      *
      * @return tuple<string, string>
      */

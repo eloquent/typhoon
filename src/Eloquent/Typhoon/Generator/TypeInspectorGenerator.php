@@ -45,7 +45,7 @@ use Icecave\Pasta\AST\Type\ConcreteMethod;
 use Icecave\Rasta\Renderer;
 use Typhoon\Typhoon;
 
-class TypeInspectorGenerator
+class TypeInspectorGenerator implements StaticClassGenerator
 {
     /**
      * @param Renderer|null $renderer
