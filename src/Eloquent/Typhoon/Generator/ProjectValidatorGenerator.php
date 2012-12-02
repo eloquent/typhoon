@@ -13,8 +13,8 @@ namespace Eloquent\Typhoon\Generator;
 
 use Eloquent\Typhoon\ClassMapper\ClassMapper;
 use Eloquent\Typhoon\Configuration\Configuration;
+use Eloquent\Typhoon\Validators\Typhoon;
 use Icecave\Isolator\Isolator;
-use Typhoon\Typhoon;
 
 class ProjectValidatorGenerator
 {

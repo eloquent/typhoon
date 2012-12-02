@@ -15,7 +15,7 @@ use Eloquent\Typhax\Resolver\ObjectTypeClassNameResolver;
 use Eloquent\Typhoon\Parameter\Parameter;
 use Eloquent\Typhoon\Parameter\ParameterList;
 use Eloquent\Typhoon\Parameter\Visitor;
-use Typhoon\Typhoon;
+use Eloquent\Typhoon\Validators\Typhoon;
 
 class ParameterListClassNameResolver implements Visitor
 {

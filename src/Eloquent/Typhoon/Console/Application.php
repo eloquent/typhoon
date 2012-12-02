@@ -12,8 +12,8 @@
 namespace Eloquent\Typhoon\Console;
 
 use Eloquent\Typhoon\Configuration\ConfigurationReader;
+use Eloquent\Typhoon\Validators\Typhoon;
 use Symfony\Component\Console\Application as SymfonyApplication;
-use Typhoon\Typhoon;
 
 class Application extends SymfonyApplication
 {

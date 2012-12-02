@@ -11,11 +11,11 @@
 
 namespace Eloquent\Typhoon\ClassMapper;
 
+use Eloquent\Typhoon\Validators\Typhoon;
 use FilesystemIterator;
 use Icecave\Isolator\Isolator;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
-use Typhoon\Typhoon;
 
 class ClassMapper
 {

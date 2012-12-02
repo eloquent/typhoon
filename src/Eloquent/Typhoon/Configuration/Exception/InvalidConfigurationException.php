@@ -11,8 +11,8 @@
 
 namespace Eloquent\Typhoon\Configuration\Exception;
 
+use Eloquent\Typhoon\Validators\Typhoon;
 use Exception;
-use Typhoon\Typhoon;
 
 final class InvalidConfigurationException extends Exception
 {

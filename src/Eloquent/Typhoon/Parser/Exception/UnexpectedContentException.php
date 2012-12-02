@@ -11,8 +11,8 @@
 
 namespace Eloquent\Typhoon\Parser\Exception;
 
+use Eloquent\Typhoon\Validators\Typhoon;
 use Exception;
-use Typhoon\Typhoon;
 
 final class UnexpectedContentException extends ParseException
 {

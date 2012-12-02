@@ -11,8 +11,8 @@
 
 namespace Eloquent\Typhoon\Parameter;
 
+use Eloquent\Typhoon\Validators\Typhoon;
 use Icecave\Visita\Host;
-use Typhoon\Typhoon;
 
 class ParameterList extends Host
 {

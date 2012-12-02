@@ -11,9 +11,9 @@
 
 namespace Eloquent\Typhoon\Configuration\Exception;
 
+use Eloquent\Typhoon\Validators\Typhoon;
 use Exception;
 use RuntimeException;
-use Typhoon\Typhoon;
 
 final class InvalidJSONException extends RuntimeException
 {

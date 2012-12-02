@@ -13,9 +13,9 @@ namespace Eloquent\Typhoon\Generator\Exception;
 
 use Eloquent\Typhax\Renderer\TypeRenderer;
 use Eloquent\Typhax\Type\Type;
+use Eloquent\Typhoon\Validators\Typhoon;
 use Exception;
 use LogicException;
-use Typhoon\Typhoon;
 
 final class DocumentedParameterTypeMismatchException extends LogicException
 {

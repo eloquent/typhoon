@@ -12,7 +12,7 @@
 namespace Eloquent\Typhoon\ClassMapper;
 
 use Eloquent\Cosmos\ClassNameResolver;
-use Typhoon\Typhoon;
+use Eloquent\Typhoon\Validators\Typhoon;
 
 class ClassDefinition
 {

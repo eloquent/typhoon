@@ -1,5 +1,6 @@
 {
     "output-path": "src-typhoon",
     "source-paths": ["src"],
+    "validator-namespace": "Eloquent\\Typhoon\\Validators",
     "use-native-callable": false
 }

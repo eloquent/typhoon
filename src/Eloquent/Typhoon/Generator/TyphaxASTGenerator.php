@@ -29,6 +29,7 @@ use Eloquent\Typhax\Type\StringableType;
 use Eloquent\Typhax\Type\TraversableType;
 use Eloquent\Typhax\Type\TupleType;
 use Eloquent\Typhax\Type\Visitor;
+use Eloquent\Typhoon\Validators\Typhoon;
 use Icecave\Pasta\AST\Expr\Assign;
 use Icecave\Pasta\AST\Expr\Call;
 use Icecave\Pasta\AST\Expr\Constant;
@@ -52,7 +53,6 @@ use Icecave\Pasta\AST\Stmt\ForeachStatement;
 use Icecave\Pasta\AST\Stmt\IfStatement;
 use Icecave\Pasta\AST\Stmt\ReturnStatement;
 use Icecave\Pasta\AST\Stmt\StatementBlock;
-use Typhoon\Typhoon;
 
 class TyphaxASTGenerator implements Visitor
 {

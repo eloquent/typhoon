@@ -11,9 +11,9 @@
 
 namespace Eloquent\Typhoon\Generator\Exception;
 
+use Eloquent\Typhoon\Validators\Typhoon;
 use Exception;
 use LogicException;
-use Typhoon\Typhoon;
 
 final class UndocumentedParameterException extends LogicException
 {

@@ -12,6 +12,7 @@
 namespace Eloquent\Typhoon\Generator;
 
 use Eloquent\Typhoon\Configuration\RuntimeConfiguration;
+use Eloquent\Typhoon\Validators\Typhoon;
 use Icecave\Pasta\AST\Expr\QualifiedIdentifier;
 use Icecave\Pasta\AST\Func\ArrayTypeHint;
 use Icecave\Pasta\AST\Func\Parameter;
@@ -23,7 +24,6 @@ use Icecave\Pasta\AST\Type\AccessModifier;
 use Icecave\Pasta\AST\Type\ClassDefinition;
 use Icecave\Pasta\AST\Type\ConcreteMethod;
 use Icecave\Rasta\Renderer;
-use Typhoon\Typhoon;
 
 class DummyValidatorGenerator implements StaticClassGenerator
 {

@@ -15,6 +15,7 @@ use Eloquent\Typhax\Renderer\TypeRenderer;
 use Eloquent\Typhoon\Parameter\Parameter;
 use Eloquent\Typhoon\Parameter\ParameterList;
 use Eloquent\Typhoon\Parameter\Visitor;
+use Eloquent\Typhoon\Validators\Typhoon;
 use Icecave\Pasta\AST\Expr\Assign;
 use Icecave\Pasta\AST\Expr\Call;
 use Icecave\Pasta\AST\Expr\Greater;
@@ -35,7 +36,6 @@ use Icecave\Pasta\AST\Stmt\IStatement;
 use Icecave\Pasta\AST\Stmt\StatementBlock;
 use Icecave\Pasta\AST\Stmt\ThrowStatement;
 use Icecave\Pasta\AST\Identifier;
-use Typhoon\Typhoon;
 
 class ParameterListGenerator implements Visitor
 {

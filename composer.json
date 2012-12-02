@@ -35,6 +35,7 @@
     },
     "autoload": {
         "psr-0": {
+            "Eloquent\\Typhoon\\Validators": "src-typhoon",
             "Eloquent\\Typhoon": "src",
             "Typhoon\\Validator": "src-typhoon",
             "Typhoon": "src-deploy"

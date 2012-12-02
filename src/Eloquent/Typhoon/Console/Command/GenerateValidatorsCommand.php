@@ -12,11 +12,11 @@
 namespace Eloquent\Typhoon\Console\Command;
 
 use Eloquent\Typhoon\Generator\ProjectValidatorGenerator;
+use Eloquent\Typhoon\Validators\Typhoon;
 use Icecave\Isolator\Isolator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Typhoon\Typhoon;
 
 class GenerateValidatorsCommand extends Command
 {

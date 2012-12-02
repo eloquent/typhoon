@@ -11,11 +11,11 @@
 
 namespace Eloquent\Typhoon\Configuration;
 
+use Eloquent\Typhoon\Validators\Typhoon;
 use ErrorException;
 use Icecave\Isolator\Isolator;
 use Symfony\Component\Filesystem\Filesystem;
 use stdClass;
-use Typhoon\Typhoon;
 
 class ConfigurationReader
 {

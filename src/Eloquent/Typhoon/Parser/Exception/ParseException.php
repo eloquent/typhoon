@@ -11,9 +11,9 @@
 
 namespace Eloquent\Typhoon\Parser\Exception;
 
+use Eloquent\Typhoon\Validators\Typhoon;
 use Exception;
 use LogicException;
-use Typhoon\Typhoon;
 
 abstract class ParseException extends LogicException
 {

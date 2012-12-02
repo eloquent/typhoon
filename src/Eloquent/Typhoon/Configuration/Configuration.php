@@ -11,7 +11,7 @@
 
 namespace Eloquent\Typhoon\Configuration;
 
-use Typhoon\Typhoon;
+use Eloquent\Typhoon\Validators\Typhoon;
 
 class Configuration extends RuntimeConfiguration
 {

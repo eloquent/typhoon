@@ -13,6 +13,7 @@ namespace Eloquent\Typhoon\Generator\ExceptionGenerator;
 
 use Eloquent\Typhoon\Configuration\RuntimeConfiguration;
 use Eloquent\Typhoon\Generator\StaticClassGenerator;
+use Eloquent\Typhoon\Validators\Typhoon;
 use Icecave\Pasta\AST\Expr\Assign;
 use Icecave\Pasta\AST\Expr\Call;
 use Icecave\Pasta\AST\Expr\Constant;
@@ -36,7 +37,6 @@ use Icecave\Pasta\AST\Type\ClassModifier;
 use Icecave\Pasta\AST\Type\ConcreteMethod;
 use Icecave\Pasta\AST\Type\Property;
 use Icecave\Rasta\Renderer;
-use Typhoon\Typhoon;
 
 class MissingArgumentExceptionGenerator implements StaticClassGenerator
 {

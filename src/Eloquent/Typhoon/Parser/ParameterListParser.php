@@ -28,10 +28,10 @@ use Eloquent\Typhax\Type\TraversableType;
 use Eloquent\Typhax\Type\Type;
 use Eloquent\Typhoon\Parameter\Parameter;
 use Eloquent\Typhoon\Parameter\ParameterList;
+use Eloquent\Typhoon\Validators\Typhoon;
 use ReflectionFunctionAbstract;
 use ReflectionObject;
 use ReflectionParameter;
-use Typhoon\Typhoon;
 
 class ParameterListParser implements Visitor
 {

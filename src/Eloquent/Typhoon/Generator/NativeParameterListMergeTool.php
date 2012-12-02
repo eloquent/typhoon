@@ -25,7 +25,7 @@ use Eloquent\Typhax\Type\Type;
 use Eloquent\Typhoon\Configuration\RuntimeConfiguration;
 use Eloquent\Typhoon\Parameter\Parameter;
 use Eloquent\Typhoon\Parameter\ParameterList;
-use Typhoon\Typhoon;
+use Eloquent\Typhoon\Validators\Typhoon;
 use ReflectionClass;
 
 class NativeParameterListMergeTool

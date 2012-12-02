@@ -23,6 +23,7 @@ class TyphoonTest extends PHPUnit_Framework_TestCase
         parent::setUp();
 
         Liberator::liberateClass(__NAMESPACE__.'\Typhoon')->instances = array();
+        Liberator::liberateClass(__NAMESPACE__.'\Typhoon')->dummyMode = false;
         if (class_exists('Typhoon\Validator\Eloquent\Typhoon\TestFixture\ExampleClassTyphoon', false)) {
             ExampleClassTyphoon::$arguments = array();
         }
@@ -64,6 +65,16 @@ class TyphoonTest extends PHPUnit_Framework_TestCase
         $this->assertSame($validator, Typhoon::get($className));
         $this->assertTrue(array_key_exists('validateConstruct', ExampleClassTyphoon::$arguments));
         $this->assertSame($arguments, ExampleClassTyphoon::$arguments['validateConstruct']);
+    }
+
+    public function testGetDummyMode()
+    {
+        Liberator::liberateClass(__NAMESPACE__.'\Typhoon')->dummyMode = true;
+
+        $this->assertInstanceOf(
+            __NAMESPACE__.'\DummyValidator',
+            Typhoon::get('foo')
+        );
     }
 
     public function testRuntimeGeneration()

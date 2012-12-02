@@ -18,6 +18,7 @@ use Eloquent\Typhoon\Configuration\RuntimeConfiguration;
 use Eloquent\Typhoon\Parameter\ParameterList;
 use Eloquent\Typhoon\Parser\ParameterListParser;
 use Eloquent\Typhoon\Resolver\ParameterListClassNameResolver;
+use Eloquent\Typhoon\Validators\Typhoon;
 use Icecave\Isolator\Isolator;
 use Icecave\Pasta\AST\Expr\QualifiedIdentifier;
 use Icecave\Pasta\AST\Func\ArrayTypeHint;
@@ -31,7 +32,6 @@ use Icecave\Pasta\AST\Type\ConcreteMethod;
 use Icecave\Rasta\Renderer;
 use ReflectionClass;
 use ReflectionMethod;
-use Typhoon\Typhoon;
 
 class ValidatorClassGenerator
 {
