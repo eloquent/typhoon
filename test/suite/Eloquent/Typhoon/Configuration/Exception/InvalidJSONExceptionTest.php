@@ -20,27 +20,27 @@ class InvalidJSONExceptionTest extends MultiGenerationTestCase
     {
         return array(
             array(
-                "Invalid JSON in 'foo' - The maximum stack depth has been exceeded.",
+                "Invalid JSON in 'foo'. The maximum stack depth has been exceeded.",
                 JSON_ERROR_DEPTH,
             ),
             array(
-                "Invalid JSON in 'foo' - Invalid or malformed JSON.",
+                "Invalid JSON in 'foo'. Invalid or malformed JSON.",
                 JSON_ERROR_STATE_MISMATCH,
             ),
             array(
-                "Invalid JSON in 'foo' - Control character error, possibly incorrectly encoded.",
+                "Invalid JSON in 'foo'. Control character error, possibly incorrectly encoded.",
                 JSON_ERROR_CTRL_CHAR,
             ),
             array(
-                "Invalid JSON in 'foo' - Syntax error.",
+                "Invalid JSON in 'foo'. Syntax error.",
                 JSON_ERROR_SYNTAX,
             ),
             array(
-                "Invalid JSON in 'foo' - Malformed UTF-8 characters, possibly incorrectly encoded.",
+                "Invalid JSON in 'foo'. Malformed UTF-8 characters, possibly incorrectly encoded.",
                 JSON_ERROR_UTF8,
             ),
             array(
-                "Invalid JSON in 'foo' - An unknown error occurred.",
+                "Invalid JSON in 'foo'. An unknown error occurred.",
                 JSON_ERROR_NONE,
             ),
         );

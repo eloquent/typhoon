@@ -1,0 +1,5 @@
+{
+    "output-path": "src-typhoon",
+    "source-paths": ["src"],
+    "use-native-callable": false
+}

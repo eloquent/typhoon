@@ -16,11 +16,11 @@ use Exception as NativeException;
 
 final class ConfigurationOption extends Enumeration
 {
-    const LOADER_PATHS = 'loaderPaths';
-    const OUTPUT_PATH = 'outputPath';
-    const SOURCE_PATHS = 'sourcePaths';
-    const USE_NATIVE_CALLABLE = 'useNativeCallable';
-    const VALIDATOR_NAMESPACE = 'validatorNamespace';
+    const LOADER_PATHS = 'loader-paths';
+    const OUTPUT_PATH = 'output-path';
+    const SOURCE_PATHS = 'source-paths';
+    const USE_NATIVE_CALLABLE = 'use-native-callable';
+    const VALIDATOR_NAMESPACE = 'validator-namespace';
 
     /**
      * @param string               $className

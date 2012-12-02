@@ -131,12 +131,12 @@ class ConfigurationReader
         }
 
         $typhoonData = $data->extra->typhoon;
-        if (!property_exists($typhoonData, 'outputPath')) {
+        if (!property_exists($typhoonData, ConfigurationOption::OUTPUT_PATH()->value())) {
             throw new Exception\InvalidConfigurationException(
-                "'outputPath' is required."
+                "Output path is required."
             );
         }
-        if (property_exists($typhoonData, 'sourcePaths')) {
+        if (property_exists($typhoonData, ConfigurationOption::SOURCE_PATHS()->value())) {
             return $this->buildConfiguration($typhoonData);
         }
 
@@ -191,14 +191,14 @@ class ConfigurationReader
             }
         }
 
-        $typhoonData->sourcePaths = array();
+        $typhoonData->{'source-paths'} = array();
         foreach ($sourcePaths as $sourcePath) {
             if (!$this->pathIsDescandantOrEqual(
                 $path,
-                $typhoonData->outputPath,
+                $typhoonData->{'output-path'},
                 $sourcePath
             )) {
-                $typhoonData->sourcePaths[] = $sourcePath;
+                $typhoonData->{'source-paths'}[] = $sourcePath;
             }
         }
 
@@ -216,17 +216,17 @@ class ConfigurationReader
 
         $this->validateData($data);
         $configuration = new Configuration(
-            $data->outputPath,
-            $data->sourcePaths
+            $data->{'output-path'},
+            $data->{'source-paths'}
         );
-        if (property_exists($data, 'loaderPaths')) {
-            $configuration->setLoaderPaths($data->loaderPaths);
+        if (property_exists($data, ConfigurationOption::LOADER_PATHS()->value())) {
+            $configuration->setLoaderPaths($data->{'loader-paths'});
         }
-        if (property_exists($data, 'validatorNamespace')) {
-            $configuration->setValidatorNamespace($data->validatorNamespace);
+        if (property_exists($data, ConfigurationOption::VALIDATOR_NAMESPACE()->value())) {
+            $configuration->setValidatorNamespace($data->{'validator-namespace'});
         }
-        if (property_exists($data, 'useNativeCallable')) {
-            $configuration->setUseNativeCallable($data->useNativeCallable);
+        if (property_exists($data, ConfigurationOption::USE_NATIVE_CALLABLE()->value())) {
+            $configuration->setUseNativeCallable($data->{'use-native-callable'});
         }
 
         return $configuration;
@@ -284,67 +284,67 @@ class ConfigurationReader
             ConfigurationOption::instanceByValue($optionName);
         }
 
-        // outputPath
-        if (!property_exists($data, 'outputPath')) {
+        // output path
+        if (!property_exists($data, ConfigurationOption::OUTPUT_PATH()->value())) {
             throw new Exception\InvalidConfigurationException(
-                "'outputPath' is required."
+                "Output path is required."
             );
         }
-        if (!is_string($data->outputPath)) {
+        if (!is_string($data->{'output-path'})) {
             throw new Exception\InvalidConfigurationException(
-                "'outputPath' must be a string."
+                "Output path must be a string."
             );
         }
 
-        // sourcePaths
-        if (!property_exists($data, 'sourcePaths')) {
+        // source paths
+        if (!property_exists($data, ConfigurationOption::SOURCE_PATHS()->value())) {
             throw new Exception\InvalidConfigurationException(
-                "'sourcePaths' is required."
+                "At least one source path is required."
             );
         }
-        if (!is_array($data->sourcePaths)) {
+        if (!is_array($data->{'source-paths'})) {
             throw new Exception\InvalidConfigurationException(
-                "'sourcePaths' must be an array."
+                "Source paths must be an array."
             );
         }
-        foreach ($data->sourcePaths as $sourcePath) {
+        foreach ($data->{'source-paths'} as $sourcePath) {
             if (!is_string($sourcePath)) {
                 throw new Exception\InvalidConfigurationException(
-                    "Entries in 'sourcePaths' must be strings."
+                    "Entries in source paths must be strings."
                 );
             }
         }
 
-        // loaderPaths
-        if (property_exists($data, 'loaderPaths')) {
-            if (!is_array($data->loaderPaths)) {
+        // loader paths
+        if (property_exists($data, ConfigurationOption::LOADER_PATHS()->value())) {
+            if (!is_array($data->{'loader-paths'})) {
                 throw new Exception\InvalidConfigurationException(
-                    "'loaderPaths' must be an array."
+                    "Loader paths must be an array."
                 );
             }
-            foreach ($data->loaderPaths as $loaderPath) {
+            foreach ($data->{'loader-paths'} as $loaderPath) {
                 if (!is_string($loaderPath)) {
                     throw new Exception\InvalidConfigurationException(
-                        "Entries in 'loaderPaths' must be strings."
+                        "Entries in loader paths must be strings."
                     );
                 }
             }
         }
 
-        // validatorNamespace
-        if (property_exists($data, 'validatorNamespace')) {
-            if (!is_string($data->validatorNamespace)) {
+        // validator namespace
+        if (property_exists($data, ConfigurationOption::VALIDATOR_NAMESPACE()->value())) {
+            if (!is_string($data->{'validator-namespace'})) {
                 throw new Exception\InvalidConfigurationException(
-                    "'validatorNamespace' must be a string."
+                    "Validator namespace must be a string."
                 );
             }
         }
 
-        // useNativeCallable
-        if (property_exists($data, 'useNativeCallable')) {
-            if (!is_bool($data->useNativeCallable)) {
+        // use native callable
+        if (property_exists($data, ConfigurationOption::USE_NATIVE_CALLABLE()->value())) {
+            if (!is_bool($data->{'use-native-callable'})) {
                 throw new Exception\InvalidConfigurationException(
-                    "'useNativeCallable' must be a boolean."
+                    "Use native callable option must be a boolean."
                 );
             }
         }

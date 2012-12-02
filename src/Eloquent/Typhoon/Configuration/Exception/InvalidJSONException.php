@@ -53,7 +53,7 @@ final class InvalidJSONException extends RuntimeException
 
         parent::__construct(
             sprintf(
-                "Invalid JSON in '%s' - %s",
+                "Invalid JSON in '%s'. %s",
                 $this->path(),
                 $this->jsonErrorMessage()
             ),
