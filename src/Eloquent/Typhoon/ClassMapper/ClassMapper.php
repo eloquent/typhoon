@@ -29,6 +29,22 @@ class ClassMapper
     }
 
     /**
+     * @param string $path
+     *
+     * @return array<ClassDefinition>
+     */
+    public function classesByPath($path)
+    {
+        $this->typhoon->classesByPath(func_get_args());
+
+        if ($this->isolator->is_dir($path)) {
+            return $this->classesByDirectory($path);
+        }
+
+        return $this->classesByFile($path);
+    }
+
+    /**
      * @param string $directoryPath
      *
      * @return array<ClassDefinition>

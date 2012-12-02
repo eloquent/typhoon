@@ -37,6 +37,48 @@ class ClassMapperTest extends MultiGenerationTestCase
         return $fileInfo;
     }
 
+    public function testClassesByPathDirectory()
+    {
+        $classDefinitionA = new ClassDefinition('A');
+        $classDefinitionB = new ClassDefinition('B');
+        $classDefinitions = array(
+            $classDefinitionA,
+            $classDefinitionB,
+        );
+        Phake::when($this->_isolator)->is_dir(Phake::anyParameters())->thenReturn(true);
+        Phake::when($this->_mapper)
+            ->classesByDirectory(Phake::anyParameters())
+            ->thenReturn($classDefinitions)
+        ;
+
+        $this->assertSame($classDefinitions, $this->_mapper->classesByPath('foo'));
+        Phake::inOrder(
+            Phake::verify($this->_isolator)->is_dir('foo'),
+            Phake::verify($this->_mapper)->classesByDirectory('foo')
+        );
+    }
+
+    public function testClassesByPathFile()
+    {
+        $classDefinitionA = new ClassDefinition('A');
+        $classDefinitionB = new ClassDefinition('B');
+        $classDefinitions = array(
+            $classDefinitionA,
+            $classDefinitionB,
+        );
+        Phake::when($this->_isolator)->is_dir(Phake::anyParameters())->thenReturn(false);
+        Phake::when($this->_mapper)
+            ->classesByFile(Phake::anyParameters())
+            ->thenReturn($classDefinitions)
+        ;
+
+        $this->assertSame($classDefinitions, $this->_mapper->classesByPath('foo'));
+        Phake::inOrder(
+            Phake::verify($this->_isolator)->is_dir('foo'),
+            Phake::verify($this->_mapper)->classesByFile('foo')
+        );
+    }
+
     public function testClassesByDirectory()
     {
         $iterator = new ArrayIterator(array(

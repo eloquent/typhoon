@@ -164,7 +164,7 @@ class ProjectValidatorGenerator
         foreach ($classPaths as $classPath) {
             $classMap = array_merge(
                 $classMap,
-                $this->classMapper->classesByDirectory(
+                $this->classMapper->classesByPath(
                     $classPath
                 )
             );

@@ -12,6 +12,28 @@ class ClassMapperTyphoon extends \Eloquent\Typhoon\Validators\AbstractValidator
             throw (new \Typhoon\Exception\UnexpectedArgumentException(1, $arguments[1]));
         }
     }
+    public function classesByPath(array $arguments)
+    {
+        ($argumentCount = \count($arguments));
+        if (($argumentCount < 1))
+        {
+            throw (new \Typhoon\Exception\MissingArgumentException('path', 0, 'string'));
+        }
+        elseif (($argumentCount > 1))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(1, $arguments[1]));
+        }
+        ($value = $arguments[0]);
+        if ((!\is_string($value)))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+                'path',
+                0,
+                $arguments[0],
+                'string'
+            ));
+        }
+    }
     public function classesByDirectory(array $arguments)
     {
         ($argumentCount = \count($arguments));

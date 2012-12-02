@@ -220,7 +220,7 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
         $classDefinitionC = new ClassDefinition('C');
         $classDefinitionD = new ClassDefinition('D');
         Phake::when($this->_classMapper)
-            ->classesByDirectory(Phake::anyParameters())
+            ->classesByPath(Phake::anyParameters())
             ->thenReturn(array(
                 $classDefinitionA,
                 $classDefinitionB,
