@@ -149,7 +149,31 @@ class NativeParameterListMergeToolTest extends MultiGenerationTestCase
                 ),
             )
         );
-        $expected = $documentedParameterList;
+        $expected = new ParameterList(
+            array(
+                new Parameter(
+                    'bar',
+                    new NullifiedType(new MixedType),
+                    'Bar description.',
+                    false,
+                    false
+                ),
+                new Parameter(
+                    'baz',
+                    new NullifiedType(new MixedType),
+                    'Baz description.',
+                    false,
+                    true
+                ),
+                new Parameter(
+                    'qux',
+                    new NullifiedType(new MixedType),
+                    'Qux description.',
+                    true,
+                    true
+                ),
+            )
+        );
         $data['Unchanged parameter list'] = array(
             $expected,
             $documentedParameterList,
@@ -200,7 +224,32 @@ class NativeParameterListMergeToolTest extends MultiGenerationTestCase
                 ),
             )
         );
-        $expected = $documentedParameterList;
+        $expected = new ParameterList(
+            array(
+                new Parameter(
+                    'bar',
+                    new NullifiedType(new MixedType),
+                    'Bar description.',
+                    false,
+                    false
+                ),
+                new Parameter(
+                    'baz',
+                    new NullifiedType(new MixedType),
+                    'Baz description.',
+                    false,
+                    true
+                ),
+                new Parameter(
+                    'qux',
+                    new MixedType,
+                    'Qux description.',
+                    true,
+                    true
+                ),
+            ),
+            true
+        );
         $data['Unchanged parameter list (variable length)'] = array(
             $expected,
             $documentedParameterList,
@@ -233,7 +282,7 @@ class NativeParameterListMergeToolTest extends MultiGenerationTestCase
             array(
                 new Parameter(
                     'bar',
-                    new MixedType,
+                    new NullifiedType(new MixedType),
                     'Bar description.',
                     true,
                     false
@@ -545,7 +594,7 @@ class NativeParameterListMergeToolTest extends MultiGenerationTestCase
             new MixedType,
             new MixedType
         );
-        $expected = new MixedType;
+        $expected = new NullifiedType($documentedType);
         $data['Both types documented as array'] = array(
             $expected,
             $documentedType,
@@ -574,7 +623,7 @@ class NativeParameterListMergeToolTest extends MultiGenerationTestCase
             new NullType,
         ));
         $nativeType = $documentedType;
-        $expected = new MixedType;
+        $expected = new NullifiedType($documentedType);
         $data['Both types documented Exception|null'] = array(
             $expected,
             $documentedType,

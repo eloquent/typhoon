@@ -1,0 +1,40 @@
+<?php
+
+/*
+ * This file is part of the Typhoon package.
+ *
+ * Copyright © 2012 Erin Millard
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Eloquent\Typhoon\Generator;
+
+use Eloquent\Typhax\Type\MixedType;
+use Eloquent\Typhax\Type\Type;
+use Eloquent\Typhoon\Validators\Typhoon;
+
+class NullifiedType extends MixedType
+{
+    /**
+     * @param Type $originalType
+     */
+    public function __construct(Type $originalType)
+    {
+        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
+
+        $this->originalType = $originalType;
+    }
+
+    /**
+     * @return Type
+     */
+    public function originalType()
+    {
+        return $this->originalType;
+    }
+
+    private $originalType;
+    private $typhoon;
+}

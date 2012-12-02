@@ -23,7 +23,7 @@ class NativeParameterListMergeToolTyphoon extends \Eloquent\Typhoon\Validators\A
         ($argumentCount = \count($arguments));
         if (($argumentCount < 1))
         {
-            throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
+            throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'Eloquent\\Typhoon\\Configuration\\RuntimeConfiguration'));
         }
         elseif (($argumentCount > 1))
         {
@@ -37,7 +37,7 @@ class NativeParameterListMergeToolTyphoon extends \Eloquent\Typhoon\Validators\A
         {
             if (($argumentCount < 1))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
+                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'Eloquent\\Typhoon\\Configuration\\RuntimeConfiguration'));
             }
             if (($argumentCount < 2))
             {
@@ -45,9 +45,9 @@ class NativeParameterListMergeToolTyphoon extends \Eloquent\Typhoon\Validators\A
             }
             if (($argumentCount < 3))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('documentedParameterList', 2, 'mixed'));
+                throw (new \Typhoon\Exception\MissingArgumentException('documentedParameterList', 2, 'Eloquent\\Typhoon\\Parameter\\ParameterList'));
             }
-            throw (new \Typhoon\Exception\MissingArgumentException('nativeParameterList', 3, 'mixed'));
+            throw (new \Typhoon\Exception\MissingArgumentException('nativeParameterList', 3, 'Eloquent\\Typhoon\\Parameter\\ParameterList'));
         }
         elseif (($argumentCount > 4))
         {
@@ -71,7 +71,7 @@ class NativeParameterListMergeToolTyphoon extends \Eloquent\Typhoon\Validators\A
         {
             if (($argumentCount < 1))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
+                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'Eloquent\\Typhoon\\Configuration\\RuntimeConfiguration'));
             }
             if (($argumentCount < 2))
             {
@@ -79,9 +79,9 @@ class NativeParameterListMergeToolTyphoon extends \Eloquent\Typhoon\Validators\A
             }
             if (($argumentCount < 3))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('documentedParameter', 2, 'mixed'));
+                throw (new \Typhoon\Exception\MissingArgumentException('documentedParameter', 2, 'Eloquent\\Typhoon\\Parameter\\Parameter'));
             }
-            throw (new \Typhoon\Exception\MissingArgumentException('nativeParameter', 3, 'mixed'));
+            throw (new \Typhoon\Exception\MissingArgumentException('nativeParameter', 3, 'Eloquent\\Typhoon\\Parameter\\Parameter'));
         }
         elseif (($argumentCount > 4))
         {
@@ -105,7 +105,7 @@ class NativeParameterListMergeToolTyphoon extends \Eloquent\Typhoon\Validators\A
         {
             if (($argumentCount < 1))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
+                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'Eloquent\\Typhoon\\Configuration\\RuntimeConfiguration'));
             }
             if (($argumentCount < 2))
             {
@@ -117,9 +117,9 @@ class NativeParameterListMergeToolTyphoon extends \Eloquent\Typhoon\Validators\A
             }
             if (($argumentCount < 4))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('documentedType', 3, 'mixed'));
+                throw (new \Typhoon\Exception\MissingArgumentException('documentedType', 3, 'Eloquent\\Typhax\\Type\\Type'));
             }
-            throw (new \Typhoon\Exception\MissingArgumentException('nativeType', 4, 'mixed'));
+            throw (new \Typhoon\Exception\MissingArgumentException('nativeType', 4, 'Eloquent\\Typhax\\Type\\Type'));
         }
         elseif (($argumentCount > 5))
         {
@@ -153,13 +153,13 @@ class NativeParameterListMergeToolTyphoon extends \Eloquent\Typhoon\Validators\A
         {
             if (($argumentCount < 1))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
+                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'Eloquent\\Typhoon\\Configuration\\RuntimeConfiguration'));
             }
             if (($argumentCount < 2))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('documentedType', 1, 'mixed'));
+                throw (new \Typhoon\Exception\MissingArgumentException('documentedType', 1, 'Eloquent\\Typhax\\Type\\Type'));
             }
-            throw (new \Typhoon\Exception\MissingArgumentException('nativeType', 2, 'mixed'));
+            throw (new \Typhoon\Exception\MissingArgumentException('nativeType', 2, 'Eloquent\\Typhax\\Type\\Type'));
         }
         elseif (($argumentCount > 4))
         {

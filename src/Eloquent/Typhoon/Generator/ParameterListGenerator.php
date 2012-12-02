@@ -12,6 +12,7 @@
 namespace Eloquent\Typhoon\Generator;
 
 use Eloquent\Typhax\Renderer\TypeRenderer;
+use Eloquent\Typhax\Type\Type;
 use Eloquent\Typhoon\Parameter\Parameter;
 use Eloquent\Typhoon\Parameter\ParameterList;
 use Eloquent\Typhoon\Parameter\Visitor;
@@ -139,7 +140,7 @@ class ParameterListGenerator implements Visitor
         $newExceptionCall->add($this->indexExpression);
         $newExceptionCall->add($this->argumentExpression);
         $newExceptionCall->add(new Literal(
-            $parameter->type()->accept($this->typeRenderer())
+            $this->renderTypeName($parameter->type())
         ));
         $ifStatement = new IfStatement(new LogicalNot($conditionExpression));
         $ifStatement->trueBranch()->add(
@@ -211,7 +212,7 @@ class ParameterListGenerator implements Visitor
                 $newExceptionCall->add(new Literal($parameters[$i]->name()));
                 $newExceptionCall->add(new Literal($i));
                 $newExceptionCall->add(new Literal(
-                    $parameters[$i]->type()->accept($this->typeRenderer())
+                    $this->renderTypeName($parameters[$i]->type())
                 ));
                 $ifStatement = new IfStatement(
                     new Less($argumentCountVariable, new Literal($i + 1))
@@ -232,7 +233,7 @@ class ParameterListGenerator implements Visitor
                 $lastRequiredParameterIndex
             ));
             $newExceptionCall->add(new Literal(
-                $parameters[$lastRequiredParameterIndex]->type()->accept($this->typeRenderer())
+                $this->renderTypeName($parameters[$lastRequiredParameterIndex]->type())
             ));
             $missingParametersStatement->trueBranch()->add(
                 new ThrowStatement(new NewOperator($newExceptionCall))
@@ -370,6 +371,22 @@ class ParameterListGenerator implements Visitor
         }
 
         return $expressions;
+    }
+
+    /**
+     * @param Type $type
+     *
+     * @return string
+     */
+    protected function renderTypeName(Type $type)
+    {
+        $this->typhoon->renderTypeName(func_get_args());
+
+        if ($type instanceof NullifiedType) {
+            return $type->originalType()->accept($this->typeRenderer());
+        }
+
+        return $type->accept($this->typeRenderer());
     }
 
     private $typeGenerator;

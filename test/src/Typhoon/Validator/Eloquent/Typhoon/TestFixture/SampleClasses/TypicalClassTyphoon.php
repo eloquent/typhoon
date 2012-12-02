@@ -132,7 +132,7 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
             }
             if (($argumentCount < 2))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('bar', 1, 'mixed'));
+                throw (new \Typhoon\Exception\MissingArgumentException('bar', 1, 'stdClass'));
             }
             throw (new \Typhoon\Exception\MissingArgumentException('baz', 2, 'array<stdClass>'));
         }
@@ -761,7 +761,7 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         {
             if (($argumentCount < 1))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('foo', 0, 'mixed'));
+                throw (new \Typhoon\Exception\MissingArgumentException('foo', 0, 'array'));
             }
             if (($argumentCount < 2))
             {

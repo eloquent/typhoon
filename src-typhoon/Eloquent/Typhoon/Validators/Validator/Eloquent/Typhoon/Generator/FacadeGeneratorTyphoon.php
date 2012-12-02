@@ -31,7 +31,7 @@ class FacadeGeneratorTyphoon extends \Eloquent\Typhoon\Validators\AbstractValida
         ($argumentCount = \count($arguments));
         if (($argumentCount < 1))
         {
-            throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
+            throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'Eloquent\\Typhoon\\Configuration\\RuntimeConfiguration'));
         }
         elseif (($argumentCount > 3))
         {
@@ -69,7 +69,7 @@ class FacadeGeneratorTyphoon extends \Eloquent\Typhoon\Validators\AbstractValida
         ($argumentCount = \count($arguments));
         if (($argumentCount < 1))
         {
-            throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
+            throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'Eloquent\\Typhoon\\Configuration\\RuntimeConfiguration'));
         }
         elseif (($argumentCount > 3))
         {
@@ -135,7 +135,7 @@ class FacadeGeneratorTyphoon extends \Eloquent\Typhoon\Validators\AbstractValida
         ($argumentCount = \count($arguments));
         if (($argumentCount < 1))
         {
-            throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
+            throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'Eloquent\\Typhoon\\Configuration\\RuntimeConfiguration'));
         }
         elseif (($argumentCount > 1))
         {
@@ -147,7 +147,7 @@ class FacadeGeneratorTyphoon extends \Eloquent\Typhoon\Validators\AbstractValida
         ($argumentCount = \count($arguments));
         if (($argumentCount < 1))
         {
-            throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
+            throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'Eloquent\\Typhoon\\Configuration\\RuntimeConfiguration'));
         }
         elseif (($argumentCount > 1))
         {
@@ -159,7 +159,7 @@ class FacadeGeneratorTyphoon extends \Eloquent\Typhoon\Validators\AbstractValida
         ($argumentCount = \count($arguments));
         if (($argumentCount < 1))
         {
-            throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
+            throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'Eloquent\\Typhoon\\Configuration\\RuntimeConfiguration'));
         }
         elseif (($argumentCount > 1))
         {

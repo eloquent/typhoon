@@ -24,7 +24,7 @@ class AbstractValidatorGeneratorTyphoon extends \Eloquent\Typhoon\Validators\Abs
         ($argumentCount = \count($arguments));
         if (($argumentCount < 1))
         {
-            throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
+            throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'Eloquent\\Typhoon\\Configuration\\RuntimeConfiguration'));
         }
         elseif (($argumentCount > 3))
         {
@@ -62,7 +62,7 @@ class AbstractValidatorGeneratorTyphoon extends \Eloquent\Typhoon\Validators\Abs
         ($argumentCount = \count($arguments));
         if (($argumentCount < 1))
         {
-            throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
+            throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'Eloquent\\Typhoon\\Configuration\\RuntimeConfiguration'));
         }
         elseif (($argumentCount > 3))
         {

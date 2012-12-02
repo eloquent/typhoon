@@ -33,9 +33,9 @@ class GenerateValidatorsCommandTyphoon extends \Eloquent\Typhoon\Validators\Abst
         {
             if (($argumentCount < 1))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('input', 0, 'mixed'));
+                throw (new \Typhoon\Exception\MissingArgumentException('input', 0, 'Symfony\\Component\\Console\\Input\\InputInterface'));
             }
-            throw (new \Typhoon\Exception\MissingArgumentException('output', 1, 'mixed'));
+            throw (new \Typhoon\Exception\MissingArgumentException('output', 1, 'Symfony\\Component\\Console\\Output\\OutputInterface'));
         }
         elseif (($argumentCount > 2))
         {

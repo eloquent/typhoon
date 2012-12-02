@@ -54,9 +54,9 @@ class ValidatorClassGeneratorTyphoon extends \Eloquent\Typhoon\Validators\Abstra
         {
             if (($argumentCount < 1))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
+                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'Eloquent\\Typhoon\\Configuration\\RuntimeConfiguration'));
             }
-            throw (new \Typhoon\Exception\MissingArgumentException('classDefinition', 1, 'mixed'));
+            throw (new \Typhoon\Exception\MissingArgumentException('classDefinition', 1, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition'));
         }
         elseif (($argumentCount > 4))
         {
@@ -96,7 +96,7 @@ class ValidatorClassGeneratorTyphoon extends \Eloquent\Typhoon\Validators\Abstra
         {
             if (($argumentCount < 1))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
+                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'Eloquent\\Typhoon\\Configuration\\RuntimeConfiguration'));
             }
             if (($argumentCount < 2))
             {
@@ -162,7 +162,7 @@ class ValidatorClassGeneratorTyphoon extends \Eloquent\Typhoon\Validators\Abstra
         {
             if (($argumentCount < 1))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
+                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'Eloquent\\Typhoon\\Configuration\\RuntimeConfiguration'));
             }
             if (($argumentCount < 2))
             {
@@ -228,9 +228,9 @@ class ValidatorClassGeneratorTyphoon extends \Eloquent\Typhoon\Validators\Abstra
         {
             if (($argumentCount < 1))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
+                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'Eloquent\\Typhoon\\Configuration\\RuntimeConfiguration'));
             }
-            throw (new \Typhoon\Exception\MissingArgumentException('class', 1, 'mixed'));
+            throw (new \Typhoon\Exception\MissingArgumentException('class', 1, 'ReflectionClass'));
         }
         elseif (($argumentCount > 4))
         {
@@ -270,9 +270,9 @@ class ValidatorClassGeneratorTyphoon extends \Eloquent\Typhoon\Validators\Abstra
         {
             if (($argumentCount < 1))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
+                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'Eloquent\\Typhoon\\Configuration\\RuntimeConfiguration'));
             }
-            throw (new \Typhoon\Exception\MissingArgumentException('classDefinition', 1, 'mixed'));
+            throw (new \Typhoon\Exception\MissingArgumentException('classDefinition', 1, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition'));
         }
         elseif (($argumentCount > 4))
         {
@@ -312,13 +312,13 @@ class ValidatorClassGeneratorTyphoon extends \Eloquent\Typhoon\Validators\Abstra
         {
             if (($argumentCount < 1))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
+                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'Eloquent\\Typhoon\\Configuration\\RuntimeConfiguration'));
             }
             if (($argumentCount < 2))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('method', 1, 'mixed'));
+                throw (new \Typhoon\Exception\MissingArgumentException('method', 1, 'ReflectionMethod'));
             }
-            throw (new \Typhoon\Exception\MissingArgumentException('classDefinition', 2, 'mixed'));
+            throw (new \Typhoon\Exception\MissingArgumentException('classDefinition', 2, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition'));
         }
         elseif (($argumentCount > 3))
         {
@@ -330,7 +330,7 @@ class ValidatorClassGeneratorTyphoon extends \Eloquent\Typhoon\Validators\Abstra
         ($argumentCount = \count($arguments));
         if (($argumentCount < 1))
         {
-            throw (new \Typhoon\Exception\MissingArgumentException('classDefinition', 0, 'mixed'));
+            throw (new \Typhoon\Exception\MissingArgumentException('classDefinition', 0, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition'));
         }
         elseif (($argumentCount > 1))
         {
@@ -344,9 +344,9 @@ class ValidatorClassGeneratorTyphoon extends \Eloquent\Typhoon\Validators\Abstra
         {
             if (($argumentCount < 1))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
+                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'Eloquent\\Typhoon\\Configuration\\RuntimeConfiguration'));
             }
-            throw (new \Typhoon\Exception\MissingArgumentException('classDefinition', 1, 'mixed'));
+            throw (new \Typhoon\Exception\MissingArgumentException('classDefinition', 1, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition'));
         }
         elseif (($argumentCount > 4))
         {
@@ -384,7 +384,7 @@ class ValidatorClassGeneratorTyphoon extends \Eloquent\Typhoon\Validators\Abstra
         ($argumentCount = \count($arguments));
         if (($argumentCount < 1))
         {
-            throw (new \Typhoon\Exception\MissingArgumentException('method', 0, 'mixed'));
+            throw (new \Typhoon\Exception\MissingArgumentException('method', 0, 'ReflectionMethod'));
         }
         elseif (($argumentCount > 1))
         {
@@ -398,13 +398,13 @@ class ValidatorClassGeneratorTyphoon extends \Eloquent\Typhoon\Validators\Abstra
         {
             if (($argumentCount < 1))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
+                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'Eloquent\\Typhoon\\Configuration\\RuntimeConfiguration'));
             }
             if (($argumentCount < 2))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('method', 1, 'mixed'));
+                throw (new \Typhoon\Exception\MissingArgumentException('method', 1, 'ReflectionMethod'));
             }
-            throw (new \Typhoon\Exception\MissingArgumentException('classDefinition', 2, 'mixed'));
+            throw (new \Typhoon\Exception\MissingArgumentException('classDefinition', 2, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition'));
         }
         elseif (($argumentCount > 3))
         {
@@ -416,7 +416,7 @@ class ValidatorClassGeneratorTyphoon extends \Eloquent\Typhoon\Validators\Abstra
         ($argumentCount = \count($arguments));
         if (($argumentCount < 1))
         {
-            throw (new \Typhoon\Exception\MissingArgumentException('classDefinition', 0, 'mixed'));
+            throw (new \Typhoon\Exception\MissingArgumentException('classDefinition', 0, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition'));
         }
         elseif (($argumentCount > 1))
         {

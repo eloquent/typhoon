@@ -60,7 +60,7 @@ class ParameterListGeneratorTyphoon extends \Eloquent\Typhoon\Validators\Abstrac
         ($argumentCount = \count($arguments));
         if (($argumentCount < 1))
         {
-            throw (new \Typhoon\Exception\MissingArgumentException('parameter', 0, 'mixed'));
+            throw (new \Typhoon\Exception\MissingArgumentException('parameter', 0, 'Eloquent\\Typhoon\\Parameter\\Parameter'));
         }
         elseif (($argumentCount > 1))
         {
@@ -72,7 +72,7 @@ class ParameterListGeneratorTyphoon extends \Eloquent\Typhoon\Validators\Abstrac
         ($argumentCount = \count($arguments));
         if (($argumentCount < 1))
         {
-            throw (new \Typhoon\Exception\MissingArgumentException('parameterList', 0, 'mixed'));
+            throw (new \Typhoon\Exception\MissingArgumentException('parameterList', 0, 'Eloquent\\Typhoon\\Parameter\\ParameterList'));
         }
         elseif (($argumentCount > 1))
         {
@@ -84,7 +84,19 @@ class ParameterListGeneratorTyphoon extends \Eloquent\Typhoon\Validators\Abstrac
         ($argumentCount = \count($arguments));
         if (($argumentCount < 1))
         {
-            throw (new \Typhoon\Exception\MissingArgumentException('expressions', 0, 'mixed'));
+            throw (new \Typhoon\Exception\MissingArgumentException('expressions', 0, 'array'));
+        }
+        elseif (($argumentCount > 1))
+        {
+            throw (new \Typhoon\Exception\UnexpectedArgumentException(1, $arguments[1]));
+        }
+    }
+    public function renderTypeName(array $arguments)
+    {
+        ($argumentCount = \count($arguments));
+        if (($argumentCount < 1))
+        {
+            throw (new \Typhoon\Exception\MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\Type'));
         }
         elseif (($argumentCount > 1))
         {

@@ -9,7 +9,7 @@ class ParameterListClassNameResolverTyphoon extends \Eloquent\Typhoon\Validators
         ($argumentCount = \count($arguments));
         if (($argumentCount < 1))
         {
-            throw (new \Typhoon\Exception\MissingArgumentException('typeResolver', 0, 'mixed'));
+            throw (new \Typhoon\Exception\MissingArgumentException('typeResolver', 0, 'Eloquent\\Typhax\\Resolver\\ObjectTypeClassNameResolver'));
         }
         elseif (($argumentCount > 1))
         {
@@ -28,7 +28,7 @@ class ParameterListClassNameResolverTyphoon extends \Eloquent\Typhoon\Validators
         ($argumentCount = \count($arguments));
         if (($argumentCount < 1))
         {
-            throw (new \Typhoon\Exception\MissingArgumentException('parameter', 0, 'mixed'));
+            throw (new \Typhoon\Exception\MissingArgumentException('parameter', 0, 'Eloquent\\Typhoon\\Parameter\\Parameter'));
         }
         elseif (($argumentCount > 1))
         {
@@ -40,7 +40,7 @@ class ParameterListClassNameResolverTyphoon extends \Eloquent\Typhoon\Validators
         ($argumentCount = \count($arguments));
         if (($argumentCount < 1))
         {
-            throw (new \Typhoon\Exception\MissingArgumentException('parameterList', 0, 'mixed'));
+            throw (new \Typhoon\Exception\MissingArgumentException('parameterList', 0, 'Eloquent\\Typhoon\\Parameter\\ParameterList'));
         }
         elseif (($argumentCount > 1))
         {

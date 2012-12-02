@@ -13,7 +13,7 @@ class ParameterTyphoon extends \Eloquent\Typhoon\Validators\AbstractValidator
             {
                 throw (new \Typhoon\Exception\MissingArgumentException('name', 0, 'string'));
             }
-            throw (new \Typhoon\Exception\MissingArgumentException('type', 1, 'mixed'));
+            throw (new \Typhoon\Exception\MissingArgumentException('type', 1, 'Eloquent\\Typhax\\Type\\Type'));
         }
         elseif (($argumentCount > 5))
         {

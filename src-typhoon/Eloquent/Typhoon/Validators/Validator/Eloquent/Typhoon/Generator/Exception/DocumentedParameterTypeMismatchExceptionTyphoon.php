@@ -19,9 +19,9 @@ class DocumentedParameterTypeMismatchExceptionTyphoon extends \Eloquent\Typhoon\
             }
             if (($argumentCount < 3))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('documentedType', 2, 'mixed'));
+                throw (new \Typhoon\Exception\MissingArgumentException('documentedType', 2, 'Eloquent\\Typhax\\Type\\Type'));
             }
-            throw (new \Typhoon\Exception\MissingArgumentException('nativeType', 3, 'mixed'));
+            throw (new \Typhoon\Exception\MissingArgumentException('nativeType', 3, 'Eloquent\\Typhax\\Type\\Type'));
         }
         elseif (($argumentCount > 6))
         {

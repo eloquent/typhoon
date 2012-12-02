@@ -91,7 +91,7 @@ class ProjectValidatorGeneratorTyphoon extends \Eloquent\Typhoon\Validators\Abst
         ($argumentCount = \count($arguments));
         if (($argumentCount < 1))
         {
-            throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
+            throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'Eloquent\\Typhoon\\Configuration\\Configuration'));
         }
         elseif (($argumentCount > 1))
         {
@@ -103,7 +103,7 @@ class ProjectValidatorGeneratorTyphoon extends \Eloquent\Typhoon\Validators\Abst
         ($argumentCount = \count($arguments));
         if (($argumentCount < 1))
         {
-            throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
+            throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'Eloquent\\Typhoon\\Configuration\\Configuration'));
         }
         elseif (($argumentCount > 1))
         {
@@ -115,7 +115,7 @@ class ProjectValidatorGeneratorTyphoon extends \Eloquent\Typhoon\Validators\Abst
         ($argumentCount = \count($arguments));
         if (($argumentCount < 1))
         {
-            throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
+            throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'Eloquent\\Typhoon\\Configuration\\Configuration'));
         }
         elseif (($argumentCount > 1))
         {
@@ -167,7 +167,7 @@ class ProjectValidatorGeneratorTyphoon extends \Eloquent\Typhoon\Validators\Abst
         {
             if (($argumentCount < 1))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
+                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'Eloquent\\Typhoon\\Configuration\\Configuration'));
             }
             if (($argumentCount < 2))
             {
@@ -207,7 +207,7 @@ class ProjectValidatorGeneratorTyphoon extends \Eloquent\Typhoon\Validators\Abst
         {
             if (($argumentCount < 1))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'mixed'));
+                throw (new \Typhoon\Exception\MissingArgumentException('configuration', 0, 'Eloquent\\Typhoon\\Configuration\\Configuration'));
             }
             if (($argumentCount < 2))
             {

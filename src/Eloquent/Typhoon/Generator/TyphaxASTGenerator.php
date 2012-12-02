@@ -252,6 +252,18 @@ class TyphaxASTGenerator implements Visitor
     }
 
     /**
+     * @param NullifiedType $type
+     *
+     * @return null
+     */
+    public function visitNullifiedType(NullifiedType $type)
+    {
+        $this->typhoon->visitNullifiedType(func_get_args());
+
+        return null;
+    }
+
+    /**
      * @param NumericType $type
      *
      * @return Call

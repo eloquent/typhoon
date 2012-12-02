@@ -210,7 +210,7 @@ class NativeParameterListMergeTool
             $documentedType,
             $nativeType
         )) {
-            return new MixedType;
+            return new NullifiedType($documentedType);
         }
 
         return $documentedType;

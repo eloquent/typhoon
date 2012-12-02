@@ -60,7 +60,7 @@ class ParameterListParserTyphoon extends \Eloquent\Typhoon\Validators\AbstractVa
         ($argumentCount = \count($arguments));
         if (($argumentCount < 1))
         {
-            throw (new \Typhoon\Exception\MissingArgumentException('reflector', 0, 'mixed'));
+            throw (new \Typhoon\Exception\MissingArgumentException('reflector', 0, 'ReflectionFunctionAbstract'));
         }
         elseif (($argumentCount > 1))
         {
@@ -72,7 +72,7 @@ class ParameterListParserTyphoon extends \Eloquent\Typhoon\Validators\AbstractVa
         ($argumentCount = \count($arguments));
         if (($argumentCount < 1))
         {
-            throw (new \Typhoon\Exception\MissingArgumentException('reflector', 0, 'mixed'));
+            throw (new \Typhoon\Exception\MissingArgumentException('reflector', 0, 'ReflectionParameter'));
         }
         elseif (($argumentCount > 1))
         {
@@ -84,7 +84,7 @@ class ParameterListParserTyphoon extends \Eloquent\Typhoon\Validators\AbstractVa
         ($argumentCount = \count($arguments));
         if (($argumentCount < 1))
         {
-            throw (new \Typhoon\Exception\MissingArgumentException('documentationBlock', 0, 'mixed'));
+            throw (new \Typhoon\Exception\MissingArgumentException('documentationBlock', 0, 'Eloquent\\Blox\\AST\\DocumentationBlock'));
         }
         elseif (($argumentCount > 1))
         {
@@ -96,7 +96,7 @@ class ParameterListParserTyphoon extends \Eloquent\Typhoon\Validators\AbstractVa
         ($argumentCount = \count($arguments));
         if (($argumentCount < 1))
         {
-            throw (new \Typhoon\Exception\MissingArgumentException('documentationTag', 0, 'mixed'));
+            throw (new \Typhoon\Exception\MissingArgumentException('documentationTag', 0, 'Eloquent\\Blox\\AST\\DocumentationTag'));
         }
         elseif (($argumentCount > 1))
         {
