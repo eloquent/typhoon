@@ -14,7 +14,7 @@ namespace Typhoon;
 use Eloquent\Liberator\Liberator;
 use PHPUnit_Framework_TestCase;
 use stdClass;
-use Typhoon\Eloquent\Typhoon\TestFixture\ExampleClassTyphoon;
+use Typhoon\Validator\Eloquent\Typhoon\TestFixture\ExampleClassTyphoon;
 
 class TyphoonTest extends PHPUnit_Framework_TestCase
 {
@@ -23,7 +23,7 @@ class TyphoonTest extends PHPUnit_Framework_TestCase
         parent::setUp();
 
         Liberator::liberateClass(__NAMESPACE__.'\Typhoon')->instances = array();
-        if (class_exists('Typhoon\Eloquent\Typhoon\TestFixture\ExampleClassTyphoon', false)) {
+        if (class_exists('Typhoon\Validator\Eloquent\Typhoon\TestFixture\ExampleClassTyphoon', false)) {
             ExampleClassTyphoon::$arguments = array();
         }
 
@@ -44,7 +44,7 @@ class TyphoonTest extends PHPUnit_Framework_TestCase
         $validator = Typhoon::get($className);
 
         $this->assertInstanceOf(
-            'Typhoon\Eloquent\Typhoon\TestFixture\ExampleClassTyphoon',
+            'Typhoon\Validator\Eloquent\Typhoon\TestFixture\ExampleClassTyphoon',
             $validator
         );
         $this->assertSame($validator, Typhoon::get($className));
@@ -58,7 +58,7 @@ class TyphoonTest extends PHPUnit_Framework_TestCase
         $validator = Typhoon::get($className, $arguments);
 
         $this->assertInstanceOf(
-            'Typhoon\Eloquent\Typhoon\TestFixture\ExampleClassTyphoon',
+            'Typhoon\Validator\Eloquent\Typhoon\TestFixture\ExampleClassTyphoon',
             $validator
         );
         $this->assertSame($validator, Typhoon::get($className));
@@ -73,7 +73,7 @@ class TyphoonTest extends PHPUnit_Framework_TestCase
         $validator = Typhoon::get($className);
 
         $this->assertInstanceOf(
-            'Typhoon\Eloquent\Typhoon\TestFixture\ExampleClassRuntimeTyphoon',
+            'Typhoon\Validator\Eloquent\Typhoon\TestFixture\ExampleClassRuntimeTyphoon',
             $validator
         );
         $this->assertSame($validator, Typhoon::get($className));

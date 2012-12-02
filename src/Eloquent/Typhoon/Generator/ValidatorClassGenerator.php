@@ -353,6 +353,7 @@ class ValidatorClassGenerator
 
         $namespaceNameParts = array(
             $configuration->validatorNamespace(),
+            'Validator',
         );
         if (null !== $classDefinition->namespaceName()) {
             $namespaceNameParts[] = $classDefinition->namespaceName();

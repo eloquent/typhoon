@@ -381,7 +381,7 @@ class FacadeGenerator implements StaticClassGenerator
         $method->addParameter(new Parameter($classNameIdentifier));
 
         $validatorClassNameConcatenation = new Concat(
-            new Literal(sprintf('%s\\', $configuration->validatorNamespace())),
+            new Literal(sprintf('%s\Validator\\', $configuration->validatorNamespace())),
             $classNameVariable
         );
         $validatorClassNameConcatenation->add(new Literal('Typhoon'));

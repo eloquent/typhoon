@@ -35,7 +35,7 @@ abstract class Typhoon
     }
     protected static function createValidator($className)
     {
-        ($validatorClassName = ('foo\\' . $className . 'Typhoon'));
+        ($validatorClassName = ('foo\\Validator\\' . $className . 'Typhoon'));
         if ((static::runtimeGeneration() && (!\class_exists($validatorClassName))))
         {
             (static::$dummyMode = true);
