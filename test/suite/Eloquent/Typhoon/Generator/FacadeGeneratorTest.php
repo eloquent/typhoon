@@ -57,7 +57,7 @@ class FacadeGeneratorTest extends MultiGenerationTestCase
         $configuration = new RuntimeConfiguration('foo', true);
         $expected = file_get_contents(
             __DIR__.
-            '/../../../../src/Typhoon/Eloquent/Typhoon/TestFixture/ExampleTyphoon.php'
+            '/../../../../src/Eloquent/Typhoon/TestFixture/GeneratorExamples/ExampleTyphoon.php'
         );
 
         $this->assertSame($expected, $this->_generator->generate(
@@ -74,7 +74,7 @@ class FacadeGeneratorTest extends MultiGenerationTestCase
         $configuration = new RuntimeConfiguration('foo', false);
         $expected = file_get_contents(
             __DIR__.
-            '/../../../../src/Typhoon/Eloquent/Typhoon/TestFixture/ExampleTyphoonNoCallable.php'
+            '/../../../../src/Eloquent/Typhoon/TestFixture/GeneratorExamples/ExampleTyphoonNoCallable.php'
         );
 
         $this->assertSame($expected, $this->_generator->generate(

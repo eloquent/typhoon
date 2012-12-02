@@ -47,7 +47,7 @@ class DummyValidatorGeneratorTest extends MultiGenerationTestCase
         $configuration = new RuntimeConfiguration;
         $expected = file_get_contents(
             __DIR__.
-            '/../../../../src/Typhoon/Eloquent/Typhoon/TestFixture/ExampleDummyValidator.php'
+            '/../../../../src/Eloquent/Typhoon/TestFixture/GeneratorExamples/ExampleDummyValidator.php'
         );
 
         $this->assertSame($expected, $this->_generator->generate(

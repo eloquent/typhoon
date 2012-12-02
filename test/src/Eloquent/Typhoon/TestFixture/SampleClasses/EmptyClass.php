@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Eloquent\Typhoon\TestFixture\GeneratorExamples;
+namespace Eloquent\Typhoon\TestFixture\SampleClasses;
 
 class EmptyClass
 {

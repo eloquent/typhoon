@@ -47,7 +47,7 @@ class UnexpectedArgumentValueExceptionGeneratorTest extends MultiGenerationTestC
         $configuration = new RuntimeConfiguration;
         $expected = file_get_contents(
             __DIR__.
-            '/../../../../../src/Typhoon/Eloquent/Typhoon/TestFixture/Exception/ExampleUnexpectedArgumentValueException.php'
+            '/../../../../../src/Eloquent/Typhoon/TestFixture/GeneratorExamples/Exception/ExampleUnexpectedArgumentValueException.php'
         );
 
         $this->assertSame($expected, $this->_generator->generate(

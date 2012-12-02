@@ -47,7 +47,7 @@ class TypeInspectorGeneratorTest extends MultiGenerationTestCase
         $configuration = new RuntimeConfiguration;
         $expected = file_get_contents(
             __DIR__.
-            '/../../../../src/Typhoon/Eloquent/Typhoon/TestFixture/ExampleTypeInspector.php'
+            '/../../../../src/Eloquent/Typhoon/TestFixture/GeneratorExamples/ExampleTypeInspector.php'
         );
 
         $this->assertSame($expected, $this->_generator->generate(

@@ -90,7 +90,7 @@ class ValidatorClassGeneratorTest extends MultiGenerationTestCase
     {
         $exampleClassesPath =
             __DIR__.
-            '/../../../../src/Eloquent/Typhoon/TestFixture/GeneratorExamples/'
+            '/../../../../src/Eloquent/Typhoon/TestFixture/SampleClasses/'
         ;
 
         $data = array();
@@ -111,13 +111,13 @@ class ValidatorClassGeneratorTest extends MultiGenerationTestCase
     {
         $classPath =
             __DIR__.
-            '/../../../../src/Eloquent/Typhoon/TestFixture/GeneratorExamples/'.
+            '/../../../../src/Eloquent/Typhoon/TestFixture/SampleClasses/'.
             $className.
             '.php'
         ;
         $expectedPath =
             __DIR__.
-            '/../../../../src/Typhoon/Eloquent/Typhoon/TestFixture/GeneratorExamples/'.
+            '/../../../../src/Typhoon/Eloquent/Typhoon/TestFixture/SampleClasses/'.
             $className.
             'Typhoon.php'
         ;

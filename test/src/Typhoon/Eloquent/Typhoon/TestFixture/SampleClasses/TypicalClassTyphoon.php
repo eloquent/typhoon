@@ -1,5 +1,5 @@
 <?php
-namespace Typhoon\Eloquent\Typhoon\TestFixture\GeneratorExamples;
+namespace Typhoon\Eloquent\Typhoon\TestFixture\SampleClasses;
 
 
 class TypicalClassTyphoon extends \Typhoon\AbstractValidator

@@ -47,7 +47,7 @@ class AbstractValidatorGeneratorTest extends MultiGenerationTestCase
         $configuration = new RuntimeConfiguration;
         $expected = file_get_contents(
             __DIR__.
-            '/../../../../src/Typhoon/Eloquent/Typhoon/TestFixture/ExampleAbstractValidator.php'
+            '/../../../../src/Eloquent/Typhoon/TestFixture/GeneratorExamples/ExampleAbstractValidator.php'
         );
 
         $this->assertSame($expected, $this->_generator->generate(

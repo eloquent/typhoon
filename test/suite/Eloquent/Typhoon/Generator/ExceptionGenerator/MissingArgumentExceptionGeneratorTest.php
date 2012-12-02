@@ -47,7 +47,7 @@ class MissingArgumentExceptionGeneratorTest extends MultiGenerationTestCase
         $configuration = new RuntimeConfiguration;
         $expected = file_get_contents(
             __DIR__.
-            '/../../../../../src/Typhoon/Eloquent/Typhoon/TestFixture/Exception/ExampleMissingArgumentException.php'
+            '/../../../../../src/Eloquent/Typhoon/TestFixture/GeneratorExamples/Exception/ExampleMissingArgumentException.php'
         );
 
         $this->assertSame($expected, $this->_generator->generate(
