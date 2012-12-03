@@ -13,17 +13,17 @@
     ],
     "require": {
         "php": ">=5.3.0",
-        "eloquent/asplode": "*",
-        "eloquent/blox": "*",
-        "eloquent/cosmos": "*",
-        "eloquent/enumeration": "*",
-        "eloquent/typhax": "*",
-        "icecave/isolator": "*",
-        "icecave/pasta-ast": "dev-master@dev",
-        "icecave/rasta": "dev-master@dev",
-        "icecave/visita": "*",
-        "symfony/console": "*",
-        "symfony/filesystem": "*"
+        "eloquent/asplode": "~1",
+        "eloquent/blox": "~1",
+        "eloquent/cosmos": "~1",
+        "eloquent/enumeration": "~3",
+        "eloquent/typhax": "~0.7",
+        "icecave/isolator": "~2",
+        "icecave/pasta-ast": "~0.1",
+        "icecave/rasta": "~0.1",
+        "icecave/visita": "~0.1",
+        "symfony/console": "~2",
+        "symfony/filesystem": "~2"
     },
     "require-dev": {
         "phake/phake": "*",

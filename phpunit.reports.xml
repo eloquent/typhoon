@@ -8,6 +8,7 @@
     convertWarningsToExceptions="true"
     verbose="true"
     colors="true"
+    timeoutForSmallTests="999"
 >
     <php>
         <ini name="xdebug.max_nesting_level" value="103"/>

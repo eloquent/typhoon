@@ -1,5 +1,5 @@
 {
-    "hash": "1b9f4b210693783a202da05f6312b87e",
+    "hash": "b040d8a4637d2779c239faeb384142af",
     "packages": [
         {
             "name": "eloquent/asplode",
@@ -300,16 +300,16 @@
         },
         {
             "name": "icecave/pasta-ast",
-            "version": "dev-master",
+            "version": "0.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/IcecaveStudios/pasta-ast.git",
-                "reference": "e60498ac26189a50990b190d34a61b3677a14a69"
+                "reference": "0.1.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/IcecaveStudios/pasta-ast/archive/e60498ac26189a50990b190d34a61b3677a14a69.zip",
-                "reference": "e60498ac26189a50990b190d34a61b3677a14a69",
+                "url": "https://github.com/IcecaveStudios/pasta-ast/archive/0.1.0.zip",
+                "reference": "0.1.0",
                 "shasum": ""
             },
             "require": {
@@ -319,9 +319,9 @@
             "require-dev": {
                 "phake/phake": "1.*"
             },
-            "time": "1354104039",
+            "time": "2012-11-28 12:00:39",
             "type": "library",
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "psr-0": {
                     "Icecave\\Pasta\\AST": "lib"
@@ -348,28 +348,28 @@
         },
         {
             "name": "icecave/rasta",
-            "version": "dev-master",
+            "version": "0.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/IcecaveStudios/rasta.git",
-                "reference": "7a87be08edf1a11f296bb9ff3b0858335406f74e"
+                "reference": "0.1.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/IcecaveStudios/rasta/archive/7a87be08edf1a11f296bb9ff3b0858335406f74e.zip",
-                "reference": "7a87be08edf1a11f296bb9ff3b0858335406f74e",
+                "url": "https://github.com/IcecaveStudios/rasta/archive/0.1.0.zip",
+                "reference": "0.1.0",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
-                "icecave/pasta-ast": "dev-master@dev"
+                "icecave/pasta-ast": ">=0.1,<1.0"
             },
             "require-dev": {
-                "phake/phake": "1.*"
+                "phake/phake": ">=1.0,<2.0"
             },
-            "time": "1354104883",
+            "time": "2012-12-03 10:58:07",
             "type": "library",
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "psr-0": {
                     "Icecave\\Rasta": "lib"
@@ -438,23 +438,23 @@
         },
         {
             "name": "symfony/console",
-            "version": "v2.1.3",
+            "version": "v2.1.4",
             "target-dir": "Symfony/Component/Console",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console",
-                "reference": "v2.1.3"
+                "reference": "v2.1.4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/Console/zipball/v2.1.3",
-                "reference": "v2.1.3",
+                "url": "https://github.com/symfony/Console/archive/v2.1.4.zip",
+                "reference": "v2.1.4",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "2012-10-22 07:37:12",
+            "time": "2012-11-09 08:52:51",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -485,23 +485,23 @@
         },
         {
             "name": "symfony/filesystem",
-            "version": "v2.1.3",
+            "version": "v2.1.4",
             "target-dir": "Symfony/Component/Filesystem",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Filesystem",
-                "reference": "v2.1.3"
+                "reference": "v2.1.4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/Filesystem/zipball/v2.1.3",
-                "reference": "v2.1.3",
+                "url": "https://github.com/symfony/Filesystem/archive/v2.1.4.zip",
+                "reference": "v2.1.4",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "2012-10-20 00:10:30",
+            "time": "2012-11-20 13:21:32",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -719,8 +719,7 @@
 
     ],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "icecave/pasta-ast": 20,
-        "icecave/rasta": 20
-    }
+    "stability-flags": [
+
+    ]
 }
