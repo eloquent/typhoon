@@ -302,6 +302,9 @@ class ValidatorClassGenerator
             new ArrayTypeHint
         ));
 
+        $this->generator()
+            ->setValidatorNamespace($configuration->validatorNamespace())
+        ;
         $expressions = $this->parameterList($configuration, $method, $classDefinition)
             ->accept($this->generator())
         ;

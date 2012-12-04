@@ -1,28 +1,28 @@
 <?php
-namespace Typhoon\Validator\Eloquent\Typhoon\TestFixture\SampleClasses;
+namespace foo\Validator\Eloquent\Typhoon\TestFixture\SampleClasses;
 
 
-class TypicalClassTyphoon extends \Typhoon\AbstractValidator
+class TypicalClassTyphoon extends \foo\AbstractValidator
 {
     public function validateConstruct(array $arguments)
     {
         if ((\count($arguments) > 0))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(0, $arguments[0]));
+            throw (new \foo\Exception\UnexpectedArgumentException(0, $arguments[0]));
         }
     }
     public function validateToString(array $arguments)
     {
         if ((\count($arguments) > 0))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(0, $arguments[0]));
+            throw (new \foo\Exception\UnexpectedArgumentException(0, $arguments[0]));
         }
     }
     public function undocumentedMethod(array $arguments)
     {
         if ((\count($arguments) > 0))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(0, $arguments[0]));
+            throw (new \foo\Exception\UnexpectedArgumentException(0, $arguments[0]));
         }
     }
     public function simpleTypes(array $arguments)
@@ -32,38 +32,38 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         {
             if (($argumentCount < 1))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('boolean', 0, 'boolean'));
+                throw (new \foo\Exception\MissingArgumentException('boolean', 0, 'boolean'));
             }
             if (($argumentCount < 2))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('float', 1, 'float'));
+                throw (new \foo\Exception\MissingArgumentException('float', 1, 'float'));
             }
             if (($argumentCount < 3))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('integer', 2, 'integer'));
+                throw (new \foo\Exception\MissingArgumentException('integer', 2, 'integer'));
             }
             if (($argumentCount < 4))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('mixed', 3, 'mixed'));
+                throw (new \foo\Exception\MissingArgumentException('mixed', 3, 'mixed'));
             }
             if (($argumentCount < 5))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('null', 4, 'null'));
+                throw (new \foo\Exception\MissingArgumentException('null', 4, 'null'));
             }
             if (($argumentCount < 6))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('numeric', 5, 'numeric'));
+                throw (new \foo\Exception\MissingArgumentException('numeric', 5, 'numeric'));
             }
-            throw (new \Typhoon\Exception\MissingArgumentException('string', 6, 'string'));
+            throw (new \foo\Exception\MissingArgumentException('string', 6, 'string'));
         }
         elseif (($argumentCount > 7))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(7, $arguments[7]));
+            throw (new \foo\Exception\UnexpectedArgumentException(7, $arguments[7]));
         }
         ($value = $arguments[0]);
         if ((!\is_bool($value)))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'boolean',
                 0,
                 $arguments[0],
@@ -73,7 +73,7 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         ($value = $arguments[1]);
         if ((!\is_float($value)))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'float',
                 1,
                 $arguments[1],
@@ -83,7 +83,7 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         ($value = $arguments[2]);
         if ((!\is_int($value)))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'integer',
                 2,
                 $arguments[2],
@@ -93,7 +93,7 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         ($value = $arguments[4]);
         if ((!($value === null)))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'null',
                 4,
                 $arguments[4],
@@ -103,7 +103,7 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         ($value = $arguments[5]);
         if ((!\is_numeric($value)))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'numeric',
                 5,
                 $arguments[5],
@@ -113,7 +113,7 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         ($value = $arguments[6]);
         if ((!\is_string($value)))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'string',
                 6,
                 $arguments[6],
@@ -128,22 +128,22 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         {
             if (($argumentCount < 1))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('foo', 0, 'object'));
+                throw (new \foo\Exception\MissingArgumentException('foo', 0, 'object'));
             }
             if (($argumentCount < 2))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('bar', 1, 'stdClass'));
+                throw (new \foo\Exception\MissingArgumentException('bar', 1, 'stdClass'));
             }
-            throw (new \Typhoon\Exception\MissingArgumentException('baz', 2, 'array<stdClass>'));
+            throw (new \foo\Exception\MissingArgumentException('baz', 2, 'array<stdClass>'));
         }
         elseif (($argumentCount > 3))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(3, $arguments[3]));
+            throw (new \foo\Exception\UnexpectedArgumentException(3, $arguments[3]));
         }
         ($value = $arguments[0]);
         if ((!\is_object($value)))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'foo',
                 0,
                 $arguments[0],
@@ -169,7 +169,7 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         );
         if ((!$check($arguments[2])))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'baz',
                 2,
                 $arguments[2],
@@ -184,18 +184,18 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         {
             if (($argumentCount < 1))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('foo', 0, 'resource'));
+                throw (new \foo\Exception\MissingArgumentException('foo', 0, 'resource'));
             }
-            throw (new \Typhoon\Exception\MissingArgumentException('bar', 1, 'resource {ofType: \'stream\'}'));
+            throw (new \foo\Exception\MissingArgumentException('bar', 1, 'resource {ofType: \'stream\'}'));
         }
         elseif (($argumentCount > 2))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(2, $arguments[2]));
+            throw (new \foo\Exception\UnexpectedArgumentException(2, $arguments[2]));
         }
         ($value = $arguments[0]);
         if ((!\is_resource($value)))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'foo',
                 0,
                 $arguments[0],
@@ -205,7 +205,7 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         ($value = $arguments[1]);
         if ((!(\is_resource($value) && (\get_resource_type($value) === 'stream'))))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'bar',
                 1,
                 $arguments[1],
@@ -220,38 +220,38 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         {
             if (($argumentCount < 1))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('foo', 0, 'stream'));
+                throw (new \foo\Exception\MissingArgumentException('foo', 0, 'stream'));
             }
             if (($argumentCount < 2))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('bar', 1, 'stream {readable: true}'));
+                throw (new \foo\Exception\MissingArgumentException('bar', 1, 'stream {readable: true}'));
             }
             if (($argumentCount < 3))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('baz', 2, 'stream {readable: false}'));
+                throw (new \foo\Exception\MissingArgumentException('baz', 2, 'stream {readable: false}'));
             }
             if (($argumentCount < 4))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('qux', 3, 'stream {writable: true}'));
+                throw (new \foo\Exception\MissingArgumentException('qux', 3, 'stream {writable: true}'));
             }
             if (($argumentCount < 5))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('doom', 4, 'stream {writable: false}'));
+                throw (new \foo\Exception\MissingArgumentException('doom', 4, 'stream {writable: false}'));
             }
             if (($argumentCount < 6))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('splat', 5, 'stream {readable: true, writable: true}'));
+                throw (new \foo\Exception\MissingArgumentException('splat', 5, 'stream {readable: true, writable: true}'));
             }
-            throw (new \Typhoon\Exception\MissingArgumentException('ping', 6, 'stream {readable: false, writable: true}'));
+            throw (new \foo\Exception\MissingArgumentException('ping', 6, 'stream {readable: false, writable: true}'));
         }
         elseif (($argumentCount > 7))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(7, $arguments[7]));
+            throw (new \foo\Exception\UnexpectedArgumentException(7, $arguments[7]));
         }
         ($value = $arguments[0]);
         if ((!(\is_resource($value) && (\get_resource_type($value) === 'stream'))))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'foo',
                 0,
                 $arguments[0],
@@ -271,7 +271,7 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         );
         if ((!$check($arguments[1])))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'bar',
                 1,
                 $arguments[1],
@@ -291,7 +291,7 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         );
         if ((!$check($arguments[2])))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'baz',
                 2,
                 $arguments[2],
@@ -311,7 +311,7 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         );
         if ((!$check($arguments[3])))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'qux',
                 3,
                 $arguments[3],
@@ -331,7 +331,7 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         );
         if ((!$check($arguments[4])))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'doom',
                 4,
                 $arguments[4],
@@ -355,7 +355,7 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         );
         if ((!$check($arguments[5])))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'splat',
                 5,
                 $arguments[5],
@@ -379,7 +379,7 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         );
         if ((!$check($arguments[6])))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'ping',
                 6,
                 $arguments[6],
@@ -392,11 +392,11 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         ($argumentCount = \count($arguments));
         if (($argumentCount < 1))
         {
-            throw (new \Typhoon\Exception\MissingArgumentException('foo', 0, 'stringable'));
+            throw (new \foo\Exception\MissingArgumentException('foo', 0, 'stringable'));
         }
         elseif (($argumentCount > 1))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(1, $arguments[1]));
+            throw (new \foo\Exception\UnexpectedArgumentException(1, $arguments[1]));
         }
         ($value = $arguments[0]);
         ($check =         function ($value)
@@ -415,7 +415,7 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         );
         if ((!$check($arguments[0])))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'foo',
                 0,
                 $arguments[0],
@@ -428,11 +428,11 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         ($argumentCount = \count($arguments));
         if (($argumentCount < 1))
         {
-            throw (new \Typhoon\Exception\MissingArgumentException('foo', 0, 'array<callable>'));
+            throw (new \foo\Exception\MissingArgumentException('foo', 0, 'array<callable>'));
         }
         elseif (($argumentCount > 1))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(1, $arguments[1]));
+            throw (new \foo\Exception\UnexpectedArgumentException(1, $arguments[1]));
         }
         ($value = $arguments[0]);
         ($check =         function ($value)
@@ -453,7 +453,7 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         );
         if ((!$check($arguments[0])))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'foo',
                 0,
                 $arguments[0],
@@ -468,26 +468,26 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         {
             if (($argumentCount < 1))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('foo', 0, 'stdClass+Iterator'));
+                throw (new \foo\Exception\MissingArgumentException('foo', 0, 'stdClass+Iterator'));
             }
             if (($argumentCount < 2))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('bar', 1, 'object+stringable'));
+                throw (new \foo\Exception\MissingArgumentException('bar', 1, 'object+stringable'));
             }
             if (($argumentCount < 3))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('baz', 2, 'stringable+object'));
+                throw (new \foo\Exception\MissingArgumentException('baz', 2, 'stringable+object'));
             }
-            throw (new \Typhoon\Exception\MissingArgumentException('qux', 3, 'mixed+mixed'));
+            throw (new \foo\Exception\MissingArgumentException('qux', 3, 'mixed+mixed'));
         }
         elseif (($argumentCount > 4))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(4, $arguments[4]));
+            throw (new \foo\Exception\UnexpectedArgumentException(4, $arguments[4]));
         }
         ($value = $arguments[0]);
         if ((!(($value instanceof \stdClass) && ($value instanceof \Iterator))))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'foo',
                 0,
                 $arguments[0],
@@ -515,7 +515,7 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         );
         if ((!$check($arguments[1])))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'bar',
                 1,
                 $arguments[1],
@@ -561,7 +561,7 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         );
         if ((!$check($arguments[2])))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'baz',
                 2,
                 $arguments[2],
@@ -576,26 +576,26 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         {
             if (($argumentCount < 1))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('foo', 0, 'integer|string'));
+                throw (new \foo\Exception\MissingArgumentException('foo', 0, 'integer|string'));
             }
             if (($argumentCount < 2))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('bar', 1, 'integer|stringable'));
+                throw (new \foo\Exception\MissingArgumentException('bar', 1, 'integer|stringable'));
             }
             if (($argumentCount < 3))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('baz', 2, 'stringable|integer'));
+                throw (new \foo\Exception\MissingArgumentException('baz', 2, 'stringable|integer'));
             }
-            throw (new \Typhoon\Exception\MissingArgumentException('qux', 3, 'mixed|mixed'));
+            throw (new \foo\Exception\MissingArgumentException('qux', 3, 'mixed|mixed'));
         }
         elseif (($argumentCount > 4))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(4, $arguments[4]));
+            throw (new \foo\Exception\UnexpectedArgumentException(4, $arguments[4]));
         }
         ($value = $arguments[0]);
         if ((!(\is_int($value) || \is_string($value))))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'foo',
                 0,
                 $arguments[0],
@@ -623,7 +623,7 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         );
         if ((!$check($arguments[1])))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'bar',
                 1,
                 $arguments[1],
@@ -669,7 +669,7 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         );
         if ((!$check($arguments[2])))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'baz',
                 2,
                 $arguments[2],
@@ -684,18 +684,18 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         {
             if (($argumentCount < 1))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('foo', 0, 'tuple<integer, string>'));
+                throw (new \foo\Exception\MissingArgumentException('foo', 0, 'tuple<integer, string>'));
             }
-            throw (new \Typhoon\Exception\MissingArgumentException('bar', 1, 'tuple<integer, stringable, stringable>'));
+            throw (new \foo\Exception\MissingArgumentException('bar', 1, 'tuple<integer, stringable, stringable>'));
         }
         elseif (($argumentCount > 2))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(2, $arguments[2]));
+            throw (new \foo\Exception\UnexpectedArgumentException(2, $arguments[2]));
         }
         ($value = $arguments[0]);
         if ((!(\is_array($value) && (\array_keys($value) === \range(0, 1)) && \is_int($value[0]) && \is_string($value[1]))))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'foo',
                 0,
                 $arguments[0],
@@ -746,7 +746,7 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         );
         if ((!$check($arguments[1])))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'bar',
                 1,
                 $arguments[1],
@@ -761,25 +761,25 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         {
             if (($argumentCount < 1))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('foo', 0, 'array'));
+                throw (new \foo\Exception\MissingArgumentException('foo', 0, 'array'));
             }
             if (($argumentCount < 2))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('bar', 1, 'array<array>'));
+                throw (new \foo\Exception\MissingArgumentException('bar', 1, 'array<array>'));
             }
             if (($argumentCount < 3))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('baz', 2, 'array<integer, string>'));
+                throw (new \foo\Exception\MissingArgumentException('baz', 2, 'array<integer, string>'));
             }
             if (($argumentCount < 4))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('qux', 3, 'array<integer, stringable>'));
+                throw (new \foo\Exception\MissingArgumentException('qux', 3, 'array<integer, stringable>'));
             }
-            throw (new \Typhoon\Exception\MissingArgumentException('doom', 4, 'array<stringable, integer>'));
+            throw (new \foo\Exception\MissingArgumentException('doom', 4, 'array<stringable, integer>'));
         }
         elseif (($argumentCount > 5))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(5, $arguments[5]));
+            throw (new \foo\Exception\UnexpectedArgumentException(5, $arguments[5]));
         }
         ($value = $arguments[1]);
         ($check =         function ($value)
@@ -800,7 +800,7 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         );
         if ((!$check($arguments[1])))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'bar',
                 1,
                 $arguments[1],
@@ -830,7 +830,7 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         );
         if ((!$check($arguments[2])))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'baz',
                 2,
                 $arguments[2],
@@ -874,7 +874,7 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         );
         if ((!$check($arguments[3])))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'qux',
                 3,
                 $arguments[3],
@@ -918,7 +918,7 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         );
         if ((!$check($arguments[4])))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'doom',
                 4,
                 $arguments[4],
@@ -933,21 +933,21 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         {
             if (($argumentCount < 1))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('foo', 0, 'Iterator<string>'));
+                throw (new \foo\Exception\MissingArgumentException('foo', 0, 'Iterator<string>'));
             }
             if (($argumentCount < 2))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('bar', 1, 'Iterator<integer, string>'));
+                throw (new \foo\Exception\MissingArgumentException('bar', 1, 'Iterator<integer, string>'));
             }
             if (($argumentCount < 3))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('baz', 2, 'Iterator<integer, stringable>'));
+                throw (new \foo\Exception\MissingArgumentException('baz', 2, 'Iterator<integer, stringable>'));
             }
-            throw (new \Typhoon\Exception\MissingArgumentException('qux', 3, 'Iterator<stringable, integer>'));
+            throw (new \foo\Exception\MissingArgumentException('qux', 3, 'Iterator<stringable, integer>'));
         }
         elseif (($argumentCount > 4))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(4, $arguments[4]));
+            throw (new \foo\Exception\UnexpectedArgumentException(4, $arguments[4]));
         }
         ($value = $arguments[0]);
         ($check =         function ($value)
@@ -968,7 +968,7 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         );
         if ((!$check($arguments[0])))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'foo',
                 0,
                 $arguments[0],
@@ -998,7 +998,7 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         );
         if ((!$check($arguments[1])))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'bar',
                 1,
                 $arguments[1],
@@ -1042,7 +1042,7 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         );
         if ((!$check($arguments[2])))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'baz',
                 2,
                 $arguments[2],
@@ -1086,7 +1086,7 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         );
         if ((!$check($arguments[3])))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'qux',
                 3,
                 $arguments[3],
@@ -1101,21 +1101,21 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         {
             if (($argumentCount < 1))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('foo', 0, 'mixed<string>'));
+                throw (new \foo\Exception\MissingArgumentException('foo', 0, 'mixed<string>'));
             }
             if (($argumentCount < 2))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('bar', 1, 'mixed<integer, string>'));
+                throw (new \foo\Exception\MissingArgumentException('bar', 1, 'mixed<integer, string>'));
             }
             if (($argumentCount < 3))
             {
-                throw (new \Typhoon\Exception\MissingArgumentException('baz', 2, 'mixed<integer, stringable>'));
+                throw (new \foo\Exception\MissingArgumentException('baz', 2, 'mixed<integer, stringable>'));
             }
-            throw (new \Typhoon\Exception\MissingArgumentException('qux', 3, 'mixed<stringable, integer>'));
+            throw (new \foo\Exception\MissingArgumentException('qux', 3, 'mixed<stringable, integer>'));
         }
         elseif (($argumentCount > 4))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(4, $arguments[4]));
+            throw (new \foo\Exception\UnexpectedArgumentException(4, $arguments[4]));
         }
         ($value = $arguments[0]);
         ($check =         function ($value)
@@ -1136,7 +1136,7 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         );
         if ((!$check($arguments[0])))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'foo',
                 0,
                 $arguments[0],
@@ -1166,7 +1166,7 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         );
         if ((!$check($arguments[1])))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'bar',
                 1,
                 $arguments[1],
@@ -1210,7 +1210,7 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         );
         if ((!$check($arguments[2])))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'baz',
                 2,
                 $arguments[2],
@@ -1254,7 +1254,7 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         );
         if ((!$check($arguments[3])))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'qux',
                 3,
                 $arguments[3],
@@ -1267,16 +1267,16 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         ($argumentCount = \count($arguments));
         if (($argumentCount < 1))
         {
-            throw (new \Typhoon\Exception\MissingArgumentException('foo', 0, 'string'));
+            throw (new \foo\Exception\MissingArgumentException('foo', 0, 'string'));
         }
         elseif (($argumentCount > 2))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(2, $arguments[2]));
+            throw (new \foo\Exception\UnexpectedArgumentException(2, $arguments[2]));
         }
         ($value = $arguments[0]);
         if ((!\is_string($value)))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'foo',
                 0,
                 $arguments[0],
@@ -1288,7 +1288,7 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
             ($value = $arguments[1]);
             if ((!\is_string($value)))
             {
-                throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+                throw (new \foo\Exception\UnexpectedArgumentValueException(
                     'bar',
                     1,
                     $arguments[1],
@@ -1302,14 +1302,14 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         ($argumentCount = \count($arguments));
         if (($argumentCount > 1))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentException(1, $arguments[1]));
+            throw (new \foo\Exception\UnexpectedArgumentException(1, $arguments[1]));
         }
         if (($argumentCount > 0))
         {
             ($value = $arguments[0]);
             if ((!\is_string($value)))
             {
-                throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+                throw (new \foo\Exception\UnexpectedArgumentValueException(
                     'foo',
                     0,
                     $arguments[0],
@@ -1323,12 +1323,12 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
         ($argumentCount = \count($arguments));
         if (($argumentCount < 1))
         {
-            throw (new \Typhoon\Exception\MissingArgumentException('foo', 0, 'string'));
+            throw (new \foo\Exception\MissingArgumentException('foo', 0, 'string'));
         }
         ($value = $arguments[0]);
         if ((!\is_string($value)))
         {
-            throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+            throw (new \foo\Exception\UnexpectedArgumentValueException(
                 'foo',
                 0,
                 $arguments[0],
@@ -1342,7 +1342,7 @@ class TypicalClassTyphoon extends \Typhoon\AbstractValidator
                             ($value = $argument);
                             if ((!\is_string($value)))
                             {
-                                throw (new \Typhoon\Exception\UnexpectedArgumentValueException(
+                                throw (new \foo\Exception\UnexpectedArgumentValueException(
                                     'bar',
                                     $index,
                                     $argument,
