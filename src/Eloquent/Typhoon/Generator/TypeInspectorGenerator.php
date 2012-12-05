@@ -12,7 +12,7 @@
 namespace Eloquent\Typhoon\Generator;
 
 use Eloquent\Typhoon\Configuration\RuntimeConfiguration;
-use Eloquent\Typhoon\Validators\Typhoon;
+use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Icecave\Pasta\AST\Expr\ArrayLiteral;
 use Icecave\Pasta\AST\Expr\Assign;
 use Icecave\Pasta\AST\Expr\Call;
@@ -52,7 +52,7 @@ class TypeInspectorGenerator implements StaticClassGenerator
      */
     public function __construct(Renderer $renderer = null)
     {
-        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
+        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
 
         if (null === $renderer) {
             $renderer = new Renderer;
@@ -66,7 +66,7 @@ class TypeInspectorGenerator implements StaticClassGenerator
      */
     public function renderer()
     {
-        $this->typhoon->renderer(func_get_args());
+        $this->typeCheck->renderer(func_get_args());
 
         return $this->renderer;
     }
@@ -83,7 +83,7 @@ class TypeInspectorGenerator implements StaticClassGenerator
         &$namespaceName = null,
         &$className = null
     ) {
-        $this->typhoon->generate(func_get_args());
+        $this->typeCheck->generate(func_get_args());
 
         return $this->generateSyntaxTree(
             $configuration,
@@ -104,7 +104,7 @@ class TypeInspectorGenerator implements StaticClassGenerator
         &$namespaceName = null,
         &$className = null
     ) {
-        $this->typhoon->generateSyntaxTree(func_get_args());
+        $this->typeCheck->generateSyntaxTree(func_get_args());
 
         $namespaceName = $configuration->validatorNamespace();
         $className = 'TypeInspector';
@@ -136,7 +136,7 @@ class TypeInspectorGenerator implements StaticClassGenerator
      */
     protected function generateTypeMethod()
     {
-        $this->typhoon->generateTypeMethod(func_get_args());
+        $this->typeCheck->generateTypeMethod(func_get_args());
 
         $valueIdentifier = new Identifier('value');
         $valueVariable = new Variable($valueIdentifier);
@@ -223,7 +223,7 @@ class TypeInspectorGenerator implements StaticClassGenerator
      */
     protected function generateArrayTypeMethod()
     {
-        $this->typhoon->generateArrayTypeMethod(func_get_args());
+        $this->typeCheck->generateArrayTypeMethod(func_get_args());
 
         $valueIdentifier = new Identifier('value');
         $valueVariable = new Variable($valueIdentifier);
@@ -259,7 +259,7 @@ class TypeInspectorGenerator implements StaticClassGenerator
      */
     protected function generateObjectTypeMethod()
     {
-        $this->typhoon->generateObjectTypeMethod(func_get_args());
+        $this->typeCheck->generateObjectTypeMethod(func_get_args());
 
         $valueIdentifier = new Identifier('value');
         $valueVariable = new Variable($valueIdentifier);
@@ -328,7 +328,7 @@ class TypeInspectorGenerator implements StaticClassGenerator
      */
     protected function generateTraversableSubTypesMethod()
     {
-        $this->typhoon->generateTraversableSubTypesMethod(func_get_args());
+        $this->typeCheck->generateTraversableSubTypesMethod(func_get_args());
 
         $valueIdentifier = new Identifier('value');
         $valueVariable = new Variable($valueIdentifier);
@@ -477,7 +477,7 @@ class TypeInspectorGenerator implements StaticClassGenerator
      */
     protected function generateResourceTypeMethod()
     {
-        $this->typhoon->generateResourceTypeMethod(func_get_args());
+        $this->typeCheck->generateResourceTypeMethod(func_get_args());
 
         $valueIdentifier = new Identifier('value');
         $valueVariable = new Variable($valueIdentifier);
@@ -529,7 +529,7 @@ class TypeInspectorGenerator implements StaticClassGenerator
      */
     protected function generateStreamTypeMethod()
     {
-        $this->typhoon->generateStreamTypeMethod(func_get_args());
+        $this->typeCheck->generateStreamTypeMethod(func_get_args());
 
         $valueIdentifier = new Identifier('value');
         $valueVariable = new Variable($valueIdentifier);
@@ -610,5 +610,5 @@ class TypeInspectorGenerator implements StaticClassGenerator
     }
 
     private $renderer;
-    private $typhoon;
+    private $typeCheck;
 }

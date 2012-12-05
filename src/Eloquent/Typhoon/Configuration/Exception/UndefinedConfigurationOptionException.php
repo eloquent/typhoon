@@ -11,7 +11,7 @@
 
 namespace Eloquent\Typhoon\Configuration\Exception;
 
-use Eloquent\Typhoon\Validators\Typhoon;
+use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Exception;
 
 final class UndefinedConfigurationOptionException extends Exception
@@ -24,7 +24,7 @@ final class UndefinedConfigurationOptionException extends Exception
         $optionName,
         Exception $previous = null
     ) {
-        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
+        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
         $this->optionName = $optionName;
 
         parent::__construct(
@@ -42,11 +42,11 @@ final class UndefinedConfigurationOptionException extends Exception
      */
     public function optionName()
     {
-        $this->typhoon->optionName(func_get_args());
+        $this->typeCheck->optionName(func_get_args());
 
         return $this->optionName;
     }
 
     private $optionName;
-    private $typhoon;
+    private $typeCheck;
 }

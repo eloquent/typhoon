@@ -13,7 +13,7 @@ namespace Eloquent\Typhoon\Generator;
 
 use Eloquent\Typhoon\ClassMapper\ClassMapper;
 use Eloquent\Typhoon\Configuration\Configuration;
-use Eloquent\Typhoon\Validators\Typhoon;
+use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Icecave\Isolator\Isolator;
 
 class ProjectValidatorGenerator
@@ -30,7 +30,7 @@ class ProjectValidatorGenerator
         array $staticClassGenerators = null,
         Isolator $isolator = null
     ) {
-        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
+        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
         if (null === $classMapper) {
             $classMapper = new ClassMapper;
         }
@@ -61,7 +61,7 @@ class ProjectValidatorGenerator
      */
     public function classMapper()
     {
-        $this->typhoon->classMapper(func_get_args());
+        $this->typeCheck->classMapper(func_get_args());
 
         return $this->classMapper;
     }
@@ -71,7 +71,7 @@ class ProjectValidatorGenerator
      */
     public function validatorClassGenerator()
     {
-        $this->typhoon->validatorClassGenerator(func_get_args());
+        $this->typeCheck->validatorClassGenerator(func_get_args());
 
         return $this->validatorClassGenerator;
     }
@@ -81,7 +81,7 @@ class ProjectValidatorGenerator
      */
     public function staticClassGenerators()
     {
-        $this->typhoon->staticClassGenerators(func_get_args());
+        $this->typeCheck->staticClassGenerators(func_get_args());
 
         return $this->staticClassGenerators;
     }
@@ -91,7 +91,7 @@ class ProjectValidatorGenerator
      */
     public function generate(Configuration $configuration)
     {
-        $this->typhoon->generate(func_get_args());
+        $this->typeCheck->generate(func_get_args());
 
         $this->generateClassValidators($configuration);
         $this->generateStaticClasses($configuration);
@@ -102,7 +102,7 @@ class ProjectValidatorGenerator
      */
     protected function generateClassValidators(Configuration $configuration)
     {
-        $this->typhoon->generateClassValidators(func_get_args());
+        $this->typeCheck->generateClassValidators(func_get_args());
 
         $sourcePaths = $configuration->sourcePaths();
         foreach ($this->buildClassMap($sourcePaths) as $classDefinition) {
@@ -131,7 +131,7 @@ class ProjectValidatorGenerator
      */
     protected function generateStaticClasses(Configuration $configuration)
     {
-        $this->typhoon->generateStaticClasses(func_get_args());
+        $this->typeCheck->generateStaticClasses(func_get_args());
 
         foreach ($this->staticClassGenerators() as $generator) {
             $source = $generator->generate(
@@ -158,7 +158,7 @@ class ProjectValidatorGenerator
      */
     protected function buildClassMap(array $classPaths)
     {
-        $this->typhoon->buildClassMap(func_get_args());
+        $this->typeCheck->buildClassMap(func_get_args());
 
         $classMap = array();
         foreach ($classPaths as $classPath) {
@@ -185,7 +185,7 @@ class ProjectValidatorGenerator
         $namespaceName,
         $className
     ) {
-        $this->typhoon->prepareOutputPath(func_get_args());
+        $this->typeCheck->prepareOutputPath(func_get_args());
 
         $path = $this->outputPath($configuration, $namespaceName, $className);
         $parentPath = dirname($path);
@@ -208,7 +208,7 @@ class ProjectValidatorGenerator
         $namespaceName,
         $className
     ) {
-        $this->typhoon->outputPath(func_get_args());
+        $this->typeCheck->outputPath(func_get_args());
 
         return sprintf(
             '%s/%s',
@@ -225,7 +225,7 @@ class ProjectValidatorGenerator
      */
     protected function PSRPath($namespaceName, $className)
     {
-        $this->typhoon->PSRPath(func_get_args());
+        $this->typeCheck->PSRPath(func_get_args());
 
         return
             str_replace('\\', '/', $namespaceName).
@@ -239,5 +239,5 @@ class ProjectValidatorGenerator
     private $validatorClassGenerator;
     private $staticClassGenerators;
     private $isolator;
-    private $typhoon;
+    private $typeCheck;
 }

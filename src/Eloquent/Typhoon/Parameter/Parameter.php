@@ -12,7 +12,7 @@
 namespace Eloquent\Typhoon\Parameter;
 
 use Eloquent\Typhax\Type\Type;
-use Eloquent\Typhoon\Validators\Typhoon;
+use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Icecave\Visita\Host;
 
 class Parameter extends Host
@@ -31,7 +31,7 @@ class Parameter extends Host
         $optional = false,
         $byReference = false
     ) {
-        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
+        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
         $this->name = $name;
         $this->type = $type;
         $this->description = $description;
@@ -44,7 +44,7 @@ class Parameter extends Host
      */
     public function name()
     {
-        $this->typhoon->name(func_get_args());
+        $this->typeCheck->name(func_get_args());
 
         return $this->name;
     }
@@ -54,7 +54,7 @@ class Parameter extends Host
      */
     public function type()
     {
-        $this->typhoon->type(func_get_args());
+        $this->typeCheck->type(func_get_args());
 
         return $this->type;
     }
@@ -64,7 +64,7 @@ class Parameter extends Host
      */
     public function description()
     {
-        $this->typhoon->description(func_get_args());
+        $this->typeCheck->description(func_get_args());
 
         return $this->description;
     }
@@ -74,7 +74,7 @@ class Parameter extends Host
      */
     public function isOptional()
     {
-        $this->typhoon->isOptional(func_get_args());
+        $this->typeCheck->isOptional(func_get_args());
 
         return $this->optional;
     }
@@ -84,7 +84,7 @@ class Parameter extends Host
      */
     public function isByReference()
     {
-        $this->typhoon->isByReference(func_get_args());
+        $this->typeCheck->isByReference(func_get_args());
 
         return $this->byReference;
     }
@@ -94,5 +94,5 @@ class Parameter extends Host
     private $description;
     private $optional;
     private $byReference;
-    private $typhoon;
+    private $typeCheck;
 }

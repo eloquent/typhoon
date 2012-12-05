@@ -25,14 +25,14 @@ use Eloquent\Typhax\Type\Type;
 use Eloquent\Typhoon\Configuration\RuntimeConfiguration;
 use Eloquent\Typhoon\Parameter\Parameter;
 use Eloquent\Typhoon\Parameter\ParameterList;
-use Eloquent\Typhoon\Validators\Typhoon;
+use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use ReflectionClass;
 
 class NativeParameterListMergeTool
 {
     public function __construct()
     {
-        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
+        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
 
         $reflectionParameterClass = new ReflectionClass('ReflectionParameter');
         $this->nativeCallableAvailable =
@@ -45,7 +45,7 @@ class NativeParameterListMergeTool
      */
     public function nativeCallableAvailable()
     {
-        $this->typhoon->nativeCallableAvailable(func_get_args());
+        $this->typeCheck->nativeCallableAvailable(func_get_args());
 
         return $this->nativeCallableAvailable;
     }
@@ -57,7 +57,7 @@ class NativeParameterListMergeTool
      */
     public function useNativeCallable(RuntimeConfiguration $configuration)
     {
-        $this->typhoon->useNativeCallable(func_get_args());
+        $this->typeCheck->useNativeCallable(func_get_args());
 
         return
             $configuration->useNativeCallable() &&
@@ -77,7 +77,7 @@ class NativeParameterListMergeTool
         ParameterList $documentedParameterList,
         ParameterList $nativeParameterList
     ) {
-        $this->typhoon->merge(func_get_args());
+        $this->typeCheck->merge(func_get_args());
 
         $documentedParameters = $documentedParameterList->parameters();
         $nativeParameters = $nativeParameterList->parameters();
@@ -141,7 +141,7 @@ class NativeParameterListMergeTool
         Parameter $documentedParameter,
         Parameter $nativeParameter
     ) {
-        $this->typhoon->mergeParameter(func_get_args());
+        $this->typeCheck->mergeParameter(func_get_args());
 
         if ($documentedParameter->name() !== $nativeParameter->name()) {
             throw new Exception\DocumentedParameterNameMismatchException(
@@ -191,7 +191,7 @@ class NativeParameterListMergeTool
         Type $documentedType,
         Type $nativeType
     ) {
-        $this->typhoon->mergeType(func_get_args());
+        $this->typeCheck->mergeType(func_get_args());
 
         if (!$this->typeIsCompatible(
             $configuration,
@@ -230,7 +230,7 @@ class NativeParameterListMergeTool
         Type $nativeType,
         $depth = 0
     ) {
-        $this->typhoon->typeIsCompatible(func_get_args());
+        $this->typeCheck->typeIsCompatible(func_get_args());
 
         // callable
         if (
@@ -365,5 +365,5 @@ class NativeParameterListMergeTool
     }
 
     private $nativeCallableAvailable;
-    private $typhoon;
+    private $typeCheck;
 }

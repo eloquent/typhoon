@@ -16,7 +16,7 @@ use Eloquent\Typhax\Type\Type;
 use Eloquent\Typhoon\Parameter\Parameter;
 use Eloquent\Typhoon\Parameter\ParameterList;
 use Eloquent\Typhoon\Parameter\Visitor;
-use Eloquent\Typhoon\Validators\Typhoon;
+use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Icecave\Pasta\AST\Expr\Assign;
 use Icecave\Pasta\AST\Expr\Call;
 use Icecave\Pasta\AST\Expr\Greater;
@@ -48,7 +48,7 @@ class ParameterListGenerator implements Visitor
         TyphaxASTGenerator $typeGenerator = null,
         TypeRenderer $typeRenderer = null
     ) {
-        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
+        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
 
         if (null === $typeGenerator) {
             $typeGenerator = new TyphaxASTGenerator;
@@ -70,7 +70,7 @@ class ParameterListGenerator implements Visitor
      */
     public function typeGenerator()
     {
-        $this->typhoon->typeGenerator(func_get_args());
+        $this->typeCheck->typeGenerator(func_get_args());
 
         return $this->typeGenerator;
     }
@@ -80,7 +80,7 @@ class ParameterListGenerator implements Visitor
      */
     public function typeRenderer()
     {
-        $this->typhoon->typeRenderer(func_get_args());
+        $this->typeCheck->typeRenderer(func_get_args());
 
         return $this->typeRenderer;
     }
@@ -90,7 +90,7 @@ class ParameterListGenerator implements Visitor
      */
     public function setValidatorNamespace($validatorNamespace)
     {
-        $this->typhoon->setValidatorNamespace(func_get_args());
+        $this->typeCheck->setValidatorNamespace(func_get_args());
 
         $this->validatorNamespace = $validatorNamespace;
     }
@@ -100,7 +100,7 @@ class ParameterListGenerator implements Visitor
      */
     public function validatorNamespace()
     {
-        $this->typhoon->validatorNamespace(func_get_args());
+        $this->typeCheck->validatorNamespace(func_get_args());
 
         return $this->validatorNamespace;
     }
@@ -112,7 +112,7 @@ class ParameterListGenerator implements Visitor
      */
     public function visitParameter(Parameter $parameter)
     {
-        $this->typhoon->visitParameter(func_get_args());
+        $this->typeCheck->visitParameter(func_get_args());
 
         $typeExpression = $parameter->type()->accept($this->typeGenerator());
         if (null === $typeExpression) {
@@ -158,7 +158,7 @@ class ParameterListGenerator implements Visitor
      */
     public function visitParameterList(ParameterList $parameterList)
     {
-        $this->typhoon->visitParameterList(func_get_args());
+        $this->typeCheck->visitParameterList(func_get_args());
 
         $expressions = array();
         $parameters = $parameterList->parameters();
@@ -362,7 +362,7 @@ class ParameterListGenerator implements Visitor
      */
     protected function wrapExpressions(array $expressions)
     {
-        $this->typhoon->wrapExpressions(func_get_args());
+        $this->typeCheck->wrapExpressions(func_get_args());
 
         foreach ($expressions as $index => $expression) {
             if (!$expression instanceof IStatement) {
@@ -380,7 +380,7 @@ class ParameterListGenerator implements Visitor
      */
     protected function renderTypeName(Type $type)
     {
-        $this->typhoon->renderTypeName(func_get_args());
+        $this->typeCheck->renderTypeName(func_get_args());
 
         if ($type instanceof NullifiedType) {
             return $type->originalType()->accept($this->typeRenderer());
@@ -394,5 +394,5 @@ class ParameterListGenerator implements Visitor
     private $argumentExpression;
     private $indexExpression;
     private $validatorNamespace;
-    private $typhoon;
+    private $typeCheck;
 }

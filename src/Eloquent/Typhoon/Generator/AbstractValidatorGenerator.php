@@ -12,7 +12,7 @@
 namespace Eloquent\Typhoon\Generator;
 
 use Eloquent\Typhoon\Configuration\RuntimeConfiguration;
-use Eloquent\Typhoon\Validators\Typhoon;
+use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Icecave\Pasta\AST\Expr\Assign;
 use Icecave\Pasta\AST\Expr\Call;
 use Icecave\Pasta\AST\Expr\Constant;
@@ -46,7 +46,7 @@ class AbstractValidatorGenerator implements StaticClassGenerator
      */
     public function __construct(Renderer $renderer = null)
     {
-        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
+        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
 
         if (null === $renderer) {
             $renderer = new Renderer;
@@ -60,7 +60,7 @@ class AbstractValidatorGenerator implements StaticClassGenerator
      */
     public function renderer()
     {
-        $this->typhoon->renderer(func_get_args());
+        $this->typeCheck->renderer(func_get_args());
 
         return $this->renderer;
     }
@@ -77,7 +77,7 @@ class AbstractValidatorGenerator implements StaticClassGenerator
         &$namespaceName = null,
         &$className = null
     ) {
-        $this->typhoon->generate(func_get_args());
+        $this->typeCheck->generate(func_get_args());
 
         return $this->generateSyntaxTree(
             $configuration,
@@ -98,7 +98,7 @@ class AbstractValidatorGenerator implements StaticClassGenerator
         &$namespaceName = null,
         &$className = null
     ) {
-        $this->typhoon->generateSyntaxTree(func_get_args());
+        $this->typeCheck->generateSyntaxTree(func_get_args());
 
         $namespaceName = $configuration->validatorNamespace();
         $className = 'AbstractValidator';
@@ -129,7 +129,7 @@ class AbstractValidatorGenerator implements StaticClassGenerator
      */
     protected function generateConstructor()
     {
-        $this->typhoon->generateConstructor(func_get_args());
+        $this->typeCheck->generateConstructor(func_get_args());
 
         $method = new ConcreteMethod(
             new Identifier('__construct'),
@@ -157,7 +157,7 @@ class AbstractValidatorGenerator implements StaticClassGenerator
      */
     protected function generateCallMethod()
     {
-        $this->typhoon->generateCallMethod(func_get_args());
+        $this->typeCheck->generateCallMethod(func_get_args());
 
         $nameIdentifier = new Identifier('name');
         $nameVariable = new Variable($nameIdentifier);
@@ -240,5 +240,5 @@ class AbstractValidatorGenerator implements StaticClassGenerator
     }
 
     private $renderer;
-    private $typhoon;
+    private $typeCheck;
 }

@@ -12,7 +12,7 @@
 namespace Eloquent\Typhoon\Generator;
 
 use Eloquent\Typhoon\Configuration\RuntimeConfiguration;
-use Eloquent\Typhoon\Validators\Typhoon;
+use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Icecave\Pasta\AST\Expr\ArrayLiteral;
 use Icecave\Pasta\AST\Expr\Assign;
 use Icecave\Pasta\AST\Expr\Call;
@@ -56,7 +56,7 @@ class FacadeGenerator implements StaticClassGenerator
         Renderer $renderer = null,
         RuntimeConfigurationGenerator $configurationGenerator = null
     ) {
-        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
+        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
 
         if (null === $renderer) {
             $renderer = new Renderer;
@@ -74,7 +74,7 @@ class FacadeGenerator implements StaticClassGenerator
      */
     public function renderer()
     {
-        $this->typhoon->renderer(func_get_args());
+        $this->typeCheck->renderer(func_get_args());
 
         return $this->renderer;
     }
@@ -84,7 +84,7 @@ class FacadeGenerator implements StaticClassGenerator
      */
     public function configurationGenerator()
     {
-        $this->typhoon->configurationGenerator(func_get_args());
+        $this->typeCheck->configurationGenerator(func_get_args());
 
         return $this->configurationGenerator;
     }
@@ -101,7 +101,7 @@ class FacadeGenerator implements StaticClassGenerator
         &$namespaceName = null,
         &$className = null
     ) {
-        $this->typhoon->generate(func_get_args());
+        $this->typeCheck->generate(func_get_args());
 
         return $this->generateSyntaxTree(
             $configuration,
@@ -122,10 +122,10 @@ class FacadeGenerator implements StaticClassGenerator
         &$namespaceName = null,
         &$className = null
     ) {
-        $this->typhoon->generateSyntaxTree(func_get_args());
+        $this->typeCheck->generateSyntaxTree(func_get_args());
 
         $namespaceName = $configuration->validatorNamespace();
-        $className = 'Typhoon';
+        $className = 'TypeCheck';
 
         $classDefinition = new ClassDefinition(
             new Identifier($className),
@@ -188,7 +188,7 @@ class FacadeGenerator implements StaticClassGenerator
      */
     protected function generateGetMethod()
     {
-        $this->typhoon->generateGetMethod(func_get_args());
+        $this->typeCheck->generateGetMethod(func_get_args());
 
         $staticConstant = new Constant(new Identifier('static'));
         $classNameIdentifier = new Identifier('className');
@@ -277,7 +277,7 @@ class FacadeGenerator implements StaticClassGenerator
      */
     protected function generateInstallMethod()
     {
-        $this->typhoon->generateInstallMethod(func_get_args());
+        $this->typeCheck->generateInstallMethod(func_get_args());
 
         $classNameIdentifier = new Identifier('className');
         $validatorIdentifier = new Identifier('validator');
@@ -311,7 +311,7 @@ class FacadeGenerator implements StaticClassGenerator
      */
     protected function generateSetRuntimeGenerationMethod()
     {
-        $this->typhoon->generateSetRuntimeGenerationMethod(func_get_args());
+        $this->typeCheck->generateSetRuntimeGenerationMethod(func_get_args());
 
         $runtimeGenerationIdentifier = new Identifier('runtimeGeneration');
         $runtimeGenerationVariable = new Variable($runtimeGenerationIdentifier);
@@ -341,7 +341,7 @@ class FacadeGenerator implements StaticClassGenerator
      */
     protected function generateRuntimeGenerationMethod()
     {
-        $this->typhoon->generateRuntimeGenerationMethod(func_get_args());
+        $this->typeCheck->generateRuntimeGenerationMethod(func_get_args());
 
         $method = new ConcreteMethod(
             new Identifier('runtimeGeneration'),
@@ -367,7 +367,7 @@ class FacadeGenerator implements StaticClassGenerator
     protected function generateCreateValidatorMethod(
         RuntimeConfiguration $configuration
     ) {
-        $this->typhoon->generateCreateValidatorMethod(func_get_args());
+        $this->typeCheck->generateCreateValidatorMethod(func_get_args());
 
         $classNameIdentifier = new Identifier('className');
         $classNameVariable = new Variable($classNameIdentifier);
@@ -384,7 +384,7 @@ class FacadeGenerator implements StaticClassGenerator
             new Literal(sprintf('%s\Validator\\', $configuration->validatorNamespace())),
             $classNameVariable
         );
-        $validatorClassNameConcatenation->add(new Literal('Typhoon'));
+        $validatorClassNameConcatenation->add(new Literal('TypeCheck'));
         $method->statementBlock()->add(new ExpressionStatement(new Assign(
             $validatorClassNameVariable,
             $validatorClassNameConcatenation
@@ -442,7 +442,7 @@ class FacadeGenerator implements StaticClassGenerator
     protected function generateDefineValidatorMethod(
         RuntimeConfiguration $configuration
     ) {
-        $this->typhoon->generateDefineValidatorMethod(func_get_args());
+        $this->typeCheck->generateDefineValidatorMethod(func_get_args());
 
         $classNameIdentifier = new Identifier('className');
         $classNameVariable = new Variable($classNameIdentifier);
@@ -509,7 +509,7 @@ class FacadeGenerator implements StaticClassGenerator
     protected function generateConfigurationMethod(
         RuntimeConfiguration $configuration
     ) {
-        $this->typhoon->generateConfigurationMethod(func_get_args());
+        $this->typeCheck->generateConfigurationMethod(func_get_args());
 
         $method = new ConcreteMethod(
             new Identifier('configuration'),
@@ -526,5 +526,5 @@ class FacadeGenerator implements StaticClassGenerator
 
     private $renderer;
     private $configurationGenerator;
-    private $typhoon;
+    private $typeCheck;
 }

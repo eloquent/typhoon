@@ -11,7 +11,7 @@
 
 namespace Eloquent\Typhoon\ClassMapper;
 
-use Eloquent\Typhoon\Validators\Typhoon;
+use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use FilesystemIterator;
 use Icecave\Isolator\Isolator;
 use RecursiveDirectoryIterator;
@@ -24,7 +24,7 @@ class ClassMapper
      */
     public function __construct(Isolator $isolator = null)
     {
-        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
+        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
         $this->isolator = Isolator::get($isolator);
     }
 
@@ -35,7 +35,7 @@ class ClassMapper
      */
     public function classesByPath($path)
     {
-        $this->typhoon->classesByPath(func_get_args());
+        $this->typeCheck->classesByPath(func_get_args());
 
         if ($this->isolator->is_dir($path)) {
             return $this->classesByDirectory($path);
@@ -51,7 +51,7 @@ class ClassMapper
      */
     public function classesByDirectory($directoryPath)
     {
-        $this->typhoon->classesByDirectory(func_get_args());
+        $this->typeCheck->classesByDirectory(func_get_args());
 
         $classDefinitions = array();
         foreach ($this->fileIterator($directoryPath) as $filePathInfo) {
@@ -71,7 +71,7 @@ class ClassMapper
      */
     public function classesByFile($filePath)
     {
-        $this->typhoon->classesByFile(func_get_args());
+        $this->typeCheck->classesByFile(func_get_args());
 
         return $this->classesBySource(
             $this->isolator->file_get_contents($filePath)
@@ -85,7 +85,7 @@ class ClassMapper
      */
     public function classesBySource($source)
     {
-        $this->typhoon->classesBySource(func_get_args());
+        $this->typeCheck->classesBySource(func_get_args());
 
         $classDefinitions = array();
         $namespaceName = null;
@@ -128,7 +128,7 @@ class ClassMapper
      */
     public function classBySource($className, $source)
     {
-        $this->typhoon->classBySource(func_get_args());
+        $this->typeCheck->classBySource(func_get_args());
 
         foreach ($this->classesBySource($source) as $classDefinition) {
             if ($classDefinition->canonicalClassName() === $className) {
@@ -146,7 +146,7 @@ class ClassMapper
      */
     protected function parseNamespaceName(array &$tokens)
     {
-        $this->typhoon->parseNamespaceName(func_get_args());
+        $this->typeCheck->parseNamespaceName(func_get_args());
 
         $namespaceName = '';
         do {
@@ -175,7 +175,7 @@ class ClassMapper
      */
     protected function parseUsedClass(array &$tokens)
     {
-        $this->typhoon->parseUsedClass(func_get_args());
+        $this->typeCheck->parseUsedClass(func_get_args());
 
         $usedClass = null;
         $token = next($tokens);
@@ -222,7 +222,7 @@ class ClassMapper
      */
     protected function parseClassName(array &$tokens)
     {
-        $this->typhoon->parseClassName(func_get_args());
+        $this->typeCheck->parseClassName(func_get_args());
 
         $token = next($tokens);
 
@@ -236,7 +236,7 @@ class ClassMapper
      */
     protected function sourceTokens($source)
     {
-        $this->typhoon->sourceTokens(func_get_args());
+        $this->typeCheck->sourceTokens(func_get_args());
 
         $tokens = $this->isolator->token_get_all($source);
         $tokens = array_filter($tokens, function($token) {
@@ -257,7 +257,7 @@ class ClassMapper
      */
     protected function fileIterator($directoryPath)
     {
-        $this->typhoon->fileIterator(func_get_args());
+        $this->typeCheck->fileIterator(func_get_args());
 
         return new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator(
@@ -269,5 +269,5 @@ class ClassMapper
     }
 
     private $isolator;
-    private $typhoon;
+    private $typeCheck;
 }

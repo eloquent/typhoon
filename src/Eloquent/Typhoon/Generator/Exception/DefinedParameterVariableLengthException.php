@@ -11,7 +11,7 @@
 
 namespace Eloquent\Typhoon\Generator\Exception;
 
-use Eloquent\Typhoon\Validators\Typhoon;
+use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Exception;
 use LogicException;
 
@@ -27,7 +27,7 @@ final class DefinedParameterVariableLengthException extends LogicException
         $parameterName,
         Exception $previous = null
     ) {
-        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
+        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
         $this->functionName = $functionName;
         $this->parameterName = $parameterName;
 
@@ -47,7 +47,7 @@ final class DefinedParameterVariableLengthException extends LogicException
      */
     public function functionName()
     {
-        $this->typhoon->functionName(func_get_args());
+        $this->typeCheck->functionName(func_get_args());
 
         return $this->functionName;
     }
@@ -57,12 +57,12 @@ final class DefinedParameterVariableLengthException extends LogicException
      */
     public function parameterName()
     {
-        $this->typhoon->parameterName(func_get_args());
+        $this->typeCheck->parameterName(func_get_args());
 
         return $this->parameterName;
     }
 
     private $functionName;
     private $parameterName;
-    private $typhoon;
+    private $typeCheck;
 }

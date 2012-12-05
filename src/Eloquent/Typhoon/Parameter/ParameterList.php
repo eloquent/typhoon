@@ -11,7 +11,7 @@
 
 namespace Eloquent\Typhoon\Parameter;
 
-use Eloquent\Typhoon\Validators\Typhoon;
+use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Icecave\Visita\Host;
 
 class ParameterList extends Host
@@ -24,7 +24,7 @@ class ParameterList extends Host
         array $parameters = array(),
         $variableLength = false
     ) {
-        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
+        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
         $this->parameters = $parameters;
         $this->variableLength = $variableLength;
     }
@@ -34,7 +34,7 @@ class ParameterList extends Host
      */
     public function parameters()
     {
-        $this->typhoon->parameters(func_get_args());
+        $this->typeCheck->parameters(func_get_args());
 
         return $this->parameters;
     }
@@ -46,7 +46,7 @@ class ParameterList extends Host
      */
     public function parameterByName($name)
     {
-        $this->typhoon->parameterByName(func_get_args());
+        $this->typeCheck->parameterByName(func_get_args());
 
         foreach ($this->parameters() as $parameter) {
             if ($parameter->name() === $name) {
@@ -62,7 +62,7 @@ class ParameterList extends Host
      */
     public function isVariableLength()
     {
-        $this->typhoon->isVariableLength(func_get_args());
+        $this->typeCheck->isVariableLength(func_get_args());
 
         return $this->variableLength;
     }
@@ -72,7 +72,7 @@ class ParameterList extends Host
      */
     public function requiredParameters()
     {
-        $this->typhoon->requiredParameters(func_get_args());
+        $this->typeCheck->requiredParameters(func_get_args());
 
         $requiredParameters = array();
         $parameters = $this->parameters();
@@ -95,5 +95,5 @@ class ParameterList extends Host
 
     private $parameters;
     private $variableLength;
-    private $typhoon;
+    private $typeCheck;
 }

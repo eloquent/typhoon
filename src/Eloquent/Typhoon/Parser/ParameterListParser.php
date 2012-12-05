@@ -28,7 +28,7 @@ use Eloquent\Typhax\Type\TraversableType;
 use Eloquent\Typhax\Type\Type;
 use Eloquent\Typhoon\Parameter\Parameter;
 use Eloquent\Typhoon\Parameter\ParameterList;
-use Eloquent\Typhoon\Validators\Typhoon;
+use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use ReflectionFunctionAbstract;
 use ReflectionObject;
 use ReflectionParameter;
@@ -40,7 +40,7 @@ class ParameterListParser implements Visitor
      */
     public function __construct(TyphaxParser $typhaxParser = null)
     {
-        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
+        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
         if (null === $typhaxParser) {
             $typhaxParser = new TyphaxParser;
         }
@@ -53,7 +53,7 @@ class ParameterListParser implements Visitor
      */
     public function typhaxParser()
     {
-        $this->typhoon->typhaxParser(func_get_args());
+        $this->typeCheck->typhaxParser(func_get_args());
 
         return $this->typhaxParser;
     }
@@ -70,7 +70,7 @@ class ParameterListParser implements Visitor
         $blockComment,
         DocumentationBlockParser $documentationParser = null
     ) {
-        $this->typhoon->parseBlockComment(func_get_args());
+        $this->typeCheck->parseBlockComment(func_get_args());
 
         if (null === $documentationParser) {
             $documentationParser = new BloxParser;
@@ -98,7 +98,7 @@ class ParameterListParser implements Visitor
      */
     public function parseReflector(ReflectionFunctionAbstract $reflector)
     {
-        $this->typhoon->parseReflector(func_get_args());
+        $this->typeCheck->parseReflector(func_get_args());
 
         $parameters = array();
         foreach ($reflector->getParameters() as $parameterReflector) {
@@ -115,7 +115,7 @@ class ParameterListParser implements Visitor
      */
     public function parseParameterReflector(ReflectionParameter $reflector)
     {
-        $this->typhoon->parseParameterReflector(func_get_args());
+        $this->typeCheck->parseParameterReflector(func_get_args());
 
         if ($class = $reflector->getClass()) {
             $type = new ObjectType($class->getName());
@@ -163,7 +163,7 @@ class ParameterListParser implements Visitor
      */
     public function visitDocumentationBlock(DocumentationBlock $documentationBlock)
     {
-        $this->typhoon->visitDocumentationBlock(func_get_args());
+        $this->typeCheck->visitDocumentationBlock(func_get_args());
 
         $parameters = array();
         $paramTags = $documentationBlock->tagsByName('param');
@@ -189,7 +189,7 @@ class ParameterListParser implements Visitor
      */
     public function visitDocumentationTag(DocumentationTag $documentationTag)
     {
-        $this->typhoon->visitDocumentationTag(func_get_args());
+        $this->typeCheck->visitDocumentationTag(func_get_args());
         $content = $documentationTag->content() ?: '';
 
         $position = 0;
@@ -232,7 +232,7 @@ class ParameterListParser implements Visitor
      */
     protected function parseType($content, &$position)
     {
-        $this->typhoon->parseType(func_get_args());
+        $this->typeCheck->parseType(func_get_args());
 
         try {
             return $this->typhaxParser()->parse(
@@ -256,7 +256,7 @@ class ParameterListParser implements Visitor
      */
     protected function parseByReference($content, &$position)
     {
-        $this->typhoon->parseByReference(func_get_args());
+        $this->typeCheck->parseByReference(func_get_args());
 
         return null !== $this->parseContent(
             $content,
@@ -275,7 +275,7 @@ class ParameterListParser implements Visitor
      */
     protected function parseName($content, &$position)
     {
-        $this->typhoon->parseName(func_get_args());
+        $this->typeCheck->parseName(func_get_args());
 
         return $this->parseContent(
             $content,
@@ -294,7 +294,7 @@ class ParameterListParser implements Visitor
      */
     protected function parseDescription($content, &$position)
     {
-        $this->typhoon->parseDescription(func_get_args());
+        $this->typeCheck->parseDescription(func_get_args());
 
         return $this->parseContent(
             $content,
@@ -312,7 +312,7 @@ class ParameterListParser implements Visitor
      */
     protected function parseOptional($content)
     {
-        $this->typhoon->parseOptional(func_get_args());
+        $this->typeCheck->parseOptional(func_get_args());
 
         if (preg_match(static::PATTERN_VARIABLE_LENGTH, $content)) {
             return true;
@@ -332,7 +332,7 @@ class ParameterListParser implements Visitor
      */
     protected function parseContent($content, &$position, $pattern, $optional, $type)
     {
-        $this->typhoon->parseContent(func_get_args());
+        $this->typeCheck->parseContent(func_get_args());
 
         $subject = substr($content, $position - 1);
         if (
@@ -355,5 +355,5 @@ class ParameterListParser implements Visitor
     }
 
     private $typhaxParser;
-    private $typhoon;
+    private $typeCheck;
 }

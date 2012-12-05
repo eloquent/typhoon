@@ -11,7 +11,7 @@
 
 namespace Eloquent\Typhoon\Parser\Exception;
 
-use Eloquent\Typhoon\Validators\Typhoon;
+use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Exception;
 use LogicException;
 
@@ -23,7 +23,7 @@ final class InvalidFunctionDocumentationException extends LogicException
      */
     public function __construct($functionName, Exception $previous = null)
     {
-        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
+        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
         $this->functionName = $functionName;
 
         parent::__construct(
@@ -41,11 +41,11 @@ final class InvalidFunctionDocumentationException extends LogicException
      */
     public function functionName()
     {
-        $this->typhoon->functionName(func_get_args());
+        $this->typeCheck->functionName(func_get_args());
 
         return $this->functionName;
     }
 
     private $functionName;
-    private $typhoon;
+    private $typeCheck;
 }

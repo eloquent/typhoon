@@ -11,7 +11,7 @@
 
 namespace Eloquent\Typhoon\Generator\Exception;
 
-use Eloquent\Typhoon\Validators\Typhoon;
+use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Exception;
 use LogicException;
 
@@ -29,7 +29,7 @@ final class DocumentedParameterNameMismatchException extends LogicException
         $nativeParameterName,
         Exception $previous = null
     ) {
-        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
+        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
         $this->functionName = $functionName;
         $this->documentedParameterName = $documentedParameterName;
         $this->nativeParameterName = $nativeParameterName;
@@ -51,7 +51,7 @@ final class DocumentedParameterNameMismatchException extends LogicException
      */
     public function functionName()
     {
-        $this->typhoon->functionName(func_get_args());
+        $this->typeCheck->functionName(func_get_args());
 
         return $this->functionName;
     }
@@ -61,7 +61,7 @@ final class DocumentedParameterNameMismatchException extends LogicException
      */
     public function documentedParameterName()
     {
-        $this->typhoon->documentedParameterName(func_get_args());
+        $this->typeCheck->documentedParameterName(func_get_args());
 
         return $this->documentedParameterName;
     }
@@ -71,7 +71,7 @@ final class DocumentedParameterNameMismatchException extends LogicException
      */
     public function nativeParameterName()
     {
-        $this->typhoon->nativeParameterName(func_get_args());
+        $this->typeCheck->nativeParameterName(func_get_args());
 
         return $this->nativeParameterName;
     }
@@ -79,5 +79,5 @@ final class DocumentedParameterNameMismatchException extends LogicException
     private $functionName;
     private $documentedParameterName;
     private $nativeParameterName;
-    private $typhoon;
+    private $typeCheck;
 }

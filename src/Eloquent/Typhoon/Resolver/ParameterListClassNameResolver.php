@@ -15,7 +15,7 @@ use Eloquent\Typhax\Resolver\ObjectTypeClassNameResolver;
 use Eloquent\Typhoon\Parameter\Parameter;
 use Eloquent\Typhoon\Parameter\ParameterList;
 use Eloquent\Typhoon\Parameter\Visitor;
-use Eloquent\Typhoon\Validators\Typhoon;
+use Eloquent\Typhoon\TypeCheck\TypeCheck;
 
 class ParameterListClassNameResolver implements Visitor
 {
@@ -24,7 +24,7 @@ class ParameterListClassNameResolver implements Visitor
      */
     public function __construct(ObjectTypeClassNameResolver $typeResolver)
     {
-        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
+        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
         $this->typeResolver = $typeResolver;
     }
 
@@ -33,7 +33,7 @@ class ParameterListClassNameResolver implements Visitor
      */
     public function typeResolver()
     {
-        $this->typhoon->typeResolver(func_get_args());
+        $this->typeCheck->typeResolver(func_get_args());
 
         return $this->typeResolver;
     }
@@ -45,7 +45,7 @@ class ParameterListClassNameResolver implements Visitor
      */
     public function visitParameter(Parameter $parameter)
     {
-        $this->typhoon->visitParameter(func_get_args());
+        $this->typeCheck->visitParameter(func_get_args());
 
         return new Parameter(
             $parameter->name(),
@@ -63,7 +63,7 @@ class ParameterListClassNameResolver implements Visitor
      */
     public function visitParameterList(ParameterList $parameterList)
     {
-        $this->typhoon->visitParameterList(func_get_args());
+        $this->typeCheck->visitParameterList(func_get_args());
 
         $parameters = array();
         foreach ($parameterList->parameters() as $parameter) {
@@ -77,5 +77,5 @@ class ParameterListClassNameResolver implements Visitor
     }
 
     private $typeResolver;
-    private $typhoon;
+    private $typeCheck;
 }

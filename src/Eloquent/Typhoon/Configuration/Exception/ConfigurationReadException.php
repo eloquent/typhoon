@@ -11,7 +11,7 @@
 
 namespace Eloquent\Typhoon\Configuration\Exception;
 
-use Eloquent\Typhoon\Validators\Typhoon;
+use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Exception;
 use RuntimeException;
 
@@ -25,7 +25,7 @@ final class ConfigurationReadException extends RuntimeException
         $path,
         Exception $previous = null
     ) {
-        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
+        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
         $this->path = $path;
 
         parent::__construct(
@@ -43,11 +43,11 @@ final class ConfigurationReadException extends RuntimeException
      */
     public function path()
     {
-        $this->typhoon->path(func_get_args());
+        $this->typeCheck->path(func_get_args());
 
         return $this->path;
     }
 
     private $path;
-    private $typhoon;
+    private $typeCheck;
 }

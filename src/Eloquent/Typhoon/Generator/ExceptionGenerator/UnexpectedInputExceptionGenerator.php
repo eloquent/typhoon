@@ -13,7 +13,7 @@ namespace Eloquent\Typhoon\Generator\ExceptionGenerator;
 
 use Eloquent\Typhoon\Configuration\RuntimeConfiguration;
 use Eloquent\Typhoon\Generator\StaticClassGenerator;
-use Eloquent\Typhoon\Validators\Typhoon;
+use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Icecave\Pasta\AST\Expr\Call;
 use Icecave\Pasta\AST\Expr\Constant;
 use Icecave\Pasta\AST\Expr\Literal;
@@ -41,7 +41,7 @@ class UnexpectedInputExceptionGenerator implements StaticClassGenerator
      */
     public function __construct(Renderer $renderer = null)
     {
-        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
+        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
 
         if (null === $renderer) {
             $renderer = new Renderer;
@@ -55,7 +55,7 @@ class UnexpectedInputExceptionGenerator implements StaticClassGenerator
      */
     public function renderer()
     {
-        $this->typhoon->renderer(func_get_args());
+        $this->typeCheck->renderer(func_get_args());
 
         return $this->renderer;
     }
@@ -72,7 +72,7 @@ class UnexpectedInputExceptionGenerator implements StaticClassGenerator
         &$namespaceName = null,
         &$className = null
     ) {
-        $this->typhoon->generate(func_get_args());
+        $this->typeCheck->generate(func_get_args());
 
         return $this->generateSyntaxTree(
             $configuration,
@@ -93,7 +93,7 @@ class UnexpectedInputExceptionGenerator implements StaticClassGenerator
         &$namespaceName = null,
         &$className = null
     ) {
-        $this->typhoon->generateSyntaxTree(func_get_args());
+        $this->typeCheck->generateSyntaxTree(func_get_args());
 
         $namespaceName = sprintf('%s\Exception', $configuration->validatorNamespace());
         $className = 'UnexpectedInputException';
@@ -124,7 +124,7 @@ class UnexpectedInputExceptionGenerator implements StaticClassGenerator
      */
     protected function generateConstructor()
     {
-        $this->typhoon->generateConstructor(func_get_args());
+        $this->typeCheck->generateConstructor(func_get_args());
 
         $messageIdentifier = new Identifier('message');
         $previousIdentifier = new Identifier('previous');
@@ -156,5 +156,5 @@ class UnexpectedInputExceptionGenerator implements StaticClassGenerator
     }
 
     private $renderer;
-    private $typhoon;
+    private $typeCheck;
 }

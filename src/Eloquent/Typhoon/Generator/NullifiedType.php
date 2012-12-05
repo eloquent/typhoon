@@ -13,7 +13,7 @@ namespace Eloquent\Typhoon\Generator;
 
 use Eloquent\Typhax\Type\MixedType;
 use Eloquent\Typhax\Type\Type;
-use Eloquent\Typhoon\Validators\Typhoon;
+use Eloquent\Typhoon\TypeCheck\TypeCheck;
 
 class NullifiedType extends MixedType
 {
@@ -22,7 +22,7 @@ class NullifiedType extends MixedType
      */
     public function __construct(Type $originalType)
     {
-        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
+        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
 
         $this->originalType = $originalType;
     }
@@ -36,5 +36,5 @@ class NullifiedType extends MixedType
     }
 
     private $originalType;
-    private $typhoon;
+    private $typeCheck;
 }

@@ -12,7 +12,7 @@
 namespace Eloquent\Typhoon\Console;
 
 use Eloquent\Typhoon\Configuration\ConfigurationReader;
-use Eloquent\Typhoon\Validators\Typhoon;
+use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Symfony\Component\Console\Application as SymfonyApplication;
 
 class Application extends SymfonyApplication
@@ -23,7 +23,7 @@ class Application extends SymfonyApplication
     public function __construct(
         ConfigurationReader $configurationReader = null
     ) {
-        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
+        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
         if (null === $configurationReader) {
             $configurationReader = new ConfigurationReader;
         }
@@ -40,11 +40,11 @@ class Application extends SymfonyApplication
      */
     public function configurationReader()
     {
-        $this->typhoon->configurationReader(func_get_args());
+        $this->typeCheck->configurationReader(func_get_args());
 
         return $this->configurationReader;
     }
 
     private $configurationReader;
-    private $typhoon;
+    private $typeCheck;
 }

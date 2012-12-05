@@ -11,7 +11,7 @@
 
 namespace Eloquent\Typhoon\ClassMapper\Exception;
 
-use Eloquent\Typhoon\Validators\Typhoon;
+use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Exception;
 use LogicException;
 
@@ -23,7 +23,7 @@ final class UndefinedClassException extends LogicException
      */
     public function __construct($className, Exception $previous = null)
     {
-        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
+        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
         $this->className = $className;
 
         parent::__construct(
@@ -41,11 +41,11 @@ final class UndefinedClassException extends LogicException
      */
     public function className()
     {
-        $this->typhoon->className(func_get_args());
+        $this->typeCheck->className(func_get_args());
 
         return $this->className;
     }
 
     private $className;
-    private $typhoon;
+    private $typeCheck;
 }

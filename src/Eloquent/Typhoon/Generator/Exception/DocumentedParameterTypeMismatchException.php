@@ -13,7 +13,7 @@ namespace Eloquent\Typhoon\Generator\Exception;
 
 use Eloquent\Typhax\Renderer\TypeRenderer;
 use Eloquent\Typhax\Type\Type;
-use Eloquent\Typhoon\Validators\Typhoon;
+use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Exception;
 use LogicException;
 
@@ -35,7 +35,7 @@ final class DocumentedParameterTypeMismatchException extends LogicException
         Exception $previous = null,
         TypeRenderer $typeRenderer = null
     ) {
-        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
+        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
         if (null === $typeRenderer) {
             $typeRenderer = new TypeRenderer;
         }
@@ -64,7 +64,7 @@ final class DocumentedParameterTypeMismatchException extends LogicException
      */
     public function functionName()
     {
-        $this->typhoon->functionName(func_get_args());
+        $this->typeCheck->functionName(func_get_args());
 
         return $this->functionName;
     }
@@ -74,7 +74,7 @@ final class DocumentedParameterTypeMismatchException extends LogicException
      */
     public function parameterName()
     {
-        $this->typhoon->parameterName(func_get_args());
+        $this->typeCheck->parameterName(func_get_args());
 
         return $this->parameterName;
     }
@@ -84,7 +84,7 @@ final class DocumentedParameterTypeMismatchException extends LogicException
      */
     public function documentedType()
     {
-        $this->typhoon->documentedType(func_get_args());
+        $this->typeCheck->documentedType(func_get_args());
 
         return $this->documentedType;
     }
@@ -94,7 +94,7 @@ final class DocumentedParameterTypeMismatchException extends LogicException
      */
     public function nativeType()
     {
-        $this->typhoon->nativeType(func_get_args());
+        $this->typeCheck->nativeType(func_get_args());
 
         return $this->nativeType;
     }
@@ -104,7 +104,7 @@ final class DocumentedParameterTypeMismatchException extends LogicException
      */
     public function typeRenderer()
     {
-        $this->typhoon->typeRenderer(func_get_args());
+        $this->typeCheck->typeRenderer(func_get_args());
 
         return $this->typeRenderer;
     }
@@ -114,5 +114,5 @@ final class DocumentedParameterTypeMismatchException extends LogicException
     private $documentedType;
     private $nativeType;
     private $typeRenderer;
-    private $typhoon;
+    private $typeCheck;
 }

@@ -12,7 +12,7 @@
 namespace Eloquent\Typhoon\Generator;
 
 use Eloquent\Typhoon\Configuration\RuntimeConfiguration;
-use Eloquent\Typhoon\Validators\Typhoon;
+use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Icecave\Pasta\AST\Expr\Call;
 use Icecave\Pasta\AST\Expr\Literal;
 use Icecave\Pasta\AST\Expr\NewOperator;
@@ -22,7 +22,7 @@ class RuntimeConfigurationGenerator
 {
     public function __construct()
     {
-        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
+        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
     }
 
     /**
@@ -32,7 +32,7 @@ class RuntimeConfigurationGenerator
      */
     public function generate(RuntimeConfiguration $configuration)
     {
-        $this->typhoon->generate(func_get_args());
+        $this->typeCheck->generate(func_get_args());
 
         $newConfigurationCall = new Call(QualifiedIdentifier::fromString(
             '\Eloquent\Typhoon\Configuration\RuntimeConfiguration'
@@ -47,5 +47,5 @@ class RuntimeConfigurationGenerator
         return new NewOperator($newConfigurationCall);
     }
 
-    private $typhoon;
+    private $typeCheck;
 }

@@ -11,7 +11,7 @@
 
 namespace Eloquent\Typhoon\Parser\Exception;
 
-use Eloquent\Typhoon\Validators\Typhoon;
+use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Exception;
 use LogicException;
 
@@ -24,7 +24,7 @@ abstract class ParseException extends LogicException
      */
     public function __construct($message, $position, Exception $previous = null)
     {
-        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
+        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
         $this->position = $position;
 
         parent::__construct($message, 0, $previous);
@@ -35,11 +35,11 @@ abstract class ParseException extends LogicException
      */
     public function position()
     {
-        $this->typhoon->position(func_get_args());
+        $this->typeCheck->position(func_get_args());
 
         return $this->position;
     }
 
     private $position;
-    private $typhoon;
+    private $typeCheck;
 }

@@ -29,7 +29,7 @@ use Eloquent\Typhax\Type\StringableType;
 use Eloquent\Typhax\Type\TraversableType;
 use Eloquent\Typhax\Type\TupleType;
 use Eloquent\Typhax\Type\Visitor;
-use Eloquent\Typhoon\Validators\Typhoon;
+use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Icecave\Pasta\AST\Expr\Assign;
 use Icecave\Pasta\AST\Expr\Call;
 use Icecave\Pasta\AST\Expr\Constant;
@@ -62,7 +62,7 @@ class TyphaxASTGenerator implements Visitor
     public function __construct(
         Identifier $valueIdentifier = null
     ) {
-        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
+        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
 
         if (null === $valueIdentifier) {
             $valueIdentifier = new Identifier('value');
@@ -78,7 +78,7 @@ class TyphaxASTGenerator implements Visitor
      */
     public function visitAndType(AndType $type)
     {
-        $this->typhoon->visitAndType(func_get_args());
+        $this->typeCheck->visitAndType(func_get_args());
 
         $expressions = array();
         $containsClosure = false;
@@ -156,7 +156,7 @@ class TyphaxASTGenerator implements Visitor
      */
     public function visitArrayType(ArrayType $type)
     {
-        $this->typhoon->visitArrayType(func_get_args());
+        $this->typeCheck->visitArrayType(func_get_args());
 
         $call = new Call(QualifiedIdentifier::fromString('\is_array'));
         $call->add($this->valueExpression());
@@ -171,7 +171,7 @@ class TyphaxASTGenerator implements Visitor
      */
     public function visitBooleanType(BooleanType $type)
     {
-        $this->typhoon->visitBooleanType(func_get_args());
+        $this->typeCheck->visitBooleanType(func_get_args());
 
         $call = new Call(QualifiedIdentifier::fromString('\is_bool'));
         $call->add($this->valueExpression());
@@ -186,7 +186,7 @@ class TyphaxASTGenerator implements Visitor
      */
     public function visitCallableType(CallableType $type)
     {
-        $this->typhoon->visitCallableType(func_get_args());
+        $this->typeCheck->visitCallableType(func_get_args());
 
         $call = new Call(QualifiedIdentifier::fromString('\is_callable'));
         $call->add($this->valueExpression());
@@ -201,7 +201,7 @@ class TyphaxASTGenerator implements Visitor
      */
     public function visitFloatType(FloatType $type)
     {
-        $this->typhoon->visitFloatType(func_get_args());
+        $this->typeCheck->visitFloatType(func_get_args());
 
         $call = new Call(QualifiedIdentifier::fromString('\is_float'));
         $call->add($this->valueExpression());
@@ -216,7 +216,7 @@ class TyphaxASTGenerator implements Visitor
      */
     public function visitIntegerType(IntegerType $type)
     {
-        $this->typhoon->visitIntegerType(func_get_args());
+        $this->typeCheck->visitIntegerType(func_get_args());
 
         $call = new Call(QualifiedIdentifier::fromString('\is_int'));
         $call->add($this->valueExpression());
@@ -231,7 +231,7 @@ class TyphaxASTGenerator implements Visitor
      */
     public function visitMixedType(MixedType $type)
     {
-        $this->typhoon->visitMixedType(func_get_args());
+        $this->typeCheck->visitMixedType(func_get_args());
 
         return null;
     }
@@ -243,7 +243,7 @@ class TyphaxASTGenerator implements Visitor
      */
     public function visitNullType(NullType $type)
     {
-        $this->typhoon->visitNullType(func_get_args());
+        $this->typeCheck->visitNullType(func_get_args());
 
         return new StrictEquals(
             $this->valueExpression(),
@@ -258,7 +258,7 @@ class TyphaxASTGenerator implements Visitor
      */
     public function visitNullifiedType(NullifiedType $type)
     {
-        $this->typhoon->visitNullifiedType(func_get_args());
+        $this->typeCheck->visitNullifiedType(func_get_args());
 
         return null;
     }
@@ -270,7 +270,7 @@ class TyphaxASTGenerator implements Visitor
      */
     public function visitNumericType(NumericType $type)
     {
-        $this->typhoon->visitNumericType(func_get_args());
+        $this->typeCheck->visitNumericType(func_get_args());
 
         $call = new Call(QualifiedIdentifier::fromString('\is_numeric'));
         $call->add($this->valueExpression());
@@ -285,7 +285,7 @@ class TyphaxASTGenerator implements Visitor
      */
     public function visitObjectType(ObjectType $type)
     {
-        $this->typhoon->visitObjectType(func_get_args());
+        $this->typeCheck->visitObjectType(func_get_args());
 
         if (null === $type->ofType()) {
             $call = new Call(QualifiedIdentifier::fromString('\is_object'));
@@ -307,7 +307,7 @@ class TyphaxASTGenerator implements Visitor
      */
     public function visitOrType(OrType $type)
     {
-        $this->typhoon->visitOrType(func_get_args());
+        $this->typeCheck->visitOrType(func_get_args());
 
         $expressions = array();
         $containsClosure = false;
@@ -381,7 +381,7 @@ class TyphaxASTGenerator implements Visitor
      */
     public function visitResourceType(ResourceType $type)
     {
-        $this->typhoon->visitResourceType(func_get_args());
+        $this->typeCheck->visitResourceType(func_get_args());
 
         $isResourceCall = new Call(QualifiedIdentifier::fromString('\is_resource'));
         $isResourceCall->add($this->valueExpression());
@@ -409,7 +409,7 @@ class TyphaxASTGenerator implements Visitor
      */
     public function visitStreamType(StreamType $type)
     {
-        $this->typhoon->visitStreamType(func_get_args());
+        $this->typeCheck->visitStreamType(func_get_args());
 
         $isResourceCall = new Call(QualifiedIdentifier::fromString('\is_resource'));
         $isResourceCall->add($this->valueExpression());
@@ -511,7 +511,7 @@ class TyphaxASTGenerator implements Visitor
      */
     public function visitStringType(StringType $type)
     {
-        $this->typhoon->visitStringType(func_get_args());
+        $this->typeCheck->visitStringType(func_get_args());
 
         $call = new Call(QualifiedIdentifier::fromString('\is_string'));
         $call->add($this->valueExpression());
@@ -526,7 +526,7 @@ class TyphaxASTGenerator implements Visitor
      */
     public function visitStringableType(StringableType $type)
     {
-        $this->typhoon->visitStringableType(func_get_args());
+        $this->typeCheck->visitStringableType(func_get_args());
 
         $closure = new Closure;
         $closure->addParameter(new Parameter($this->valueIdentifier));
@@ -585,7 +585,7 @@ class TyphaxASTGenerator implements Visitor
      */
     public function visitTraversableType(TraversableType $type)
     {
-        $this->typhoon->visitTraversableType(func_get_args());
+        $this->typeCheck->visitTraversableType(func_get_args());
 
         $primaryExpression = $type->primaryType()->accept($this);
 
@@ -692,7 +692,7 @@ class TyphaxASTGenerator implements Visitor
      */
     public function visitTupleType(TupleType $type)
     {
-        $this->typhoon->visitTupleType(func_get_args());
+        $this->typeCheck->visitTupleType(func_get_args());
 
         $tupleSize = count($type->types());
         $isArrayCall = new Call(QualifiedIdentifier::fromString('\is_array'));
@@ -779,7 +779,7 @@ class TyphaxASTGenerator implements Visitor
      */
     protected function valueExpression()
     {
-        $this->typhoon->valueExpression(func_get_args());
+        $this->typeCheck->valueExpression(func_get_args());
 
         $valueExpression = new Variable($this->valueIdentifier);
         if (null !== $this->valueIndex) {
@@ -794,5 +794,5 @@ class TyphaxASTGenerator implements Visitor
 
     private $valueIdentifier;
     private $valueIndex;
-    private $typhoon;
+    private $typeCheck;
 }

@@ -11,7 +11,7 @@
 
 namespace Eloquent\Typhoon\Configuration\Exception;
 
-use Eloquent\Typhoon\Validators\Typhoon;
+use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Exception;
 
 final class InvalidConfigurationException extends Exception
@@ -24,7 +24,7 @@ final class InvalidConfigurationException extends Exception
         $reason,
         Exception $previous = null
     ) {
-        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
+        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
         $this->reason = $reason;
 
         parent::__construct(
@@ -42,11 +42,11 @@ final class InvalidConfigurationException extends Exception
      */
     public function reason()
     {
-        $this->typhoon->reason(func_get_args());
+        $this->typeCheck->reason(func_get_args());
 
         return $this->reason;
     }
 
     private $reason;
-    private $typhoon;
+    private $typeCheck;
 }

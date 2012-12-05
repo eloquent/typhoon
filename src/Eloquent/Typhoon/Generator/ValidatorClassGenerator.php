@@ -18,7 +18,7 @@ use Eloquent\Typhoon\Configuration\RuntimeConfiguration;
 use Eloquent\Typhoon\Parameter\ParameterList;
 use Eloquent\Typhoon\Parser\ParameterListParser;
 use Eloquent\Typhoon\Resolver\ParameterListClassNameResolver;
-use Eloquent\Typhoon\Validators\Typhoon;
+use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Icecave\Isolator\Isolator;
 use Icecave\Pasta\AST\Expr\QualifiedIdentifier;
 use Icecave\Pasta\AST\Func\ArrayTypeHint;
@@ -51,7 +51,7 @@ class ValidatorClassGenerator
         NativeParameterListMergeTool $nativeMergeTool = null,
         Isolator $isolator = null
     ) {
-        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
+        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
 
         if (null === $renderer) {
             $renderer = new Renderer;
@@ -82,7 +82,7 @@ class ValidatorClassGenerator
      */
     public function renderer()
     {
-        $this->typhoon->renderer(func_get_args());
+        $this->typeCheck->renderer(func_get_args());
 
         return $this->renderer;
     }
@@ -92,7 +92,7 @@ class ValidatorClassGenerator
      */
     public function parser()
     {
-        $this->typhoon->parser(func_get_args());
+        $this->typeCheck->parser(func_get_args());
 
         return $this->parser;
     }
@@ -102,7 +102,7 @@ class ValidatorClassGenerator
      */
     public function generator()
     {
-        $this->typhoon->generator(func_get_args());
+        $this->typeCheck->generator(func_get_args());
 
         return $this->generator;
     }
@@ -112,7 +112,7 @@ class ValidatorClassGenerator
      */
     public function classMapper()
     {
-        $this->typhoon->classMapper(func_get_args());
+        $this->typeCheck->classMapper(func_get_args());
 
         return $this->classMapper;
     }
@@ -122,7 +122,7 @@ class ValidatorClassGenerator
      */
     public function nativeMergeTool()
     {
-        $this->typhoon->nativeMergeTool(func_get_args());
+        $this->typeCheck->nativeMergeTool(func_get_args());
 
         return $this->nativeMergeTool;
     }
@@ -141,7 +141,7 @@ class ValidatorClassGenerator
         &$namespaceName = null,
         &$className = null
     ) {
-        $this->typhoon->generate(func_get_args());
+        $this->typeCheck->generate(func_get_args());
 
         return $this->generateSyntaxTree(
             $configuration,
@@ -167,7 +167,7 @@ class ValidatorClassGenerator
         &$namespaceName = null,
         &$className = null
     ) {
-        $this->typhoon->generateFromSource(func_get_args());
+        $this->typeCheck->generateFromSource(func_get_args());
 
         return $this->generate(
             $configuration,
@@ -193,7 +193,7 @@ class ValidatorClassGenerator
         &$namespaceName = null,
         &$className = null
     ) {
-        $this->typhoon->generateFromFile(func_get_args());
+        $this->typeCheck->generateFromFile(func_get_args());
 
         return $this->generateFromSource(
             $configuration,
@@ -220,7 +220,7 @@ class ValidatorClassGenerator
         &$namespaceName = null,
         &$className = null
     ) {
-        $this->typhoon->generateFromClass(func_get_args());
+        $this->typeCheck->generateFromClass(func_get_args());
 
         return $this->generateFromFile(
             $configuration,
@@ -245,7 +245,7 @@ class ValidatorClassGenerator
         &$namespaceName = null,
         &$className = null
     ) {
-        $this->typhoon->generateSyntaxTree(func_get_args());
+        $this->typeCheck->generateSyntaxTree(func_get_args());
 
         list($namespaceName, $className) = $this->validatorClassName(
             $configuration,
@@ -290,7 +290,7 @@ class ValidatorClassGenerator
         ReflectionMethod $method,
         ClassDefinition $classDefinition
     ) {
-        $this->typhoon->generateMethod(func_get_args());
+        $this->typeCheck->generateMethod(func_get_args());
 
         $typhoonMethod = new ConcreteMethod(
             new Identifier(
@@ -322,7 +322,7 @@ class ValidatorClassGenerator
      */
     protected function methods(ClassDefinition $classDefinition)
     {
-        $this->typhoon->methods(func_get_args());
+        $this->typeCheck->methods(func_get_args());
 
         $class = new ReflectionClass(
             $classDefinition->canonicalClassName()
@@ -352,7 +352,7 @@ class ValidatorClassGenerator
         $namespaceName = null,
         $className = null
     ) {
-        $this->typhoon->validatorClassName(func_get_args());
+        $this->typeCheck->validatorClassName(func_get_args());
 
         $namespaceNameParts = array(
             $configuration->validatorNamespace(),
@@ -364,7 +364,7 @@ class ValidatorClassGenerator
 
         return array(
             implode('\\', $namespaceNameParts),
-            sprintf('%sTyphoon', $classDefinition->className()),
+            sprintf('%sTypeCheck', $classDefinition->className()),
         );
     }
 
@@ -375,7 +375,7 @@ class ValidatorClassGenerator
      */
     protected function validatorMethodName(ReflectionMethod $method)
     {
-        $this->typhoon->validatorMethodName(func_get_args());
+        $this->typeCheck->validatorMethodName(func_get_args());
 
         $methodName = $method->getName();
         if ('__' === substr($methodName, 0, 2)) {
@@ -400,7 +400,7 @@ class ValidatorClassGenerator
         ReflectionMethod $method,
         ClassDefinition $classDefinition
     ) {
-        $this->typhoon->parameterList(func_get_args());
+        $this->typeCheck->parameterList(func_get_args());
 
         $methodName = sprintf(
             '%s::%s',
@@ -435,7 +435,7 @@ class ValidatorClassGenerator
      */
     protected function classNameResolver(ClassDefinition $classDefinition)
     {
-        $this->typhoon->classNameResolver(func_get_args());
+        $this->typeCheck->classNameResolver(func_get_args());
 
         return new ParameterListClassNameResolver(
             new ObjectTypeClassNameResolver(
@@ -449,5 +449,5 @@ class ValidatorClassGenerator
     private $generator;
     private $classMapper;
     private $isolator;
-    private $typhoon;
+    private $typeCheck;
 }

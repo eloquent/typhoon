@@ -119,7 +119,7 @@ class ValidatorClassGeneratorTest extends MultiGenerationTestCase
             __DIR__.
             '/../../../../src/foo/Validator/Eloquent/Typhoon/TestFixture/SampleClasses/'.
             $className.
-            'Typhoon.php'
+            'TypeCheck.php'
         ;
         $configuration = new RuntimeConfiguration('foo');
         $classDefinitions = $this->_classMapper->classesByFile($classPath);

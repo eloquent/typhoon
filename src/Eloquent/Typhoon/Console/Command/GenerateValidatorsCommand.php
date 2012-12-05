@@ -12,7 +12,7 @@
 namespace Eloquent\Typhoon\Console\Command;
 
 use Eloquent\Typhoon\Generator\ProjectValidatorGenerator;
-use Eloquent\Typhoon\Validators\Typhoon;
+use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Icecave\Isolator\Isolator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -28,7 +28,7 @@ class GenerateValidatorsCommand extends Command
         ProjectValidatorGenerator $generator = null,
         Isolator $isolator = null
     ) {
-        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
+        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
         if (null === $generator) {
             $generator = new ProjectValidatorGenerator;
         }
@@ -44,14 +44,14 @@ class GenerateValidatorsCommand extends Command
      */
     public function generator()
     {
-        $this->typhoon->generator(func_get_args());
+        $this->typeCheck->generator(func_get_args());
 
         return $this->generator;
     }
 
     protected function configure()
     {
-        $this->typhoon->configure(func_get_args());
+        $this->typeCheck->configure(func_get_args());
 
         $this->setName('generate:validators');
         $this->setDescription(
@@ -65,7 +65,7 @@ class GenerateValidatorsCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->typhoon->execute(func_get_args());
+        $this->typeCheck->execute(func_get_args());
 
         $output->setVerbosity(OutputInterface::VERBOSITY_VERBOSE);
         $configuration = $this->getApplication()->configurationReader()->read(
@@ -86,5 +86,5 @@ class GenerateValidatorsCommand extends Command
 
     private $generator;
     private $isolator;
-    private $typhoon;
+    private $typeCheck;
 }

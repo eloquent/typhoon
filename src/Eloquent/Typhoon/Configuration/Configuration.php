@@ -11,7 +11,7 @@
 
 namespace Eloquent\Typhoon\Configuration;
 
-use Eloquent\Typhoon\Validators\Typhoon;
+use Eloquent\Typhoon\TypeCheck\TypeCheck;
 
 class Configuration extends RuntimeConfiguration
 {
@@ -23,7 +23,7 @@ class Configuration extends RuntimeConfiguration
         $outputPath,
         array $sourcePaths
     ) {
-        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
+        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
 
         parent::__construct();
 
@@ -37,7 +37,7 @@ class Configuration extends RuntimeConfiguration
      */
     public function setOutputPath($outputPath)
     {
-        $this->typhoon->setOutputPath(func_get_args());
+        $this->typeCheck->setOutputPath(func_get_args());
 
         $this->outputPath = $outputPath;
     }
@@ -47,7 +47,7 @@ class Configuration extends RuntimeConfiguration
      */
     public function outputPath()
     {
-        $this->typhoon->outputPath(func_get_args());
+        $this->typeCheck->outputPath(func_get_args());
 
         return $this->outputPath;
     }
@@ -57,7 +57,7 @@ class Configuration extends RuntimeConfiguration
      */
     public function setSourcePaths(array $sourcePaths)
     {
-        $this->typhoon->setSourcePaths(func_get_args());
+        $this->typeCheck->setSourcePaths(func_get_args());
 
         if (count($sourcePaths) < 1) {
             throw new Exception\InvalidConfigurationException(
@@ -72,7 +72,7 @@ class Configuration extends RuntimeConfiguration
      */
     public function sourcePaths()
     {
-        $this->typhoon->sourcePaths(func_get_args());
+        $this->typeCheck->sourcePaths(func_get_args());
 
         return $this->sourcePaths;
     }
@@ -82,7 +82,7 @@ class Configuration extends RuntimeConfiguration
      */
     public function setLoaderPaths(array $loaderPaths)
     {
-        $this->typhoon->setLoaderPaths(func_get_args());
+        $this->typeCheck->setLoaderPaths(func_get_args());
 
         $this->loaderPaths = $loaderPaths;
     }
@@ -92,7 +92,7 @@ class Configuration extends RuntimeConfiguration
      */
     public function loaderPaths()
     {
-        $this->typhoon->loaderPaths(func_get_args());
+        $this->typeCheck->loaderPaths(func_get_args());
 
         return $this->loaderPaths;
     }
@@ -100,5 +100,5 @@ class Configuration extends RuntimeConfiguration
     private $outputPath;
     private $sourcePaths;
     private $loaderPaths;
-    private $typhoon;
+    private $typeCheck;
 }

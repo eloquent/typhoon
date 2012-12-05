@@ -11,7 +11,7 @@
 
 namespace Eloquent\Typhoon\Configuration;
 
-use Eloquent\Typhoon\Validators\Typhoon;
+use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use ErrorException;
 use Icecave\Isolator\Isolator;
 use Symfony\Component\Filesystem\Filesystem;
@@ -24,7 +24,7 @@ class ConfigurationReader
      */
     public function __construct(Isolator $isolator = null)
     {
-        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
+        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
 
         $this->filesystemHelper = new Filesystem;
         $this->isolator = Isolator::get($isolator);
@@ -38,7 +38,7 @@ class ConfigurationReader
      */
     public function read($path = null, $throwOnFailure = false)
     {
-        $this->typhoon->read(func_get_args());
+        $this->typeCheck->read(func_get_args());
         if (null === $path) {
             $path = $this->isolator->getcwd();
         }
@@ -64,7 +64,7 @@ class ConfigurationReader
      */
     protected function typhoonPath($path)
     {
-        $this->typhoon->typhoonPath(func_get_args());
+        $this->typeCheck->typhoonPath(func_get_args());
 
         return sprintf(
             '%s/typhoon.json',
@@ -79,7 +79,7 @@ class ConfigurationReader
      */
     protected function composerPath($path)
     {
-        $this->typhoon->composerPath(func_get_args());
+        $this->typeCheck->composerPath(func_get_args());
 
         return sprintf(
             '%s/composer.json',
@@ -94,7 +94,7 @@ class ConfigurationReader
      */
     protected function readTyphoon($path)
     {
-        $this->typhoon->readTyphoon(func_get_args());
+        $this->typeCheck->readTyphoon(func_get_args());
 
         $typhoonPath = $this->typhoonPath($path);
         if (!$this->isolator->is_file($typhoonPath)) {
@@ -113,7 +113,7 @@ class ConfigurationReader
      */
     protected function readComposer($path)
     {
-        $this->typhoon->readComposer(func_get_args());
+        $this->typeCheck->readComposer(func_get_args());
 
         $composerPath = $this->composerPath($path);
         if (!$this->isolator->is_file($composerPath)) {
@@ -212,7 +212,7 @@ class ConfigurationReader
      */
     protected function buildConfiguration($data)
     {
-        $this->typhoon->buildConfiguration(func_get_args());
+        $this->typeCheck->buildConfiguration(func_get_args());
 
         $this->validateData($data);
         $configuration = new Configuration(
@@ -239,7 +239,7 @@ class ConfigurationReader
      */
     protected function loadJSON($path)
     {
-        $this->typhoon->loadJSON(func_get_args());
+        $this->typeCheck->loadJSON(func_get_args());
 
         $data = json_decode($this->load($path));
         $lastJSONError = json_last_error();
@@ -257,7 +257,7 @@ class ConfigurationReader
      */
     protected function load($path)
     {
-        $this->typhoon->load(func_get_args());
+        $this->typeCheck->load(func_get_args());
 
         try {
             $data = $this->isolator->file_get_contents($path);
@@ -273,7 +273,7 @@ class ConfigurationReader
      */
     protected function validateData($data)
     {
-        $this->typhoon->validateData(func_get_args());
+        $this->typeCheck->validateData(func_get_args());
 
         if (!$data instanceof stdClass) {
             throw new Exception\InvalidConfigurationException(
@@ -362,7 +362,7 @@ class ConfigurationReader
         $ancestor,
         $descendant
     ) {
-        $this->typhoon->pathIsDescandantOrEqual(func_get_args());
+        $this->typeCheck->pathIsDescandantOrEqual(func_get_args());
 
         $ancestor = $this->normalizePath($workingPath, $ancestor);
         $descendant = $this->normalizePath($workingPath, $descendant);
@@ -378,7 +378,7 @@ class ConfigurationReader
      */
     protected function normalizePath($workingPath, $path)
     {
-        $this->typhoon->normalizePath(func_get_args());
+        $this->typeCheck->normalizePath(func_get_args());
 
         if ($this->filesystemHelper->isAbsolutePath($path)) {
             $path = $this->filesystemHelper->makePathRelative(
@@ -400,5 +400,5 @@ class ConfigurationReader
 
     private $filesystemHelper;
     private $isolator;
-    private $typhoon;
+    private $typeCheck;
 }

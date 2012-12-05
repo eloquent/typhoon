@@ -13,7 +13,7 @@ namespace Eloquent\Typhoon\Generator\ExceptionGenerator;
 
 use Eloquent\Typhoon\Configuration\RuntimeConfiguration;
 use Eloquent\Typhoon\Generator\StaticClassGenerator;
-use Eloquent\Typhoon\Validators\Typhoon;
+use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Icecave\Pasta\AST\Expr\Assign;
 use Icecave\Pasta\AST\Expr\Call;
 use Icecave\Pasta\AST\Expr\Constant;
@@ -48,7 +48,7 @@ class UnexpectedArgumentValueExceptionGenerator implements StaticClassGenerator
      */
     public function __construct(Renderer $renderer = null)
     {
-        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
+        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
 
         if (null === $renderer) {
             $renderer = new Renderer;
@@ -62,7 +62,7 @@ class UnexpectedArgumentValueExceptionGenerator implements StaticClassGenerator
      */
     public function renderer()
     {
-        $this->typhoon->renderer(func_get_args());
+        $this->typeCheck->renderer(func_get_args());
 
         return $this->renderer;
     }
@@ -79,7 +79,7 @@ class UnexpectedArgumentValueExceptionGenerator implements StaticClassGenerator
         &$namespaceName = null,
         &$className = null
     ) {
-        $this->typhoon->generate(func_get_args());
+        $this->typeCheck->generate(func_get_args());
 
         return $this->generateSyntaxTree(
             $configuration,
@@ -100,7 +100,7 @@ class UnexpectedArgumentValueExceptionGenerator implements StaticClassGenerator
         &$namespaceName = null,
         &$className = null
     ) {
-        $this->typhoon->generateSyntaxTree(func_get_args());
+        $this->typeCheck->generateSyntaxTree(func_get_args());
 
         $namespaceName = sprintf('%s\Exception', $configuration->validatorNamespace());
         $className = 'UnexpectedArgumentValueException';
@@ -164,7 +164,7 @@ class UnexpectedArgumentValueExceptionGenerator implements StaticClassGenerator
      */
     protected function generateConstructor(RuntimeConfiguration $configuration)
     {
-        $this->typhoon->generateConstructor(func_get_args());
+        $this->typeCheck->generateConstructor(func_get_args());
 
         $parameterNameIdentifier = new Identifier('parameterName');
         $parameterNameVariable = new Variable($parameterNameIdentifier);
@@ -298,7 +298,7 @@ class UnexpectedArgumentValueExceptionGenerator implements StaticClassGenerator
      */
     protected function generateParameterNameMethod()
     {
-        $this->typhoon->generateParameterNameMethod(func_get_args());
+        $this->typeCheck->generateParameterNameMethod(func_get_args());
 
         $parameterNameIdentifier = new Identifier('parameterName');
         $method = new ConcreteMethod(
@@ -318,7 +318,7 @@ class UnexpectedArgumentValueExceptionGenerator implements StaticClassGenerator
      */
     protected function generateIndexMethod()
     {
-        $this->typhoon->generateIndexMethod(func_get_args());
+        $this->typeCheck->generateIndexMethod(func_get_args());
 
         $indexIdentifier = new Identifier('index');
         $method = new ConcreteMethod(
@@ -338,7 +338,7 @@ class UnexpectedArgumentValueExceptionGenerator implements StaticClassGenerator
      */
     protected function generateValueMethod()
     {
-        $this->typhoon->generateValueMethod(func_get_args());
+        $this->typeCheck->generateValueMethod(func_get_args());
 
         $valueIdentifier = new Identifier('value');
         $method = new ConcreteMethod(
@@ -358,7 +358,7 @@ class UnexpectedArgumentValueExceptionGenerator implements StaticClassGenerator
      */
     protected function generateExpectedTypeMethod()
     {
-        $this->typhoon->generateExpectedTypeMethod(func_get_args());
+        $this->typeCheck->generateExpectedTypeMethod(func_get_args());
 
         $expectedTypeIdentifier = new Identifier('expectedType');
         $method = new ConcreteMethod(
@@ -378,7 +378,7 @@ class UnexpectedArgumentValueExceptionGenerator implements StaticClassGenerator
      */
     protected function generateTypeInspectorMethod()
     {
-        $this->typhoon->generateTypeInspectorMethod(func_get_args());
+        $this->typeCheck->generateTypeInspectorMethod(func_get_args());
 
         $typeInspectorIdentifier = new Identifier('typeInspector');
         $method = new ConcreteMethod(
@@ -398,7 +398,7 @@ class UnexpectedArgumentValueExceptionGenerator implements StaticClassGenerator
      */
     protected function generateUnexpectedTypeMethod()
     {
-        $this->typhoon->generateUnexpectedTypeMethod(func_get_args());
+        $this->typeCheck->generateUnexpectedTypeMethod(func_get_args());
 
         $unexpectedTypeIdentifier = new Identifier('unexpectedType');
         $method = new ConcreteMethod(
@@ -414,5 +414,5 @@ class UnexpectedArgumentValueExceptionGenerator implements StaticClassGenerator
     }
 
     private $renderer;
-    private $typhoon;
+    private $typeCheck;
 }

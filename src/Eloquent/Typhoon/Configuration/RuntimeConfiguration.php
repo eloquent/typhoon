@@ -11,7 +11,7 @@
 
 namespace Eloquent\Typhoon\Configuration;
 
-use Eloquent\Typhoon\Validators\Typhoon;
+use Eloquent\Typhoon\TypeCheck\TypeCheck;
 
 class RuntimeConfiguration
 {
@@ -23,7 +23,7 @@ class RuntimeConfiguration
         $validatorNamespace = null,
         $useNativeCallable = null
     ) {
-        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
+        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
         if (null === $validatorNamespace) {
             $validatorNamespace = 'Typhoon';
         }
@@ -40,7 +40,7 @@ class RuntimeConfiguration
      */
     public function setValidatorNamespace($validatorNamespace)
     {
-        $this->typhoon->setValidatorNamespace(func_get_args());
+        $this->typeCheck->setValidatorNamespace(func_get_args());
 
         $this->validatorNamespace = $validatorNamespace;
     }
@@ -50,7 +50,7 @@ class RuntimeConfiguration
      */
     public function validatorNamespace()
     {
-        $this->typhoon->validatorNamespace(func_get_args());
+        $this->typeCheck->validatorNamespace(func_get_args());
 
         return $this->validatorNamespace;
     }
@@ -60,7 +60,7 @@ class RuntimeConfiguration
      */
     public function setUseNativeCallable($useNativeCallable)
     {
-        $this->typhoon->setUseNativeCallable(func_get_args());
+        $this->typeCheck->setUseNativeCallable(func_get_args());
 
         $this->useNativeCallable = $useNativeCallable;
     }
@@ -70,12 +70,12 @@ class RuntimeConfiguration
      */
     public function useNativeCallable()
     {
-        $this->typhoon->useNativeCallable(func_get_args());
+        $this->typeCheck->useNativeCallable(func_get_args());
 
         return $this->useNativeCallable;
     }
 
     private $validatorNamespace;
     private $useNativeCallable;
-    private $typhoon;
+    private $typeCheck;
 }

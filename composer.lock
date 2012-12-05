@@ -1,5 +1,5 @@
 {
-    "hash": "be58b39a9474be00d3bff424d897ae9e",
+    "hash": "ed24dfe3162bbf778eb47f626b17e47a",
     "packages": [
         {
             "name": "eloquent/asplode",
@@ -30,7 +30,6 @@
                     "Eloquent\\Asplode": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -81,7 +80,6 @@
                     "Eloquent\\Blox": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -131,7 +129,6 @@
                     "Eloquent\\Cosmos": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -182,7 +179,6 @@
                     "Eloquent\\Enumeration": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -232,7 +228,6 @@
                     "Eloquent\\Typhax": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -283,7 +278,6 @@
                     "Icecave\\Isolator": "lib"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -333,7 +327,6 @@
                     "Icecave\\Pasta\\AST": "lib"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -382,7 +375,6 @@
                     "Icecave\\Rasta": "lib"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -427,7 +419,6 @@
                     "Icecave\\Visita": "lib"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -476,7 +467,6 @@
                     "Symfony\\Component\\Console": ""
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -524,7 +514,6 @@
                     "Symfony\\Component\\Filesystem": ""
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -569,7 +558,6 @@
                     "Eloquent\\Liberator": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -617,7 +605,6 @@
                     "Eloquent\\Pops": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -662,7 +649,6 @@
                     "Ezzatron\\PHPUnit": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -709,7 +695,6 @@
                     "src"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
             "include-path": [
                 "src"
             ],

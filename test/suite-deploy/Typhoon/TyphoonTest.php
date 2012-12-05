@@ -14,7 +14,7 @@ namespace Typhoon;
 use Eloquent\Liberator\Liberator;
 use PHPUnit_Framework_TestCase;
 use stdClass;
-use Typhoon\Validator\Eloquent\Typhoon\TestFixture\ExampleClassTyphoon;
+use Typhoon\Validator\Eloquent\Typhoon\TestFixture\ExampleClassTypeCheck;
 
 class TyphoonTest extends PHPUnit_Framework_TestCase
 {
@@ -24,8 +24,8 @@ class TyphoonTest extends PHPUnit_Framework_TestCase
 
         Liberator::liberateClass(__NAMESPACE__.'\Typhoon')->instances = array();
         Liberator::liberateClass(__NAMESPACE__.'\Typhoon')->dummyMode = false;
-        if (class_exists('Typhoon\Validator\Eloquent\Typhoon\TestFixture\ExampleClassTyphoon', false)) {
-            ExampleClassTyphoon::$arguments = array();
+        if (class_exists('Typhoon\Validator\Eloquent\Typhoon\TestFixture\ExampleClassTypeCheck', false)) {
+            ExampleClassTypeCheck::$arguments = array();
         }
 
         $this->_oldRuntimeGeneration = Typhoon::runtimeGeneration();
@@ -45,11 +45,11 @@ class TyphoonTest extends PHPUnit_Framework_TestCase
         $validator = Typhoon::get($className);
 
         $this->assertInstanceOf(
-            'Typhoon\Validator\Eloquent\Typhoon\TestFixture\ExampleClassTyphoon',
+            'Typhoon\Validator\Eloquent\Typhoon\TestFixture\ExampleClassTypeCheck',
             $validator
         );
         $this->assertSame($validator, Typhoon::get($className));
-        $this->assertFalse(array_key_exists('validateConstruct', ExampleClassTyphoon::$arguments));
+        $this->assertFalse(array_key_exists('validateConstruct', ExampleClassTypeCheck::$arguments));
     }
 
     public function testGetWithArguments()
@@ -59,12 +59,12 @@ class TyphoonTest extends PHPUnit_Framework_TestCase
         $validator = Typhoon::get($className, $arguments);
 
         $this->assertInstanceOf(
-            'Typhoon\Validator\Eloquent\Typhoon\TestFixture\ExampleClassTyphoon',
+            'Typhoon\Validator\Eloquent\Typhoon\TestFixture\ExampleClassTypeCheck',
             $validator
         );
         $this->assertSame($validator, Typhoon::get($className));
-        $this->assertTrue(array_key_exists('validateConstruct', ExampleClassTyphoon::$arguments));
-        $this->assertSame($arguments, ExampleClassTyphoon::$arguments['validateConstruct']);
+        $this->assertTrue(array_key_exists('validateConstruct', ExampleClassTypeCheck::$arguments));
+        $this->assertSame($arguments, ExampleClassTypeCheck::$arguments['validateConstruct']);
     }
 
     public function testGetDummyMode()
@@ -84,7 +84,7 @@ class TyphoonTest extends PHPUnit_Framework_TestCase
         $validator = Typhoon::get($className);
 
         $this->assertInstanceOf(
-            'Typhoon\Validator\Eloquent\Typhoon\TestFixture\ExampleClassRuntimeTyphoon',
+            'Typhoon\Validator\Eloquent\Typhoon\TestFixture\ExampleClassRuntimeTypeCheck',
             $validator
         );
         $this->assertSame($validator, Typhoon::get($className));

@@ -11,7 +11,7 @@
 
 namespace Eloquent\Typhoon\Configuration\Exception;
 
-use Eloquent\Typhoon\Validators\Typhoon;
+use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Exception;
 use RuntimeException;
 
@@ -27,7 +27,7 @@ final class InvalidJSONException extends RuntimeException
         $path,
         Exception $previous = null
     ) {
-        $this->typhoon = Typhoon::get(__CLASS__, func_get_args());
+        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
         $this->jsonErrorCode = $jsonErrorCode;
         $this->path = $path;
 
@@ -67,7 +67,7 @@ final class InvalidJSONException extends RuntimeException
      */
     public function jsonErrorCode()
     {
-        $this->typhoon->jsonErrorCode(func_get_args());
+        $this->typeCheck->jsonErrorCode(func_get_args());
 
         return $this->jsonErrorCode;
     }
@@ -77,7 +77,7 @@ final class InvalidJSONException extends RuntimeException
      */
     public function jsonErrorMessage()
     {
-        $this->typhoon->jsonErrorMessage(func_get_args());
+        $this->typeCheck->jsonErrorMessage(func_get_args());
 
         return $this->jsonErrorMessage;
     }
@@ -87,7 +87,7 @@ final class InvalidJSONException extends RuntimeException
      */
     public function path()
     {
-        $this->typhoon->path(func_get_args());
+        $this->typeCheck->path(func_get_args());
 
         return $this->path;
     }
@@ -95,5 +95,5 @@ final class InvalidJSONException extends RuntimeException
     private $jsonErrorCode;
     private $jsonErrorMessage;
     private $path;
-    private $typhoon;
+    private $typeCheck;
 }
