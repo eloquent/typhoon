@@ -12,6 +12,7 @@
 namespace Eloquent\Typhoon\Configuration;
 
 use Eloquent\Enumeration\Enumeration;
+use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Exception as NativeException;
 
 final class ConfigurationOption extends Enumeration
@@ -36,6 +37,8 @@ final class ConfigurationOption extends Enumeration
         $value,
         NativeException $previous = null
     ) {
+        TypeCheck::get(__CLASS__)->createUndefinedInstanceException(func_get_args());
+
         return new Exception\UndefinedConfigurationOptionException($value, $previous);
     }
 }
