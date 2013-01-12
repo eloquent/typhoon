@@ -37,8 +37,8 @@ class ApplicationTest extends MultiGenerationTestCase
         $this->assertSame('Typhoon', $this->_application->getName());
         $this->assertSame('DEV', $this->_application->getVersion());
         $this->assertInstanceOf(
-            __NAMESPACE__.'\Command\GenerateValidatorsCommand',
-            $this->_application->get('generate:validators')
+            __NAMESPACE__.'\Command\GenerateCommand',
+            $this->_application->get('generate')
         );
     }
 

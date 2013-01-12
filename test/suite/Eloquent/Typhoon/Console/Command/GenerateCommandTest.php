@@ -17,7 +17,7 @@ use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Phake;
 use Symfony\Component\Console\Input\InputDefinition;
 
-class GenerateValidatorsCommandTest extends MultiGenerationTestCase
+class GenerateCommandTest extends MultiGenerationTestCase
 {
     protected function setUp()
     {
@@ -43,7 +43,7 @@ class GenerateValidatorsCommandTest extends MultiGenerationTestCase
         Phake::when($this->_generator)->classGenerator()->thenReturn($this->_classGenerator);
         $this->_isolator = Phake::mock('Icecave\Isolator\Isolator');
         $this->_command = Phake::partialMock(
-            __NAMESPACE__.'\GenerateValidatorsCommand',
+            __NAMESPACE__.'\GenerateCommand',
             $this->_generator,
             $this->_isolator
         );
@@ -57,7 +57,7 @@ class GenerateValidatorsCommandTest extends MultiGenerationTestCase
 
     public function testConstructorDefaults()
     {
-        $command = new GenerateValidatorsCommand;
+        $command = new GenerateCommand;
 
         $this->assertInstanceOf(
             'Eloquent\Typhoon\Generator\ProjectValidatorGenerator',
@@ -67,7 +67,7 @@ class GenerateValidatorsCommandTest extends MultiGenerationTestCase
 
     public function testConfigure()
     {
-        $this->assertSame('generate:validators', $this->_command->getName());
+        $this->assertSame('generate', $this->_command->getName());
         $this->assertSame(
             'Generates Typhoon validator classes for a given directory.',
             $this->_command->getDescription()

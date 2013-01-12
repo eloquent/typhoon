@@ -18,7 +18,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class GenerateValidatorsCommand extends Command
+class GenerateCommand extends Command
 {
     /**
      * @param ProjectValidatorGenerator|null $generator
@@ -53,7 +53,7 @@ class GenerateValidatorsCommand extends Command
     {
         $this->typeCheck->configure(func_get_args());
 
-        $this->setName('generate:validators');
+        $this->setName('generate');
         $this->setDescription(
             'Generates Typhoon validator classes for a given directory.'
         );

@@ -32,7 +32,7 @@ class Application extends SymfonyApplication
 
         parent::__construct('Typhoon', 'DEV');
 
-        $this->add(new Command\GenerateValidatorsCommand);
+        $this->add(new Command\GenerateCommand);
     }
 
     /**

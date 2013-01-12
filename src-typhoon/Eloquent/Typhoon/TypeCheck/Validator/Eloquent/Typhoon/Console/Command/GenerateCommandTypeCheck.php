@@ -2,7 +2,7 @@
 namespace Eloquent\Typhoon\TypeCheck\Validator\Eloquent\Typhoon\Console\Command;
 
 
-class GenerateValidatorsCommandTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
+class GenerateCommandTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
 {
     public function validateConstruct(array $arguments)
     {
