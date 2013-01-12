@@ -11,9 +11,9 @@
 
 namespace Eloquent\Typhoon\TestCase;
 
+use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Ezzatron\PHPUnit\ParameterizedTestCase;
 use LogicException;
-use Typhoon\Typhoon;
 
 abstract class MultiGenerationTestCase extends ParameterizedTestCase
 {
@@ -27,12 +27,12 @@ abstract class MultiGenerationTestCase extends ParameterizedTestCase
 
     public function setUpParameterized($generationType)
     {
-        Typhoon::setRuntimeGeneration('runtime' === $generationType);
+        TypeCheck::setRuntimeGeneration('runtime' === $generationType);
     }
 
     public function tearDownParameterized($generationType)
     {
-        if (Typhoon::runtimeGeneration() !== ('runtime' === $generationType)) {
+        if (TypeCheck::runtimeGeneration() !== ('runtime' === $generationType)) {
             throw new LogicException('Test changed global runtime generation setting.');
         }
     }
