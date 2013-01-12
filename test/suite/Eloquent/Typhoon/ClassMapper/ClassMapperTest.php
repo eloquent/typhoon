@@ -15,6 +15,7 @@ use ArrayIterator;
 use Eloquent\Liberator\Liberator;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use FilesystemIterator;
+use Icecave\Pasta\AST\Type\AccessModifier;
 use Phake;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -139,8 +140,7 @@ class ClassMapperTest extends MultiGenerationTestCase
     public function classesBySourceData()
     {
         return array(
-            // #0: Source with no classes
-            array(
+            'Source with no classes' => array(
                 array(
                 ),
                 <<<'EOD'
@@ -149,8 +149,7 @@ EOD
                 ,
             ),
 
-            // #1: Source with a single class
-            array(
+            'Source with a single class' => array(
                 array(
                     new ClassDefinition('Foo'),
                 ),
@@ -161,8 +160,7 @@ EOD
                 ,
             ),
 
-            // #2: Source with a single, namespaced class
-            array(
+            'Source with a single, namespaced class' => array(
                 array(
                     new ClassDefinition('Baz', 'Foo\Bar'),
                 ),
@@ -174,8 +172,7 @@ EOD
                 ,
             ),
 
-            // #3: Source with a multiple, namespaced classes, and extends/implements keywords
-            array(
+            'Source with a multiple, namespaced classes, and extends/implements keywords' => array(
                 array(
                     new ClassDefinition('Baz', 'Foo\Bar'),
                     new ClassDefinition('Pip', 'Foo\Bar'),
@@ -189,8 +186,7 @@ EOD
                 ,
             ),
 
-            // #4: Source with multiple namespaces
-            array(
+            'Source with multiple namespaces' => array(
                 array(
                     new ClassDefinition('Baz', 'Foo\Bar'),
                     new ClassDefinition('Qux', 'Foo\Bar'),
@@ -209,8 +205,7 @@ EOD
                 ,
             ),
 
-            // #5: Source with use statements
-            array(
+            'Source with use statements' => array(
                 array(
                     new ClassDefinition('Pop', 'Foo\Bar', array(
                         'Baz\Qux' => null,
@@ -232,8 +227,7 @@ EOD
                 ,
             ),
 
-            // #6: Multiple namespaces with use statements
-            array(
+            'Multiple namespaces with use statements' => array(
                 array(
                     new ClassDefinition('Baz', 'Foo', array(
                         'Bar' => null,
@@ -254,8 +248,7 @@ EOD
                 ,
             ),
 
-            // #7: Ignore keywords outside of relevant context
-            array(
+            'Ignore keywords outside of relevant context' => array(
                 array(
                     new ClassDefinition('Foo'),
                     new ClassDefinition('Splat'),
@@ -276,8 +269,7 @@ EOD
                 ,
             ),
 
-            // #8: Alternate namespace syntax
-            array(
+            'Alternate namespace syntax' => array(
                 array(
                     new ClassDefinition('Baz', 'Foo\Bar'),
                     new ClassDefinition('Qux', 'Foo\Bar'),
@@ -295,6 +287,78 @@ namespace Doom\Splat
 {
     class Pip {}
     class Pop {}
+}
+EOD
+                ,
+            ),
+
+            'Source with properties' => array(
+                array(
+                    new ClassDefinition(
+                        'Foo',
+                        null,
+                        array(),
+                        array(),
+                        array(
+                            new PropertyDefinition(
+                                'bar',
+                                false,
+                                AccessModifier::PUBLIC_(),
+                                3
+                            ),
+                            new PropertyDefinition(
+                                'baz',
+                                true,
+                                AccessModifier::PROTECTED_(),
+                                4
+                            ),
+                            new PropertyDefinition(
+                                'qux',
+                                false,
+                                AccessModifier::PRIVATE_(),
+                                5
+                            ),
+                        )
+                    ),
+                    new ClassDefinition(
+                        'Bar',
+                        null,
+                        array(),
+                        array(),
+                        array(
+                            new PropertyDefinition(
+                                'doom',
+                                false,
+                                AccessModifier::PUBLIC_(),
+                                8
+                            ),
+                            new PropertyDefinition(
+                                'splat',
+                                true,
+                                AccessModifier::PROTECTED_(),
+                                10
+                            ),
+                            new PropertyDefinition(
+                                'ping',
+                                false,
+                                AccessModifier::PRIVATE_(),
+                                11
+                            ),
+                        )
+                    ),
+                ),
+                <<<'EOD'
+<?php
+class Foo {
+    public $bar;
+    protected static $baz;
+    private $qux;
+}
+class Bar {
+    public $doom;
+    static protected $splat
+    ;
+    private $ping;
 }
 EOD
                 ,

@@ -14,6 +14,7 @@ namespace Eloquent\Typhoon\ClassMapper;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use FilesystemIterator;
 use Icecave\Isolator\Isolator;
+use Icecave\Pasta\AST\Type\AccessModifier;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
@@ -90,7 +91,7 @@ class ClassMapper
         $classDefinitions = array();
         $namespaceName = null;
         $usedClasses = array();
-        $tokens = $this->sourceTokens($source);
+        $tokens = $this->isolator->token_get_all($source);
 
         while ($token = next($tokens)) {
             if (is_array($token)) {
@@ -100,14 +101,13 @@ class ClassMapper
                         $usedClasses = array();
                         break;
                     case T_USE:
-                        if ($usedClass = $this->parseUsedClass($tokens)) {
-                            list($usedClassName, $usedClassAlias) = $usedClass;
-                            $usedClasses[$usedClassName] = $usedClassAlias;
-                        }
+                        $usedClass = $this->parseUsedClass($tokens);
+                        list($usedClassName, $usedClassAlias) = $usedClass;
+                        $usedClasses[$usedClassName] = $usedClassAlias;
                         break;
                     case T_CLASS:
-                        $classDefinitions[] = new ClassDefinition(
-                            $this->parseClassName($tokens),
+                        $classDefinitions[] = $this->parseClassDefinition(
+                            $tokens,
                             $namespaceName,
                             $usedClasses
                         );
@@ -163,6 +163,7 @@ class ClassMapper
         } while (
             T_STRING === $token[0]
             || T_NS_SEPARATOR === $token[0]
+            || T_WHITESPACE === $token[0]
         );
 
         return $namespaceName;
@@ -171,7 +172,7 @@ class ClassMapper
     /**
      * @param array<string|array> &$tokens
      *
-     * @return tuple<string,string|null>|null
+     * @return tuple<string,string|null>
      */
     protected function parseUsedClass(array &$tokens)
     {
@@ -182,19 +183,19 @@ class ClassMapper
         while (
             is_array($token) && (
                 T_STRING === $token[0] ||
-                T_NS_SEPARATOR === $token[0]
+                T_NS_SEPARATOR === $token[0] ||
+                T_WHITESPACE === $token[0]
             )
         ) {
-            if (null === $usedClass) {
-                $usedClass = array('', null);
+            if (T_WHITESPACE !== $token[0]) {
+                if (null === $usedClass) {
+                    $usedClass = array('', null);
+                }
+
+                $usedClass[0] .= $token[1];
             }
 
-            $usedClass[0] .= $token[1];
             $token = next($tokens);
-        }
-
-        if (null === $usedClass) {
-            return null;
         }
 
         if (
@@ -205,6 +206,13 @@ class ClassMapper
         }
 
         $token = next($tokens);
+        while (
+            is_array($token) &&
+            T_WHITESPACE === $token[0]
+        ) {
+            $token = next($tokens);
+        }
+
         if (
             is_array($token) &&
             T_STRING === $token[0]
@@ -216,6 +224,143 @@ class ClassMapper
     }
 
     /**
+     * @param array<string|array>       &$tokens
+     * @param string|null               $namespaceName
+     * @param array<string,string|null> $usedClasses
+     *
+     * @return ClassDefinition
+     */
+    protected function parseClassDefinition(array &$tokens, $namespaceName, array $usedClasses)
+    {
+        $this->typeCheck->parseClassDefinition(func_get_args());
+
+        $className = $this->parseClassName($tokens);
+        $methods = array();
+        $properties = array();
+        $inClassBody = false;
+        $accessModifier = null;
+        $isStatic = null;
+        while ($token = next($tokens)) {
+            $token = $this->normalizeToken($token);
+
+            if ($inClassBody) {
+                if ('}' === $token[0]) {
+                    break;
+                }
+
+                if (
+                    T_PUBLIC === $token[0] ||
+                    T_PROTECTED === $token[0] ||
+                    T_PRIVATE === $token[0] ||
+                    T_STATIC === $token[0]
+                ) {
+                    $token = $this->parseClassMemberModifiers(
+                        $token,
+                        $tokens,
+                        $accessModifier,
+                        $isStatic
+                    );
+
+                    if (T_VARIABLE === $token[0]) {
+                        $properties[] = $this->parseProperty(
+                            $token,
+                            $tokens,
+                            $accessModifier,
+                            $isStatic
+                        );
+                        $accessModifier = null;
+                        $isStatic = null;
+                    }
+                }
+            } elseif ('{' === $token[0]) {
+                $inClassBody = true;
+            }
+        }
+
+        return new ClassDefinition(
+            $className,
+            $namespaceName,
+            $usedClasses,
+            $methods,
+            $properties
+        );
+    }
+
+    /**
+     * @param tuple<integer,string,integer> $token
+     * @param array<string|array>           &$tokens
+     * @param null                          &$accessModifier
+     * @param null                          &$isStatic
+     *
+     * @return tuple<integer|string,string,integer|null>
+     */
+    protected function parseClassMemberModifiers(
+        array $token,
+        array &$tokens,
+        &$accessModifier,
+        &$isStatic
+    ) {
+        $this->typeCheck->parseClassMemberModifiers(func_get_args());
+
+        $isStatic = false;
+
+        while ($token) {
+            if (
+                T_STRING === $token[0] ||
+                T_VARIABLE === $token[0]
+            ) {
+                break;
+            } elseif (
+                T_PUBLIC === $token[0] ||
+                T_PROTECTED === $token[0] ||
+                T_PRIVATE === $token[0]
+            ) {
+                $accessModifier = AccessModifier::instanceByValue(
+                    strtolower($token[1])
+                );
+            } elseif (T_STATIC === $token[0]) {
+                $isStatic = true;
+            }
+
+            $token = next($tokens);
+        }
+
+        return $token;
+    }
+
+    /**
+     * @param tuple<integer,string,integer> $token
+     * @param array<string|array>           &$tokens
+     * @param AccessModifier $accessModifier
+     * @param boolean        $isStatic
+     *
+     * @return PropertyDefinition
+     */
+    protected function parseProperty(
+        array $token,
+        array &$tokens,
+        AccessModifier $accessModifier,
+        $isStatic
+    ) {
+        $this->typeCheck->parseProperty(func_get_args());
+
+        $propertyName = substr($token[1], 1);
+
+        while ($token = next($tokens)) {
+            if (';' === $token) {
+                break;
+            }
+        }
+
+        return new PropertyDefinition(
+            $propertyName,
+            $isStatic,
+            $accessModifier,
+            $this->calculateLineNumber($tokens, key($tokens))
+        );
+    }
+
+    /**
      * @param array<string|array> &$tokens
      *
      * @return string
@@ -224,30 +369,36 @@ class ClassMapper
     {
         $this->typeCheck->parseClassName(func_get_args());
 
-        $token = next($tokens);
+        do {
+            $token = $this->normalizeToken(next($tokens));
+        } while (T_WHITESPACE === $token[0]);
 
         return $token[1];
     }
 
     /**
-     * @param string $source
+     * @param array<string|array> $tokens
+     * @param integer             $index
      *
-     * @return array<string|array>
+     * @return integer
      */
-    protected function sourceTokens($source)
+    protected function calculateLineNumber(array $tokens, $index)
     {
-        $this->typeCheck->sourceTokens(func_get_args());
+        $this->typeCheck->calculateLineNumber(func_get_args());
 
-        $tokens = $this->isolator->token_get_all($source);
-        $tokens = array_filter($tokens, function($token) {
-            if (!is_array($token)) {
-                return true;
+        $lineNumber = 0;
+        for ($i = 0; $i <= $index; $i ++) {
+            $token = $this->normalizeToken($tokens[$i]);
+
+            if (null !== $token[2]) {
+                $lineNumber = $token[2];
             }
+            if (preg_match_all('/\r\n|\r|\n/', $token[1], $matches)) {
+                $lineNumber += count($matches);
+            }
+        }
 
-            return T_WHITESPACE !== $token[0];
-        });
-
-        return $tokens;
+        return $lineNumber;
     }
 
     /**
@@ -266,6 +417,22 @@ class ClassMapper
                 FilesystemIterator::SKIP_DOTS
             )
         );
+    }
+
+    /**
+     * @param string|tuple<integer,string,integer> $token
+     *
+     * @return tuple<integer|string,string,integer|null>
+     */
+    protected function normalizeToken($token)
+    {
+        $this->typeCheck->normalizeToken(func_get_args());
+
+        if (is_array($token)) {
+            return $token;
+        }
+
+        return array($token, $token, null);
     }
 
     private $isolator;

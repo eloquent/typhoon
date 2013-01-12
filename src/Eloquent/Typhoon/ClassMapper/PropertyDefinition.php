@@ -77,6 +77,7 @@ class PropertyDefinition
 
     private $propertyName;
     private $isStatic;
+    private $accessModifier;
     private $lineNumber;
     private $typeCheck;
 }

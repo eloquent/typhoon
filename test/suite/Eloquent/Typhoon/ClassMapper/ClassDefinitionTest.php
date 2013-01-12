@@ -13,34 +13,75 @@ namespace Eloquent\Typhoon\ClassMapper;
 
 use Eloquent\Cosmos\ClassNameResolver;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
+use Icecave\Pasta\AST\Type\AccessModifier;
 use Phake;
 
 class ClassDefinitionTest extends MultiGenerationTestCase
 {
-    public function testDefinition()
+    protected function setUp()
     {
-        $usedClasses = array(
+        parent::setUp();
+
+        $this->_usedClasses = array(
             'foo' => 'bar',
             'baz' => null,
         );
-        $definition = new ClassDefinition(
+        $this->_methods = array(
+            new MethodDefinition(
+                'splat',
+                false,
+                111,
+                'ping'
+            ),
+            new MethodDefinition(
+                'pong',
+                true,
+                222,
+                'pang'
+            ),
+        );
+        $this->_properties = array(
+            new PropertyDefinition(
+                'peng',
+                false,
+                AccessModifier::PUBLIC_(),
+                333
+            ),
+            new PropertyDefinition(
+                'pip',
+                true,
+                AccessModifier::PROTECTED_(),
+                444
+            ),
+        );
+        $this->_definition = new ClassDefinition(
             'qux',
             'doom',
-            $usedClasses
+            $this->_usedClasses,
+            $this->_methods,
+            $this->_properties
         );
-
-        $this->assertSame('qux', $definition->className());
-        $this->assertSame('doom', $definition->namespaceName());
-        $this->assertSame($usedClasses, $definition->usedClasses());
     }
 
-    public function testDefinitionConstructorDefaults()
+    public function testConstructor()
     {
-        $definition = new ClassDefinition('foo');
+        $this->assertSame('qux', $this->_definition->className());
+        $this->assertSame('doom', $this->_definition->namespaceName());
+        $this->assertSame($this->_usedClasses, $this->_definition->usedClasses());
+        $this->assertSame($this->_methods, $this->_definition->methods());
+        $this->assertSame($this->_properties, $this->_definition->properties());
+    }
 
-        $this->assertSame('foo', $definition->className());
-        $this->assertNull($definition->namespaceName());
-        $this->assertSame(array(), $definition->usedClasses());
+    public function testConstructorDefaults()
+    {
+        $this->_definition = new ClassDefinition(
+            'foo'
+        );
+
+        $this->assertNull($this->_definition->namespaceName());
+        $this->assertSame(array(), $this->_definition->usedClasses());
+        $this->assertSame(array(), $this->_definition->methods());
+        $this->assertSame(array(), $this->_definition->properties());
     }
 
     public function testCanonicalClassName()
