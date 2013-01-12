@@ -13,26 +13,35 @@ namespace Eloquent\Typhoon\ClassMapper;
 
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Icecave\Pasta\AST\Type\AccessModifier;
+use Phake;
 
-class PropertyDefinitionTest extends MultiGenerationTestCase
+class ClassMemberDefinitionTest extends MultiGenerationTestCase
 {
     protected function setUp()
     {
         parent::setUp();
 
-        $this->_definition = new PropertyDefinition(
+        $this->_definition = Phake::partialMock(
+            __NAMESPACE__.'\ClassMemberDefinition',
             'foo',
             true,
             AccessModifier::PUBLIC_(),
-            111
+            111,
+            "bar\r\nbaz\rqux\ndoom"
         );
     }
 
     public function testConstruct()
     {
-        $this->assertSame('foo', $this->_definition->propertyName());
+        $this->assertSame('foo', $this->_definition->name());
         $this->assertTrue($this->_definition->isStatic());
         $this->assertSame(AccessModifier::PUBLIC_(), $this->_definition->accessModifier());
         $this->assertSame(111, $this->_definition->lineNumber());
+        $this->assertSame("bar\r\nbaz\rqux\ndoom", $this->_definition->source());
+    }
+
+    public function testEndLineNumber()
+    {
+        $this->assertSame(114, $this->_definition->endLineNumber());
     }
 }

@@ -304,19 +304,22 @@ EOD
                                 'bar',
                                 false,
                                 AccessModifier::PUBLIC_(),
-                                3
+                                4,
+                                'public $bar;'
                             ),
                             new PropertyDefinition(
                                 'baz',
                                 true,
                                 AccessModifier::PROTECTED_(),
-                                4
+                                5,
+                                'protected static $baz;'
                             ),
                             new PropertyDefinition(
                                 'qux',
                                 false,
                                 AccessModifier::PRIVATE_(),
-                                5
+                                6,
+                                'private $qux;'
                             ),
                         )
                     ),
@@ -330,35 +333,43 @@ EOD
                                 'doom',
                                 false,
                                 AccessModifier::PUBLIC_(),
-                                8
+                                10,
+                                "public \$doom = <<<EOT\npeng pung\npip pop\nEOT;"
                             ),
                             new PropertyDefinition(
                                 'splat',
                                 true,
                                 AccessModifier::PROTECTED_(),
-                                10
+                                14,
+                                "static protected \$splat\n    ;"
                             ),
                             new PropertyDefinition(
                                 'ping',
                                 false,
                                 AccessModifier::PRIVATE_(),
-                                11
+                                16,
+                                "private \$ping = array('pang', 'pong');"
                             ),
                         )
                     ),
                 ),
                 <<<'EOD'
 <?php
-class Foo {
+class Foo
+{
     public $bar;
     protected static $baz;
     private $qux;
 }
-class Bar {
-    public $doom;
+class Bar
+{
+    public $doom = <<<EOT
+peng pung
+pip pop
+EOT;
     static protected $splat
     ;
-    private $ping;
+    private $ping = array('pang', 'pong');
 }
 EOD
                 ,

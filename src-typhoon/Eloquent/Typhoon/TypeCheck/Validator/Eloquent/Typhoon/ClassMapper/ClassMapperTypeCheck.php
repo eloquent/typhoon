@@ -301,7 +301,7 @@ class ClassMapperTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
     public function parseClassMemberModifiers(array $arguments)
     {
         ($argumentCount = \count($arguments));
-        if (($argumentCount < 4))
+        if (($argumentCount < 5))
         {
             if (($argumentCount < 1))
             {
@@ -315,11 +315,15 @@ class ClassMapperTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
             {
                 throw (new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('accessModifier', 2, 'null'));
             }
-            throw (new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('isStatic', 3, 'null'));
+            if (($argumentCount < 4))
+            {
+                throw (new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('isStatic', 3, 'null'));
+            }
+            throw (new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('source', 4, 'null'));
         }
-        elseif (($argumentCount > 4))
+        elseif (($argumentCount > 5))
         {
-            throw (new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(4, $arguments[4]));
+            throw (new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(5, $arguments[5]));
         }
         ($value = $arguments[0]);
         if ((!(\is_array($value) && (\array_keys($value) === \range(0, 2)) && \is_int($value[0]) && \is_string($value[1]) && \is_int($value[2]))))
@@ -377,11 +381,21 @@ class ClassMapperTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
                 'null'
             ));
         }
+        ($value = $arguments[4]);
+        if ((!($value === null)))
+        {
+            throw (new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
+                'source',
+                4,
+                $arguments[4],
+                'null'
+            ));
+        }
     }
     public function parseProperty(array $arguments)
     {
         ($argumentCount = \count($arguments));
-        if (($argumentCount < 4))
+        if (($argumentCount < 6))
         {
             if (($argumentCount < 1))
             {
@@ -395,11 +409,19 @@ class ClassMapperTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
             {
                 throw (new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('accessModifier', 2, 'Icecave\\Pasta\\AST\\Type\\AccessModifier'));
             }
-            throw (new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('isStatic', 3, 'boolean'));
+            if (($argumentCount < 4))
+            {
+                throw (new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('isStatic', 3, 'boolean'));
+            }
+            if (($argumentCount < 5))
+            {
+                throw (new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('source', 4, 'string'));
+            }
+            throw (new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('lineNumber', 5, 'integer'));
         }
-        elseif (($argumentCount > 4))
+        elseif (($argumentCount > 6))
         {
-            throw (new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(4, $arguments[4]));
+            throw (new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(6, $arguments[6]));
         }
         ($value = $arguments[0]);
         if ((!(\is_array($value) && (\array_keys($value) === \range(0, 2)) && \is_int($value[0]) && \is_string($value[1]) && \is_int($value[2]))))
@@ -447,6 +469,26 @@ class ClassMapperTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
                 'boolean'
             ));
         }
+        ($value = $arguments[4]);
+        if ((!\is_string($value)))
+        {
+            throw (new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
+                'source',
+                4,
+                $arguments[4],
+                'string'
+            ));
+        }
+        ($value = $arguments[5]);
+        if ((!\is_int($value)))
+        {
+            throw (new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
+                'lineNumber',
+                5,
+                $arguments[5],
+                'integer'
+            ));
+        }
     }
     public function parseClassName(array $arguments)
     {
@@ -483,58 +525,6 @@ class ClassMapperTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
                 0,
                 $arguments[0],
                 'array<string|array>'
-            ));
-        }
-    }
-    public function calculateLineNumber(array $arguments)
-    {
-        ($argumentCount = \count($arguments));
-        if (($argumentCount < 2))
-        {
-            if (($argumentCount < 1))
-            {
-                throw (new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('tokens', 0, 'array<string|array>'));
-            }
-            throw (new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('index', 1, 'integer'));
-        }
-        elseif (($argumentCount > 2))
-        {
-            throw (new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(2, $arguments[2]));
-        }
-        ($value = $arguments[0]);
-        ($check =         function ($value)
-                {
-                    if ((!\is_array($value)))
-                    {
-                        return false;
-                    }
-                    foreach ($value as $key => $subValue)
-                    {
-                        if ((!(\is_string($subValue) || \is_array($subValue))))
-                        {
-                            return false;
-                        }
-                    }
-                    return true;
-                }
-        );
-        if ((!$check($arguments[0])))
-        {
-            throw (new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
-                'tokens',
-                0,
-                $arguments[0],
-                'array<string|array>'
-            ));
-        }
-        ($value = $arguments[1]);
-        if ((!\is_int($value)))
-        {
-            throw (new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
-                'index',
-                1,
-                $arguments[1],
-                'integer'
             ));
         }
     }

@@ -30,12 +30,14 @@ class ClassDefinitionTest extends MultiGenerationTestCase
             new MethodDefinition(
                 'splat',
                 false,
+                AccessModifier::PUBLIC_(),
                 111,
                 'ping'
             ),
             new MethodDefinition(
                 'pong',
                 true,
+                AccessModifier::PRIVATE_(),
                 222,
                 'pang'
             ),
@@ -45,13 +47,15 @@ class ClassDefinitionTest extends MultiGenerationTestCase
                 'peng',
                 false,
                 AccessModifier::PUBLIC_(),
-                333
+                333,
+                'pep'
             ),
             new PropertyDefinition(
                 'pip',
                 true,
                 AccessModifier::PROTECTED_(),
-                444
+                444,
+                'pup'
             ),
         );
         $this->_definition = new ClassDefinition(

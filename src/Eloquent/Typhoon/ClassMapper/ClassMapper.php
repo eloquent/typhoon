@@ -240,6 +240,7 @@ class ClassMapper
         $inClassBody = false;
         $accessModifier = null;
         $isStatic = null;
+        $source = null;
         while ($token = next($tokens)) {
             $token = $this->normalizeToken($token);
 
@@ -254,11 +255,13 @@ class ClassMapper
                     T_PRIVATE === $token[0] ||
                     T_STATIC === $token[0]
                 ) {
+                    $lineNumber = $token[2];
                     $token = $this->parseClassMemberModifiers(
                         $token,
                         $tokens,
                         $accessModifier,
-                        $isStatic
+                        $isStatic,
+                        $source
                     );
 
                     if (T_VARIABLE === $token[0]) {
@@ -266,11 +269,15 @@ class ClassMapper
                             $token,
                             $tokens,
                             $accessModifier,
-                            $isStatic
+                            $isStatic,
+                            $source,
+                            $lineNumber
                         );
-                        $accessModifier = null;
-                        $isStatic = null;
                     }
+
+                    $accessModifier = null;
+                    $isStatic = null;
+                    $source = null;
                 }
             } elseif ('{' === $token[0]) {
                 $inClassBody = true;
@@ -291,6 +298,7 @@ class ClassMapper
      * @param array<string|array>           &$tokens
      * @param null                          &$accessModifier
      * @param null                          &$isStatic
+     * @param null                          &$source
      *
      * @return tuple<integer|string,string,integer|null>
      */
@@ -298,13 +306,17 @@ class ClassMapper
         array $token,
         array &$tokens,
         &$accessModifier,
-        &$isStatic
+        &$isStatic,
+        &$source
     ) {
         $this->typeCheck->parseClassMemberModifiers(func_get_args());
 
         $isStatic = false;
+        $source = '';
 
         while ($token) {
+            $token = $this->normalizeToken($token);
+            $source .= $token[1];
             if (
                 T_STRING === $token[0] ||
                 T_VARIABLE === $token[0]
@@ -333,6 +345,8 @@ class ClassMapper
      * @param array<string|array>           &$tokens
      * @param AccessModifier $accessModifier
      * @param boolean        $isStatic
+     * @param string         $source
+     * @param integer        $lineNumber
      *
      * @return PropertyDefinition
      */
@@ -340,14 +354,18 @@ class ClassMapper
         array $token,
         array &$tokens,
         AccessModifier $accessModifier,
-        $isStatic
+        $isStatic,
+        $source,
+        $lineNumber
     ) {
         $this->typeCheck->parseProperty(func_get_args());
 
         $propertyName = substr($token[1], 1);
 
         while ($token = next($tokens)) {
-            if (';' === $token) {
+            $token = $this->normalizeToken($token);
+            $source .= $token[1];
+            if (';' === $token[0]) {
                 break;
             }
         }
@@ -356,7 +374,8 @@ class ClassMapper
             $propertyName,
             $isStatic,
             $accessModifier,
-            $this->calculateLineNumber($tokens, key($tokens))
+            $lineNumber,
+            $source
         );
     }
 
@@ -374,31 +393,6 @@ class ClassMapper
         } while (T_WHITESPACE === $token[0]);
 
         return $token[1];
-    }
-
-    /**
-     * @param array<string|array> $tokens
-     * @param integer             $index
-     *
-     * @return integer
-     */
-    protected function calculateLineNumber(array $tokens, $index)
-    {
-        $this->typeCheck->calculateLineNumber(func_get_args());
-
-        $lineNumber = 0;
-        for ($i = 0; $i <= $index; $i ++) {
-            $token = $this->normalizeToken($tokens[$i]);
-
-            if (null !== $token[2]) {
-                $lineNumber = $token[2];
-            }
-            if (preg_match_all('/\r\n|\r|\n/', $token[1], $matches)) {
-                $lineNumber += count($matches);
-            }
-        }
-
-        return $lineNumber;
     }
 
     /**
