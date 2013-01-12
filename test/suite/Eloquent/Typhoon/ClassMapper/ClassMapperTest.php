@@ -250,7 +250,20 @@ EOD
 
             'Ignore keywords outside of relevant context' => array(
                 array(
-                    new ClassDefinition('Foo'),
+                    new ClassDefinition(
+                        'Foo',
+                        null,
+                        array(),
+                        array(
+                            new MethodDefinition(
+                                'bar',
+                                false,
+                                AccessModifier::PUBLIC_(),
+                                4,
+                                "public function bar()\n    {\n        \$baz = null;\n        \$qux = function() use (\$baz) {};\n        foreach (array() as \$doom) {}\n    }"
+                            ),
+                        )
+                    ),
                     new ClassDefinition('Splat'),
                 ),
                 <<<'EOD'
@@ -370,6 +383,82 @@ EOT;
     static protected $splat
     ;
     private $ping = array('pang', 'pong');
+}
+EOD
+                ,
+            ),
+
+            'Source with methods' => array(
+                array(
+                    new ClassDefinition(
+                        'Foo',
+                        null,
+                        array(),
+                        array(
+                            new MethodDefinition(
+                                '__construct',
+                                false,
+                                AccessModifier::PUBLIC_(),
+                                4,
+                                "public function __construct()\n    {\n        // baz\n    }"
+                            ),
+                            new MethodDefinition(
+                                'qux',
+                                true,
+                                AccessModifier::PROTECTED_(),
+                                9,
+                                "protected static function qux()\n    {\n        // doom\n    }"
+                            ),
+                        )
+                    ),
+                    new ClassDefinition(
+                        'Bar',
+                        null,
+                        array(),
+                        array(
+                            new MethodDefinition(
+                                'splat',
+                                false,
+                                AccessModifier::PRIVATE_(),
+                                16,
+                                "private function splat(array \$ping = array())\n    {\n        \$pong = function() use(\$ping) {\n        };\n    }"
+                            ),
+                            new MethodDefinition(
+                                'pang',
+                                true,
+                                AccessModifier::PUBLIC_(),
+                                22,
+                                "static public function pang()\n    {\n        // pung\n    }"
+                            ),
+                        )
+                    ),
+                ),
+                <<<'EOD'
+<?php
+class Foo
+{
+    public function __construct()
+    {
+        // baz
+    }
+
+    protected static function qux()
+    {
+        // doom
+    }
+}
+class Bar
+{
+    private function splat(array $ping = array())
+    {
+        $pong = function() use($ping) {
+        };
+    }
+
+    static public function pang()
+    {
+        // pung
+    }
 }
 EOD
                 ,

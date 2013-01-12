@@ -264,7 +264,16 @@ class ClassMapper
                         $source
                     );
 
-                    if (T_VARIABLE === $token[0]) {
+                    if (T_FUNCTION === $token[0]) {
+                        $methods[] = $this->parseMethod(
+                            $token,
+                            $tokens,
+                            $accessModifier,
+                            $isStatic,
+                            $source,
+                            $lineNumber
+                        );
+                    } elseif (T_VARIABLE === $token[0]) {
                         $properties[] = $this->parseProperty(
                             $token,
                             $tokens,
@@ -318,7 +327,7 @@ class ClassMapper
             $token = $this->normalizeToken($token);
             $source .= $token[1];
             if (
-                T_STRING === $token[0] ||
+                T_FUNCTION === $token[0] ||
                 T_VARIABLE === $token[0]
             ) {
                 break;
@@ -360,7 +369,7 @@ class ClassMapper
     ) {
         $this->typeCheck->parseProperty(func_get_args());
 
-        $propertyName = substr($token[1], 1);
+        $name = substr($token[1], 1);
 
         while ($token = next($tokens)) {
             $token = $this->normalizeToken($token);
@@ -371,7 +380,59 @@ class ClassMapper
         }
 
         return new PropertyDefinition(
-            $propertyName,
+            $name,
+            $isStatic,
+            $accessModifier,
+            $lineNumber,
+            $source
+        );
+    }
+
+    /**
+     * @param tuple<integer,string,integer> $token
+     * @param array<string|array>           &$tokens
+     * @param AccessModifier $accessModifier
+     * @param boolean        $isStatic
+     * @param string         $source
+     * @param integer        $lineNumber
+     *
+     * @return MethodDefinition
+     */
+    protected function parseMethod(
+        array $token,
+        array &$tokens,
+        AccessModifier $accessModifier,
+        $isStatic,
+        $source,
+        $lineNumber
+    ) {
+        $this->typeCheck->parseMethod(func_get_args());
+
+        do {
+            $token = $this->normalizeToken(next($tokens));
+            $source .= $token[1];
+        } while (T_WHITESPACE === $token[0]);
+
+        $name = $token[1];
+
+        $bracketDepth = 0;
+        while ($token = next($tokens)) {
+            $token = $this->normalizeToken($token);
+            $source .= $token[1];
+
+            if ('{' === $token[0]) {
+                $bracketDepth ++;
+            } elseif ('}' === $token[0]) {
+                $bracketDepth --;
+
+                if ($bracketDepth < 1) {
+                    break;
+                }
+            }
+        }
+
+        return new MethodDefinition(
+            $name,
             $isStatic,
             $accessModifier,
             $lineNumber,
