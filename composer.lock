@@ -410,16 +410,16 @@
         },
         {
             "name": "icecave/rasta",
-            "version": "0.1.1",
+            "version": "0.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/IcecaveStudios/rasta.git",
-                "reference": "0.1.1"
+                "reference": "0.1.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/IcecaveStudios/rasta/archive/0.1.1.zip",
-                "reference": "0.1.1",
+                "url": "https://github.com/IcecaveStudios/rasta/archive/0.1.2.zip",
+                "reference": "0.1.2",
                 "shasum": ""
             },
             "require": {
@@ -430,7 +430,7 @@
             "require-dev": {
                 "icecave/testing": "1.*"
             },
-            "time": "2013-01-14 11:21:03",
+            "time": "2013-01-14 12:27:30",
             "type": "library",
             "autoload": {
                 "psr-0": {

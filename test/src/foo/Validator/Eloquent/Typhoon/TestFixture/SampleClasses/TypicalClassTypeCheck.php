@@ -128,15 +128,15 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
         }
         $value = $arguments[2];
         $check = function ($value) {
-                if (!\is_array($value)) {
+            if (!\is_array($value)) {
+                return false;
+            }
+            foreach ($value as $key => $subValue) {
+                if (!$subValue instanceof \stdClass) {
                     return false;
                 }
-                foreach ($value as $key => $subValue) {
-                    if (!$subValue instanceof \stdClass) {
-                        return false;
-                    }
-                }
-                return true;
+            }
+            return true;
         };
         if (!$check($arguments[2])) {
             throw new \foo\Exception\UnexpectedArgumentValueException(
@@ -214,11 +214,11 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
         }
         $value = $arguments[1];
         $check = function ($value) {
-                if (!(\is_resource($value) && \get_resource_type($value) === 'stream')) {
-                    return false;
-                }
-                $streamMetaData = stream_get_meta_data($value);
-                return \strpbrk($streamMetaData['mode'], 'r+') !== false;
+            if (!(\is_resource($value) && \get_resource_type($value) === 'stream')) {
+                return false;
+            }
+            $streamMetaData = stream_get_meta_data($value);
+            return \strpbrk($streamMetaData['mode'], 'r+') !== false;
         };
         if (!$check($arguments[1])) {
             throw new \foo\Exception\UnexpectedArgumentValueException(
@@ -230,11 +230,11 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
         }
         $value = $arguments[2];
         $check = function ($value) {
-                if (!(\is_resource($value) && \get_resource_type($value) === 'stream')) {
-                    return false;
-                }
-                $streamMetaData = stream_get_meta_data($value);
-                return !(\strpbrk($streamMetaData['mode'], 'r+') !== false);
+            if (!(\is_resource($value) && \get_resource_type($value) === 'stream')) {
+                return false;
+            }
+            $streamMetaData = stream_get_meta_data($value);
+            return !(\strpbrk($streamMetaData['mode'], 'r+') !== false);
         };
         if (!$check($arguments[2])) {
             throw new \foo\Exception\UnexpectedArgumentValueException(
@@ -246,11 +246,11 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
         }
         $value = $arguments[3];
         $check = function ($value) {
-                if (!(\is_resource($value) && \get_resource_type($value) === 'stream')) {
-                    return false;
-                }
-                $streamMetaData = stream_get_meta_data($value);
-                return \strpbrk($streamMetaData['mode'], 'waxc+') !== false;
+            if (!(\is_resource($value) && \get_resource_type($value) === 'stream')) {
+                return false;
+            }
+            $streamMetaData = stream_get_meta_data($value);
+            return \strpbrk($streamMetaData['mode'], 'waxc+') !== false;
         };
         if (!$check($arguments[3])) {
             throw new \foo\Exception\UnexpectedArgumentValueException(
@@ -262,11 +262,11 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
         }
         $value = $arguments[4];
         $check = function ($value) {
-                if (!(\is_resource($value) && \get_resource_type($value) === 'stream')) {
-                    return false;
-                }
-                $streamMetaData = stream_get_meta_data($value);
-                return !(\strpbrk($streamMetaData['mode'], 'waxc+') !== false);
+            if (!(\is_resource($value) && \get_resource_type($value) === 'stream')) {
+                return false;
+            }
+            $streamMetaData = stream_get_meta_data($value);
+            return !(\strpbrk($streamMetaData['mode'], 'waxc+') !== false);
         };
         if (!$check($arguments[4])) {
             throw new \foo\Exception\UnexpectedArgumentValueException(
@@ -278,14 +278,14 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
         }
         $value = $arguments[5];
         $check = function ($value) {
-                if (!(\is_resource($value) && \get_resource_type($value) === 'stream')) {
-                    return false;
-                }
-                $streamMetaData = stream_get_meta_data($value);
-                if (!(\strpbrk($streamMetaData['mode'], 'r+') !== false)) {
-                    return false;
-                }
-                return \strpbrk($streamMetaData['mode'], 'waxc+') !== false;
+            if (!(\is_resource($value) && \get_resource_type($value) === 'stream')) {
+                return false;
+            }
+            $streamMetaData = stream_get_meta_data($value);
+            if (!(\strpbrk($streamMetaData['mode'], 'r+') !== false)) {
+                return false;
+            }
+            return \strpbrk($streamMetaData['mode'], 'waxc+') !== false;
         };
         if (!$check($arguments[5])) {
             throw new \foo\Exception\UnexpectedArgumentValueException(
@@ -297,14 +297,14 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
         }
         $value = $arguments[6];
         $check = function ($value) {
-                if (!(\is_resource($value) && \get_resource_type($value) === 'stream')) {
-                    return false;
-                }
-                $streamMetaData = stream_get_meta_data($value);
-                if (\strpbrk($streamMetaData['mode'], 'r+') !== false) {
-                    return false;
-                }
-                return \strpbrk($streamMetaData['mode'], 'waxc+') !== false;
+            if (!(\is_resource($value) && \get_resource_type($value) === 'stream')) {
+                return false;
+            }
+            $streamMetaData = stream_get_meta_data($value);
+            if (\strpbrk($streamMetaData['mode'], 'r+') !== false) {
+                return false;
+            }
+            return \strpbrk($streamMetaData['mode'], 'waxc+') !== false;
         };
         if (!$check($arguments[6])) {
             throw new \foo\Exception\UnexpectedArgumentValueException(
@@ -325,14 +325,14 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
         }
         $value = $arguments[0];
         $check = function ($value) {
-                if (\is_string($value) || \is_int($value) || \is_float($value)) {
-                    return true;
-                }
-                if (!\is_object($value)) {
-                    return false;
-                }
-                $reflector = new \ReflectionObject($value);
-                return $reflector->hasMethod('__toString');
+            if (\is_string($value) || \is_int($value) || \is_float($value)) {
+                return true;
+            }
+            if (!\is_object($value)) {
+                return false;
+            }
+            $reflector = new \ReflectionObject($value);
+            return $reflector->hasMethod('__toString');
         };
         if (!$check($arguments[0])) {
             throw new \foo\Exception\UnexpectedArgumentValueException(
@@ -353,15 +353,15 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
         }
         $value = $arguments[0];
         $check = function ($value) {
-                if (!\is_array($value)) {
+            if (!\is_array($value)) {
+                return false;
+            }
+            foreach ($value as $key => $subValue) {
+                if (!\is_callable($subValue)) {
                     return false;
                 }
-                foreach ($value as $key => $subValue) {
-                    if (!\is_callable($subValue)) {
-                        return false;
-                    }
-                }
-                return true;
+            }
+            return true;
         };
         if (!$check($arguments[0])) {
             throw new \foo\Exception\UnexpectedArgumentValueException(
@@ -400,17 +400,17 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
         }
         $value = $arguments[1];
         $check = function ($value) {
-                if (!\is_object($value)) {
-                    return false;
-                }
-                if (\is_string($value) || \is_int($value) || \is_float($value)) {
-                    return true;
-                }
-                if (!\is_object($value)) {
-                    return false;
-                }
-                $reflector = new \ReflectionObject($value);
-                return $reflector->hasMethod('__toString');
+            if (!\is_object($value)) {
+                return false;
+            }
+            if (\is_string($value) || \is_int($value) || \is_float($value)) {
+                return true;
+            }
+            if (!\is_object($value)) {
+                return false;
+            }
+            $reflector = new \ReflectionObject($value);
+            return $reflector->hasMethod('__toString');
         };
         if (!$check($arguments[1])) {
             throw new \foo\Exception\UnexpectedArgumentValueException(
@@ -422,29 +422,29 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
         }
         $value = $arguments[2];
         $check = function ($value) {
-                $check = function ($value) {
-                        if (\is_string($value) || \is_int($value) || \is_float($value)) {
-                            return true;
-                        }
-                        if (!\is_object($value)) {
-                            return false;
-                        }
-                        $reflector = new \ReflectionObject($value);
-                        return $reflector->hasMethod('__toString');
-                };
-                if (!function ($value) {
-                        if ((\is_string($value) || \is_int($value) || \is_float($value))) {
-                            return true;
-                        }
-                        if (!\is_object($value)) {
-                            return false;
-                        }
-                        ($reflector = new \ReflectionObject($value));
-                        return $reflector->hasMethod('__toString');
-                }) {
+            $check = function ($value) {
+                if (\is_string($value) || \is_int($value) || \is_float($value)) {
+                    return true;
+                }
+                if (!\is_object($value)) {
                     return false;
                 }
-                return \is_object($value);
+                $reflector = new \ReflectionObject($value);
+                return $reflector->hasMethod('__toString');
+            };
+            if (!function ($value) {
+                if ((\is_string($value) || \is_int($value) || \is_float($value))) {
+                    return true;
+                }
+                if (!\is_object($value)) {
+                    return false;
+                }
+                ($reflector = new \ReflectionObject($value));
+                return $reflector->hasMethod('__toString');
+            }) {
+                return false;
+            }
+            return \is_object($value);
         };
         if (!$check($arguments[2])) {
             throw new \foo\Exception\UnexpectedArgumentValueException(
@@ -483,17 +483,17 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
         }
         $value = $arguments[1];
         $check = function ($value) {
-                if (\is_int($value)) {
-                    return true;
-                }
-                if (\is_string($value) || \is_int($value) || \is_float($value)) {
-                    return true;
-                }
-                if (!\is_object($value)) {
-                    return false;
-                }
-                $reflector = new \ReflectionObject($value);
-                return $reflector->hasMethod('__toString');
+            if (\is_int($value)) {
+                return true;
+            }
+            if (\is_string($value) || \is_int($value) || \is_float($value)) {
+                return true;
+            }
+            if (!\is_object($value)) {
+                return false;
+            }
+            $reflector = new \ReflectionObject($value);
+            return $reflector->hasMethod('__toString');
         };
         if (!$check($arguments[1])) {
             throw new \foo\Exception\UnexpectedArgumentValueException(
@@ -505,29 +505,29 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
         }
         $value = $arguments[2];
         $check = function ($value) {
-                $check = function ($value) {
-                        if (\is_string($value) || \is_int($value) || \is_float($value)) {
-                            return true;
-                        }
-                        if (!\is_object($value)) {
-                            return false;
-                        }
-                        $reflector = new \ReflectionObject($value);
-                        return $reflector->hasMethod('__toString');
-                };
-                if (function ($value) {
-                        if (\is_string($value) || \is_int($value) || \is_float($value)) {
-                            return true;
-                        }
-                        if (!\is_object($value)) {
-                            return false;
-                        }
-                        $reflector = new \ReflectionObject($value);
-                        return $reflector->hasMethod('__toString');
-                }) {
+            $check = function ($value) {
+                if (\is_string($value) || \is_int($value) || \is_float($value)) {
                     return true;
                 }
-                return \is_int($value);
+                if (!\is_object($value)) {
+                    return false;
+                }
+                $reflector = new \ReflectionObject($value);
+                return $reflector->hasMethod('__toString');
+            };
+            if (function ($value) {
+                if (\is_string($value) || \is_int($value) || \is_float($value)) {
+                    return true;
+                }
+                if (!\is_object($value)) {
+                    return false;
+                }
+                $reflector = new \ReflectionObject($value);
+                return $reflector->hasMethod('__toString');
+            }) {
+                return true;
+            }
+            return \is_int($value);
         };
         if (!$check($arguments[2])) {
             throw new \foo\Exception\UnexpectedArgumentValueException(
@@ -560,33 +560,33 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
         }
         $value = $arguments[1];
         $check = function ($value) {
-                if (!(\is_array($value) && \array_keys($value) === \range(0, 2) && \is_int($value[0]))) {
+            if (!(\is_array($value) && \array_keys($value) === \range(0, 2) && \is_int($value[0]))) {
+                return false;
+            }
+            $check = function ($value) {
+                if (\is_string($value) || \is_int($value) || \is_float($value)) {
+                    return true;
+                }
+                if (!\is_object($value)) {
                     return false;
                 }
-                $check = function ($value) {
-                        if (\is_string($value) || \is_int($value) || \is_float($value)) {
-                            return true;
-                        }
-                        if (!\is_object($value)) {
-                            return false;
-                        }
-                        $reflector = new \ReflectionObject($value);
-                        return $reflector->hasMethod('__toString');
-                };
-                if (!$check($value[1])) {
+                $reflector = new \ReflectionObject($value);
+                return $reflector->hasMethod('__toString');
+            };
+            if (!$check($value[1])) {
+                return false;
+            }
+            $check = function ($value) {
+                if (\is_string($value) || \is_int($value) || \is_float($value)) {
+                    return true;
+                }
+                if (!\is_object($value)) {
                     return false;
                 }
-                $check = function ($value) {
-                        if (\is_string($value) || \is_int($value) || \is_float($value)) {
-                            return true;
-                        }
-                        if (!\is_object($value)) {
-                            return false;
-                        }
-                        $reflector = new \ReflectionObject($value);
-                        return $reflector->hasMethod('__toString');
-                };
-                return $check($value[2]);
+                $reflector = new \ReflectionObject($value);
+                return $reflector->hasMethod('__toString');
+            };
+            return $check($value[2]);
         };
         if (!$check($arguments[1])) {
             throw new \foo\Exception\UnexpectedArgumentValueException(
@@ -619,15 +619,15 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
         }
         $value = $arguments[1];
         $check = function ($value) {
-                if (!\is_array($value)) {
+            if (!\is_array($value)) {
+                return false;
+            }
+            foreach ($value as $key => $subValue) {
+                if (!\is_array($subValue)) {
                     return false;
                 }
-                foreach ($value as $key => $subValue) {
-                    if (!\is_array($subValue)) {
-                        return false;
-                    }
-                }
-                return true;
+            }
+            return true;
         };
         if (!$check($arguments[1])) {
             throw new \foo\Exception\UnexpectedArgumentValueException(
@@ -639,18 +639,18 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
         }
         $value = $arguments[2];
         $check = function ($value) {
-                if (!\is_array($value)) {
+            if (!\is_array($value)) {
+                return false;
+            }
+            foreach ($value as $key => $subValue) {
+                if (!\is_int($key)) {
                     return false;
                 }
-                foreach ($value as $key => $subValue) {
-                    if (!\is_int($key)) {
-                        return false;
-                    }
-                    if (!\is_string($subValue)) {
-                        return false;
-                    }
+                if (!\is_string($subValue)) {
+                    return false;
                 }
-                return true;
+            }
+            return true;
         };
         if (!$check($arguments[2])) {
             throw new \foo\Exception\UnexpectedArgumentValueException(
@@ -662,28 +662,28 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
         }
         $value = $arguments[3];
         $check = function ($value) {
-                if (!\is_array($value)) {
+            if (!\is_array($value)) {
+                return false;
+            }
+            $valueCheck = function ($subValue) {
+                if (\is_string($subValue) || \is_int($subValue) || \is_float($subValue)) {
+                    return true;
+                }
+                if (!\is_object($subValue)) {
                     return false;
                 }
-                $valueCheck = function ($subValue) {
-                        if (\is_string($subValue) || \is_int($subValue) || \is_float($subValue)) {
-                            return true;
-                        }
-                        if (!\is_object($subValue)) {
-                            return false;
-                        }
-                        $reflector = new \ReflectionObject($subValue);
-                        return $reflector->hasMethod('__toString');
-                };
-                foreach ($value as $key => $subValue) {
-                    if (!\is_int($key)) {
-                        return false;
-                    }
-                    if (!$valueCheck($subValue)) {
-                        return false;
-                    }
+                $reflector = new \ReflectionObject($subValue);
+                return $reflector->hasMethod('__toString');
+            };
+            foreach ($value as $key => $subValue) {
+                if (!\is_int($key)) {
+                    return false;
                 }
-                return true;
+                if (!$valueCheck($subValue)) {
+                    return false;
+                }
+            }
+            return true;
         };
         if (!$check($arguments[3])) {
             throw new \foo\Exception\UnexpectedArgumentValueException(
@@ -695,28 +695,28 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
         }
         $value = $arguments[4];
         $check = function ($value) {
-                if (!\is_array($value)) {
+            if (!\is_array($value)) {
+                return false;
+            }
+            $keyCheck = function ($key) {
+                if (\is_string($key) || \is_int($key) || \is_float($key)) {
+                    return true;
+                }
+                if (!\is_object($key)) {
                     return false;
                 }
-                $keyCheck = function ($key) {
-                        if (\is_string($key) || \is_int($key) || \is_float($key)) {
-                            return true;
-                        }
-                        if (!\is_object($key)) {
-                            return false;
-                        }
-                        $reflector = new \ReflectionObject($key);
-                        return $reflector->hasMethod('__toString');
-                };
-                foreach ($value as $key => $subValue) {
-                    if (!$keyCheck($key)) {
-                        return false;
-                    }
-                    if (!\is_int($subValue)) {
-                        return false;
-                    }
+                $reflector = new \ReflectionObject($key);
+                return $reflector->hasMethod('__toString');
+            };
+            foreach ($value as $key => $subValue) {
+                if (!$keyCheck($key)) {
+                    return false;
                 }
-                return true;
+                if (!\is_int($subValue)) {
+                    return false;
+                }
+            }
+            return true;
         };
         if (!$check($arguments[4])) {
             throw new \foo\Exception\UnexpectedArgumentValueException(
@@ -746,15 +746,15 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
         }
         $value = $arguments[0];
         $check = function ($value) {
-                if (!$value instanceof \Traversable) {
+            if (!$value instanceof \Traversable) {
+                return false;
+            }
+            foreach ($value as $key => $subValue) {
+                if (!\is_string($subValue)) {
                     return false;
                 }
-                foreach ($value as $key => $subValue) {
-                    if (!\is_string($subValue)) {
-                        return false;
-                    }
-                }
-                return true;
+            }
+            return true;
         };
         if (!$check($arguments[0])) {
             throw new \foo\Exception\UnexpectedArgumentValueException(
@@ -766,18 +766,18 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
         }
         $value = $arguments[1];
         $check = function ($value) {
-                if (!$value instanceof \Traversable) {
+            if (!$value instanceof \Traversable) {
+                return false;
+            }
+            foreach ($value as $key => $subValue) {
+                if (!\is_int($key)) {
                     return false;
                 }
-                foreach ($value as $key => $subValue) {
-                    if (!\is_int($key)) {
-                        return false;
-                    }
-                    if (!\is_string($subValue)) {
-                        return false;
-                    }
+                if (!\is_string($subValue)) {
+                    return false;
                 }
-                return true;
+            }
+            return true;
         };
         if (!$check($arguments[1])) {
             throw new \foo\Exception\UnexpectedArgumentValueException(
@@ -789,28 +789,28 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
         }
         $value = $arguments[2];
         $check = function ($value) {
-                if (!$value instanceof \Traversable) {
+            if (!$value instanceof \Traversable) {
+                return false;
+            }
+            $valueCheck = function ($subValue) {
+                if (\is_string($subValue) || \is_int($subValue) || \is_float($subValue)) {
+                    return true;
+                }
+                if (!\is_object($subValue)) {
                     return false;
                 }
-                $valueCheck = function ($subValue) {
-                        if (\is_string($subValue) || \is_int($subValue) || \is_float($subValue)) {
-                            return true;
-                        }
-                        if (!\is_object($subValue)) {
-                            return false;
-                        }
-                        $reflector = new \ReflectionObject($subValue);
-                        return $reflector->hasMethod('__toString');
-                };
-                foreach ($value as $key => $subValue) {
-                    if (!\is_int($key)) {
-                        return false;
-                    }
-                    if (!$valueCheck($subValue)) {
-                        return false;
-                    }
+                $reflector = new \ReflectionObject($subValue);
+                return $reflector->hasMethod('__toString');
+            };
+            foreach ($value as $key => $subValue) {
+                if (!\is_int($key)) {
+                    return false;
                 }
-                return true;
+                if (!$valueCheck($subValue)) {
+                    return false;
+                }
+            }
+            return true;
         };
         if (!$check($arguments[2])) {
             throw new \foo\Exception\UnexpectedArgumentValueException(
@@ -822,28 +822,28 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
         }
         $value = $arguments[3];
         $check = function ($value) {
-                if (!$value instanceof \Traversable) {
+            if (!$value instanceof \Traversable) {
+                return false;
+            }
+            $keyCheck = function ($key) {
+                if (\is_string($key) || \is_int($key) || \is_float($key)) {
+                    return true;
+                }
+                if (!\is_object($key)) {
                     return false;
                 }
-                $keyCheck = function ($key) {
-                        if (\is_string($key) || \is_int($key) || \is_float($key)) {
-                            return true;
-                        }
-                        if (!\is_object($key)) {
-                            return false;
-                        }
-                        $reflector = new \ReflectionObject($key);
-                        return $reflector->hasMethod('__toString');
-                };
-                foreach ($value as $key => $subValue) {
-                    if (!$keyCheck($key)) {
-                        return false;
-                    }
-                    if (!\is_int($subValue)) {
-                        return false;
-                    }
+                $reflector = new \ReflectionObject($key);
+                return $reflector->hasMethod('__toString');
+            };
+            foreach ($value as $key => $subValue) {
+                if (!$keyCheck($key)) {
+                    return false;
                 }
-                return true;
+                if (!\is_int($subValue)) {
+                    return false;
+                }
+            }
+            return true;
         };
         if (!$check($arguments[3])) {
             throw new \foo\Exception\UnexpectedArgumentValueException(
@@ -873,15 +873,15 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
         }
         $value = $arguments[0];
         $check = function ($value) {
-                if (!\is_array($value) && !$value instanceof \Traversable) {
+            if (!\is_array($value) && !$value instanceof \Traversable) {
+                return false;
+            }
+            foreach ($value as $key => $subValue) {
+                if (!\is_string($subValue)) {
                     return false;
                 }
-                foreach ($value as $key => $subValue) {
-                    if (!\is_string($subValue)) {
-                        return false;
-                    }
-                }
-                return true;
+            }
+            return true;
         };
         if (!$check($arguments[0])) {
             throw new \foo\Exception\UnexpectedArgumentValueException(
@@ -893,18 +893,18 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
         }
         $value = $arguments[1];
         $check = function ($value) {
-                if (!\is_array($value) && !$value instanceof \Traversable) {
+            if (!\is_array($value) && !$value instanceof \Traversable) {
+                return false;
+            }
+            foreach ($value as $key => $subValue) {
+                if (!\is_int($key)) {
                     return false;
                 }
-                foreach ($value as $key => $subValue) {
-                    if (!\is_int($key)) {
-                        return false;
-                    }
-                    if (!\is_string($subValue)) {
-                        return false;
-                    }
+                if (!\is_string($subValue)) {
+                    return false;
                 }
-                return true;
+            }
+            return true;
         };
         if (!$check($arguments[1])) {
             throw new \foo\Exception\UnexpectedArgumentValueException(
@@ -916,28 +916,28 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
         }
         $value = $arguments[2];
         $check = function ($value) {
-                if (!\is_array($value) && !$value instanceof \Traversable) {
+            if (!\is_array($value) && !$value instanceof \Traversable) {
+                return false;
+            }
+            $valueCheck = function ($subValue) {
+                if (\is_string($subValue) || \is_int($subValue) || \is_float($subValue)) {
+                    return true;
+                }
+                if (!\is_object($subValue)) {
                     return false;
                 }
-                $valueCheck = function ($subValue) {
-                        if (\is_string($subValue) || \is_int($subValue) || \is_float($subValue)) {
-                            return true;
-                        }
-                        if (!\is_object($subValue)) {
-                            return false;
-                        }
-                        $reflector = new \ReflectionObject($subValue);
-                        return $reflector->hasMethod('__toString');
-                };
-                foreach ($value as $key => $subValue) {
-                    if (!\is_int($key)) {
-                        return false;
-                    }
-                    if (!$valueCheck($subValue)) {
-                        return false;
-                    }
+                $reflector = new \ReflectionObject($subValue);
+                return $reflector->hasMethod('__toString');
+            };
+            foreach ($value as $key => $subValue) {
+                if (!\is_int($key)) {
+                    return false;
                 }
-                return true;
+                if (!$valueCheck($subValue)) {
+                    return false;
+                }
+            }
+            return true;
         };
         if (!$check($arguments[2])) {
             throw new \foo\Exception\UnexpectedArgumentValueException(
@@ -949,28 +949,28 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
         }
         $value = $arguments[3];
         $check = function ($value) {
-                if (!\is_array($value) && !$value instanceof \Traversable) {
+            if (!\is_array($value) && !$value instanceof \Traversable) {
+                return false;
+            }
+            $keyCheck = function ($key) {
+                if (\is_string($key) || \is_int($key) || \is_float($key)) {
+                    return true;
+                }
+                if (!\is_object($key)) {
                     return false;
                 }
-                $keyCheck = function ($key) {
-                        if (\is_string($key) || \is_int($key) || \is_float($key)) {
-                            return true;
-                        }
-                        if (!\is_object($key)) {
-                            return false;
-                        }
-                        $reflector = new \ReflectionObject($key);
-                        return $reflector->hasMethod('__toString');
-                };
-                foreach ($value as $key => $subValue) {
-                    if (!$keyCheck($key)) {
-                        return false;
-                    }
-                    if (!\is_int($subValue)) {
-                        return false;
-                    }
+                $reflector = new \ReflectionObject($key);
+                return $reflector->hasMethod('__toString');
+            };
+            foreach ($value as $key => $subValue) {
+                if (!$keyCheck($key)) {
+                    return false;
                 }
-                return true;
+                if (!\is_int($subValue)) {
+                    return false;
+                }
+            }
+            return true;
         };
         if (!$check($arguments[3])) {
             throw new \foo\Exception\UnexpectedArgumentValueException(
@@ -1045,15 +1045,15 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
         }
         if ($argumentCount > 1) {
             $check = function ($argument, $index) {
-                        $value = $argument;
-                        if (!\is_string($value)) {
-                            throw new \foo\Exception\UnexpectedArgumentValueException(
-                                'bar',
-                                $index,
-                                $argument,
-                                'string'
-                            );
-                        }
+                $value = $argument;
+                if (!\is_string($value)) {
+                    throw new \foo\Exception\UnexpectedArgumentValueException(
+                        'bar',
+                        $index,
+                        $argument,
+                        'string'
+                    );
+                }
             };
             for ($index = 1; $index < $argumentCount; $index++) {
                 $check($arguments[$index], $index);
