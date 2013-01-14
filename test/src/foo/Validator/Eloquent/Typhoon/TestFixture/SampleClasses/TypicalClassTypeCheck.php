@@ -432,16 +432,7 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
                 $reflector = new \ReflectionObject($value);
                 return $reflector->hasMethod('__toString');
             };
-            if (!function ($value) {
-                if ((\is_string($value) || \is_int($value) || \is_float($value))) {
-                    return true;
-                }
-                if (!\is_object($value)) {
-                    return false;
-                }
-                ($reflector = new \ReflectionObject($value));
-                return $reflector->hasMethod('__toString');
-            }) {
+            if (!$check($value)) {
                 return false;
             }
             return \is_object($value);
