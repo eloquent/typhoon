@@ -6,9 +6,9 @@ final class MissingArgumentException extends UnexpectedInputException
 {
     public function __construct($parameterName, $index, $expectedType, \Exception $previous = null)
     {
-        ($this->parameterName = $parameterName);
-        ($this->index = $index);
-        ($this->expectedType = $expectedType);
+        $this->parameterName = $parameterName;
+        $this->index = $index;
+        $this->expectedType = $expectedType;
         parent::__construct(
             \sprintf(
                 'Missing argument for parameter \'%s\' at index %d. Expected \'%s\'.',
