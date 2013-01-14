@@ -6,14 +6,13 @@ final class UnexpectedArgumentException extends UnexpectedInputException
 {
     public function __construct($index, $value, \Exception $previous = null, \Typhoon\TypeInspector $typeInspector = null)
     {
-        if ((null === $typeInspector))
-        {
-            ($typeInspector = (new \Typhoon\TypeInspector()));
+        if (null === $typeInspector) {
+            $typeInspector = new \Typhoon\TypeInspector();
         }
-        ($this->index = $index);
-        ($this->value = $value);
-        ($this->typeInspector = $typeInspector);
-        ($this->unexpectedType = $typeInspector->type($this->value));
+        $this->index = $index;
+        $this->value = $value;
+        $this->typeInspector = $typeInspector;
+        $this->unexpectedType = $typeInspector->type($this->value);
         parent::__construct(\sprintf('Unexpected argument of type \'%s\' at index %d.', $this->unexpectedType, $index), $previous);
     }
     public function index()

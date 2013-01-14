@@ -252,33 +252,94 @@
             ]
         },
         {
-            "name": "icecave/isolator",
-            "version": "2.1.0",
+            "name": "icecave/collections",
+            "version": "0.5.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/IcecaveStudios/isolator.git",
-                "reference": "2.1.0"
+                "url": "https://github.com/IcecaveStudios/collections.git",
+                "reference": "0.5.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/IcecaveStudios/isolator/zipball/2.1.0",
-                "reference": "2.1.0",
+                "url": "https://github.com/IcecaveStudios/collections/archive/0.5.0.zip",
+                "reference": "0.5.0",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0",
+                "icecave/repr": "1.*"
+            },
+            "require-dev": {
+                "icecave/testing": "1.*",
+                "eloquent/liberator": "1.*",
+                "eloquent/typhoon": "0.6.*"
+            },
+            "time": "2013-01-14 04:29:20",
+            "type": "library",
+            "extra": {
+                "typhoon": {
+                    "output-path": "lib-typhoon",
+                    "validator-namespace": "Icecave\\Collections\\TypeCheck",
+                    "use-native-callable": false
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Icecave\\Collections": "lib",
+                    "Icecave\\Collections\\TypeCheck": "lib-typhoon"
+                }
+            },
+            "notification-url": "http://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "James Harris",
+                    "email": "james.harris@icecave.com.au"
+                }
+            ],
+            "description": "PHP collections without leaky abstractions.",
+            "homepage": "https://github.com/IcecaveStudios/collections",
+            "keywords": [
+                "container",
+                "queue",
+                "array",
+                "map",
+                "hash",
+                "sequence",
+                "collection",
+                "stack"
+            ]
+        },
+        {
+            "name": "icecave/isolator",
+            "version": "2.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/IcecaveStudios/isolator.git",
+                "reference": "2.1.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/IcecaveStudios/isolator/archive/2.1.1.zip",
+                "reference": "2.1.1",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
             "require-dev": {
-                "phake/phake": "1.*"
+                "icecave/testing": "1.*"
             },
-            "time": "2012-08-12 03:37:39",
+            "time": "2013-01-14 04:17:36",
             "type": "library",
             "autoload": {
                 "psr-0": {
                     "Icecave\\Isolator": "lib"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -349,33 +410,34 @@
         },
         {
             "name": "icecave/rasta",
-            "version": "0.1.0",
+            "version": "0.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/IcecaveStudios/rasta.git",
-                "reference": "0.1.0"
+                "reference": "0.1.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/IcecaveStudios/rasta/archive/0.1.0.zip",
-                "reference": "0.1.0",
+                "url": "https://github.com/IcecaveStudios/rasta/archive/0.1.2.zip",
+                "reference": "0.1.2",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
-                "icecave/pasta-ast": ">=0.1,<1.0"
+                "icecave/pasta-ast": "0.1.*",
+                "icecave/collections": "*"
             },
             "require-dev": {
-                "phake/phake": ">=1.0,<2.0"
+                "icecave/testing": "1.*"
             },
-            "time": "2012-12-03 10:58:07",
+            "time": "2013-01-14 12:27:30",
             "type": "library",
             "autoload": {
                 "psr-0": {
                     "Icecave\\Rasta": "lib"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -390,6 +452,51 @@
             "keywords": [
                 "parser",
                 "ast"
+            ]
+        },
+        {
+            "name": "icecave/repr",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/IcecaveStudios/repr.git",
+                "reference": "1.0.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/IcecaveStudios/repr/archive/1.0.0.zip",
+                "reference": "1.0.0",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phake/phake": "1.*"
+            },
+            "time": "2013-01-11 00:04:43",
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Icecave\\Repr": "lib"
+                }
+            },
+            "notification-url": "http://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "James Harris",
+                    "email": "james.harris@icecave.com.au"
+                }
+            ],
+            "description": "Human readable string representations of everything.",
+            "homepage": "https://github.com/IcecaveStudios/repr",
+            "keywords": [
+                "string",
+                "representation",
+                "repr"
             ]
         },
         {
