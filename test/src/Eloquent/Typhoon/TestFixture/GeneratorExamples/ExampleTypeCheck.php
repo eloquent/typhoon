@@ -1,7 +1,6 @@
 <?php
 namespace foo;
 
-
 abstract class TypeCheck
 {
     public static function get($className, array $arguments = null)
@@ -18,18 +17,22 @@ abstract class TypeCheck
         }
         return $validator;
     }
+
     public static function install($className, $validator)
     {
         static::$instances[$className] = $validator;
     }
+
     public static function setRuntimeGeneration($runtimeGeneration)
     {
         static::$runtimeGeneration = $runtimeGeneration;
     }
+
     public static function runtimeGeneration()
     {
         return static::$runtimeGeneration;
     }
+
     protected static function createValidator($className)
     {
         $validatorClassName = 'foo\\Validator\\' . $className . 'TypeCheck';
@@ -40,6 +43,7 @@ abstract class TypeCheck
         }
         return new $validatorClassName;
     }
+
     protected static function defineValidator($className, \Eloquent\Typhoon\Generator\ValidatorClassGenerator $classGenerator = null)
     {
         if (null === $classGenerator) {
@@ -47,10 +51,12 @@ abstract class TypeCheck
         }
         eval('?>' . $classGenerator->generateFromClass(static::configuration(), new \ReflectionClass($className)));
     }
+
     protected static function configuration()
     {
         return new \Eloquent\Typhoon\Configuration\RuntimeConfiguration('foo', true);
     }
+
     private static $instances = array();
     private static $dummyMode = false;
     private static $runtimeGeneration = false;

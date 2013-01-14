@@ -1,13 +1,13 @@
 <?php
 namespace Typhoon;
 
-
 abstract class AbstractValidator
 {
     public function __construct()
     {
         $this->reflector = new \ReflectionObject($this);
     }
+
     public function __call($name, array $arguments)
     {
         $validatorMethodName = \sprintf('validate%s', \ucfirst(\ltrim($name, '_')));
@@ -16,5 +16,6 @@ abstract class AbstractValidator
         }
         return $this->reflector->getMethod($validatorMethodName)->invokeArgs($this, $arguments);
     }
+
     private $reflector;
 }

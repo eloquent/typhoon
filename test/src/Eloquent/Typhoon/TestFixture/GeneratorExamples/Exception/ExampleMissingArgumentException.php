@@ -1,7 +1,6 @@
 <?php
 namespace Typhoon\Exception;
 
-
 final class MissingArgumentException extends UnexpectedInputException
 {
     public function __construct($parameterName, $index, $expectedType, \Exception $previous = null)
@@ -19,18 +18,22 @@ final class MissingArgumentException extends UnexpectedInputException
             $previous
         );
     }
+
     public function parameterName()
     {
         return $this->parameterName;
     }
+
     public function index()
     {
         return $this->index;
     }
+
     public function expectedType()
     {
         return $this->expectedType;
     }
+
     private $parameterName;
     private $index;
     private $expectedType;
