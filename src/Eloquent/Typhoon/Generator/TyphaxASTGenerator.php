@@ -346,15 +346,13 @@ class TyphaxASTGenerator implements Visitor
                     $checkVariable,
                     $expressions[$i]
                 )));
-                $condition = new Call(
-                    $checkVariable,
-                    new Variable(new Identifier('value'))
-                );
+                $condition = new Call($checkVariable);
+                $condition->add(new Variable(new Identifier('value')));
             } else {
                 $condition = $expressions[$i];
             }
 
-            $ifStatement = new IfStatement($expressions[$i]);
+            $ifStatement = new IfStatement($condition);
             $ifStatement->trueBranch()->add(
                 new ReturnStatement(new Literal(true))
             );
