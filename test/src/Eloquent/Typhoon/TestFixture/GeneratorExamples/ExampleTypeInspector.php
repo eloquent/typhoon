@@ -1,7 +1,6 @@
 <?php
 namespace Typhoon;
 
-
 class TypeInspector
 {
     public function type($value, $maxIterations = 10)
@@ -24,10 +23,12 @@ class TypeInspector
         }
         return $nativeType;
     }
+
     protected function arrayType(array $value, $maxIterations)
     {
         return \sprintf('array%s', $this->traversableSubTypes($value, $maxIterations));
     }
+
     protected function objectType($value, $maxIterations)
     {
         $reflector = new \ReflectionObject($value);
@@ -38,6 +39,7 @@ class TypeInspector
         }
         return \sprintf('%s%s', $class, $traversableSubTypes);
     }
+
     protected function traversableSubTypes($value, $maxIterations)
     {
         $keyTypes = array();
@@ -60,6 +62,7 @@ class TypeInspector
         \sort($valueTypes, SORT_STRING);
         return \sprintf('<%s, %s>', \implode('|', $keyTypes), \implode('|', $valueTypes));
     }
+
     protected function resourceType($value)
     {
         $ofType = \get_resource_type($value);
@@ -68,6 +71,7 @@ class TypeInspector
         }
         return \sprintf('resource {ofType: %s}', $ofType);
     }
+
     protected function streamType($value)
     {
         $metaData = \stream_get_meta_data($value);
@@ -83,4 +87,5 @@ class TypeInspector
         }
         return \sprintf('stream {readable: %s, writable: %s}', $readable, $writable);
     }
+
 }

@@ -1,7 +1,6 @@
 <?php
 namespace foo\Validator\Eloquent\Typhoon\TestFixture\SampleClasses;
 
-
 class TypicalClassTypeCheck extends \foo\AbstractValidator
 {
     public function validateConstruct(array $arguments)
@@ -10,18 +9,21 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
             throw new \foo\Exception\UnexpectedArgumentException(0, $arguments[0]);
         }
     }
+
     public function validateToString(array $arguments)
     {
         if (\count($arguments) > 0) {
             throw new \foo\Exception\UnexpectedArgumentException(0, $arguments[0]);
         }
     }
+
     public function undocumentedMethod(array $arguments)
     {
         if (\count($arguments) > 0) {
             throw new \foo\Exception\UnexpectedArgumentException(0, $arguments[0]);
         }
     }
+
     public function simpleTypes(array $arguments)
     {
         $argumentCount = \count($arguments);
@@ -103,6 +105,7 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
             );
         }
     }
+
     public function objectType(array $arguments)
     {
         $argumentCount = \count($arguments);
@@ -147,6 +150,7 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
             );
         }
     }
+
     public function resourceType(array $arguments)
     {
         $argumentCount = \count($arguments);
@@ -177,6 +181,7 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
             );
         }
     }
+
     public function streamType(array $arguments)
     {
         $argumentCount = \count($arguments);
@@ -315,6 +320,7 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
             );
         }
     }
+
     public function stringableType(array $arguments)
     {
         $argumentCount = \count($arguments);
@@ -343,6 +349,7 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
             );
         }
     }
+
     public function callableType(array $arguments)
     {
         $argumentCount = \count($arguments);
@@ -372,6 +379,7 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
             );
         }
     }
+
     public function andType(array $arguments)
     {
         $argumentCount = \count($arguments);
@@ -446,6 +454,7 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
             );
         }
     }
+
     public function orType(array $arguments)
     {
         $argumentCount = \count($arguments);
@@ -520,6 +529,7 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
             );
         }
     }
+
     public function tupleType(array $arguments)
     {
         $argumentCount = \count($arguments);
@@ -579,6 +589,7 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
             );
         }
     }
+
     public function traversableArray(array $arguments)
     {
         $argumentCount = \count($arguments);
@@ -709,6 +720,7 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
             );
         }
     }
+
     public function traversableObject(array $arguments)
     {
         $argumentCount = \count($arguments);
@@ -836,6 +848,7 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
             );
         }
     }
+
     public function traversableMixed(array $arguments)
     {
         $argumentCount = \count($arguments);
@@ -963,6 +976,7 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
             );
         }
     }
+
     public function optionalParameter(array $arguments)
     {
         $argumentCount = \count($arguments);
@@ -992,6 +1006,7 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
             }
         }
     }
+
     public function onlyOptional(array $arguments)
     {
         $argumentCount = \count($arguments);
@@ -1010,6 +1025,7 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
             }
         }
     }
+
     public function variableLength(array $arguments)
     {
         $argumentCount = \count($arguments);
@@ -1042,4 +1058,5 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
             }
         }
     }
+
 }
