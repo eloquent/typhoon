@@ -1,5 +1,5 @@
 {
-    "hash": "ed24dfe3162bbf778eb47f626b17e47a",
+    "hash": "7df1ee8a18aa31952a9de4622015c1f8",
     "packages": [
         {
             "name": "eloquent/asplode",
@@ -289,7 +289,7 @@
                     "Icecave\\Collections\\TypeCheck": "lib-typhoon"
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -339,7 +339,7 @@
                     "Icecave\\Isolator": "lib"
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -437,7 +437,7 @@
                     "Icecave\\Rasta": "lib"
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -481,7 +481,7 @@
                     "Icecave\\Repr": "lib"
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -766,6 +766,55 @@
                 "extension",
                 "case",
                 "parameterized"
+            ]
+        },
+        {
+            "name": "icecave/testing",
+            "version": "1.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/IcecaveStudios/testing.git",
+                "reference": "1.0.6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/IcecaveStudios/testing/archive/1.0.6.zip",
+                "reference": "1.0.6",
+                "shasum": ""
+            },
+            "require": {
+                "phake/phake": "1.*"
+            },
+            "suggest": {
+                "eloquent/asplode": "Use the asplode error handler instead of PHPUnit's internal error handler.",
+                "eloquent/liberator": "Use liberator for circumventing PHP access modifier restrictions inside tests."
+            },
+            "time": "2013-01-14 05:53:31",
+            "bin": [
+                "bin/phpunit",
+                "bin/phpunit-coverage",
+                "bin/update-dotfiles"
+            ],
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "James Harris",
+                    "email": "james.harris@icecave.com.au"
+                }
+            ],
+            "description": "Helper package for testing Icecave projects in a uniform way.",
+            "homepage": "https://github.com/IcecaveStudios/testing",
+            "keywords": [
+                "testing",
+                "phpunit",
+                "test",
+                "unit",
+                "phake",
+                "coverage"
             ]
         },
         {

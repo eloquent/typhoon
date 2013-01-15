@@ -26,9 +26,9 @@
         "symfony/filesystem": "~2"
     },
     "require-dev": {
-        "phake/phake": "~1",
         "eloquent/liberator": "~1",
-        "ezzatron/phpunit-extensions": "~1"
+        "ezzatron/phpunit-extensions": "~1",
+        "icecave/testing": "~1"
     },
     "autoload": {
         "psr-0": {
