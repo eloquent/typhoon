@@ -110,6 +110,30 @@ class TyphaxASTGeneratorTest extends MultiGenerationTestCase
         $this->assertFalse($validator(stream_context_create()));
     }
 
+    /**
+     * @link https://github.com/eloquent/typhoon/issues/85
+     */
+    public function testVisitAndTypeLogicWithClosureBasedSubCheck()
+    {
+        $validator = $this->validatorFixture(new AndType(array(
+            new StringableType,
+            new NullType,
+        )));
+        
+        $this->assertFalse($validator('foo'));
+        $this->assertFalse($validator(111));
+        $this->assertFalse($validator(1.11));
+        $this->assertFalse($validator(Phake::mock('SplFileInfo')));
+
+        $this->assertFalse($validator(true));
+        $this->assertFalse($validator(false));
+        $this->assertFalse($validator(array()));
+        $this->assertFalse($validator(new stdClass));
+        $this->assertFalse($validator(stream_context_create()));
+
+        $this->assertFalse($validator(null));
+    }
+
     public function testVisitArrayTypeLogic()
     {
         $validator = $this->validatorFixture(new ArrayType);

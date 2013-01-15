@@ -1,7 +1,6 @@
 <?php
 namespace Typhoon\Exception;
 
-
 final class UnexpectedArgumentValueException extends UnexpectedInputException
 {
     public function __construct($parameterName, $index, $value, $expectedType, \Exception $previous = null, \Typhoon\TypeInspector $typeInspector = null)
@@ -26,30 +25,37 @@ final class UnexpectedArgumentValueException extends UnexpectedInputException
             $previous
         );
     }
+
     public function parameterName()
     {
         return $this->parameterName;
     }
+
     public function index()
     {
         return $this->index;
     }
+
     public function value()
     {
         return $this->value;
     }
+
     public function expectedType()
     {
         return $this->expectedType;
     }
+
     public function typeInspector()
     {
         return $this->typeInspector;
     }
+
     public function unexpectedType()
     {
         return $this->unexpectedType;
     }
+
     private $parameterName;
     private $index;
     private $value;
