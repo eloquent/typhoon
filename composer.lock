@@ -1,5 +1,5 @@
 {
-    "hash": "316777411db61cfb48d992df04983a06",
+    "hash": "9da65ccda6b2404847e3b69e0f803507",
     "packages": [
         {
             "name": "eloquent/asplode",
@@ -29,7 +29,7 @@
                     "Eloquent\\Asplode": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -79,7 +79,7 @@
                     "Eloquent\\Blox": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -133,7 +133,7 @@
                     "Eloquent\\Cosmos": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -183,7 +183,7 @@
                     "Eloquent\\Enumeration": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -230,7 +230,7 @@
                     "Eloquent\\Equality": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -281,7 +281,7 @@
                     "Eloquent\\Typhax": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -342,7 +342,7 @@
                     "Icecave\\Collections\\TypeCheck": "lib-typhoon"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -392,7 +392,7 @@
                     "Icecave\\Isolator": "lib"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -441,7 +441,7 @@
                     "Icecave\\Pasta\\AST": "lib"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -490,7 +490,7 @@
                     "Icecave\\Rasta": "lib"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -534,7 +534,7 @@
                     "Icecave\\Repr": "lib"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -579,7 +579,7 @@
                     "Icecave\\Visita": "lib"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -622,7 +622,7 @@
                     "Symfony\\Component\\Console": ""
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -664,7 +664,7 @@
                     "Symfony\\Component\\Filesystem": ""
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -708,7 +708,7 @@
                     "Eloquent\\Liberator": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -755,7 +755,7 @@
                     "Eloquent\\Pops": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -790,7 +790,7 @@
             },
             "time": "2013-01-18 05:57:45",
             "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -841,7 +841,7 @@
                     "Ezzatron\\PHPUnit": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -865,16 +865,16 @@
         },
         {
             "name": "icecave/testing",
-            "version": "1.1.4",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/IcecaveStudios/testing.git",
-                "reference": "1.1.4"
+                "reference": "2.0.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/IcecaveStudios/testing/archive/1.1.4.zip",
-                "reference": "1.1.4",
+                "url": "https://github.com/IcecaveStudios/testing/archive/2.0.0.zip",
+                "reference": "2.0.0",
                 "shasum": ""
             },
             "require": {
@@ -882,9 +882,10 @@
             },
             "suggest": {
                 "eloquent/asplode": "Use the asplode error handler instead of PHPUnit's internal error handler.",
-                "eloquent/liberator": "Use liberator for circumventing PHP access modifier restrictions inside tests."
+                "eloquent/liberator": "Use liberator for circumventing PHP access modifier restrictions inside tests.",
+                "icecave/woodhouse": "Publish your code coverage information to GitHub pages."
             },
-            "time": "2013-01-18 02:42:39",
+            "time": "2013-01-19 14:28:21",
             "bin": [
                 "bin/phpunit",
                 "bin/phpunit-coverage",
@@ -892,7 +893,7 @@
                 "bin/travis-build"
             ],
             "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -957,7 +958,7 @@
                     "Icecave\\Woodhouse\\TypeCheck": "lib-typhoon"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1003,7 +1004,7 @@
                     "src"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "include-path": [
                 "src"
             ],

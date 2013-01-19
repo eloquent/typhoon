@@ -28,7 +28,7 @@
     "require-dev": {
         "eloquent/liberator": "~1",
         "ezzatron/phpunit-extensions": "~1",
-        "icecave/testing": "~1",
+        "icecave/testing": "~2",
         "icecave/woodhouse": "*"
     },
     "autoload": {
