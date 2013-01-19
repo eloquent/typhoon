@@ -493,6 +493,8 @@ EOD
      */
     public function testClassesBySource(array $expected, $source)
     {
+        $this->_mapper = new ClassMapper($this->_isolator);
+
         $this->assertEquals($expected, $this->_mapper->classesBySource($source));
     }
 
