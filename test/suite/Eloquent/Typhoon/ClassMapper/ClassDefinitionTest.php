@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\ClassMapper;
 
+use Eloquent\Cosmos\ClassName;
 use Eloquent\Cosmos\ClassNameResolver;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Icecave\Pasta\AST\Type\AccessModifier;
@@ -22,9 +23,15 @@ class ClassDefinitionTest extends MultiGenerationTestCase
     {
         parent::setUp();
 
+        $this->_className = ClassName::fromString('doom\qux');
         $this->_usedClasses = array(
-            'foo' => 'bar',
-            'baz' => null,
+            array(
+                ClassName::fromString('foo'),
+                ClassName::fromString('bar'),
+            ),
+            array(
+                ClassName::fromString('baz'),
+            ),
         );
         $this->_methods = array(
             new MethodDefinition(
@@ -59,19 +66,30 @@ class ClassDefinitionTest extends MultiGenerationTestCase
             ),
         );
         $this->_definition = new ClassDefinition(
-            'qux',
-            'doom',
+            $this->_className,
             $this->_usedClasses,
             $this->_methods,
             $this->_properties
+        );
+
+        $this->_expectedClassName = ClassName::fromString('\doom\qux');
+        $this->_expectedNamespaceName = ClassName::fromString('\doom');
+        $this->_expectedUsedClasses = array(
+            array(
+                ClassName::fromString('\foo'),
+                ClassName::fromString('bar'),
+            ),
+            array(
+                ClassName::fromString('\baz'),
+                ClassName::fromString('baz'),
+            ),
         );
     }
 
     public function testConstructor()
     {
-        $this->assertSame('qux', $this->_definition->className());
-        $this->assertSame('doom', $this->_definition->namespaceName());
-        $this->assertSame($this->_usedClasses, $this->_definition->usedClasses());
+        $this->assertEquals($this->_expectedClassName, $this->_definition->className());
+        $this->assertEquals($this->_expectedUsedClasses, $this->_definition->usedClasses());
         $this->assertSame($this->_methods, $this->_definition->methods());
         $this->assertSame($this->_properties, $this->_definition->properties());
     }
@@ -79,42 +97,35 @@ class ClassDefinitionTest extends MultiGenerationTestCase
     public function testConstructorDefaults()
     {
         $this->_definition = new ClassDefinition(
-            'foo'
+            $this->_className
         );
 
-        $this->assertNull($this->_definition->namespaceName());
         $this->assertSame(array(), $this->_definition->usedClasses());
         $this->assertSame(array(), $this->_definition->methods());
         $this->assertSame(array(), $this->_definition->properties());
     }
 
-    public function testCanonicalClassName()
-    {
-        $resolver = Phake::mock('Eloquent\Cosmos\ClassNameResolver');
-        Phake::when($resolver)->resolve(Phake::anyParameters())->thenReturn('foo');
-        $definition = Phake::partialMock(__NAMESPACE__.'\ClassDefinition', 'bar');
-        Phake::when($definition)->classNameResolver()->thenReturn($resolver);
-
-        $this->assertSame('foo', $definition->canonicalClassName());
-        Phake::verify($resolver)->resolve('bar');
-    }
-
     public function testClassNameResolver()
     {
-        $usedClasses = array(
-            'foo' => 'bar',
-            'baz' => null,
-        );
-        $definition = new ClassDefinition(
-            'qux',
-            'doom',
-            $usedClasses
-        );
         $expected = new ClassNameResolver(
-            'doom',
-            $usedClasses
+            $this->_expectedNamespaceName,
+            $this->_expectedUsedClasses
         );
 
-        $this->assertEquals($expected, $definition->classNameResolver());
+        $this->assertEquals($expected, $this->_definition->classNameResolver());
+    }
+
+    public function testClassNameResolverWithoutNamespace()
+    {
+        $this->_definition = new ClassDefinition(
+            ClassName::fromString('\qux'),
+            $this->_usedClasses
+        );
+        $expected = new ClassNameResolver(
+            null,
+            $this->_expectedUsedClasses
+        );
+
+        $this->assertEquals($expected, $this->_definition->classNameResolver());
     }
 }

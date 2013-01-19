@@ -294,7 +294,7 @@ class TyphaxASTGenerator implements Visitor
 
         return new InstanceOfType(
             $this->valueExpression(),
-            QualifiedIdentifier::fromString('\\'.$type->ofType())
+            QualifiedIdentifier::fromString($type->ofType()->string())
         );
     }
 

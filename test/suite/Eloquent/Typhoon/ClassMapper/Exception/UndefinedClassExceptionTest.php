@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\ClassMapper\Exception;
 
+use Eloquent\Cosmos\ClassName;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Phake;
 
@@ -18,13 +19,14 @@ class UndefinedClassExceptionTest extends MultiGenerationTestCase
 {
     public function testException()
     {
+        $className = ClassName::fromString('foo');
         $previous = Phake::mock('Exception');
         $exception = new UndefinedClassException(
-            'foo',
+            $className,
             $previous
         );
 
-        $this->assertSame('foo', $exception->className());
+        $this->assertSame($className, $exception->className());
         $this->assertSame($previous, $exception->getPrevious());
     }
 }

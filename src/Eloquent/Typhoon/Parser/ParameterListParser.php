@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Parser;
 
+use Eloquent\Cosmos\ClassName;
 use Eloquent\Blox\AST\DocumentationBlock;
 use Eloquent\Blox\AST\DocumentationTag;
 use Eloquent\Blox\AST\Visitor;
@@ -118,7 +119,7 @@ class ParameterListParser implements Visitor
         $this->typeCheck->parseParameterReflector(func_get_args());
 
         if ($class = $reflector->getClass()) {
-            $type = new ObjectType($class->getName());
+            $type = new ObjectType(ClassName::fromString($class->getName())->toAbsolute());
         } elseif ($reflector->isArray()) {
             $type = new TraversableType(
                 new ArrayType,

@@ -52,10 +52,8 @@ class UnexpectedInputExceptionGeneratorTest extends MultiGenerationTestCase
 
         $this->assertSame($expected, $this->_generator->generate(
             $configuration,
-            $namespaceName,
             $className
         ));
-        $this->assertSame('Typhoon\Exception', $namespaceName);
-        $this->assertSame('UnexpectedInputException', $className);
+        $this->assertSame('\Typhoon\Exception\UnexpectedInputException', $className->string());
     }
 }

@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Parser;
 
+use Eloquent\Cosmos\ClassName;
 use Eloquent\Typhax\Parser\Parser as TyphaxParser;
 use Eloquent\Typhax\Type\ArrayType;
 use Eloquent\Typhax\Type\CallableType;
@@ -266,7 +267,7 @@ EOD;
             ),
             new Parameter(
                 'baz',
-                new ObjectType('stdClass'),
+                new ObjectType(ClassName::fromString('\stdClass')),
                 null,
                 false,
                 false
@@ -313,7 +314,7 @@ EOD;
             new Parameter(
                 'pong',
                 new OrType(array(
-                    new ObjectType('stdClass'),
+                    new ObjectType(ClassName::fromString('\stdClass')),
                     new NullType,
                 )),
                 null,

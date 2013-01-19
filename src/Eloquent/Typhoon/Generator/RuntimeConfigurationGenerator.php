@@ -14,9 +14,12 @@ namespace Eloquent\Typhoon\Generator;
 use Eloquent\Typhoon\Configuration\RuntimeConfiguration;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Icecave\Pasta\AST\Expr\Call;
+use Icecave\Pasta\AST\Expr\Constant;
 use Icecave\Pasta\AST\Expr\Literal;
 use Icecave\Pasta\AST\Expr\NewOperator;
 use Icecave\Pasta\AST\Expr\QualifiedIdentifier;
+use Icecave\Pasta\AST\Expr\StaticMember;
+use Icecave\Pasta\AST\Identifier;
 
 class RuntimeConfigurationGenerator
 {
@@ -34,12 +37,17 @@ class RuntimeConfigurationGenerator
     {
         $this->typeCheck->generate(func_get_args());
 
+        $validatorNamespaceCall = new Call(new StaticMember(
+            QualifiedIdentifier::fromString('\Eloquent\Cosmos\ClassName'),
+            new Constant(new Identifier('fromString'))
+        ));
+        $validatorNamespaceCall->add(
+            new Literal($configuration->validatorNamespace()->string())
+        );
         $newConfigurationCall = new Call(QualifiedIdentifier::fromString(
             '\Eloquent\Typhoon\Configuration\RuntimeConfiguration'
         ));
-        $newConfigurationCall->add(
-            new Literal($configuration->validatorNamespace())
-        );
+        $newConfigurationCall->add($validatorNamespaceCall);
         $newConfigurationCall->add(
             new Literal($configuration->useNativeCallable())
         );

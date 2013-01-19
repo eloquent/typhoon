@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Generator;
 
+use Eloquent\Cosmos\ClassName;
 use Eloquent\Typhax\Renderer\TypeRenderer;
 use Eloquent\Typhax\Type\FloatType;
 use Eloquent\Typhax\Type\IntegerType;
@@ -65,7 +66,7 @@ class ParameterListGeneratorTest extends MultiGenerationTestCase
     {
         $this->assertSame($this->_typeGenerator, $this->_generator->typeGenerator());
         $this->assertSame($this->_typeRenderer, $this->_generator->typeRenderer());
-        $this->assertSame('Typhoon', $this->_generator->validatorNamespace());
+        $this->assertSame('\Typhoon', $this->_generator->validatorNamespace()->string());
     }
 
     public function testConstructorDefaults()
@@ -84,9 +85,16 @@ class ParameterListGeneratorTest extends MultiGenerationTestCase
 
     public function testSetValidatorNamespace()
     {
-        $this->_generator->setValidatorNamespace('foo');
+        $this->_generator->setValidatorNamespace(ClassName::fromString('\foo'));
 
-        $this->assertSame('foo', $this->_generator->validatorNamespace());
+        $this->assertSame('\foo', $this->_generator->validatorNamespace()->string());
+    }
+
+    public function testSetValidatorNamespaceNormalization()
+    {
+        $this->_generator->setValidatorNamespace(ClassName::fromString('foo'));
+
+        $this->assertSame('\foo', $this->_generator->validatorNamespace()->string());
     }
 
     public function testVisitParameterListLogic()

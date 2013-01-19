@@ -52,10 +52,8 @@ class AbstractValidatorGeneratorTest extends MultiGenerationTestCase
 
         $this->assertSame($expected, $this->_generator->generate(
             $configuration,
-            $namespaceName,
             $className
         ));
-        $this->assertSame('Typhoon', $namespaceName);
-        $this->assertSame('AbstractValidator', $className);
+        $this->assertSame('\Typhoon\AbstractValidator', $className->string());
     }
 }

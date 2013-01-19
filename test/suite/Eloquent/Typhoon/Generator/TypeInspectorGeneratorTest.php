@@ -52,10 +52,8 @@ class TypeInspectorGeneratorTest extends MultiGenerationTestCase
 
         $this->assertSame($expected, $this->_generator->generate(
             $configuration,
-            $namespaceName,
             $className
         ));
-        $this->assertSame('Typhoon', $namespaceName);
-        $this->assertSame('TypeInspector', $className);
+        $this->assertSame('\Typhoon\TypeInspector', $className->string());
     }
 }

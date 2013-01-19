@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Configuration;
 
+use Eloquent\Cosmos\ClassName;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use ErrorException;
 use Icecave\Isolator\Isolator;
@@ -223,7 +224,9 @@ class ConfigurationReader
             $configuration->setLoaderPaths($data->{'loader-paths'});
         }
         if (property_exists($data, ConfigurationOption::VALIDATOR_NAMESPACE()->value())) {
-            $configuration->setValidatorNamespace($data->{'validator-namespace'});
+            $configuration->setValidatorNamespace(
+                ClassName::fromString($data->{'validator-namespace'})
+            );
         }
         if (property_exists($data, ConfigurationOption::USE_NATIVE_CALLABLE()->value())) {
             $configuration->setUseNativeCallable($data->{'use-native-callable'});

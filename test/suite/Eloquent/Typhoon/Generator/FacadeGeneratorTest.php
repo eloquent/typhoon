@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Generator;
 
+use Eloquent\Cosmos\ClassName;
 use Eloquent\Typhoon\Configuration\RuntimeConfiguration;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Icecave\Rasta\Renderer;
@@ -54,7 +55,7 @@ class FacadeGeneratorTest extends MultiGenerationTestCase
 
     public function testGenerate()
     {
-        $configuration = new RuntimeConfiguration('foo', true);
+        $configuration = new RuntimeConfiguration(ClassName::fromString('\foo'), true);
         $expected = file_get_contents(
             __DIR__.
             '/../../../../src/Eloquent/Typhoon/TestFixture/GeneratorExamples/ExampleTypeCheck.php'
@@ -62,16 +63,14 @@ class FacadeGeneratorTest extends MultiGenerationTestCase
 
         $this->assertSame($expected, $this->_generator->generate(
             $configuration,
-            $namespaceName,
             $className
         ));
-        $this->assertSame('foo', $namespaceName);
-        $this->assertSame('TypeCheck', $className);
+        $this->assertSame('\foo\TypeCheck', $className->string());
     }
 
     public function testGenerateNoCallable()
     {
-        $configuration = new RuntimeConfiguration('foo', false);
+        $configuration = new RuntimeConfiguration(ClassName::fromString('\foo'), false);
         $expected = file_get_contents(
             __DIR__.
             '/../../../../src/Eloquent/Typhoon/TestFixture/GeneratorExamples/ExampleTypeCheckNoCallable.php'
@@ -79,10 +78,8 @@ class FacadeGeneratorTest extends MultiGenerationTestCase
 
         $this->assertSame($expected, $this->_generator->generate(
             $configuration,
-            $namespaceName,
             $className
         ));
-        $this->assertSame('foo', $namespaceName);
-        $this->assertSame('TypeCheck', $className);
+        $this->assertSame('\foo\TypeCheck', $className->string());
     }
 }

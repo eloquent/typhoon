@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Generator;
 
+use Eloquent\Cosmos\ClassName;
 use Eloquent\Typhoon\Configuration\RuntimeConfiguration;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Icecave\Pasta\AST\Expr\ArrayLiteral;
@@ -91,44 +92,41 @@ class FacadeGenerator implements StaticClassGenerator
 
     /**
      * @param RuntimeConfiguration $configuration
-     * @param string|null &$namespaceName
-     * @param string|null &$className
+     * @param null                 &$className
      *
      * @return string
      */
     public function generate(
         RuntimeConfiguration $configuration,
-        &$namespaceName = null,
         &$className = null
     ) {
         $this->typeCheck->generate(func_get_args());
 
         return $this->generateSyntaxTree(
             $configuration,
-            $namespaceName,
             $className
         )->accept($this->renderer());
     }
 
     /**
      * @param RuntimeConfiguration $configuration
-     * @param string|null &$namespaceName
-     * @param string|null &$className
+     * @param null                 &$className
      *
      * @return SyntaxTree
      */
     public function generateSyntaxTree(
         RuntimeConfiguration $configuration,
-        &$namespaceName = null,
         &$className = null
     ) {
         $this->typeCheck->generateSyntaxTree(func_get_args());
 
-        $namespaceName = $configuration->validatorNamespace();
-        $className = 'TypeCheck';
+        $className = $configuration
+            ->validatorNamespace()
+            ->joinAtoms('TypeCheck')
+        ;
 
         $classDefinition = new ClassDefinition(
-            new Identifier($className),
+            new Identifier($className->shortName()->string()),
             ClassModifier::ABSTRACT_()
         );
         $classDefinition->add($this->generateGetMethod());
@@ -172,9 +170,9 @@ class FacadeGenerator implements StaticClassGenerator
         $classDefinition->add($runtimeGenerationProperty);
 
         $primaryBlock = new PhpBlock;
-        $primaryBlock->add(new NamespaceStatement(
-            QualifiedIdentifier::fromString($namespaceName)
-        ));
+        $primaryBlock->add(new NamespaceStatement(QualifiedIdentifier::fromString(
+            $className->parent()->toRelative()->string()
+        )));
         $primaryBlock->add($classDefinition);
 
         $syntaxTree = new SyntaxTree;
@@ -381,7 +379,13 @@ class FacadeGenerator implements StaticClassGenerator
         $method->addParameter(new Parameter($classNameIdentifier));
 
         $validatorClassNameConcatenation = new Concat(
-            new Literal(sprintf('%s\Validator\\', $configuration->validatorNamespace())),
+            new Literal(sprintf(
+                '%s\\',
+                $configuration
+                    ->validatorNamespace()
+                    ->joinAtoms('Validator')
+                    ->string()
+            )),
             $classNameVariable
         );
         $validatorClassNameConcatenation->add(new Literal('TypeCheck'));

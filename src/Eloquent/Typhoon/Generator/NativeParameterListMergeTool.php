@@ -270,16 +270,16 @@ class NativeParameterListMergeTool
             if (!$nativeType instanceof ObjectType) {
                 return false;
             }
-            if ($nativeType->ofType() === $documentedType->ofType()) {
+            if ($nativeType->ofType()->isRuntimeEquivalentTo($documentedType->ofType())) {
                 return true;
             }
 
             $documentedClassReflector = new ReflectionClass(
-                $documentedType->ofType()
+                $documentedType->ofType()->string()
             );
 
             return $documentedClassReflector->isSubclassOf(
-                $nativeType->ofType()
+                $nativeType->ofType()->string()
             );
         }
 

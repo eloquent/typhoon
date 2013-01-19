@@ -92,20 +92,11 @@ class ClassMapperTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
         $argumentCount = \count($arguments);
         if ($argumentCount < 2) {
             if ($argumentCount < 1) {
-                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('className', 0, 'string');
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('className', 0, 'Eloquent\\Cosmos\\ClassName');
             }
             throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('source', 1, 'string');
         } elseif ($argumentCount > 2) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(2, $arguments[2]);
-        }
-        $value = $arguments[0];
-        if (!\is_string($value)) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
-                'className',
-                0,
-                $arguments[0],
-                'string'
-            );
         }
         $value = $arguments[1];
         if (!\is_string($value)) {
@@ -186,9 +177,9 @@ class ClassMapperTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
                 throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('tokens', 0, 'array<string|array>');
             }
             if ($argumentCount < 2) {
-                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('namespaceName', 1, 'string|null');
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('namespaceName', 1, 'Eloquent\\Cosmos\\ClassName|null');
             }
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('usedClasses', 2, 'array<string, string|null>');
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('usedClasses', 2, 'array<array<Eloquent\\Cosmos\\ClassName>>');
         } elseif ($argumentCount > 3) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(3, $arguments[3]);
         }
@@ -212,25 +203,24 @@ class ClassMapperTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
                 'array<string|array>'
             );
         }
-        $value = $arguments[1];
-        if (!(\is_string($value) || $value === null)) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
-                'namespaceName',
-                1,
-                $arguments[1],
-                'string|null'
-            );
-        }
         $value = $arguments[2];
         $check = function ($value) {
             if (!\is_array($value)) {
                 return false;
             }
-            foreach ($value as $key => $subValue) {
-                if (!\is_string($key)) {
+            $valueCheck = function ($subValue) {
+                if (!\is_array($subValue)) {
                     return false;
                 }
-                if (!(\is_string($subValue) || $subValue === null)) {
+                foreach ($subValue as $key => $subValue) {
+                    if (!$subValue instanceof \Eloquent\Cosmos\ClassName) {
+                        return false;
+                    }
+                }
+                return true;
+            };
+            foreach ($value as $key => $subValue) {
+                if (!$valueCheck($subValue)) {
                     return false;
                 }
             }
@@ -241,7 +231,7 @@ class ClassMapperTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
                 'usedClasses',
                 2,
                 $arguments[2],
-                'array<string, string|null>'
+                'array<array<Eloquent\\Cosmos\\ClassName>>'
             );
         }
     }

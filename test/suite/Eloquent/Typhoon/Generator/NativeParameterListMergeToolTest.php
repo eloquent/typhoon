@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Generator;
 
+use Eloquent\Cosmos\ClassName;
 use Eloquent\Liberator\Liberator;
 use Eloquent\Typhax\Type\AndType;
 use Eloquent\Typhax\Type\BooleanType;
@@ -60,7 +61,10 @@ class NativeParameterListMergeToolTest extends MultiGenerationTestCase
     public function testUseNativeCallableManualOff()
     {
         $mergeTool = Phake::partialMock(__NAMESPACE__.'\NativeParameterListMergeTool');
-        $configuration = new RuntimeConfiguration('foo', false);
+        $configuration = new RuntimeConfiguration(
+            ClassName::fromString('\foo'),
+            false
+        );
 
         $this->assertFalse($mergeTool->useNativeCallable($configuration));
         Phake::verify($mergeTool, Phake::never())->nativeCallableAvailable();
@@ -70,7 +74,10 @@ class NativeParameterListMergeToolTest extends MultiGenerationTestCase
     {
         $mergeTool = Phake::partialMock(__NAMESPACE__.'\NativeParameterListMergeTool');
         Phake::when($mergeTool)->nativeCallableAvailable()->thenReturn(false);
-        $configuration = new RuntimeConfiguration('foo', true);
+        $configuration = new RuntimeConfiguration(
+            ClassName::fromString('\foo'),
+            true
+        );
 
         $this->assertFalse($mergeTool->useNativeCallable($configuration));
         Phake::verify($mergeTool)->nativeCallableAvailable();
@@ -80,7 +87,10 @@ class NativeParameterListMergeToolTest extends MultiGenerationTestCase
     {
         $mergeTool = Phake::partialMock(__NAMESPACE__.'\NativeParameterListMergeTool');
         Phake::when($mergeTool)->nativeCallableAvailable()->thenReturn(true);
-        $configuration = new RuntimeConfiguration('foo', true);
+        $configuration = new RuntimeConfiguration(
+            ClassName::fromString('\foo'),
+            true
+        );
 
         $this->assertTrue($mergeTool->useNativeCallable($configuration));
         Phake::verify($mergeTool)->nativeCallableAvailable();
@@ -619,7 +629,7 @@ class NativeParameterListMergeToolTest extends MultiGenerationTestCase
         );
 
         $documentedType = new OrType(array(
-            new ObjectType('Exception'),
+            new ObjectType(ClassName::fromString('Exception')),
             new NullType,
         ));
         $nativeType = $documentedType;
@@ -651,8 +661,8 @@ class NativeParameterListMergeToolTest extends MultiGenerationTestCase
             $nativeType,
         );
 
-        $documentedType = new ObjectType('RecursiveDirectoryIterator');
-        $nativeType = new ObjectType('FilesystemIterator');
+        $documentedType = new ObjectType(ClassName::fromString('RecursiveDirectoryIterator'));
+        $nativeType = new ObjectType(ClassName::fromString('FilesystemIterator'));
         $expected = $documentedType;
         $data['Native type is a parent class of documented class'] = array(
             $expected,
@@ -670,10 +680,10 @@ class NativeParameterListMergeToolTest extends MultiGenerationTestCase
         );
 
         $documentedType = new AndType(array(
-            new ObjectType('Iterator'),
-            new ObjectType('Countable'),
+            new ObjectType(ClassName::fromString('Iterator')),
+            new ObjectType(ClassName::fromString('Countable')),
         ));
-        $nativeType = new ObjectType('Traversable');
+        $nativeType = new ObjectType(ClassName::fromString('Traversable'));
         $expected = $documentedType;
         $data['Native type is compatible with all types in AND composite'] = array(
             $expected,
@@ -723,7 +733,10 @@ class NativeParameterListMergeToolTest extends MultiGenerationTestCase
     {
         $documentedType = new CallableType;
         $nativeType = new MixedType;
-        $configuration = new RuntimeConfiguration('foo', false);
+        $configuration = new RuntimeConfiguration(
+            ClassName::fromString('\foo'),
+            false
+        );
         $actual = Liberator::liberate($this->_mergeTool)->mergeType(
             $configuration,
             'foo',
@@ -742,7 +755,10 @@ class NativeParameterListMergeToolTest extends MultiGenerationTestCase
             new NullType,
         ));
         $nativeType = new MixedType;
-        $configuration = new RuntimeConfiguration('foo', false);
+        $configuration = new RuntimeConfiguration(
+            ClassName::fromString('\foo'),
+            false
+        );
         $actual = Liberator::liberate($this->_mergeTool)->mergeType(
             $configuration,
             'foo',
@@ -852,7 +868,7 @@ class NativeParameterListMergeToolTest extends MultiGenerationTestCase
         );
 
         // objects
-        $documentedType = new ObjectType('Baz');
+        $documentedType = new ObjectType(ClassName::fromString('Baz'));
         $nativeType = new MixedType;
         $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
         $expectedMessage = "Documented type 'Baz' is not correct for defined type 'mixed' for parameter 'bar' in 'foo'.";
@@ -864,7 +880,7 @@ class NativeParameterListMergeToolTest extends MultiGenerationTestCase
         );
 
         $documentedType = new MixedType;
-        $nativeType = new ObjectType('Baz');
+        $nativeType = new ObjectType(ClassName::fromString('Baz'));
         $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
         $expectedMessage = "Documented type 'mixed' is not correct for defined type 'Baz' for parameter 'bar' in 'foo'.";
         $data['Error when native is object of type and documented is mixed'] = array(
@@ -875,10 +891,10 @@ class NativeParameterListMergeToolTest extends MultiGenerationTestCase
         );
 
         $documentedType = new OrType(array(
-            new ObjectType('Baz'),
+            new ObjectType(ClassName::fromString('Baz')),
             new NullType,
         ));
-        $nativeType = new ObjectType('Baz');
+        $nativeType = new ObjectType(ClassName::fromString('Baz'));
         $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
         $expectedMessage = "Documented type 'Baz|null' is not correct for defined type 'Baz' for parameter 'bar' in 'foo'.";
         $data['Error when native is object of type and documented is object of type or null'] = array(
@@ -888,9 +904,9 @@ class NativeParameterListMergeToolTest extends MultiGenerationTestCase
             $nativeType,
         );
 
-        $documentedType = new ObjectType('Baz');
+        $documentedType = new ObjectType(ClassName::fromString('Baz'));
         $nativeType = new OrType(array(
-            new ObjectType('Baz'),
+            new ObjectType(ClassName::fromString('Baz')),
             new NullType,
         ));
         $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
@@ -903,7 +919,7 @@ class NativeParameterListMergeToolTest extends MultiGenerationTestCase
         );
 
         $documentedType = new OrType(array(
-            new ObjectType('Baz'),
+            new ObjectType(ClassName::fromString('Baz')),
             new NullType,
         ));
         $nativeType = new MixedType;
@@ -916,8 +932,8 @@ class NativeParameterListMergeToolTest extends MultiGenerationTestCase
             $nativeType,
         );
 
-        $documentedType = new ObjectType('stdClass');
-        $nativeType = new ObjectType('Iterator');
+        $documentedType = new ObjectType(ClassName::fromString('stdClass'));
+        $nativeType = new ObjectType(ClassName::fromString('Iterator'));
         $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
         $expectedMessage = "Documented type 'stdClass' is not correct for defined type 'Iterator' for parameter 'bar' in 'foo'.";
         $data['Error when native is a class and documented is an incompatible class'] = array(
@@ -929,12 +945,12 @@ class NativeParameterListMergeToolTest extends MultiGenerationTestCase
 
         // or composites
         $documentedType = new OrType(array(
-            new ObjectType('Baz'),
+            new ObjectType(ClassName::fromString('Baz')),
             new FloatType,
             new NullType,
         ));
         $nativeType = new OrType(array(
-            new ObjectType('Baz'),
+            new ObjectType(ClassName::fromString('Baz')),
             new NullType,
         ));
         $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
@@ -948,10 +964,10 @@ class NativeParameterListMergeToolTest extends MultiGenerationTestCase
 
         // and composites
         $documentedType = new AndType(array(
-            new ObjectType('Traversable'),
-            new ObjectType('Serializable'),
+            new ObjectType(ClassName::fromString('Traversable')),
+            new ObjectType(ClassName::fromString('Serializable')),
         ));
-        $nativeType = new ObjectType('Iterator');
+        $nativeType = new ObjectType(ClassName::fromString('Iterator'));
         $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
         $expectedMessage = "Documented type 'Traversable+Serializable' is not correct for defined type 'Iterator' for parameter 'bar' in 'foo'.";
         $data['Error when native is not compatible with all types in AND composite'] = array(

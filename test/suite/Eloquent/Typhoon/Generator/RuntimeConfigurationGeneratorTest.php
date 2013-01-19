@@ -11,12 +11,16 @@
 
 namespace Eloquent\Typhoon\Generator;
 
+use Eloquent\Cosmos\ClassName;
 use Eloquent\Typhoon\Configuration\RuntimeConfiguration;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Icecave\Pasta\AST\Expr\Call;
+use Icecave\Pasta\AST\Expr\Constant;
 use Icecave\Pasta\AST\Expr\Literal;
 use Icecave\Pasta\AST\Expr\NewOperator;
 use Icecave\Pasta\AST\Expr\QualifiedIdentifier;
+use Icecave\Pasta\AST\Expr\StaticMember;
+use Icecave\Pasta\AST\Identifier;
 
 class RuntimeConfigurationGeneratorTest extends MultiGenerationTestCase
 {
@@ -31,20 +35,36 @@ class RuntimeConfigurationGeneratorTest extends MultiGenerationTestCase
     {
         $data = array();
 
-        $configuration = new RuntimeConfiguration('foo', true);
+        $configuration = new RuntimeConfiguration(
+            ClassName::fromString('\foo'),
+            true
+        );
+        $validatorNamespaceCall = new Call(new StaticMember(
+            QualifiedIdentifier::fromString('\Eloquent\Cosmos\ClassName'),
+            new Constant(new Identifier('fromString'))
+        ));
+        $validatorNamespaceCall->add(new Literal('\foo'));
         $newConfigurationCall = new Call(QualifiedIdentifier::fromString(
             '\Eloquent\Typhoon\Configuration\RuntimeConfiguration'
         ));
-        $newConfigurationCall->add(new Literal('foo'));
+        $newConfigurationCall->add($validatorNamespaceCall);
         $newConfigurationCall->add(new Literal(true));
         $expected = new NewOperator($newConfigurationCall);
         $data["Use native callable"] = array($expected, $configuration);
 
-        $configuration = new RuntimeConfiguration('bar', false);
+        $configuration = new RuntimeConfiguration(
+            ClassName::fromString('\bar'),
+            false
+        );
+        $validatorNamespaceCall = new Call(new StaticMember(
+            QualifiedIdentifier::fromString('\Eloquent\Cosmos\ClassName'),
+            new Constant(new Identifier('fromString'))
+        ));
+        $validatorNamespaceCall->add(new Literal('\bar'));
         $newConfigurationCall = new Call(QualifiedIdentifier::fromString(
             '\Eloquent\Typhoon\Configuration\RuntimeConfiguration'
         ));
-        $newConfigurationCall->add(new Literal('bar'));
+        $newConfigurationCall->add($validatorNamespaceCall);
         $newConfigurationCall->add(new Literal(false));
         $expected = new NewOperator($newConfigurationCall);
         $data["Don't use native callable"] = array($expected, $configuration);

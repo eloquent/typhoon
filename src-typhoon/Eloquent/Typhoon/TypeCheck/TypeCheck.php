@@ -35,7 +35,7 @@ abstract class TypeCheck
 
     protected static function createValidator($className)
     {
-        $validatorClassName = 'Eloquent\\Typhoon\\TypeCheck\\Validator\\' . $className . 'TypeCheck';
+        $validatorClassName = '\\Eloquent\\Typhoon\\TypeCheck\\Validator\\' . $className . 'TypeCheck';
         if (static::runtimeGeneration() && !\class_exists($validatorClassName)) {
             static::$dummyMode = true;
             static::defineValidator($className);
@@ -54,7 +54,7 @@ abstract class TypeCheck
 
     protected static function configuration()
     {
-        return new \Eloquent\Typhoon\Configuration\RuntimeConfiguration('Eloquent\\Typhoon\\TypeCheck', false);
+        return new \Eloquent\Typhoon\Configuration\RuntimeConfiguration(\Eloquent\Cosmos\ClassName::fromString('\\Eloquent\\Typhoon\\TypeCheck'), false);
     }
 
     private static $instances = array();

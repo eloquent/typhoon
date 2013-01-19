@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Generator\ExceptionGenerator;
 
+use Eloquent\Cosmos\ClassName;
 use Eloquent\Typhoon\Configuration\RuntimeConfiguration;
 use Eloquent\Typhoon\Generator\StaticClassGenerator;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
@@ -62,44 +63,41 @@ class UnexpectedInputExceptionGenerator implements StaticClassGenerator
 
     /**
      * @param RuntimeConfiguration $configuration
-     * @param string|null &$namespaceName
-     * @param string|null &$className
+     * @param null                 &$className
      *
      * @return string
      */
     public function generate(
         RuntimeConfiguration $configuration,
-        &$namespaceName = null,
         &$className = null
     ) {
         $this->typeCheck->generate(func_get_args());
 
         return $this->generateSyntaxTree(
             $configuration,
-            $namespaceName,
             $className
         )->accept($this->renderer());
     }
 
     /**
      * @param RuntimeConfiguration $configuration
-     * @param string|null &$namespaceName
-     * @param string|null &$className
+     * @param null                 &$className
      *
      * @return SyntaxTree
      */
     public function generateSyntaxTree(
         RuntimeConfiguration $configuration,
-        &$namespaceName = null,
         &$className = null
     ) {
         $this->typeCheck->generateSyntaxTree(func_get_args());
 
-        $namespaceName = sprintf('%s\Exception', $configuration->validatorNamespace());
-        $className = 'UnexpectedInputException';
+        $className = $configuration
+            ->validatorNamespace()
+            ->joinAtoms('Exception', 'UnexpectedInputException')
+        ;
 
         $classDefinition = new ClassDefinition(
-            new Identifier($className),
+            new Identifier($className->shortName()->string()),
             ClassModifier::ABSTRACT_()
         );
         $classDefinition->setParentName(
@@ -108,9 +106,9 @@ class UnexpectedInputExceptionGenerator implements StaticClassGenerator
         $classDefinition->add($this->generateConstructor());
 
         $primaryBlock = new PhpBlock;
-        $primaryBlock->add(new NamespaceStatement(
-            QualifiedIdentifier::fromString($namespaceName)
-        ));
+        $primaryBlock->add(new NamespaceStatement(QualifiedIdentifier::fromString(
+            $className->parent()->toRelative()->string()
+        )));
         $primaryBlock->add($classDefinition);
 
         $syntaxTree = new SyntaxTree;

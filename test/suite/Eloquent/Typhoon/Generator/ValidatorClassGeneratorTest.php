@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Generator;
 
+use Eloquent\Cosmos\ClassName;
 use Eloquent\Typhoon\ClassMapper\ClassDefinition;
 use Eloquent\Typhoon\ClassMapper\ClassMapper;
 use Eloquent\Typhoon\Configuration\RuntimeConfiguration;
@@ -121,7 +122,7 @@ class ValidatorClassGeneratorTest extends MultiGenerationTestCase
             $className.
             'TypeCheck.php'
         ;
-        $configuration = new RuntimeConfiguration('foo');
+        $configuration = new RuntimeConfiguration(ClassName::fromString('\foo'));
         $classDefinitions = $this->_classMapper->classesByFile($classPath);
         $classDefinition = array_pop($classDefinitions);
         $expected = file_get_contents($expectedPath);
@@ -133,7 +134,8 @@ class ValidatorClassGeneratorTest extends MultiGenerationTestCase
     public function testGenerateFromSource()
     {
         $configuration = new RuntimeConfiguration;
-        $classDefinition = new ClassDefinition('Foo');
+        $classDefinition = new ClassDefinition(ClassName::fromString('\Foo'));
+        $generatedClassName = ClassName::fromString('\qux');
         Phake::when($this->_classMapper)
             ->classBySource(Phake::anyParameters())
             ->thenReturn($classDefinition)
@@ -146,27 +148,27 @@ class ValidatorClassGeneratorTest extends MultiGenerationTestCase
             ->generate(
                 $this->identicalTo($configuration),
                 $this->identicalTo($classDefinition),
-                Phake::setReference('baz'),
-                Phake::setReference('qux')
+                Phake::setReference($generatedClassName)
             )
             ->thenReturn('doom')
         ;
+        $sourceClassName = ClassName::fromString('splat');
         $actual = $this->_generator->generateFromSource(
             $configuration,
-            'splat',
+            $sourceClassName,
             'ping',
-            $namespaceName,
             $className
         );
 
         $this->assertSame('doom', $actual);
-        $this->assertSame('baz', $namespaceName);
-        $this->assertSame('qux', $className);
-        Phake::verify($this->_classMapper)->classBySource('splat', 'ping');
+        $this->assertSame($generatedClassName, $className);
+        Phake::verify($this->_classMapper)->classBySource(
+            $this->identicalTo($sourceClassName),
+            'ping'
+        );
         Phake::verify($this->_generator)->generate(
             $this->identicalTo($configuration),
             $this->identicalTo($classDefinition),
-            null,
             null
         );
     }
@@ -174,6 +176,8 @@ class ValidatorClassGeneratorTest extends MultiGenerationTestCase
     public function testGenerateFromFile()
     {
         $configuration = new RuntimeConfiguration;
+        $sourceClassName = ClassName::fromString('baz');
+        $generatedClassName = ClassName::fromString('\qux');
         Phake::when($this->_isolator)
             ->file_get_contents(Phake::anyParameters())
             ->thenReturn('foo')
@@ -185,30 +189,26 @@ class ValidatorClassGeneratorTest extends MultiGenerationTestCase
         Phake::when($this->_generator)
             ->generateFromSource(
                 $this->identicalTo($configuration),
-                'baz',
+                $this->identicalTo($sourceClassName),
                 'foo',
-                Phake::setReference('qux'),
-                Phake::setReference('doom')
+                Phake::setReference($generatedClassName)
             )
             ->thenReturn('splat')
         ;
         $actual = $this->_generator->generateFromFile(
             $configuration,
-            'baz',
+            $sourceClassName,
             'pip',
-            $namespaceName,
             $className
         );
 
         $this->assertSame('splat', $actual);
-        $this->assertSame('qux', $namespaceName);
-        $this->assertSame('doom', $className);
+        $this->assertSame($generatedClassName, $className);
         Phake::verify($this->_isolator)->file_get_contents('pip');
         Phake::verify($this->_generator)->generateFromSource(
             $this->identicalTo($configuration),
-            'baz',
+            $this->identicalTo($sourceClassName),
             'foo',
-            null,
             null
         );
     }
@@ -216,6 +216,7 @@ class ValidatorClassGeneratorTest extends MultiGenerationTestCase
     public function testGenerateFromClass()
     {
         $configuration = new RuntimeConfiguration;
+        $generatedClassName = ClassName::fromString('\qux');
         $class = Phake::mock('ReflectionClass');
         Phake::when($class)->getName()->thenReturn('foo');
         Phake::when($class)->getFileName()->thenReturn('bar');
@@ -226,30 +227,26 @@ class ValidatorClassGeneratorTest extends MultiGenerationTestCase
         Phake::when($this->_generator)
             ->generateFromFile(
                 $this->identicalTo($configuration),
-                'foo',
+                ClassName::fromString('\foo'),
                 'bar',
-                Phake::setReference('qux'),
-                Phake::setReference('doom')
+                Phake::setReference($generatedClassName)
             )
             ->thenReturn('splat')
         ;
         $actual = $this->_generator->generateFromClass(
             $configuration,
             $class,
-            $namespaceName,
             $className
         );
 
         $this->assertSame('splat', $actual);
-        $this->assertSame('qux', $namespaceName);
-        $this->assertSame('doom', $className);
+        $this->assertSame($generatedClassName, $className);
         Phake::verify($class)->getName();
         Phake::verify($class)->getFileName();
         Phake::verify($this->_generator)->generateFromFile(
             $this->identicalTo($configuration),
-            'foo',
+            ClassName::fromString('\foo'),
             'bar',
-            null,
             null
         );
     }

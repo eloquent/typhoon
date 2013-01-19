@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Generator;
 
+use Eloquent\Cosmos\ClassName;
 use Eloquent\Liberator\Liberator;
 use Eloquent\Typhoon\ClassMapper\ClassDefinition;
 use Eloquent\Typhoon\Configuration\Configuration;
@@ -122,8 +123,7 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
             ->generate(
                 $this->identicalTo($configuration),
                 $this->identicalTo($classDefinitionA),
-                Phake::setReference('Namespace\Name\A'),
-                Phake::setReference('Class_Name_A')
+                Phake::setReference(ClassName::fromString('\Namespace\Name\A\Class_Name_A'))
             )
             ->thenReturn('A source')
         ;
@@ -131,24 +131,21 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
             ->generate(
                 $this->identicalTo($configuration),
                 $this->identicalTo($classDefinitionB),
-                Phake::setReference('Namespace\Name\B'),
-                Phake::setReference('Class_Name_B')
+                Phake::setReference(ClassName::fromString('\Namespace\Name\B\Class_Name_B'))
             )
             ->thenReturn('B source')
         ;
         Phake::when($this->_staticClassGeneratorA)
             ->generate(
                 $this->identicalTo($configuration),
-                Phake::setReference('Namespace\Name'),
-                Phake::setReference('Static_Class_A')
+                Phake::setReference(ClassName::fromString('\Namespace\Name\Static_Class_A'))
             )
             ->thenReturn('Static class A source')
         ;
         Phake::when($this->_staticClassGeneratorB)
             ->generate(
                 $this->identicalTo($configuration),
-                Phake::setReference('Namespace\Name'),
-                Phake::setReference('Static_Class_B')
+                Phake::setReference(ClassName::fromString('\Namespace\Name\Static_Class_B'))
             )
             ->thenReturn('Static class B source')
         ;
@@ -166,7 +163,6 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
             Phake::verify($this->_validatorClassGenerator)->generate(
                 $this->identicalTo($configuration),
                 $this->identicalTo($classDefinitionA),
-                null,
                 null
             ),
             Phake::verify($this->_isolator)->is_dir('foo/Namespace/Name/A/Class/Name'),
@@ -177,7 +173,6 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
             Phake::verify($this->_validatorClassGenerator)->generate(
                 $this->identicalTo($configuration),
                 $this->identicalTo($classDefinitionB),
-                null,
                 null
             ),
             Phake::verify($this->_isolator)->is_dir('foo/Namespace/Name/B/Class/Name'),
@@ -215,10 +210,10 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
 
     public function testBuildClassMap()
     {
-        $classDefinitionA = new ClassDefinition('A');
-        $classDefinitionB = new ClassDefinition('B');
-        $classDefinitionC = new ClassDefinition('C');
-        $classDefinitionD = new ClassDefinition('D');
+        $classDefinitionA = new ClassDefinition(ClassName::fromString('A'));
+        $classDefinitionB = new ClassDefinition(ClassName::fromString('B'));
+        $classDefinitionC = new ClassDefinition(ClassName::fromString('C'));
+        $classDefinitionD = new ClassDefinition(ClassName::fromString('D'));
         Phake::when($this->_classMapper)
             ->classesByPath(Phake::anyParameters())
             ->thenReturn(array(
@@ -242,12 +237,11 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
 
     public function testPSRPath()
     {
-        $namespaceName = 'Foo\Bar_Baz\Qux';
-        $className = 'Doom_Splat_Pip';
+        $className = ClassName::fromString('Foo\Bar_Baz\Qux\Doom_Splat_Pip');
 
         $this->assertSame(
             'Foo/Bar_Baz/Qux/Doom/Splat/Pip.php',
-            Liberator::liberate($this->_generator)->PSRPath($namespaceName, $className)
+            Liberator::liberate($this->_generator)->PSRPath($className)
         );
     }
 }

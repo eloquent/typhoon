@@ -7,18 +7,9 @@ class UndefinedClassExceptionTypeCheck extends \Eloquent\Typhoon\TypeCheck\Abstr
     {
         $argumentCount = \count($arguments);
         if ($argumentCount < 1) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('className', 0, 'string');
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('className', 0, 'Eloquent\\Cosmos\\ClassName');
         } elseif ($argumentCount > 2) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(2, $arguments[2]);
-        }
-        $value = $arguments[0];
-        if (!\is_string($value)) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
-                'className',
-                0,
-                $arguments[0],
-                'string'
-            );
         }
     }
 

@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\ClassMapper\Exception;
 
+use Eloquent\Cosmos\ClassName;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Exception;
 use LogicException;
@@ -18,10 +19,10 @@ use LogicException;
 final class UndefinedClassException extends LogicException
 {
     /**
-     * @param string         $className
+     * @param ClassName      $className
      * @param Exception|null $previous
      */
-    public function __construct($className, Exception $previous = null)
+    public function __construct(ClassName $className, Exception $previous = null)
     {
         $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
         $this->className = $className;
@@ -29,7 +30,7 @@ final class UndefinedClassException extends LogicException
         parent::__construct(
             sprintf(
                 "Undefined class '%'.",
-                $this->className
+                $className->string()
             ),
             0,
             $previous
@@ -37,7 +38,7 @@ final class UndefinedClassException extends LogicException
     }
 
     /**
-     * @return string
+     * @return ClassName
      */
     public function className()
     {

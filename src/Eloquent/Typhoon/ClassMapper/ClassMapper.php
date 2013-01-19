@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\ClassMapper;
 
+use Eloquent\Cosmos\ClassName;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use FilesystemIterator;
 use Icecave\Isolator\Isolator;
@@ -101,9 +102,7 @@ class ClassMapper
                         $usedClasses = array();
                         break;
                     case T_USE:
-                        $usedClass = $this->parseUsedClass($tokens);
-                        list($usedClassName, $usedClassAlias) = $usedClass;
-                        $usedClasses[$usedClassName] = $usedClassAlias;
+                        $usedClasses[] = $this->parseUsedClass($tokens);
                         break;
                     case T_CLASS:
                         $classDefinitions[] = $this->parseClassDefinition(
@@ -120,18 +119,18 @@ class ClassMapper
     }
 
     /**
-     * @param string $className
-     * @param string $source
+     * @param ClassName $className
+     * @param string    $source
      *
      * @return ClassDefinition
      * @throws Exception\UndefinedClassException
      */
-    public function classBySource($className, $source)
+    public function classBySource(ClassName $className, $source)
     {
         $this->typeCheck->classBySource(func_get_args());
 
         foreach ($this->classesBySource($source) as $classDefinition) {
-            if ($classDefinition->canonicalClassName() === $className) {
+            if ($classDefinition->className()->string() === $className->toAbsolute()->string()) {
                 return $classDefinition;
             }
         }
@@ -142,22 +141,19 @@ class ClassMapper
     /**
      * @param array<string|array> &$tokens
      *
-     * @return string
+     * @return ClassName
      */
     protected function parseNamespaceName(array &$tokens)
     {
         $this->typeCheck->parseNamespaceName(func_get_args());
 
-        $namespaceName = '';
+        $namespaceAtoms = array();
         do {
             $token = next($tokens);
 
             switch ($token[0]) {
                 case T_STRING:
-                    $namespaceName .= $token[1];
-                    break;
-                case T_NS_SEPARATOR:
-                    $namespaceName .= '\\';
+                    $namespaceAtoms[] = $token[1];
                     break;
             }
         } while (
@@ -166,19 +162,21 @@ class ClassMapper
             || T_WHITESPACE === $token[0]
         );
 
-        return $namespaceName;
+        return ClassName::fromAtoms($namespaceAtoms, true);
     }
 
     /**
      * @param array<string|array> &$tokens
      *
-     * @return tuple<string,string|null>
+     * @return array<ClassName>
      */
     protected function parseUsedClass(array &$tokens)
     {
         $this->typeCheck->parseUsedClass(func_get_args());
 
-        $usedClass = null;
+        $usedClassTuple = array();
+        $usedClassAtoms = array();
+
         $token = next($tokens);
         while (
             is_array($token) && (
@@ -187,22 +185,19 @@ class ClassMapper
                 T_WHITESPACE === $token[0]
             )
         ) {
-            if (T_WHITESPACE !== $token[0]) {
-                if (null === $usedClass) {
-                    $usedClass = array('', null);
-                }
-
-                $usedClass[0] .= $token[1];
+            if (T_STRING === $token[0]) {
+                $usedClassAtoms[] .= $token[1];
             }
 
             $token = next($tokens);
         }
+        $usedClassTuple[] = ClassName::fromAtoms($usedClassAtoms, true);
 
         if (
             !is_array($token) ||
             T_AS !== $token[0]
         ) {
-            return $usedClass;
+            return $usedClassTuple;
         }
 
         $token = next($tokens);
@@ -217,20 +212,20 @@ class ClassMapper
             is_array($token) &&
             T_STRING === $token[0]
         ) {
-            $usedClass[1] = $token[1];
+            $usedClassTuple[] = ClassName::fromAtoms(array($token[1]), false);
         }
 
-        return $usedClass;
+        return $usedClassTuple;
     }
 
     /**
-     * @param array<string|array>       &$tokens
-     * @param string|null               $namespaceName
-     * @param array<string,string|null> $usedClasses
+     * @param array<string|array>     &$tokens
+     * @param ClassName|null          $namespaceName
+     * @param array<array<ClassName>> $usedClasses
      *
      * @return ClassDefinition
      */
-    protected function parseClassDefinition(array &$tokens, $namespaceName, array $usedClasses)
+    protected function parseClassDefinition(array &$tokens, ClassName $namespaceName = null, array $usedClasses)
     {
         $this->typeCheck->parseClassDefinition(func_get_args());
 
@@ -293,9 +288,12 @@ class ClassMapper
             }
         }
 
+        if (null !== $namespaceName) {
+            $className = $namespaceName->join($className);
+        }
+
         return new ClassDefinition(
             $className,
-            $namespaceName,
             $usedClasses,
             $methods,
             $properties
@@ -352,10 +350,10 @@ class ClassMapper
     /**
      * @param tuple<integer,string,integer> $token
      * @param array<string|array>           &$tokens
-     * @param AccessModifier $accessModifier
-     * @param boolean        $isStatic
-     * @param string         $source
-     * @param integer        $lineNumber
+     * @param AccessModifier                $accessModifier
+     * @param boolean                       $isStatic
+     * @param string                        $source
+     * @param integer                       $lineNumber
      *
      * @return PropertyDefinition
      */
@@ -391,10 +389,10 @@ class ClassMapper
     /**
      * @param tuple<integer,string,integer> $token
      * @param array<string|array>           &$tokens
-     * @param AccessModifier $accessModifier
-     * @param boolean        $isStatic
-     * @param string         $source
-     * @param integer        $lineNumber
+     * @param AccessModifier                $accessModifier
+     * @param boolean                       $isStatic
+     * @param string                        $source
+     * @param integer                       $lineNumber
      *
      * @return MethodDefinition
      */
@@ -443,7 +441,7 @@ class ClassMapper
     /**
      * @param array<string|array> &$tokens
      *
-     * @return string
+     * @return ClassName
      */
     protected function parseClassName(array &$tokens)
     {
@@ -453,7 +451,7 @@ class ClassMapper
             $token = $this->normalizeToken(next($tokens));
         } while (T_WHITESPACE === $token[0]);
 
-        return $token[1];
+        return ClassName::fromAtoms(array($token[1]), false);
     }
 
     /**

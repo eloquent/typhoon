@@ -52,10 +52,8 @@ class UnexpectedArgumentValueExceptionGeneratorTest extends MultiGenerationTestC
 
         $this->assertSame($expected, $this->_generator->generate(
             $configuration,
-            $namespaceName,
             $className
         ));
-        $this->assertSame('Typhoon\Exception', $namespaceName);
-        $this->assertSame('UnexpectedArgumentValueException', $className);
+        $this->assertSame('\Typhoon\Exception\UnexpectedArgumentValueException', $className->string());
     }
 }

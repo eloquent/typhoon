@@ -29,18 +29,9 @@ class ParameterListGeneratorTypeCheck extends \Eloquent\Typhoon\TypeCheck\Abstra
     {
         $argumentCount = \count($arguments);
         if ($argumentCount < 1) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('validatorNamespace', 0, 'string');
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('validatorNamespace', 0, 'Eloquent\\Cosmos\\ClassName');
         } elseif ($argumentCount > 1) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
-        }
-        $value = $arguments[0];
-        if (!\is_string($value)) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
-                'validatorNamespace',
-                0,
-                $arguments[0],
-                'string'
-            );
         }
     }
 

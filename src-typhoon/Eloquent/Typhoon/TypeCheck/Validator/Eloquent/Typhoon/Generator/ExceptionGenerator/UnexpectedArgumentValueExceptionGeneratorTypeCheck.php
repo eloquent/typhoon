@@ -23,28 +23,17 @@ class UnexpectedArgumentValueExceptionGeneratorTypeCheck extends \Eloquent\Typho
         $argumentCount = \count($arguments);
         if ($argumentCount < 1) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('configuration', 0, 'Eloquent\\Typhoon\\Configuration\\RuntimeConfiguration');
-        } elseif ($argumentCount > 3) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(3, $arguments[3]);
+        } elseif ($argumentCount > 2) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(2, $arguments[2]);
         }
         if ($argumentCount > 1) {
             $value = $arguments[1];
-            if (!(\is_string($value) || $value === null)) {
-                throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
-                    'namespaceName',
-                    1,
-                    $arguments[1],
-                    'string|null'
-                );
-            }
-        }
-        if ($argumentCount > 2) {
-            $value = $arguments[2];
-            if (!(\is_string($value) || $value === null)) {
+            if (!($value === null)) {
                 throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
                     'className',
-                    2,
-                    $arguments[2],
-                    'string|null'
+                    1,
+                    $arguments[1],
+                    'null'
                 );
             }
         }
@@ -55,28 +44,17 @@ class UnexpectedArgumentValueExceptionGeneratorTypeCheck extends \Eloquent\Typho
         $argumentCount = \count($arguments);
         if ($argumentCount < 1) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('configuration', 0, 'Eloquent\\Typhoon\\Configuration\\RuntimeConfiguration');
-        } elseif ($argumentCount > 3) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(3, $arguments[3]);
+        } elseif ($argumentCount > 2) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(2, $arguments[2]);
         }
         if ($argumentCount > 1) {
             $value = $arguments[1];
-            if (!(\is_string($value) || $value === null)) {
-                throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
-                    'namespaceName',
-                    1,
-                    $arguments[1],
-                    'string|null'
-                );
-            }
-        }
-        if ($argumentCount > 2) {
-            $value = $arguments[2];
-            if (!(\is_string($value) || $value === null)) {
+            if (!($value === null)) {
                 throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
                     'className',
-                    2,
-                    $arguments[2],
-                    'string|null'
+                    1,
+                    $arguments[1],
+                    'null'
                 );
             }
         }

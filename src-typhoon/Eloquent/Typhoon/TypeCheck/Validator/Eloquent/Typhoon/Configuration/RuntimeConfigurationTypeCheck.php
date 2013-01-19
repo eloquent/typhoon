@@ -9,17 +9,6 @@ class RuntimeConfigurationTypeCheck extends \Eloquent\Typhoon\TypeCheck\Abstract
         if ($argumentCount > 2) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(2, $arguments[2]);
         }
-        if ($argumentCount > 0) {
-            $value = $arguments[0];
-            if (!(\is_string($value) || $value === null)) {
-                throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
-                    'validatorNamespace',
-                    0,
-                    $arguments[0],
-                    'string|null'
-                );
-            }
-        }
         if ($argumentCount > 1) {
             $value = $arguments[1];
             if (!(\is_bool($value) || $value === null)) {
@@ -37,18 +26,9 @@ class RuntimeConfigurationTypeCheck extends \Eloquent\Typhoon\TypeCheck\Abstract
     {
         $argumentCount = \count($arguments);
         if ($argumentCount < 1) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('validatorNamespace', 0, 'string');
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('validatorNamespace', 0, 'Eloquent\\Cosmos\\ClassName');
         } elseif ($argumentCount > 1) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
-        }
-        $value = $arguments[0];
-        if (!\is_string($value)) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
-                'validatorNamespace',
-                0,
-                $arguments[0],
-                'string'
-            );
         }
     }
 

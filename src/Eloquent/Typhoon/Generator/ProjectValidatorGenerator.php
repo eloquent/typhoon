@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Generator;
 
+use Eloquent\Cosmos\ClassName;
 use Eloquent\Typhoon\ClassMapper\ClassMapper;
 use Eloquent\Typhoon\Configuration\Configuration;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
@@ -106,19 +107,16 @@ class ProjectValidatorGenerator
 
         $sourcePaths = $configuration->sourcePaths();
         foreach ($this->buildClassMap($sourcePaths) as $classDefinition) {
-            $namespaceName = null;
             $className = null;
             $source = $this->validatorClassGenerator()->generate(
                 $configuration,
                 $classDefinition,
-                $namespaceName,
                 $className
             );
 
             $this->isolator->file_put_contents(
                 $this->prepareOutputPath(
                     $configuration,
-                    $namespaceName,
                     $className
                 ),
                 $source
@@ -134,16 +132,15 @@ class ProjectValidatorGenerator
         $this->typeCheck->generateStaticClasses(func_get_args());
 
         foreach ($this->staticClassGenerators() as $generator) {
+            $className = null;
             $source = $generator->generate(
                 $configuration,
-                $namespaceName,
                 $className
             );
 
             $this->isolator->file_put_contents(
                 $this->prepareOutputPath(
                     $configuration,
-                    $namespaceName,
                     $className
                 ),
                 $source
@@ -175,19 +172,17 @@ class ProjectValidatorGenerator
 
     /**
      * @param Configuration $configuration
-     * @param string        $namespaceName
-     * @param string        $className
+     * @param ClassName     $className
      *
      * @return string
      */
     protected function prepareOutputPath(
         Configuration $configuration,
-        $namespaceName,
-        $className
+        ClassName $className
     ) {
         $this->typeCheck->prepareOutputPath(func_get_args());
 
-        $path = $this->outputPath($configuration, $namespaceName, $className);
+        $path = $this->outputPath($configuration, $className);
         $parentPath = dirname($path);
         if (!$this->isolator->is_dir($parentPath)) {
             $this->isolator->mkdir($parentPath, 0777, true);
@@ -198,39 +193,36 @@ class ProjectValidatorGenerator
 
     /**
      * @param Configuration $configuration
-     * @param string        $namespaceName
-     * @param string        $className
+     * @param ClassName     $className
      *
      * @return string
      */
     protected function outputPath(
         Configuration $configuration,
-        $namespaceName,
-        $className
+        ClassName $className
     ) {
         $this->typeCheck->outputPath(func_get_args());
 
         return sprintf(
-            '%s/%s',
+            '%s%s',
             $configuration->outputPath(),
-            $this->PSRPath($namespaceName, $className)
+            $this->PSRPath($className)
         );
     }
 
     /**
-     * @param string $namespaceName
-     * @param string $className
+     * @param ClassName $className
      *
      * @return string
      */
-    protected function PSRPath($namespaceName, $className)
+    protected function PSRPath(ClassName $className)
     {
         $this->typeCheck->PSRPath(func_get_args());
 
         return
-            str_replace('\\', '/', $namespaceName).
+            str_replace('\\', '/', $className->parent()->string()).
             '/'.
-            str_replace('_', '/', $className).
+            str_replace('_', '/', $className->shortName()->string()).
             '.php'
         ;
     }

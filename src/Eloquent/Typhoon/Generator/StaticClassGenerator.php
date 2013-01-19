@@ -17,14 +17,12 @@ interface StaticClassGenerator
 {
     /**
      * @param RuntimeConfiguration $configuration
-     * @param string|null &$namespaceName
-     * @param string|null &$className
+     * @param null                 &$className
      *
      * @return string
      */
     public function generate(
         RuntimeConfiguration $configuration,
-        &$namespaceName = null,
         &$className = null
     );
 }

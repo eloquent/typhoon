@@ -7,57 +7,45 @@ class ClassDefinitionTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValid
     {
         $argumentCount = \count($arguments);
         if ($argumentCount < 1) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('className', 0, 'string');
-        } elseif ($argumentCount > 5) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(5, $arguments[5]);
-        }
-        $value = $arguments[0];
-        if (!\is_string($value)) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
-                'className',
-                0,
-                $arguments[0],
-                'string'
-            );
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('className', 0, 'Eloquent\\Cosmos\\ClassName');
+        } elseif ($argumentCount > 4) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(4, $arguments[4]);
         }
         if ($argumentCount > 1) {
             $value = $arguments[1];
-            if (!(\is_string($value) || $value === null)) {
-                throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
-                    'namespaceName',
-                    1,
-                    $arguments[1],
-                    'string|null'
-                );
-            }
-        }
-        if ($argumentCount > 2) {
-            $value = $arguments[2];
             $check = function ($value) {
                 if (!\is_array($value)) {
                     return false;
                 }
-                foreach ($value as $key => $subValue) {
-                    if (!\is_string($key)) {
+                $valueCheck = function ($subValue) {
+                    if (!\is_array($subValue)) {
                         return false;
                     }
-                    if (!(\is_string($subValue) || $subValue === null)) {
+                    foreach ($subValue as $key => $subValue) {
+                        if (!$subValue instanceof \Eloquent\Cosmos\ClassName) {
+                            return false;
+                        }
+                    }
+                    return true;
+                };
+                foreach ($value as $key => $subValue) {
+                    if (!$valueCheck($subValue)) {
                         return false;
                     }
                 }
                 return true;
             };
-            if (!$check($arguments[2])) {
+            if (!$check($arguments[1])) {
                 throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
                     'usedClasses',
-                    2,
-                    $arguments[2],
-                    'array<string, string|null>'
+                    1,
+                    $arguments[1],
+                    'array<array<Eloquent\\Cosmos\\ClassName>>'
                 );
             }
         }
-        if ($argumentCount > 3) {
-            $value = $arguments[3];
+        if ($argumentCount > 2) {
+            $value = $arguments[2];
             $check = function ($value) {
                 if (!\is_array($value)) {
                     return false;
@@ -69,17 +57,17 @@ class ClassDefinitionTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValid
                 }
                 return true;
             };
-            if (!$check($arguments[3])) {
+            if (!$check($arguments[2])) {
                 throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
                     'methods',
-                    3,
-                    $arguments[3],
+                    2,
+                    $arguments[2],
                     'array<Eloquent\\Typhoon\\ClassMapper\\MethodDefinition>'
                 );
             }
         }
-        if ($argumentCount > 4) {
-            $value = $arguments[4];
+        if ($argumentCount > 3) {
+            $value = $arguments[3];
             $check = function ($value) {
                 if (!\is_array($value)) {
                     return false;
@@ -91,11 +79,11 @@ class ClassDefinitionTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValid
                 }
                 return true;
             };
-            if (!$check($arguments[4])) {
+            if (!$check($arguments[3])) {
                 throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
                     'properties',
-                    4,
-                    $arguments[4],
+                    3,
+                    $arguments[3],
                     'array<Eloquent\\Typhoon\\ClassMapper\\PropertyDefinition>'
                 );
             }
@@ -103,20 +91,6 @@ class ClassDefinitionTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValid
     }
 
     public function className(array $arguments)
-    {
-        if (\count($arguments) > 0) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(0, $arguments[0]);
-        }
-    }
-
-    public function canonicalClassName(array $arguments)
-    {
-        if (\count($arguments) > 0) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(0, $arguments[0]);
-        }
-    }
-
-    public function namespaceName(array $arguments)
     {
         if (\count($arguments) > 0) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(0, $arguments[0]);

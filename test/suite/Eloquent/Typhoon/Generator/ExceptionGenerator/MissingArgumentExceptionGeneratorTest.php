@@ -52,10 +52,8 @@ class MissingArgumentExceptionGeneratorTest extends MultiGenerationTestCase
 
         $this->assertSame($expected, $this->_generator->generate(
             $configuration,
-            $namespaceName,
             $className
         ));
-        $this->assertSame('Typhoon\Exception', $namespaceName);
-        $this->assertSame('MissingArgumentException', $className);
+        $this->assertSame('\Typhoon\Exception\MissingArgumentException', $className->string());
     }
 }

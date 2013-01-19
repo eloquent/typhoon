@@ -11,21 +11,22 @@
 
 namespace Eloquent\Typhoon\Configuration;
 
+use Eloquent\Cosmos\ClassName;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 
 class RuntimeConfiguration
 {
     /**
-     * @param string|null  $validatorNamespace
+     * @param ClassName|null  $validatorNamespace
      * @param boolean|null $useNativeCallable
      */
     public function __construct(
-        $validatorNamespace = null,
+        ClassName $validatorNamespace = null,
         $useNativeCallable = null
     ) {
         $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
         if (null === $validatorNamespace) {
-            $validatorNamespace = 'Typhoon';
+            $validatorNamespace = ClassName::fromAtoms(array('Typhoon'), true);
         }
         if (null === $useNativeCallable) {
             $useNativeCallable = true;
@@ -36,17 +37,17 @@ class RuntimeConfiguration
     }
 
     /**
-     * @param string $validatorNamespace
+     * @param ClassName $validatorNamespace
      */
-    public function setValidatorNamespace($validatorNamespace)
+    public function setValidatorNamespace(ClassName $validatorNamespace)
     {
         $this->typeCheck->setValidatorNamespace(func_get_args());
 
-        $this->validatorNamespace = $validatorNamespace;
+        $this->validatorNamespace = $validatorNamespace->toAbsolute();
     }
 
     /**
-     * @return string
+     * @return ClassName
      */
     public function validatorNamespace()
     {

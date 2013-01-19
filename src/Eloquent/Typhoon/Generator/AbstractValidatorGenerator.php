@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Generator;
 
+use Eloquent\Cosmos\ClassName;
 use Eloquent\Typhoon\Configuration\RuntimeConfiguration;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Icecave\Pasta\AST\Expr\Assign;
@@ -67,44 +68,41 @@ class AbstractValidatorGenerator implements StaticClassGenerator
 
     /**
      * @param RuntimeConfiguration $configuration
-     * @param string|null &$namespaceName
-     * @param string|null &$className
+     * @param null                 &$className
      *
      * @return string
      */
     public function generate(
         RuntimeConfiguration $configuration,
-        &$namespaceName = null,
         &$className = null
     ) {
         $this->typeCheck->generate(func_get_args());
 
         return $this->generateSyntaxTree(
             $configuration,
-            $namespaceName,
             $className
         )->accept($this->renderer());
     }
 
     /**
      * @param RuntimeConfiguration $configuration
-     * @param string|null &$namespaceName
-     * @param string|null &$className
+     * @param null                 &$className
      *
      * @return SyntaxTree
      */
     public function generateSyntaxTree(
         RuntimeConfiguration $configuration,
-        &$namespaceName = null,
         &$className = null
     ) {
         $this->typeCheck->generateSyntaxTree(func_get_args());
 
-        $namespaceName = $configuration->validatorNamespace();
-        $className = 'AbstractValidator';
+        $className = $configuration
+            ->validatorNamespace()
+            ->joinAtoms('AbstractValidator')
+        ;
 
         $classDefinition = new ClassDefinition(
-            new Identifier($className),
+            new Identifier($className->shortName()->string()),
             ClassModifier::ABSTRACT_()
         );
         $classDefinition->add($this->generateConstructor());
@@ -113,9 +111,9 @@ class AbstractValidatorGenerator implements StaticClassGenerator
         $classDefinition->add(new Property(new Identifier('reflector')));
 
         $primaryBlock = new PhpBlock;
-        $primaryBlock->add(new NamespaceStatement(
-            QualifiedIdentifier::fromString($namespaceName)
-        ));
+        $primaryBlock->add(new NamespaceStatement(QualifiedIdentifier::fromString(
+            $className->parent()->toRelative()->string()
+        )));
         $primaryBlock->add($classDefinition);
 
         $syntaxTree = new SyntaxTree;

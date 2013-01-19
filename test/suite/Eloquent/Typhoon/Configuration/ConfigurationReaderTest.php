@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Configuration;
 
+use Eloquent\Cosmos\ClassName;
 use Eloquent\Liberator\Liberator;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use ErrorException;
@@ -167,7 +168,7 @@ class ConfigurationReaderTest extends MultiGenerationTestCase
             array('bar', 'baz')
         );
         $expected->setLoaderPaths(array('qux', 'doom'));
-        $expected->setValidatorNamespace('splat');
+        $expected->setValidatorNamespace(ClassName::fromString('splat'));
         $expected->setUseNativeCallable(false);
 
         $this->assertEquals(

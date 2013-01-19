@@ -123,99 +123,36 @@ class ProjectValidatorGeneratorTypeCheck extends \Eloquent\Typhoon\TypeCheck\Abs
     public function prepareOutputPath(array $arguments)
     {
         $argumentCount = \count($arguments);
-        if ($argumentCount < 3) {
+        if ($argumentCount < 2) {
             if ($argumentCount < 1) {
                 throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('configuration', 0, 'Eloquent\\Typhoon\\Configuration\\Configuration');
             }
-            if ($argumentCount < 2) {
-                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('namespaceName', 1, 'string');
-            }
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('className', 2, 'string');
-        } elseif ($argumentCount > 3) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(3, $arguments[3]);
-        }
-        $value = $arguments[1];
-        if (!\is_string($value)) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
-                'namespaceName',
-                1,
-                $arguments[1],
-                'string'
-            );
-        }
-        $value = $arguments[2];
-        if (!\is_string($value)) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
-                'className',
-                2,
-                $arguments[2],
-                'string'
-            );
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('className', 1, 'Eloquent\\Cosmos\\ClassName');
+        } elseif ($argumentCount > 2) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(2, $arguments[2]);
         }
     }
 
     public function outputPath(array $arguments)
     {
         $argumentCount = \count($arguments);
-        if ($argumentCount < 3) {
+        if ($argumentCount < 2) {
             if ($argumentCount < 1) {
                 throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('configuration', 0, 'Eloquent\\Typhoon\\Configuration\\Configuration');
             }
-            if ($argumentCount < 2) {
-                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('namespaceName', 1, 'string');
-            }
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('className', 2, 'string');
-        } elseif ($argumentCount > 3) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(3, $arguments[3]);
-        }
-        $value = $arguments[1];
-        if (!\is_string($value)) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
-                'namespaceName',
-                1,
-                $arguments[1],
-                'string'
-            );
-        }
-        $value = $arguments[2];
-        if (!\is_string($value)) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
-                'className',
-                2,
-                $arguments[2],
-                'string'
-            );
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('className', 1, 'Eloquent\\Cosmos\\ClassName');
+        } elseif ($argumentCount > 2) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(2, $arguments[2]);
         }
     }
 
     public function PSRPath(array $arguments)
     {
         $argumentCount = \count($arguments);
-        if ($argumentCount < 2) {
-            if ($argumentCount < 1) {
-                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('namespaceName', 0, 'string');
-            }
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('className', 1, 'string');
-        } elseif ($argumentCount > 2) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(2, $arguments[2]);
-        }
-        $value = $arguments[0];
-        if (!\is_string($value)) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
-                'namespaceName',
-                0,
-                $arguments[0],
-                'string'
-            );
-        }
-        $value = $arguments[1];
-        if (!\is_string($value)) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
-                'className',
-                1,
-                $arguments[1],
-                'string'
-            );
+        if ($argumentCount < 1) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('className', 0, 'Eloquent\\Cosmos\\ClassName');
+        } elseif ($argumentCount > 1) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
         }
     }
 

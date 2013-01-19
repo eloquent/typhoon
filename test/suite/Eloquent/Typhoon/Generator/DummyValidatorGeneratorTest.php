@@ -52,10 +52,8 @@ class DummyValidatorGeneratorTest extends MultiGenerationTestCase
 
         $this->assertSame($expected, $this->_generator->generate(
             $configuration,
-            $namespaceName,
             $className
         ));
-        $this->assertSame('Typhoon', $namespaceName);
-        $this->assertSame('DummyValidator', $className);
+        $this->assertSame('\Typhoon\DummyValidator', $className->string());
     }
 }

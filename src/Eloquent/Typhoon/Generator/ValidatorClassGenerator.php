@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Generator;
 
+use Eloquent\Cosmos\ClassName;
 use Eloquent\Typhax\Resolver\ObjectTypeClassNameResolver;
 use Eloquent\Typhoon\ClassMapper\ClassDefinition;
 use Eloquent\Typhoon\ClassMapper\ClassMapper;
@@ -130,15 +131,13 @@ class ValidatorClassGenerator
     /**
      * @param RuntimeConfiguration $configuration
      * @param ClassDefinition      $classDefinition
-     * @param string|null &$namespaceName
-     * @param string|null &$className
+     * @param null                 &$className
      *
      * @return string
      */
     public function generate(
         RuntimeConfiguration $configuration,
         ClassDefinition $classDefinition,
-        &$namespaceName = null,
         &$className = null
     ) {
         $this->typeCheck->generate(func_get_args());
@@ -146,25 +145,22 @@ class ValidatorClassGenerator
         return $this->generateSyntaxTree(
             $configuration,
             $classDefinition,
-            $namespaceName,
             $className
         )->accept($this->renderer());
     }
 
     /**
      * @param RuntimeConfiguration $configuration
-     * @param string               $sourceClassName
+     * @param ClassName            $sourceClassName
      * @param string               $source
-     * @param string|null &$namespaceName
-     * @param string|null &$className
+     * @param null                 &$className
      *
      * @return string
      */
     public function generateFromSource(
         RuntimeConfiguration $configuration,
-        $sourceClassName,
+        ClassName $sourceClassName,
         $source,
-        &$namespaceName = null,
         &$className = null
     ) {
         $this->typeCheck->generateFromSource(func_get_args());
@@ -172,25 +168,22 @@ class ValidatorClassGenerator
         return $this->generate(
             $configuration,
             $this->classMapper()->classBySource($sourceClassName, $source),
-            $namespaceName,
             $className
         );
     }
 
     /**
      * @param RuntimeConfiguration $configuration
-     * @param string               $sourceClassName
+     * @param ClassName            $sourceClassName
      * @param string               $path
-     * @param string|null &$namespaceName
-     * @param string|null &$className
+     * @param null                 &$className
      *
      * @return string
      */
     public function generateFromFile(
         RuntimeConfiguration $configuration,
-        $sourceClassName,
+        ClassName $sourceClassName,
         $path,
-        &$namespaceName = null,
         &$className = null
     ) {
         $this->typeCheck->generateFromFile(func_get_args());
@@ -201,7 +194,6 @@ class ValidatorClassGenerator
             $this->isolator->file_get_contents(
                 $path
             ),
-            $namespaceName,
             $className
         );
     }
@@ -209,24 +201,21 @@ class ValidatorClassGenerator
     /**
      * @param RuntimeConfiguration $configuration
      * @param ReflectionClass      $class
-     * @param string|null &$namespaceName
-     * @param string|null &$className
+     * @param null                 &$className
      *
      * @return string
      */
     public function generateFromClass(
         RuntimeConfiguration $configuration,
         ReflectionClass $class,
-        &$namespaceName = null,
         &$className = null
     ) {
         $this->typeCheck->generateFromClass(func_get_args());
 
         return $this->generateFromFile(
             $configuration,
-            $class->getName(),
+            ClassName::fromString($class->getName())->toAbsolute(),
             $class->getFileName(),
-            $namespaceName,
             $className
         );
     }
@@ -234,31 +223,30 @@ class ValidatorClassGenerator
     /**
      * @param RuntimeConfiguration $configuration
      * @param ClassDefinition      $classDefinition
-     * @param string|null &$namespaceName
-     * @param string|null &$className
+     * @param null                 &$className
      *
      * @return SyntaxTree
      */
     public function generateSyntaxTree(
         RuntimeConfiguration $configuration,
         ClassDefinition $classDefinition,
-        &$namespaceName = null,
         &$className = null
     ) {
         $this->typeCheck->generateSyntaxTree(func_get_args());
 
-        list($namespaceName, $className) = $this->validatorClassName(
+        $className = $this->validatorClassName(
             $configuration,
-            $classDefinition,
-            $namespaceName,
-            $className
+            $classDefinition
         );
 
         $classDefinitionASTNode = new ClassDefinitionASTNode(
-            new Identifier($className)
+            new Identifier($className->shortName()->string())
         );
         $classDefinitionASTNode->setParentName(QualifiedIdentifier::fromString(
-            sprintf('\%s\AbstractValidator', $configuration->validatorNamespace())
+            $configuration
+                ->validatorNamespace()
+                ->joinAtoms('AbstractValidator')
+                ->string()
         ));
         foreach ($this->methods($classDefinition) as $method) {
             $classDefinitionASTNode->add(
@@ -267,9 +255,9 @@ class ValidatorClassGenerator
         }
 
         $primaryBlock = new PhpBlock;
-        $primaryBlock->add(new NamespaceStatement(
-            QualifiedIdentifier::fromString($namespaceName)
-        ));
+        $primaryBlock->add(new NamespaceStatement(QualifiedIdentifier::fromString(
+            $className->parent()->toRelative()->string()
+        )));
         $primaryBlock->add($classDefinitionASTNode);
 
         $syntaxTree = new SyntaxTree;
@@ -325,7 +313,7 @@ class ValidatorClassGenerator
         $this->typeCheck->methods(func_get_args());
 
         $class = new ReflectionClass(
-            $classDefinition->canonicalClassName()
+            $classDefinition->className()->string()
         );
 
         $methods = array();
@@ -341,31 +329,30 @@ class ValidatorClassGenerator
     /**
      * @param RuntimeConfiguration $configuration
      * @param ClassDefinition      $classDefinition
-     * @param string|null          $namespaceName
-     * @param string|null          $className
      *
-     * @return tuple<string, string>
+     * @return ClassName
      */
     protected function validatorClassName(
         RuntimeConfiguration $configuration,
-        ClassDefinition $classDefinition,
-        $namespaceName = null,
-        $className = null
+        ClassDefinition $classDefinition
     ) {
         $this->typeCheck->validatorClassName(func_get_args());
 
-        $namespaceNameParts = array(
-            $configuration->validatorNamespace(),
-            'Validator',
-        );
-        if (null !== $classDefinition->namespaceName()) {
-            $namespaceNameParts[] = $classDefinition->namespaceName();
+        $classNameAtoms = $configuration->validatorNamespace()->atoms();
+        $classNameAtoms[] = 'Validator';
+        if ($classDefinition->className()->hasParent()) {
+            $classNameAtoms = array_merge(
+                $classNameAtoms,
+                $classDefinition->className()->parent()->atoms()
+            );
         }
 
-        return array(
-            implode('\\', $namespaceNameParts),
-            sprintf('%sTypeCheck', $classDefinition->className()),
+        $classNameAtoms[] = sprintf(
+            '%sTypeCheck',
+            $classDefinition->className()->shortName()->string()
         );
+
+        return ClassName::fromAtoms($classNameAtoms, true);
     }
 
     /**

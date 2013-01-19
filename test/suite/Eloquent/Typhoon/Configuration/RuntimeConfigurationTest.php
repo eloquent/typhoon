@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Configuration;
 
+use Eloquent\Cosmos\ClassName;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 
 class RuntimeConfigurationTest extends MultiGenerationTestCase
@@ -19,15 +20,16 @@ class RuntimeConfigurationTest extends MultiGenerationTestCase
     {
         parent::setUp();
 
+        $this->_validatorNamespace = ClassName::fromString('\foo');
         $this->_configuration = new RuntimeConfiguration(
-            'foo',
+            $this->_validatorNamespace,
             false
         );
     }
 
     public function testConstructor()
     {
-        $this->assertSame('foo', $this->_configuration->validatorNamespace());
+        $this->assertSame($this->_validatorNamespace, $this->_configuration->validatorNamespace());
         $this->assertFalse($this->_configuration->useNativeCallable());
     }
 
@@ -35,15 +37,23 @@ class RuntimeConfigurationTest extends MultiGenerationTestCase
     {
         $this->_configuration = new RuntimeConfiguration;
 
-        $this->assertSame('Typhoon', $this->_configuration->validatorNamespace());
+        $this->assertSame('\Typhoon', $this->_configuration->validatorNamespace()->string());
         $this->assertTrue($this->_configuration->useNativeCallable());
     }
 
     public function testSetValidatorNamespace()
     {
-        $this->_configuration->setValidatorNamespace('bar');
+        $this->_validatorNamespace = ClassName::fromString('\foo');
+        $this->_configuration->setValidatorNamespace($this->_validatorNamespace);
 
-        $this->assertSame('bar', $this->_configuration->validatorNamespace());
+        $this->assertSame($this->_validatorNamespace, $this->_configuration->validatorNamespace());
+    }
+
+    public function testSetValidatorNamespaceNormalization()
+    {
+        $this->_configuration->setValidatorNamespace(ClassName::fromString('bar'));
+
+        $this->assertSame('\bar', $this->_configuration->validatorNamespace()->string());
     }
 
     public function testSetUseNativeCallable()

@@ -11,35 +11,43 @@
 
 namespace Eloquent\Typhoon\ClassMapper;
 
+use Eloquent\Cosmos\ClassName;
 use Eloquent\Cosmos\ClassNameResolver;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 
 class ClassDefinition
 {
     /**
-     * @param string                    $className
-     * @param string|null               $namespaceName
-     * @param array<string,string|null> $usedClasses
+     * @param ClassName                 $className
+     * @param array<array<ClassName>>   $usedClasses
      * @param array<MethodDefinition>   $methods
      * @param array<PropertyDefinition> $properties
      */
     public function __construct(
-        $className,
-        $namespaceName = null,
+        ClassName $className,
         array $usedClasses = array(),
         array $methods = array(),
         array $properties = array()
     ) {
         $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
-        $this->className = $className;
-        $this->namespaceName = $namespaceName;
-        $this->usedClasses = $usedClasses;
+        $this->className = $className->toAbsolute();
         $this->methods = $methods;
         $this->properties = $properties;
+
+        if ($className->hasParent()) {
+            $namespaceName = $className->parent();
+        } else {
+            $namespaceName = null;
+        }
+
+        $this->classNameResolver = new ClassNameResolver(
+            $namespaceName,
+            $usedClasses
+        );
     }
 
     /**
-     * @return string
+     * @return ClassName
      */
     public function className()
     {
@@ -49,35 +57,13 @@ class ClassDefinition
     }
 
     /**
-     * @return string
-     */
-    public function canonicalClassName()
-    {
-        $this->typeCheck->canonicalClassName(func_get_args());
-
-        return $this->classNameResolver()->resolve(
-            $this->className()
-        );
-    }
-
-    /**
-     * @return string|null
-     */
-    public function namespaceName()
-    {
-        $this->typeCheck->namespaceName(func_get_args());
-
-        return $this->namespaceName;
-    }
-
-    /**
-     * @return array<string,string|null>
+     * @return array<array<ClassName>>
      */
     public function usedClasses()
     {
         $this->typeCheck->usedClasses(func_get_args());
 
-        return $this->usedClasses;
+        return $this->classNameResolver()->usedClasses();
     }
 
     /**
@@ -107,15 +93,11 @@ class ClassDefinition
     {
         $this->typeCheck->classNameResolver(func_get_args());
 
-        return new ClassNameResolver(
-            $this->namespaceName(),
-            $this->usedClasses()
-        );
+        return $this->classNameResolver;
     }
 
     private $className;
-    private $namespaceName;
-    private $usedClasses;
+    private $classNameResolver;
     private $methods;
     private $properties;
     private $typeCheck;

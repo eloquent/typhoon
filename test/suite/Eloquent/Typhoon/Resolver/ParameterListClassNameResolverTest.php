@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Resolver;
 
+use Eloquent\Cosmos\ClassName;
 use Eloquent\Cosmos\ClassNameResolver;
 use Eloquent\Typhax\Resolver\ObjectTypeClassNameResolver;
 use Eloquent\Typhax\Type\ObjectType;
@@ -25,9 +26,12 @@ class ParameterListClassNameResolverTest extends MultiGenerationTestCase
         parent::setUp();
 
         $this->_classNameResolver = new ClassNameResolver(
-            'Foo\Bar\Baz',
+            ClassName::fromString('\Foo\Bar\Baz'),
             array(
-                'Qux\Doom\Splat' => 'Pip',
+                array(
+                    ClassName::fromString('\Qux\Doom\Splat'),
+                    ClassName::fromString('Pip'),
+                ),
             )
         );
         $this->_typeResolver = new ObjectTypeClassNameResolver(
@@ -43,14 +47,14 @@ class ParameterListClassNameResolverTest extends MultiGenerationTestCase
         $list = new ParameterList(array(
             new Parameter(
                 'foo',
-                new ObjectType('Spam'),
+                new ObjectType(ClassName::fromString('Spam')),
                 'Foo description',
                 false,
                 true
             ),
             new Parameter(
                 'bar',
-                new ObjectType('Pip'),
+                new ObjectType(ClassName::fromString('Pip')),
                 'Bar description',
                 true,
                 false
@@ -59,14 +63,14 @@ class ParameterListClassNameResolverTest extends MultiGenerationTestCase
         $expected = new ParameterList(array(
             new Parameter(
                 'foo',
-                new ObjectType('Foo\Bar\Baz\Spam'),
+                new ObjectType(ClassName::fromString('\Foo\Bar\Baz\Spam')),
                 'Foo description',
                 false,
                 true
             ),
             new Parameter(
                 'bar',
-                new ObjectType('Qux\Doom\Splat'),
+                new ObjectType(ClassName::fromString('\Qux\Doom\Splat')),
                 'Bar description',
                 true,
                 false
@@ -82,14 +86,14 @@ class ParameterListClassNameResolverTest extends MultiGenerationTestCase
             array(
                 new Parameter(
                     'foo',
-                    new ObjectType('Spam'),
+                    new ObjectType(ClassName::fromString('Spam')),
                     'Foo description',
                     false,
                     true
                 ),
                 new Parameter(
                     'bar',
-                    new ObjectType('Pip'),
+                    new ObjectType(ClassName::fromString('Pip')),
                     'Bar description',
                     true,
                     false
@@ -101,14 +105,14 @@ class ParameterListClassNameResolverTest extends MultiGenerationTestCase
             array(
                 new Parameter(
                     'foo',
-                    new ObjectType('Foo\Bar\Baz\Spam'),
+                    new ObjectType(ClassName::fromString('\Foo\Bar\Baz\Spam')),
                     'Foo description',
                     false,
                     true
                 ),
                 new Parameter(
                     'bar',
-                    new ObjectType('Qux\Doom\Splat'),
+                    new ObjectType(ClassName::fromString('\Qux\Doom\Splat')),
                     'Bar description',
                     true,
                     false

@@ -12,6 +12,7 @@
 namespace Eloquent\Typhoon\Generator;
 
 use ArrayIterator;
+use Eloquent\Cosmos\ClassName;
 use Eloquent\Typhax\Type\AndType;
 use Eloquent\Typhax\Type\ArrayType;
 use Eloquent\Typhax\Type\BooleanType;
@@ -92,8 +93,8 @@ class TyphaxASTGeneratorTest extends MultiGenerationTestCase
     public function testVisitAndTypeLogic()
     {
         $validator = $this->validatorFixture(new AndType(array(
-            new ObjectType('Eloquent\Typhax\Type\Visitor'),
-            new ObjectType('Phake_IMock'),
+            new ObjectType(ClassName::fromString('Eloquent\Typhax\Type\Visitor')),
+            new ObjectType(ClassName::fromString('Phake_IMock')),
         )));
 
         $this->assertTrue($validator(Phake::mock('Eloquent\Typhax\Type\Visitor')));
@@ -119,7 +120,7 @@ class TyphaxASTGeneratorTest extends MultiGenerationTestCase
             new StringableType,
             new NullType,
         )));
-        
+
         $this->assertFalse($validator('foo'));
         $this->assertFalse($validator(111));
         $this->assertFalse($validator(1.11));
@@ -288,7 +289,7 @@ class TyphaxASTGeneratorTest extends MultiGenerationTestCase
     public function testVisitObjectOfTypeClassLogic()
     {
         $validator = $this->validatorFixture(new ObjectType(
-            __NAMESPACE__.'\TyphaxASTGenerator'
+            ClassName::fromString(__NAMESPACE__.'\TyphaxASTGenerator')
         ));
 
         $this->assertTrue($validator($this->_generator));
@@ -307,7 +308,7 @@ class TyphaxASTGeneratorTest extends MultiGenerationTestCase
     public function testVisitObjectOfTypeInterfaceLogic()
     {
         $validator = $this->validatorFixture(new ObjectType(
-            'Eloquent\Typhax\Type\Visitor'
+            ClassName::fromString('Eloquent\Typhax\Type\Visitor')
         ));
 
         $this->assertTrue($validator($this->_generator));
@@ -326,8 +327,8 @@ class TyphaxASTGeneratorTest extends MultiGenerationTestCase
     public function testVisitOrTypeLogic()
     {
         $validator = $this->validatorFixture(new OrType(array(
-            new ObjectType('Eloquent\Typhax\Type\Visitor'),
-            new ObjectType('Phake_IMock'),
+            new ObjectType(ClassName::fromString('Eloquent\Typhax\Type\Visitor')),
+            new ObjectType(ClassName::fromString('Phake_IMock')),
         )));
 
         $this->assertTrue($validator($this->_generator));
@@ -344,7 +345,7 @@ class TyphaxASTGeneratorTest extends MultiGenerationTestCase
         $this->assertFalse($validator(new stdClass));
         $this->assertFalse($validator(stream_context_create()));
     }
-    
+
     /**
      * @link https://github.com/eloquent/typhoon/issues/81
      */
@@ -354,7 +355,7 @@ class TyphaxASTGeneratorTest extends MultiGenerationTestCase
             new StringableType,
             new NullType,
         )));
-        
+
         $this->assertTrue($validator('foo'));
         $this->assertTrue($validator(111));
         $this->assertTrue($validator(1.11));
@@ -607,7 +608,7 @@ class TyphaxASTGeneratorTest extends MultiGenerationTestCase
     public function testVisitTraversableTypeLogicObjectPrimary()
     {
         $validator = $this->validatorFixture(new TraversableType(
-            new ObjectType('ArrayIterator'),
+            new ObjectType(ClassName::fromString('ArrayIterator')),
             new StringType,
             new IntegerType
         ));
