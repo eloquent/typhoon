@@ -15,16 +15,50 @@ use Typhoon\TypeCheck as Baz;
 
 class ComplexSetup
 {
+    public static function qux(
+        array $array = array('one', 'two', array('three'), static::FOUR),
+        SomeClass $class = null
+    ) {
+        Baz :: get ( __CLASS__ ) -> qux
+        (
+            func_get_args ( )
+        );
+    }
+
     public function __construct(
         array $array = array('one', 'two', array('three'), static::FOUR),
         SomeClass $class = null
     ) {
-        $this->bar = Baz::get(__CLASS__, func_get_args());
+        $this -> bar
+        =
+        Baz :: get ( __CLASS__
+            ,
+            func_get_args ( )
+        );
     }
 
-    public function foo()
-    {
-        $this->typeCheck->foo(func_get_args());
+    public function foo(
+        array $array = array('one', 'two', array('three'), static::FOUR),
+        SomeClass $class = null
+    ) {
+        $this -> bar
+        ->
+        foo
+        (
+            func_get_args ( )
+        );
+    }
+
+    public function __doom(
+        array $array = array('one', 'two', array('three'), static::FOUR),
+        SomeClass $class = null
+    ) {
+        $this -> bar
+        ->
+        validateDoom
+        (
+            func_get_args ( )
+        );
     }
 
     private $bar;

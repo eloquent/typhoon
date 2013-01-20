@@ -60,6 +60,14 @@ class ProjectAnalyzerTest extends MultiGenerationTestCase
         foreach ($actual->classesMissingProperty() as $classDefinition) {
             $actualClassesMissingProperty[] = $classDefinition->className()->string();
         }
+        $actualMethodsMissingCall = array();
+        foreach ($actual->methodsMissingCall() as $tuple) {
+            $actualMethodsMissingCall[] = sprintf(
+                '%s::%s',
+                $tuple[0]->className()->string(),
+                $tuple[1]->name()
+            );
+        }
 
         $this->assertFalse($actual->isSuccessful());
         $this->assertSame(array(
@@ -70,6 +78,11 @@ class ProjectAnalyzerTest extends MultiGenerationTestCase
             '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\NonPrivateProperty',
             '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\StaticProperty',
         ), $actualClassesMissingProperty);
+        $this->assertSame(array(
+            '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\MissingCalls::bar',
+            '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\MissingCalls::baz',
+            '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\MissingCalls::foo',
+        ), $actualMethodsMissingCall);
     }
 
     public function testAnalyzeSuccess()

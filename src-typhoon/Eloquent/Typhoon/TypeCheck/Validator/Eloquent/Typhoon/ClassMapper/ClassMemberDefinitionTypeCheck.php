@@ -3,6 +3,50 @@ namespace Eloquent\Typhoon\TypeCheck\Validator\Eloquent\Typhoon\ClassMapper;
 
 class ClassMemberDefinitionTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
 {
+    public function compare(array $arguments)
+    {
+        $argumentCount = \count($arguments);
+        if ($argumentCount < 2) {
+            if ($argumentCount < 1) {
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('left', 0, 'Eloquent\\Typhoon\\ClassMapper\\ClassMemberDefinition');
+            }
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('right', 1, 'Eloquent\\Typhoon\\ClassMapper\\ClassMemberDefinition');
+        } elseif ($argumentCount > 2) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(2, $arguments[2]);
+        }
+    }
+
+    public function compareTuples(array $arguments)
+    {
+        $argumentCount = \count($arguments);
+        if ($argumentCount < 2) {
+            if ($argumentCount < 1) {
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('left', 0, 'tuple<Eloquent\\Typhoon\\ClassMapper\\ClassDefinition, Eloquent\\Typhoon\\ClassMapper\\ClassMemberDefinition>');
+            }
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('right', 1, 'tuple<Eloquent\\Typhoon\\ClassMapper\\ClassDefinition, Eloquent\\Typhoon\\ClassMapper\\ClassMemberDefinition>');
+        } elseif ($argumentCount > 2) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(2, $arguments[2]);
+        }
+        $value = $arguments[0];
+        if (!(\is_array($value) && \array_keys($value) === \range(0, 1) && $value[0] instanceof \Eloquent\Typhoon\ClassMapper\ClassDefinition && $value[1] instanceof \Eloquent\Typhoon\ClassMapper\ClassMemberDefinition)) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
+                'left',
+                0,
+                $arguments[0],
+                'tuple<Eloquent\\Typhoon\\ClassMapper\\ClassDefinition, Eloquent\\Typhoon\\ClassMapper\\ClassMemberDefinition>'
+            );
+        }
+        $value = $arguments[1];
+        if (!(\is_array($value) && \array_keys($value) === \range(0, 1) && $value[0] instanceof \Eloquent\Typhoon\ClassMapper\ClassDefinition && $value[1] instanceof \Eloquent\Typhoon\ClassMapper\ClassMemberDefinition)) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
+                'right',
+                1,
+                $arguments[1],
+                'tuple<Eloquent\\Typhoon\\ClassMapper\\ClassDefinition, Eloquent\\Typhoon\\ClassMapper\\ClassMemberDefinition>'
+            );
+        }
+    }
+
     public function validateConstruct(array $arguments)
     {
         $argumentCount = \count($arguments);

@@ -9,15 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Successful;
+namespace Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing;
 
 use Typhoon\TypeCheck;
 
-class StandardSetup
+class MissingCalls
 {
-    public static function bar()
+    public static function baz()
     {
-        TypeCheck::get(__CLASS__)->bar(func_get_args());
     }
 
     public function __construct()
@@ -27,12 +26,10 @@ class StandardSetup
 
     public function foo()
     {
-        $this->typeCheck->foo(func_get_args());
     }
 
-    public function __baz()
+    public function bar()
     {
-        $this->typeCheck->validateBaz(func_get_args());
     }
 
     private $typeCheck;

@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\ClassMapper;
 
+use Eloquent\Cosmos\ClassName;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Icecave\Pasta\AST\Type\AccessModifier;
 use Phake;
@@ -43,5 +44,95 @@ class ClassMemberDefinitionTest extends MultiGenerationTestCase
     public function testEndLineNumber()
     {
         $this->assertSame(114, $this->_definition->endLineNumber());
+    }
+
+    public function testCompare()
+    {
+        $definitionA = Phake::partialMock(
+            __NAMESPACE__.'\ClassMemberDefinition',
+            'A',
+            true,
+            AccessModifier::PUBLIC_(),
+            111,
+            ''
+        );
+        $definitionB = Phake::partialMock(
+            __NAMESPACE__.'\ClassMemberDefinition',
+            'B',
+            true,
+            AccessModifier::PUBLIC_(),
+            111,
+            ''
+        );
+        $definitionC = Phake::partialMock(
+            __NAMESPACE__.'\ClassMemberDefinition',
+            'C',
+            true,
+            AccessModifier::PUBLIC_(),
+            111,
+            ''
+        );
+        $actual = array(
+            $definitionB,
+            $definitionA,
+            $definitionC,
+        );
+        $expected = array(
+            $definitionA,
+            $definitionB,
+            $definitionC,
+        );
+        usort($actual, __NAMESPACE__.'\MethodDefinition::compare');
+
+        $this->assertSame($expected, $actual);
+    }
+
+    public function testCompareTuples()
+    {
+        $classDefinitionA = new ClassDefinition(ClassName::fromString('\A'));
+        $classDefinitionB = new ClassDefinition(ClassName::fromString('\B'));
+        $definitionA = Phake::partialMock(
+            __NAMESPACE__.'\ClassMemberDefinition',
+            'A',
+            true,
+            AccessModifier::PUBLIC_(),
+            111,
+            ''
+        );
+        $definitionB = Phake::partialMock(
+            __NAMESPACE__.'\ClassMemberDefinition',
+            'B',
+            true,
+            AccessModifier::PUBLIC_(),
+            111,
+            ''
+        );
+        $definitionC = Phake::partialMock(
+            __NAMESPACE__.'\ClassMemberDefinition',
+            'C',
+            true,
+            AccessModifier::PUBLIC_(),
+            111,
+            ''
+        );
+        $actual = array(
+            array($classDefinitionA, $definitionB),
+            array($classDefinitionB, $definitionB),
+            array($classDefinitionB, $definitionA),
+            array($classDefinitionA, $definitionA),
+            array($classDefinitionA, $definitionC),
+            array($classDefinitionB, $definitionC),
+        );
+        $expected = array(
+            array($classDefinitionA, $definitionA),
+            array($classDefinitionA, $definitionB),
+            array($classDefinitionA, $definitionC),
+            array($classDefinitionB, $definitionA),
+            array($classDefinitionB, $definitionB),
+            array($classDefinitionB, $definitionC),
+        );
+        usort($actual, __NAMESPACE__.'\MethodDefinition::compareTuples');
+
+        $this->assertSame($expected, $actual);
     }
 }

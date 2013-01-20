@@ -25,6 +25,8 @@ class ClassDefinition
      */
     public static function compare(ClassDefinition $left, ClassDefinition $right)
     {
+        TypeCheck::get(__CLASS__)->compare(func_get_args());
+
         return strcmp(
             $left->className()->string(),
             $right->className()->string()

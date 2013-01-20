@@ -17,6 +17,37 @@ use Icecave\Pasta\AST\Type\AccessModifier;
 abstract class ClassMemberDefinition
 {
     /**
+     * @param ClassMemberDefinition $left
+     * @param ClassMemberDefinition $right
+     *
+     * @return integer
+     */
+    public static function compare(ClassMemberDefinition $left, ClassMemberDefinition $right)
+    {
+        TypeCheck::get(__CLASS__)->compare(func_get_args());
+
+        return strcmp($left->name(), $right->name());
+    }
+
+    /**
+     * @param tuple<ClassDefinition,ClassMemberDefinition> $left
+     * @param tuple<ClassDefinition,ClassMemberDefinition> $right
+     *
+     * @return integer
+     */
+    public static function compareTuples(array $left, array $right)
+    {
+        TypeCheck::get(__CLASS__)->compareTuples(func_get_args());
+
+        $classResult = ClassDefinition::compare($left[0], $right[0]);
+        if (0 !== $classResult) {
+            return $classResult;
+        }
+
+        return static::compare($left[1], $right[1]);
+    }
+
+    /**
      * @param string         $name
      * @param boolean        $isStatic
      * @param AccessModifier $accessModifier

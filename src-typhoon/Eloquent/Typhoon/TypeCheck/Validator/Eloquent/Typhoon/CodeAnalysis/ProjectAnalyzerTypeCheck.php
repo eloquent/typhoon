@@ -123,6 +123,41 @@ class ProjectAnalyzerTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValid
         }
     }
 
+    public function analyzeMethod(array $arguments)
+    {
+        $argumentCount = \count($arguments);
+        if ($argumentCount < 2) {
+            if ($argumentCount < 1) {
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('methodDefinition', 0, 'Eloquent\\Typhoon\\ClassMapper\\MethodDefinition');
+            }
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('propertyName', 1, 'string');
+        } elseif ($argumentCount > 2) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(2, $arguments[2]);
+        }
+        $value = $arguments[1];
+        if (!\is_string($value)) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
+                'propertyName',
+                1,
+                $arguments[1],
+                'string'
+            );
+        }
+    }
+
+    public function analyzeStaticMethod(array $arguments)
+    {
+        $argumentCount = \count($arguments);
+        if ($argumentCount < 2) {
+            if ($argumentCount < 1) {
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('methodDefinition', 0, 'Eloquent\\Typhoon\\ClassMapper\\MethodDefinition');
+            }
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('expectedfacadeClassName', 1, 'Eloquent\\Cosmos\\ClassName');
+        } elseif ($argumentCount > 2) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(2, $arguments[2]);
+        }
+    }
+
     public function parseFirstMethodStatement(array $arguments)
     {
         $argumentCount = \count($arguments);
@@ -157,6 +192,25 @@ class ProjectAnalyzerTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValid
                 0,
                 $arguments[0],
                 'string|tuple<integer, string, integer>'
+            );
+        }
+    }
+
+    public function normalizeValidatorMethodName(array $arguments)
+    {
+        $argumentCount = \count($arguments);
+        if ($argumentCount < 1) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('methodName', 0, 'string');
+        } elseif ($argumentCount > 1) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
+        }
+        $value = $arguments[0];
+        if (!\is_string($value)) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
+                'methodName',
+                0,
+                $arguments[0],
+                'string'
             );
         }
     }

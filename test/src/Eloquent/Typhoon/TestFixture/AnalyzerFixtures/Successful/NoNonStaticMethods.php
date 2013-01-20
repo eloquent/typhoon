@@ -11,6 +11,8 @@
 
 namespace Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Successful;
 
+use Typhoon\TypeCheck;
+
 class NoNonStaticMethods
 {
     public static function foo()
