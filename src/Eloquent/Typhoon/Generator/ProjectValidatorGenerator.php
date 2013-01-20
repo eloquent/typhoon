@@ -106,7 +106,7 @@ class ProjectValidatorGenerator
         $this->typeCheck->generateClassValidators(func_get_args());
 
         $sourcePaths = $configuration->sourcePaths();
-        foreach ($this->buildClassMap($sourcePaths) as $classDefinition) {
+        foreach ($this->classMapper()->classesByPaths($sourcePaths) as $classDefinition) {
             $className = null;
             $source = $this->validatorClassGenerator()->generate(
                 $configuration,
@@ -146,28 +146,6 @@ class ProjectValidatorGenerator
                 $source
             );
         }
-    }
-
-    /**
-     * @param array<string> $classPaths
-     *
-     * @return array<ClassDefinition>
-     */
-    protected function buildClassMap(array $classPaths)
-    {
-        $this->typeCheck->buildClassMap(func_get_args());
-
-        $classMap = array();
-        foreach ($classPaths as $classPath) {
-            $classMap = array_merge(
-                $classMap,
-                $this->classMapper->classesByPath(
-                    $classPath
-                )
-            );
-        }
-
-        return $classMap;
     }
 
     /**

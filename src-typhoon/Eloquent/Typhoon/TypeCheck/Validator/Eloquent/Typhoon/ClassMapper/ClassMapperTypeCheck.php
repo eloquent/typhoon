@@ -30,6 +30,36 @@ class ClassMapperTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
         }
     }
 
+    public function classesByPaths(array $arguments)
+    {
+        $argumentCount = \count($arguments);
+        if ($argumentCount < 1) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('paths', 0, 'array<string>');
+        } elseif ($argumentCount > 1) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
+        }
+        $value = $arguments[0];
+        $check = function ($value) {
+            if (!\is_array($value)) {
+                return false;
+            }
+            foreach ($value as $key => $subValue) {
+                if (!\is_string($subValue)) {
+                    return false;
+                }
+            }
+            return true;
+        };
+        if (!$check($arguments[0])) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
+                'paths',
+                0,
+                $arguments[0],
+                'array<string>'
+            );
+        }
+    }
+
     public function classesByDirectory(array $arguments)
     {
         $argumentCount = \count($arguments);

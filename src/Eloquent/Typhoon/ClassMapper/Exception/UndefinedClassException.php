@@ -29,7 +29,7 @@ final class UndefinedClassException extends LogicException
 
         parent::__construct(
             sprintf(
-                "Undefined class '%'.",
+                "Undefined class '%s'.",
                 $className->string()
             ),
             0,

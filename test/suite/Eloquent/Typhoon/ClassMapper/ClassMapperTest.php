@@ -39,6 +39,27 @@ class ClassMapperTest extends MultiGenerationTestCase
         return $fileInfo;
     }
 
+    public function testClassesByPaths()
+    {
+        $classDefinitionA = new ClassDefinition(ClassName::fromString('\A'));
+        $classDefinitionB = new ClassDefinition(ClassName::fromString('\B'));
+        $classDefinitions = array(
+            $classDefinitionA,
+            $classDefinitionB,
+        );
+        Phake::when($this->_mapper)
+            ->classesByPath(Phake::anyParameters())
+            ->thenReturn(array($classDefinitionA))
+            ->thenReturn(array($classDefinitionB))
+        ;
+
+        $this->assertSame($classDefinitions, $this->_mapper->classesByPaths(array('foo', 'bar')));
+        Phake::inOrder(
+            Phake::verify($this->_mapper)->classesByPath('foo'),
+            Phake::verify($this->_mapper)->classesByPath('bar')
+        );
+    }
+
     public function testClassesByPathDirectory()
     {
         $classDefinitionA = new ClassDefinition(ClassName::fromString('\A'));

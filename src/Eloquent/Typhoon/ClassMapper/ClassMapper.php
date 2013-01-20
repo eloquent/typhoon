@@ -47,6 +47,26 @@ class ClassMapper
     }
 
     /**
+     * @param array<string> $paths
+     *
+     * @return array<ClassDefinition>
+     */
+    public function classesByPaths(array $paths)
+    {
+        $this->typeCheck->classesByPaths(func_get_args());
+
+        $classMap = array();
+        foreach ($paths as $path) {
+            $classMap = array_merge(
+                $classMap,
+                $this->classesByPath($path)
+            );
+        }
+
+        return $classMap;
+    }
+
+    /**
      * @param string $directoryPath
      *
      * @return array<ClassDefinition>

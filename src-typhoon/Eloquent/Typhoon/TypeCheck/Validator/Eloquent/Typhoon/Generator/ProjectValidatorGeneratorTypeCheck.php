@@ -90,36 +90,6 @@ class ProjectValidatorGeneratorTypeCheck extends \Eloquent\Typhoon\TypeCheck\Abs
         }
     }
 
-    public function buildClassMap(array $arguments)
-    {
-        $argumentCount = \count($arguments);
-        if ($argumentCount < 1) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('classPaths', 0, 'array<string>');
-        } elseif ($argumentCount > 1) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
-        }
-        $value = $arguments[0];
-        $check = function ($value) {
-            if (!\is_array($value)) {
-                return false;
-            }
-            foreach ($value as $key => $subValue) {
-                if (!\is_string($subValue)) {
-                    return false;
-                }
-            }
-            return true;
-        };
-        if (!$check($arguments[0])) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
-                'classPaths',
-                0,
-                $arguments[0],
-                'array<string>'
-            );
-        }
-    }
-
     public function prepareOutputPath(array $arguments)
     {
         $argumentCount = \count($arguments);

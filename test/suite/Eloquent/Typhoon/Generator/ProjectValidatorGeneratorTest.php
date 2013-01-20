@@ -111,8 +111,8 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
             $classDefinitionA,
             $classDefinitionB,
         );
-        Phake::when($this->_generator)
-            ->buildClassMap(Phake::anyParameters())
+        Phake::when($this->_classMapper)
+            ->classesByPaths(Phake::anyParameters())
             ->thenReturn($classMap)
         ;
         Phake::when($this->_validatorClassGenerator)
@@ -159,7 +159,7 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
         $this->_generator->generate($configuration);
 
         Phake::inOrder(
-            Phake::verify($this->_generator)->buildClassMap(array('bar', 'baz')),
+            Phake::verify($this->_classMapper)->classesByPaths(array('bar', 'baz')),
             Phake::verify($this->_validatorClassGenerator)->generate(
                 $this->identicalTo($configuration),
                 $this->identicalTo($classDefinitionA),
@@ -206,33 +206,6 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
             $this->anything(),
             $this->anything()
         );
-    }
-
-    public function testBuildClassMap()
-    {
-        $classDefinitionA = new ClassDefinition(ClassName::fromString('A'));
-        $classDefinitionB = new ClassDefinition(ClassName::fromString('B'));
-        $classDefinitionC = new ClassDefinition(ClassName::fromString('C'));
-        $classDefinitionD = new ClassDefinition(ClassName::fromString('D'));
-        Phake::when($this->_classMapper)
-            ->classesByPath(Phake::anyParameters())
-            ->thenReturn(array(
-                $classDefinitionA,
-                $classDefinitionB,
-            ))
-            ->thenReturn(array(
-                $classDefinitionC,
-                $classDefinitionD,
-            ))
-        ;
-        $expected = array(
-            $classDefinitionA,
-            $classDefinitionB,
-            $classDefinitionC,
-            $classDefinitionD,
-        );
-
-        $this->assertSame($expected, Liberator::liberate($this->_generator)->buildClassMap(array('foo', 'bar')));
     }
 
     public function testPSRPath()
