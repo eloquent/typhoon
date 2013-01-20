@@ -15,7 +15,6 @@ use Eloquent\Cosmos\ClassName;
 use Eloquent\Cosmos\ClassNameResolver;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Icecave\Pasta\AST\Type\AccessModifier;
-use Phake;
 
 class ClassDefinitionTest extends MultiGenerationTestCase
 {

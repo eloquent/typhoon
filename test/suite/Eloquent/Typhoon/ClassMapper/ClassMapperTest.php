@@ -443,7 +443,7 @@ EOD
                                 false,
                                 AccessModifier::PRIVATE_(),
                                 16,
-                                "private function splat(array \$ping = array())\n    {\n        \$pong = function() use(\$ping) {\n        };\n    }"
+                                "private function splat(array \$ping = array())\n    {\n        \$pong = function() use (\$ping) {\n        };\n    }"
                             ),
                             new MethodDefinition(
                                 'pang',
@@ -473,7 +473,7 @@ class Bar
 {
     private function splat(array $ping = array())
     {
-        $pong = function() use($ping) {
+        $pong = function() use ($ping) {
         };
     }
 

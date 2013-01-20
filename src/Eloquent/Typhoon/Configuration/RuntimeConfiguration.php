@@ -17,8 +17,8 @@ use Eloquent\Typhoon\TypeCheck\TypeCheck;
 class RuntimeConfiguration
 {
     /**
-     * @param ClassName|null  $validatorNamespace
-     * @param boolean|null $useNativeCallable
+     * @param ClassName|null $validatorNamespace
+     * @param boolean|null   $useNativeCallable
      */
     public function __construct(
         ClassName $validatorNamespace = null,
