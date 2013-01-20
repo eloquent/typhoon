@@ -124,6 +124,8 @@ abstract class ClassMemberDefinition
      */
     public function endLineNumber()
     {
+        $this->typeCheck->endLineNumber(func_get_args());
+
         return
             $this->lineNumber() +
             preg_match_all('/\r\n|\r|\n/', $this->source(), $matches)

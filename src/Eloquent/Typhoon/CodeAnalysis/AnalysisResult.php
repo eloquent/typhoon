@@ -11,11 +11,12 @@
 
 namespace Eloquent\Typhoon\CodeAnalysis;
 
+use Countable;
 use Eloquent\Typhoon\ClassMapper\ClassDefinition;
 use Eloquent\Typhoon\ClassMapper\MethodDefinition;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 
-class AnalysisResult
+class AnalysisResult implements Countable
 {
     /**
      * @param array<ClassDefinition>                         $classesMissingConstructorCall
@@ -70,10 +71,20 @@ class AnalysisResult
     {
         $this->typeCheck->isSuccessful(func_get_args());
 
+        return 0 === $this->count();
+    }
+
+    /**
+     * @return integer
+     */
+    public function count()
+    {
+        $this->typeCheck->count(func_get_args());
+
         return
-            array() === $this->classesMissingConstructorCall() &&
-            array() === $this->classesMissingProperty() &&
-            array() === $this->methodsMissingCall()
+            count($this->classesMissingConstructorCall()) +
+            count($this->classesMissingProperty()) +
+            count($this->methodsMissingCall())
         ;
     }
 

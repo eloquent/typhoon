@@ -69,7 +69,7 @@ class GenerateCommandTest extends MultiGenerationTestCase
     {
         $this->assertSame('generate', $this->_command->getName());
         $this->assertSame(
-            'Generates Typhoon validator classes for a given directory.',
+            'Generates Typhoon classes for a project.',
             $this->_command->getDescription()
         );
         $this->assertEquals(new InputDefinition, $this->_command->getDefinition());
@@ -82,14 +82,16 @@ class GenerateCommandTest extends MultiGenerationTestCase
         Liberator::liberate($this->_command)->execute($input, $output);
 
         Phake::inOrder(
-            Phake::verify($output)->writeln('Including loaders...'),
+            Phake::verify($output)->writeln('<info>Including loaders...</info>'),
+            Phake::verify($output)->writeln('  - foo'),
             Phake::verify($this->_isolator)->require('foo'),
+            Phake::verify($output)->writeln('  - bar'),
             Phake::verify($this->_isolator)->require('bar'),
-            Phake::verify($output)->writeln('Generating validator classes...'),
+            Phake::verify($output)->writeln('<info>Generating classes...</info>'),
             Phake::verify($this->_generator)->generate(
                 $this->identicalTo($this->_configuration)
             ),
-            Phake::verify($output)->writeln('Done.')
+            Phake::verify($output)->writeln('<info>Done.</info>')
         );
     }
 }

@@ -61,6 +61,14 @@ class AnalysisResultTest extends MultiGenerationTestCase
         );
     }
 
+    public function testCount()
+    {
+        $result = new AnalysisResult(array(), array(), array());
+
+        $this->assertSame(6, count($this->_result));
+        $this->assertSame(0, count($result));
+    }
+
     public function testIsSuccessful()
     {
         $result = new AnalysisResult(array(), array(), array());

@@ -107,4 +107,11 @@ class AnalysisResultTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValida
         }
     }
 
+    public function count(array $arguments)
+    {
+        if (\count($arguments) > 0) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(0, $arguments[0]);
+        }
+    }
+
 }

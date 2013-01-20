@@ -54,9 +54,7 @@ class GenerateCommand extends Command
         $this->typeCheck->configure(func_get_args());
 
         $this->setName('generate');
-        $this->setDescription(
-            'Generates Typhoon validator classes for a given directory.'
-        );
+        $this->setDescription('Generates Typhoon classes for a project.');
     }
 
     /**
@@ -68,20 +66,18 @@ class GenerateCommand extends Command
         $this->typeCheck->execute(func_get_args());
 
         $output->setVerbosity(OutputInterface::VERBOSITY_VERBOSE);
-        $configuration = $this->getApplication()->configurationReader()->read(
-            null,
-            true
-        );
+        $configuration = $this->getApplication()->configurationReader()->read(null, true);
 
-        $output->writeln('Including loaders...');
+        $output->writeln('<info>Including loaders...</info>');
         foreach ($configuration->loaderPaths() as $path) {
+            $output->writeln(sprintf('  - %s', $path));
             $this->isolator->require($path);
         }
 
-        $output->writeln('Generating validator classes...');
+        $output->writeln('<info>Generating classes...</info>');
         $this->generator()->generate($configuration);
 
-        $output->writeln('Done.');
+        $output->writeln('<info>Done.</info>');
     }
 
     private $generator;

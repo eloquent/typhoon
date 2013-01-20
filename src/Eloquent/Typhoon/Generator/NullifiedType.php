@@ -32,6 +32,8 @@ class NullifiedType extends MixedType
      */
     public function originalType()
     {
+        $this->typeCheck->originalType(func_get_args());
+
         return $this->originalType;
     }
 
