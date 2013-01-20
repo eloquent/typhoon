@@ -127,4 +127,24 @@ class ClassDefinitionTest extends MultiGenerationTestCase
 
         $this->assertEquals($expected, $this->_definition->classNameResolver());
     }
+
+    public function testCompare()
+    {
+        $definitionA = new ClassDefinition(ClassName::fromString('A'));
+        $definitionB = new ClassDefinition(ClassName::fromString('B'));
+        $definitionC = new ClassDefinition(ClassName::fromString('C'));
+        $actual = array(
+            $definitionB,
+            $definitionA,
+            $definitionC,
+        );
+        $expected = array(
+            $definitionA,
+            $definitionB,
+            $definitionC,
+        );
+        usort($actual, __NAMESPACE__.'\ClassDefinition::compare');
+
+        $this->assertSame($expected, $actual);
+    }
 }

@@ -17,6 +17,7 @@ use Eloquent\Typhoon\ClassMapper\ClassMapper;
 use Eloquent\Typhoon\ClassMapper\MethodDefinition;
 use Eloquent\Typhoon\Configuration\Configuration;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
+use Icecave\Pasta\AST\Type\AccessModifier;
 
 class ProjectAnalyzer
 {
@@ -72,6 +73,15 @@ class ProjectAnalyzer
             );
         }
 
+        usort(
+            $classesMissingConstructorCall,
+            'Eloquent\Typhoon\ClassMapper\ClassDefinition::compare'
+        );
+        usort(
+            $classesMissingProperty,
+            'Eloquent\Typhoon\ClassMapper\ClassDefinition::compare'
+        );
+
         return new AnalysisResult(
             $classesMissingConstructorCall,
             $classesMissingProperty,
@@ -102,13 +112,11 @@ class ProjectAnalyzer
             ->shorten($facadeClassName)
         ;
 
-        $hasConstructor = false;
         $hasConstructorCall = false;
-        $propertyName = null;
+        $propertyName = 'typeCheck';
         $hasNonStaticMethods = false;
         foreach ($classDefinition->methods() as $methodDefinition) {
             if ('__construct' === $methodDefinition->name()) {
-                $hasConstructor = true;
                 list($hasConstructorCall, $propertyName) = $this->analyzeConstructor(
                     $methodDefinition,
                     $expectedfacadeClassName
@@ -118,14 +126,28 @@ class ProjectAnalyzer
             }
         }
 
+        $hasProperty = false;
+        foreach ($classDefinition->properties() as $propertyDefinition) {
+            if (
+                !$propertyDefinition->isStatic() &&
+                $propertyDefinition->accessModifier() === AccessModifier::PRIVATE_() &&
+                $propertyDefinition->name() === $propertyName
+            ) {
+                $hasProperty = true;
+            }
+        }
+
         if ($hasNonStaticMethods && !$hasConstructorCall) {
             $classesMissingConstructorCall[] = $classDefinition;
+        }
+        if ($hasNonStaticMethods && !$hasProperty) {
+            $classesMissingProperty[] = $classDefinition;
         }
     }
 
     /**
      * @param MethodDefinition $methodDefinition
-     * @param ClassName $expectedfacadeClassName
+     * @param ClassName        $expectedfacadeClassName
      *
      * @return tuple<boolean,string|null>
      */
@@ -136,7 +158,7 @@ class ProjectAnalyzer
         $this->typeCheck->analyzeConstructor(func_get_args());
 
         $hasConstructorCall = false;
-        $propertyName = null;
+        $propertyName = 'typeCheck';
 
         $callPattern = sprintf(
             '/^\s*\$this\s*->\s*(%s)\s*=\s*%s\s*::\s*get\s*\(\s*__CLASS__\s*,\s*\\\\?func_get_args\s*\(\s*\)\s*\)\s*;$/',

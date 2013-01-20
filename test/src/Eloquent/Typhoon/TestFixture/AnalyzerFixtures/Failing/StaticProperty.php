@@ -11,12 +11,19 @@
 
 namespace Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing;
 
-class NoConstructorCall
+use Typhoon\TypeCheck;
+
+class StaticProperty
 {
+    public function __construct()
+    {
+        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
+    }
+
     public function foo()
     {
         $this->typeCheck->foo(func_get_args());
     }
 
-    private $typeCheck;
+    private static $typeCheck;
 }

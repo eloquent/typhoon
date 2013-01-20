@@ -370,10 +370,10 @@ class ClassMapper
     /**
      * @param tuple<integer,string,integer> $token
      * @param array<string|array>           &$tokens
-     * @param AccessModifier                $accessModifier
-     * @param boolean                       $isStatic
-     * @param string                        $source
-     * @param integer                       $lineNumber
+     * @param AccessModifier $accessModifier
+     * @param boolean        $isStatic
+     * @param string         $source
+     * @param integer        $lineNumber
      *
      * @return PropertyDefinition
      */
@@ -409,10 +409,10 @@ class ClassMapper
     /**
      * @param tuple<integer,string,integer> $token
      * @param array<string|array>           &$tokens
-     * @param AccessModifier                $accessModifier
-     * @param boolean                       $isStatic
-     * @param string                        $source
-     * @param integer                       $lineNumber
+     * @param AccessModifier $accessModifier
+     * @param boolean        $isStatic
+     * @param string         $source
+     * @param integer        $lineNumber
      *
      * @return MethodDefinition
      */

@@ -18,6 +18,20 @@ use Eloquent\Typhoon\TypeCheck\TypeCheck;
 class ClassDefinition
 {
     /**
+     * @param ClassDefinition $left
+     * @param ClassDefinition $right
+     *
+     * @return integer
+     */
+    public static function compare(ClassDefinition $left, ClassDefinition $right)
+    {
+        return strcmp(
+            $left->className()->string(),
+            $right->className()->string()
+        );
+    }
+
+    /**
      * @param ClassName                 $className
      * @param array<array<ClassName>>   $usedClasses
      * @param array<MethodDefinition>   $methods
