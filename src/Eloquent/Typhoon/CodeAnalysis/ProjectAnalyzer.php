@@ -126,7 +126,7 @@ class ProjectAnalyzer
                 $expectedfacadeClassName
             );
         }
-        $hasNonStaticMethods = false;
+        $hasCheckableMethods = false;
         foreach ($classDefinition->methods() as $methodDefinition) {
             if ('__construct' === $methodDefinition->name()) {
                 continue;
@@ -137,8 +137,8 @@ class ProjectAnalyzer
                     $methodDefinition,
                     $expectedfacadeClassName
                 );
-            } else {
-                $hasNonStaticMethods = true;
+            } elseif (!$methodDefinition->isAbstract()) {
+                $hasCheckableMethods = true;
                 list($hasCall) = $this->analyzeMethod(
                     $methodDefinition,
                     $propertyName
@@ -164,10 +164,10 @@ class ProjectAnalyzer
             }
         }
 
-        if ($hasNonStaticMethods && !$hasConstructorCall) {
+        if ($hasCheckableMethods && !$hasConstructorCall) {
             $classesMissingConstructorCall[] = $classDefinition;
         }
-        if ($hasNonStaticMethods && !$hasProperty) {
+        if ($hasCheckableMethods && !$hasProperty) {
             $classesMissingProperty[] = $classDefinition;
         }
     }

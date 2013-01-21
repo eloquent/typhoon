@@ -255,6 +255,7 @@ class ClassMapper
         $inClassBody = false;
         $accessModifier = null;
         $isStatic = null;
+        $isAbstract = null;
         $source = null;
         while ($token = next($tokens)) {
             $token = $this->normalizeToken($token);
@@ -268,7 +269,9 @@ class ClassMapper
                     T_PUBLIC === $token[0] ||
                     T_PROTECTED === $token[0] ||
                     T_PRIVATE === $token[0] ||
-                    T_STATIC === $token[0]
+                    T_STATIC === $token[0] ||
+                    T_ABSTRACT === $token[0] ||
+                    T_FINAL === $token[0]
                 ) {
                     $lineNumber = $token[2];
                     $token = $this->parseClassMemberModifiers(
@@ -276,6 +279,7 @@ class ClassMapper
                         $tokens,
                         $accessModifier,
                         $isStatic,
+                        $isAbstract,
                         $source
                     );
 
@@ -285,6 +289,7 @@ class ClassMapper
                             $tokens,
                             $accessModifier,
                             $isStatic,
+                            $isAbstract,
                             $source,
                             $lineNumber
                         );
@@ -301,6 +306,7 @@ class ClassMapper
 
                     $accessModifier = null;
                     $isStatic = null;
+                    $isAbstract = null;
                     $source = null;
                 }
             } elseif ('{' === $token[0]) {
@@ -325,6 +331,7 @@ class ClassMapper
      * @param array<string|array>           &$tokens
      * @param null                          &$accessModifier
      * @param null                          &$isStatic
+     * @param null                          &$isAbstract
      * @param null                          &$source
      *
      * @return tuple<integer|string,string,integer|null>
@@ -334,11 +341,13 @@ class ClassMapper
         array &$tokens,
         &$accessModifier,
         &$isStatic,
+        &$isAbstract,
         &$source
     ) {
         $this->typeCheck->parseClassMemberModifiers(func_get_args());
 
         $isStatic = false;
+        $isAbstract = false;
         $source = '';
 
         while ($token) {
@@ -359,6 +368,8 @@ class ClassMapper
                 );
             } elseif (T_STATIC === $token[0]) {
                 $isStatic = true;
+            } elseif (T_ABSTRACT === $token[0]) {
+                $isAbstract = true;
             }
 
             $token = next($tokens);
@@ -370,10 +381,10 @@ class ClassMapper
     /**
      * @param tuple<integer,string,integer> $token
      * @param array<string|array>           &$tokens
-     * @param AccessModifier $accessModifier
-     * @param boolean        $isStatic
-     * @param string         $source
-     * @param integer        $lineNumber
+     * @param AccessModifier                $accessModifier
+     * @param boolean                       $isStatic
+     * @param string                        $source
+     * @param integer                       $lineNumber
      *
      * @return PropertyDefinition
      */
@@ -409,10 +420,11 @@ class ClassMapper
     /**
      * @param tuple<integer,string,integer> $token
      * @param array<string|array>           &$tokens
-     * @param AccessModifier $accessModifier
-     * @param boolean        $isStatic
-     * @param string         $source
-     * @param integer        $lineNumber
+     * @param AccessModifier                $accessModifier
+     * @param boolean                       $isStatic
+     * @param boolean                       $isAbstract
+     * @param string                        $source
+     * @param integer                       $lineNumber
      *
      * @return MethodDefinition
      */
@@ -421,6 +433,7 @@ class ClassMapper
         array &$tokens,
         AccessModifier $accessModifier,
         $isStatic,
+        $isAbstract,
         $source,
         $lineNumber
     ) {
@@ -446,12 +459,17 @@ class ClassMapper
                 if ($bracketDepth < 1) {
                     break;
                 }
+            } elseif (';' === $token[0]) {
+                if ($bracketDepth < 1) {
+                    break;
+                }
             }
         }
 
         return new MethodDefinition(
             $name,
             $isStatic,
+            $isAbstract,
             $accessModifier,
             $lineNumber,
             $source

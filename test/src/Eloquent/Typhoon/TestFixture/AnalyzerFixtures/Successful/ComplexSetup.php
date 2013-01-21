@@ -61,5 +61,10 @@ class ComplexSetup
         );
     }
 
+    abstract public function splat(
+        array $array = array('one', 'two', array('three'), static::FOUR),
+        SomeClass $class = null
+    );
+
     private $bar;
 }

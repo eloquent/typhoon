@@ -36,12 +36,14 @@ class ClassDefinitionTest extends MultiGenerationTestCase
             new MethodDefinition(
                 'splat',
                 false,
+                false,
                 AccessModifier::PUBLIC_(),
                 111,
                 'ping'
             ),
             new MethodDefinition(
                 'pong',
+                true,
                 true,
                 AccessModifier::PRIVATE_(),
                 222,

@@ -100,22 +100,6 @@ class CheckCommandTest extends MultiGenerationTestCase
 
     public function testExecuteFailure()
     {
-        // $result = new AnalysisResult(array(
-        //     new ClassDefinition(ClassName::fromString('\foo')),
-        //     new ClassDefinition(ClassName::fromString('\bar')),
-        // ), array(
-        //     new ClassDefinition(ClassName::fromString('\baz')),
-        //     new ClassDefinition(ClassName::fromString('\qux')),
-        // ), array(
-        //     array(
-        //         new ClassDefinition(ClassName::fromString('\doom')),
-        //         new MethodDefinition('splat', true, AccessModifier::PUBLIC_(), 111, ''),
-        //     ),
-        //     array(
-        //         new ClassDefinition(ClassName::fromString('\ping')),
-        //         new MethodDefinition('pong', true, AccessModifier::PUBLIC_(), 111, ''),
-        //     ),
-        // ));
         $result = Phake::mock('Eloquent\Typhoon\CodeAnalysis\AnalysisResult');
         Phake::when($result)->isSuccessful(Phake::anyParameters())->thenReturn(false);
         Phake::when($this->_analyzer)
@@ -166,11 +150,11 @@ class CheckCommandTest extends MultiGenerationTestCase
         ), array(
             array(
                 new ClassDefinition(ClassName::fromString('\doom')),
-                new MethodDefinition('splat', true, AccessModifier::PUBLIC_(), 111, ''),
+                new MethodDefinition('splat', true, false, AccessModifier::PUBLIC_(), 111, ''),
             ),
             array(
                 new ClassDefinition(ClassName::fromString('\ping')),
-                new MethodDefinition('pong', true, AccessModifier::PUBLIC_(), 111, ''),
+                new MethodDefinition('pong', true, false, AccessModifier::PUBLIC_(), 111, ''),
             ),
         ));
         $expected = array(

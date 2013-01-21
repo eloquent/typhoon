@@ -305,6 +305,7 @@ EOD
                             new MethodDefinition(
                                 'bar',
                                 false,
+                                false,
                                 AccessModifier::PUBLIC_(),
                                 4,
                                 "public function bar()\n    {\n        \$baz = null;\n        \$qux = function() use (\$baz) {};\n        foreach (array() as \$doom) {}\n    }"
@@ -442,6 +443,7 @@ EOD
                             new MethodDefinition(
                                 '__construct',
                                 false,
+                                false,
                                 AccessModifier::PUBLIC_(),
                                 4,
                                 "public function __construct()\n    {\n        // baz\n    }"
@@ -449,6 +451,7 @@ EOD
                             new MethodDefinition(
                                 'qux',
                                 true,
+                                false,
                                 AccessModifier::PROTECTED_(),
                                 9,
                                 "protected static function qux()\n    {\n        // doom\n    }"
@@ -462,6 +465,7 @@ EOD
                             new MethodDefinition(
                                 'splat',
                                 false,
+                                false,
                                 AccessModifier::PRIVATE_(),
                                 16,
                                 "private function splat(array \$ping = array())\n    {\n        \$pong = function() use (\$ping) {\n        };\n    }"
@@ -469,6 +473,7 @@ EOD
                             new MethodDefinition(
                                 'pang',
                                 true,
+                                false,
                                 AccessModifier::PUBLIC_(),
                                 22,
                                 "static public function pang()\n    {\n        // pung\n    }"
@@ -502,6 +507,78 @@ class Bar
     {
         // pung
     }
+}
+EOD
+                ,
+            ),
+
+            'Source with abstract methods' => array(
+                array(
+                    new ClassDefinition(
+                        ClassName::fromString('Foo'),
+                        array(),
+                        array(
+                            new MethodDefinition(
+                                'perg',
+                                false,
+                                true,
+                                AccessModifier::PUBLIC_(),
+                                4,
+                                "abstract public function perg();"
+                            ),
+                            new MethodDefinition(
+                                'qux',
+                                true,
+                                false,
+                                AccessModifier::PROTECTED_(),
+                                6,
+                                "protected static function qux()\n    {\n        // doom\n    }"
+                            ),
+                        )
+                    ),
+                    new ClassDefinition(
+                        ClassName::fromString('Bar'),
+                        array(),
+                        array(
+                            new MethodDefinition(
+                                'splat',
+                                false,
+                                false,
+                                AccessModifier::PRIVATE_(),
+                                13,
+                                "private function splat(array \$ping = array())\n    {\n        \$pong = function() use (\$ping) {\n        };\n    }"
+                            ),
+                            new MethodDefinition(
+                                'pang',
+                                false,
+                                true,
+                                AccessModifier::PUBLIC_(),
+                                19,
+                                "abstract public function pang();"
+                            ),
+                        )
+                    ),
+                ),
+                <<<'EOD'
+<?php
+class Foo
+{
+    abstract public function perg();
+
+    protected static function qux()
+    {
+        // doom
+    }
+}
+class Bar
+{
+    private function splat(array $ping = array())
+    {
+        $pong = function() use ($ping) {
+        };
+    }
+
+    abstract public function pang();
 }
 EOD
                 ,

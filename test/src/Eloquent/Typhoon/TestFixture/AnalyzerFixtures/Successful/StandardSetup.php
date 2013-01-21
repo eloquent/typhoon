@@ -13,7 +13,7 @@ namespace Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Successful;
 
 use Typhoon\TypeCheck;
 
-class StandardSetup
+abstract class StandardSetup
 {
     public static function bar()
     {
@@ -34,6 +34,8 @@ class StandardSetup
     {
         $this->typeCheck->validateBaz(func_get_args());
     }
+
+    abstract public function qux();
 
     private $typeCheck;
 }
