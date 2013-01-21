@@ -25,6 +25,10 @@ abstract class StandardSetup
         $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
     }
 
+    public function __destruct()
+    {
+    }
+
     public function foo()
     {
         $this->typeCheck->foo(func_get_args());
@@ -36,6 +40,10 @@ abstract class StandardSetup
     }
 
     abstract public function qux();
+
+    public static function __wakeup()
+    {
+    }
 
     private $typeCheck;
 }

@@ -128,7 +128,11 @@ class ProjectAnalyzer
         }
         $hasCheckableMethods = false;
         foreach ($classDefinition->methods() as $methodDefinition) {
-            if ('__construct' === $methodDefinition->name()) {
+            if (
+                '__construct' === $methodDefinition->name() ||
+                '__destruct' === $methodDefinition->name() ||
+                '__wakeup' === $methodDefinition->name()
+            ) {
                 continue;
             }
 
