@@ -132,6 +132,7 @@ class ProjectAnalyzer
                 '__construct' === $methodDefinition->name() ||
                 '__destruct' === $methodDefinition->name() ||
                 '__wakeup' === $methodDefinition->name() ||
+                '__toString' === $methodDefinition->name() ||
                 'unserialize' === $methodDefinition->name()
             ) {
                 continue;
