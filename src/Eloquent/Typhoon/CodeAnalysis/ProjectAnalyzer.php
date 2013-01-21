@@ -131,7 +131,8 @@ class ProjectAnalyzer
             if (
                 '__construct' === $methodDefinition->name() ||
                 '__destruct' === $methodDefinition->name() ||
-                '__wakeup' === $methodDefinition->name()
+                '__wakeup' === $methodDefinition->name() ||
+                'unserialize' === $methodDefinition->name()
             ) {
                 continue;
             }
