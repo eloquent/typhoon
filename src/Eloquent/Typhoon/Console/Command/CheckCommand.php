@@ -94,30 +94,40 @@ class CheckCommand extends Command
     {
         $this->typeCheck->generateErrorBlock(func_get_args());
 
-        $errorLines = array(
-            '[Problems detected]',
-            '',
-        );
+        $errorLinesByClass = array();
+
         if (count($result->classesMissingConstructorCall()) > 0) {
             $this->addClassDefinitionList(
-                $errorLines,
+                $errorLinesByClass,
                 $result->classesMissingConstructorCall(),
-                'Classes that do not initialize Typhoon correctly in their constructor'
+                'Incorrect or missing constructor initialization.'
             );
         }
         if (count($result->classesMissingProperty()) > 0) {
             $this->addClassDefinitionList(
-                $errorLines,
+                $errorLinesByClass,
                 $result->classesMissingProperty(),
-                'Classes that do not have a correctly defined typeCheck property'
+                'Incorrect or missing property definition.'
             );
         }
         if (count($result->methodsMissingCall()) > 0) {
             $this->addMethodDefinitionList(
-                $errorLines,
+                $errorLinesByClass,
                 $result->methodsMissingCall(),
-                'Methods that do not have a correct typeCheck call'
+                'Incorrect or missing type check call in method %s().'
             );
+        }
+
+        $errorLines = array(
+            '[Problems detected]',
+        );
+        foreach ($errorLinesByClass as $class => $classErrorLines) {
+            $errorLines[] = '';
+            $errorLines[] = sprintf('  [%s]', $class);
+
+            foreach ($classErrorLines as $errorLine) {
+                $errorLines[] = sprintf('    - %s', $errorLine);
+            }
         }
 
         return $this->getHelperSet()
@@ -127,51 +137,41 @@ class CheckCommand extends Command
     }
 
     /**
-     * @param array<string>          &$errorLines
-     * @param array<ClassDefinition> $classDefinitions
-     * @param string                 $label
+     * @param array<string,array<string>> &$errorLinesByClass
+     * @param array<ClassDefinition>      $classDefinitions
+     * @param string                      $label
      */
     protected function addClassDefinitionList(
-        array &$errorLines,
+        array &$errorLinesByClass,
         array $classDefinitions,
         $label
     ) {
         $this->typeCheck->addClassDefinitionList(func_get_args());
 
-        if (count($classDefinitions) > 0) {
-            $errorLines[] = sprintf('  %s:', $label);
-
-            foreach ($classDefinitions as $classDefinition) {
-                $errorLines[] = sprintf(
-                    '    - %s',
-                    $classDefinition->className()->toRelative()->string()
-                );
-            }
+        foreach ($classDefinitions as $classDefinition) {
+            $relativeClassName = $classDefinition->className()->toRelative()->string();
+            $errorLinesByClass[$relativeClassName][] = $label;
         }
     }
 
     /**
-     * @param array<string>                                  &$errorLines
+     * @param array<string,array<string>>                    &$errorLinesByClass
      * @param array<tuple<ClassDefinition,MethodDefinition>> $tuples
      * @param string                                         $label
      */
     protected function addMethodDefinitionList(
-        array &$errorLines,
+        array &$errorLinesByClass,
         array $tuples,
         $label
     ) {
         $this->typeCheck->addMethodDefinitionList(func_get_args());
 
-        if (count($tuples) > 0) {
-            $errorLines[] = sprintf('  %s:', $label);
-
-            foreach ($tuples as $tuple) {
-                $errorLines[] = sprintf(
-                    '    - %s::%s()',
-                    $tuple[0]->className()->toRelative()->string(),
-                    $tuple[1]->name()
-                );
-            }
+        foreach ($tuples as $tuple) {
+            $relativeClassName = $tuple[0]->className()->toRelative()->string();
+            $errorLinesByClass[$relativeClassName][] = sprintf(
+                $label,
+                $tuple[1]->name()
+            );
         }
     }
 

@@ -53,7 +53,7 @@ class CheckCommandTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidato
         $argumentCount = \count($arguments);
         if ($argumentCount < 3) {
             if ($argumentCount < 1) {
-                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('errorLines', 0, 'array<string>');
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('errorLinesByClass', 0, 'array<string, array<string>>');
             }
             if ($argumentCount < 2) {
                 throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('classDefinitions', 1, 'array<Eloquent\\Typhoon\\ClassMapper\\ClassDefinition>');
@@ -67,8 +67,22 @@ class CheckCommandTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidato
             if (!\is_array($value)) {
                 return false;
             }
+            $valueCheck = function ($subValue) {
+                if (!\is_array($subValue)) {
+                    return false;
+                }
+                foreach ($subValue as $key => $subValue) {
+                    if (!\is_string($subValue)) {
+                        return false;
+                    }
+                }
+                return true;
+            };
             foreach ($value as $key => $subValue) {
-                if (!\is_string($subValue)) {
+                if (!\is_string($key)) {
+                    return false;
+                }
+                if (!$valueCheck($subValue)) {
                     return false;
                 }
             }
@@ -76,10 +90,10 @@ class CheckCommandTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidato
         };
         if (!$check($arguments[0])) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
-                'errorLines',
+                'errorLinesByClass',
                 0,
                 $arguments[0],
-                'array<string>'
+                'array<string, array<string>>'
             );
         }
         $value = $arguments[1];
@@ -118,7 +132,7 @@ class CheckCommandTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidato
         $argumentCount = \count($arguments);
         if ($argumentCount < 3) {
             if ($argumentCount < 1) {
-                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('errorLines', 0, 'array<string>');
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('errorLinesByClass', 0, 'array<string, array<string>>');
             }
             if ($argumentCount < 2) {
                 throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('tuples', 1, 'array<tuple<Eloquent\\Typhoon\\ClassMapper\\ClassDefinition, Eloquent\\Typhoon\\ClassMapper\\MethodDefinition>>');
@@ -132,8 +146,22 @@ class CheckCommandTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidato
             if (!\is_array($value)) {
                 return false;
             }
+            $valueCheck = function ($subValue) {
+                if (!\is_array($subValue)) {
+                    return false;
+                }
+                foreach ($subValue as $key => $subValue) {
+                    if (!\is_string($subValue)) {
+                        return false;
+                    }
+                }
+                return true;
+            };
             foreach ($value as $key => $subValue) {
-                if (!\is_string($subValue)) {
+                if (!\is_string($key)) {
+                    return false;
+                }
+                if (!$valueCheck($subValue)) {
                     return false;
                 }
             }
@@ -141,10 +169,10 @@ class CheckCommandTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidato
         };
         if (!$check($arguments[0])) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
-                'errorLines',
+                'errorLinesByClass',
                 0,
                 $arguments[0],
-                'array<string>'
+                'array<string, array<string>>'
             );
         }
         $value = $arguments[1];
