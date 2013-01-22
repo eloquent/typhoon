@@ -11,7 +11,7 @@
 
 namespace Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing;
 
-class NoConstructorCall
+class NoConstructor
 {
     public function foo()
     {

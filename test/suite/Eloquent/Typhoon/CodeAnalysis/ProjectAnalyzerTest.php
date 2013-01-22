@@ -71,7 +71,8 @@ class ProjectAnalyzerTest extends MultiGenerationTestCase
 
         $this->assertFalse($actual->isSuccessful());
         $this->assertSame(array(
-            '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\NoConstructorCall',
+            '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\MissingConstructorCall',
+            '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\NoConstructor',
         ), $actualClassesMissingConstructorCall);
         $this->assertSame(array(
             '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\MissingProperty',

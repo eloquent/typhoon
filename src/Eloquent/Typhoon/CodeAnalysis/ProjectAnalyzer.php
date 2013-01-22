@@ -114,6 +114,8 @@ class ProjectAnalyzer
             ->shorten($facadeClassName)
         ;
 
+        $hasCheckableMethods = false;
+        $hasConstructor = false;
         $hasConstructorCall = false;
         $propertyName = 'typeCheck';
         foreach ($classDefinition->methods() as $methodDefinition) {
@@ -121,12 +123,12 @@ class ProjectAnalyzer
                 continue;
             }
 
+            $hasCheckableMethods = true;
             list($hasConstructorCall, $propertyName) = $this->analyzeConstructor(
                 $methodDefinition,
                 $expectedfacadeClassName
             );
         }
-        $hasCheckableMethods = false;
         foreach ($classDefinition->methods() as $methodDefinition) {
             if (
                 '__construct' === $methodDefinition->name() ||
