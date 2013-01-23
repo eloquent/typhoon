@@ -52,38 +52,46 @@ class ProjectAnalyzerTest extends MultiGenerationTestCase
             )
         );
         $actual = $this->_analyzer->analyze($configuration);
-        $actualClassesMissingConstructorCall = array();
-        foreach ($actual->classesMissingConstructorCall() as $classDefinition) {
-            $actualClassesMissingConstructorCall[] = $classDefinition->className()->string();
-        }
-        $actualClassesMissingProperty = array();
-        foreach ($actual->classesMissingProperty() as $classDefinition) {
-            $actualClassesMissingProperty[] = $classDefinition->className()->string();
-        }
-        $actualMethodsMissingCall = array();
-        foreach ($actual->methodsMissingCall() as $tuple) {
-            $actualMethodsMissingCall[] = sprintf(
-                '%s::%s',
-                $tuple[0]->className()->string(),
-                $tuple[1]->name()
-            );
-        }
+        $expected = array(
+            array(
+                'Eloquent\Typhoon\CodeAnalysis\Issue\MissingMethodCall',
+                '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\MissingCalls',
+                'bar',
+            ),
+            array(
+                'Eloquent\Typhoon\CodeAnalysis\Issue\MissingMethodCall',
+                '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\MissingCalls',
+                'baz',
+            ),
+            array(
+                'Eloquent\Typhoon\CodeAnalysis\Issue\MissingMethodCall',
+                '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\MissingCalls',
+                'foo',
+            ),
+            array(
+                'Eloquent\Typhoon\CodeAnalysis\Issue\MissingConstructorCall',
+                '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\MissingConstructorCall',
+            ),
+            array(
+                'Eloquent\Typhoon\CodeAnalysis\Issue\MissingProperty',
+                '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\MissingProperty',
+            ),
+            array(
+                'Eloquent\Typhoon\CodeAnalysis\Issue\MissingConstructorCall',
+                '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\NoConstructor',
+            ),
+            array(
+                'Eloquent\Typhoon\CodeAnalysis\Issue\MissingProperty',
+                '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\NonPrivateProperty',
+            ),
+            array(
+                'Eloquent\Typhoon\CodeAnalysis\Issue\MissingProperty',
+                '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\StaticProperty',
+            ),
+        );
 
-        $this->assertFalse($actual->isSuccessful());
-        $this->assertSame(array(
-            '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\MissingConstructorCall',
-            '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\NoConstructor',
-        ), $actualClassesMissingConstructorCall);
-        $this->assertSame(array(
-            '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\MissingProperty',
-            '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\NonPrivateProperty',
-            '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\StaticProperty',
-        ), $actualClassesMissingProperty);
-        $this->assertSame(array(
-            '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\MissingCalls::bar',
-            '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\MissingCalls::baz',
-            '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\MissingCalls::foo',
-        ), $actualMethodsMissingCall);
+        $this->assertTrue($actual->isError());
+        $this->assertAnalysisResult($expected, $actual);
     }
 
     public function testAnalyzeSuccess()
@@ -96,9 +104,37 @@ class ProjectAnalyzerTest extends MultiGenerationTestCase
         );
         $actual = $this->_analyzer->analyze($configuration);
 
-        $this->assertSame(0, count($actual->classesMissingConstructorCall()));
-        $this->assertSame(0, count($actual->classesMissingProperty()));
-        $this->assertSame(0, count($actual->methodsMissingCall()));
-        $this->assertTrue($actual->isSuccessful());
+        $this->assertFalse($actual->isError());
+    }
+
+    protected function assertAnalysisResult(array $expected, AnalysisResult $actual)
+    {
+        $issues = $actual->issues();
+        $sort = array();
+        foreach ($issues as $issue) {
+            if ($issue instanceof Issue\ClassRelatedIssue) {
+                $sort[] = $issue->classDefinition()->className()->string();
+            } else {
+                $sort[] = '';
+            }
+        }
+        array_multisort($sort, SORT_STRING, $issues);
+
+        $actualArray = '';
+        foreach ($issues as $issue) {
+            $actualArrayEntry = array(
+                get_class($issue)
+            );
+            if ($issue instanceof Issue\ClassRelatedIssue) {
+                $actualArrayEntry[] = $issue->classDefinition()->className()->string();
+            }
+            if ($issue instanceof Issue\MethodIssue) {
+                $actualArrayEntry[] = $issue->methodDefinition()->name();
+            }
+
+            $actualArray[] = $actualArrayEntry;
+        }
+
+        $this->assertSame($expected, $actualArray);
     }
 }

@@ -16,6 +16,8 @@ use Eloquent\Liberator\Liberator;
 use Eloquent\Typhoon\ClassMapper\ClassDefinition;
 use Eloquent\Typhoon\ClassMapper\MethodDefinition;
 use Eloquent\Typhoon\CodeAnalysis\AnalysisResult;
+use Eloquent\Typhoon\CodeAnalysis\Issue\IssueRenderer;
+use Eloquent\Typhoon\CodeAnalysis\Issue\IssueSeverity;
 use Eloquent\Typhoon\Configuration\Configuration;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Icecave\Pasta\AST\Type\AccessModifier;
@@ -44,16 +46,35 @@ class CheckCommandTest extends MultiGenerationTestCase
         $this->_application = Phake::mock('Eloquent\Typhoon\Console\Application');
         Phake::when($this->_application)->configurationReader()->thenReturn($this->_configurationReader);
         $this->_analyzer = Phake::mock('Eloquent\Typhoon\CodeAnalysis\ProjectAnalyzer');
+        $this->_issueRenderer = new IssueRenderer;
         $this->_command = Phake::partialMock(
             __NAMESPACE__.'\CheckCommand',
-            $this->_analyzer
+            $this->_analyzer,
+            $this->_issueRenderer
         );
         Phake::when($this->_command)->getApplication()->thenReturn($this->_application);
+
+        $this->_classDefinition = new ClassDefinition(ClassName::fromString('A'));
+        $this->_methodDefinition = Phake::mock(
+            'Eloquent\Typhoon\ClassMapper\MethodDefinition'
+        );
+
+        $this->_warning = Phake::partialMock(
+            'Eloquent\Typhoon\CodeAnalysis\Issue\MethodWarning',
+            $this->_classDefinition,
+            $this->_methodDefinition
+        );
+        $this->_error = Phake::partialMock(
+            'Eloquent\Typhoon\CodeAnalysis\Issue\MethodError',
+            $this->_classDefinition,
+            $this->_methodDefinition
+        );
     }
 
     public function testConstructor()
     {
         $this->assertSame($this->_analyzer, $this->_command->analyzer());
+        $this->assertSame($this->_issueRenderer, $this->_command->issueRenderer());
     }
 
     public function testConstructorDefaults()
@@ -63,6 +84,10 @@ class CheckCommandTest extends MultiGenerationTestCase
         $this->assertInstanceOf(
             'Eloquent\Typhoon\CodeAnalysis\ProjectAnalyzer',
             $command->analyzer()
+        );
+        $this->assertInstanceOf(
+            'Eloquent\Typhoon\CodeAnalysis\Issue\IssueRenderer',
+            $command->issueRenderer()
         );
     }
 
@@ -78,30 +103,36 @@ class CheckCommandTest extends MultiGenerationTestCase
 
     public function testExecuteSuccess()
     {
-        $result = Phake::mock('Eloquent\Typhoon\CodeAnalysis\AnalysisResult');
-        Phake::when($result)->isSuccessful(Phake::anyParameters())->thenReturn(true);
+        $result = Phake::partialMock('Eloquent\Typhoon\CodeAnalysis\AnalysisResult');
         Phake::when($this->_analyzer)
             ->analyze(Phake::anyParameters())
             ->thenReturn($result)
         ;
         $input = Phake::mock('Symfony\Component\Console\Input\InputInterface');
         $output = Phake::mock('Symfony\Component\Console\Output\OutputInterface');
-        Liberator::liberate($this->_command)->execute($input, $output);
+        $exitCode = Liberator::liberate($this->_command)->execute($input, $output);
 
+        $this->assertSame(0, $exitCode);
         Phake::inOrder(
             Phake::verify($output)->writeln('<info>Checking for correct Typhoon setup...</info>'),
             Phake::verify($this->_analyzer)->analyze(
                 $this->identicalTo($this->_configuration)
             ),
-            Phake::verify($result)->isSuccessful(),
-            Phake::verify($output)->writeln('<info>No problems detected.</info>')
+            Phake::verify($result, Phake::times(2))->issues(),
+            Phake::verify($output)->writeln('<info>No problems detected.</info>'),
+            Phake::verify($result)->isError()
         );
     }
 
     public function testExecuteFailure()
     {
-        $result = Phake::mock('Eloquent\Typhoon\CodeAnalysis\AnalysisResult');
-        Phake::when($result)->isSuccessful(Phake::anyParameters())->thenReturn(false);
+        $result = Phake::partialMock(
+            'Eloquent\Typhoon\CodeAnalysis\AnalysisResult',
+            array(
+                $this->_error,
+                $this->_warning,
+            )
+        );
         Phake::when($this->_analyzer)
             ->analyze(Phake::anyParameters())
             ->thenReturn($result)
@@ -110,27 +141,115 @@ class CheckCommandTest extends MultiGenerationTestCase
             ->generateErrorBlock(Phake::anyParameters())
             ->thenReturn('foo')
         ;
+        Phake::when($this->_command)
+            ->generateWarningBlock(Phake::anyParameters())
+            ->thenReturn('bar')
+        ;
         $input = Phake::mock('Symfony\Component\Console\Input\InputInterface');
         $output = Phake::mock('Symfony\Component\Console\Output\OutputInterface');
-        Liberator::liberate($this->_command)->execute($input, $output);
+        $exitCode = Liberator::liberate($this->_command)->execute($input, $output);
 
+        $this->assertSame(1, $exitCode);
         Phake::inOrder(
             Phake::verify($output)->writeln('<info>Checking for correct Typhoon setup...</info>'),
             Phake::verify($this->_analyzer)->analyze(
                 $this->identicalTo($this->_configuration)
             ),
-            Phake::verify($result)->isSuccessful(),
+            Phake::verify($result, Phake::atLeast(1))->issues(),
+            Phake::verify($result, Phake::atLeast(1))->issuesBySeverity(IssueSeverity::ERROR()),
+            Phake::verify($output, Phake::times(2))->writeln(''),
+            Phake::verify($output)->writeln('foo'),
+            Phake::verify($result, Phake::atLeast(1))->issuesBySeverity(IssueSeverity::WARNING()),
+            Phake::verify($output, Phake::times(2))->writeln(''),
+            Phake::verify($output)->writeln('bar')
+        );
+    }
+
+    public function testExecuteWarning()
+    {
+        $result = Phake::partialMock(
+            'Eloquent\Typhoon\CodeAnalysis\AnalysisResult',
+            array(
+                $this->_warning,
+            )
+        );
+        Phake::when($this->_analyzer)
+            ->analyze(Phake::anyParameters())
+            ->thenReturn($result)
+        ;
+        Phake::when($this->_command)
+            ->generateWarningBlock(Phake::anyParameters())
+            ->thenReturn('bar')
+        ;
+        $input = Phake::mock('Symfony\Component\Console\Input\InputInterface');
+        $output = Phake::mock('Symfony\Component\Console\Output\OutputInterface');
+        $exitCode = Liberator::liberate($this->_command)->execute($input, $output);
+
+        $this->assertSame(0, $exitCode);
+        Phake::inOrder(
+            Phake::verify($output)->writeln('<info>Checking for correct Typhoon setup...</info>'),
+            Phake::verify($this->_analyzer)->analyze(
+                $this->identicalTo($this->_configuration)
+            ),
+            Phake::verify($result, Phake::atLeast(1))->issues(),
+            Phake::verify($result, Phake::atLeast(1))->issuesBySeverity(IssueSeverity::WARNING()),
             Phake::verify($output)->writeln(''),
-            Phake::verify($output)->writeln('foo')
+            Phake::verify($output)->writeln('bar')
         );
     }
 
     public function testGenerateErrorBlock()
     {
+        Phake::when($this->_command)
+            ->generateBlock(Phake::anyParameters())
+            ->thenReturn('foo')
+        ;
+        $result = Phake::partialMock(
+            'Eloquent\Typhoon\CodeAnalysis\AnalysisResult',
+            array(
+                $this->_error,
+                $this->_warning,
+            )
+        );
+        $actual = Liberator::liberate($this->_command)->generateErrorBlock($result);
+
+        $this->assertSame('foo', $actual);
+        Phake::verify($this->_command)->generateBlock(
+            'Problems detected',
+            'error',
+            $this->identicalTo(array('\A' => array($this->_error)))
+        );
+    }
+
+    public function testGenerateWarningBlock()
+    {
+        Phake::when($this->_command)
+            ->generateBlock(Phake::anyParameters())
+            ->thenReturn('foo')
+        ;
+        $result = Phake::partialMock(
+            'Eloquent\Typhoon\CodeAnalysis\AnalysisResult',
+            array(
+                $this->_error,
+                $this->_warning,
+            )
+        );
+        $actual = Liberator::liberate($this->_command)->generateWarningBlock($result);
+
+        $this->assertSame('foo', $actual);
+        Phake::verify($this->_command)->generateBlock(
+            'Potential problems detected',
+            'comment',
+            $this->identicalTo(array('\A' => array($this->_warning)))
+        );
+    }
+
+    public function testGenerateBlock()
+    {
         $formatter = Phake::mock('Symfony\Component\Console\Helper\FormatterHelper');
         Phake::when($formatter)
             ->formatBlock(Phake::anyParameters())
-            ->thenReturn('pang')
+            ->thenReturn('foo')
         ;
         $helperSet = Phake::mock('Symfony\Component\Console\Helper\HelperSet');
         Phake::when($helperSet)
@@ -141,48 +260,36 @@ class CheckCommandTest extends MultiGenerationTestCase
             ->getHelperSet(Phake::anyParameters())
             ->thenReturn($helperSet)
         ;
-        $result = new AnalysisResult(array(
-            new ClassDefinition(ClassName::fromString('\foo')),
-            new ClassDefinition(ClassName::fromString('\bar')),
-        ), array(
-            new ClassDefinition(ClassName::fromString('\baz')),
-            new ClassDefinition(ClassName::fromString('\qux')),
-        ), array(
-            array(
-                new ClassDefinition(ClassName::fromString('\doom')),
-                new MethodDefinition('splat', true, false, AccessModifier::PUBLIC_(), 111, ''),
+        $issueA = Phake::mock('Eloquent\Typhoon\CodeAnalysis\Issue\Issue');
+        Phake::when($issueA)->accept(Phake::anyParameters())->thenReturn('bar');
+        $issueB = Phake::mock('Eloquent\Typhoon\CodeAnalysis\Issue\Issue');
+        Phake::when($issueB)->accept(Phake::anyParameters())->thenReturn('baz');
+        $issues = array(
+            '\qux' => array(
+                $issueA,
+                $issueB,
             ),
-            array(
-                new ClassDefinition(ClassName::fromString('\ping')),
-                new MethodDefinition('pong', true, false, AccessModifier::PUBLIC_(), 111, ''),
+            '\doom' => array(
+                $issueA,
+                $issueB,
             ),
-        ));
+        );
         $expected = array(
-          '[Problems detected]',
+          '[splat]',
           '',
-          '  [foo]',
-          '    - Incorrect or missing constructor initialization.',
+          '  [\qux]',
+          '    - bar',
+          '    - baz',
           '',
-          '  [bar]',
-          '    - Incorrect or missing constructor initialization.',
-          '',
-          '  [baz]',
-          '    - Incorrect or missing property definition.',
-          '',
-          '  [qux]',
-          '    - Incorrect or missing property definition.',
-          '',
-          '  [doom]',
-          '    - Incorrect or missing type check call in method splat().',
-          '',
-          '  [ping]',
-          '    - Incorrect or missing type check call in method pong().',
+          '  [\doom]',
+          '    - bar',
+          '    - baz',
         );
 
         $this->assertSame(
-            'pang',
-            Liberator::liberate($this->_command)->generateErrorBlock($result)
+            'foo',
+            Liberator::liberate($this->_command)->generateBlock('splat', 'ping', $issues)
         );
-        Phake::verify($formatter)->formatBlock($expected, 'error', true);
+        Phake::verify($formatter)->formatBlock($expected, 'ping', true);
     }
 }

@@ -31,22 +31,16 @@ class ProjectAnalyzerTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValid
     public function analyzeClass(array $arguments)
     {
         $argumentCount = \count($arguments);
-        if ($argumentCount < 5) {
+        if ($argumentCount < 3) {
             if ($argumentCount < 1) {
                 throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('classDefinition', 0, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition');
             }
             if ($argumentCount < 2) {
                 throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('facadeClassName', 1, 'Eloquent\\Cosmos\\ClassName');
             }
-            if ($argumentCount < 3) {
-                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('classesMissingConstructorCall', 2, 'array<Eloquent\\Typhoon\\ClassMapper\\ClassDefinition>');
-            }
-            if ($argumentCount < 4) {
-                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('classesMissingProperty', 3, 'array<Eloquent\\Typhoon\\ClassMapper\\ClassDefinition>');
-            }
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('methodsMissingCall', 4, 'array<tuple<Eloquent\\Typhoon\\ClassMapper\\ClassDefinition, Eloquent\\Typhoon\\ClassMapper\\MethodDefinition>>');
-        } elseif ($argumentCount > 5) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(5, $arguments[5]);
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('issues', 2, 'array<Eloquent\\Typhoon\\CodeAnalysis\\Issue\\Issue>');
+        } elseif ($argumentCount > 3) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(3, $arguments[3]);
         }
         $value = $arguments[2];
         $check = function ($value) {
@@ -54,7 +48,7 @@ class ProjectAnalyzerTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValid
                 return false;
             }
             foreach ($value as $key => $subValue) {
-                if (!$subValue instanceof \Eloquent\Typhoon\ClassMapper\ClassDefinition) {
+                if (!$subValue instanceof \Eloquent\Typhoon\CodeAnalysis\Issue\Issue) {
                     return false;
                 }
             }
@@ -62,50 +56,10 @@ class ProjectAnalyzerTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValid
         };
         if (!$check($arguments[2])) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
-                'classesMissingConstructorCall',
+                'issues',
                 2,
                 $arguments[2],
-                'array<Eloquent\\Typhoon\\ClassMapper\\ClassDefinition>'
-            );
-        }
-        $value = $arguments[3];
-        $check = function ($value) {
-            if (!\is_array($value)) {
-                return false;
-            }
-            foreach ($value as $key => $subValue) {
-                if (!$subValue instanceof \Eloquent\Typhoon\ClassMapper\ClassDefinition) {
-                    return false;
-                }
-            }
-            return true;
-        };
-        if (!$check($arguments[3])) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
-                'classesMissingProperty',
-                3,
-                $arguments[3],
-                'array<Eloquent\\Typhoon\\ClassMapper\\ClassDefinition>'
-            );
-        }
-        $value = $arguments[4];
-        $check = function ($value) {
-            if (!\is_array($value)) {
-                return false;
-            }
-            foreach ($value as $key => $subValue) {
-                if (!(\is_array($subValue) && \array_keys($subValue) === \range(0, 1) && $subValue[0] instanceof \Eloquent\Typhoon\ClassMapper\ClassDefinition && $subValue[1] instanceof \Eloquent\Typhoon\ClassMapper\MethodDefinition)) {
-                    return false;
-                }
-            }
-            return true;
-        };
-        if (!$check($arguments[4])) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
-                'methodsMissingCall',
-                4,
-                $arguments[4],
-                'array<tuple<Eloquent\\Typhoon\\ClassMapper\\ClassDefinition, Eloquent\\Typhoon\\ClassMapper\\MethodDefinition>>'
+                'array<Eloquent\\Typhoon\\CodeAnalysis\\Issue\\Issue>'
             );
         }
     }

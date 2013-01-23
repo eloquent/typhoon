@@ -11,6 +11,8 @@
 
 namespace Eloquent\Typhoon\CodeAnalysis;
 
+use Eloquent\Cosmos\ClassName;
+use Eloquent\Typhoon\ClassMapper\ClassDefinition;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Phake;
 
@@ -20,60 +22,95 @@ class AnalysisResultTest extends MultiGenerationTestCase
     {
         parent::setUp();
 
-        $this->_classesMissingConstructorCall = array(
-            Phake::mock('Eloquent\Typhoon\ClassMapper\ClassDefinition'),
-            Phake::mock('Eloquent\Typhoon\ClassMapper\ClassDefinition'),
+        $this->_classDefinitionA = new ClassDefinition(
+            ClassName::fromString('\A')
         );
-        $this->_classesMissingProperty = array(
-            Phake::mock('Eloquent\Typhoon\ClassMapper\ClassDefinition'),
-            Phake::mock('Eloquent\Typhoon\ClassMapper\ClassDefinition'),
+        $this->_classDefinitionB = new ClassDefinition(
+            ClassName::fromString('\B')
         );
-        $this->_methodsMissingCall = array(
-            array(
-                Phake::mock('Eloquent\Typhoon\ClassMapper\ClassDefinition'),
-                Phake::mock('Eloquent\Typhoon\ClassMapper\MethodDefinition'),
-            ),
-            array(
-                Phake::mock('Eloquent\Typhoon\ClassMapper\ClassDefinition'),
-                Phake::mock('Eloquent\Typhoon\ClassMapper\MethodDefinition'),
-            ),
+        $this->_methodDefinition = Phake::mock(
+            'Eloquent\Typhoon\ClassMapper\MethodDefinition'
         );
-        $this->_result = new AnalysisResult(
-            $this->_classesMissingConstructorCall,
-            $this->_classesMissingProperty,
-            $this->_methodsMissingCall
+
+        $this->_warningA = Phake::partialMock(
+            __NAMESPACE__.'\Issue\MethodWarning',
+            $this->_classDefinitionA,
+            $this->_methodDefinition
         );
+        $this->_warningB = Phake::partialMock(
+            __NAMESPACE__.'\Issue\MethodWarning',
+            $this->_classDefinitionB,
+            $this->_methodDefinition
+        );
+        $this->_errorA = Phake::partialMock(
+            __NAMESPACE__.'\Issue\MethodError',
+            $this->_classDefinitionA,
+            $this->_methodDefinition
+        );
+        $this->_errorB = Phake::partialMock(
+            __NAMESPACE__.'\Issue\MethodError',
+            $this->_classDefinitionB,
+            $this->_methodDefinition
+        );
+
+        $this->_issues = array(
+            $this->_warningA,
+            $this->_warningB,
+            $this->_errorA,
+            $this->_errorB,
+        );
+        $this->_result = new AnalysisResult($this->_issues);
     }
 
     public function testConstructor()
     {
-        $this->assertSame(
-            $this->_classesMissingConstructorCall,
-            $this->_result->classesMissingConstructorCall()
-        );
-        $this->assertSame(
-            $this->_classesMissingProperty,
-            $this->_result->classesMissingProperty()
-        );
-        $this->assertSame(
-            $this->_methodsMissingCall,
-            $this->_result->methodsMissingCall()
-        );
+        $this->assertSame($this->_issues, $this->_result->issues());
     }
 
-    public function testCount()
+    public function testConstructorDefaults()
     {
-        $result = new AnalysisResult(array(), array(), array());
+        $this->_result = new AnalysisResult;
 
-        $this->assertSame(6, count($this->_result));
-        $this->assertSame(0, count($result));
+        $this->assertSame(array(), $this->_result->issues());
     }
 
-    public function testIsSuccessful()
+    public function testIssuesBySeverity()
     {
-        $result = new AnalysisResult(array(), array(), array());
+        $this->assertSame(array(
+            $this->_warningA,
+            $this->_warningB,
+        ), $this->_result->issuesBySeverity(Issue\IssueSeverity::WARNING()));
+        $this->assertSame(array(
+            $this->_errorA,
+            $this->_errorB,
+        ), $this->_result->issuesBySeverity(Issue\IssueSeverity::ERROR()));
+    }
 
-        $this->assertFalse($this->_result->isSuccessful());
-        $this->assertTrue($result->isSuccessful());
+    public function testIssuesBySeverityByClass()
+    {
+        $this->assertSame(array(
+            '\A' => array($this->_warningA),
+            '\B' => array($this->_warningB),
+        ), $this->_result->issuesBySeverityByClass(Issue\IssueSeverity::WARNING()));
+        $this->assertSame(array(
+            '\A' => array($this->_errorA),
+            '\B' => array($this->_errorB),
+        ), $this->_result->issuesBySeverityByClass(Issue\IssueSeverity::ERROR()));
+    }
+
+    public function testIsError()
+    {
+        $successResult = new AnalysisResult;
+        $warningResult = new AnalysisResult(array(
+            $this->_warningA,
+        ));
+        $errorResult = new AnalysisResult(array(
+            $this->_warningA,
+            $this->_errorA,
+        ));
+
+        $this->assertFalse($successResult->isError());
+        $this->assertFalse($warningResult->isError());
+        $this->assertTrue($errorResult->isError());
     }
 }

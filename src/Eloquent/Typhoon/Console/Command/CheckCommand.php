@@ -11,12 +11,12 @@
 
 namespace Eloquent\Typhoon\Console\Command;
 
-use Eloquent\Typhoon\ClassMapper\ClassDefinition;
-use Eloquent\Typhoon\ClassMapper\MethodDefinition;
 use Eloquent\Typhoon\CodeAnalysis\AnalysisResult;
+use Eloquent\Typhoon\CodeAnalysis\Issue\Issue;
+use Eloquent\Typhoon\CodeAnalysis\Issue\IssueRenderer;
+use Eloquent\Typhoon\CodeAnalysis\Issue\IssueSeverity;
 use Eloquent\Typhoon\CodeAnalysis\ProjectAnalyzer;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
-use Icecave\Isolator\Isolator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -25,16 +25,22 @@ class CheckCommand extends Command
 {
     /**
      * @param ProjectAnalyzer|null $analyzer
+     * @param IssueRenderer|null   $issueRenderer
      */
     public function __construct(
-        ProjectAnalyzer $analyzer = null
+        ProjectAnalyzer $analyzer = null,
+        IssueRenderer $issueRenderer = null
     ) {
         $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
         if (null === $analyzer) {
             $analyzer = new ProjectAnalyzer;
         }
+        if (null === $issueRenderer) {
+            $issueRenderer = new IssueRenderer;
+        }
 
         $this->analyzer = $analyzer;
+        $this->issueRenderer = $issueRenderer;
 
         parent::__construct();
     }
@@ -47,6 +53,16 @@ class CheckCommand extends Command
         $this->typeCheck->analyzer(func_get_args());
 
         return $this->analyzer;
+    }
+
+    /**
+     * @return IssueRenderer
+     */
+    public function issueRenderer()
+    {
+        $this->typeCheck->issueRenderer(func_get_args());
+
+        return $this->issueRenderer;
     }
 
     protected function configure()
@@ -73,16 +89,24 @@ class CheckCommand extends Command
         $output->writeln('<info>Checking for correct Typhoon setup...</info>');
         $result = $this->analyzer()->analyze($configuration);
 
-        if ($result->isSuccessful()) {
+        if (count($result->issues()) < 1) {
             $output->writeln('<info>No problems detected.</info>');
-
-            return 0;
+        } else {
+            if (count($result->issuesBySeverity(IssueSeverity::ERROR())) > 0) {
+                $output->writeln('');
+                $output->writeln($this->generateErrorBlock($result));
+            }
+            if (count($result->issuesBySeverity(IssueSeverity::WARNING())) > 0) {
+                $output->writeln('');
+                $output->writeln($this->generateWarningBlock($result));
+            }
         }
 
-        $output->writeln('');
-        $output->writeln($this->generateErrorBlock($result));
+        if ($result->isError()) {
+            return 1;
+        }
 
-        return 1;
+        return 0;
     }
 
     /**
@@ -94,88 +118,63 @@ class CheckCommand extends Command
     {
         $this->typeCheck->generateErrorBlock(func_get_args());
 
-        $errorLinesByClass = array();
+        return $this->generateBlock(
+            'Problems detected',
+            'error',
+            $result->issuesBySeverityByClass(IssueSeverity::ERROR())
+        );
+    }
 
-        if (count($result->classesMissingConstructorCall()) > 0) {
-            $this->addClassDefinitionList(
-                $errorLinesByClass,
-                $result->classesMissingConstructorCall(),
-                'Incorrect or missing constructor initialization.'
-            );
-        }
-        if (count($result->classesMissingProperty()) > 0) {
-            $this->addClassDefinitionList(
-                $errorLinesByClass,
-                $result->classesMissingProperty(),
-                'Incorrect or missing property definition.'
-            );
-        }
-        if (count($result->methodsMissingCall()) > 0) {
-            $this->addMethodDefinitionList(
-                $errorLinesByClass,
-                $result->methodsMissingCall(),
-                'Incorrect or missing type check call in method %s().'
-            );
-        }
+    /**
+     * @param AnalysisResult $result
+     *
+     * @return string
+     */
+    protected function generateWarningBlock(AnalysisResult $result)
+    {
+        $this->typeCheck->generateWarningBlock(func_get_args());
+
+        return $this->generateBlock(
+            'Potential problems detected',
+            'comment',
+            $result->issuesBySeverityByClass(IssueSeverity::WARNING())
+        );
+    }
+
+    /**
+     * @param string                     $label
+     * @param string                     $blockStyle
+     * @param array<string,array<Issue>> $issues
+     *
+     * @return string
+     */
+    protected function generateBlock($label, $blockStyle, array $issues)
+    {
+        $this->typeCheck->generateBlock(func_get_args());
 
         $errorLines = array(
-            '[Problems detected]',
+            sprintf('[%s]', $label),
         );
-        foreach ($errorLinesByClass as $class => $classErrorLines) {
+
+        foreach ($issues as $class => $classIssues) {
             $errorLines[] = '';
             $errorLines[] = sprintf('  [%s]', $class);
 
-            foreach ($classErrorLines as $errorLine) {
-                $errorLines[] = sprintf('    - %s', $errorLine);
+            foreach ($classIssues as $issue) {
+                $errorLines[] = sprintf(
+                    '    - %s',
+                    $issue->accept($this->issueRenderer())
+                );
             }
         }
 
         return $this->getHelperSet()
             ->get('formatter')
-            ->formatBlock($errorLines, 'error', true)
+            ->formatBlock($errorLines, $blockStyle, true)
         ;
     }
 
-    /**
-     * @param array<string,array<string>> &$errorLinesByClass
-     * @param array<ClassDefinition>      $classDefinitions
-     * @param string                      $label
-     */
-    protected function addClassDefinitionList(
-        array &$errorLinesByClass,
-        array $classDefinitions,
-        $label
-    ) {
-        $this->typeCheck->addClassDefinitionList(func_get_args());
-
-        foreach ($classDefinitions as $classDefinition) {
-            $relativeClassName = $classDefinition->className()->toRelative()->string();
-            $errorLinesByClass[$relativeClassName][] = $label;
-        }
-    }
-
-    /**
-     * @param array<string,array<string>>                    &$errorLinesByClass
-     * @param array<tuple<ClassDefinition,MethodDefinition>> $tuples
-     * @param string                                         $label
-     */
-    protected function addMethodDefinitionList(
-        array &$errorLinesByClass,
-        array $tuples,
-        $label
-    ) {
-        $this->typeCheck->addMethodDefinitionList(func_get_args());
-
-        foreach ($tuples as $tuple) {
-            $relativeClassName = $tuple[0]->className()->toRelative()->string();
-            $errorLinesByClass[$relativeClassName][] = sprintf(
-                $label,
-                $tuple[1]->name()
-            );
-        }
-    }
-
-    private $generator;
-    private $isolator;
+    private $analyzer;
+    private $issueRenderer;
     private $typeCheck;
 }

@@ -11,85 +11,80 @@
 
 namespace Eloquent\Typhoon\CodeAnalysis;
 
-use Countable;
-use Eloquent\Typhoon\ClassMapper\ClassDefinition;
-use Eloquent\Typhoon\ClassMapper\MethodDefinition;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 
-class AnalysisResult implements Countable
+class AnalysisResult
 {
     /**
-     * @param array<ClassDefinition>                         $classesMissingConstructorCall
-     * @param array<ClassDefinition>                         $classesMissingProperty
-     * @param array<tuple<ClassDefinition,MethodDefinition>> $methodsMissingCall
+     * @param array<Issue\Issue> $issues
      */
-    public function __construct(
-        array $classesMissingConstructorCall,
-        array $classesMissingProperty,
-        array $methodsMissingCall
-    ) {
+    public function __construct(array $issues = array())
+    {
         $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
-        $this->classesMissingConstructorCall = $classesMissingConstructorCall;
-        $this->classesMissingProperty = $classesMissingProperty;
-        $this->methodsMissingCall = $methodsMissingCall;
+        $this->issues = $issues;
     }
 
     /**
-     * @return array<ClassDefinition>
+     * @return array<Issue\Issue>
      */
-    public function classesMissingConstructorCall()
+    public function issues()
     {
-        $this->typeCheck->classesMissingConstructorCall(func_get_args());
+        $this->typeCheck->issues(func_get_args());
 
-        return $this->classesMissingConstructorCall;
+        return $this->issues;
     }
 
     /**
-     * @return array<ClassDefinition>
+     * @param Issue\IssueSeverity $severity
+     *
+     * @return array<Issue\Issue>
      */
-    public function classesMissingProperty()
+    public function issuesBySeverity(Issue\IssueSeverity $severity)
     {
-        $this->typeCheck->classesMissingProperty(func_get_args());
+        $this->typeCheck->issuesBySeverity(func_get_args());
 
-        return $this->classesMissingProperty;
+        $issues = array();
+        foreach ($this->issues() as $issue) {
+            if ($issue->severity() === $severity) {
+                $issues[] = $issue;
+            }
+        }
+
+        return $issues;
     }
 
     /**
-     * @return array<tuple<ClassDefinition,MethodDefinition>>
+     * @param Issue\IssueSeverity $severity
+     *
+     * @return array<string,array<Issue\Issue>>
      */
-    public function methodsMissingCall()
+    public function issuesBySeverityByClass(Issue\IssueSeverity $severity)
     {
-        $this->typeCheck->methodsMissingCall(func_get_args());
+        $this->typeCheck->issuesBySeverityByClass(func_get_args());
 
-        return $this->methodsMissingCall;
+        $issues = array();
+        foreach ($this->issuesBySeverity($severity) as $issue) {
+            if ($issue instanceof Issue\ClassRelatedIssue) {
+                $issues[$issue->classDefinition()->className()->string()][] =
+                    $issue
+                ;
+            }
+        }
+        ksort($issues, SORT_STRING);
+
+        return $issues;
     }
 
     /**
      * @return boolean
      */
-    public function isSuccessful()
+    public function isError()
     {
-        $this->typeCheck->isSuccessful(func_get_args());
+        $this->typeCheck->isError(func_get_args());
 
-        return 0 === $this->count();
+        return count($this->issuesBySeverity(Issue\IssueSeverity::ERROR())) > 0;
     }
 
-    /**
-     * @return integer
-     */
-    public function count()
-    {
-        $this->typeCheck->count(func_get_args());
-
-        return
-            count($this->classesMissingConstructorCall()) +
-            count($this->classesMissingProperty()) +
-            count($this->methodsMissingCall())
-        ;
-    }
-
-    private $classesMissingConstructorCall;
-    private $classesMissingProperty;
-    private $methodsMissingCall;
+    private $issues;
     private $typeCheck;
 }

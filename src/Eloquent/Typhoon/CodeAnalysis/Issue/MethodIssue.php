@@ -15,7 +15,7 @@ use Eloquent\Typhoon\ClassMapper\ClassDefinition;
 use Eloquent\Typhoon\ClassMapper\MethodDefinition;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 
-abstract class MethodIssue
+abstract class MethodIssue implements ClassRelatedIssue
 {
     /**
      * @param ClassDefinition  $classDefinition

@@ -60,52 +60,29 @@ class ProjectAnalyzer
         ;
 
         $sourcePaths = $configuration->sourcePaths();
-        $classesMissingConstructorCall = array();
-        $classesMissingProperty = array();
-        $methodsMissingCall = array();
+        $issues = array();
         foreach ($this->classMapper()->classesByPaths($sourcePaths) as $classDefinition) {
             $this->analyzeClass(
                 $classDefinition,
                 $facadeClassName,
-                $classesMissingConstructorCall,
-                $classesMissingProperty,
-                $methodsMissingCall
+                $issues
             );
         }
 
-        usort(
-            $classesMissingConstructorCall,
-            'Eloquent\Typhoon\ClassMapper\ClassDefinition::compare'
-        );
-        usort(
-            $classesMissingProperty,
-            'Eloquent\Typhoon\ClassMapper\ClassDefinition::compare'
-        );
-        usort(
-            $methodsMissingCall,
-            'Eloquent\Typhoon\ClassMapper\ClassMemberDefinition::compareTuples'
-        );
-
         return new AnalysisResult(
-            $classesMissingConstructorCall,
-            $classesMissingProperty,
-            $methodsMissingCall
+            $issues
         );
     }
 
     /**
-     * @param ClassDefinition $classDefinition
-     * @param ClassName       $facadeClassName
-     * @param array<ClassDefinition>                         &$classesMissingConstructorCall
-     * @param array<ClassDefinition>                         &$classesMissingProperty
-     * @param array<tuple<ClassDefinition,MethodDefinition>> &$methodsMissingCall
+     * @param ClassDefinition    $classDefinition
+     * @param ClassName          $facadeClassName
+     * @param array<Issue\Issue> &$issues
      */
     protected function analyzeClass(
         ClassDefinition $classDefinition,
         ClassName $facadeClassName,
-        array &$classesMissingConstructorCall,
-        array &$classesMissingProperty,
-        array &$methodsMissingCall
+        array &$issues
     ) {
         $this->typeCheck->analyzeClass(func_get_args());
 
@@ -154,9 +131,9 @@ class ProjectAnalyzer
             }
 
             if (!$hasCall) {
-                $methodsMissingCall[] = array(
+                $issues[] = new Issue\MissingMethodCall(
                     $classDefinition,
-                    $methodDefinition,
+                    $methodDefinition
                 );
             }
         }
@@ -173,10 +150,10 @@ class ProjectAnalyzer
         }
 
         if ($hasCheckableMethods && !$hasConstructorCall) {
-            $classesMissingConstructorCall[] = $classDefinition;
+            $issues[] = new Issue\MissingConstructorCall($classDefinition);
         }
         if ($hasCheckableMethods && !$hasProperty) {
-            $classesMissingProperty[] = $classDefinition;
+            $issues[] = new Issue\MissingProperty($classDefinition);
         }
     }
 
