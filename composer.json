@@ -17,7 +17,7 @@
         "eloquent/blox": "~1",
         "eloquent/cosmos": "~2",
         "eloquent/enumeration": "~3",
-        "eloquent/typhax": "~0.8",
+        "eloquent/typhax": "dev-master",
         "icecave/isolator": "~2",
         "icecave/pasta-ast": "~0.1",
         "icecave/rasta": "~0.1",

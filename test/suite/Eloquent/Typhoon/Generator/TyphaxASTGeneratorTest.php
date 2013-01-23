@@ -17,6 +17,7 @@ use Eloquent\Typhax\Type\AndType;
 use Eloquent\Typhax\Type\ArrayType;
 use Eloquent\Typhax\Type\BooleanType;
 use Eloquent\Typhax\Type\CallableType;
+use Eloquent\Typhax\Type\ExtensionType;
 use Eloquent\Typhax\Type\FloatType;
 use Eloquent\Typhax\Type\IntegerType;
 use Eloquent\Typhax\Type\MixedType;
@@ -33,6 +34,8 @@ use Eloquent\Typhax\Type\TupleType;
 use Eloquent\Typhax\Type\Type;
 use Eloquent\Typhax\Type\Visitor;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
+use Icecave\Pasta\AST\Expr\Call;
+use Icecave\Pasta\AST\Expr\Variable;
 use Icecave\Pasta\AST\Func\Closure;
 use Icecave\Pasta\AST\Func\Parameter;
 use Icecave\Pasta\AST\Identifier;
@@ -47,7 +50,8 @@ class TyphaxASTGeneratorTest extends MultiGenerationTestCase
     {
         parent::setUp();
 
-        $this->_generator = new TyphaxASTGenerator;
+        $this->_loader = Phake::mock('Eloquent\Typhoon\Extension\ExtensionLoaderInterface');
+        $this->_generator = new TyphaxASTGenerator(null, $this->_loader);
         $this->_renderer = new Renderer;
     }
 
@@ -185,6 +189,34 @@ class TyphaxASTGeneratorTest extends MultiGenerationTestCase
         $this->assertFalse($validator(array()));
         $this->assertFalse($validator(new stdClass));
         $this->assertFalse($validator(stream_context_create()));
+    }
+
+    public function testVisitExtensionType()
+    {
+        $closure   = Phake::mock('Icecave\Pasta\AST\Func\Closure');
+        $extension = Phake::mock('Eloquent\Typhoon\Extension\ExtensionInterface');
+        $className = ClassName::fromString(get_class($extension));
+
+        $type = new ExtensionType(
+            $className,
+            array(),
+            array()
+        );
+
+        Phake::when($this->_loader)
+            ->load($className->string())
+            ->thenReturn($extension);
+
+        Phake::when($extension)
+            ->generateTypeCheck($this->_generator, $type)
+            ->thenReturn($closure);
+
+        $expected = new Call($closure);
+        $expected->add(new Variable(new Identifier('value')));
+
+        $result = $this->_generator->visitExtensionType($type);
+
+        $this->assertEquals($expected, $result);
     }
 
     public function testVisitFloatTypeLogic()

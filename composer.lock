@@ -1,5 +1,5 @@
 {
-    "hash": "9da65ccda6b2404847e3b69e0f803507",
+    "hash": "a456aa34fa1d0f4893a42aebd1c25530",
     "packages": [
         {
             "name": "eloquent/asplode",
@@ -253,16 +253,16 @@
         },
         {
             "name": "eloquent/typhax",
-            "version": "0.8.2",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "git://github.com/eloquent/typhax.git",
-                "reference": "0.8.2"
+                "reference": "6f220ef6c4ce7a74ee474e132d24f56d332b8790"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/eloquent/typhax/archive/0.8.2.zip",
-                "reference": "0.8.2",
+                "url": "https://github.com/eloquent/typhax/archive/6f220ef6c4ce7a74ee474e132d24f56d332b8790.zip",
+                "reference": "6f220ef6c4ce7a74ee474e132d24f56d332b8790",
                 "shasum": ""
             },
             "require": {
@@ -274,14 +274,14 @@
             "require-dev": {
                 "icecave/testing": ">=1.0,<2.0"
             },
-            "time": "2013-01-19 13:51:39",
+            "time": "2013-01-23 12:02:24",
             "type": "library",
             "autoload": {
                 "psr-0": {
                     "Eloquent\\Typhax": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -342,7 +342,7 @@
                     "Icecave\\Collections\\TypeCheck": "lib-typhoon"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -392,7 +392,7 @@
                     "Icecave\\Isolator": "lib"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -490,7 +490,7 @@
                     "Icecave\\Rasta": "lib"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -534,7 +534,7 @@
                     "Icecave\\Repr": "lib"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1029,7 +1029,7 @@
 
     ],
     "minimum-stability": "stable",
-    "stability-flags": [
-
-    ]
+    "stability-flags": {
+        "eloquent/typhax": 20
+    }
 }
