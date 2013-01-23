@@ -6,8 +6,8 @@ class TyphaxASTGeneratorTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractVa
     public function validateConstruct(array $arguments)
     {
         $argumentCount = \count($arguments);
-        if ($argumentCount > 1) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
+        if ($argumentCount > 2) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(2, $arguments[2]);
         }
     }
 
@@ -46,6 +46,16 @@ class TyphaxASTGeneratorTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractVa
         $argumentCount = \count($arguments);
         if ($argumentCount < 1) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\CallableType');
+        } elseif ($argumentCount > 1) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
+        }
+    }
+
+    public function visitExtensionType(array $arguments)
+    {
+        $argumentCount = \count($arguments);
+        if ($argumentCount < 1) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('type', 0, 'Eloquent\\Typhax\\Type\\ExtensionType');
         } elseif ($argumentCount > 1) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
         }

@@ -1059,4 +1059,25 @@ class TypicalClassTypeCheck extends \foo\AbstractValidator
         }
     }
 
+    public function extensionType(array $arguments)
+    {
+        $argumentCount = \count($arguments);
+        if ($argumentCount < 1) {
+            throw new \foo\Exception\MissingArgumentException('foo', 0, ':Eloquent\\Typhoon\\TestFixture\\ExtensionFixtures\\TestExtension');
+        } elseif ($argumentCount > 1) {
+            throw new \foo\Exception\UnexpectedArgumentException(1, $arguments[1]);
+        }
+        $value = $arguments[0];
+        if (!function ($value) {
+            return ($value == 12345);
+        }($value)) {
+            throw new \foo\Exception\UnexpectedArgumentValueException(
+                'foo',
+                0,
+                $arguments[0],
+                ':Eloquent\\Typhoon\\TestFixture\\ExtensionFixtures\\TestExtension'
+            );
+        }
+    }
+
 }

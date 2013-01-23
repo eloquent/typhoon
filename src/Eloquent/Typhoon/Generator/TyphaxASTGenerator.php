@@ -15,6 +15,7 @@ use Eloquent\Typhax\Type\AndType;
 use Eloquent\Typhax\Type\ArrayType;
 use Eloquent\Typhax\Type\BooleanType;
 use Eloquent\Typhax\Type\CallableType;
+use Eloquent\Typhax\Type\ExtensionType;
 use Eloquent\Typhax\Type\FloatType;
 use Eloquent\Typhax\Type\IntegerType;
 use Eloquent\Typhax\Type\MixedType;
@@ -29,6 +30,8 @@ use Eloquent\Typhax\Type\StringableType;
 use Eloquent\Typhax\Type\TraversableType;
 use Eloquent\Typhax\Type\TupleType;
 use Eloquent\Typhax\Type\Visitor;
+use Eloquent\Typhoon\Extension\ExtensionLoader;
+use Eloquent\Typhoon\Extension\ExtensionLoaderInterface;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Icecave\Pasta\AST\Expr\Assign;
 use Icecave\Pasta\AST\Expr\Call;
@@ -58,17 +61,23 @@ class TyphaxASTGenerator implements Visitor
 {
     /**
      * @param Identifier|null $valueIdentifier
+     * @param ExtensionLoaderInterface|null $extensionLoader
      */
     public function __construct(
-        Identifier $valueIdentifier = null
+        Identifier $valueIdentifier = null,
+        ExtensionLoaderInterface $extensionLoader = null
     ) {
         $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
 
         if (null === $valueIdentifier) {
             $valueIdentifier = new Identifier('value');
         }
+        if (null === $extensionLoader) {
+            $extensionLoader = new ExtensionLoader;
+        }
 
         $this->valueIdentifier = $valueIdentifier;
+        $this->extensionLoader = $extensionLoader;
     }
 
     /**
@@ -187,6 +196,24 @@ class TyphaxASTGenerator implements Visitor
         $this->typeCheck->visitCallableType(func_get_args());
 
         $call = new Call(QualifiedIdentifier::fromString('\is_callable'));
+        $call->add($this->valueExpression());
+
+        return $call;
+    }
+
+    /**
+     * @param ExtensionType $type
+     *
+     * @return Call
+     */
+    public function visitExtensionType(ExtensionType $type)
+    {
+        $this->typeCheck->visitExtensionType(func_get_args());
+
+        $extension = $this->extensionLoader->load($type->className()->string());
+        $closure = $extension->generateTypeCheck($this, $type);
+
+        $call = new Call($closure);
         $call->add($this->valueExpression());
 
         return $call;
@@ -790,5 +817,6 @@ class TyphaxASTGenerator implements Visitor
 
     private $valueIdentifier;
     private $valueIndex;
+    private $extensionLoader;
     private $typeCheck;
 }
