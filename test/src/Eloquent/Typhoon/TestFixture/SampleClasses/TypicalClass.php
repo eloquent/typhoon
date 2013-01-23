@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\TestFixture\SampleClasses;
 
+use Eloquent\Typhoon\TestFixture\ExtensionFixtures\TestExtension;
 use Iterator;
 use stdClass;
 
@@ -187,6 +188,13 @@ class TypicalClass
      * @param string $bar,...
      */
     private function variableLength($foo)
+    {
+    }
+
+    /**
+     * @param :TestExtension $foo
+     */
+    private function extensionType($foo)
     {
     }
 }
