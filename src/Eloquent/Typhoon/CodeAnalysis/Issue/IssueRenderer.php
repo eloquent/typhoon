@@ -21,6 +21,21 @@ class IssueRenderer implements IssueVisitor
     }
 
     /**
+     * @param InadmissibleMethodCall $issue
+     *
+     * @return string
+     */
+    public function visitInadmissibleMethodCall(InadmissibleMethodCall $issue)
+    {
+        $this->typeCheck->visitInadmissibleMethodCall(func_get_args());
+
+        return sprintf(
+            'Type check call should not be present in method %s().',
+            $issue->methodDefinition()->name()
+        );
+    }
+
+    /**
      * @param MissingConstructorCall $issue
      *
      * @return string
@@ -57,6 +72,18 @@ class IssueRenderer implements IssueVisitor
         $this->typeCheck->visitMissingProperty(func_get_args());
 
         return 'Incorrect or missing property definition.';
+    }
+
+    /**
+     * @param UnserializeMethod $issue
+     *
+     * @return string
+     */
+    public function visitUnserializeMethod(UnserializeMethod $issue)
+    {
+        $this->typeCheck->visitUnserializeMethod(func_get_args());
+
+        return 'Method unserialize() should have a type check call, unless it is an implementation of PHP\'s built-in Serializable interface.';
     }
 
     private $typeCheck;

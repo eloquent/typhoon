@@ -25,12 +25,37 @@ class IssueRendererTest extends MultiGenerationTestCase
         parent::setUp();
 
         $this->_renderer = new IssueRenderer;
+
+        $this->_classDefinition = new ClassDefinition(
+            ClassName::fromString('\foo')
+        );
+        $this->_methodDefinition = new MethodDefinition(
+            'bar',
+            false,
+            false,
+            AccessModifier::PUBLIC_(),
+            111,
+            'baz'
+        );
+    }
+
+    public function testVisitInadmissibleMethodCall()
+    {
+        $issue = new InadmissibleMethodCall(
+            $this->_classDefinition,
+            $this->_methodDefinition
+        );
+
+        $this->assertSame(
+            'Type check call should not be present in method bar().',
+            $issue->accept($this->_renderer)
+        );
     }
 
     public function testVisitMissingConstructorCall()
     {
         $issue = new MissingConstructorCall(
-            new ClassDefinition(ClassName::fromString('\foo'))
+            $this->_classDefinition
         );
 
         $this->assertSame(
@@ -42,15 +67,8 @@ class IssueRendererTest extends MultiGenerationTestCase
     public function testVisitMissingMethodCall()
     {
         $issue = new MissingMethodCall(
-            new ClassDefinition(ClassName::fromString('\foo')),
-            new MethodDefinition(
-                'bar',
-                false,
-                false,
-                AccessModifier::PUBLIC_(),
-                111,
-                'baz'
-            )
+            $this->_classDefinition,
+            $this->_methodDefinition
         );
 
         $this->assertSame(
@@ -62,11 +80,24 @@ class IssueRendererTest extends MultiGenerationTestCase
     public function testVisitMissingProperty()
     {
         $issue = new MissingProperty(
-            new ClassDefinition(ClassName::fromString('\foo'))
+            $this->_classDefinition
         );
 
         $this->assertSame(
             'Incorrect or missing property definition.',
+            $issue->accept($this->_renderer)
+        );
+    }
+
+    public function testVisitUnserializeMethod()
+    {
+        $issue = new UnserializeMethod(
+            $this->_classDefinition,
+            $this->_methodDefinition
+        );
+
+        $this->assertSame(
+            'Method unserialize() should have a type check call, unless it is an implementation of PHP\'s built-in Serializable interface.',
             $issue->accept($this->_renderer)
         );
     }

@@ -14,6 +14,13 @@ namespace Eloquent\Typhoon\CodeAnalysis\Issue;
 interface IssueVisitor
 {
     /**
+     * @param InadmissibleMethodCall $issue
+     *
+     * @return mixed
+     */
+    public function visitInadmissibleMethodCall(InadmissibleMethodCall $issue);
+
+    /**
      * @param MissingConstructorCall $issue
      *
      * @return mixed
@@ -33,4 +40,11 @@ interface IssueVisitor
      * @return mixed
      */
     public function visitMissingProperty(MissingProperty $issue);
+
+    /**
+     * @param UnserializeMethod $issue
+     *
+     * @return mixed
+     */
+    public function visitUnserializeMethod(UnserializeMethod $issue);
 }
