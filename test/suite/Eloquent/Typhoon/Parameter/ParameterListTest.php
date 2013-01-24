@@ -13,6 +13,7 @@ namespace Eloquent\Typhoon\Parameter;
 
 use Eloquent\Typhax\Type\MixedType;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
+use Phake;
 
 class ParameterListTest extends MultiGenerationTestCase
 {
@@ -77,5 +78,20 @@ class ParameterListTest extends MultiGenerationTestCase
         );
 
         $this->assertSame($expected, $list->requiredParameters());
+    }
+
+    public function testAccept()
+    {
+        $parameterList = new ParameterList;
+
+        $visitor = Phake::mock(__NAMESPACE__ . '\\Visitor');
+
+        Phake::when($visitor)
+            ->visitParameterList($parameterList)
+            ->thenReturn('<visitor result>');
+
+        $result = $parameterList->accept($visitor);
+
+        $this->assertSame('<visitor result>', $result);
     }
 }
