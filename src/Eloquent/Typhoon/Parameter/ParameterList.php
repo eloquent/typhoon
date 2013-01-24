@@ -12,9 +12,8 @@
 namespace Eloquent\Typhoon\Parameter;
 
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
-use Icecave\Visita\Host;
 
-class ParameterList extends Host
+class ParameterList
 {
     /**
      * @param array<Parameter> $parameters
@@ -91,6 +90,16 @@ class ParameterList extends Host
         }
 
         return array_reverse($requiredParameters);
+    }
+
+    /**
+     * @param Visitor $visitor
+     *
+     * @return mixed
+     */
+    public function accept(Visitor $visitor)
+    {
+        return $visitor->visitParameterList($this);
     }
 
     private $parameters;
