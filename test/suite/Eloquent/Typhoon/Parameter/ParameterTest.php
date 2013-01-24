@@ -13,6 +13,7 @@ namespace Eloquent\Typhoon\Parameter;
 
 use Eloquent\Typhax\Type\StringType;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
+use Phake;
 
 class ParameterTest extends MultiGenerationTestCase
 {
@@ -47,5 +48,20 @@ class ParameterTest extends MultiGenerationTestCase
         $this->assertNull($parameter->description());
         $this->assertFalse($parameter->isOptional());
         $this->assertFalse($parameter->isByReference());
+    }
+
+    public function testAccept()
+    {
+        $parameter = new Parameter('foo', new StringType);
+
+        $visitor = Phake::mock(__NAMESPACE__ . '\\Visitor');
+
+        Phake::when($visitor)
+            ->visitParameter($parameter)
+            ->thenReturn('<visitor result>');
+
+        $result = $parameter->accept($visitor);
+
+        $this->assertSame('<visitor result>', $result);
     }
 }

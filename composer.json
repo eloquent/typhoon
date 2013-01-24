@@ -21,7 +21,6 @@
         "icecave/isolator": "~2",
         "icecave/pasta-ast": "~0.1",
         "icecave/rasta": "~0.1",
-        "icecave/visita": "~0.1",
         "symfony/console": "~2",
         "symfony/filesystem": "~2"
     },

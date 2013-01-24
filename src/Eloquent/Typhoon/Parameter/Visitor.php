@@ -13,9 +13,7 @@
 
 namespace Eloquent\Typhoon\Parameter;
 
-use Icecave\Visita\IVisitor;
-
-interface Visitor extends IVisitor
+interface Visitor
 {
     /**
      * @param Parameter $parameter

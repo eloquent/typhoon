@@ -13,9 +13,8 @@ namespace Eloquent\Typhoon\Parameter;
 
 use Eloquent\Typhax\Type\Type;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
-use Icecave\Visita\Host;
 
-class Parameter extends Host
+class Parameter
 {
     /**
      * @param string      $name
@@ -87,6 +86,16 @@ class Parameter extends Host
         $this->typeCheck->isByReference(func_get_args());
 
         return $this->byReference;
+    }
+
+    /**
+     * @param Visitor $visitor
+     *
+     * @return mixed
+     */
+    public function accept(Visitor $visitor)
+    {
+        return $visitor->visitParameter($this);
     }
 
     private $name;

@@ -1,5 +1,5 @@
 {
-    "hash": "a456aa34fa1d0f4893a42aebd1c25530",
+    "hash": "ebbdd667ef3d6c8f85daf7f93ba96e96",
     "packages": [
         {
             "name": "eloquent/asplode",
@@ -29,7 +29,7 @@
                     "Eloquent\\Asplode": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -79,7 +79,7 @@
                     "Eloquent\\Blox": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -133,7 +133,7 @@
                     "Eloquent\\Cosmos": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -183,7 +183,7 @@
                     "Eloquent\\Enumeration": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -230,7 +230,7 @@
                     "Eloquent\\Equality": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -257,24 +257,23 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/eloquent/typhax.git",
-                "reference": "6f220ef6c4ce7a74ee474e132d24f56d332b8790"
+                "reference": "b2a1925c1d42493021bfabd77f22be77e74c520e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/eloquent/typhax/archive/6f220ef6c4ce7a74ee474e132d24f56d332b8790.zip",
-                "reference": "6f220ef6c4ce7a74ee474e132d24f56d332b8790",
+                "url": "https://github.com/eloquent/typhax/archive/b2a1925c1d42493021bfabd77f22be77e74c520e.zip",
+                "reference": "b2a1925c1d42493021bfabd77f22be77e74c520e",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
                 "ext-mbstring": "*",
-                "eloquent/cosmos": ">=2.0,<3.0",
-                "icecave/visita": ">=0.1,<1.0"
+                "eloquent/cosmos": ">=2.0,<3.0"
             },
             "require-dev": {
                 "icecave/testing": ">=1.0,<2.0"
             },
-            "time": "2013-01-23 12:02:24",
+            "time": "2013-01-24 05:03:32",
             "type": "library",
             "autoload": {
                 "psr-0": {
@@ -441,7 +440,7 @@
                     "Icecave\\Pasta\\AST": "lib"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -553,51 +552,6 @@
             ]
         },
         {
-            "name": "icecave/visita",
-            "version": "0.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/IcecaveStudios/visita.git",
-                "reference": "0.1.0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/IcecaveStudios/visita/zipball/0.1.0",
-                "reference": "0.1.0",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "phake/phake": "1.*"
-            },
-            "time": "2012-08-04 23:35:23",
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Icecave\\Visita": "lib"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "James Harris",
-                    "email": "james.harris@icecave.com.au"
-                }
-            ],
-            "description": "A PHP library for assisting with visitor pattern implementations.",
-            "homepage": "https://github.com/IcecaveStudios/visita",
-            "keywords": [
-                "pattern",
-                "design",
-                "visitor"
-            ]
-        },
-        {
             "name": "symfony/console",
             "version": "v2.1.7",
             "target-dir": "Symfony/Component/Console",
@@ -622,7 +576,7 @@
                     "Symfony\\Component\\Console": ""
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -664,7 +618,7 @@
                     "Symfony\\Component\\Filesystem": ""
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -708,7 +662,7 @@
                     "Eloquent\\Liberator": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -755,7 +709,7 @@
                     "Eloquent\\Pops": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -790,7 +744,7 @@
             },
             "time": "2013-01-18 05:57:45",
             "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -841,7 +795,7 @@
                     "Ezzatron\\PHPUnit": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -893,7 +847,7 @@
                 "bin/travis-build"
             ],
             "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -958,7 +912,7 @@
                     "Icecave\\Woodhouse\\TypeCheck": "lib-typhoon"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1004,7 +958,7 @@
                     "src"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "include-path": [
                 "src"
             ],
