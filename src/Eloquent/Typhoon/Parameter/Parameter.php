@@ -95,6 +95,8 @@ class Parameter
      */
     public function accept(Visitor $visitor)
     {
+        $this->typeCheck->accept(func_get_args());
+
         return $visitor->visitParameter($this);
     }
 

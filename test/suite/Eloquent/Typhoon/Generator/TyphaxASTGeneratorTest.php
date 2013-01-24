@@ -764,4 +764,11 @@ class TyphaxASTGeneratorTest extends MultiGenerationTestCase
         $this->assertFalse($validator(new stdClass));
         $this->assertFalse($validator(stream_context_create()));
     }
+
+    public function testVisitNullifiedType()
+    {
+        $type = new NullifiedType(new StringType);
+
+        $this->assertNull($this->_generator->visitNullifiedType($type));
+    }
 }

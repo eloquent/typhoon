@@ -18,22 +18,6 @@ use Eloquent\Typhoon\TypeCheck\TypeCheck;
 class ClassDefinition
 {
     /**
-     * @param ClassDefinition $left
-     * @param ClassDefinition $right
-     *
-     * @return integer
-     */
-    public static function compare(ClassDefinition $left, ClassDefinition $right)
-    {
-        TypeCheck::get(__CLASS__)->compare(func_get_args());
-
-        return strcmp(
-            $left->className()->string(),
-            $right->className()->string()
-        );
-    }
-
-    /**
      * @param ClassName                 $className
      * @param array<array<ClassName>>   $usedClasses
      * @param array<MethodDefinition>   $methods
@@ -93,6 +77,42 @@ class ClassDefinition
     }
 
     /**
+     * @param string $name
+     *
+     * @return boolean
+     */
+    public function hasMethod($name)
+    {
+        $this->typeCheck->hasMethod(func_get_args());
+
+        foreach ($this->methods() as $method) {
+            if ($method->name() === $name) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return MethodDefinition
+     */
+    public function method($name)
+    {
+        $this->typeCheck->method(func_get_args());
+
+        foreach ($this->methods() as $method) {
+            if ($method->name() === $name) {
+                return $method;
+            }
+        }
+
+        throw new Exception\UndefinedMethodException($this->className(), $name);
+    }
+
+    /**
      * @return array<PropertyDefinition>
      */
     public function properties()
@@ -100,6 +120,42 @@ class ClassDefinition
         $this->typeCheck->properties(func_get_args());
 
         return $this->properties;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return boolean
+     */
+    public function hasProperty($name)
+    {
+        $this->typeCheck->hasProperty(func_get_args());
+
+        foreach ($this->properties() as $property) {
+            if ($property->name() === $name) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return PropertyDefinition
+     */
+    public function property($name)
+    {
+        $this->typeCheck->property(func_get_args());
+
+        foreach ($this->properties() as $property) {
+            if ($property->name() === $name) {
+                return $property;
+            }
+        }
+
+        throw new Exception\UndefinedPropertyException($this->className(), $name);
     }
 
     /**

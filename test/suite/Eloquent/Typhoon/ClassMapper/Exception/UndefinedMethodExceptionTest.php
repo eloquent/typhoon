@@ -15,19 +15,21 @@ use Eloquent\Cosmos\ClassName;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Phake;
 
-class UndefinedClassExceptionTest extends MultiGenerationTestCase
+class UndefinedMethodExceptionTest extends MultiGenerationTestCase
 {
     public function testException()
     {
         $className = ClassName::fromString('foo');
         $previous = Phake::mock('Exception');
-        $exception = new UndefinedClassException(
+        $exception = new UndefinedMethodException(
             $className,
+            'bar',
             $previous
         );
 
-        $this->assertSame("Undefined class 'foo'.", $exception->getMessage());
+        $this->assertSame("Undefined method 'foo::bar()'.", $exception->getMessage());
         $this->assertSame($className, $exception->className());
+        $this->assertSame('bar', $exception->methodName());
         $this->assertSame(0, $exception->getCode());
         $this->assertSame($previous, $exception->getPrevious());
     }

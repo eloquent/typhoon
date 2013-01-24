@@ -106,6 +106,48 @@ class ClassDefinitionTest extends MultiGenerationTestCase
         $this->assertSame(array(), $this->_definition->properties());
     }
 
+    public function testHasMethod()
+    {
+        $this->assertTrue($this->_definition->hasMethod('splat'));
+        $this->assertTrue($this->_definition->hasMethod('pong'));
+        $this->assertFalse($this->_definition->hasMethod('foo'));
+    }
+
+    public function testMethod()
+    {
+        $this->assertSame($this->_methods[0], $this->_definition->method('splat'));
+        $this->assertSame($this->_methods[1], $this->_definition->method('pong'));
+    }
+
+    public function testMethodFailureUndefined()
+    {
+        $this->setExpectedException(
+            __NAMESPACE__.'\Exception\UndefinedMethodException'
+        );
+        $this->_definition->method('foo');
+    }
+
+    public function testHasProperty()
+    {
+        $this->assertTrue($this->_definition->hasProperty('peng'));
+        $this->assertTrue($this->_definition->hasProperty('pip'));
+        $this->assertFalse($this->_definition->hasProperty('foo'));
+    }
+
+    public function testProperty()
+    {
+        $this->assertSame($this->_properties[0], $this->_definition->property('peng'));
+        $this->assertSame($this->_properties[1], $this->_definition->property('pip'));
+    }
+
+    public function testPropertyFailureUndefined()
+    {
+        $this->setExpectedException(
+            __NAMESPACE__.'\Exception\UndefinedPropertyException'
+        );
+        $this->_definition->property('foo');
+    }
+
     public function testClassNameResolver()
     {
         $expected = new ClassNameResolver(
@@ -128,25 +170,5 @@ class ClassDefinitionTest extends MultiGenerationTestCase
         );
 
         $this->assertEquals($expected, $this->_definition->classNameResolver());
-    }
-
-    public function testCompare()
-    {
-        $definitionA = new ClassDefinition(ClassName::fromString('A'));
-        $definitionB = new ClassDefinition(ClassName::fromString('B'));
-        $definitionC = new ClassDefinition(ClassName::fromString('C'));
-        $actual = array(
-            $definitionB,
-            $definitionA,
-            $definitionC,
-        );
-        $expected = array(
-            $definitionA,
-            $definitionB,
-            $definitionC,
-        );
-        usort($actual, __NAMESPACE__.'\ClassDefinition::compare');
-
-        $this->assertSame($expected, $actual);
     }
 }

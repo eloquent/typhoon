@@ -63,6 +63,8 @@ class ExtensionLoader implements ExtensionLoaderInterface
      */
     public function unload($className)
     {
+        $this->typeCheck->unload(func_get_args());
+
         unset($this->extensions[$className]);
     }
 
@@ -73,6 +75,8 @@ class ExtensionLoader implements ExtensionLoaderInterface
      */
     public function isLoaded($className)
     {
+        $this->typeCheck->isLoaded(func_get_args());
+
         return array_key_exists($className, $this->extensions);
     }
 

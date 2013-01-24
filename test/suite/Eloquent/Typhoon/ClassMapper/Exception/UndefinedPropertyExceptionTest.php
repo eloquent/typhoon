@@ -15,19 +15,21 @@ use Eloquent\Cosmos\ClassName;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Phake;
 
-class UndefinedClassExceptionTest extends MultiGenerationTestCase
+class UndefinedPropertyExceptionTest extends MultiGenerationTestCase
 {
     public function testException()
     {
         $className = ClassName::fromString('foo');
         $previous = Phake::mock('Exception');
-        $exception = new UndefinedClassException(
+        $exception = new UndefinedPropertyException(
             $className,
+            'bar',
             $previous
         );
 
-        $this->assertSame("Undefined class 'foo'.", $exception->getMessage());
+        $this->assertSame("Undefined property 'foo::\$bar'.", $exception->getMessage());
         $this->assertSame($className, $exception->className());
+        $this->assertSame('bar', $exception->propertyName());
         $this->assertSame(0, $exception->getCode());
         $this->assertSame($previous, $exception->getPrevious());
     }
