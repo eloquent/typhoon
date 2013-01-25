@@ -1,5 +1,5 @@
 {
-    "hash": "ebbdd667ef3d6c8f85daf7f93ba96e96",
+    "hash": "281f804e435e0519d6b182b025c7a299",
     "packages": [
         {
             "name": "eloquent/asplode",
@@ -253,16 +253,16 @@
         },
         {
             "name": "eloquent/typhax",
-            "version": "dev-master",
+            "version": "0.9.0",
             "source": {
                 "type": "git",
                 "url": "git://github.com/eloquent/typhax.git",
-                "reference": "b2a1925c1d42493021bfabd77f22be77e74c520e"
+                "reference": "0.9.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/eloquent/typhax/archive/b2a1925c1d42493021bfabd77f22be77e74c520e.zip",
-                "reference": "b2a1925c1d42493021bfabd77f22be77e74c520e",
+                "url": "https://github.com/eloquent/typhax/archive/0.9.0.zip",
+                "reference": "0.9.0",
                 "shasum": ""
             },
             "require": {
@@ -983,7 +983,7 @@
 
     ],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "eloquent/typhax": 20
-    }
+    "stability-flags": [
+
+    ]
 }
