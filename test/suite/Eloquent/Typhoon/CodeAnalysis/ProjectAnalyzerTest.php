@@ -54,6 +54,16 @@ class ProjectAnalyzerTest extends MultiGenerationTestCase
         $actual = $this->_analyzer->analyze($configuration);
         $expected = array(
             array(
+                'Eloquent\Typhoon\CodeAnalysis\Issue\InadmissibleMethodCall',
+                '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\CallInDestructor',
+                '__destruct',
+            ),
+            array(
+                'Eloquent\Typhoon\CodeAnalysis\Issue\InadmissibleMethodCall',
+                '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\CallInToString',
+                '__toString',
+            ),
+            array(
                 'Eloquent\Typhoon\CodeAnalysis\Issue\MissingMethodCall',
                 '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\MissingCalls',
                 'bar',

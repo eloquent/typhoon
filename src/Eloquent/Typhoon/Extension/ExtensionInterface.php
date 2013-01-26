@@ -19,7 +19,7 @@ interface ExtensionInterface
 {
     /**
      * @param TyphaxASTGenerator $generator The AST generator that loaded this extension.
-     * @param ExtensionType $type Type extension type for which code should be generated.
+     * @param ExtensionType      $type      Type extension type for which code should be generated.
      *
      * @return Closure A closure AST node that accepts a single value parameter.
      */

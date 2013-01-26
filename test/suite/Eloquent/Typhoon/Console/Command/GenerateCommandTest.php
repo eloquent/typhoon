@@ -17,6 +17,10 @@ use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Phake;
 use Symfony\Component\Console\Input\InputDefinition;
 
+/**
+ * @covers \Eloquent\Typhoon\Console\Command\Command
+ * @covers \Eloquent\Typhoon\Console\Command\GenerateCommand
+ */
 class GenerateCommandTest extends MultiGenerationTestCase
 {
     protected function setUp()
@@ -47,7 +51,14 @@ class GenerateCommandTest extends MultiGenerationTestCase
             $this->_generator,
             $this->_isolator
         );
-        Phake::when($this->_command)->getApplication()->thenReturn($this->_application);
+        Phake::when($this->_command)
+            ->getApplication(Phake::anyParameters())
+            ->thenReturn($this->_application)
+        ;
+        Phake::when($this->_command)
+            ->includeLoaders(Phake::anyParameters())
+            ->thenReturn(null)
+        ;
     }
 
     public function testConstructor()
@@ -82,16 +93,34 @@ class GenerateCommandTest extends MultiGenerationTestCase
         Liberator::liberate($this->_command)->execute($input, $output);
 
         Phake::inOrder(
-            Phake::verify($output)->writeln('<info>Including loaders...</info>'),
-            Phake::verify($output)->writeln('  - foo'),
-            Phake::verify($this->_isolator)->require('foo'),
-            Phake::verify($output)->writeln('  - bar'),
-            Phake::verify($this->_isolator)->require('bar'),
+            Phake::verify($this->_command)->includeLoaders(
+                $this->identicalTo($this->_configuration),
+                $this->identicalTo($output)
+            ),
             Phake::verify($output)->writeln('<info>Generating classes...</info>'),
             Phake::verify($this->_generator)->generate(
                 $this->identicalTo($this->_configuration)
             ),
             Phake::verify($output)->writeln('<info>Done.</info>')
+        );
+    }
+
+    public function testIncludeLoaders()
+    {
+        $this->_command = Phake::partialMock(
+            __NAMESPACE__.'\GenerateCommand',
+            $this->_generator,
+            $this->_isolator
+        );
+        $output = Phake::mock('Symfony\Component\Console\Output\OutputInterface');
+        Liberator::liberate($this->_command)->includeLoaders($this->_configuration, $output);
+
+        Phake::inOrder(
+            Phake::verify($output)->writeln('<info>Including loaders...</info>'),
+            Phake::verify($output)->writeln('  - foo'),
+            Phake::verify($this->_isolator)->require('foo'),
+            Phake::verify($output)->writeln('  - bar'),
+            Phake::verify($this->_isolator)->require('bar')
         );
     }
 }

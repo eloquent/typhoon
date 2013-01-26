@@ -29,7 +29,7 @@ class ExtensionLoader implements ExtensionLoaderInterface
     }
 
     /**
-     * @param string $className The name of the extension class.
+     * @param string  $className   The name of the extension class.
      * @param boolean $forceReload
      *
      * @return ExtensionInterface

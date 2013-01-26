@@ -9,13 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing;
+namespace Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Successful;
 
 use Typhoon\TypeCheck;
 
-class MissingConstructorCall
+class OnlyStaticConstructor
 {
     public function __construct()
     {
+        TypeCheck::get(__CLASS__, func_get_args());
     }
 }

@@ -15,6 +15,7 @@ use Eloquent\Cosmos\ClassName;
 use Eloquent\Cosmos\ClassNameResolver;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Icecave\Pasta\AST\Type\AccessModifier;
+use ReflectionClass;
 
 class ClassDefinitionTest extends MultiGenerationTestCase
 {
@@ -170,5 +171,15 @@ class ClassDefinitionTest extends MultiGenerationTestCase
         );
 
         $this->assertEquals($expected, $this->_definition->classNameResolver());
+    }
+
+    public function testCreateReflector()
+    {
+        $this->_definition = new ClassDefinition(
+            ClassName::fromString(__CLASS__)
+        );
+        $expected = new ReflectionClass(__CLASS__);
+
+        $this->assertEquals($expected, $this->_definition->createReflector());
     }
 }

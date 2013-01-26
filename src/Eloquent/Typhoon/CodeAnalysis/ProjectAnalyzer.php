@@ -91,86 +91,109 @@ class ProjectAnalyzer
             ->shorten($facadeClassName)
         ;
 
-        $hasCheckableMethods = false;
-        $hasConstructor = false;
-        $hasConstructorCall = false;
+        $hasConstructorInit = false;
         $propertyName = 'typeCheck';
-        foreach ($classDefinition->methods() as $methodDefinition) {
-            if ('__construct' !== $methodDefinition->name()) {
-                continue;
-            }
+        $hasNonStaticCalls = false;
 
-            $hasCheckableMethods = true;
-            list($hasConstructorCall, $propertyName) = $this->analyzeConstructor(
-                $methodDefinition,
-                $expectedfacadeClassName
+        if ($classDefinition->hasMethod('__construct')) {
+            $methodDefinition = $classDefinition->method('__construct');
+            if ($this->methodHasInit($methodDefinition, $expectedfacadeClassName, $propertyName)) {
+                $hasConstructorInit = true;
+            } elseif (!$this->methodHasConstructorStaticCall($methodDefinition, $expectedfacadeClassName)) {
+                $issues[] = new Issue\MissingConstructorCall(
+                    $classDefinition
+                );
+            }
+        }
+
+        foreach ($classDefinition->methods() as $methodDefinition) {
+            switch ($methodDefinition->name()) {
+                case '__construct':
+                case '__wakeup':
+                    continue;
+                case '__destruct':
+                case '__toString':
+                    if (
+                        $this->methodHasCall($methodDefinition, $propertyName) ||
+                        $this->methodHasStaticCall($methodDefinition, $expectedfacadeClassName)
+                    ) {
+                        $issues[] = new Issue\InadmissibleMethodCall(
+                            $classDefinition,
+                            $methodDefinition
+                        );
+                    }
+                    break;
+                case 'unserialize':
+                    if ($this->classImplementsSerializable($classDefinition)) {
+                        continue;
+                    }
+                default:
+                    if ($methodDefinition->isAbstract()) {
+                        continue;
+                    }
+
+                    $missingCall = false;
+                    if ($methodDefinition->isStatic()) {
+                        $missingCall = !$this->methodHasStaticCall($methodDefinition, $expectedfacadeClassName);
+                    } else {
+                        if ($this->methodHasCall($methodDefinition, $propertyName)) {
+                            $hasNonStaticCalls = true;
+                        } elseif (!$this->methodHasStaticCall($methodDefinition, $expectedfacadeClassName)) {
+                            $missingCall = true;
+                        }
+                    }
+
+                    if ($missingCall) {
+                        $issues[] = new Issue\MissingMethodCall(
+                            $classDefinition,
+                            $methodDefinition
+                        );
+                    }
+            }
+        }
+
+        if ($hasNonStaticCalls && !$hasConstructorInit) {
+            array_unshift(
+                $issues,
+                new Issue\MissingConstructorCall(
+                    $classDefinition
+                )
             );
         }
-        foreach ($classDefinition->methods() as $methodDefinition) {
-            if (
-                '__construct' === $methodDefinition->name() ||
-                '__destruct' === $methodDefinition->name() ||
-                '__wakeup' === $methodDefinition->name() ||
-                '__toString' === $methodDefinition->name() ||
-                'unserialize' === $methodDefinition->name()
-            ) {
-                continue;
+        if ($hasConstructorInit) {
+            if ($classDefinition->hasProperty($propertyName)) {
+                $typhoonProperty = $classDefinition->property($propertyName);
+                $missingProperty =
+                    $typhoonProperty->isStatic() ||
+                    AccessModifier::PRIVATE_() !== $typhoonProperty->accessModifier()
+                ;
+            } else {
+                $missingProperty = true;
             }
 
-            if ($methodDefinition->isStatic()) {
-                list($hasCall) = $this->analyzeStaticMethod(
-                    $methodDefinition,
-                    $expectedfacadeClassName
-                );
-            } elseif (!$methodDefinition->isAbstract()) {
-                $hasCheckableMethods = true;
-                list($hasCall) = $this->analyzeMethod(
-                    $methodDefinition,
-                    $propertyName
+            if ($missingProperty) {
+                $issues[] = new Issue\MissingProperty(
+                    $classDefinition
                 );
             }
-
-            if (!$hasCall) {
-                $issues[] = new Issue\MissingMethodCall(
-                    $classDefinition,
-                    $methodDefinition
-                );
-            }
-        }
-
-        $hasProperty = false;
-        foreach ($classDefinition->properties() as $propertyDefinition) {
-            if (
-                !$propertyDefinition->isStatic() &&
-                $propertyDefinition->accessModifier() === AccessModifier::PRIVATE_() &&
-                $propertyDefinition->name() === $propertyName
-            ) {
-                $hasProperty = true;
-            }
-        }
-
-        if ($hasCheckableMethods && !$hasConstructorCall) {
-            $issues[] = new Issue\MissingConstructorCall($classDefinition);
-        }
-        if ($hasCheckableMethods && !$hasProperty) {
-            $issues[] = new Issue\MissingProperty($classDefinition);
         }
     }
 
     /**
      * @param MethodDefinition $methodDefinition
      * @param ClassName        $expectedfacadeClassName
+     * @param string           &$propertyName
      *
-     * @return tuple<boolean,string|null>
+     * @return boolean
      */
-    protected function analyzeConstructor(
+    protected function methodHasInit(
         MethodDefinition $methodDefinition,
-        ClassName $expectedfacadeClassName
+        ClassName $expectedfacadeClassName,
+        &$propertyName
     ) {
-        $this->typeCheck->analyzeConstructor(func_get_args());
+        $this->typeCheck->methodHasInit(func_get_args());
 
-        $hasConstructorCall = false;
-        $propertyName = 'typeCheck';
+        $hasInit = false;
         $callPattern = sprintf(
             '/^\s*\$this\s*->\s*(%s)\s*=\s*%s\s*::\s*get\s*\(\s*__CLASS__\s*,\s*\\\\?func_get_args\s*\(\s*\)\s*\)\s*;$/',
             '[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*', // PHP variable name
@@ -179,27 +202,24 @@ class ProjectAnalyzer
 
         $firstStatement = $this->parseFirstMethodStatement($methodDefinition->source());
         if (preg_match($callPattern, $firstStatement, $matches)) {
-            $hasConstructorCall = true;
+            $hasInit = true;
             $propertyName = $matches[1];
         }
 
-        return array(
-            $hasConstructorCall,
-            $propertyName,
-        );
+        return $hasInit;
     }
 
     /**
      * @param MethodDefinition $methodDefinition
      * @param string           $propertyName
      *
-     * @return tuple<boolean>
+     * @return boolean
      */
-    protected function analyzeMethod(
+    protected function methodHasCall(
         MethodDefinition $methodDefinition,
         $propertyName
     ) {
-        $this->typeCheck->analyzeMethod(func_get_args());
+        $this->typeCheck->methodHasCall(func_get_args());
 
         $hasCall = false;
         $expectedMethodName = $this->normalizeValidatorMethodName(
@@ -216,22 +236,20 @@ class ProjectAnalyzer
             $hasCall = true;
         }
 
-        return array(
-            $hasCall,
-        );
+        return $hasCall;
     }
 
     /**
      * @param MethodDefinition $methodDefinition
      * @param ClassName        $expectedfacadeClassName
      *
-     * @return tuple<boolean,string|null>
+     * @return boolean
      */
-    protected function analyzeStaticMethod(
+    protected function methodHasStaticCall(
         MethodDefinition $methodDefinition,
         ClassName $expectedfacadeClassName
     ) {
-        $this->typeCheck->analyzeStaticMethod(func_get_args());
+        $this->typeCheck->methodHasStaticCall(func_get_args());
 
         $hasCall = false;
         $expectedMethodName = $this->normalizeValidatorMethodName(
@@ -248,9 +266,33 @@ class ProjectAnalyzer
             $hasCall = true;
         }
 
-        return array(
-            $hasCall,
+        return $hasCall;
+    }
+
+    /**
+     * @param MethodDefinition $methodDefinition
+     * @param ClassName        $expectedfacadeClassName
+     *
+     * @return boolean
+     */
+    protected function methodHasConstructorStaticCall(
+        MethodDefinition $methodDefinition,
+        ClassName $expectedfacadeClassName
+    ) {
+        $this->typeCheck->methodHasConstructorStaticCall(func_get_args());
+
+        $hasCall = false;
+        $callPattern = sprintf(
+            '/^\s*%s\s*::\s*get\s*\(\s*__CLASS__\s*,\s*\\\\?func_get_args\s*\(\s*\)\s*\)\s*;$/',
+            preg_quote($expectedfacadeClassName->string(), '/')
         );
+
+        $firstStatement = $this->parseFirstMethodStatement($methodDefinition->source());
+        if (preg_match($callPattern, $firstStatement)) {
+            $hasCall = true;
+        }
+
+        return $hasCall;
     }
 
     /**
@@ -348,6 +390,18 @@ class ProjectAnalyzer
         }
 
         return $methodName;
+    }
+
+    /**
+     * @param ClassDefinition $classDefinition
+     *
+     * @return boolean
+     */
+    protected function classImplementsSerializable(ClassDefinition $classDefinition)
+    {
+        $this->typeCheck->classImplementsSerializable(func_get_args());
+
+        return $classDefinition->createReflector()->implementsInterface('Serializable');
     }
 
     private $classMapper;

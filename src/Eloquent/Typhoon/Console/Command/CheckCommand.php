@@ -17,7 +17,7 @@ use Eloquent\Typhoon\CodeAnalysis\Issue\IssueRenderer;
 use Eloquent\Typhoon\CodeAnalysis\Issue\IssueSeverity;
 use Eloquent\Typhoon\CodeAnalysis\ProjectAnalyzer;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
-use Symfony\Component\Console\Command\Command;
+use Icecave\Isolator\Isolator;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -26,10 +26,12 @@ class CheckCommand extends Command
     /**
      * @param ProjectAnalyzer|null $analyzer
      * @param IssueRenderer|null   $issueRenderer
+     * @param Isolator|null        $isolator
      */
     public function __construct(
         ProjectAnalyzer $analyzer = null,
-        IssueRenderer $issueRenderer = null
+        IssueRenderer $issueRenderer = null,
+        Isolator $isolator = null
     ) {
         $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
         if (null === $analyzer) {
@@ -42,7 +44,7 @@ class CheckCommand extends Command
         $this->analyzer = $analyzer;
         $this->issueRenderer = $issueRenderer;
 
-        parent::__construct();
+        parent::__construct($isolator);
     }
 
     /**
@@ -85,6 +87,7 @@ class CheckCommand extends Command
 
         $output->setVerbosity(OutputInterface::VERBOSITY_VERBOSE);
         $configuration = $this->getApplication()->configurationReader()->read(null, true);
+        $this->includeLoaders($configuration, $output);
 
         $output->writeln('<info>Checking for correct Typhoon setup...</info>');
         $result = $this->analyzer()->analyze($configuration);

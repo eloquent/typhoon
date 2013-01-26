@@ -24,6 +24,10 @@ use Icecave\Pasta\AST\Type\AccessModifier;
 use Phake;
 use Symfony\Component\Console\Input\InputDefinition;
 
+/**
+ * @covers \Eloquent\Typhoon\Console\Command\CheckCommand
+ * @covers \Eloquent\Typhoon\Console\Command\Command
+ */
 class CheckCommandTest extends MultiGenerationTestCase
 {
     protected function setUp()
@@ -47,12 +51,21 @@ class CheckCommandTest extends MultiGenerationTestCase
         Phake::when($this->_application)->configurationReader()->thenReturn($this->_configurationReader);
         $this->_analyzer = Phake::mock('Eloquent\Typhoon\CodeAnalysis\ProjectAnalyzer');
         $this->_issueRenderer = new IssueRenderer;
+        $this->_isolator = Phake::mock('Icecave\Isolator\Isolator');
         $this->_command = Phake::partialMock(
             __NAMESPACE__.'\CheckCommand',
             $this->_analyzer,
-            $this->_issueRenderer
+            $this->_issueRenderer,
+            $this->_isolator
         );
-        Phake::when($this->_command)->getApplication()->thenReturn($this->_application);
+        Phake::when($this->_command)
+            ->getApplication(Phake::anyParameters())
+            ->thenReturn($this->_application)
+        ;
+        Phake::when($this->_command)
+            ->includeLoaders(Phake::anyParameters())
+            ->thenReturn(null)
+        ;
 
         $this->_classDefinition = new ClassDefinition(ClassName::fromString('A'));
         $this->_methodDefinition = Phake::mock(
@@ -114,6 +127,10 @@ class CheckCommandTest extends MultiGenerationTestCase
 
         $this->assertSame(0, $exitCode);
         Phake::inOrder(
+            Phake::verify($this->_command)->includeLoaders(
+                $this->identicalTo($this->_configuration),
+                $this->identicalTo($output)
+            ),
             Phake::verify($output)->writeln('<info>Checking for correct Typhoon setup...</info>'),
             Phake::verify($this->_analyzer)->analyze(
                 $this->identicalTo($this->_configuration)
@@ -151,6 +168,10 @@ class CheckCommandTest extends MultiGenerationTestCase
 
         $this->assertSame(1, $exitCode);
         Phake::inOrder(
+            Phake::verify($this->_command)->includeLoaders(
+                $this->identicalTo($this->_configuration),
+                $this->identicalTo($output)
+            ),
             Phake::verify($output)->writeln('<info>Checking for correct Typhoon setup...</info>'),
             Phake::verify($this->_analyzer)->analyze(
                 $this->identicalTo($this->_configuration)
@@ -187,6 +208,10 @@ class CheckCommandTest extends MultiGenerationTestCase
 
         $this->assertSame(0, $exitCode);
         Phake::inOrder(
+            Phake::verify($this->_command)->includeLoaders(
+                $this->identicalTo($this->_configuration),
+                $this->identicalTo($output)
+            ),
             Phake::verify($output)->writeln('<info>Checking for correct Typhoon setup...</info>'),
             Phake::verify($this->_analyzer)->analyze(
                 $this->identicalTo($this->_configuration)
@@ -291,5 +316,25 @@ class CheckCommandTest extends MultiGenerationTestCase
             Liberator::liberate($this->_command)->generateBlock('splat', 'ping', $issues)
         );
         Phake::verify($formatter)->formatBlock($expected, 'ping', true);
+    }
+
+    public function testIncludeLoaders()
+    {
+        $this->_command = Phake::partialMock(
+            __NAMESPACE__.'\CheckCommand',
+            $this->_analyzer,
+            $this->_issueRenderer,
+            $this->_isolator
+        );
+        $output = Phake::mock('Symfony\Component\Console\Output\OutputInterface');
+        Liberator::liberate($this->_command)->includeLoaders($this->_configuration, $output);
+
+        Phake::inOrder(
+            Phake::verify($output)->writeln('<info>Including loaders...</info>'),
+            Phake::verify($output)->writeln('  - foo'),
+            Phake::verify($this->_isolator)->require('foo'),
+            Phake::verify($output)->writeln('  - bar'),
+            Phake::verify($this->_isolator)->require('bar')
+        );
     }
 }

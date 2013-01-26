@@ -11,24 +11,17 @@
 
 namespace Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Successful;
 
-use Serializable;
 use Typhoon\TypeCheck;
 
-class ImplementsSerializable implements Serializable
+class AllStaticCalls
 {
-    public function __construct()
+    public function foo()
     {
-        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
+        TypeCheck::get(__CLASS__)->foo(func_get_args());
     }
 
-    public function serialize()
+    public function __bar()
     {
-        $this->typeCheck->serialize(func_get_args());
+        TypeCheck::get(__CLASS__)->validateBar(func_get_args());
     }
-
-    public function unserialize($serialized)
-    {
-    }
-
-    private $typeCheck;
 }

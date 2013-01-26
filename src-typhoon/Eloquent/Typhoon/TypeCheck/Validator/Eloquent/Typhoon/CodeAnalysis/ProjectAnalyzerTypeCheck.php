@@ -64,20 +64,32 @@ class ProjectAnalyzerTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValid
         }
     }
 
-    public function analyzeConstructor(array $arguments)
+    public function methodHasInit(array $arguments)
     {
         $argumentCount = \count($arguments);
-        if ($argumentCount < 2) {
+        if ($argumentCount < 3) {
             if ($argumentCount < 1) {
                 throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('methodDefinition', 0, 'Eloquent\\Typhoon\\ClassMapper\\MethodDefinition');
             }
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('expectedfacadeClassName', 1, 'Eloquent\\Cosmos\\ClassName');
-        } elseif ($argumentCount > 2) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(2, $arguments[2]);
+            if ($argumentCount < 2) {
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('expectedfacadeClassName', 1, 'Eloquent\\Cosmos\\ClassName');
+            }
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('propertyName', 2, 'string');
+        } elseif ($argumentCount > 3) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(3, $arguments[3]);
+        }
+        $value = $arguments[2];
+        if (!\is_string($value)) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
+                'propertyName',
+                2,
+                $arguments[2],
+                'string'
+            );
         }
     }
 
-    public function analyzeMethod(array $arguments)
+    public function methodHasCall(array $arguments)
     {
         $argumentCount = \count($arguments);
         if ($argumentCount < 2) {
@@ -99,7 +111,20 @@ class ProjectAnalyzerTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValid
         }
     }
 
-    public function analyzeStaticMethod(array $arguments)
+    public function methodHasStaticCall(array $arguments)
+    {
+        $argumentCount = \count($arguments);
+        if ($argumentCount < 2) {
+            if ($argumentCount < 1) {
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('methodDefinition', 0, 'Eloquent\\Typhoon\\ClassMapper\\MethodDefinition');
+            }
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('expectedfacadeClassName', 1, 'Eloquent\\Cosmos\\ClassName');
+        } elseif ($argumentCount > 2) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(2, $arguments[2]);
+        }
+    }
+
+    public function methodHasConstructorStaticCall(array $arguments)
     {
         $argumentCount = \count($arguments);
         if ($argumentCount < 2) {
@@ -166,6 +191,16 @@ class ProjectAnalyzerTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValid
                 $arguments[0],
                 'string'
             );
+        }
+    }
+
+    public function classImplementsSerializable(array $arguments)
+    {
+        $argumentCount = \count($arguments);
+        if ($argumentCount < 1) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('classDefinition', 0, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition');
+        } elseif ($argumentCount > 1) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
         }
     }
 

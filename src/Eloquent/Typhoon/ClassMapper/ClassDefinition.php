@@ -14,6 +14,7 @@ namespace Eloquent\Typhoon\ClassMapper;
 use Eloquent\Cosmos\ClassName;
 use Eloquent\Cosmos\ClassNameResolver;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
+use ReflectionClass;
 
 class ClassDefinition
 {
@@ -166,6 +167,16 @@ class ClassDefinition
         $this->typeCheck->classNameResolver(func_get_args());
 
         return $this->classNameResolver;
+    }
+
+    /**
+     * @return ReflectionClass
+     */
+    public function createReflector()
+    {
+        $this->typeCheck->createReflector(func_get_args());
+
+        return new ReflectionClass($this->className()->string());
     }
 
     private $className;

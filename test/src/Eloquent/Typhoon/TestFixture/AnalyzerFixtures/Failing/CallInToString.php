@@ -13,9 +13,10 @@ namespace Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing;
 
 use Typhoon\TypeCheck;
 
-class MissingConstructorCall
+class CallInToString
 {
-    public function __construct()
+    public function __toString()
     {
+        TypeCheck::get(__CLASS__)->validateToString(func_get_args());
     }
 }

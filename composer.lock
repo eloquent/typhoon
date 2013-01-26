@@ -819,16 +819,16 @@
         },
         {
             "name": "icecave/testing",
-            "version": "2.0.0",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/IcecaveStudios/testing.git",
-                "reference": "2.0.0"
+                "reference": "2.0.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/IcecaveStudios/testing/archive/2.0.0.zip",
-                "reference": "2.0.0",
+                "url": "https://github.com/IcecaveStudios/testing/archive/2.0.1.zip",
+                "reference": "2.0.1",
                 "shasum": ""
             },
             "require": {
@@ -839,7 +839,7 @@
                 "eloquent/liberator": "Use liberator for circumventing PHP access modifier restrictions inside tests.",
                 "icecave/woodhouse": "Publish your code coverage information to GitHub pages."
             },
-            "time": "2013-01-19 14:28:21",
+            "time": "2013-01-26 12:24:15",
             "bin": [
                 "bin/phpunit",
                 "bin/phpunit-coverage",

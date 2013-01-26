@@ -60,7 +60,7 @@ use Icecave\Pasta\AST\Stmt\StatementBlock;
 class TyphaxASTGenerator implements Visitor
 {
     /**
-     * @param Identifier|null $valueIdentifier
+     * @param Identifier|null               $valueIdentifier
      * @param ExtensionLoaderInterface|null $extensionLoader
      */
     public function __construct(

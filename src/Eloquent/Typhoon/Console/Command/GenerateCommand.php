@@ -14,7 +14,6 @@ namespace Eloquent\Typhoon\Console\Command;
 use Eloquent\Typhoon\Generator\ProjectValidatorGenerator;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Icecave\Isolator\Isolator;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -34,9 +33,8 @@ class GenerateCommand extends Command
         }
 
         $this->generator = $generator;
-        $this->isolator = Isolator::get($isolator);
 
-        parent::__construct();
+        parent::__construct($isolator);
     }
 
     /**
@@ -67,12 +65,7 @@ class GenerateCommand extends Command
 
         $output->setVerbosity(OutputInterface::VERBOSITY_VERBOSE);
         $configuration = $this->getApplication()->configurationReader()->read(null, true);
-
-        $output->writeln('<info>Including loaders...</info>');
-        foreach ($configuration->loaderPaths() as $path) {
-            $output->writeln(sprintf('  - %s', $path));
-            $this->isolator->require($path);
-        }
+        $this->includeLoaders($configuration, $output);
 
         $output->writeln('<info>Generating classes...</info>');
         $this->generator()->generate($configuration);
@@ -81,6 +74,5 @@ class GenerateCommand extends Command
     }
 
     private $generator;
-    private $isolator;
     private $typeCheck;
 }

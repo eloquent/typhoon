@@ -6,8 +6,8 @@ class CheckCommandTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidato
     public function validateConstruct(array $arguments)
     {
         $argumentCount = \count($arguments);
-        if ($argumentCount > 2) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(2, $arguments[2]);
+        if ($argumentCount > 3) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(3, $arguments[3]);
         }
     }
 

@@ -201,4 +201,11 @@ class ClassDefinitionTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValid
         }
     }
 
+    public function createReflector(array $arguments)
+    {
+        if (\count($arguments) > 0) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(0, $arguments[0]);
+        }
+    }
+
 }
