@@ -11,20 +11,10 @@
 
 namespace Eloquent\Typhoon\CodeAnalysis\Issue;
 
-use Eloquent\Typhoon\ClassMapper\ClassDefinition;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 
 class MissingConstructorCall extends ClassError
 {
-    /**
-     * @param ClassDefinition $classDefinition
-     */
-    public function __construct(ClassDefinition $classDefinition)
-    {
-        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
-        parent::__construct($classDefinition);
-    }
-
     /**
      * @param IssueVisitor $visitor
      *
@@ -32,10 +22,8 @@ class MissingConstructorCall extends ClassError
      */
     public function accept(IssueVisitor $visitor)
     {
-        $this->typeCheck->accept(func_get_args());
+        TypeCheck::get(__CLASS__)->accept(func_get_args());
 
         return $visitor->visitMissingConstructorCall($this);
     }
-
-    private $typeCheck;
 }

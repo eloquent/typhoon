@@ -50,14 +50,4 @@ class IssueRendererTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidat
         }
     }
 
-    public function visitUnserializeMethod(array $arguments)
-    {
-        $argumentCount = \count($arguments);
-        if ($argumentCount < 1) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('issue', 0, 'Eloquent\\Typhoon\\CodeAnalysis\\Issue\\UnserializeMethod');
-        } elseif ($argumentCount > 1) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
-        }
-    }
-
 }

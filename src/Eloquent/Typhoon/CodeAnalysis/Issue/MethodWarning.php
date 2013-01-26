@@ -11,34 +11,17 @@
 
 namespace Eloquent\Typhoon\CodeAnalysis\Issue;
 
-use Eloquent\Typhoon\ClassMapper\ClassDefinition;
-use Eloquent\Typhoon\ClassMapper\MethodDefinition;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 
 abstract class MethodWarning extends MethodIssue
 {
     /**
-     * @param ClassDefinition  $classDefinition
-     * @param MethodDefinition $methodDefinition
-     */
-    public function __construct(
-        ClassDefinition $classDefinition,
-        MethodDefinition $methodDefinition
-    ) {
-        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
-
-        parent::__construct($classDefinition, $methodDefinition);
-    }
-
-    /**
      * @return IssueSeverity
      */
     public function severity()
     {
-        $this->typeCheck->severity(func_get_args());
+        TypeCheck::get(__CLASS__)->severity(func_get_args());
 
         return IssueSeverity::WARNING();
     }
-
-    private $typeCheck;
 }

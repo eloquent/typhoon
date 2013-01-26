@@ -74,17 +74,5 @@ class IssueRenderer implements IssueVisitor
         return 'Incorrect or missing property definition.';
     }
 
-    /**
-     * @param UnserializeMethod $issue
-     *
-     * @return string
-     */
-    public function visitUnserializeMethod(UnserializeMethod $issue)
-    {
-        $this->typeCheck->visitUnserializeMethod(func_get_args());
-
-        return 'Method unserialize() should have a type check call, unless it is an implementation of PHP\'s built-in Serializable interface.';
-    }
-
     private $typeCheck;
 }

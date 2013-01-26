@@ -40,11 +40,4 @@ interface IssueVisitor
      * @return mixed
      */
     public function visitMissingProperty(MissingProperty $issue);
-
-    /**
-     * @param UnserializeMethod $issue
-     *
-     * @return mixed
-     */
-    public function visitUnserializeMethod(UnserializeMethod $issue);
 }

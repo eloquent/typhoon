@@ -11,25 +11,10 @@
 
 namespace Eloquent\Typhoon\CodeAnalysis\Issue;
 
-use Eloquent\Typhoon\ClassMapper\ClassDefinition;
-use Eloquent\Typhoon\ClassMapper\MethodDefinition;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 
 class InadmissibleMethodCall extends MethodError
 {
-    /**
-     * @param ClassDefinition  $classDefinition
-     * @param MethodDefinition $methodDefinition
-     */
-    public function __construct(
-        ClassDefinition $classDefinition,
-        MethodDefinition $methodDefinition
-    ) {
-        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
-
-        parent::__construct($classDefinition, $methodDefinition);
-    }
-
     /**
      * @param IssueVisitor $visitor
      *
@@ -37,10 +22,8 @@ class InadmissibleMethodCall extends MethodError
      */
     public function accept(IssueVisitor $visitor)
     {
-        $this->typeCheck->accept(func_get_args());
+        TypeCheck::get(__CLASS__)->accept(func_get_args());
 
         return $visitor->visitInadmissibleMethodCall($this);
     }
-
-    private $typeCheck;
 }

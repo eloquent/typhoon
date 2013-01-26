@@ -88,17 +88,4 @@ class IssueRendererTest extends MultiGenerationTestCase
             $issue->accept($this->_renderer)
         );
     }
-
-    public function testVisitUnserializeMethod()
-    {
-        $issue = new UnserializeMethod(
-            $this->_classDefinition,
-            $this->_methodDefinition
-        );
-
-        $this->assertSame(
-            'Method unserialize() should have a type check call, unless it is an implementation of PHP\'s built-in Serializable interface.',
-            $issue->accept($this->_renderer)
-        );
-    }
 }

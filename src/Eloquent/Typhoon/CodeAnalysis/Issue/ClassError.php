@@ -11,29 +11,17 @@
 
 namespace Eloquent\Typhoon\CodeAnalysis\Issue;
 
-use Eloquent\Typhoon\ClassMapper\ClassDefinition;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 
 abstract class ClassError extends ClassIssue
 {
     /**
-     * @param ClassDefinition $classDefinition
-     */
-    public function __construct(ClassDefinition $classDefinition)
-    {
-        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
-        parent::__construct($classDefinition);
-    }
-
-    /**
      * @return IssueSeverity
      */
     public function severity()
     {
-        $this->typeCheck->severity(func_get_args());
+        TypeCheck::get(__CLASS__)->severity(func_get_args());
 
         return IssueSeverity::ERROR();
     }
-
-    private $typeCheck;
 }
