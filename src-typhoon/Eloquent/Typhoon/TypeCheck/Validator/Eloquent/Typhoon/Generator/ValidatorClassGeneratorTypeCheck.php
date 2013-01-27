@@ -39,7 +39,7 @@ class ValidatorClassGeneratorTypeCheck extends \Eloquent\Typhoon\TypeCheck\Abstr
         }
     }
 
-    public function nativeMergeTool(array $arguments)
+    public function mergeTool(array $arguments)
     {
         if (\count($arguments) > 0) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(0, $arguments[0]);

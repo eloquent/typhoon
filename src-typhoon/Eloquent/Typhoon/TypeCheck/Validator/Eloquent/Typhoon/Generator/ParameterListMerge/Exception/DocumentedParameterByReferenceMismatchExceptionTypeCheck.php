@@ -1,7 +1,7 @@
 <?php
-namespace Eloquent\Typhoon\TypeCheck\Validator\Eloquent\Typhoon\Generator\Exception;
+namespace Eloquent\Typhoon\TypeCheck\Validator\Eloquent\Typhoon\Generator\ParameterListMerge\Exception;
 
-class DocumentedParameterTypeMismatchExceptionTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
+class DocumentedParameterByReferenceMismatchExceptionTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
 {
     public function validateConstruct(array $arguments)
     {
@@ -14,11 +14,11 @@ class DocumentedParameterTypeMismatchExceptionTypeCheck extends \Eloquent\Typhoo
                 throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('parameterName', 1, 'string');
             }
             if ($argumentCount < 3) {
-                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('documentedType', 2, 'Eloquent\\Typhax\\Type\\Type');
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('documentedIsByReference', 2, 'boolean');
             }
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('nativeType', 3, 'Eloquent\\Typhax\\Type\\Type');
-        } elseif ($argumentCount > 6) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(6, $arguments[6]);
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('nativeIsByReference', 3, 'boolean');
+        } elseif ($argumentCount > 5) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(5, $arguments[5]);
         }
         $value = $arguments[0];
         if (!\is_string($value)) {
@@ -38,6 +38,24 @@ class DocumentedParameterTypeMismatchExceptionTypeCheck extends \Eloquent\Typhoo
                 'string'
             );
         }
+        $value = $arguments[2];
+        if (!\is_bool($value)) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
+                'documentedIsByReference',
+                2,
+                $arguments[2],
+                'boolean'
+            );
+        }
+        $value = $arguments[3];
+        if (!\is_bool($value)) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
+                'nativeIsByReference',
+                3,
+                $arguments[3],
+                'boolean'
+            );
+        }
     }
 
     public function functionName(array $arguments)
@@ -54,21 +72,14 @@ class DocumentedParameterTypeMismatchExceptionTypeCheck extends \Eloquent\Typhoo
         }
     }
 
-    public function documentedType(array $arguments)
+    public function documentedIsByReference(array $arguments)
     {
         if (\count($arguments) > 0) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(0, $arguments[0]);
         }
     }
 
-    public function nativeType(array $arguments)
-    {
-        if (\count($arguments) > 0) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(0, $arguments[0]);
-        }
-    }
-
-    public function typeRenderer(array $arguments)
+    public function nativeIsByReference(array $arguments)
     {
         if (\count($arguments) > 0) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(0, $arguments[0]);

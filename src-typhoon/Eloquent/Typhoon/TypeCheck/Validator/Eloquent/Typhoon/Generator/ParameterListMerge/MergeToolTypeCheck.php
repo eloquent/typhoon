@@ -1,7 +1,7 @@
 <?php
-namespace Eloquent\Typhoon\TypeCheck\Validator\Eloquent\Typhoon\Generator;
+namespace Eloquent\Typhoon\TypeCheck\Validator\Eloquent\Typhoon\Generator\ParameterListMerge;
 
-class NativeParameterListMergeToolTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
+class MergeToolTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
 {
     public function validateConstruct(array $arguments)
     {

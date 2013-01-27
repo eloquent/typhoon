@@ -37,7 +37,7 @@ class ValidatorClassGeneratorTest extends MultiGenerationTestCase
         $this->_classMapper = Phake::partialMock(
             'Eloquent\Typhoon\ClassMapper\ClassMapper'
         );
-        $this->_nativeMergeTool = new NativeParameterListMergeTool;
+        $this->_mergeTool = new ParameterListMerge\MergeTool;
         $this->_isolator = Phake::mock('IceCave\Isolator\Isolator');
         $this->_generator = Phake::partialMock(
             __NAMESPACE__.'\ValidatorClassGenerator',
@@ -45,7 +45,7 @@ class ValidatorClassGeneratorTest extends MultiGenerationTestCase
             $this->_parser,
             $this->_parameterListGenerator,
             $this->_classMapper,
-            $this->_nativeMergeTool,
+            $this->_mergeTool,
             $this->_isolator
         );
     }
@@ -56,7 +56,7 @@ class ValidatorClassGeneratorTest extends MultiGenerationTestCase
         $this->assertSame($this->_parser, $this->_generator->parser());
         $this->assertSame($this->_parameterListGenerator, $this->_generator->generator());
         $this->assertSame($this->_classMapper, $this->_generator->classMapper());
-        $this->assertSame($this->_nativeMergeTool, $this->_generator->nativeMergeTool());
+        $this->assertSame($this->_mergeTool, $this->_generator->mergeTool());
     }
 
     public function testConstructorDefaults()
@@ -82,8 +82,8 @@ class ValidatorClassGeneratorTest extends MultiGenerationTestCase
             $this->_generator->classMapper()
         );
         $this->assertInstanceOf(
-            __NAMESPACE__.'\NativeParameterListMergeTool',
-            $this->_generator->nativeMergeTool()
+            __NAMESPACE__.'\ParameterListMerge\MergeTool',
+            $this->_generator->mergeTool()
         );
     }
 

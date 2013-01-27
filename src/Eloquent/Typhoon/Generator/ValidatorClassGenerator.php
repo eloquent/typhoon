@@ -41,7 +41,7 @@ class ValidatorClassGenerator
      * @param ParameterListParser|null          $parser
      * @param ParameterListGenerator|null       $generator
      * @param ClassMapper|null                  $classMapper
-     * @param NativeParameterListMergeTool|null $nativeMergeTool
+     * @param ParameterListMerge\MergeTool|null $mergeTool
      * @param Isolator|null                     $isolator
      */
     public function __construct(
@@ -49,7 +49,7 @@ class ValidatorClassGenerator
         ParameterListParser $parser = null,
         ParameterListGenerator $generator = null,
         ClassMapper $classMapper = null,
-        NativeParameterListMergeTool $nativeMergeTool = null,
+        ParameterListMerge\MergeTool $mergeTool = null,
         Isolator $isolator = null
     ) {
         $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
@@ -66,15 +66,15 @@ class ValidatorClassGenerator
         if (null === $classMapper) {
             $classMapper = new ClassMapper;
         }
-        if (null === $nativeMergeTool) {
-            $nativeMergeTool = new NativeParameterListMergeTool;
+        if (null === $mergeTool) {
+            $mergeTool = new ParameterListMerge\MergeTool;
         }
 
         $this->renderer = $renderer;
         $this->parser = $parser;
         $this->generator = $generator;
         $this->classMapper = $classMapper;
-        $this->nativeMergeTool = $nativeMergeTool;
+        $this->mergeTool = $mergeTool;
         $this->isolator = Isolator::get($isolator);
     }
 
@@ -119,13 +119,13 @@ class ValidatorClassGenerator
     }
 
     /**
-     * @return NativeParameterListMergeTool
+     * @return ParameterListMerge\MergeTool
      */
-    public function nativeMergeTool()
+    public function mergeTool()
     {
-        $this->typeCheck->nativeMergeTool(func_get_args());
+        $this->typeCheck->mergeTool(func_get_args());
 
-        return $this->nativeMergeTool;
+        return $this->mergeTool;
     }
 
     /**
@@ -405,7 +405,7 @@ class ValidatorClassGenerator
             );
         }
 
-        return $this->nativeMergeTool()->merge(
+        return $this->mergeTool()->merge(
             $configuration,
             $methodName,
             $parameterList

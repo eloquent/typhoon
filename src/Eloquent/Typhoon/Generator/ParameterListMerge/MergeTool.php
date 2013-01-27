@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Eloquent\Typhoon\Generator;
+namespace Eloquent\Typhoon\Generator\ParameterListMerge;
 
 use Eloquent\Typhax\Comparator\TypeEquivalenceComparator;
 use Eloquent\Typhax\Type\AndType;
@@ -23,12 +23,13 @@ use Eloquent\Typhax\Type\TraversableType;
 use Eloquent\Typhax\Type\TupleType;
 use Eloquent\Typhax\Type\Type;
 use Eloquent\Typhoon\Configuration\RuntimeConfiguration;
+use Eloquent\Typhoon\Generator\NullifiedType;
 use Eloquent\Typhoon\Parameter\Parameter;
 use Eloquent\Typhoon\Parameter\ParameterList;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use ReflectionClass;
 
-class NativeParameterListMergeTool
+class MergeTool
 {
     public function __construct()
     {

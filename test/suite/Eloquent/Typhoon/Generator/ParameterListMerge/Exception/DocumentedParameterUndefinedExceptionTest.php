@@ -9,24 +9,24 @@
  * file that was distributed with this source code.
  */
 
-namespace Eloquent\Typhoon\Generator\Exception;
+namespace Eloquent\Typhoon\Generator\ParameterListMerge\Exception;
 
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Phake;
 
-class UndocumentedParameterExceptionTest extends MultiGenerationTestCase
+class DocumentedParameterUndefinedExceptionTest extends MultiGenerationTestCase
 {
     public function testException()
     {
         $previous = Phake::mock('Exception');
-        $exception = new UndocumentedParameterException(
+        $exception = new DocumentedParameterUndefinedException(
             'foo',
             'bar',
             $previous
         );
 
         $this->assertSame(
-            "Parameter 'bar' is undocumented in 'foo'.",
+            "Documented parameter 'bar' not defined in 'foo'.",
             $exception->getMessage()
         );
         $this->assertSame('foo', $exception->functionName());

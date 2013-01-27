@@ -1,5 +1,5 @@
 <?php
-namespace Eloquent\Typhoon\TypeCheck\Validator\Eloquent\Typhoon\Generator\Exception;
+namespace Eloquent\Typhoon\TypeCheck\Validator\Eloquent\Typhoon\Generator\ParameterListMerge\Exception;
 
 class UndocumentedParameterExceptionTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
 {

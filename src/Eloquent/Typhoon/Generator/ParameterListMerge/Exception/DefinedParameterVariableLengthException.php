@@ -9,28 +9,31 @@
  * file that was distributed with this source code.
  */
 
-namespace Eloquent\Typhoon\Generator\Exception;
+namespace Eloquent\Typhoon\Generator\ParameterListMerge\Exception;
 
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Exception;
 use LogicException;
 
-final class DocumentedParameterUndefinedException extends LogicException
+final class DefinedParameterVariableLengthException extends LogicException
 {
     /**
      * @param string         $functionName
      * @param string         $parameterName
      * @param Exception|null $previous
      */
-    public function __construct($functionName, $parameterName, Exception $previous = null)
-    {
+    public function __construct(
+        $functionName,
+        $parameterName,
+        Exception $previous = null
+    ) {
         $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
         $this->functionName = $functionName;
         $this->parameterName = $parameterName;
 
         parent::__construct(
             sprintf(
-                "Documented parameter '%s' not defined in '%s'.",
+                "Variable-length parameter '%s' should only be documented, not defined in '%s'.",
                 $this->parameterName(),
                 $this->functionName()
             ),

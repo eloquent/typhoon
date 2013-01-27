@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Eloquent\Typhoon\Generator;
+namespace Eloquent\Typhoon\Generator\ParameterListMerge;
 
 use Eloquent\Cosmos\ClassName;
 use Eloquent\Liberator\Liberator;
@@ -27,13 +27,14 @@ use Eloquent\Typhax\Type\TraversableType;
 use Eloquent\Typhax\Type\TupleType;
 use Eloquent\Typhax\Type\Type;
 use Eloquent\Typhoon\Configuration\RuntimeConfiguration;
+use Eloquent\Typhoon\Generator\NullifiedType;
 use Eloquent\Typhoon\Parameter\Parameter;
 use Eloquent\Typhoon\Parameter\ParameterList;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Phake;
 use ReflectionClass;
 
-class NativeParameterListMergeToolTest extends MultiGenerationTestCase
+class MergeToolTest extends MultiGenerationTestCase
 {
     public function __construct($name = null, array $data = array(), $dataName = '')
     {
@@ -47,7 +48,7 @@ class NativeParameterListMergeToolTest extends MultiGenerationTestCase
     {
         parent::setUp();
 
-        $this->_mergeTool = new NativeParameterListMergeTool;
+        $this->_mergeTool = new MergeTool;
     }
 
     public function testNativeCallableAvailable()
@@ -60,7 +61,7 @@ class NativeParameterListMergeToolTest extends MultiGenerationTestCase
 
     public function testUseNativeCallableManualOff()
     {
-        $mergeTool = Phake::partialMock(__NAMESPACE__.'\NativeParameterListMergeTool');
+        $mergeTool = Phake::partialMock(__NAMESPACE__.'\MergeTool');
         $configuration = new RuntimeConfiguration(
             ClassName::fromString('\foo'),
             false
@@ -72,7 +73,7 @@ class NativeParameterListMergeToolTest extends MultiGenerationTestCase
 
     public function testUseNativeCallableNotAvailable()
     {
-        $mergeTool = Phake::partialMock(__NAMESPACE__.'\NativeParameterListMergeTool');
+        $mergeTool = Phake::partialMock(__NAMESPACE__.'\MergeTool');
         Phake::when($mergeTool)->nativeCallableAvailable()->thenReturn(false);
         $configuration = new RuntimeConfiguration(
             ClassName::fromString('\foo'),
@@ -85,7 +86,7 @@ class NativeParameterListMergeToolTest extends MultiGenerationTestCase
 
     public function testUseNativeCallableOn()
     {
-        $mergeTool = Phake::partialMock(__NAMESPACE__.'\NativeParameterListMergeTool');
+        $mergeTool = Phake::partialMock(__NAMESPACE__.'\MergeTool');
         Phake::when($mergeTool)->nativeCallableAvailable()->thenReturn(true);
         $configuration = new RuntimeConfiguration(
             ClassName::fromString('\foo'),

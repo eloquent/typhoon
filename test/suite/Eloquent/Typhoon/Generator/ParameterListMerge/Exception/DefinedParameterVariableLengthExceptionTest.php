@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Eloquent\Typhoon\Generator\Exception;
+namespace Eloquent\Typhoon\Generator\ParameterListMerge\Exception;
 
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Phake;

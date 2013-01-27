@@ -1,7 +1,7 @@
 <?php
-namespace Eloquent\Typhoon\TypeCheck\Validator\Eloquent\Typhoon\Generator\Exception;
+namespace Eloquent\Typhoon\TypeCheck\Validator\Eloquent\Typhoon\Generator\ParameterListMerge\Exception;
 
-class DefinedParameterVariableLengthExceptionTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
+class DocumentedParameterUndefinedExceptionTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
 {
     public function validateConstruct(array $arguments)
     {
