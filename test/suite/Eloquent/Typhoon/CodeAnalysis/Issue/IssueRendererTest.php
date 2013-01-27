@@ -39,9 +39,33 @@ class IssueRendererTest extends MultiGenerationTestCase
         );
     }
 
+    public function testVisitMissingConstructorCall()
+    {
+        $issue = new ClassRelated\MissingConstructorCall(
+            $this->_classDefinition
+        );
+
+        $this->assertSame(
+            'Incorrect or missing constructor initialization.',
+            $issue->accept($this->_renderer)
+        );
+    }
+
+    public function testVisitMissingProperty()
+    {
+        $issue = new ClassRelated\MissingProperty(
+            $this->_classDefinition
+        );
+
+        $this->assertSame(
+            'Incorrect or missing property definition.',
+            $issue->accept($this->_renderer)
+        );
+    }
+
     public function testVisitInadmissibleMethodCall()
     {
-        $issue = new InadmissibleMethodCall(
+        $issue = new MethodRelated\InadmissibleMethodCall(
             $this->_classDefinition,
             $this->_methodDefinition
         );
@@ -52,39 +76,15 @@ class IssueRendererTest extends MultiGenerationTestCase
         );
     }
 
-    public function testVisitMissingConstructorCall()
-    {
-        $issue = new MissingConstructorCall(
-            $this->_classDefinition
-        );
-
-        $this->assertSame(
-            'Incorrect or missing constructor initialization.',
-            $issue->accept($this->_renderer)
-        );
-    }
-
     public function testVisitMissingMethodCall()
     {
-        $issue = new MissingMethodCall(
+        $issue = new MethodRelated\MissingMethodCall(
             $this->_classDefinition,
             $this->_methodDefinition
         );
 
         $this->assertSame(
             'Incorrect or missing type check call in method bar().',
-            $issue->accept($this->_renderer)
-        );
-    }
-
-    public function testVisitMissingProperty()
-    {
-        $issue = new MissingProperty(
-            $this->_classDefinition
-        );
-
-        $this->assertSame(
-            'Incorrect or missing property definition.',
             $issue->accept($this->_renderer)
         );
     }

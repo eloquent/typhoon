@@ -54,48 +54,48 @@ class ProjectAnalyzerTest extends MultiGenerationTestCase
         $actual = $this->_analyzer->analyze($configuration);
         $expected = array(
             array(
-                'Eloquent\Typhoon\CodeAnalysis\Issue\InadmissibleMethodCall',
+                'Eloquent\Typhoon\CodeAnalysis\Issue\MethodRelated\InadmissibleMethodCall',
                 '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\CallInDestructor',
                 '__destruct',
             ),
             array(
-                'Eloquent\Typhoon\CodeAnalysis\Issue\InadmissibleMethodCall',
+                'Eloquent\Typhoon\CodeAnalysis\Issue\MethodRelated\InadmissibleMethodCall',
                 '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\CallInToString',
                 '__toString',
             ),
             array(
-                'Eloquent\Typhoon\CodeAnalysis\Issue\MissingMethodCall',
+                'Eloquent\Typhoon\CodeAnalysis\Issue\MethodRelated\MissingMethodCall',
                 '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\MissingCalls',
                 'bar',
             ),
             array(
-                'Eloquent\Typhoon\CodeAnalysis\Issue\MissingMethodCall',
+                'Eloquent\Typhoon\CodeAnalysis\Issue\MethodRelated\MissingMethodCall',
                 '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\MissingCalls',
                 'baz',
             ),
             array(
-                'Eloquent\Typhoon\CodeAnalysis\Issue\MissingMethodCall',
+                'Eloquent\Typhoon\CodeAnalysis\Issue\MethodRelated\MissingMethodCall',
                 '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\MissingCalls',
                 'foo',
             ),
             array(
-                'Eloquent\Typhoon\CodeAnalysis\Issue\MissingConstructorCall',
+                'Eloquent\Typhoon\CodeAnalysis\Issue\ClassRelated\MissingConstructorCall',
                 '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\MissingConstructorCall',
             ),
             array(
-                'Eloquent\Typhoon\CodeAnalysis\Issue\MissingProperty',
+                'Eloquent\Typhoon\CodeAnalysis\Issue\ClassRelated\MissingProperty',
                 '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\MissingProperty',
             ),
             array(
-                'Eloquent\Typhoon\CodeAnalysis\Issue\MissingConstructorCall',
+                'Eloquent\Typhoon\CodeAnalysis\Issue\ClassRelated\MissingConstructorCall',
                 '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\NoConstructor',
             ),
             array(
-                'Eloquent\Typhoon\CodeAnalysis\Issue\MissingProperty',
+                'Eloquent\Typhoon\CodeAnalysis\Issue\ClassRelated\MissingProperty',
                 '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\NonPrivateProperty',
             ),
             array(
-                'Eloquent\Typhoon\CodeAnalysis\Issue\MissingProperty',
+                'Eloquent\Typhoon\CodeAnalysis\Issue\ClassRelated\MissingProperty',
                 '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\StaticProperty',
             ),
         );
@@ -122,7 +122,7 @@ class ProjectAnalyzerTest extends MultiGenerationTestCase
         $issues = $actual->issues();
         $sort = array();
         foreach ($issues as $issue) {
-            if ($issue instanceof Issue\ClassRelatedIssue) {
+            if ($issue instanceof Issue\ClassRelated\ClassRelatedIssue) {
                 $sort[] = $issue->classDefinition()->className()->string();
             } else {
                 $sort[] = '';
@@ -135,10 +135,10 @@ class ProjectAnalyzerTest extends MultiGenerationTestCase
             $actualArrayEntry = array(
                 get_class($issue)
             );
-            if ($issue instanceof Issue\ClassRelatedIssue) {
+            if ($issue instanceof Issue\ClassRelated\ClassRelatedIssue) {
                 $actualArrayEntry[] = $issue->classDefinition()->className()->string();
             }
-            if ($issue instanceof Issue\MethodIssue) {
+            if ($issue instanceof Issue\MethodRelated\MethodRelatedIssue) {
                 $actualArrayEntry[] = $issue->methodDefinition()->name();
             }
 

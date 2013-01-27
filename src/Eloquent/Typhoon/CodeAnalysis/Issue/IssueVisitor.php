@@ -14,30 +14,30 @@ namespace Eloquent\Typhoon\CodeAnalysis\Issue;
 interface IssueVisitor
 {
     /**
-     * @param InadmissibleMethodCall $issue
+     * @param ClassRelated\MissingConstructorCall $issue
      *
      * @return mixed
      */
-    public function visitInadmissibleMethodCall(InadmissibleMethodCall $issue);
+    public function visitMissingConstructorCall(ClassRelated\MissingConstructorCall $issue);
 
     /**
-     * @param MissingConstructorCall $issue
+     * @param ClassRelated\MissingProperty $issue
      *
      * @return mixed
      */
-    public function visitMissingConstructorCall(MissingConstructorCall $issue);
+    public function visitMissingProperty(ClassRelated\MissingProperty $issue);
 
     /**
-     * @param MissingMethodCall $issue
+     * @param MethodRelated\InadmissibleMethodCall $issue
      *
      * @return mixed
      */
-    public function visitMissingMethodCall(MissingMethodCall $issue);
+    public function visitInadmissibleMethodCall(MethodRelated\InadmissibleMethodCall $issue);
 
     /**
-     * @param MissingProperty $issue
+     * @param MethodRelated\MissingMethodCall $issue
      *
      * @return mixed
      */
-    public function visitMissingProperty(MissingProperty $issue);
+    public function visitMissingMethodCall(MethodRelated\MissingMethodCall $issue);
 }

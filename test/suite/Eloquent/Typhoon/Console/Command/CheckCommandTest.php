@@ -73,12 +73,16 @@ class CheckCommandTest extends MultiGenerationTestCase
         );
 
         $this->_warning = Phake::partialMock(
-            'Eloquent\Typhoon\CodeAnalysis\Issue\MethodWarning',
+            'Eloquent\Typhoon\CodeAnalysis\Issue\MethodRelated\MethodIssue',
             $this->_classDefinition,
             $this->_methodDefinition
         );
+        Phake::when($this->_warning)
+            ->severity(Phake::anyParameters())
+            ->thenReturn(IssueSeverity::WARNING())
+        ;
         $this->_error = Phake::partialMock(
-            'Eloquent\Typhoon\CodeAnalysis\Issue\MethodError',
+            'Eloquent\Typhoon\CodeAnalysis\Issue\MethodRelated\MethodError',
             $this->_classDefinition,
             $this->_methodDefinition
         );

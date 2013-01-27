@@ -21,11 +21,35 @@ class IssueRenderer implements IssueVisitor
     }
 
     /**
-     * @param InadmissibleMethodCall $issue
+     * @param ClassRelated\MissingConstructorCall $issue
      *
      * @return string
      */
-    public function visitInadmissibleMethodCall(InadmissibleMethodCall $issue)
+    public function visitMissingConstructorCall(ClassRelated\MissingConstructorCall $issue)
+    {
+        $this->typeCheck->visitMissingConstructorCall(func_get_args());
+
+        return 'Incorrect or missing constructor initialization.';
+    }
+
+    /**
+     * @param ClassRelated\MissingProperty $issue
+     *
+     * @return string
+     */
+    public function visitMissingProperty(ClassRelated\MissingProperty $issue)
+    {
+        $this->typeCheck->visitMissingProperty(func_get_args());
+
+        return 'Incorrect or missing property definition.';
+    }
+
+    /**
+     * @param MethodRelated\InadmissibleMethodCall $issue
+     *
+     * @return string
+     */
+    public function visitInadmissibleMethodCall(MethodRelated\InadmissibleMethodCall $issue)
     {
         $this->typeCheck->visitInadmissibleMethodCall(func_get_args());
 
@@ -36,23 +60,11 @@ class IssueRenderer implements IssueVisitor
     }
 
     /**
-     * @param MissingConstructorCall $issue
+     * @param MethodRelated\MissingMethodCall $issue
      *
      * @return string
      */
-    public function visitMissingConstructorCall(MissingConstructorCall $issue)
-    {
-        $this->typeCheck->visitMissingConstructorCall(func_get_args());
-
-        return 'Incorrect or missing constructor initialization.';
-    }
-
-    /**
-     * @param MissingMethodCall $issue
-     *
-     * @return string
-     */
-    public function visitMissingMethodCall(MissingMethodCall $issue)
+    public function visitMissingMethodCall(MethodRelated\MissingMethodCall $issue)
     {
         $this->typeCheck->visitMissingMethodCall(func_get_args());
 
@@ -60,18 +72,6 @@ class IssueRenderer implements IssueVisitor
             'Incorrect or missing type check call in method %s().',
             $issue->methodDefinition()->name()
         );
-    }
-
-    /**
-     * @param MissingProperty $issue
-     *
-     * @return string
-     */
-    public function visitMissingProperty(MissingProperty $issue)
-    {
-        $this->typeCheck->visitMissingProperty(func_get_args());
-
-        return 'Incorrect or missing property definition.';
     }
 
     private $typeCheck;

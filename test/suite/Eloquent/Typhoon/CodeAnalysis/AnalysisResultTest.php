@@ -33,22 +33,30 @@ class AnalysisResultTest extends MultiGenerationTestCase
         );
 
         $this->_warningA = Phake::partialMock(
-            __NAMESPACE__.'\Issue\MethodWarning',
+            __NAMESPACE__.'\Issue\MethodRelated\MethodIssue',
             $this->_classDefinitionA,
             $this->_methodDefinition
         );
+        Phake::when($this->_warningA)
+            ->severity(Phake::anyParameters())
+            ->thenReturn(Issue\IssueSeverity::WARNING())
+        ;
         $this->_warningB = Phake::partialMock(
-            __NAMESPACE__.'\Issue\MethodWarning',
+            __NAMESPACE__.'\Issue\MethodRelated\MethodIssue',
             $this->_classDefinitionB,
             $this->_methodDefinition
         );
+        Phake::when($this->_warningB)
+            ->severity(Phake::anyParameters())
+            ->thenReturn(Issue\IssueSeverity::WARNING())
+        ;
         $this->_errorA = Phake::partialMock(
-            __NAMESPACE__.'\Issue\MethodError',
+            __NAMESPACE__.'\Issue\MethodRelated\MethodError',
             $this->_classDefinitionA,
             $this->_methodDefinition
         );
         $this->_errorB = Phake::partialMock(
-            __NAMESPACE__.'\Issue\MethodError',
+            __NAMESPACE__.'\Issue\MethodRelated\MethodError',
             $this->_classDefinitionB,
             $this->_methodDefinition
         );

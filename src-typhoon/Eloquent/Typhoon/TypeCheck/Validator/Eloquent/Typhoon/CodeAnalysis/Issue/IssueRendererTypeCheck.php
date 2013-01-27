@@ -10,31 +10,11 @@ class IssueRendererTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidat
         }
     }
 
-    public function visitInadmissibleMethodCall(array $arguments)
-    {
-        $argumentCount = \count($arguments);
-        if ($argumentCount < 1) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('issue', 0, 'Eloquent\\Typhoon\\CodeAnalysis\\Issue\\InadmissibleMethodCall');
-        } elseif ($argumentCount > 1) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
-        }
-    }
-
     public function visitMissingConstructorCall(array $arguments)
     {
         $argumentCount = \count($arguments);
         if ($argumentCount < 1) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('issue', 0, 'Eloquent\\Typhoon\\CodeAnalysis\\Issue\\MissingConstructorCall');
-        } elseif ($argumentCount > 1) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
-        }
-    }
-
-    public function visitMissingMethodCall(array $arguments)
-    {
-        $argumentCount = \count($arguments);
-        if ($argumentCount < 1) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('issue', 0, 'Eloquent\\Typhoon\\CodeAnalysis\\Issue\\MissingMethodCall');
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('issue', 0, 'Eloquent\\Typhoon\\CodeAnalysis\\Issue\\ClassRelated\\MissingConstructorCall');
         } elseif ($argumentCount > 1) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
         }
@@ -44,7 +24,27 @@ class IssueRendererTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidat
     {
         $argumentCount = \count($arguments);
         if ($argumentCount < 1) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('issue', 0, 'Eloquent\\Typhoon\\CodeAnalysis\\Issue\\MissingProperty');
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('issue', 0, 'Eloquent\\Typhoon\\CodeAnalysis\\Issue\\ClassRelated\\MissingProperty');
+        } elseif ($argumentCount > 1) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
+        }
+    }
+
+    public function visitInadmissibleMethodCall(array $arguments)
+    {
+        $argumentCount = \count($arguments);
+        if ($argumentCount < 1) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('issue', 0, 'Eloquent\\Typhoon\\CodeAnalysis\\Issue\\MethodRelated\\InadmissibleMethodCall');
+        } elseif ($argumentCount > 1) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
+        }
+    }
+
+    public function visitMissingMethodCall(array $arguments)
+    {
+        $argumentCount = \count($arguments);
+        if ($argumentCount < 1) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('issue', 0, 'Eloquent\\Typhoon\\CodeAnalysis\\Issue\\MethodRelated\\MissingMethodCall');
         } elseif ($argumentCount > 1) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
         }

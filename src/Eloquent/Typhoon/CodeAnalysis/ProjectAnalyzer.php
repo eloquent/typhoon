@@ -100,7 +100,7 @@ class ProjectAnalyzer
             if ($this->methodHasInit($methodDefinition, $expectedfacadeClassName, $propertyName)) {
                 $hasConstructorInit = true;
             } elseif (!$this->methodHasConstructorStaticCall($methodDefinition, $expectedfacadeClassName)) {
-                $issues[] = new Issue\MissingConstructorCall(
+                $issues[] = new Issue\ClassRelated\MissingConstructorCall(
                     $classDefinition
                 );
             }
@@ -117,7 +117,7 @@ class ProjectAnalyzer
                         $this->methodHasCall($methodDefinition, $propertyName) ||
                         $this->methodHasStaticCall($methodDefinition, $expectedfacadeClassName)
                     ) {
-                        $issues[] = new Issue\InadmissibleMethodCall(
+                        $issues[] = new Issue\MethodRelated\InadmissibleMethodCall(
                             $classDefinition,
                             $methodDefinition
                         );
@@ -144,7 +144,7 @@ class ProjectAnalyzer
                     }
 
                     if ($missingCall) {
-                        $issues[] = new Issue\MissingMethodCall(
+                        $issues[] = new Issue\MethodRelated\MissingMethodCall(
                             $classDefinition,
                             $methodDefinition
                         );
@@ -155,7 +155,7 @@ class ProjectAnalyzer
         if ($hasNonStaticCalls && !$hasConstructorInit) {
             array_unshift(
                 $issues,
-                new Issue\MissingConstructorCall(
+                new Issue\ClassRelated\MissingConstructorCall(
                     $classDefinition
                 )
             );
@@ -172,7 +172,7 @@ class ProjectAnalyzer
             }
 
             if ($missingProperty) {
-                $issues[] = new Issue\MissingProperty(
+                $issues[] = new Issue\ClassRelated\MissingProperty(
                     $classDefinition
                 );
             }

@@ -64,7 +64,7 @@ class AnalysisResult
 
         $issues = array();
         foreach ($this->issuesBySeverity($severity) as $issue) {
-            if ($issue instanceof Issue\ClassRelatedIssue) {
+            if ($issue instanceof Issue\ClassRelated\ClassRelatedIssue) {
                 $issues[$issue->classDefinition()->className()->string()][] =
                     $issue
                 ;
