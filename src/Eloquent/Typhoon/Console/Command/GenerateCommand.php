@@ -14,6 +14,7 @@ namespace Eloquent\Typhoon\Console\Command;
 use Eloquent\Typhoon\Generator\ProjectValidatorGenerator;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Icecave\Isolator\Isolator;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -53,6 +54,13 @@ class GenerateCommand extends Command
 
         $this->setName('generate');
         $this->setDescription('Generates Typhoon classes for a project.');
+
+        $this->addArgument(
+            'path',
+            InputArgument::OPTIONAL,
+            'The path to the root of the project.',
+            '.'
+        );
     }
 
     /**
@@ -62,6 +70,8 @@ class GenerateCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->typeCheck->execute(func_get_args());
+
+        $this->isolator->chdir($input->getArgument('path'));
 
         $output->setVerbosity(OutputInterface::VERBOSITY_VERBOSE);
         $configuration = $this->getApplication()->configurationReader()->read(null, true);
