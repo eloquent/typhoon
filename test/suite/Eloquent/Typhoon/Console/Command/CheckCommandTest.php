@@ -22,6 +22,7 @@ use Eloquent\Typhoon\Configuration\Configuration;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Icecave\Pasta\AST\Type\AccessModifier;
 use Phake;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
 
 /**
@@ -115,7 +116,18 @@ class CheckCommandTest extends MultiGenerationTestCase
             'Checks for correct Typhoon setup within a project.',
             $this->_command->getDescription()
         );
-        $this->assertEquals(new InputDefinition, $this->_command->getDefinition());
+
+        $inputDefinition = new InputDefinition;
+        $inputDefinition->addArgument(
+            new InputArgument(
+                'path',
+                InputArgument::OPTIONAL,
+                'The path to the root of the project.',
+                '.'
+            )
+        );
+
+        $this->assertEquals($inputDefinition, $this->_command->getDefinition());
     }
 
     public function testExecuteSuccess()
@@ -131,6 +143,40 @@ class CheckCommandTest extends MultiGenerationTestCase
 
         $this->assertSame(0, $exitCode);
         Phake::inOrder(
+            Phake::verify($this->_command)->includeLoaders(
+                $this->identicalTo($this->_configuration),
+                $this->identicalTo($output)
+            ),
+            Phake::verify($output)->writeln('<info>Checking for correct Typhoon setup...</info>'),
+            Phake::verify($this->_analyzer)->analyze(
+                $this->identicalTo($this->_configuration)
+            ),
+            Phake::verify($result, Phake::times(2))->issues(),
+            Phake::verify($output)->writeln('<info>No problems detected.</info>'),
+            Phake::verify($result)->isError()
+        );
+    }
+
+    public function testExecuteSuccessWithExplicitPath()
+    {
+        $result = Phake::partialMock('Eloquent\Typhoon\CodeAnalysis\AnalysisResult');
+        Phake::when($this->_analyzer)
+            ->analyze(Phake::anyParameters())
+            ->thenReturn($result)
+        ;
+        $input = Phake::mock('Symfony\Component\Console\Input\InputInterface');
+        $output = Phake::mock('Symfony\Component\Console\Output\OutputInterface');
+
+        Phake::when($input)
+            ->getArgument('path')
+            ->thenReturn('/path/to/project')
+        ;
+
+        $exitCode = Liberator::liberate($this->_command)->execute($input, $output);
+
+        $this->assertSame(0, $exitCode);
+        Phake::inOrder(
+            Phake::verify($this->_isolator)->chdir('/path/to/project'),
             Phake::verify($this->_command)->includeLoaders(
                 $this->identicalTo($this->_configuration),
                 $this->identicalTo($output)
