@@ -18,6 +18,7 @@ use Eloquent\Typhoon\CodeAnalysis\Issue\IssueSeverity;
 use Eloquent\Typhoon\CodeAnalysis\ProjectAnalyzer;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Icecave\Isolator\Isolator;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -73,6 +74,13 @@ class CheckCommand extends Command
 
         $this->setName('check');
         $this->setDescription('Checks for correct Typhoon setup within a project.');
+
+        $this->addArgument(
+            'path',
+            InputArgument::OPTIONAL,
+            'The path to the root of the project.',
+            '.'
+        );
     }
 
     /**
@@ -84,6 +92,8 @@ class CheckCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->typeCheck->execute(func_get_args());
+
+        $this->isolator->chdir($input->getArgument('path'));
 
         $output->setVerbosity(OutputInterface::VERBOSITY_VERBOSE);
         $configuration = $this->getApplication()->configurationReader()->read(null, true);

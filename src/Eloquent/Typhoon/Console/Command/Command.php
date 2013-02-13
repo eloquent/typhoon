@@ -47,6 +47,6 @@ abstract class Command extends SymfonyCommand
         }
     }
 
-    private $isolator;
+    protected $isolator;
     private $typeCheck;
 }
