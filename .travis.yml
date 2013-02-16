@@ -1,3 +1,11 @@
+#
+# This is the default Travis CI configuration.
+#
+# It uses a GitHub OAuth token when fetching composer dependencies
+# to avoid IP-based API throttling.
+#
+# It also allows publication of artifacts via an additional build.
+#
 language: php
 
 php:
@@ -6,16 +14,19 @@ php:
   - 5.4
   - 5.5
 
-matrix:
-  # Use PHP 5.4 for coverage reporting.
-  include:
-    - php: 5.4
-      env:
-        - secure: "ELSvqXauLq9BoLX52V8TcJX97NFGod6dlwhxC//8vv4f+qDFW2NaNUOajjAn\nsg0Sf5tv9S+RzQnkCIxH96/kZghzvzykQ0+vfyxxc9vtbQc1Yni+xKja+aRW\nW7ZHw24NyiPNxNjHIJYiDaiC89w9qSsoLnZRsU5GjbI3NHqJuGs="
+env:
+  global:
+    - ARCHER_PUBLISH_VERSION=5.4
+    - secure: "GhZDtmRamoata0kGaT4TvA8hvaDdhOU5OsK9JkXf0DZUpQ24qk4pk+q7am8dolc0rPQfms0i2Nv6jtUr3L6xRufC3hb1wZyKkcrIu6m0juYeNwNoMU8mOKeW1Gghw9VDRdzzHLLONJeXQHUVRCSDPsJyUFHD+zzyR3n5VZag1YU="
 
+before_install:
+  - ./.travis.before-install
+install:
+  - composer install --dev --prefer-dist --no-progress --no-interaction
+script:
+  - ./vendor/bin/archer travis:build
+
+matrix:
   # PHP 5.5 is still in alpha, so ignore build failures.
   allow_failures:
     - php: 5.5
-
-install: composer install --dev --prefer-source
-script:  ./vendor/bin/travis-build

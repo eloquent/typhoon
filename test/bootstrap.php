@@ -1,9 +1,5 @@
 <?php
 
-use Composer\Autoload\ClassLoader;
-use Typhoon\Typhoon;
-
-$autoloader = new ClassLoader;
 $autoloader->add('Typhoon', __DIR__.'/../src-deploy');
 $autoloader->add('Eloquent\Typhoon\TestCase', __DIR__.'/src');
 $autoloader->add('Eloquent\Typhoon\TestFixture', __DIR__.'/src');
