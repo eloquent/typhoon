@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Generator\ParameterListMerge\Exception;
 
+use Eloquent\Cosmos\ClassName;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Phake;
 
@@ -18,20 +19,38 @@ class UndocumentedParameterExceptionTest extends MultiGenerationTestCase
 {
     public function testException()
     {
+        $className = ClassName::fromString('\baz');
         $previous = Phake::mock('Exception');
         $exception = new UndocumentedParameterException(
+            $className,
             'foo',
             'bar',
             $previous
         );
 
         $this->assertSame(
-            "Parameter 'bar' is undocumented in 'foo'.",
+            'Parameter $bar is undocumented in method \baz::foo().',
             $exception->getMessage()
         );
+        $this->assertSame($className, $exception->className());
         $this->assertSame('foo', $exception->functionName());
         $this->assertSame('bar', $exception->parameterName());
         $this->assertSame(0, $exception->getCode());
         $this->assertSame($previous, $exception->getPrevious());
+    }
+
+    public function testExceptionWithoutClassName()
+    {
+        $exception = new UndocumentedParameterException(
+            null,
+            'foo',
+            'bar'
+        );
+
+        $this->assertSame(
+            'Parameter $bar is undocumented in function foo().',
+            $exception->getMessage()
+        );
+        $this->assertNull($exception->className());
     }
 }

@@ -319,7 +319,8 @@ class MergeToolTest extends MultiGenerationTestCase
     ) {
         $this->assertEquals($expected, $this->_mergeTool->merge(
             new RuntimeConfiguration,
-            'foo',
+            ClassName::fromString('\foo'),
+            'bar',
             $documentedParameterList,
             $nativeParameterList
         ));
@@ -359,7 +360,7 @@ class MergeToolTest extends MultiGenerationTestCase
             )
         );
         $expected = __NAMESPACE__.'\Exception\DocumentedParameterUndefinedException';
-        $expectedMessage = "Documented parameter 'baz' not defined in 'foo'.";
+        $expectedMessage = "Documented parameter \$baz not defined in method \\foo::bar().";
         $data['Documented parameter not defined'] = array(
             $expected,
             $expectedMessage,
@@ -397,7 +398,7 @@ class MergeToolTest extends MultiGenerationTestCase
             )
         );
         $expected = __NAMESPACE__.'\Exception\UndocumentedParameterException';
-        $expectedMessage = "Parameter 'baz' is undocumented in 'foo'.";
+        $expectedMessage = "Parameter \$baz is undocumented in method \\foo::bar().";
         $data['Native parameter not documented'] = array(
             $expected,
             $expectedMessage,
@@ -428,7 +429,7 @@ class MergeToolTest extends MultiGenerationTestCase
             )
         );
         $expected = __NAMESPACE__.'\Exception\DocumentedParameterNameMismatchException';
-        $expectedMessage = "Documented parameter name 'bar' does not match defined parameter name 'baz' in 'foo'.";
+        $expectedMessage = "Documented parameter name \$bar does not match defined parameter name \$baz in method \\foo::bar().";
         $data['Parameter name mismatch'] = array(
             $expected,
             $expectedMessage,
@@ -459,7 +460,7 @@ class MergeToolTest extends MultiGenerationTestCase
             )
         );
         $expected = __NAMESPACE__.'\Exception\DocumentedParameterByReferenceMismatchException';
-        $expectedMessage = "Parameter 'bar' is documented as by-value but defined as by-reference in 'foo'.";
+        $expectedMessage = "Parameter \$bar is documented as by-value but defined as by-reference in method \\foo::bar().";
         $data['Parameter by-reference mismatch'] = array(
             $expected,
             $expectedMessage,
@@ -505,7 +506,7 @@ class MergeToolTest extends MultiGenerationTestCase
             )
         );
         $expected = __NAMESPACE__.'\Exception\DefinedParameterVariableLengthException';
-        $expectedMessage = "Variable-length parameter 'baz' should only be documented, not defined in 'foo'.";
+        $expectedMessage = "Variable-length parameter \$baz should only be documented, not defined in method \\foo::bar().";
         $data['Non documentation-only variable length parameter'] = array(
             $expected,
             $expectedMessage,
@@ -551,7 +552,7 @@ class MergeToolTest extends MultiGenerationTestCase
             )
         );
         $expected = __NAMESPACE__.'\Exception\DocumentedParameterUndefinedException';
-        $expectedMessage = "Documented parameter 'qux' not defined in 'foo'.";
+        $expectedMessage = "Documented parameter \$qux not defined in method \\foo::bar().";
         $data['Variable length parameters with undefined penultimate parameter'] = array(
             $expected,
             $expectedMessage,
@@ -574,7 +575,8 @@ class MergeToolTest extends MultiGenerationTestCase
         try {
             $this->_mergeTool->merge(
                 new RuntimeConfiguration,
-                'foo',
+                ClassName::fromString('\foo'),
+                'bar',
                 $documentedParameterList,
                 $nativeParameterList
             );
@@ -721,8 +723,9 @@ class MergeToolTest extends MultiGenerationTestCase
     ) {
         $actual = Liberator::liberate($this->_mergeTool)->mergeType(
             new RuntimeConfiguration,
-            'foo',
+            ClassName::fromString('\foo'),
             'bar',
+            'baz',
             $documentedType,
             $nativeType
         );
@@ -740,8 +743,9 @@ class MergeToolTest extends MultiGenerationTestCase
         );
         $actual = Liberator::liberate($this->_mergeTool)->mergeType(
             $configuration,
-            'foo',
+            ClassName::fromString('\foo'),
             'bar',
+            'baz',
             $documentedType,
             $nativeType
         );
@@ -762,8 +766,9 @@ class MergeToolTest extends MultiGenerationTestCase
         );
         $actual = Liberator::liberate($this->_mergeTool)->mergeType(
             $configuration,
-            'foo',
+            ClassName::fromString('\foo'),
             'bar',
+            'baz',
             $documentedType,
             $nativeType
         );
@@ -783,7 +788,7 @@ class MergeToolTest extends MultiGenerationTestCase
         );
         $nativeType = new MixedType;
         $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
-        $expectedMessage = "Documented type 'array<string, object>' is not correct for defined type 'mixed' for parameter 'bar' in 'foo'.";
+        $expectedMessage = "Documented type 'array<string, object>' is not correct for defined type 'mixed' for parameter \$baz in method \\foo::bar().";
         $data['Error when native is mixed and documented is array'] = array(
             $expected,
             $expectedMessage,
@@ -798,7 +803,7 @@ class MergeToolTest extends MultiGenerationTestCase
             new MixedType
         );
         $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
-        $expectedMessage = "Documented type 'mixed' is not correct for defined type 'array' for parameter 'bar' in 'foo'.";
+        $expectedMessage = "Documented type 'mixed' is not correct for defined type 'array' for parameter \$baz in method \\foo::bar().";
         $data['Error when native is array and documented is mixed'] = array(
             $expected,
             $expectedMessage,
@@ -820,7 +825,7 @@ class MergeToolTest extends MultiGenerationTestCase
             new MixedType
         );
         $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
-        $expectedMessage = "Documented type 'array|null' is not correct for defined type 'array' for parameter 'bar' in 'foo'.";
+        $expectedMessage = "Documented type 'array|null' is not correct for defined type 'array' for parameter \$baz in method \\foo::bar().";
         $data['Error when native is array and documented is array or null'] = array(
             $expected,
             $expectedMessage,
@@ -842,7 +847,7 @@ class MergeToolTest extends MultiGenerationTestCase
             new NullType,
         ));
         $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
-        $expectedMessage = "Documented type 'array' is not correct for defined type 'array|null' for parameter 'bar' in 'foo'.";
+        $expectedMessage = "Documented type 'array' is not correct for defined type 'array|null' for parameter \$baz in method \\foo::bar().";
         $data['Error when native is array or null and documented is array'] = array(
             $expected,
             $expectedMessage,
@@ -860,7 +865,7 @@ class MergeToolTest extends MultiGenerationTestCase
         ));
         $nativeType = new MixedType;
         $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
-        $expectedMessage = "Documented type 'array|null' is not correct for defined type 'mixed' for parameter 'bar' in 'foo'.";
+        $expectedMessage = "Documented type 'array|null' is not correct for defined type 'mixed' for parameter \$baz in method \\foo::bar().";
         $data['Error when native is mixed and documented is array or null'] = array(
             $expected,
             $expectedMessage,
@@ -872,7 +877,7 @@ class MergeToolTest extends MultiGenerationTestCase
         $documentedType = new ObjectType(ClassName::fromString('Baz'));
         $nativeType = new MixedType;
         $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
-        $expectedMessage = "Documented type 'Baz' is not correct for defined type 'mixed' for parameter 'bar' in 'foo'.";
+        $expectedMessage = "Documented type 'Baz' is not correct for defined type 'mixed' for parameter \$baz in method \\foo::bar().";
         $data['Error when native is mixed and documented is object of type'] = array(
             $expected,
             $expectedMessage,
@@ -883,7 +888,7 @@ class MergeToolTest extends MultiGenerationTestCase
         $documentedType = new MixedType;
         $nativeType = new ObjectType(ClassName::fromString('Baz'));
         $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
-        $expectedMessage = "Documented type 'mixed' is not correct for defined type 'Baz' for parameter 'bar' in 'foo'.";
+        $expectedMessage = "Documented type 'mixed' is not correct for defined type 'Baz' for parameter \$baz in method \\foo::bar().";
         $data['Error when native is object of type and documented is mixed'] = array(
             $expected,
             $expectedMessage,
@@ -897,7 +902,7 @@ class MergeToolTest extends MultiGenerationTestCase
         ));
         $nativeType = new ObjectType(ClassName::fromString('Baz'));
         $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
-        $expectedMessage = "Documented type 'Baz|null' is not correct for defined type 'Baz' for parameter 'bar' in 'foo'.";
+        $expectedMessage = "Documented type 'Baz|null' is not correct for defined type 'Baz' for parameter \$baz in method \\foo::bar().";
         $data['Error when native is object of type and documented is object of type or null'] = array(
             $expected,
             $expectedMessage,
@@ -911,7 +916,7 @@ class MergeToolTest extends MultiGenerationTestCase
             new NullType,
         ));
         $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
-        $expectedMessage = "Documented type 'Baz' is not correct for defined type 'Baz|null' for parameter 'bar' in 'foo'.";
+        $expectedMessage = "Documented type 'Baz' is not correct for defined type 'Baz|null' for parameter \$baz in method \\foo::bar().";
         $data['Error when native is object of type or null and documented is object of type'] = array(
             $expected,
             $expectedMessage,
@@ -925,7 +930,7 @@ class MergeToolTest extends MultiGenerationTestCase
         ));
         $nativeType = new MixedType;
         $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
-        $expectedMessage = "Documented type 'Baz|null' is not correct for defined type 'mixed' for parameter 'bar' in 'foo'.";
+        $expectedMessage = "Documented type 'Baz|null' is not correct for defined type 'mixed' for parameter \$baz in method \\foo::bar().";
         $data['Error when native is mixed and documented is object of type or null'] = array(
             $expected,
             $expectedMessage,
@@ -936,7 +941,7 @@ class MergeToolTest extends MultiGenerationTestCase
         $documentedType = new ObjectType(ClassName::fromString('stdClass'));
         $nativeType = new ObjectType(ClassName::fromString('Iterator'));
         $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
-        $expectedMessage = "Documented type 'stdClass' is not correct for defined type 'Iterator' for parameter 'bar' in 'foo'.";
+        $expectedMessage = "Documented type 'stdClass' is not correct for defined type 'Iterator' for parameter \$baz in method \\foo::bar().";
         $data['Error when native is a class and documented is an incompatible class'] = array(
             $expected,
             $expectedMessage,
@@ -955,7 +960,7 @@ class MergeToolTest extends MultiGenerationTestCase
             new NullType,
         ));
         $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
-        $expectedMessage = "Documented type 'Baz|float|null' is not correct for defined type 'Baz|null' for parameter 'bar' in 'foo'.";
+        $expectedMessage = "Documented type 'Baz|float|null' is not correct for defined type 'Baz|null' for parameter \$baz in method \\foo::bar().";
         $data['Error when documented and native are both or composites, and one of the documented types is incompatible'] = array(
             $expected,
             $expectedMessage,
@@ -970,7 +975,7 @@ class MergeToolTest extends MultiGenerationTestCase
         ));
         $nativeType = new ObjectType(ClassName::fromString('Iterator'));
         $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
-        $expectedMessage = "Documented type 'Traversable+Serializable' is not correct for defined type 'Iterator' for parameter 'bar' in 'foo'.";
+        $expectedMessage = "Documented type 'Traversable+Serializable' is not correct for defined type 'Iterator' for parameter \$baz in method \\foo::bar().";
         $data['Error when native is not compatible with all types in AND composite'] = array(
             $expected,
             $expectedMessage,
@@ -983,7 +988,7 @@ class MergeToolTest extends MultiGenerationTestCase
             $documentedType = new CallableType;
             $nativeType = new MixedType;
             $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
-            $expectedMessage = "Documented type 'callable' is not correct for defined type 'mixed' for parameter 'bar' in 'foo'.";
+            $expectedMessage = "Documented type 'callable' is not correct for defined type 'mixed' for parameter \$baz in method \\foo::bar().";
             $data['Error when native is mixed and documented is callable'] = array(
                 $expected,
                 $expectedMessage,
@@ -994,7 +999,7 @@ class MergeToolTest extends MultiGenerationTestCase
             $documentedType = new MixedType;
             $nativeType = new CallableType;
             $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
-            $expectedMessage = "Documented type 'mixed' is not correct for defined type 'callable' for parameter 'bar' in 'foo'.";
+            $expectedMessage = "Documented type 'mixed' is not correct for defined type 'callable' for parameter \$baz in method \\foo::bar().";
             $data['Error when native is callable and documented is mixed'] = array(
                 $expected,
                 $expectedMessage,
@@ -1008,7 +1013,7 @@ class MergeToolTest extends MultiGenerationTestCase
             ));
             $nativeType = new CallableType;
             $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
-            $expectedMessage = "Documented type 'callable|null' is not correct for defined type 'callable' for parameter 'bar' in 'foo'.";
+            $expectedMessage = "Documented type 'callable|null' is not correct for defined type 'callable' for parameter \$baz in method \\foo::bar().";
             $data['Error when native is callable and documented is callable or null'] = array(
                 $expected,
                 $expectedMessage,
@@ -1022,7 +1027,7 @@ class MergeToolTest extends MultiGenerationTestCase
                 new NullType,
             ));
             $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
-            $expectedMessage = "Documented type 'callable' is not correct for defined type 'callable|null' for parameter 'bar' in 'foo'.";
+            $expectedMessage = "Documented type 'callable' is not correct for defined type 'callable|null' for parameter \$baz in method \\foo::bar().";
             $data['Error when native is callable or null and documented is callable'] = array(
                 $expected,
                 $expectedMessage,
@@ -1036,7 +1041,7 @@ class MergeToolTest extends MultiGenerationTestCase
             ));
             $nativeType = new MixedType;
             $expected = __NAMESPACE__.'\Exception\DocumentedParameterTypeMismatchException';
-            $expectedMessage = "Documented type 'callable|null' is not correct for defined type 'mixed' for parameter 'bar' in 'foo'.";
+            $expectedMessage = "Documented type 'callable|null' is not correct for defined type 'mixed' for parameter \$baz in method \\foo::bar().";
             $data['Error when native is mixed and documented is callable or null'] = array(
                 $expected,
                 $expectedMessage,
@@ -1060,8 +1065,9 @@ class MergeToolTest extends MultiGenerationTestCase
         $this->setExpectedException($expected, $expectedMessage);
         Liberator::liberate($this->_mergeTool)->mergeType(
             new RuntimeConfiguration,
-            'foo',
+            ClassName::fromString('\foo'),
             'bar',
+            'baz',
             $documentedType,
             $nativeType
         );

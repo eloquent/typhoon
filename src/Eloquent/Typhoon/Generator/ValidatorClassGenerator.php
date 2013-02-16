@@ -389,12 +389,6 @@ class ValidatorClassGenerator
     ) {
         $this->typeCheck->parameterList(func_get_args());
 
-        $methodName = sprintf(
-            '%s::%s',
-            $method->getDeclaringClass()->getName(),
-            $method->getName()
-        );
-
         $blockComment = $method->getDocComment();
         if (false === $blockComment) {
             $parameterList = new ParameterList;
@@ -408,7 +402,8 @@ class ValidatorClassGenerator
 
         return $this->mergeTool()->merge(
             $configuration,
-            $methodName,
+            $classDefinition->className(),
+            $method->getName(),
             $parameterList
                 ->accept($this->classNameResolver($classDefinition))
             ,

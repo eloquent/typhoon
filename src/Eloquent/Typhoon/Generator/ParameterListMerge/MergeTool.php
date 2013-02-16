@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Generator\ParameterListMerge;
 
+use Eloquent\Cosmos\ClassName;
 use Eloquent\Typhax\Comparator\TypeEquivalenceComparator;
 use Eloquent\Typhax\Type\AndType;
 use Eloquent\Typhax\Type\ArrayType;
@@ -68,12 +69,14 @@ class MergeTool
 
     /**
      * @param RuntimeConfiguration $configuration
+     * @param ClassName|null       $className
      * @param string               $functionName
      * @param ParameterList        $documentedParameterList
      * @param ParameterList        $nativeParameterList
      */
     public function merge(
         RuntimeConfiguration $configuration,
+        ClassName $className = null,
         $functionName,
         ParameterList $documentedParameterList,
         ParameterList $nativeParameterList
@@ -87,6 +90,7 @@ class MergeTool
         foreach ($nativeParameters as $index => $nativeParameter) {
             if (!array_key_exists($index, $documentedParameters)) {
                 throw new Exception\UndocumentedParameterException(
+                    $className,
                     $functionName,
                     $nativeParameter->name()
                 );
@@ -94,6 +98,7 @@ class MergeTool
 
             $parameters[] = $this->mergeParameter(
                 $configuration,
+                $className,
                 $functionName,
                 $documentedParameters[$index],
                 $nativeParameter
@@ -106,11 +111,13 @@ class MergeTool
         if ($documentedParameterList->isVariableLength()) {
             if ($documentedParameterCount > $nativeParameterCount + 1) {
                 throw new Exception\DocumentedParameterUndefinedException(
+                    $className,
                     $functionName,
                     $documentedParameters[$nativeParameterCount + 1]->name()
                 );
             } elseif ($documentedParameterCount === $nativeParameterCount) {
                 throw new Exception\DefinedParameterVariableLengthException(
+                    $className,
                     $functionName,
                     $nativeParameters[$nativeParameterCount - 1]->name()
                 );
@@ -119,6 +126,7 @@ class MergeTool
             $parameters[] = $documentedParameters[$nativeParameterCount];
         } elseif ($documentedParameterCount > $nativeParameterCount) {
             throw new Exception\DocumentedParameterUndefinedException(
+                $className,
                 $functionName,
                 $documentedParameters[$nativeParameterCount]->name()
             );
@@ -132,12 +140,14 @@ class MergeTool
 
     /**
      * @param RuntimeConfiguration $configuration
+     * @param ClassName|null       $className
      * @param string               $functionName
      * @param Parameter            $documentedParameter
      * @param Parameter            $nativeParameter
      */
     protected function mergeParameter(
         RuntimeConfiguration $configuration,
+        ClassName $className = null,
         $functionName,
         Parameter $documentedParameter,
         Parameter $nativeParameter
@@ -146,6 +156,7 @@ class MergeTool
 
         if ($documentedParameter->name() !== $nativeParameter->name()) {
             throw new Exception\DocumentedParameterNameMismatchException(
+                $className,
                 $functionName,
                 $documentedParameter->name(),
                 $nativeParameter->name()
@@ -154,6 +165,7 @@ class MergeTool
 
         if ($documentedParameter->isByReference() !== $nativeParameter->isByReference()) {
             throw new Exception\DocumentedParameterByReferenceMismatchException(
+                $className,
                 $functionName,
                 $nativeParameter->name(),
                 $documentedParameter->isByReference(),
@@ -165,6 +177,7 @@ class MergeTool
             $documentedParameter->name(),
             $this->mergeType(
                 $configuration,
+                $className,
                 $functionName,
                 $documentedParameter->name(),
                 $documentedParameter->type(),
@@ -178,6 +191,7 @@ class MergeTool
 
     /**
      * @param RuntimeConfiguration $configuration
+     * @param ClassName|null       $className
      * @param string               $functionName
      * @param string               $parameterName
      * @param Type                 $documentedType
@@ -187,6 +201,7 @@ class MergeTool
      */
     protected function mergeType(
         RuntimeConfiguration $configuration,
+        ClassName $className = null,
         $functionName,
         $parameterName,
         Type $documentedType,
@@ -200,6 +215,7 @@ class MergeTool
             $nativeType
         )) {
             throw new Exception\DocumentedParameterTypeMismatchException(
+                $className,
                 $functionName,
                 $parameterName,
                 $documentedType,

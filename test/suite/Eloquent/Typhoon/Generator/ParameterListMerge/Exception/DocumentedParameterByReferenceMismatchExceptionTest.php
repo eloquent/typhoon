@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Generator\ParameterListMerge\Exception;
 
+use Eloquent\Cosmos\ClassName;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Phake;
 
@@ -18,8 +19,10 @@ class DocumentedParameterByReferenceMismatchExceptionTest extends MultiGeneratio
 {
     public function testExceptionDocumentedByReference()
     {
+        $className = ClassName::fromString('\baz');
         $previous = Phake::mock('Exception');
         $exception = new DocumentedParameterByReferenceMismatchException(
+            $className,
             'foo',
             'bar',
             true,
@@ -28,9 +31,10 @@ class DocumentedParameterByReferenceMismatchExceptionTest extends MultiGeneratio
         );
 
         $this->assertSame(
-            "Parameter 'bar' is documented as by-reference but defined as by-value in 'foo'.",
+            'Parameter $bar is documented as by-reference but defined as by-value in method \baz::foo().',
             $exception->getMessage()
         );
+        $this->assertSame($className, $exception->className());
         $this->assertSame('foo', $exception->functionName());
         $this->assertSame('bar', $exception->parameterName());
         $this->assertTrue($exception->documentedIsByReference());
@@ -41,24 +45,35 @@ class DocumentedParameterByReferenceMismatchExceptionTest extends MultiGeneratio
 
     public function testExceptionDefinedByReference()
     {
-        $previous = Phake::mock('Exception');
+        $className = ClassName::fromString('\baz');
         $exception = new DocumentedParameterByReferenceMismatchException(
+            $className,
             'foo',
             'bar',
             false,
-            true,
-            $previous
+            true
         );
 
         $this->assertSame(
-            "Parameter 'bar' is documented as by-value but defined as by-reference in 'foo'.",
+            'Parameter $bar is documented as by-value but defined as by-reference in method \baz::foo().',
             $exception->getMessage()
         );
-        $this->assertSame('foo', $exception->functionName());
-        $this->assertSame('bar', $exception->parameterName());
-        $this->assertFalse($exception->documentedIsByReference());
-        $this->assertTrue($exception->nativeIsByReference());
-        $this->assertSame(0, $exception->getCode());
-        $this->assertSame($previous, $exception->getPrevious());
+    }
+
+    public function testExceptionWithoutClassName()
+    {
+        $exception = new DocumentedParameterByReferenceMismatchException(
+            null,
+            'foo',
+            'bar',
+            true,
+            false
+        );
+
+        $this->assertSame(
+            'Parameter $bar is documented as by-reference but defined as by-value in function foo().',
+            $exception->getMessage()
+        );
+        $this->assertNull($exception->className());
     }
 }

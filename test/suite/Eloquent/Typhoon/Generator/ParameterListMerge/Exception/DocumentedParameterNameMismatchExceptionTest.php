@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Generator\ParameterListMerge\Exception;
 
+use Eloquent\Cosmos\ClassName;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Phake;
 
@@ -18,8 +19,10 @@ class DocumentedParameterNameMismatchExceptionTest extends MultiGenerationTestCa
 {
     public function testException()
     {
+        $className = ClassName::fromString('\qux');
         $previous = Phake::mock('Exception');
         $exception = new DocumentedParameterNameMismatchException(
+            $className,
             'foo',
             'bar',
             'baz',
@@ -27,13 +30,30 @@ class DocumentedParameterNameMismatchExceptionTest extends MultiGenerationTestCa
         );
 
         $this->assertSame(
-            "Documented parameter name 'bar' does not match defined parameter name 'baz' in 'foo'.",
+            'Documented parameter name $bar does not match defined parameter name $baz in method \qux::foo().',
             $exception->getMessage()
         );
+        $this->assertSame($className, $exception->className());
         $this->assertSame('foo', $exception->functionName());
         $this->assertSame('bar', $exception->documentedParameterName());
         $this->assertSame('baz', $exception->nativeParameterName());
         $this->assertSame(0, $exception->getCode());
         $this->assertSame($previous, $exception->getPrevious());
+    }
+
+    public function testExceptionWithoutClassName()
+    {
+        $exception = new DocumentedParameterNameMismatchException(
+            null,
+            'foo',
+            'bar',
+            'baz'
+        );
+
+        $this->assertSame(
+            'Documented parameter name $bar does not match defined parameter name $baz in function foo().',
+            $exception->getMessage()
+        );
+        $this->assertNull($exception->className());
     }
 }

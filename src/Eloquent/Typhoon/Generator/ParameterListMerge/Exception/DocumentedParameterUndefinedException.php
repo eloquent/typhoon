@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Generator\ParameterListMerge\Exception;
 
+use Eloquent\Cosmos\ClassName;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Exception;
 use LogicException;
@@ -18,25 +19,48 @@ use LogicException;
 final class DocumentedParameterUndefinedException extends LogicException
 {
     /**
+     * @param ClassName|null $className
      * @param string         $functionName
      * @param string         $parameterName
      * @param Exception|null $previous
      */
-    public function __construct($functionName, $parameterName, Exception $previous = null)
-    {
+    public function __construct(
+        ClassName $className = null,
+        $functionName,
+        $parameterName,
+        Exception $previous = null
+    ) {
         $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
+        $this->className = $className;
         $this->functionName = $functionName;
         $this->parameterName = $parameterName;
 
-        parent::__construct(
-            sprintf(
-                "Documented parameter '%s' not defined in '%s'.",
+        if (null === $className) {
+            $message = sprintf(
+                'Documented parameter $%s not defined in function %s().',
                 $this->parameterName(),
                 $this->functionName()
-            ),
-            0,
-            $previous
-        );
+            );
+        } else {
+            $message = sprintf(
+                'Documented parameter $%s not defined in method %s::%s().',
+                $this->parameterName(),
+                $this->className()->string(),
+                $this->functionName()
+            );
+        }
+
+        parent::__construct($message, 0, $previous);
+    }
+
+    /**
+     * @return ClassName|null
+     */
+    public function className()
+    {
+        $this->typeCheck->className(func_get_args());
+
+        return $this->className;
     }
 
     /**
@@ -59,6 +83,7 @@ final class DocumentedParameterUndefinedException extends LogicException
         return $this->parameterName;
     }
 
+    private $className;
     private $functionName;
     private $parameterName;
     private $typeCheck;

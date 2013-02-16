@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Generator\ParameterListMerge\Exception;
 
+use Eloquent\Cosmos\ClassName;
 use Eloquent\Typhax\Renderer\TypeRenderer;
 use Eloquent\Typhax\Type\Type;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
@@ -20,6 +21,7 @@ use LogicException;
 final class DocumentedParameterTypeMismatchException extends LogicException
 {
     /**
+     * @param ClassName|null    $className
      * @param string            $functionName
      * @param string            $parameterName
      * @param Type              $documentedType
@@ -28,6 +30,7 @@ final class DocumentedParameterTypeMismatchException extends LogicException
      * @param TypeRenderer|null $typeRenderer
      */
     public function __construct(
+        ClassName $className = null,
         $functionName,
         $parameterName,
         Type $documentedType,
@@ -40,23 +43,43 @@ final class DocumentedParameterTypeMismatchException extends LogicException
             $typeRenderer = new TypeRenderer;
         }
 
+        $this->className = $className;
         $this->functionName = $functionName;
         $this->parameterName = $parameterName;
         $this->documentedType = $documentedType;
         $this->nativeType = $nativeType;
         $this->typeRenderer = $typeRenderer;
 
-        parent::__construct(
-            sprintf(
-                "Documented type '%s' is not correct for defined type '%s' for parameter '%s' in '%s'.",
+        if (null === $className) {
+            $message = sprintf(
+                "Documented type '%s' is not correct for defined type '%s' for parameter $%s in function %s().",
                 $this->documentedType()->accept($this->typeRenderer()),
                 $this->nativeType()->accept($this->typeRenderer()),
                 $this->parameterName(),
                 $this->functionName()
-            ),
-            0,
-            $previous
-        );
+            );
+        } else {
+            $message = sprintf(
+                "Documented type '%s' is not correct for defined type '%s' for parameter $%s in method %s::%s().",
+                $this->documentedType()->accept($this->typeRenderer()),
+                $this->nativeType()->accept($this->typeRenderer()),
+                $this->parameterName(),
+                $this->className()->string(),
+                $this->functionName()
+            );
+        }
+
+        parent::__construct($message, 0, $previous);
+    }
+
+    /**
+     * @return ClassName|null
+     */
+    public function className()
+    {
+        $this->typeCheck->className(func_get_args());
+
+        return $this->className;
     }
 
     /**
@@ -109,6 +132,7 @@ final class DocumentedParameterTypeMismatchException extends LogicException
         return $this->typeRenderer;
     }
 
+    private $className;
     private $functionName;
     private $parameterName;
     private $documentedType;
