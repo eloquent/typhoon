@@ -60,6 +60,7 @@ class ParameterListParser implements Visitor
     }
 
     /**
+     * @param ClassName|null                $className
      * @param string                        $functionName
      * @param string                        $blockComment
      * @param DocumentationBlockParser|null $documentationParser
@@ -67,6 +68,7 @@ class ParameterListParser implements Visitor
      * @return ParameterList
      */
     public function parseBlockComment(
+        ClassName $className = null,
         $functionName,
         $blockComment,
         DocumentationBlockParser $documentationParser = null
@@ -85,6 +87,7 @@ class ParameterListParser implements Visitor
             ;
         } catch (Exception\ParseException $e) {
             throw new Exception\InvalidFunctionDocumentationException(
+                $className,
                 $functionName
             );
         }

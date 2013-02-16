@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Parser\Exception;
 
+use Eloquent\Cosmos\ClassName;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Exception;
 use LogicException;
@@ -18,22 +19,43 @@ use LogicException;
 final class InvalidFunctionDocumentationException extends LogicException
 {
     /**
+     * @param ClassName|null $className
      * @param string         $functionName
      * @param Exception|null $previous
      */
-    public function __construct($functionName, Exception $previous = null)
-    {
+    public function __construct(
+        ClassName $className = null,
+        $functionName,
+        Exception $previous = null
+    ) {
         $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
+        $this->className = $className;
         $this->functionName = $functionName;
 
-        parent::__construct(
-            sprintf(
-                'Invalid param tags found in the documentation for %s().',
+        if (null === $className) {
+            $message = sprintf(
+                'Invalid param tags found in the documentation for function %s().',
                 $this->functionName()
-            ),
-            0,
-            $previous
-        );
+            );
+        } else {
+            $message = sprintf(
+                'Invalid param tags found in the documentation for method %s::%s().',
+                $this->className()->string(),
+                $this->functionName()
+            );
+        }
+
+        parent::__construct($message, 0, $previous);
+    }
+
+    /**
+     * @return ClassName|null
+     */
+    public function className()
+    {
+        $this->typeCheck->className(func_get_args());
+
+        return $this->className;
     }
 
     /**
@@ -46,6 +68,7 @@ final class InvalidFunctionDocumentationException extends LogicException
         return $this->functionName;
     }
 
+    private $className;
     private $functionName;
     private $typeCheck;
 }

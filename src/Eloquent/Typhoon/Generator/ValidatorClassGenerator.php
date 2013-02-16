@@ -400,7 +400,8 @@ class ValidatorClassGenerator
             $parameterList = new ParameterList;
         } else {
             $parameterList = $this->parser()->parseBlockComment(
-                $methodName,
+                $classDefinition->className(),
+                $method->getName(),
                 $blockComment
             );
         }

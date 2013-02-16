@@ -37,6 +37,7 @@ class ParameterListParserTest extends MultiGenerationTestCase
         parent::setUp();
 
         $this->_parser = new ParameterListParser;
+        $this->_className = ClassName::fromString('\foo');
     }
 
     public function testConstructor()
@@ -70,7 +71,11 @@ class ParameterListParserTest extends MultiGenerationTestCase
 EOD;
         $expected = new ParameterList;
 
-        $this->assertEquals($expected, $this->_parser->parseBlockComment('foo', $source));
+        $this->assertEquals($expected, $this->_parser->parseBlockComment(
+            $this->_className,
+            'bar',
+            $source
+        ));
     }
 
     public function testVisitParameterList()
@@ -117,7 +122,11 @@ EOD;
             $barParameter,
             $bazParameter,
         ));
-        $actual = $this->_parser->parseBlockComment('foo', $source);
+        $actual = $this->_parser->parseBlockComment(
+            $this->_className,
+            'bar',
+            $source
+        );
 
         $this->assertEquals($expected, $actual);
         $this->assertInstanceOf(
@@ -154,7 +163,11 @@ EOD;
             true
         );
 
-        $this->assertEquals($expected, $this->_parser->parseBlockComment('foo', $source));
+        $this->assertEquals($expected, $this->_parser->parseBlockComment(
+            $this->_className,
+            'bar',
+            $source
+        ));
     }
 
     public function testVisitParameterListVariableLengthNoDescription()
@@ -184,7 +197,11 @@ EOD;
             true
         );
 
-        $this->assertEquals($expected, $this->_parser->parseBlockComment('foo', $source));
+        $this->assertEquals($expected, $this->_parser->parseBlockComment(
+            $this->_className,
+            'bar',
+            $source
+        ));
     }
 
     public function testVisitInvalidParameterTagFailureNoType()
@@ -203,9 +220,13 @@ EOD;
 
         $this->setExpectedException(
             __NAMESPACE__.'\Exception\InvalidFunctionDocumentationException',
-            "Invalid param tags found in the documentation for foo()."
+            'Invalid param tags found in the documentation for method \foo::bar().'
         );
-        $this->_parser->parseBlockComment('foo', $source);
+        $this->_parser->parseBlockComment(
+            $this->_className,
+            'bar',
+            $source
+        );
     }
 
     public function testVisitInvalidParameterTagFailureNoName()
@@ -224,9 +245,13 @@ EOD;
 
         $this->setExpectedException(
             __NAMESPACE__.'\Exception\InvalidFunctionDocumentationException',
-            "Invalid param tags found in the documentation for foo()."
+            'Invalid param tags found in the documentation for method \foo::bar().'
         );
-        $this->_parser->parseBlockComment('foo', $source);
+        $this->_parser->parseBlockComment(
+            $this->_className,
+            'bar',
+            $source
+        );
     }
 
     protected function typicalMethod(
