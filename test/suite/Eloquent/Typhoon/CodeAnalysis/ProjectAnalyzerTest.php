@@ -122,7 +122,7 @@ class ProjectAnalyzerTest extends MultiGenerationTestCase
         $issues = $actual->issues();
         $sort = array();
         foreach ($issues as $issue) {
-            if ($issue instanceof Issue\ClassRelated\ClassRelatedIssue) {
+            if ($issue instanceof Issue\ClassRelatedIssueInterface) {
                 $sort[] = $issue->classDefinition()->className()->string();
             } else {
                 $sort[] = '';
@@ -135,10 +135,10 @@ class ProjectAnalyzerTest extends MultiGenerationTestCase
             $actualArrayEntry = array(
                 get_class($issue)
             );
-            if ($issue instanceof Issue\ClassRelated\ClassRelatedIssue) {
+            if ($issue instanceof Issue\ClassRelatedIssueInterface) {
                 $actualArrayEntry[] = $issue->classDefinition()->className()->string();
             }
-            if ($issue instanceof Issue\MethodRelated\MethodRelatedIssue) {
+            if ($issue instanceof Issue\MethodRelatedIssueInterface) {
                 $actualArrayEntry[] = $issue->methodDefinition()->name();
             }
 

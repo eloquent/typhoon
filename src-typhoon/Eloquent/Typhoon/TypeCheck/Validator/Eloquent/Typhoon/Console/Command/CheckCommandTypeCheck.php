@@ -75,7 +75,7 @@ class CheckCommandTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidato
             if ($argumentCount < 2) {
                 throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('blockStyle', 1, 'string');
             }
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('issues', 2, 'array<string, array<Eloquent\\Typhoon\\CodeAnalysis\\Issue\\Issue>>');
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('issues', 2, 'array<string, array<Eloquent\\Typhoon\\CodeAnalysis\\Issue\\IssueInterface>>');
         } elseif ($argumentCount > 3) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(3, $arguments[3]);
         }
@@ -107,7 +107,7 @@ class CheckCommandTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidato
                     return false;
                 }
                 foreach ($subValue as $key => $subValue) {
-                    if (!$subValue instanceof \Eloquent\Typhoon\CodeAnalysis\Issue\Issue) {
+                    if (!$subValue instanceof \Eloquent\Typhoon\CodeAnalysis\Issue\IssueInterface) {
                         return false;
                     }
                 }
@@ -128,7 +128,7 @@ class CheckCommandTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidato
                 'issues',
                 2,
                 $arguments[2],
-                'array<string, array<Eloquent\\Typhoon\\CodeAnalysis\\Issue\\Issue>>'
+                'array<string, array<Eloquent\\Typhoon\\CodeAnalysis\\Issue\\IssueInterface>>'
             );
         }
     }

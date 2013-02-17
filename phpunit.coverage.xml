@@ -1,0 +1,43 @@
+<phpunit
+    bootstrap="vendor/icecave/archer/res/phpunit/bootstrap.php"
+    strict="true"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+    mapTestClassNameToCoveredClassName="true"
+    verbose="true"
+    colors="true"
+    timeoutForSmallTests="60"
+>
+    <testsuites>
+        <testsuite>
+            <directory>test/suite</directory>
+            <directory>test/suite-deploy</directory>
+        </testsuite>
+    </testsuites>
+
+    <logging>
+        <log
+            type="tap"
+            target="artifacts/tests/report.tap"
+        />
+        <log
+            type="coverage-html"
+            target="artifacts/tests/coverage"
+            charset="UTF-8"
+            yui="true"
+            highlight="true"
+        />
+        <log
+            type="coverage-text"
+            target="artifacts/tests/coverage/coverage.txt"
+        />
+    </logging>
+
+    <filter>
+        <whitelist>
+            <directory>src</directory>
+            <directory>src-deploy</directory>
+        </whitelist>
+    </filter>
+</phpunit>

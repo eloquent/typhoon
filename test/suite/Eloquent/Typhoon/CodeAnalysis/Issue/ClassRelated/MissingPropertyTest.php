@@ -15,6 +15,10 @@ use Eloquent\Typhoon\CodeAnalysis\Issue\IssueSeverity;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Phake;
 
+/**
+ * @covers \Eloquent\Typhoon\CodeAnalysis\Issue\ClassRelated\MissingProperty
+ * @covers \Eloquent\Typhoon\CodeAnalysis\Issue\AbstractClassIssue
+ */
 class MissingPropertyTest extends MultiGenerationTestCase
 {
     protected function setUp()
@@ -24,20 +28,31 @@ class MissingPropertyTest extends MultiGenerationTestCase
         $this->_classDefinition = Phake::mock(
             'Eloquent\Typhoon\ClassMapper\ClassDefinition'
         );
+        $this->_severity = IssueSeverity::WARNING();
         $this->_issue = new MissingProperty(
-            $this->_classDefinition
+            $this->_classDefinition,
+            $this->_severity
         );
     }
 
     public function testConstructor()
     {
         $this->assertSame($this->_classDefinition, $this->_issue->classDefinition());
+        $this->assertSame(IssueSeverity::WARNING(), $this->_issue->severity());
+    }
+
+    public function testConstructorDefaults()
+    {
+        $this->_issue = new MissingProperty(
+            $this->_classDefinition
+        );
+
         $this->assertSame(IssueSeverity::ERROR(), $this->_issue->severity());
     }
 
     public function testAccept()
     {
-        $visitor = Phake::mock('Eloquent\Typhoon\CodeAnalysis\Issue\IssueVisitor');
+        $visitor = Phake::mock('Eloquent\Typhoon\CodeAnalysis\Issue\IssueVisitorInterface');
         Phake::when($visitor)
             ->visitMissingProperty(Phake::anyParameters())
             ->thenReturn('foo')

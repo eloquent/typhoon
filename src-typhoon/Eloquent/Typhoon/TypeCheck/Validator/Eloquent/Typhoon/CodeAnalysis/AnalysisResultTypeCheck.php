@@ -16,7 +16,7 @@ class AnalysisResultTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValida
                     return false;
                 }
                 foreach ($value as $key => $subValue) {
-                    if (!$subValue instanceof \Eloquent\Typhoon\CodeAnalysis\Issue\Issue) {
+                    if (!$subValue instanceof \Eloquent\Typhoon\CodeAnalysis\Issue\IssueInterface) {
                         return false;
                     }
                 }
@@ -27,7 +27,7 @@ class AnalysisResultTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValida
                     'issues',
                     0,
                     $arguments[0],
-                    'array<Eloquent\\Typhoon\\CodeAnalysis\\Issue\\Issue>'
+                    'array<Eloquent\\Typhoon\\CodeAnalysis\\Issue\\IssueInterface>'
                 );
             }
         }

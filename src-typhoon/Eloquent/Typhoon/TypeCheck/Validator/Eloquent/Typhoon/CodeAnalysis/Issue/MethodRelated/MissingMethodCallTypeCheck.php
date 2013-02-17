@@ -7,7 +7,7 @@ class MissingMethodCallTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractVal
     {
         $argumentCount = \count($arguments);
         if ($argumentCount < 1) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('visitor', 0, 'Eloquent\\Typhoon\\CodeAnalysis\\Issue\\IssueVisitor');
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('visitor', 0, 'Eloquent\\Typhoon\\CodeAnalysis\\Issue\\IssueVisitorInterface');
         } elseif ($argumentCount > 1) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
         }

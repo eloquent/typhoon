@@ -38,7 +38,7 @@ class ProjectAnalyzerTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValid
             if ($argumentCount < 2) {
                 throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('facadeClassName', 1, 'Eloquent\\Cosmos\\ClassName');
             }
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('issues', 2, 'array<Eloquent\\Typhoon\\CodeAnalysis\\Issue\\Issue>');
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('issues', 2, 'array<Eloquent\\Typhoon\\CodeAnalysis\\Issue\\IssueInterface>');
         } elseif ($argumentCount > 3) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(3, $arguments[3]);
         }
@@ -48,7 +48,7 @@ class ProjectAnalyzerTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValid
                 return false;
             }
             foreach ($value as $key => $subValue) {
-                if (!$subValue instanceof \Eloquent\Typhoon\CodeAnalysis\Issue\Issue) {
+                if (!$subValue instanceof \Eloquent\Typhoon\CodeAnalysis\Issue\IssueInterface) {
                     return false;
                 }
             }
@@ -59,7 +59,7 @@ class ProjectAnalyzerTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValid
                 'issues',
                 2,
                 $arguments[2],
-                'array<Eloquent\\Typhoon\\CodeAnalysis\\Issue\\Issue>'
+                'array<Eloquent\\Typhoon\\CodeAnalysis\\Issue\\IssueInterface>'
             );
         }
     }

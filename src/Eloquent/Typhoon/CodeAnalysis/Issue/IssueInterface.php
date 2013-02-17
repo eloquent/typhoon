@@ -11,7 +11,7 @@
 
 namespace Eloquent\Typhoon\CodeAnalysis\Issue;
 
-interface Issue
+interface IssueInterface
 {
     /**
      * @return IssueSeverity
@@ -19,9 +19,9 @@ interface Issue
     public function severity();
 
     /**
-     * @param IssueVisitor $visitor
+     * @param IssueVisitorInterface $visitor
      *
      * @return mixed
      */
-    public function accept(IssueVisitor $visitor);
+    public function accept(IssueVisitorInterface $visitor);
 }

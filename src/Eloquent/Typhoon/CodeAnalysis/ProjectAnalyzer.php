@@ -75,9 +75,9 @@ class ProjectAnalyzer
     }
 
     /**
-     * @param ClassDefinition    $classDefinition
-     * @param ClassName          $facadeClassName
-     * @param array<Issue\Issue> &$issues
+     * @param ClassDefinition             $classDefinition
+     * @param ClassName                   $facadeClassName
+     * @param array<Issue\IssueInterface> &$issues
      */
     protected function analyzeClass(
         ClassDefinition $classDefinition,

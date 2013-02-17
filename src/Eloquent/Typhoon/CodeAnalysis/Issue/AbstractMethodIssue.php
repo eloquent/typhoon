@@ -9,36 +9,28 @@
  * file that was distributed with this source code.
  */
 
-namespace Eloquent\Typhoon\CodeAnalysis\Issue\MethodRelated;
+namespace Eloquent\Typhoon\CodeAnalysis\Issue;
 
 use Eloquent\Typhoon\ClassMapper\ClassDefinition;
 use Eloquent\Typhoon\ClassMapper\MethodDefinition;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 
-abstract class MethodIssue implements MethodRelatedIssue
+abstract class AbstractMethodIssue extends AbstractClassIssue implements MethodIssueInterface
 {
     /**
-     * @param ClassDefinition  $classDefinition
-     * @param MethodDefinition $methodDefinition
+     * @param ClassDefinition    $classDefinition
+     * @param MethodDefinition   $methodDefinition
+     * @param IssueSeverity|null $severity
      */
     public function __construct(
         ClassDefinition $classDefinition,
-        MethodDefinition $methodDefinition
+        MethodDefinition $methodDefinition,
+        IssueSeverity $severity = null
     ) {
         $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
+        parent::__construct($classDefinition, $severity);
 
-        $this->classDefinition = $classDefinition;
         $this->methodDefinition = $methodDefinition;
-    }
-
-    /**
-     * @return ClassDefinition
-     */
-    public function classDefinition()
-    {
-        $this->typeCheck->classDefinition(func_get_args());
-
-        return $this->classDefinition;
     }
 
     /**
@@ -51,7 +43,6 @@ abstract class MethodIssue implements MethodRelatedIssue
         return $this->methodDefinition;
     }
 
-    private $classDefinition;
     private $methodDefinition;
     private $typeCheck;
 }

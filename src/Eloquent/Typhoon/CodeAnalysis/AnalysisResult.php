@@ -16,7 +16,7 @@ use Eloquent\Typhoon\TypeCheck\TypeCheck;
 class AnalysisResult
 {
     /**
-     * @param array<Issue\Issue> $issues
+     * @param array<Issue\IssueInterface> $issues
      */
     public function __construct(array $issues = array())
     {
@@ -25,7 +25,7 @@ class AnalysisResult
     }
 
     /**
-     * @return array<Issue\Issue>
+     * @return array<Issue\IssueInterface>
      */
     public function issues()
     {
@@ -37,7 +37,7 @@ class AnalysisResult
     /**
      * @param Issue\IssueSeverity $severity
      *
-     * @return array<Issue\Issue>
+     * @return array<Issue\IssueInterface>
      */
     public function issuesBySeverity(Issue\IssueSeverity $severity)
     {
@@ -56,7 +56,7 @@ class AnalysisResult
     /**
      * @param Issue\IssueSeverity $severity
      *
-     * @return array<string,array<Issue\Issue>>
+     * @return array<string,array<Issue\IssueInterface>>
      */
     public function issuesBySeverityByClass(Issue\IssueSeverity $severity)
     {
@@ -64,7 +64,7 @@ class AnalysisResult
 
         $issues = array();
         foreach ($this->issuesBySeverity($severity) as $issue) {
-            if ($issue instanceof Issue\ClassRelated\ClassRelatedIssue) {
+            if ($issue instanceof Issue\ClassRelatedIssueInterface) {
                 $issues[$issue->classDefinition()->className()->string()][] =
                     $issue
                 ;

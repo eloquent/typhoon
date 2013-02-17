@@ -12,7 +12,7 @@
 namespace Eloquent\Typhoon\Console\Command;
 
 use Eloquent\Typhoon\CodeAnalysis\AnalysisResult;
-use Eloquent\Typhoon\CodeAnalysis\Issue\Issue;
+use Eloquent\Typhoon\CodeAnalysis\Issue\IssueInterface;
 use Eloquent\Typhoon\CodeAnalysis\Issue\IssueRenderer;
 use Eloquent\Typhoon\CodeAnalysis\Issue\IssueSeverity;
 use Eloquent\Typhoon\CodeAnalysis\ProjectAnalyzer;
@@ -155,9 +155,9 @@ class CheckCommand extends Command
     }
 
     /**
-     * @param string                     $label
-     * @param string                     $blockStyle
-     * @param array<string,array<Issue>> $issues
+     * @param string                              $label
+     * @param string                              $blockStyle
+     * @param array<string,array<IssueInterface>> $issues
      *
      * @return string
      */

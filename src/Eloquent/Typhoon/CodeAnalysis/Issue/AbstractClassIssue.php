@@ -9,20 +9,28 @@
  * file that was distributed with this source code.
  */
 
-namespace Eloquent\Typhoon\CodeAnalysis\Issue\ClassRelated;
+namespace Eloquent\Typhoon\CodeAnalysis\Issue;
 
 use Eloquent\Typhoon\ClassMapper\ClassDefinition;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 
-abstract class ClassIssue implements ClassRelatedIssue
+abstract class AbstractClassIssue implements ClassIssueInterface
 {
     /**
-     * @param ClassDefinition $classDefinition
+     * @param ClassDefinition    $classDefinition
+     * @param IssueSeverity|null $severity
      */
-    public function __construct(ClassDefinition $classDefinition)
-    {
+    public function __construct(
+        ClassDefinition $classDefinition,
+        IssueSeverity $severity = null
+    ) {
         $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
+        if (null === $severity) {
+            $severity = IssueSeverity::ERROR();
+        }
+
         $this->classDefinition = $classDefinition;
+        $this->severity = $severity;
     }
 
     /**
@@ -35,6 +43,17 @@ abstract class ClassIssue implements ClassRelatedIssue
         return $this->classDefinition;
     }
 
+    /**
+     * @return IssueSeverity
+     */
+    public function severity()
+    {
+        $this->typeCheck->severity(func_get_args());
+
+        return $this->severity;
+    }
+
     private $classDefinition;
+    private $severity;
     private $typeCheck;
 }

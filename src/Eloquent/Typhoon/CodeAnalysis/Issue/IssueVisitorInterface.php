@@ -11,7 +11,7 @@
 
 namespace Eloquent\Typhoon\CodeAnalysis\Issue;
 
-interface IssueVisitor
+interface IssueVisitorInterface
 {
     /**
      * @param ClassRelated\MissingConstructorCall $issue

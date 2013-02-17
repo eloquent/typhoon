@@ -11,17 +11,18 @@
 
 namespace Eloquent\Typhoon\CodeAnalysis\Issue\ClassRelated;
 
-use Eloquent\Typhoon\CodeAnalysis\Issue\IssueVisitor;
+use Eloquent\Typhoon\CodeAnalysis\Issue\AbstractClassIssue;
+use Eloquent\Typhoon\CodeAnalysis\Issue\IssueVisitorInterface;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 
-class MissingConstructorCall extends ClassError
+class MissingConstructorCall extends AbstractClassIssue
 {
     /**
-     * @param IssueVisitor $visitor
+     * @param IssueVisitorInterface $visitor
      *
      * @return mixed
      */
-    public function accept(IssueVisitor $visitor)
+    public function accept(IssueVisitorInterface $visitor)
     {
         TypeCheck::get(__CLASS__)->accept(func_get_args());
 

@@ -74,16 +74,13 @@ class CheckCommandTest extends MultiGenerationTestCase
         );
 
         $this->_warning = Phake::partialMock(
-            'Eloquent\Typhoon\CodeAnalysis\Issue\MethodRelated\MethodIssue',
+            'Eloquent\Typhoon\CodeAnalysis\Issue\AbstractMethodIssue',
             $this->_classDefinition,
-            $this->_methodDefinition
+            $this->_methodDefinition,
+            IssueSeverity::WARNING()
         );
-        Phake::when($this->_warning)
-            ->severity(Phake::anyParameters())
-            ->thenReturn(IssueSeverity::WARNING())
-        ;
         $this->_error = Phake::partialMock(
-            'Eloquent\Typhoon\CodeAnalysis\Issue\MethodRelated\MethodError',
+            'Eloquent\Typhoon\CodeAnalysis\Issue\AbstractMethodIssue',
             $this->_classDefinition,
             $this->_methodDefinition
         );
@@ -335,9 +332,9 @@ class CheckCommandTest extends MultiGenerationTestCase
             ->getHelperSet(Phake::anyParameters())
             ->thenReturn($helperSet)
         ;
-        $issueA = Phake::mock('Eloquent\Typhoon\CodeAnalysis\Issue\Issue');
+        $issueA = Phake::mock('Eloquent\Typhoon\CodeAnalysis\Issue\IssueInterface');
         Phake::when($issueA)->accept(Phake::anyParameters())->thenReturn('bar');
-        $issueB = Phake::mock('Eloquent\Typhoon\CodeAnalysis\Issue\Issue');
+        $issueB = Phake::mock('Eloquent\Typhoon\CodeAnalysis\Issue\IssueInterface');
         Phake::when($issueB)->accept(Phake::anyParameters())->thenReturn('baz');
         $issues = array(
             '\qux' => array(

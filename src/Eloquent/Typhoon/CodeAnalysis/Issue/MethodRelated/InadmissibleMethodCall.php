@@ -11,17 +11,18 @@
 
 namespace Eloquent\Typhoon\CodeAnalysis\Issue\MethodRelated;
 
-use Eloquent\Typhoon\CodeAnalysis\Issue\IssueVisitor;
+use Eloquent\Typhoon\CodeAnalysis\Issue\AbstractMethodIssue;
+use Eloquent\Typhoon\CodeAnalysis\Issue\IssueVisitorInterface;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 
-class InadmissibleMethodCall extends MethodError
+class InadmissibleMethodCall extends AbstractMethodIssue
 {
     /**
-     * @param IssueVisitor $visitor
+     * @param IssueVisitorInterface $visitor
      *
      * @return mixed
      */
-    public function accept(IssueVisitor $visitor)
+    public function accept(IssueVisitorInterface $visitor)
     {
         TypeCheck::get(__CLASS__)->accept(func_get_args());
 

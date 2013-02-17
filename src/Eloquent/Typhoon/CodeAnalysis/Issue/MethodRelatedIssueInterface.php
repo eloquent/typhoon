@@ -9,11 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Eloquent\Typhoon\CodeAnalysis\Issue\MethodRelated;
+namespace Eloquent\Typhoon\CodeAnalysis\Issue;
 
-use Eloquent\Typhoon\CodeAnalysis\Issue\ClassRelated\ClassRelatedIssue;
-
-interface MethodRelatedIssue extends ClassRelatedIssue
+interface MethodRelatedIssueInterface extends ClassRelatedIssueInterface
 {
     /**
      * @return \Eloquent\Typhoon\ClassMapper\MethodDefinition

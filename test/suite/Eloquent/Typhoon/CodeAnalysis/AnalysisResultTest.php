@@ -33,30 +33,24 @@ class AnalysisResultTest extends MultiGenerationTestCase
         );
 
         $this->_warningA = Phake::partialMock(
-            __NAMESPACE__.'\Issue\MethodRelated\MethodIssue',
+            __NAMESPACE__.'\Issue\AbstractMethodIssue',
             $this->_classDefinitionA,
-            $this->_methodDefinition
+            $this->_methodDefinition,
+            Issue\IssueSeverity::WARNING()
         );
-        Phake::when($this->_warningA)
-            ->severity(Phake::anyParameters())
-            ->thenReturn(Issue\IssueSeverity::WARNING())
-        ;
         $this->_warningB = Phake::partialMock(
-            __NAMESPACE__.'\Issue\MethodRelated\MethodIssue',
+            __NAMESPACE__.'\Issue\AbstractMethodIssue',
             $this->_classDefinitionB,
-            $this->_methodDefinition
+            $this->_methodDefinition,
+            Issue\IssueSeverity::WARNING()
         );
-        Phake::when($this->_warningB)
-            ->severity(Phake::anyParameters())
-            ->thenReturn(Issue\IssueSeverity::WARNING())
-        ;
         $this->_errorA = Phake::partialMock(
-            __NAMESPACE__.'\Issue\MethodRelated\MethodError',
+            __NAMESPACE__.'\Issue\AbstractMethodIssue',
             $this->_classDefinitionA,
             $this->_methodDefinition
         );
         $this->_errorB = Phake::partialMock(
-            __NAMESPACE__.'\Issue\MethodRelated\MethodError',
+            __NAMESPACE__.'\Issue\AbstractMethodIssue',
             $this->_classDefinitionB,
             $this->_methodDefinition
         );

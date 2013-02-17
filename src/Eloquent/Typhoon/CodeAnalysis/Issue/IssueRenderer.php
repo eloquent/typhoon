@@ -13,7 +13,7 @@ namespace Eloquent\Typhoon\CodeAnalysis\Issue;
 
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 
-class IssueRenderer implements IssueVisitor
+class IssueRenderer implements IssueVisitorInterface
 {
     public function __construct()
     {
