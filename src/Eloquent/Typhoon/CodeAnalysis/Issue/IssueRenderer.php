@@ -11,13 +11,32 @@
 
 namespace Eloquent\Typhoon\CodeAnalysis\Issue;
 
+use Eloquent\Typhax\Renderer\TypeRenderer;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 
 class IssueRenderer implements IssueVisitorInterface
 {
-    public function __construct()
+    /**
+     * @param TypeRenderer|null $typeRenderer
+     */
+    public function __construct(TypeRenderer $typeRenderer = null)
     {
         $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
+        if (null === $typeRenderer) {
+            $typeRenderer = new TypeRenderer;
+        }
+
+        $this->typeRenderer = $typeRenderer;
+    }
+
+    /**
+     * @return TypeRenderer
+     */
+    public function typeRenderer()
+    {
+        $this->typeCheck->typeRenderer(func_get_args());
+
+        return $this->typeRenderer;
     }
 
     /**
@@ -69,6 +88,21 @@ class IssueRenderer implements IssueVisitorInterface
     }
 
     /**
+     * @param ParameterIssue\DefinedParameterVariableLength $issue
+     *
+     * @return string
+     */
+    public function visitDefinedParameterVariableLength(ParameterIssue\DefinedParameterVariableLength $issue)
+    {
+        $this->typeCheck->visitDefinedParameterVariableLength(func_get_args());
+
+        return sprintf(
+            'Variable-length parameter $%s should only be documented, not defined.',
+            $issue->parameterName()
+        );
+    }
+
+    /**
      * @param ParameterIssue\DocumentedParameterByReferenceMismatch $issue
      *
      * @return string
@@ -93,5 +127,69 @@ class IssueRenderer implements IssueVisitorInterface
         );
     }
 
+    /**
+     * @param ParameterIssue\DocumentedParameterNameMismatch $issue
+     *
+     * @return string
+     */
+    public function visitDocumentedParameterNameMismatch(ParameterIssue\DocumentedParameterNameMismatch $issue)
+    {
+        $this->typeCheck->visitDocumentedParameterNameMismatch(func_get_args());
+
+        return sprintf(
+            'Documented parameter name $%s does not match defined parameter name $%s.',
+            $issue->documentedParameterName(),
+            $issue->parameterName()
+        );
+    }
+
+    /**
+     * @param ParameterIssue\DocumentedParameterTypeMismatch $issue
+     *
+     * @return string
+     */
+    public function visitDocumentedParameterTypeMismatch(ParameterIssue\DocumentedParameterTypeMismatch $issue)
+    {
+        $this->typeCheck->visitDocumentedParameterTypeMismatch(func_get_args());
+
+        return sprintf(
+            "Documented type '%s' is not correct for defined type '%s' of parameter $%s.",
+            $issue->documentedType()->accept($this->typeRenderer()),
+            $issue->type()->accept($this->typeRenderer()),
+            $issue->parameterName()
+        );
+    }
+
+    /**
+     * @param ParameterIssue\DocumentedParameterUndefined $issue
+     *
+     * @return string
+     */
+    public function visitDocumentedParameterUndefined(ParameterIssue\DocumentedParameterUndefined $issue)
+    {
+        $this->typeCheck->visitDocumentedParameterUndefined(func_get_args());
+
+        return sprintf(
+            'Documented parameter $%s not defined.',
+            $issue->parameterName()
+        );
+    }
+
+    /**
+     * @param ParameterIssue\UndocumentedParameter $issue
+     *
+     * @return string
+     */
+    public function visitUndocumentedParameter(ParameterIssue\UndocumentedParameter $issue)
+    {
+        $this->typeCheck->visitUndocumentedParameter(func_get_args());
+
+        return sprintf(
+            'Parameter $%s is not documented.',
+            $issue->parameterName()
+        );
+    }
+
+    private $typeRenderer;
     private $typeCheck;
 }

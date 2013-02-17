@@ -12,6 +12,8 @@
 namespace Eloquent\Typhoon\CodeAnalysis\Issue;
 
 use Eloquent\Cosmos\ClassName;
+use Eloquent\Typhax\Type\ArrayType;
+use Eloquent\Typhax\Type\MixedType;
 use Eloquent\Typhoon\ClassMapper\ClassDefinition;
 use Eloquent\Typhoon\ClassMapper\MethodDefinition;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
@@ -89,6 +91,20 @@ class IssueRendererTest extends MultiGenerationTestCase
         );
     }
 
+    public function testVisitDefinedParameterVariableLength()
+    {
+        $issue = new ParameterIssue\DefinedParameterVariableLength(
+            $this->_classDefinition,
+            $this->_methodDefinition,
+            'qux'
+        );
+
+        $this->assertSame(
+            'Variable-length parameter $qux should only be documented, not defined.',
+            $issue->accept($this->_renderer)
+        );
+    }
+
     public function testVisitDocumentedParameterByReferenceMismatchByReference()
     {
         $issue = new ParameterIssue\DocumentedParameterByReferenceMismatch(
@@ -115,6 +131,65 @@ class IssueRendererTest extends MultiGenerationTestCase
 
         $this->assertSame(
             'Parameter $qux is defined as by-value but documented as by-reference.',
+            $issue->accept($this->_renderer)
+        );
+    }
+
+    public function testVisitDocumentedParameterNameMismatch()
+    {
+        $issue = new ParameterIssue\DocumentedParameterNameMismatch(
+            $this->_classDefinition,
+            $this->_methodDefinition,
+            'qux',
+            'doom'
+        );
+
+        $this->assertSame(
+            'Documented parameter name $doom does not match defined parameter name $qux.',
+            $issue->accept($this->_renderer)
+        );
+    }
+
+    public function testVisitDocumentedParameterTypeMismatch()
+    {
+        $issue = new ParameterIssue\DocumentedParameterTypeMismatch(
+            $this->_classDefinition,
+            $this->_methodDefinition,
+            'qux',
+            new ArrayType,
+            new MixedType
+        );
+
+        $this->assertSame(
+            "Documented type 'mixed' is not correct for defined type 'array' of parameter \$qux.",
+            $issue->accept($this->_renderer)
+        );
+    }
+
+    public function testVisitDocumentedParameterUndefined()
+    {
+        $issue = new ParameterIssue\DocumentedParameterUndefined(
+            $this->_classDefinition,
+            $this->_methodDefinition,
+            'qux'
+        );
+
+        $this->assertSame(
+            'Documented parameter $qux not defined.',
+            $issue->accept($this->_renderer)
+        );
+    }
+
+    public function testVisitUndocumentedParameter()
+    {
+        $issue = new ParameterIssue\UndocumentedParameter(
+            $this->_classDefinition,
+            $this->_methodDefinition,
+            'qux'
+        );
+
+        $this->assertSame(
+            'Parameter $qux is not documented.',
             $issue->accept($this->_renderer)
         );
     }

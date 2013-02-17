@@ -42,9 +42,44 @@ interface IssueVisitorInterface
     public function visitMissingMethodCall(MethodIssue\MissingMethodCall $issue);
 
     /**
+     * @param ParameterIssue\DefinedParameterVariableLength $issue
+     *
+     * @return mixed
+     */
+    public function visitDefinedParameterVariableLength(ParameterIssue\DefinedParameterVariableLength $issue);
+
+    /**
      * @param ParameterIssue\DocumentedParameterByReferenceMismatch $issue
      *
      * @return mixed
      */
     public function visitDocumentedParameterByReferenceMismatch(ParameterIssue\DocumentedParameterByReferenceMismatch $issue);
+
+    /**
+     * @param ParameterIssue\DocumentedParameterNameMismatch $issue
+     *
+     * @return mixed
+     */
+    public function visitDocumentedParameterNameMismatch(ParameterIssue\DocumentedParameterNameMismatch $issue);
+
+    /**
+     * @param ParameterIssue\DocumentedParameterTypeMismatch $issue
+     *
+     * @return mixed
+     */
+    public function visitDocumentedParameterTypeMismatch(ParameterIssue\DocumentedParameterTypeMismatch $issue);
+
+    /**
+     * @param ParameterIssue\DocumentedParameterUndefined $issue
+     *
+     * @return mixed
+     */
+    public function visitDocumentedParameterUndefined(ParameterIssue\DocumentedParameterUndefined $issue);
+
+    /**
+     * @param ParameterIssue\UndocumentedParameter $issue
+     *
+     * @return mixed
+     */
+    public function visitUndocumentedParameter(ParameterIssue\UndocumentedParameter $issue);
 }

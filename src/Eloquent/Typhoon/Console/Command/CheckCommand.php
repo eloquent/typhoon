@@ -185,9 +185,12 @@ class CheckCommand extends Command
                 $severity,
                 $className
             );
+            if (count($classIssues) > 0) {
+                $errorLines[] = '    [General]';
+            }
             foreach ($classIssues as $issue) {
                 $errorLines[] = sprintf(
-                    '    - %s',
+                    '      - %s',
                     $issue->accept($this->issueRenderer())
                 );
             }
@@ -197,7 +200,6 @@ class CheckCommand extends Command
                 $className
             );
             foreach ($methodRelatedIssues as $methodName => $methodIssues) {
-                $errorLines[] = '';
                 $errorLines[] = sprintf('    [%s()]', $methodName);
 
                 foreach ($methodIssues as $issue) {
