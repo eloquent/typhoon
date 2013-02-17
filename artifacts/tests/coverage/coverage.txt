@@ -1,0 +1,144 @@
+
+
+Code Coverage Report 
+  2013-02-17 06:00:54
+
+ Summary: 
+  Classes: 100.00% (70/70)
+  Methods: 100.00% (377/377)
+  Lines:   100.00% (4373/4373)
+
+\Eloquent\Typhoon\ClassMapper::ClassDefinition
+  Methods: 100.00% (11/11)   Lines: 100.00% ( 48/ 48)
+\Eloquent\Typhoon\ClassMapper::ClassMapper
+  Methods: 100.00% (16/16)   Lines: 100.00% (251/251)
+\Eloquent\Typhoon\ClassMapper::ClassMemberDefinition
+  Methods: 100.00% ( 7/ 7)   Lines: 100.00% ( 21/ 21)
+\Eloquent\Typhoon\ClassMapper\Exception::UndefinedClassException
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% ( 12/ 12)
+\Eloquent\Typhoon\ClassMapper\Exception::UndefinedMethodException
+  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 15/ 15)
+\Eloquent\Typhoon\ClassMapper\Exception::UndefinedPropertyException
+  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 15/ 15)
+\Eloquent\Typhoon\CodeAnalysis::AnalysisResult
+  Methods: 100.00% ( 7/ 7)   Lines: 100.00% ( 48/ 48)
+\Eloquent\Typhoon\CodeAnalysis::ProjectAnalyzer
+  Methods: 100.00% (12/12)   Lines: 100.00% (209/209)
+\Eloquent\Typhoon\CodeAnalysis\Issue::AbstractClassRelatedIssue
+  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 11/ 11)
+\Eloquent\Typhoon\CodeAnalysis\Issue::AbstractMethodRelatedIssue
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  6/  6)
+\Eloquent\Typhoon\CodeAnalysis\Issue::AbstractParameterRelatedIssue
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  6/  6)
+\Eloquent\Typhoon\CodeAnalysis\Issue::IssueRenderer
+  Methods: 100.00% ( 6/ 6)   Lines: 100.00% ( 22/ 22)
+\Eloquent\Typhoon\CodeAnalysis\Issue\ClassIssue::MissingConstructorCall
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
+\Eloquent\Typhoon\CodeAnalysis\Issue\ClassIssue::MissingProperty
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
+\Eloquent\Typhoon\CodeAnalysis\Issue\MethodIssue::InadmissibleMethodCall
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
+\Eloquent\Typhoon\CodeAnalysis\Issue\MethodIssue::MissingMethodCall
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
+\Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue::DocumentedParameterByReferenceMismatch
+  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 12/ 12)
+\Eloquent\Typhoon\Configuration::Configuration
+  Methods: 100.00% ( 7/ 7)   Lines: 100.00% ( 24/ 24)
+\Eloquent\Typhoon\Configuration::ConfigurationOption
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
+\Eloquent\Typhoon\Configuration::ConfigurationReader
+  Methods: 100.00% (13/13)   Lines: 100.00% (186/186)
+\Eloquent\Typhoon\Configuration::RuntimeConfiguration
+  Methods: 100.00% ( 5/ 5)   Lines: 100.00% ( 20/ 20)
+\Eloquent\Typhoon\Configuration\Exception::ConfigurationReadException
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% ( 12/ 12)
+\Eloquent\Typhoon\Configuration\Exception::InvalidConfigurationException
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% ( 12/ 12)
+\Eloquent\Typhoon\Configuration\Exception::InvalidJSONException
+  Methods: 100.00% ( 4/ 4)   Lines: 100.00% ( 36/ 36)
+\Eloquent\Typhoon\Configuration\Exception::UndefinedConfigurationOptionException
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% ( 12/ 12)
+\Eloquent\Typhoon\Console::Application
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% ( 11/ 11)
+\Eloquent\Typhoon\Console\Command::CheckCommand
+  Methods: 100.00% ( 8/ 8)   Lines: 100.00% ( 93/ 93)
+\Eloquent\Typhoon\Console\Command::Command
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% ( 11/ 11)
+\Eloquent\Typhoon\Console\Command::GenerateCommand
+  Methods: 100.00% ( 4/ 4)   Lines: 100.00% ( 27/ 27)
+\Eloquent\Typhoon\Extension::ExtensionLoader
+  Methods: 100.00% ( 4/ 4)   Lines: 100.00% ( 18/ 18)
+\Eloquent\Typhoon\Extension\Exception::InvalidExtensionException
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% ( 12/ 12)
+\Eloquent\Typhoon\Generator::AbstractValidatorGenerator
+  Methods: 100.00% ( 6/ 6)   Lines: 100.00% (121/121)
+\Eloquent\Typhoon\Generator::DummyValidatorGenerator
+  Methods: 100.00% ( 5/ 5)   Lines: 100.00% ( 41/ 41)
+\Eloquent\Typhoon\Generator::FacadeGenerator
+  Methods: 100.00% (12/12)   Lines: 100.00% (300/300)
+\Eloquent\Typhoon\Generator::NullifiedType
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  5/  5)
+\Eloquent\Typhoon\Generator::ParameterListGenerator
+  Methods: 100.00% ( 9/ 9)   Lines: 100.00% (225/225)
+\Eloquent\Typhoon\Generator::ProjectValidatorGenerator
+  Methods: 100.00% (14/14)   Lines: 100.00% (107/107)
+\Eloquent\Typhoon\Generator::RuntimeConfigurationGenerator
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% ( 17/ 17)
+\Eloquent\Typhoon\Generator::TypeInspectorGenerator
+  Methods: 100.00% (10/10)   Lines: 100.00% (398/398)
+\Eloquent\Typhoon\Generator::TyphaxASTGenerator
+  Methods: 100.00% (21/21)   Lines: 100.00% (450/450)
+\Eloquent\Typhoon\Generator::ValidatorClassGenerator
+  Methods: 100.00% (17/17)   Lines: 100.00% (156/156)
+\Eloquent\Typhoon\Generator\ExceptionGenerator::MissingArgumentExceptionGenerator
+  Methods: 100.00% ( 8/ 8)   Lines: 100.00% (139/139)
+\Eloquent\Typhoon\Generator\ExceptionGenerator::UnexpectedArgumentExceptionGenerator
+  Methods: 100.00% ( 9/ 9)   Lines: 100.00% (187/187)
+\Eloquent\Typhoon\Generator\ExceptionGenerator::UnexpectedArgumentValueExceptionGenerator
+  Methods: 100.00% (11/11)   Lines: 100.00% (240/240)
+\Eloquent\Typhoon\Generator\ExceptionGenerator::UnexpectedInputExceptionGenerator
+  Methods: 100.00% ( 5/ 5)   Lines: 100.00% ( 56/ 56)
+\Eloquent\Typhoon\Generator\ParameterListMerge::MergeTool
+  Methods: 100.00% ( 7/ 7)   Lines: 100.00% (185/185)
+\Eloquent\Typhoon\Generator\ParameterListMerge\Exception::DefinedParameterVariableLengthException
+  Methods: 100.00% ( 4/ 4)   Lines: 100.00% ( 25/ 25)
+\Eloquent\Typhoon\Generator\ParameterListMerge\Exception::DocumentedParameterByReferenceMismatchException
+  Methods: 100.00% ( 6/ 6)   Lines: 100.00% ( 41/ 41)
+\Eloquent\Typhoon\Generator\ParameterListMerge\Exception::DocumentedParameterNameMismatchException
+  Methods: 100.00% ( 5/ 5)   Lines: 100.00% ( 30/ 30)
+\Eloquent\Typhoon\Generator\ParameterListMerge\Exception::DocumentedParameterTypeMismatchException
+  Methods: 100.00% ( 7/ 7)   Lines: 100.00% ( 41/ 41)
+\Eloquent\Typhoon\Generator\ParameterListMerge\Exception::DocumentedParameterUndefinedException
+  Methods: 100.00% ( 4/ 4)   Lines: 100.00% ( 25/ 25)
+\Eloquent\Typhoon\Generator\ParameterListMerge\Exception::UndocumentedParameterException
+  Methods: 100.00% ( 4/ 4)   Lines: 100.00% ( 25/ 25)
+\Eloquent\Typhoon\Parameter::Parameter
+  Methods: 100.00% ( 7/ 7)   Lines: 100.00% ( 19/ 19)
+\Eloquent\Typhoon\Parameter::ParameterList
+  Methods: 100.00% ( 6/ 6)   Lines: 100.00% ( 30/ 30)
+\Eloquent\Typhoon\Parser::ParameterListParser
+  Methods: 100.00% (13/13)   Lines: 100.00% (141/141)
+\Eloquent\Typhoon\Parser\Exception::InvalidFunctionDocumentationException
+  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 20/ 20)
+\Eloquent\Typhoon\Parser\Exception::ParseException
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  6/  6)
+\Eloquent\Typhoon\Parser\Exception::UnexpectedContentException
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% ( 10/ 10)
+\Eloquent\Typhoon\Resolver::ParameterListClassNameResolver
+  Methods: 100.00% ( 4/ 4)   Lines: 100.00% ( 22/ 22)
+\Typhoon::AbstractValidator
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  7/  7)
+\Typhoon::DummyValidator
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
+\Typhoon::TypeInspector
+  Methods: 100.00% ( 6/ 6)   Lines: 100.00% ( 62/ 62)
+\Typhoon::Typhoon
+  Methods: 100.00% ( 7/ 7)   Lines: 100.00% ( 28/ 28)
+\Typhoon\Exception::MissingArgumentException
+  Methods: 100.00% ( 4/ 4)   Lines: 100.00% ( 14/ 14)
+\Typhoon\Exception::UnexpectedArgumentException
+  Methods: 100.00% ( 5/ 5)   Lines: 100.00% ( 14/ 14)
+\Typhoon\Exception::UnexpectedArgumentValueException
+  Methods: 100.00% ( 7/ 7)   Lines: 100.00% ( 25/ 25)
+\Typhoon\Exception::UnexpectedInputException
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
