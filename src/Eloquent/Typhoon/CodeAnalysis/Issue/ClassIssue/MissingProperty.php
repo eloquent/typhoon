@@ -9,13 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Eloquent\Typhoon\CodeAnalysis\Issue\ClassRelated;
+namespace Eloquent\Typhoon\CodeAnalysis\Issue\ClassIssue;
 
-use Eloquent\Typhoon\CodeAnalysis\Issue\AbstractClassIssue;
+use Eloquent\Typhoon\CodeAnalysis\Issue\AbstractClassRelatedIssue;
+use Eloquent\Typhoon\CodeAnalysis\Issue\ClassIssueInterface;
 use Eloquent\Typhoon\CodeAnalysis\Issue\IssueVisitorInterface;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 
-class MissingConstructorCall extends AbstractClassIssue
+class MissingProperty extends AbstractClassRelatedIssue implements ClassIssueInterface
 {
     /**
      * @param IssueVisitorInterface $visitor
@@ -26,6 +27,6 @@ class MissingConstructorCall extends AbstractClassIssue
     {
         TypeCheck::get(__CLASS__)->accept(func_get_args());
 
-        return $visitor->visitMissingConstructorCall($this);
+        return $visitor->visitMissingProperty($this);
     }
 }

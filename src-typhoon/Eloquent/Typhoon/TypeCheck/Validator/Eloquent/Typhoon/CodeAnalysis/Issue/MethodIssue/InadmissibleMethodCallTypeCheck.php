@@ -1,7 +1,7 @@
 <?php
-namespace Eloquent\Typhoon\TypeCheck\Validator\Eloquent\Typhoon\CodeAnalysis\Issue\ClassRelated;
+namespace Eloquent\Typhoon\TypeCheck\Validator\Eloquent\Typhoon\CodeAnalysis\Issue\MethodIssue;
 
-class MissingConstructorCallTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
+class InadmissibleMethodCallTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
 {
     public function accept(array $arguments)
     {

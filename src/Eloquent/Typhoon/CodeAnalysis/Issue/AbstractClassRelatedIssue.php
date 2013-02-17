@@ -14,7 +14,7 @@ namespace Eloquent\Typhoon\CodeAnalysis\Issue;
 use Eloquent\Typhoon\ClassMapper\ClassDefinition;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 
-abstract class AbstractClassIssue implements ClassIssueInterface
+abstract class AbstractClassRelatedIssue implements ClassRelatedIssueInterface
 {
     /**
      * @param ClassDefinition    $classDefinition

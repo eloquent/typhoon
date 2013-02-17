@@ -54,48 +54,48 @@ class ProjectAnalyzerTest extends MultiGenerationTestCase
         $actual = $this->_analyzer->analyze($configuration);
         $expected = array(
             array(
-                'Eloquent\Typhoon\CodeAnalysis\Issue\MethodRelated\InadmissibleMethodCall',
+                'Eloquent\Typhoon\CodeAnalysis\Issue\MethodIssue\InadmissibleMethodCall',
                 '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\CallInDestructor',
                 '__destruct',
             ),
             array(
-                'Eloquent\Typhoon\CodeAnalysis\Issue\MethodRelated\InadmissibleMethodCall',
+                'Eloquent\Typhoon\CodeAnalysis\Issue\MethodIssue\InadmissibleMethodCall',
                 '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\CallInToString',
                 '__toString',
             ),
             array(
-                'Eloquent\Typhoon\CodeAnalysis\Issue\MethodRelated\MissingMethodCall',
+                'Eloquent\Typhoon\CodeAnalysis\Issue\MethodIssue\MissingMethodCall',
                 '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\MissingCalls',
                 'bar',
             ),
             array(
-                'Eloquent\Typhoon\CodeAnalysis\Issue\MethodRelated\MissingMethodCall',
+                'Eloquent\Typhoon\CodeAnalysis\Issue\MethodIssue\MissingMethodCall',
                 '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\MissingCalls',
                 'baz',
             ),
             array(
-                'Eloquent\Typhoon\CodeAnalysis\Issue\MethodRelated\MissingMethodCall',
+                'Eloquent\Typhoon\CodeAnalysis\Issue\MethodIssue\MissingMethodCall',
                 '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\MissingCalls',
                 'foo',
             ),
             array(
-                'Eloquent\Typhoon\CodeAnalysis\Issue\ClassRelated\MissingConstructorCall',
+                'Eloquent\Typhoon\CodeAnalysis\Issue\ClassIssue\MissingConstructorCall',
                 '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\MissingConstructorCall',
             ),
             array(
-                'Eloquent\Typhoon\CodeAnalysis\Issue\ClassRelated\MissingProperty',
+                'Eloquent\Typhoon\CodeAnalysis\Issue\ClassIssue\MissingProperty',
                 '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\MissingProperty',
             ),
             array(
-                'Eloquent\Typhoon\CodeAnalysis\Issue\ClassRelated\MissingConstructorCall',
+                'Eloquent\Typhoon\CodeAnalysis\Issue\ClassIssue\MissingConstructorCall',
                 '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\NoConstructor',
             ),
             array(
-                'Eloquent\Typhoon\CodeAnalysis\Issue\ClassRelated\MissingProperty',
+                'Eloquent\Typhoon\CodeAnalysis\Issue\ClassIssue\MissingProperty',
                 '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\NonPrivateProperty',
             ),
             array(
-                'Eloquent\Typhoon\CodeAnalysis\Issue\ClassRelated\MissingProperty',
+                'Eloquent\Typhoon\CodeAnalysis\Issue\ClassIssue\MissingProperty',
                 '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\StaticProperty',
             ),
         );

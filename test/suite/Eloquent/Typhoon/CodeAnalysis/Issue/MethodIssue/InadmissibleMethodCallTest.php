@@ -9,17 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace Eloquent\Typhoon\CodeAnalysis\Issue\ClassRelated;
+namespace Eloquent\Typhoon\CodeAnalysis\Issue\MethodIssue;
 
 use Eloquent\Typhoon\CodeAnalysis\Issue\IssueSeverity;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Phake;
 
 /**
- * @covers \Eloquent\Typhoon\CodeAnalysis\Issue\ClassRelated\MissingProperty
- * @covers \Eloquent\Typhoon\CodeAnalysis\Issue\AbstractClassIssue
+ * @covers \Eloquent\Typhoon\CodeAnalysis\Issue\MethodIssue\InadmissibleMethodCall
+ * @covers \Eloquent\Typhoon\CodeAnalysis\Issue\AbstractMethodRelatedIssue
+ * @covers \Eloquent\Typhoon\CodeAnalysis\Issue\AbstractClassRelatedIssue
  */
-class MissingPropertyTest extends MultiGenerationTestCase
+class InadmissibleMethodCallTest extends MultiGenerationTestCase
 {
     protected function setUp()
     {
@@ -28,9 +29,13 @@ class MissingPropertyTest extends MultiGenerationTestCase
         $this->_classDefinition = Phake::mock(
             'Eloquent\Typhoon\ClassMapper\ClassDefinition'
         );
+        $this->_methodDefinition = Phake::mock(
+            'Eloquent\Typhoon\ClassMapper\MethodDefinition'
+        );
         $this->_severity = IssueSeverity::WARNING();
-        $this->_issue = new MissingProperty(
+        $this->_issue = new InadmissibleMethodCall(
             $this->_classDefinition,
+            $this->_methodDefinition,
             $this->_severity
         );
     }
@@ -38,13 +43,15 @@ class MissingPropertyTest extends MultiGenerationTestCase
     public function testConstructor()
     {
         $this->assertSame($this->_classDefinition, $this->_issue->classDefinition());
+        $this->assertSame($this->_methodDefinition, $this->_issue->methodDefinition());
         $this->assertSame(IssueSeverity::WARNING(), $this->_issue->severity());
     }
 
     public function testConstructorDefaults()
     {
-        $this->_issue = new MissingProperty(
-            $this->_classDefinition
+        $this->_issue = new InadmissibleMethodCall(
+            $this->_classDefinition,
+            $this->_methodDefinition
         );
 
         $this->assertSame(IssueSeverity::ERROR(), $this->_issue->severity());
@@ -54,13 +61,13 @@ class MissingPropertyTest extends MultiGenerationTestCase
     {
         $visitor = Phake::mock('Eloquent\Typhoon\CodeAnalysis\Issue\IssueVisitorInterface');
         Phake::when($visitor)
-            ->visitMissingProperty(Phake::anyParameters())
+            ->visitInadmissibleMethodCall(Phake::anyParameters())
             ->thenReturn('foo')
         ;
 
         $this->assertSame('foo', $this->_issue->accept($visitor));
         Phake::verify($visitor)
-            ->visitMissingProperty($this->identicalTo($this->_issue))
+            ->visitInadmissibleMethodCall($this->identicalTo($this->_issue))
         ;
     }
 }

@@ -16,6 +16,10 @@ use Eloquent\Liberator\Liberator;
 use Eloquent\Typhoon\ClassMapper\ClassDefinition;
 use Eloquent\Typhoon\ClassMapper\MethodDefinition;
 use Eloquent\Typhoon\CodeAnalysis\AnalysisResult;
+use Eloquent\Typhoon\CodeAnalysis\Issue\ClassIssue\MissingConstructorCall;
+use Eloquent\Typhoon\CodeAnalysis\Issue\ClassIssue\MissingProperty;
+use Eloquent\Typhoon\CodeAnalysis\Issue\MethodIssue\InadmissibleMethodCall;
+use Eloquent\Typhoon\CodeAnalysis\Issue\MethodIssue\MissingMethodCall;
 use Eloquent\Typhoon\CodeAnalysis\Issue\IssueRenderer;
 use Eloquent\Typhoon\CodeAnalysis\Issue\IssueSeverity;
 use Eloquent\Typhoon\Configuration\Configuration;
@@ -74,16 +78,27 @@ class CheckCommandTest extends MultiGenerationTestCase
         );
 
         $this->_warning = Phake::partialMock(
-            'Eloquent\Typhoon\CodeAnalysis\Issue\AbstractMethodIssue',
+            'Eloquent\Typhoon\CodeAnalysis\Issue\AbstractMethodRelatedIssue',
             $this->_classDefinition,
             $this->_methodDefinition,
             IssueSeverity::WARNING()
         );
         $this->_error = Phake::partialMock(
-            'Eloquent\Typhoon\CodeAnalysis\Issue\AbstractMethodIssue',
+            'Eloquent\Typhoon\CodeAnalysis\Issue\AbstractMethodRelatedIssue',
             $this->_classDefinition,
             $this->_methodDefinition
         );
+    }
+
+    protected function methodDefinitionFixture($name)
+    {
+        $methodDefinition = Phake::mock('Eloquent\Typhoon\ClassMapper\MethodDefinition');
+        Phake::when($methodDefinition)
+            ->name(Phake::anyParameters())
+            ->thenReturn($name)
+        ;
+
+        return $methodDefinition;
     }
 
     public function testConstructor()
@@ -276,20 +291,15 @@ class CheckCommandTest extends MultiGenerationTestCase
             ->generateBlock(Phake::anyParameters())
             ->thenReturn('foo')
         ;
-        $result = Phake::partialMock(
-            'Eloquent\Typhoon\CodeAnalysis\AnalysisResult',
-            array(
-                $this->_error,
-                $this->_warning,
-            )
-        );
+        $result = Phake::mock('Eloquent\Typhoon\CodeAnalysis\AnalysisResult');
         $actual = Liberator::liberate($this->_command)->generateErrorBlock($result);
 
         $this->assertSame('foo', $actual);
         Phake::verify($this->_command)->generateBlock(
             'Problems detected',
             'error',
-            $this->identicalTo(array('\A' => array($this->_error)))
+            $this->identicalTo($result),
+            $this->identicalTo(IssueSeverity::ERROR())
         );
     }
 
@@ -299,31 +309,43 @@ class CheckCommandTest extends MultiGenerationTestCase
             ->generateBlock(Phake::anyParameters())
             ->thenReturn('foo')
         ;
-        $result = Phake::partialMock(
-            'Eloquent\Typhoon\CodeAnalysis\AnalysisResult',
-            array(
-                $this->_error,
-                $this->_warning,
-            )
-        );
+        $result = Phake::mock('Eloquent\Typhoon\CodeAnalysis\AnalysisResult');
         $actual = Liberator::liberate($this->_command)->generateWarningBlock($result);
 
         $this->assertSame('foo', $actual);
         Phake::verify($this->_command)->generateBlock(
             'Potential problems detected',
             'comment',
-            $this->identicalTo(array('\A' => array($this->_warning)))
+            $this->identicalTo($result),
+            $this->identicalTo(IssueSeverity::WARNING())
         );
     }
 
     public function testGenerateBlock()
     {
         $formatter = Phake::mock('Symfony\Component\Console\Helper\FormatterHelper');
+        $helperSet = Phake::mock('Symfony\Component\Console\Helper\HelperSet');
+        $classDefinitionA = new ClassDefinition(ClassName::fromString('\A'));
+        $classDefinitionB = new ClassDefinition(ClassName::fromString('\B'));
+        $classDefinitionC = new ClassDefinition(ClassName::fromString('\C'));
+        $classIssueA = new MissingConstructorCall($classDefinitionA);
+        $classIssueB = new MissingProperty($classDefinitionB);
+        $methodIssueA = new InadmissibleMethodCall($classDefinitionA, $this->methodDefinitionFixture('A'));
+        $methodIssueB = new MissingMethodCall($classDefinitionA, $this->methodDefinitionFixture('B'));
+        $methodIssueC = new InadmissibleMethodCall($classDefinitionC, $this->methodDefinitionFixture('A'));
+        $methodIssueD = new MissingMethodCall($classDefinitionC, $this->methodDefinitionFixture('B'));
+        $result = new AnalysisResult(array(
+            $classIssueA,
+            $classIssueB,
+            $methodIssueA,
+            $methodIssueB,
+            $methodIssueC,
+            $methodIssueD,
+        ));
         Phake::when($formatter)
             ->formatBlock(Phake::anyParameters())
             ->thenReturn('foo')
         ;
-        $helperSet = Phake::mock('Symfony\Component\Console\Helper\HelperSet');
         Phake::when($helperSet)
             ->get(Phake::anyParameters())
             ->thenReturn($formatter)
@@ -332,37 +354,41 @@ class CheckCommandTest extends MultiGenerationTestCase
             ->getHelperSet(Phake::anyParameters())
             ->thenReturn($helperSet)
         ;
-        $issueA = Phake::mock('Eloquent\Typhoon\CodeAnalysis\Issue\IssueInterface');
-        Phake::when($issueA)->accept(Phake::anyParameters())->thenReturn('bar');
-        $issueB = Phake::mock('Eloquent\Typhoon\CodeAnalysis\Issue\IssueInterface');
-        Phake::when($issueB)->accept(Phake::anyParameters())->thenReturn('baz');
-        $issues = array(
-            '\qux' => array(
-                $issueA,
-                $issueB,
-            ),
-            '\doom' => array(
-                $issueA,
-                $issueB,
-            ),
-        );
         $expected = array(
-          '[splat]',
-          '',
-          '  [\qux]',
-          '    - bar',
-          '    - baz',
-          '',
-          '  [\doom]',
-          '    - bar',
-          '    - baz',
+            '[bar]',
+            '',
+            '  [\A]',
+            '    - Incorrect or missing constructor initialization.',
+            '',
+            '    [A()]',
+            '      - Type check call should not be present.',
+            '',
+            '    [B()]',
+            '      - Incorrect or missing type check call.',
+            '',
+            '  [\B]',
+            '    - Incorrect or missing property definition.',
+            '',
+            '  [\C]',
+            '',
+            '    [A()]',
+            '      - Type check call should not be present.',
+            '',
+            '    [B()]',
+            '      - Incorrect or missing type check call.',
         );
 
         $this->assertSame(
             'foo',
-            Liberator::liberate($this->_command)->generateBlock('splat', 'ping', $issues)
+            Liberator::liberate($this->_command)->generateBlock(
+                'bar',
+                'baz',
+                $result,
+                IssueSeverity::ERROR()
+            )
         );
-        Phake::verify($formatter)->formatBlock($expected, 'ping', true);
+        Phake::verify($formatter)->formatBlock(Phake::capture($actual), 'baz', true);
+        $this->assertSame($expected, $actual);
     }
 
     public function testIncludeLoaders()

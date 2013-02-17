@@ -9,13 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Eloquent\Typhoon\CodeAnalysis\Issue\MethodRelated;
+namespace Eloquent\Typhoon\CodeAnalysis\Issue\MethodIssue;
 
-use Eloquent\Typhoon\CodeAnalysis\Issue\AbstractMethodIssue;
+use Eloquent\Typhoon\CodeAnalysis\Issue\AbstractMethodRelatedIssue;
 use Eloquent\Typhoon\CodeAnalysis\Issue\IssueVisitorInterface;
+use Eloquent\Typhoon\CodeAnalysis\Issue\MethodIssueInterface;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 
-class MissingMethodCall extends AbstractMethodIssue
+class MissingMethodCall extends AbstractMethodRelatedIssue implements MethodIssueInterface
 {
     /**
      * @param IssueVisitorInterface $visitor

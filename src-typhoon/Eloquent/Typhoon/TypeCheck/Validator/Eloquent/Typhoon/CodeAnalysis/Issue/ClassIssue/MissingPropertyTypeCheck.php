@@ -1,5 +1,5 @@
 <?php
-namespace Eloquent\Typhoon\TypeCheck\Validator\Eloquent\Typhoon\CodeAnalysis\Issue\ClassRelated;
+namespace Eloquent\Typhoon\TypeCheck\Validator\Eloquent\Typhoon\CodeAnalysis\Issue\ClassIssue;
 
 class MissingPropertyTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
 {

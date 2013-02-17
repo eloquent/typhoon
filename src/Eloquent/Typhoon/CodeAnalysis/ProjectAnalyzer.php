@@ -100,7 +100,7 @@ class ProjectAnalyzer
             if ($this->methodHasInit($methodDefinition, $expectedfacadeClassName, $propertyName)) {
                 $hasConstructorInit = true;
             } elseif (!$this->methodHasConstructorStaticCall($methodDefinition, $expectedfacadeClassName)) {
-                $issues[] = new Issue\ClassRelated\MissingConstructorCall(
+                $issues[] = new Issue\ClassIssue\MissingConstructorCall(
                     $classDefinition
                 );
             }
@@ -117,7 +117,7 @@ class ProjectAnalyzer
                         $this->methodHasCall($methodDefinition, $propertyName) ||
                         $this->methodHasStaticCall($methodDefinition, $expectedfacadeClassName)
                     ) {
-                        $issues[] = new Issue\MethodRelated\InadmissibleMethodCall(
+                        $issues[] = new Issue\MethodIssue\InadmissibleMethodCall(
                             $classDefinition,
                             $methodDefinition
                         );
@@ -144,7 +144,7 @@ class ProjectAnalyzer
                     }
 
                     if ($missingCall) {
-                        $issues[] = new Issue\MethodRelated\MissingMethodCall(
+                        $issues[] = new Issue\MethodIssue\MissingMethodCall(
                             $classDefinition,
                             $methodDefinition
                         );
@@ -155,7 +155,7 @@ class ProjectAnalyzer
         if ($hasNonStaticCalls && !$hasConstructorInit) {
             array_unshift(
                 $issues,
-                new Issue\ClassRelated\MissingConstructorCall(
+                new Issue\ClassIssue\MissingConstructorCall(
                     $classDefinition
                 )
             );
@@ -172,7 +172,7 @@ class ProjectAnalyzer
             }
 
             if ($missingProperty) {
-                $issues[] = new Issue\ClassRelated\MissingProperty(
+                $issues[] = new Issue\ClassIssue\MissingProperty(
                     $classDefinition
                 );
             }

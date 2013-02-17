@@ -14,30 +14,37 @@ namespace Eloquent\Typhoon\CodeAnalysis\Issue;
 interface IssueVisitorInterface
 {
     /**
-     * @param ClassRelated\MissingConstructorCall $issue
+     * @param ClassIssue\MissingConstructorCall $issue
      *
      * @return mixed
      */
-    public function visitMissingConstructorCall(ClassRelated\MissingConstructorCall $issue);
+    public function visitMissingConstructorCall(ClassIssue\MissingConstructorCall $issue);
 
     /**
-     * @param ClassRelated\MissingProperty $issue
+     * @param ClassIssue\MissingProperty $issue
      *
      * @return mixed
      */
-    public function visitMissingProperty(ClassRelated\MissingProperty $issue);
+    public function visitMissingProperty(ClassIssue\MissingProperty $issue);
 
     /**
-     * @param MethodRelated\InadmissibleMethodCall $issue
+     * @param MethodIssue\InadmissibleMethodCall $issue
      *
      * @return mixed
      */
-    public function visitInadmissibleMethodCall(MethodRelated\InadmissibleMethodCall $issue);
+    public function visitInadmissibleMethodCall(MethodIssue\InadmissibleMethodCall $issue);
 
     /**
-     * @param MethodRelated\MissingMethodCall $issue
+     * @param MethodIssue\MissingMethodCall $issue
      *
      * @return mixed
      */
-    public function visitMissingMethodCall(MethodRelated\MissingMethodCall $issue);
+    public function visitMissingMethodCall(MethodIssue\MissingMethodCall $issue);
+
+    /**
+     * @param ParameterIssue\DocumentedParameterByReferenceMismatch $issue
+     *
+     * @return mixed
+     */
+    public function visitDocumentedParameterByReferenceMismatch(ParameterIssue\DocumentedParameterByReferenceMismatch $issue);
 }
