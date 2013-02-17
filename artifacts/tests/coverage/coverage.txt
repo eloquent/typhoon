@@ -1,12 +1,12 @@
 
 
 Code Coverage Report 
-  2013-02-17 06:00:54
+  2013-02-17 11:16:46
 
  Summary: 
-  Classes: 100.00% (70/70)
-  Methods: 100.00% (377/377)
-  Lines:   100.00% (4373/4373)
+  Classes: 100.00% (75/75)
+  Methods: 100.00% (393/393)
+  Lines:   100.00% (4442/4442)
 
 \Eloquent\Typhoon\ClassMapper::ClassDefinition
   Methods: 100.00% (11/11)   Lines: 100.00% ( 48/ 48)
@@ -31,7 +31,7 @@ Code Coverage Report
 \Eloquent\Typhoon\CodeAnalysis\Issue::AbstractParameterRelatedIssue
   Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  6/  6)
 \Eloquent\Typhoon\CodeAnalysis\Issue::IssueRenderer
-  Methods: 100.00% ( 6/ 6)   Lines: 100.00% ( 22/ 22)
+  Methods: 100.00% (12/12)   Lines: 100.00% ( 56/ 56)
 \Eloquent\Typhoon\CodeAnalysis\Issue\ClassIssue::MissingConstructorCall
   Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
 \Eloquent\Typhoon\CodeAnalysis\Issue\ClassIssue::MissingProperty
@@ -40,8 +40,18 @@ Code Coverage Report
   Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
 \Eloquent\Typhoon\CodeAnalysis\Issue\MethodIssue::MissingMethodCall
   Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
+\Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue::DefinedParameterVariableLength
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
 \Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue::DocumentedParameterByReferenceMismatch
   Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 12/ 12)
+\Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue::DocumentedParameterNameMismatch
+  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 12/ 12)
+\Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue::DocumentedParameterTypeMismatch
+  Methods: 100.00% ( 4/ 4)   Lines: 100.00% ( 15/ 15)
+\Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue::DocumentedParameterUndefined
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
+\Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue::UndocumentedParameter
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
 \Eloquent\Typhoon\Configuration::Configuration
   Methods: 100.00% ( 7/ 7)   Lines: 100.00% ( 24/ 24)
 \Eloquent\Typhoon\Configuration::ConfigurationOption
@@ -61,7 +71,7 @@ Code Coverage Report
 \Eloquent\Typhoon\Console::Application
   Methods: 100.00% ( 2/ 2)   Lines: 100.00% ( 11/ 11)
 \Eloquent\Typhoon\Console\Command::CheckCommand
-  Methods: 100.00% ( 8/ 8)   Lines: 100.00% ( 93/ 93)
+  Methods: 100.00% ( 8/ 8)   Lines: 100.00% ( 95/ 95)
 \Eloquent\Typhoon\Console\Command::Command
   Methods: 100.00% ( 2/ 2)   Lines: 100.00% ( 11/ 11)
 \Eloquent\Typhoon\Console\Command::GenerateCommand
