@@ -303,6 +303,7 @@ EOD
                         array(),
                         array(
                             new MethodDefinition(
+                                ClassName::fromString('Foo'),
                                 'bar',
                                 false,
                                 false,
@@ -361,6 +362,7 @@ EOD
                         array(),
                         array(
                             new PropertyDefinition(
+                                ClassName::fromString('Foo'),
                                 'bar',
                                 false,
                                 AccessModifier::PUBLIC_(),
@@ -368,6 +370,7 @@ EOD
                                 'public $bar;'
                             ),
                             new PropertyDefinition(
+                                ClassName::fromString('Foo'),
                                 'baz',
                                 true,
                                 AccessModifier::PROTECTED_(),
@@ -375,6 +378,7 @@ EOD
                                 'protected static $baz;'
                             ),
                             new PropertyDefinition(
+                                ClassName::fromString('Foo'),
                                 'qux',
                                 false,
                                 AccessModifier::PRIVATE_(),
@@ -389,6 +393,7 @@ EOD
                         array(),
                         array(
                             new PropertyDefinition(
+                                ClassName::fromString('Bar'),
                                 'doom',
                                 false,
                                 AccessModifier::PUBLIC_(),
@@ -396,6 +401,7 @@ EOD
                                 "public \$doom = <<<EOT\npeng pung\npip pop\nEOT;"
                             ),
                             new PropertyDefinition(
+                                ClassName::fromString('Bar'),
                                 'splat',
                                 true,
                                 AccessModifier::PROTECTED_(),
@@ -403,6 +409,7 @@ EOD
                                 "static protected \$splat\n    ;"
                             ),
                             new PropertyDefinition(
+                                ClassName::fromString('Bar'),
                                 'ping',
                                 false,
                                 AccessModifier::PRIVATE_(),
@@ -441,6 +448,7 @@ EOD
                         array(),
                         array(
                             new MethodDefinition(
+                                ClassName::fromString('Foo'),
                                 '__construct',
                                 false,
                                 false,
@@ -449,6 +457,7 @@ EOD
                                 "public function __construct()\n    {\n        // baz\n    }"
                             ),
                             new MethodDefinition(
+                                ClassName::fromString('Foo'),
                                 'qux',
                                 true,
                                 false,
@@ -463,6 +472,7 @@ EOD
                         array(),
                         array(
                             new MethodDefinition(
+                                ClassName::fromString('Bar'),
                                 'splat',
                                 false,
                                 false,
@@ -471,6 +481,7 @@ EOD
                                 "private function splat(array \$ping = array())\n    {\n        \$pong = function() use (\$ping) {\n        };\n    }"
                             ),
                             new MethodDefinition(
+                                ClassName::fromString('Bar'),
                                 'pang',
                                 true,
                                 false,
@@ -519,6 +530,7 @@ EOD
                         array(),
                         array(
                             new MethodDefinition(
+                                ClassName::fromString('Foo'),
                                 'perg',
                                 false,
                                 true,
@@ -527,6 +539,7 @@ EOD
                                 "abstract public function perg();"
                             ),
                             new MethodDefinition(
+                                ClassName::fromString('Foo'),
                                 'qux',
                                 true,
                                 false,
@@ -541,6 +554,7 @@ EOD
                         array(),
                         array(
                             new MethodDefinition(
+                                ClassName::fromString('Bar'),
                                 'splat',
                                 false,
                                 false,
@@ -549,6 +563,7 @@ EOD
                                 "private function splat(array \$ping = array())\n    {\n        \$pong = function() use (\$ping) {\n        };\n    }"
                             ),
                             new MethodDefinition(
+                                ClassName::fromString('Bar'),
                                 'pang',
                                 false,
                                 true,

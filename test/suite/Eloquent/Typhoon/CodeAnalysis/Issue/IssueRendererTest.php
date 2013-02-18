@@ -18,7 +18,6 @@ use Eloquent\Typhoon\ClassMapper\ClassDefinition;
 use Eloquent\Typhoon\ClassMapper\MethodDefinition;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Icecave\Pasta\AST\Type\AccessModifier;
-use Phake;
 
 class IssueRendererTest extends MultiGenerationTestCase
 {
@@ -28,16 +27,20 @@ class IssueRendererTest extends MultiGenerationTestCase
 
         $this->_renderer = new IssueRenderer;
 
-        $this->_classDefinition = new ClassDefinition(
-            ClassName::fromString('\foo')
-        );
+        $this->_className = ClassName::fromString('\foo');
         $this->_methodDefinition = new MethodDefinition(
+            $this->_className,
             'bar',
             false,
             false,
             AccessModifier::PUBLIC_(),
             111,
             'baz'
+        );
+        $this->_classDefinition = new ClassDefinition(
+            $this->_className,
+            array(),
+            array($this->_methodDefinition)
         );
     }
 

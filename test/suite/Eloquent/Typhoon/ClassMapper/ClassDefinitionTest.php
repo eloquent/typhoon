@@ -35,6 +35,7 @@ class ClassDefinitionTest extends MultiGenerationTestCase
         );
         $this->_methods = array(
             new MethodDefinition(
+                $this->_className,
                 'splat',
                 false,
                 false,
@@ -43,6 +44,7 @@ class ClassDefinitionTest extends MultiGenerationTestCase
                 'ping'
             ),
             new MethodDefinition(
+                $this->_className,
                 'pong',
                 true,
                 true,
@@ -53,6 +55,7 @@ class ClassDefinitionTest extends MultiGenerationTestCase
         );
         $this->_properties = array(
             new PropertyDefinition(
+                $this->_className,
                 'peng',
                 false,
                 AccessModifier::PUBLIC_(),
@@ -60,6 +63,7 @@ class ClassDefinitionTest extends MultiGenerationTestCase
                 'pep'
             ),
             new PropertyDefinition(
+                $this->_className,
                 'pip',
                 true,
                 AccessModifier::PROTECTED_(),

@@ -11,7 +11,6 @@
 
 namespace Eloquent\Typhoon\Generator\ParameterListMerge;
 
-use Eloquent\Cosmos\ClassName;
 use Eloquent\Typhax\Comparator\TypeEquivalenceComparator;
 use Eloquent\Typhax\Type\AndType;
 use Eloquent\Typhax\Type\ArrayType;
@@ -23,6 +22,15 @@ use Eloquent\Typhax\Type\OrType;
 use Eloquent\Typhax\Type\TraversableType;
 use Eloquent\Typhax\Type\TupleType;
 use Eloquent\Typhax\Type\Type;
+use Eloquent\Typhoon\ClassMapper\ClassDefinition;
+use Eloquent\Typhoon\ClassMapper\MethodDefinition;
+use Eloquent\Typhoon\CodeAnalysis\Issue\IssueInterface;
+use Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DefinedParameterVariableLength;
+use Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterByReferenceMismatch;
+use Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterNameMismatch;
+use Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterTypeMismatch;
+use Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterUndefined;
+use Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\UndocumentedParameter;
 use Eloquent\Typhoon\Configuration\RuntimeConfiguration;
 use Eloquent\Typhoon\Generator\NullifiedType;
 use Eloquent\Typhoon\Parameter\Parameter;
@@ -32,14 +40,45 @@ use ReflectionClass;
 
 class MergeTool
 {
-    public function __construct()
+    /**
+     * @param boolean                    $throwOnError
+     * @param array<IssueInterface>|null &$issues
+     */
+    public function __construct($throwOnError = true, array &$issues = null)
     {
         $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
+
+        if (null === $issues) {
+            $issues = array();
+        }
+
+        $this->throwOnError = $throwOnError;
+        $this->issues = &$issues;
 
         $reflectionParameterClass = new ReflectionClass('ReflectionParameter');
         $this->nativeCallableAvailable =
             $reflectionParameterClass->hasMethod('isCallable')
         ;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function throwOnError()
+    {
+        $this->typeCheck->throwOnError(func_get_args());
+
+        return $this->throwOnError;
+    }
+
+    /**
+     * @return array<IssueInterface>
+     */
+    public function issues()
+    {
+        $this->typeCheck->issues(func_get_args());
+
+        return $this->issues;
     }
 
     /**
@@ -69,15 +108,17 @@ class MergeTool
 
     /**
      * @param RuntimeConfiguration $configuration
-     * @param ClassName|null       $className
-     * @param string               $functionName
+     * @param ClassDefinition|null $classDefinition
+     * @param MethodDefinition     $methodDefinition
      * @param ParameterList        $documentedParameterList
      * @param ParameterList        $nativeParameterList
+     *
+     * @return ParameterList
      */
     public function merge(
         RuntimeConfiguration $configuration,
-        ClassName $className = null,
-        $functionName,
+        ClassDefinition $classDefinition = null,
+        MethodDefinition $methodDefinition,
         ParameterList $documentedParameterList,
         ParameterList $nativeParameterList
     ) {
@@ -88,97 +129,103 @@ class MergeTool
 
         $parameters = array();
         foreach ($nativeParameters as $index => $nativeParameter) {
-            if (!array_key_exists($index, $documentedParameters)) {
-                throw new Exception\UndocumentedParameterException(
-                    $className,
-                    $functionName,
-                    $nativeParameter->name()
+            if (array_key_exists($index, $documentedParameters)) {
+                $parameters[] = $this->mergeParameter(
+                    $configuration,
+                    $classDefinition,
+                    $methodDefinition,
+                    $documentedParameters[$index],
+                    $nativeParameter
                 );
-            }
+            } else {
+                $this->handleError(new UndocumentedParameter(
+                    $classDefinition,
+                    $methodDefinition,
+                    $nativeParameter->name()
+                ));
 
-            $parameters[] = $this->mergeParameter(
-                $configuration,
-                $className,
-                $functionName,
-                $documentedParameters[$index],
-                $nativeParameter
-            );
+                $parameters[] = $nativeParameter;
+            }
         }
 
         $documentedParameterCount = count($documentedParameters);
         $nativeParameterCount = count($nativeParameters);
 
+        $isVariableLength = false;
         if ($documentedParameterList->isVariableLength()) {
             if ($documentedParameterCount > $nativeParameterCount + 1) {
-                throw new Exception\DocumentedParameterUndefinedException(
-                    $className,
-                    $functionName,
+                $this->handleError(new DocumentedParameterUndefined(
+                    $classDefinition,
+                    $methodDefinition,
                     $documentedParameters[$nativeParameterCount + 1]->name()
-                );
+                ));
             } elseif ($documentedParameterCount === $nativeParameterCount) {
-                throw new Exception\DefinedParameterVariableLengthException(
-                    $className,
-                    $functionName,
+                $this->handleError(new DefinedParameterVariableLength(
+                    $classDefinition,
+                    $methodDefinition,
                     $nativeParameters[$nativeParameterCount - 1]->name()
-                );
+                ));
+            } elseif ($documentedParameterCount === $nativeParameterCount + 1) {
+                $isVariableLength = true;
+                $parameters[] = $documentedParameters[$nativeParameterCount];
             }
-
-            $parameters[] = $documentedParameters[$nativeParameterCount];
         } elseif ($documentedParameterCount > $nativeParameterCount) {
-            throw new Exception\DocumentedParameterUndefinedException(
-                $className,
-                $functionName,
-                $documentedParameters[$nativeParameterCount]->name()
-            );
+            for ($i = $nativeParameterCount; $i < $documentedParameterCount; $i ++) {
+                $this->handleError(new DocumentedParameterUndefined(
+                    $classDefinition,
+                    $methodDefinition,
+                    $documentedParameters[$i]->name()
+                ));
+            }
         }
 
-        return new ParameterList(
-            $parameters,
-            $documentedParameterList->isVariableLength()
-        );
+        return new ParameterList($parameters, $isVariableLength);
     }
 
     /**
      * @param RuntimeConfiguration $configuration
-     * @param ClassName|null       $className
-     * @param string               $functionName
+     * @param ClassDefinition|null $classDefinition
+     * @param MethodDefinition     $methodDefinition
      * @param Parameter            $documentedParameter
      * @param Parameter            $nativeParameter
+     *
+     * @return Parameter
      */
     protected function mergeParameter(
         RuntimeConfiguration $configuration,
-        ClassName $className = null,
-        $functionName,
+        ClassDefinition $classDefinition = null,
+        MethodDefinition $methodDefinition,
         Parameter $documentedParameter,
         Parameter $nativeParameter
     ) {
         $this->typeCheck->mergeParameter(func_get_args());
 
         if ($documentedParameter->name() !== $nativeParameter->name()) {
-            throw new Exception\DocumentedParameterNameMismatchException(
-                $className,
-                $functionName,
-                $documentedParameter->name(),
-                $nativeParameter->name()
-            );
+            $this->handleError(new DocumentedParameterNameMismatch(
+                $classDefinition,
+                $methodDefinition,
+                $nativeParameter->name(),
+                $documentedParameter->name()
+            ));
+
+            return $nativeParameter;
         }
 
         if ($documentedParameter->isByReference() !== $nativeParameter->isByReference()) {
-            throw new Exception\DocumentedParameterByReferenceMismatchException(
-                $className,
-                $functionName,
+            $this->handleError(new DocumentedParameterByReferenceMismatch(
+                $classDefinition,
+                $methodDefinition,
                 $nativeParameter->name(),
-                $documentedParameter->isByReference(),
                 $nativeParameter->isByReference()
-            );
+            ));
         }
 
         return new Parameter(
             $documentedParameter->name(),
             $this->mergeType(
                 $configuration,
-                $className,
-                $functionName,
+                $classDefinition,
+                $methodDefinition,
                 $documentedParameter->name(),
                 $documentedParameter->type(),
                 $nativeParameter->type()
@@ -191,8 +238,8 @@ class MergeTool
 
     /**
      * @param RuntimeConfiguration $configuration
-     * @param ClassName|null       $className
-     * @param string               $functionName
+     * @param ClassDefinition|null $classDefinition
+     * @param MethodDefinition     $methodDefinition
      * @param string               $parameterName
      * @param Type                 $documentedType
      * @param Type                 $nativeType
@@ -201,8 +248,8 @@ class MergeTool
      */
     protected function mergeType(
         RuntimeConfiguration $configuration,
-        ClassName $className = null,
-        $functionName,
+        ClassDefinition $classDefinition = null,
+        MethodDefinition $methodDefinition,
         $parameterName,
         Type $documentedType,
         Type $nativeType
@@ -214,19 +261,18 @@ class MergeTool
             $documentedType,
             $nativeType
         )) {
-            throw new Exception\DocumentedParameterTypeMismatchException(
-                $className,
-                $functionName,
+            $this->handleError(new DocumentedParameterTypeMismatch(
+                $classDefinition,
+                $methodDefinition,
                 $parameterName,
-                $documentedType,
-                $nativeType
-            );
+                $nativeType,
+                $documentedType
+            ));
+
+            return $nativeType;
         }
 
-        if (TypeEquivalenceComparator::equivalent(
-            $documentedType,
-            $nativeType
-        )) {
+        if (TypeEquivalenceComparator::equivalent($documentedType, $nativeType)) {
             return new NullifiedType($documentedType);
         }
 
@@ -381,6 +427,22 @@ class MergeTool
         return $nativeType instanceof MixedType;
     }
 
+    /**
+     * @param IssueInterface $error
+     */
+    protected function handleError(IssueInterface $error)
+    {
+        $this->typeCheck->handleError(func_get_args());
+
+        if ($this->throwOnError()) {
+            throw new Exception\ParameterListMergeException($error);
+        }
+
+        $this->issues[] = $error;
+    }
+
+    private $throwOnError;
+    private $issues;
     private $nativeCallableAvailable;
     private $typeCheck;
 }

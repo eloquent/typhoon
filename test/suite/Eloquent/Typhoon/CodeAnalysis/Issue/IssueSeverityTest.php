@@ -12,7 +12,6 @@
 namespace Eloquent\Typhoon\CodeAnalysis\Issue;
 
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
-use Phake;
 
 class IssueSeverityTest extends MultiGenerationTestCase
 {

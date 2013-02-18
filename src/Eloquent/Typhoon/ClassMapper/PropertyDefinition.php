@@ -1,4 +1,4 @@
-<?php // @codeCoverageIgnoreStart
+<?php
 
 /*
  * This file is part of the Typhoon package.
@@ -11,6 +11,18 @@
 
 namespace Eloquent\Typhoon\ClassMapper;
 
+use Eloquent\Typhoon\TypeCheck\TypeCheck;
+use ReflectionProperty;
+
 class PropertyDefinition extends ClassMemberDefinition
 {
+    /**
+     * @return ReflectionProperty
+     */
+    public function createReflector()
+    {
+        TypeCheck::get(__CLASS__)->createReflector(func_get_args());
+
+        return new ReflectionProperty($this->className()->string(), $this->name());
+    }
 }

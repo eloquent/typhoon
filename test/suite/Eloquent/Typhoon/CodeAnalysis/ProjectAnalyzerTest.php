@@ -14,7 +14,6 @@ namespace Eloquent\Typhoon\CodeAnalysis;
 use Eloquent\Typhoon\ClassMapper\ClassMapper;
 use Eloquent\Typhoon\Configuration\Configuration;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
-use Phake;
 
 class ProjectAnalyzerTest extends MultiGenerationTestCase
 {

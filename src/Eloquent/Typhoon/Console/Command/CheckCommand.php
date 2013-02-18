@@ -12,7 +12,6 @@
 namespace Eloquent\Typhoon\Console\Command;
 
 use Eloquent\Typhoon\CodeAnalysis\AnalysisResult;
-use Eloquent\Typhoon\CodeAnalysis\Issue\IssueInterface;
 use Eloquent\Typhoon\CodeAnalysis\Issue\IssueRenderer;
 use Eloquent\Typhoon\CodeAnalysis\Issue\IssueSeverity;
 use Eloquent\Typhoon\CodeAnalysis\ProjectAnalyzer;

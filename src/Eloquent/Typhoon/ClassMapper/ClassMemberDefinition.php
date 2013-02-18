@@ -11,12 +11,14 @@
 
 namespace Eloquent\Typhoon\ClassMapper;
 
+use Eloquent\Cosmos\ClassName;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Icecave\Pasta\AST\Type\AccessModifier;
 
 abstract class ClassMemberDefinition
 {
     /**
+     * @param ClassName      $className
      * @param string         $name
      * @param boolean        $isStatic
      * @param AccessModifier $accessModifier
@@ -24,6 +26,7 @@ abstract class ClassMemberDefinition
      * @param string         $source
      */
     public function __construct(
+        ClassName $className,
         $name,
         $isStatic,
         AccessModifier $accessModifier,
@@ -31,11 +34,22 @@ abstract class ClassMemberDefinition
         $source
     ) {
         $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
+        $this->className = $className;
         $this->name = $name;
         $this->isStatic = $isStatic;
         $this->accessModifier = $accessModifier;
         $this->lineNumber = $lineNumber;
         $this->source = $source;
+    }
+
+    /**
+     * @return ClassName
+     */
+    public function className()
+    {
+        $this->typeCheck->className(func_get_args());
+
+        return $this->className;
     }
 
     /**
@@ -101,6 +115,7 @@ abstract class ClassMemberDefinition
         ;
     }
 
+    private $className;
     private $name;
     private $isStatic;
     private $accessModifier;

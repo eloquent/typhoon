@@ -14,17 +14,23 @@ namespace Eloquent\Typhoon\ClassMapper;
 use Eloquent\Cosmos\ClassName;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Icecave\Pasta\AST\Type\AccessModifier;
-use Phake;
+use ReflectionMethod;
 
-class ClassMemberDefinitionTest extends MultiGenerationTestCase
+/**
+ * @covers \Eloquent\Typhoon\ClassMapper\MethodDefinition
+ * @covers \Eloquent\Typhoon\ClassMapper\ClassMemberDefinition
+ */
+class MethodDefinitionTest extends MultiGenerationTestCase
 {
     protected function setUp()
     {
         parent::setUp();
 
-        $this->_definition = Phake::partialMock(
-            __NAMESPACE__.'\ClassMemberDefinition',
+        $this->_className = ClassName::fromString('\splat');
+        $this->_definition = new MethodDefinition(
+            $this->_className,
             'foo',
+            true,
             true,
             AccessModifier::PUBLIC_(),
             111,
@@ -34,8 +40,10 @@ class ClassMemberDefinitionTest extends MultiGenerationTestCase
 
     public function testConstruct()
     {
+        $this->assertSame($this->_className, $this->_definition->className());
         $this->assertSame('foo', $this->_definition->name());
         $this->assertTrue($this->_definition->isStatic());
+        $this->assertTrue($this->_definition->isAbstract());
         $this->assertSame(AccessModifier::PUBLIC_(), $this->_definition->accessModifier());
         $this->assertSame(111, $this->_definition->lineNumber());
         $this->assertSame("bar\r\nbaz\rqux\ndoom", $this->_definition->source());
@@ -44,5 +52,22 @@ class ClassMemberDefinitionTest extends MultiGenerationTestCase
     public function testEndLineNumber()
     {
         $this->assertSame(114, $this->_definition->endLineNumber());
+    }
+
+    public function testCreateReflector()
+    {
+        $this->_className = ClassName::fromString(__CLASS__);
+        $this->_definition = new MethodDefinition(
+            $this->_className,
+            'testCreateReflector',
+            false,
+            false,
+            AccessModifier::PUBLIC_(),
+            111,
+            "foo"
+        );
+        $expected = new ReflectionMethod(__CLASS__, 'testCreateReflector');
+
+        $this->assertEquals($expected, $this->_definition->createReflector());
     }
 }

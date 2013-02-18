@@ -359,102 +359,21 @@ class ClassMapperTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
     public function parseProperty(array $arguments)
     {
         $argumentCount = \count($arguments);
-        if ($argumentCount < 6) {
-            if ($argumentCount < 1) {
-                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('token', 0, 'tuple<integer, string, integer>');
-            }
-            if ($argumentCount < 2) {
-                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('tokens', 1, 'array<string|array>');
-            }
-            if ($argumentCount < 3) {
-                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('accessModifier', 2, 'Icecave\\Pasta\\AST\\Type\\AccessModifier');
-            }
-            if ($argumentCount < 4) {
-                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('isStatic', 3, 'boolean');
-            }
-            if ($argumentCount < 5) {
-                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('source', 4, 'string');
-            }
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('lineNumber', 5, 'integer');
-        } elseif ($argumentCount > 6) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(6, $arguments[6]);
-        }
-        $value = $arguments[0];
-        if (!(\is_array($value) && \array_keys($value) === \range(0, 2) && \is_int($value[0]) && \is_string($value[1]) && \is_int($value[2]))) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
-                'token',
-                0,
-                $arguments[0],
-                'tuple<integer, string, integer>'
-            );
-        }
-        $value = $arguments[1];
-        $check = function ($value) {
-            if (!\is_array($value)) {
-                return false;
-            }
-            foreach ($value as $key => $subValue) {
-                if (!(\is_string($subValue) || \is_array($subValue))) {
-                    return false;
-                }
-            }
-            return true;
-        };
-        if (!$check($arguments[1])) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
-                'tokens',
-                1,
-                $arguments[1],
-                'array<string|array>'
-            );
-        }
-        $value = $arguments[3];
-        if (!\is_bool($value)) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
-                'isStatic',
-                3,
-                $arguments[3],
-                'boolean'
-            );
-        }
-        $value = $arguments[4];
-        if (!\is_string($value)) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
-                'source',
-                4,
-                $arguments[4],
-                'string'
-            );
-        }
-        $value = $arguments[5];
-        if (!\is_int($value)) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
-                'lineNumber',
-                5,
-                $arguments[5],
-                'integer'
-            );
-        }
-    }
-
-    public function parseMethod(array $arguments)
-    {
-        $argumentCount = \count($arguments);
         if ($argumentCount < 7) {
             if ($argumentCount < 1) {
-                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('token', 0, 'tuple<integer, string, integer>');
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('className', 0, 'Eloquent\\Cosmos\\ClassName');
             }
             if ($argumentCount < 2) {
-                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('tokens', 1, 'array<string|array>');
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('token', 1, 'tuple<integer, string, integer>');
             }
             if ($argumentCount < 3) {
-                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('accessModifier', 2, 'Icecave\\Pasta\\AST\\Type\\AccessModifier');
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('tokens', 2, 'array<string|array>');
             }
             if ($argumentCount < 4) {
-                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('isStatic', 3, 'boolean');
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('accessModifier', 3, 'Icecave\\Pasta\\AST\\Type\\AccessModifier');
             }
             if ($argumentCount < 5) {
-                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('isAbstract', 4, 'boolean');
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('isStatic', 4, 'boolean');
             }
             if ($argumentCount < 6) {
                 throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('source', 5, 'string');
@@ -463,16 +382,16 @@ class ClassMapperTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
         } elseif ($argumentCount > 7) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(7, $arguments[7]);
         }
-        $value = $arguments[0];
+        $value = $arguments[1];
         if (!(\is_array($value) && \array_keys($value) === \range(0, 2) && \is_int($value[0]) && \is_string($value[1]) && \is_int($value[2]))) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
                 'token',
-                0,
-                $arguments[0],
+                1,
+                $arguments[1],
                 'tuple<integer, string, integer>'
             );
         }
-        $value = $arguments[1];
+        $value = $arguments[2];
         $check = function ($value) {
             if (!\is_array($value)) {
                 return false;
@@ -484,27 +403,18 @@ class ClassMapperTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
             }
             return true;
         };
-        if (!$check($arguments[1])) {
+        if (!$check($arguments[2])) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
                 'tokens',
-                1,
-                $arguments[1],
+                2,
+                $arguments[2],
                 'array<string|array>'
-            );
-        }
-        $value = $arguments[3];
-        if (!\is_bool($value)) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
-                'isStatic',
-                3,
-                $arguments[3],
-                'boolean'
             );
         }
         $value = $arguments[4];
         if (!\is_bool($value)) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
-                'isAbstract',
+                'isStatic',
                 4,
                 $arguments[4],
                 'boolean'
@@ -525,6 +435,102 @@ class ClassMapperTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
                 'lineNumber',
                 6,
                 $arguments[6],
+                'integer'
+            );
+        }
+    }
+
+    public function parseMethod(array $arguments)
+    {
+        $argumentCount = \count($arguments);
+        if ($argumentCount < 8) {
+            if ($argumentCount < 1) {
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('className', 0, 'Eloquent\\Cosmos\\ClassName');
+            }
+            if ($argumentCount < 2) {
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('token', 1, 'tuple<integer, string, integer>');
+            }
+            if ($argumentCount < 3) {
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('tokens', 2, 'array<string|array>');
+            }
+            if ($argumentCount < 4) {
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('accessModifier', 3, 'Icecave\\Pasta\\AST\\Type\\AccessModifier');
+            }
+            if ($argumentCount < 5) {
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('isStatic', 4, 'boolean');
+            }
+            if ($argumentCount < 6) {
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('isAbstract', 5, 'boolean');
+            }
+            if ($argumentCount < 7) {
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('source', 6, 'string');
+            }
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('lineNumber', 7, 'integer');
+        } elseif ($argumentCount > 8) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(8, $arguments[8]);
+        }
+        $value = $arguments[1];
+        if (!(\is_array($value) && \array_keys($value) === \range(0, 2) && \is_int($value[0]) && \is_string($value[1]) && \is_int($value[2]))) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
+                'token',
+                1,
+                $arguments[1],
+                'tuple<integer, string, integer>'
+            );
+        }
+        $value = $arguments[2];
+        $check = function ($value) {
+            if (!\is_array($value)) {
+                return false;
+            }
+            foreach ($value as $key => $subValue) {
+                if (!(\is_string($subValue) || \is_array($subValue))) {
+                    return false;
+                }
+            }
+            return true;
+        };
+        if (!$check($arguments[2])) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
+                'tokens',
+                2,
+                $arguments[2],
+                'array<string|array>'
+            );
+        }
+        $value = $arguments[4];
+        if (!\is_bool($value)) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
+                'isStatic',
+                4,
+                $arguments[4],
+                'boolean'
+            );
+        }
+        $value = $arguments[5];
+        if (!\is_bool($value)) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
+                'isAbstract',
+                5,
+                $arguments[5],
+                'boolean'
+            );
+        }
+        $value = $arguments[6];
+        if (!\is_string($value)) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
+                'source',
+                6,
+                $arguments[6],
+                'string'
+            );
+        }
+        $value = $arguments[7];
+        if (!\is_int($value)) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
+                'lineNumber',
+                7,
+                $arguments[7],
                 'integer'
             );
         }

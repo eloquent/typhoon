@@ -24,7 +24,6 @@ use Eloquent\Typhoon\CodeAnalysis\Issue\IssueRenderer;
 use Eloquent\Typhoon\CodeAnalysis\Issue\IssueSeverity;
 use Eloquent\Typhoon\Configuration\Configuration;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
-use Icecave\Pasta\AST\Type\AccessModifier;
 use Phake;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;

@@ -250,6 +250,10 @@ class ClassMapper
         $this->typeCheck->parseClassDefinition(func_get_args());
 
         $className = $this->parseClassName($tokens);
+        if (null !== $namespaceName) {
+            $className = $namespaceName->join($className);
+        }
+
         $methods = array();
         $properties = array();
         $inClassBody = false;
@@ -285,6 +289,7 @@ class ClassMapper
 
                     if (T_FUNCTION === $token[0]) {
                         $methods[] = $this->parseMethod(
+                            $className,
                             $token,
                             $tokens,
                             $accessModifier,
@@ -295,6 +300,7 @@ class ClassMapper
                         );
                     } elseif (T_VARIABLE === $token[0]) {
                         $properties[] = $this->parseProperty(
+                            $className,
                             $token,
                             $tokens,
                             $accessModifier,
@@ -312,10 +318,6 @@ class ClassMapper
             } elseif ('{' === $token[0]) {
                 $inClassBody = true;
             }
-        }
-
-        if (null !== $namespaceName) {
-            $className = $namespaceName->join($className);
         }
 
         return new ClassDefinition(
@@ -379,6 +381,7 @@ class ClassMapper
     }
 
     /**
+     * @param ClassName                     $className
      * @param tuple<integer,string,integer> $token
      * @param array<string|array>           &$tokens
      * @param AccessModifier                $accessModifier
@@ -389,6 +392,7 @@ class ClassMapper
      * @return PropertyDefinition
      */
     protected function parseProperty(
+        ClassName $className,
         array $token,
         array &$tokens,
         AccessModifier $accessModifier,
@@ -409,6 +413,7 @@ class ClassMapper
         }
 
         return new PropertyDefinition(
+            $className,
             $name,
             $isStatic,
             $accessModifier,
@@ -418,6 +423,7 @@ class ClassMapper
     }
 
     /**
+     * @param ClassName                     $className
      * @param tuple<integer,string,integer> $token
      * @param array<string|array>           &$tokens
      * @param AccessModifier                $accessModifier
@@ -429,6 +435,7 @@ class ClassMapper
      * @return MethodDefinition
      */
     protected function parseMethod(
+        ClassName $className,
         array $token,
         array &$tokens,
         AccessModifier $accessModifier,
@@ -467,6 +474,7 @@ class ClassMapper
         }
 
         return new MethodDefinition(
+            $className,
             $name,
             $isStatic,
             $isAbstract,
