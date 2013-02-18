@@ -6,12 +6,26 @@ class ProjectAnalyzerTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValid
     public function validateConstruct(array $arguments)
     {
         $argumentCount = \count($arguments);
-        if ($argumentCount > 1) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
+        if ($argumentCount > 3) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(3, $arguments[3]);
         }
     }
 
     public function classMapper(array $arguments)
+    {
+        if (\count($arguments) > 0) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(0, $arguments[0]);
+        }
+    }
+
+    public function parameterListParser(array $arguments)
+    {
+        if (\count($arguments) > 0) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(0, $arguments[0]);
+        }
+    }
+
+    public function mergeTool(array $arguments)
     {
         if (\count($arguments) > 0) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(0, $arguments[0]);
@@ -31,35 +45,38 @@ class ProjectAnalyzerTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValid
     public function analyzeClass(array $arguments)
     {
         $argumentCount = \count($arguments);
-        if ($argumentCount < 3) {
+        if ($argumentCount < 4) {
             if ($argumentCount < 1) {
-                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('classDefinition', 0, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition');
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('configuration', 0, 'Eloquent\\Typhoon\\Configuration\\Configuration');
             }
             if ($argumentCount < 2) {
-                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('facadeClassName', 1, 'Eloquent\\Cosmos\\ClassName');
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('classDefinition', 1, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition');
             }
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('issues', 2, 'array<Eloquent\\Typhoon\\CodeAnalysis\\Issue\\Issue>');
-        } elseif ($argumentCount > 3) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(3, $arguments[3]);
+            if ($argumentCount < 3) {
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('facadeClassName', 2, 'Eloquent\\Cosmos\\ClassName');
+            }
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('issues', 3, 'array<Eloquent\\Typhoon\\CodeAnalysis\\Issue\\IssueInterface>');
+        } elseif ($argumentCount > 4) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(4, $arguments[4]);
         }
-        $value = $arguments[2];
+        $value = $arguments[3];
         $check = function ($value) {
             if (!\is_array($value)) {
                 return false;
             }
             foreach ($value as $key => $subValue) {
-                if (!$subValue instanceof \Eloquent\Typhoon\CodeAnalysis\Issue\Issue) {
+                if (!$subValue instanceof \Eloquent\Typhoon\CodeAnalysis\Issue\IssueInterface) {
                     return false;
                 }
             }
             return true;
         };
-        if (!$check($arguments[2])) {
+        if (!$check($arguments[3])) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
                 'issues',
-                2,
-                $arguments[2],
-                'array<Eloquent\\Typhoon\\CodeAnalysis\\Issue\\Issue>'
+                3,
+                $arguments[3],
+                'array<Eloquent\\Typhoon\\CodeAnalysis\\Issue\\IssueInterface>'
             );
         }
     }
@@ -195,6 +212,16 @@ class ProjectAnalyzerTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValid
     }
 
     public function classImplementsSerializable(array $arguments)
+    {
+        $argumentCount = \count($arguments);
+        if ($argumentCount < 1) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('classDefinition', 0, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition');
+        } elseif ($argumentCount > 1) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
+        }
+    }
+
+    public function createClassNameResolver(array $arguments)
     {
         $argumentCount = \count($arguments);
         if ($argumentCount < 1) {

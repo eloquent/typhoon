@@ -94,18 +94,21 @@ class ProjectValidatorGenerator
     {
         $this->typeCheck->generate(func_get_args());
 
-        $this->generateClassValidators($configuration);
-        $this->generateStaticClasses($configuration);
+        $this->generateClassValidators($configuration, $generatedPaths);
+        $this->generateStaticClasses($configuration, $generatedPaths);
+        $this->cleanDirectory($configuration->outputPath(), $generatedPaths);
     }
 
     /**
      * @param Configuration $configuration
+     * @param null          &$generatedPaths
      */
-    protected function generateClassValidators(Configuration $configuration)
+    protected function generateClassValidators(Configuration $configuration, &$generatedPaths)
     {
         $this->typeCheck->generateClassValidators(func_get_args());
 
         $sourcePaths = $configuration->sourcePaths();
+        $generatedPaths = array();
         foreach ($this->classMapper()->classesByPaths($sourcePaths) as $classDefinition) {
             $className = null;
             $source = $this->validatorClassGenerator()->generate(
@@ -114,20 +117,20 @@ class ProjectValidatorGenerator
                 $className
             );
 
-            $this->isolator->file_put_contents(
-                $this->prepareOutputPath(
-                    $configuration,
-                    $className
-                ),
-                $source
+            $generatedPaths[] = $generatedPath = $this->prepareOutputPath(
+                $configuration,
+                $className
             );
+            $this->isolator->file_put_contents($generatedPath, $source);
         }
+
     }
 
     /**
      * @param Configuration $configuration
+     * @param array<string> &$generatedPaths
      */
-    protected function generateStaticClasses(Configuration $configuration)
+    protected function generateStaticClasses(Configuration $configuration, array &$generatedPaths)
     {
         $this->typeCheck->generateStaticClasses(func_get_args());
 
@@ -138,13 +141,11 @@ class ProjectValidatorGenerator
                 $className
             );
 
-            $this->isolator->file_put_contents(
-                $this->prepareOutputPath(
-                    $configuration,
-                    $className
-                ),
-                $source
+            $generatedPaths[] = $generatedPath = $this->prepareOutputPath(
+                $configuration,
+                $className
             );
+            $this->isolator->file_put_contents($generatedPath, $source);
         }
     }
 
@@ -203,6 +204,75 @@ class ProjectValidatorGenerator
             str_replace('_', '/', $className->shortName()->string()).
             '.php'
         ;
+    }
+
+    /**
+     * @param string        $path
+     * @param array<string> $generatedPaths
+     */
+    protected function cleanPath($path, array $generatedPaths)
+    {
+        $this->typeCheck->cleanPath(func_get_args());
+
+        if ($this->isolator->is_dir($path)) {
+            $this->cleanDirectory($path, $generatedPaths);
+        } else {
+            $this->cleanFile($path, $generatedPaths);
+        }
+    }
+
+    /**
+     * @param string        $path
+     * @param array<string> $generatedPaths
+     */
+    protected function cleanFile($path, array $generatedPaths)
+    {
+        $this->typeCheck->cleanFile(func_get_args());
+
+        if (!in_array($path, $generatedPaths)) {
+            $this->isolator->unlink($path);
+        }
+    }
+
+    /**
+     * @param string        $path
+     * @param array<string> $generatedPaths
+     */
+    protected function cleanDirectory($path, array $generatedPaths)
+    {
+        $this->typeCheck->cleanDirectory(func_get_args());
+
+        foreach ($this->directoryListing($path) as $subPath) {
+            $this->cleanPath($subPath, $generatedPaths);
+        }
+
+        if (array() === $this->directoryListing($path)) {
+            $this->isolator->rmdir($path);
+        }
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return array<string>
+     */
+    protected function directoryListing($path)
+    {
+        $this->typeCheck->directoryListing(func_get_args());
+
+        $subPaths = array();
+        foreach ($this->isolator->scandir($path) as $subPath) {
+            if (
+                '.' === $subPath ||
+                '..' === $subPath
+            ) {
+                continue;
+            }
+
+            $subPaths[] = sprintf('%s/%s', $path, $subPath);
+        }
+
+        return $subPaths;
     }
 
     private $classMapper;

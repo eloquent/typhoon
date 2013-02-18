@@ -156,6 +156,10 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
             ->thenReturn(false)
             ->thenReturn(true)
         ;
+        Phake::when($this->_generator)
+            ->cleanDirectory(Phake::anyParameters())
+            ->thenReturn(null)
+        ;
         $this->_generator->generate($configuration);
 
         Phake::inOrder(
@@ -199,13 +203,20 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
             Phake::verify($this->_isolator)->file_put_contents(
                 'foo/Namespace/Name/Static/Class/B.php',
                 'Static class B source'
-            )
+            ),
+            Phake::verify($this->_generator)->cleanDirectory('foo', Phake::capture($generatedPaths))
         );
         Phake::verify($this->_isolator, Phake::never())->mkdir(
             'foo/Namespace/Name/A/Class/Name',
             $this->anything(),
             $this->anything()
         );
+        $this->assertSame(array(
+            'foo/Namespace/Name/A/Class/Name/A.php',
+            'foo/Namespace/Name/B/Class/Name/B.php',
+            'foo/Namespace/Name/Static/Class/A.php',
+            'foo/Namespace/Name/Static/Class/B.php',
+        ), $generatedPaths);
     }
 
     public function testPSRPath()
@@ -216,5 +227,49 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
             'Foo/Bar_Baz/Qux/Doom/Splat/Pip.php',
             Liberator::liberate($this->_generator)->PSRPath($className)
         );
+    }
+
+    public function testCleanPath()
+    {
+        Phake::when($this->_isolator)
+            ->is_dir(Phake::anyParameters())
+            ->thenReturn(true)
+            ->thenReturn(true)
+            ->thenReturn(false)
+            ->thenReturn(false)
+            ->thenReturn(true)
+            ->thenReturn(false)
+            ->thenReturn(false)
+            ->thenReturn(false)
+            ->thenReturn(false)
+        ;
+        Phake::when($this->_isolator)
+            ->scandir(Phake::anyParameters())
+            ->thenReturn(array('.', '..', 'A', 'B', 'A.php', 'B.php'))
+            ->thenReturn(array('.', '..', 'A.php', 'B.php'))
+            ->thenReturn(array('.', '..', 'A.php'))
+            ->thenReturn(array('.', '..', 'A.php', 'B.php'))
+            ->thenReturn(array('.', '..'))
+            ->thenReturn(array('.', '..', 'A', 'A.php'))
+        ;
+        Liberator::liberate($this->_generator)->cleanPath(
+            'foo',
+            array(
+                'foo/A/A.php',
+                'foo/A.php',
+            )
+        );
+
+        Phake::inOrder(
+            Phake::verify($this->_isolator)->unlink('foo/A/B.php'),
+            Phake::verify($this->_isolator)->unlink('foo/B/A.php'),
+            Phake::verify($this->_isolator)->unlink('foo/B/B.php'),
+            Phake::verify($this->_isolator)->rmdir('foo/B'),
+            Phake::verify($this->_isolator)->unlink('foo/B.php')
+        );
+        Phake::verify($this->_isolator, Phake::never())->unlink('foo/A/A.php');
+        Phake::verify($this->_isolator, Phake::never())->rmdir('foo/A');
+        Phake::verify($this->_isolator, Phake::never())->unlink('foo/A.php');
+        Phake::verify($this->_isolator, Phake::never())->rmdir('foo');
     }
 }

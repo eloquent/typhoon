@@ -11,21 +11,40 @@
 
 namespace Eloquent\Typhoon\CodeAnalysis\Issue;
 
+use Eloquent\Typhax\Renderer\TypeRenderer;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 
-class IssueRenderer implements IssueVisitor
+class IssueRenderer implements IssueVisitorInterface
 {
-    public function __construct()
+    /**
+     * @param TypeRenderer|null $typeRenderer
+     */
+    public function __construct(TypeRenderer $typeRenderer = null)
     {
         $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
+        if (null === $typeRenderer) {
+            $typeRenderer = new TypeRenderer;
+        }
+
+        $this->typeRenderer = $typeRenderer;
     }
 
     /**
-     * @param ClassRelated\MissingConstructorCall $issue
+     * @return TypeRenderer
+     */
+    public function typeRenderer()
+    {
+        $this->typeCheck->typeRenderer(func_get_args());
+
+        return $this->typeRenderer;
+    }
+
+    /**
+     * @param ClassIssue\MissingConstructorCall $issue
      *
      * @return string
      */
-    public function visitMissingConstructorCall(ClassRelated\MissingConstructorCall $issue)
+    public function visitMissingConstructorCall(ClassIssue\MissingConstructorCall $issue)
     {
         $this->typeCheck->visitMissingConstructorCall(func_get_args());
 
@@ -33,11 +52,11 @@ class IssueRenderer implements IssueVisitor
     }
 
     /**
-     * @param ClassRelated\MissingProperty $issue
+     * @param ClassIssue\MissingProperty $issue
      *
      * @return string
      */
-    public function visitMissingProperty(ClassRelated\MissingProperty $issue)
+    public function visitMissingProperty(ClassIssue\MissingProperty $issue)
     {
         $this->typeCheck->visitMissingProperty(func_get_args());
 
@@ -45,34 +64,132 @@ class IssueRenderer implements IssueVisitor
     }
 
     /**
-     * @param MethodRelated\InadmissibleMethodCall $issue
+     * @param MethodIssue\InadmissibleMethodCall $issue
      *
      * @return string
      */
-    public function visitInadmissibleMethodCall(MethodRelated\InadmissibleMethodCall $issue)
+    public function visitInadmissibleMethodCall(MethodIssue\InadmissibleMethodCall $issue)
     {
         $this->typeCheck->visitInadmissibleMethodCall(func_get_args());
 
+        return 'Type check call should not be present.';
+    }
+
+    /**
+     * @param MethodIssue\MissingMethodCall $issue
+     *
+     * @return string
+     */
+    public function visitMissingMethodCall(MethodIssue\MissingMethodCall $issue)
+    {
+        $this->typeCheck->visitMissingMethodCall(func_get_args());
+
+        return 'Incorrect or missing type check call.';
+    }
+
+    /**
+     * @param ParameterIssue\DefinedParameterVariableLength $issue
+     *
+     * @return string
+     */
+    public function visitDefinedParameterVariableLength(ParameterIssue\DefinedParameterVariableLength $issue)
+    {
+        $this->typeCheck->visitDefinedParameterVariableLength(func_get_args());
+
         return sprintf(
-            'Type check call should not be present in method %s().',
-            $issue->methodDefinition()->name()
+            'Variable-length parameter $%s should only be documented, not defined.',
+            $issue->parameterName()
         );
     }
 
     /**
-     * @param MethodRelated\MissingMethodCall $issue
+     * @param ParameterIssue\DocumentedParameterByReferenceMismatch $issue
      *
      * @return string
      */
-    public function visitMissingMethodCall(MethodRelated\MissingMethodCall $issue)
+    public function visitDocumentedParameterByReferenceMismatch(ParameterIssue\DocumentedParameterByReferenceMismatch $issue)
     {
-        $this->typeCheck->visitMissingMethodCall(func_get_args());
+        $this->typeCheck->visitDocumentedParameterByReferenceMismatch(func_get_args());
+
+        if ($issue->isByReference()) {
+            $nativeVariableType = 'by-reference';
+            $documentedVariableType = 'by-value';
+        } else {
+            $nativeVariableType = 'by-value';
+            $documentedVariableType = 'by-reference';
+        }
 
         return sprintf(
-            'Incorrect or missing type check call in method %s().',
-            $issue->methodDefinition()->name()
+            'Parameter $%s is defined as %s but documented as %s.',
+            $issue->parameterName(),
+            $nativeVariableType,
+            $documentedVariableType
         );
     }
 
+    /**
+     * @param ParameterIssue\DocumentedParameterNameMismatch $issue
+     *
+     * @return string
+     */
+    public function visitDocumentedParameterNameMismatch(ParameterIssue\DocumentedParameterNameMismatch $issue)
+    {
+        $this->typeCheck->visitDocumentedParameterNameMismatch(func_get_args());
+
+        return sprintf(
+            'Documented parameter name $%s does not match defined parameter name $%s.',
+            $issue->documentedParameterName(),
+            $issue->parameterName()
+        );
+    }
+
+    /**
+     * @param ParameterIssue\DocumentedParameterTypeMismatch $issue
+     *
+     * @return string
+     */
+    public function visitDocumentedParameterTypeMismatch(ParameterIssue\DocumentedParameterTypeMismatch $issue)
+    {
+        $this->typeCheck->visitDocumentedParameterTypeMismatch(func_get_args());
+
+        return sprintf(
+            "Documented type '%s' is not correct for defined type '%s' of parameter $%s.",
+            $issue->documentedType()->accept($this->typeRenderer()),
+            $issue->type()->accept($this->typeRenderer()),
+            $issue->parameterName()
+        );
+    }
+
+    /**
+     * @param ParameterIssue\DocumentedParameterUndefined $issue
+     *
+     * @return string
+     */
+    public function visitDocumentedParameterUndefined(ParameterIssue\DocumentedParameterUndefined $issue)
+    {
+        $this->typeCheck->visitDocumentedParameterUndefined(func_get_args());
+
+        return sprintf(
+            'Documented parameter $%s not defined.',
+            $issue->parameterName()
+        );
+    }
+
+    /**
+     * @param ParameterIssue\UndocumentedParameter $issue
+     *
+     * @return string
+     */
+    public function visitUndocumentedParameter(ParameterIssue\UndocumentedParameter $issue)
+    {
+        $this->typeCheck->visitUndocumentedParameter(func_get_args());
+
+        return sprintf(
+            'Parameter $%s is not documented.',
+            $issue->parameterName()
+        );
+    }
+
+    private $typeRenderer;
     private $typeCheck;
 }

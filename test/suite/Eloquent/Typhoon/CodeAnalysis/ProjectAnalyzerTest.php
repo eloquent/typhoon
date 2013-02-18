@@ -14,7 +14,6 @@ namespace Eloquent\Typhoon\CodeAnalysis;
 use Eloquent\Typhoon\ClassMapper\ClassMapper;
 use Eloquent\Typhoon\Configuration\Configuration;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
-use Phake;
 
 class ProjectAnalyzerTest extends MultiGenerationTestCase
 {
@@ -54,48 +53,114 @@ class ProjectAnalyzerTest extends MultiGenerationTestCase
         $actual = $this->_analyzer->analyze($configuration);
         $expected = array(
             array(
-                'Eloquent\Typhoon\CodeAnalysis\Issue\MethodRelated\InadmissibleMethodCall',
+                'Eloquent\Typhoon\CodeAnalysis\Issue\MethodIssue\InadmissibleMethodCall',
                 '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\CallInDestructor',
                 '__destruct',
             ),
             array(
-                'Eloquent\Typhoon\CodeAnalysis\Issue\MethodRelated\InadmissibleMethodCall',
+                'Eloquent\Typhoon\CodeAnalysis\Issue\MethodIssue\InadmissibleMethodCall',
                 '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\CallInToString',
                 '__toString',
             ),
             array(
-                'Eloquent\Typhoon\CodeAnalysis\Issue\MethodRelated\MissingMethodCall',
+                'Eloquent\Typhoon\CodeAnalysis\Issue\MethodIssue\MissingMethodCall',
                 '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\MissingCalls',
                 'bar',
             ),
             array(
-                'Eloquent\Typhoon\CodeAnalysis\Issue\MethodRelated\MissingMethodCall',
+                'Eloquent\Typhoon\CodeAnalysis\Issue\MethodIssue\MissingMethodCall',
                 '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\MissingCalls',
                 'baz',
             ),
             array(
-                'Eloquent\Typhoon\CodeAnalysis\Issue\MethodRelated\MissingMethodCall',
+                'Eloquent\Typhoon\CodeAnalysis\Issue\MethodIssue\MissingMethodCall',
                 '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\MissingCalls',
                 'foo',
             ),
             array(
-                'Eloquent\Typhoon\CodeAnalysis\Issue\ClassRelated\MissingConstructorCall',
+                'Eloquent\Typhoon\CodeAnalysis\Issue\ClassIssue\MissingConstructorCall',
                 '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\MissingConstructorCall',
             ),
             array(
-                'Eloquent\Typhoon\CodeAnalysis\Issue\ClassRelated\MissingProperty',
+                'Eloquent\Typhoon\CodeAnalysis\Issue\ClassIssue\MissingProperty',
                 '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\MissingProperty',
             ),
             array(
-                'Eloquent\Typhoon\CodeAnalysis\Issue\ClassRelated\MissingConstructorCall',
+                'Eloquent\Typhoon\CodeAnalysis\Issue\ClassIssue\MissingConstructorCall',
                 '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\NoConstructor',
             ),
             array(
-                'Eloquent\Typhoon\CodeAnalysis\Issue\ClassRelated\MissingProperty',
+                'Eloquent\Typhoon\CodeAnalysis\Issue\ClassIssue\MissingProperty',
                 '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\NonPrivateProperty',
             ),
             array(
-                'Eloquent\Typhoon\CodeAnalysis\Issue\ClassRelated\MissingProperty',
+                'Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DefinedParameterVariableLength',
+                '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\ParameterListIssues',
+                'definedParameterVariableLength',
+                'one',
+            ),
+            array(
+                'Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterByReferenceMismatch',
+                '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\ParameterListIssues',
+                'documentedParameterByReferenceMismatch',
+                'one',
+            ),
+            array(
+                'Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterByReferenceMismatch',
+                '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\ParameterListIssues',
+                'documentedParameterByReferenceMismatch',
+                'two',
+            ),
+            array(
+                'Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterNameMismatch',
+                '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\ParameterListIssues',
+                'documentedParameterNameMismatch',
+                'one',
+            ),
+            array(
+                'Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterNameMismatch',
+                '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\ParameterListIssues',
+                'documentedParameterNameMismatch',
+                'two',
+            ),
+            array(
+                'Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterTypeMismatch',
+                '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\ParameterListIssues',
+                'documentedParameterTypeMismatch',
+                'one',
+            ),
+            array(
+                'Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterTypeMismatch',
+                '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\ParameterListIssues',
+                'documentedParameterTypeMismatch',
+                'two',
+            ),
+            array(
+                'Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterUndefined',
+                '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\ParameterListIssues',
+                'documentedParameterUndefined',
+                'one',
+            ),
+            array(
+                'Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterUndefined',
+                '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\ParameterListIssues',
+                'documentedParameterUndefined',
+                'two',
+            ),
+            array(
+                'Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\UndocumentedParameter',
+                '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\ParameterListIssues',
+                'undocumentedParameter',
+                'one',
+            ),
+            array(
+                'Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\UndocumentedParameter',
+                '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\ParameterListIssues',
+                'undocumentedParameter',
+                'two',
+            ),
+            array(
+                'Eloquent\Typhoon\CodeAnalysis\Issue\ClassIssue\MissingProperty',
                 '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\StaticProperty',
             ),
         );
@@ -114,6 +179,7 @@ class ProjectAnalyzerTest extends MultiGenerationTestCase
         );
         $actual = $this->_analyzer->analyze($configuration);
 
+        $this->assertAnalysisResult(array(), $actual);
         $this->assertFalse($actual->isError());
     }
 
@@ -122,29 +188,40 @@ class ProjectAnalyzerTest extends MultiGenerationTestCase
         $issues = $actual->issues();
         $sort = array();
         foreach ($issues as $issue) {
-            if ($issue instanceof Issue\ClassRelated\ClassRelatedIssue) {
-                $sort[] = $issue->classDefinition()->className()->string();
-            } else {
-                $sort[] = '';
+            $sortString = '';
+            if ($issue instanceof Issue\ClassRelatedIssueInterface) {
+                $sortString .= $issue->classDefinition()->className()->string();
             }
+            if ($issue instanceof Issue\MethodRelatedIssueInterface) {
+                $sortString .= '.'.$issue->methodDefinition()->name();
+            }
+            if ($issue instanceof Issue\ParameterRelatedIssueInterface) {
+                $sortString .= '.'.$issue->parameterName();
+            }
+
+            $sort[] = $sortString;
         }
         array_multisort($sort, SORT_STRING, $issues);
 
-        $actualArray = '';
+        $actualArray = array();
         foreach ($issues as $issue) {
             $actualArrayEntry = array(
                 get_class($issue)
             );
-            if ($issue instanceof Issue\ClassRelated\ClassRelatedIssue) {
+            if ($issue instanceof Issue\ClassRelatedIssueInterface) {
                 $actualArrayEntry[] = $issue->classDefinition()->className()->string();
             }
-            if ($issue instanceof Issue\MethodRelated\MethodRelatedIssue) {
+            if ($issue instanceof Issue\MethodRelatedIssueInterface) {
                 $actualArrayEntry[] = $issue->methodDefinition()->name();
+            }
+            if ($issue instanceof Issue\ParameterRelatedIssueInterface) {
+                $actualArrayEntry[] = $issue->parameterName();
             }
 
             $actualArray[] = $actualArrayEntry;
         }
 
+        $this->assertEquals($expected, $actualArray);
         $this->assertSame($expected, $actualArray);
     }
 }

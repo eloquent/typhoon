@@ -1,0 +1,18 @@
+<phpunit
+    bootstrap="vendor/icecave/archer/res/phpunit/bootstrap.php"
+    strict="true"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+    mapTestClassNameToCoveredClassName="true"
+    verbose="true"
+    colors="true"
+    timeoutForSmallTests="60"
+>
+    <testsuites>
+        <testsuite>
+            <directory>test/suite</directory>
+            <directory>test/suite-deploy</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

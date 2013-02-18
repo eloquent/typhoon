@@ -16,7 +16,7 @@ class AnalysisResultTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValida
                     return false;
                 }
                 foreach ($value as $key => $subValue) {
-                    if (!$subValue instanceof \Eloquent\Typhoon\CodeAnalysis\Issue\Issue) {
+                    if (!$subValue instanceof \Eloquent\Typhoon\CodeAnalysis\Issue\IssueInterface) {
                         return false;
                     }
                 }
@@ -27,7 +27,7 @@ class AnalysisResultTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValida
                     'issues',
                     0,
                     $arguments[0],
-                    'array<Eloquent\\Typhoon\\CodeAnalysis\\Issue\\Issue>'
+                    'array<Eloquent\\Typhoon\\CodeAnalysis\\Issue\\IssueInterface>'
                 );
             }
         }
@@ -50,13 +50,39 @@ class AnalysisResultTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValida
         }
     }
 
-    public function issuesBySeverityByClass(array $arguments)
+    public function classNamesBySeverity(array $arguments)
     {
         $argumentCount = \count($arguments);
         if ($argumentCount < 1) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('severity', 0, 'Eloquent\\Typhoon\\CodeAnalysis\\Issue\\IssueSeverity');
         } elseif ($argumentCount > 1) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
+        }
+    }
+
+    public function classIssuesBySeverityAndClass(array $arguments)
+    {
+        $argumentCount = \count($arguments);
+        if ($argumentCount < 2) {
+            if ($argumentCount < 1) {
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('severity', 0, 'Eloquent\\Typhoon\\CodeAnalysis\\Issue\\IssueSeverity');
+            }
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('className', 1, 'Eloquent\\Cosmos\\ClassName');
+        } elseif ($argumentCount > 2) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(2, $arguments[2]);
+        }
+    }
+
+    public function methodRelatedIssuesBySeverityAndClass(array $arguments)
+    {
+        $argumentCount = \count($arguments);
+        if ($argumentCount < 2) {
+            if ($argumentCount < 1) {
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('severity', 0, 'Eloquent\\Typhoon\\CodeAnalysis\\Issue\\IssueSeverity');
+            }
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('className', 1, 'Eloquent\\Cosmos\\ClassName');
+        } elseif ($argumentCount > 2) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(2, $arguments[2]);
         }
     }
 

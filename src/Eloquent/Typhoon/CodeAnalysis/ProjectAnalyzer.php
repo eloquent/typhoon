@@ -12,27 +12,44 @@
 namespace Eloquent\Typhoon\CodeAnalysis;
 
 use Eloquent\Cosmos\ClassName;
+use Eloquent\Typhax\Resolver\ObjectTypeClassNameResolver;
 use Eloquent\Typhoon\ClassMapper\ClassDefinition;
 use Eloquent\Typhoon\ClassMapper\ClassMapper;
 use Eloquent\Typhoon\ClassMapper\MethodDefinition;
 use Eloquent\Typhoon\Configuration\Configuration;
+use Eloquent\Typhoon\Generator\ParameterListMerge\MergeTool;
+use Eloquent\Typhoon\Parameter\ParameterList;
+use Eloquent\Typhoon\Parser\ParameterListParser;
+use Eloquent\Typhoon\Resolver\ParameterListClassNameResolver;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Icecave\Pasta\AST\Type\AccessModifier;
 
 class ProjectAnalyzer
 {
     /**
-     * @param ClassMapper|null $classMapper
+     * @param ClassMapper|null         $classMapper
+     * @param ParameterListParser|null $parameterListParser
+     * @param MergeTool|null           $mergeTool
      */
     public function __construct(
-        ClassMapper $classMapper = null
+        ClassMapper $classMapper = null,
+        ParameterListParser $parameterListParser = null,
+        MergeTool $mergeTool = null
     ) {
         $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
         if (null === $classMapper) {
             $classMapper = new ClassMapper;
         }
+        if (null === $parameterListParser) {
+            $parameterListParser = new ParameterListParser;
+        }
+        if (null === $mergeTool) {
+            $mergeTool = new MergeTool(false);
+        }
 
         $this->classMapper = $classMapper;
+        $this->parameterListParser = $parameterListParser;
+        $this->mergeTool = $mergeTool;
     }
 
     /**
@@ -43,6 +60,26 @@ class ProjectAnalyzer
         $this->typeCheck->classMapper(func_get_args());
 
         return $this->classMapper;
+    }
+
+    /**
+     * @return ParameterListParser
+     */
+    public function parameterListParser()
+    {
+        $this->typeCheck->parameterListParser(func_get_args());
+
+        return $this->parameterListParser;
+    }
+
+    /**
+     * @return MergeTool
+     */
+    public function mergeTool()
+    {
+        $this->typeCheck->mergeTool(func_get_args());
+
+        return $this->mergeTool;
     }
 
     /**
@@ -63,23 +100,24 @@ class ProjectAnalyzer
         $issues = array();
         foreach ($this->classMapper()->classesByPaths($sourcePaths) as $classDefinition) {
             $this->analyzeClass(
+                $configuration,
                 $classDefinition,
                 $facadeClassName,
                 $issues
             );
         }
 
-        return new AnalysisResult(
-            $issues
-        );
+        return new AnalysisResult($issues);
     }
 
     /**
-     * @param ClassDefinition    $classDefinition
-     * @param ClassName          $facadeClassName
-     * @param array<Issue\Issue> &$issues
+     * @param Configuration               $configuration
+     * @param ClassDefinition             $classDefinition
+     * @param ClassName                   $facadeClassName
+     * @param array<Issue\IssueInterface> &$issues
      */
     protected function analyzeClass(
+        Configuration $configuration,
         ClassDefinition $classDefinition,
         ClassName $facadeClassName,
         array &$issues
@@ -100,7 +138,7 @@ class ProjectAnalyzer
             if ($this->methodHasInit($methodDefinition, $expectedfacadeClassName, $propertyName)) {
                 $hasConstructorInit = true;
             } elseif (!$this->methodHasConstructorStaticCall($methodDefinition, $expectedfacadeClassName)) {
-                $issues[] = new Issue\ClassRelated\MissingConstructorCall(
+                $issues[] = new Issue\ClassIssue\MissingConstructorCall(
                     $classDefinition
                 );
             }
@@ -110,14 +148,14 @@ class ProjectAnalyzer
             switch ($methodDefinition->name()) {
                 case '__construct':
                 case '__wakeup':
-                    continue;
+                    break;
                 case '__destruct':
                 case '__toString':
                     if (
                         $this->methodHasCall($methodDefinition, $propertyName) ||
                         $this->methodHasStaticCall($methodDefinition, $expectedfacadeClassName)
                     ) {
-                        $issues[] = new Issue\MethodRelated\InadmissibleMethodCall(
+                        $issues[] = new Issue\MethodIssue\InadmissibleMethodCall(
                             $classDefinition,
                             $methodDefinition
                         );
@@ -125,11 +163,11 @@ class ProjectAnalyzer
                     break;
                 case 'unserialize':
                     if ($this->classImplementsSerializable($classDefinition)) {
-                        continue;
+                        break;
                     }
                 default:
                     if ($methodDefinition->isAbstract()) {
-                        continue;
+                        break;
                     }
 
                     $missingCall = false;
@@ -144,18 +182,47 @@ class ProjectAnalyzer
                     }
 
                     if ($missingCall) {
-                        $issues[] = new Issue\MethodRelated\MissingMethodCall(
+                        $issues[] = new Issue\MethodIssue\MissingMethodCall(
                             $classDefinition,
                             $methodDefinition
                         );
                     }
+            }
+
+            if (!$methodDefinition->isAbstract()) {
+                $methodReflector = $methodDefinition->createReflector();
+                $blockComment = $methodReflector->getDocComment();
+                if (false === $blockComment) {
+                    $documentedParameterList = new ParameterList;
+                } else {
+                    $documentedParameterList = $this->parameterListParser()
+                        ->parseBlockComment(
+                            $classDefinition->className(),
+                            $methodDefinition->name(),
+                            $blockComment
+                        )
+                    ;
+                }
+                $documentedParameterList = $documentedParameterList->accept(
+                    $this->createClassNameResolver($classDefinition)
+                );
+                $this->mergeTool()->clearIssues();
+                $this->mergeTool()->merge(
+                    $configuration,
+                    $classDefinition,
+                    $methodDefinition,
+                    $documentedParameterList,
+                    $this->parameterListParser()->parseReflector($methodReflector)
+                );
+
+                $issues = array_merge($issues, $this->mergeTool()->issues());
             }
         }
 
         if ($hasNonStaticCalls && !$hasConstructorInit) {
             array_unshift(
                 $issues,
-                new Issue\ClassRelated\MissingConstructorCall(
+                new Issue\ClassIssue\MissingConstructorCall(
                     $classDefinition
                 )
             );
@@ -172,7 +239,7 @@ class ProjectAnalyzer
             }
 
             if ($missingProperty) {
-                $issues[] = new Issue\ClassRelated\MissingProperty(
+                $issues[] = new Issue\ClassIssue\MissingProperty(
                     $classDefinition
                 );
             }
@@ -404,6 +471,24 @@ class ProjectAnalyzer
         return $classDefinition->createReflector()->implementsInterface('Serializable');
     }
 
+    /**
+     * @param ClassDefinition $classDefinition
+     *
+     * @return ParameterListClassNameResolver
+     */
+    protected function createClassNameResolver(ClassDefinition $classDefinition)
+    {
+        $this->typeCheck->createClassNameResolver(func_get_args());
+
+        return new ParameterListClassNameResolver(
+            new ObjectTypeClassNameResolver(
+                $classDefinition->classNameResolver()
+            )
+        );
+    }
+
     private $classMapper;
+    private $parameterListParser;
+    private $mergeTool;
     private $typeCheck;
 }

@@ -198,21 +198,11 @@ class ValidatorClassGeneratorTypeCheck extends \Eloquent\Typhoon\TypeCheck\Abstr
                 throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('configuration', 0, 'Eloquent\\Typhoon\\Configuration\\RuntimeConfiguration');
             }
             if ($argumentCount < 2) {
-                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('method', 1, 'ReflectionMethod');
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('classDefinition', 1, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition');
             }
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('classDefinition', 2, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition');
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('methodDefinition', 2, 'Eloquent\\Typhoon\\ClassMapper\\MethodDefinition');
         } elseif ($argumentCount > 3) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(3, $arguments[3]);
-        }
-    }
-
-    public function methods(array $arguments)
-    {
-        $argumentCount = \count($arguments);
-        if ($argumentCount < 1) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('classDefinition', 0, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition');
-        } elseif ($argumentCount > 1) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
         }
     }
 
@@ -233,7 +223,7 @@ class ValidatorClassGeneratorTypeCheck extends \Eloquent\Typhoon\TypeCheck\Abstr
     {
         $argumentCount = \count($arguments);
         if ($argumentCount < 1) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('method', 0, 'ReflectionMethod');
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('methodDefinition', 0, 'Eloquent\\Typhoon\\ClassMapper\\MethodDefinition');
         } elseif ($argumentCount > 1) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
         }
@@ -247,9 +237,9 @@ class ValidatorClassGeneratorTypeCheck extends \Eloquent\Typhoon\TypeCheck\Abstr
                 throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('configuration', 0, 'Eloquent\\Typhoon\\Configuration\\RuntimeConfiguration');
             }
             if ($argumentCount < 2) {
-                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('method', 1, 'ReflectionMethod');
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('classDefinition', 1, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition');
             }
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('classDefinition', 2, 'Eloquent\\Typhoon\\ClassMapper\\ClassDefinition');
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('methodDefinition', 2, 'Eloquent\\Typhoon\\ClassMapper\\MethodDefinition');
         } elseif ($argumentCount > 3) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(3, $arguments[3]);
         }

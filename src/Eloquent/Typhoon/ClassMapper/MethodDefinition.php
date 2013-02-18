@@ -1,4 +1,4 @@
-<?php // @codeCoverageIgnoreStart
+<?php
 
 /*
  * This file is part of the Typhoon package.
@@ -11,12 +11,15 @@
 
 namespace Eloquent\Typhoon\ClassMapper;
 
+use Eloquent\Cosmos\ClassName;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use Icecave\Pasta\AST\Type\AccessModifier;
+use ReflectionMethod;
 
 class MethodDefinition extends ClassMemberDefinition
 {
     /**
+     * @param ClassName      $className
      * @param string         $name
      * @param boolean        $isStatic
      * @param boolean        $isAbstract
@@ -25,6 +28,7 @@ class MethodDefinition extends ClassMemberDefinition
      * @param string         $source
      */
     public function __construct(
+        ClassName $className,
         $name,
         $isStatic,
         $isAbstract,
@@ -35,6 +39,7 @@ class MethodDefinition extends ClassMemberDefinition
         $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
 
         parent::__construct(
+            $className,
             $name,
             $isStatic,
             $accessModifier,
@@ -53,6 +58,16 @@ class MethodDefinition extends ClassMemberDefinition
         $this->typeCheck->isAbstract(func_get_args());
 
         return $this->isAbstract;
+    }
+
+    /**
+     * @return ReflectionMethod
+     */
+    public function createReflector()
+    {
+        $this->typeCheck->createReflector(func_get_args());
+
+        return new ReflectionMethod($this->className()->string(), $this->name());
     }
 
     private $isAbstract;

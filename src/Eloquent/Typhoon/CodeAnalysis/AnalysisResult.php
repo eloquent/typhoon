@@ -11,12 +11,13 @@
 
 namespace Eloquent\Typhoon\CodeAnalysis;
 
+use Eloquent\Cosmos\ClassName;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 
 class AnalysisResult
 {
     /**
-     * @param array<Issue\Issue> $issues
+     * @param array<Issue\IssueInterface> $issues
      */
     public function __construct(array $issues = array())
     {
@@ -25,7 +26,7 @@ class AnalysisResult
     }
 
     /**
-     * @return array<Issue\Issue>
+     * @return array<Issue\IssueInterface>
      */
     public function issues()
     {
@@ -37,7 +38,7 @@ class AnalysisResult
     /**
      * @param Issue\IssueSeverity $severity
      *
-     * @return array<Issue\Issue>
+     * @return array<Issue\IssueInterface>
      */
     public function issuesBySeverity(Issue\IssueSeverity $severity)
     {
@@ -56,21 +57,75 @@ class AnalysisResult
     /**
      * @param Issue\IssueSeverity $severity
      *
-     * @return array<string,array<Issue\Issue>>
+     * @return array<ClassName>
      */
-    public function issuesBySeverityByClass(Issue\IssueSeverity $severity)
+    public function classNamesBySeverity(Issue\IssueSeverity $severity)
     {
-        $this->typeCheck->issuesBySeverityByClass(func_get_args());
+        $this->typeCheck->classNamesBySeverity(func_get_args());
+
+        $classNames = array();
+        foreach ($this->issuesBySeverity($severity) as $issue) {
+            if (
+                $issue instanceof Issue\ClassRelatedIssueInterface &&
+                !in_array(
+                    $issue->classDefinition()->className(),
+                    $classNames
+                )
+            ) {
+                $classNames[] = $issue->classDefinition()->className();
+            }
+        }
+        sort($classNames, SORT_STRING);
+
+        return $classNames;
+    }
+
+    /**
+     * @param Issue\IssueSeverity $severity
+     * @param ClassName           $className
+     *
+     * @return array<Issue\IssueInterface>
+     */
+    public function classIssuesBySeverityAndClass(
+        Issue\IssueSeverity $severity,
+        ClassName $className
+    ) {
+        $this->typeCheck->classIssuesBySeverityAndClass(func_get_args());
 
         $issues = array();
         foreach ($this->issuesBySeverity($severity) as $issue) {
-            if ($issue instanceof Issue\ClassRelated\ClassRelatedIssue) {
-                $issues[$issue->classDefinition()->className()->string()][] =
-                    $issue
-                ;
+            if (
+                $issue instanceof Issue\ClassIssueInterface &&
+                $issue->classDefinition()->className()->isEqualTo($className)
+            ) {
+                $issues[] = $issue;
             }
         }
-        ksort($issues, SORT_STRING);
+
+        return $issues;
+    }
+
+    /**
+     * @param Issue\IssueSeverity $severity
+     * @param ClassName           $className
+     *
+     * @return array<Issue\IssueInterface>
+     */
+    public function methodRelatedIssuesBySeverityAndClass(
+        Issue\IssueSeverity $severity,
+        ClassName $className
+    ) {
+        $this->typeCheck->methodRelatedIssuesBySeverityAndClass(func_get_args());
+
+        $issues = array();
+        foreach ($this->issuesBySeverity($severity) as $issue) {
+            if (
+                $issue instanceof Issue\MethodRelatedIssueInterface &&
+                $issue->classDefinition()->className()->isEqualTo($className)
+            ) {
+                $issues[$issue->methodDefinition()->name()][] = $issue;
+            }
+        }
 
         return $issues;
     }

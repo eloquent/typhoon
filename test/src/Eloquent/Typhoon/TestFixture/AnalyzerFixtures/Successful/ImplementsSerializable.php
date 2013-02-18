@@ -26,6 +26,9 @@ class ImplementsSerializable implements Serializable
         $this->typeCheck->serialize(func_get_args());
     }
 
+    /**
+     * @param string $serialized
+     */
     public function unserialize($serialized)
     {
     }

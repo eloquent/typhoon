@@ -15,6 +15,7 @@ use Eloquent\Cosmos\ClassName;
 use Eloquent\Typhax\Resolver\ObjectTypeClassNameResolver;
 use Eloquent\Typhoon\ClassMapper\ClassDefinition;
 use Eloquent\Typhoon\ClassMapper\ClassMapper;
+use Eloquent\Typhoon\ClassMapper\MethodDefinition;
 use Eloquent\Typhoon\Configuration\RuntimeConfiguration;
 use Eloquent\Typhoon\Parameter\ParameterList;
 use Eloquent\Typhoon\Parser\ParameterListParser;
@@ -32,7 +33,6 @@ use Icecave\Pasta\AST\Type\ClassDefinition as ClassDefinitionASTNode;
 use Icecave\Pasta\AST\Type\ConcreteMethod;
 use Icecave\Rasta\Renderer;
 use ReflectionClass;
-use ReflectionMethod;
 
 class ValidatorClassGenerator
 {
@@ -248,9 +248,9 @@ class ValidatorClassGenerator
                 ->joinAtoms('AbstractValidator')
                 ->string()
         ));
-        foreach ($this->methods($classDefinition) as $method) {
+        foreach ($classDefinition->methods() as $methodDefinition) {
             $classDefinitionASTNode->add(
-                $this->generateMethod($configuration, $method, $classDefinition)
+                $this->generateMethod($configuration, $classDefinition, $methodDefinition)
             );
         }
 
@@ -268,21 +268,21 @@ class ValidatorClassGenerator
 
     /**
      * @param RuntimeConfiguration $configuration
-     * @param ReflectionMethod     $method
      * @param ClassDefinition      $classDefinition
+     * @param MethodDefinition     $methodDefinition
      *
      * @return ConcreteMethod
      */
     protected function generateMethod(
         RuntimeConfiguration $configuration,
-        ReflectionMethod $method,
-        ClassDefinition $classDefinition
+        ClassDefinition $classDefinition,
+        MethodDefinition $methodDefinition
     ) {
         $this->typeCheck->generateMethod(func_get_args());
 
         $typhoonMethod = new ConcreteMethod(
             new Identifier(
-                $this->validatorMethodName($method)
+                $this->validatorMethodName($methodDefinition)
             )
         );
         $typhoonMethod->addParameter(new ParameterASTNode(
@@ -293,37 +293,16 @@ class ValidatorClassGenerator
         $this->generator()
             ->setValidatorNamespace($configuration->validatorNamespace())
         ;
-        $expressions = $this->parameterList($configuration, $method, $classDefinition)
-            ->accept($this->generator())
-        ;
+        $expressions = $this->parameterList(
+            $configuration,
+            $classDefinition,
+            $methodDefinition
+        )->accept($this->generator());
         foreach ($expressions as $expression) {
             $typhoonMethod->statementBlock()->add($expression);
         }
 
         return $typhoonMethod;
-    }
-
-    /**
-     * @param ClassDefinition $classDefinition
-     *
-     * @return array<ReflectionMethod>
-     */
-    protected function methods(ClassDefinition $classDefinition)
-    {
-        $this->typeCheck->methods(func_get_args());
-
-        $class = new ReflectionClass(
-            $classDefinition->className()->string()
-        );
-
-        $methods = array();
-        foreach ($class->getMethods() as $method) {
-            if ($class->getName() === $method->getDeclaringClass()->getName()) {
-                $methods[] = $method;
-            }
-        }
-
-        return $methods;
     }
 
     /**
@@ -356,15 +335,15 @@ class ValidatorClassGenerator
     }
 
     /**
-     * @param ReflectionMethod $method
+     * @param MethodDefinition $methodDefinition
      *
      * @return string
      */
-    protected function validatorMethodName(ReflectionMethod $method)
+    protected function validatorMethodName(MethodDefinition $methodDefinition)
     {
         $this->typeCheck->validatorMethodName(func_get_args());
 
-        $methodName = $method->getName();
+        $methodName = $methodDefinition->name();
         if ('__' === substr($methodName, 0, 2)) {
             $methodName = sprintf(
                 'validate%s',
@@ -377,42 +356,38 @@ class ValidatorClassGenerator
 
     /**
      * @param RuntimeConfiguration $configuration
-     * @param ReflectionMethod     $method
      * @param ClassDefinition      $classDefinition
+     * @param MethodDefinition     $methodDefinition
      *
      * @return ParameterList
      */
     protected function parameterList(
         RuntimeConfiguration $configuration,
-        ReflectionMethod $method,
-        ClassDefinition $classDefinition
+        ClassDefinition $classDefinition,
+        MethodDefinition $methodDefinition
     ) {
         $this->typeCheck->parameterList(func_get_args());
 
-        $methodName = sprintf(
-            '%s::%s',
-            $method->getDeclaringClass()->getName(),
-            $method->getName()
-        );
-
-        $blockComment = $method->getDocComment();
+        $methodReflector = $methodDefinition->createReflector();
+        $blockComment = $methodReflector->getDocComment();
         if (false === $blockComment) {
             $parameterList = new ParameterList;
         } else {
             $parameterList = $this->parser()->parseBlockComment(
                 $classDefinition->className(),
-                $method->getName(),
+                $methodDefinition->name(),
                 $blockComment
             );
         }
 
         return $this->mergeTool()->merge(
             $configuration,
-            $methodName,
+            $classDefinition,
+            $methodDefinition,
             $parameterList
                 ->accept($this->classNameResolver($classDefinition))
             ,
-            $this->parser()->parseReflector($method)
+            $this->parser()->parseReflector($methodReflector)
         );
     }
 

@@ -12,11 +12,12 @@
 namespace Eloquent\Typhoon\CodeAnalysis\Issue;
 
 use Eloquent\Cosmos\ClassName;
+use Eloquent\Typhax\Type\ArrayType;
+use Eloquent\Typhax\Type\MixedType;
 use Eloquent\Typhoon\ClassMapper\ClassDefinition;
 use Eloquent\Typhoon\ClassMapper\MethodDefinition;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Icecave\Pasta\AST\Type\AccessModifier;
-use Phake;
 
 class IssueRendererTest extends MultiGenerationTestCase
 {
@@ -26,10 +27,9 @@ class IssueRendererTest extends MultiGenerationTestCase
 
         $this->_renderer = new IssueRenderer;
 
-        $this->_classDefinition = new ClassDefinition(
-            ClassName::fromString('\foo')
-        );
+        $this->_className = ClassName::fromString('\foo');
         $this->_methodDefinition = new MethodDefinition(
+            $this->_className,
             'bar',
             false,
             false,
@@ -37,11 +37,16 @@ class IssueRendererTest extends MultiGenerationTestCase
             111,
             'baz'
         );
+        $this->_classDefinition = new ClassDefinition(
+            $this->_className,
+            array(),
+            array($this->_methodDefinition)
+        );
     }
 
     public function testVisitMissingConstructorCall()
     {
-        $issue = new ClassRelated\MissingConstructorCall(
+        $issue = new ClassIssue\MissingConstructorCall(
             $this->_classDefinition
         );
 
@@ -53,7 +58,7 @@ class IssueRendererTest extends MultiGenerationTestCase
 
     public function testVisitMissingProperty()
     {
-        $issue = new ClassRelated\MissingProperty(
+        $issue = new ClassIssue\MissingProperty(
             $this->_classDefinition
         );
 
@@ -65,26 +70,129 @@ class IssueRendererTest extends MultiGenerationTestCase
 
     public function testVisitInadmissibleMethodCall()
     {
-        $issue = new MethodRelated\InadmissibleMethodCall(
+        $issue = new MethodIssue\InadmissibleMethodCall(
             $this->_classDefinition,
             $this->_methodDefinition
         );
 
         $this->assertSame(
-            'Type check call should not be present in method bar().',
+            'Type check call should not be present.',
             $issue->accept($this->_renderer)
         );
     }
 
     public function testVisitMissingMethodCall()
     {
-        $issue = new MethodRelated\MissingMethodCall(
+        $issue = new MethodIssue\MissingMethodCall(
             $this->_classDefinition,
             $this->_methodDefinition
         );
 
         $this->assertSame(
-            'Incorrect or missing type check call in method bar().',
+            'Incorrect or missing type check call.',
+            $issue->accept($this->_renderer)
+        );
+    }
+
+    public function testVisitDefinedParameterVariableLength()
+    {
+        $issue = new ParameterIssue\DefinedParameterVariableLength(
+            $this->_classDefinition,
+            $this->_methodDefinition,
+            'qux'
+        );
+
+        $this->assertSame(
+            'Variable-length parameter $qux should only be documented, not defined.',
+            $issue->accept($this->_renderer)
+        );
+    }
+
+    public function testVisitDocumentedParameterByReferenceMismatchByReference()
+    {
+        $issue = new ParameterIssue\DocumentedParameterByReferenceMismatch(
+            $this->_classDefinition,
+            $this->_methodDefinition,
+            'qux',
+            true
+        );
+
+        $this->assertSame(
+            'Parameter $qux is defined as by-reference but documented as by-value.',
+            $issue->accept($this->_renderer)
+        );
+    }
+
+    public function testVisitDocumentedParameterByReferenceMismatchByValue()
+    {
+        $issue = new ParameterIssue\DocumentedParameterByReferenceMismatch(
+            $this->_classDefinition,
+            $this->_methodDefinition,
+            'qux',
+            false
+        );
+
+        $this->assertSame(
+            'Parameter $qux is defined as by-value but documented as by-reference.',
+            $issue->accept($this->_renderer)
+        );
+    }
+
+    public function testVisitDocumentedParameterNameMismatch()
+    {
+        $issue = new ParameterIssue\DocumentedParameterNameMismatch(
+            $this->_classDefinition,
+            $this->_methodDefinition,
+            'qux',
+            'doom'
+        );
+
+        $this->assertSame(
+            'Documented parameter name $doom does not match defined parameter name $qux.',
+            $issue->accept($this->_renderer)
+        );
+    }
+
+    public function testVisitDocumentedParameterTypeMismatch()
+    {
+        $issue = new ParameterIssue\DocumentedParameterTypeMismatch(
+            $this->_classDefinition,
+            $this->_methodDefinition,
+            'qux',
+            new ArrayType,
+            new MixedType
+        );
+
+        $this->assertSame(
+            "Documented type 'mixed' is not correct for defined type 'array' of parameter \$qux.",
+            $issue->accept($this->_renderer)
+        );
+    }
+
+    public function testVisitDocumentedParameterUndefined()
+    {
+        $issue = new ParameterIssue\DocumentedParameterUndefined(
+            $this->_classDefinition,
+            $this->_methodDefinition,
+            'qux'
+        );
+
+        $this->assertSame(
+            'Documented parameter $qux not defined.',
+            $issue->accept($this->_renderer)
+        );
+    }
+
+    public function testVisitUndocumentedParameter()
+    {
+        $issue = new ParameterIssue\UndocumentedParameter(
+            $this->_classDefinition,
+            $this->_methodDefinition,
+            'qux'
+        );
+
+        $this->assertSame(
+            'Parameter $qux is not documented.',
             $issue->accept($this->_renderer)
         );
     }

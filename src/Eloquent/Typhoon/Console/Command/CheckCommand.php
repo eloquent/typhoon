@@ -12,7 +12,6 @@
 namespace Eloquent\Typhoon\Console\Command;
 
 use Eloquent\Typhoon\CodeAnalysis\AnalysisResult;
-use Eloquent\Typhoon\CodeAnalysis\Issue\Issue;
 use Eloquent\Typhoon\CodeAnalysis\Issue\IssueRenderer;
 use Eloquent\Typhoon\CodeAnalysis\Issue\IssueSeverity;
 use Eloquent\Typhoon\CodeAnalysis\ProjectAnalyzer;
@@ -134,7 +133,8 @@ class CheckCommand extends Command
         return $this->generateBlock(
             'Problems detected',
             'error',
-            $result->issuesBySeverityByClass(IssueSeverity::ERROR())
+            $result,
+            IssueSeverity::ERROR()
         );
     }
 
@@ -150,34 +150,63 @@ class CheckCommand extends Command
         return $this->generateBlock(
             'Potential problems detected',
             'comment',
-            $result->issuesBySeverityByClass(IssueSeverity::WARNING())
+            $result,
+            IssueSeverity::WARNING()
         );
     }
 
     /**
-     * @param string                     $label
-     * @param string                     $blockStyle
-     * @param array<string,array<Issue>> $issues
+     * @param string         $label
+     * @param string         $blockStyle
+     * @param AnalysisResult $result
+     * @param IssueSeverity  $severity
      *
      * @return string
      */
-    protected function generateBlock($label, $blockStyle, array $issues)
-    {
+    protected function generateBlock(
+        $label,
+        $blockStyle,
+        AnalysisResult $result,
+        IssueSeverity $severity
+    ) {
         $this->typeCheck->generateBlock(func_get_args());
 
         $errorLines = array(
             sprintf('[%s]', $label),
         );
 
-        foreach ($issues as $class => $classIssues) {
+        $classNames = $result->classNamesBySeverity($severity);
+        foreach ($classNames as $className) {
             $errorLines[] = '';
-            $errorLines[] = sprintf('  [%s]', $class);
+            $errorLines[] = sprintf('  [%s]', $className->string());
 
+            $classIssues = $result->classIssuesBySeverityAndClass(
+                $severity,
+                $className
+            );
+            if (count($classIssues) > 0) {
+                $errorLines[] = '    [General]';
+            }
             foreach ($classIssues as $issue) {
                 $errorLines[] = sprintf(
-                    '    - %s',
+                    '      - %s',
                     $issue->accept($this->issueRenderer())
                 );
+            }
+
+            $methodRelatedIssues = $result->methodRelatedIssuesBySeverityAndClass(
+                $severity,
+                $className
+            );
+            foreach ($methodRelatedIssues as $methodName => $methodIssues) {
+                $errorLines[] = sprintf('    [%s()]', $methodName);
+
+                foreach ($methodIssues as $issue) {
+                    $errorLines[] = sprintf(
+                        '      - %s',
+                        $issue->accept($this->issueRenderer())
+                    );
+                }
             }
         }
 
