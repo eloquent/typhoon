@@ -133,218 +133,218 @@ class Bar
 ok 29 - Eloquent\Typhoon\ClassMapper\ClassMapperTest::testClassBySource
 ok 30 - Eloquent\Typhoon\ClassMapper\ClassMapperTest::testClassBySourceFailure
 ok 31 - Eloquent\Typhoon\ClassMapper\ClassMapperTest::testFileIterator
-ok 32 - Eloquent\Typhoon\ClassMapper\ClassMemberDefinitionTest::testConstruct
-ok 33 - Eloquent\Typhoon\ClassMapper\ClassMemberDefinitionTest::testEndLineNumber
-ok 34 - Eloquent\Typhoon\ClassMapper\Exception\UndefinedClassExceptionTest::testException
-ok 35 - Eloquent\Typhoon\ClassMapper\Exception\UndefinedMethodExceptionTest::testException
-ok 36 - Eloquent\Typhoon\ClassMapper\Exception\UndefinedPropertyExceptionTest::testException
-ok 37 - Eloquent\Typhoon\CodeAnalysis\AnalysisResultTest::testConstructor
-ok 38 - Eloquent\Typhoon\CodeAnalysis\AnalysisResultTest::testConstructorDefaults
-ok 39 - Eloquent\Typhoon\CodeAnalysis\AnalysisResultTest::testIssuesBySeverity
-ok 40 - Eloquent\Typhoon\CodeAnalysis\AnalysisResultTest::testClassNamesBySeverity
-ok 41 - Eloquent\Typhoon\CodeAnalysis\AnalysisResultTest::testClassIssuesBySeverityAndClass
-ok 42 - Eloquent\Typhoon\CodeAnalysis\AnalysisResultTest::testMethodRelatedIssuesBySeverityAndClass
-ok 43 - Eloquent\Typhoon\CodeAnalysis\AnalysisResultTest::testIsError
-ok 44 - Eloquent\Typhoon\CodeAnalysis\Issue\ClassIssue\MissingConstructorCallTest::testConstructor
-ok 45 - Eloquent\Typhoon\CodeAnalysis\Issue\ClassIssue\MissingConstructorCallTest::testConstructorDefaults
-ok 46 - Eloquent\Typhoon\CodeAnalysis\Issue\ClassIssue\MissingConstructorCallTest::testAccept
-ok 47 - Eloquent\Typhoon\CodeAnalysis\Issue\ClassIssue\MissingPropertyTest::testConstructor
-ok 48 - Eloquent\Typhoon\CodeAnalysis\Issue\ClassIssue\MissingPropertyTest::testConstructorDefaults
-ok 49 - Eloquent\Typhoon\CodeAnalysis\Issue\ClassIssue\MissingPropertyTest::testAccept
-ok 50 - Eloquent\Typhoon\CodeAnalysis\Issue\IssueRendererTest::testVisitMissingConstructorCall
-ok 51 - Eloquent\Typhoon\CodeAnalysis\Issue\IssueRendererTest::testVisitMissingProperty
-ok 52 - Eloquent\Typhoon\CodeAnalysis\Issue\IssueRendererTest::testVisitInadmissibleMethodCall
-ok 53 - Eloquent\Typhoon\CodeAnalysis\Issue\IssueRendererTest::testVisitMissingMethodCall
-ok 54 - Eloquent\Typhoon\CodeAnalysis\Issue\IssueRendererTest::testVisitDefinedParameterVariableLength
-ok 55 - Eloquent\Typhoon\CodeAnalysis\Issue\IssueRendererTest::testVisitDocumentedParameterByReferenceMismatchByReference
-ok 56 - Eloquent\Typhoon\CodeAnalysis\Issue\IssueRendererTest::testVisitDocumentedParameterByReferenceMismatchByValue
-ok 57 - Eloquent\Typhoon\CodeAnalysis\Issue\IssueRendererTest::testVisitDocumentedParameterNameMismatch
-ok 58 - Eloquent\Typhoon\CodeAnalysis\Issue\IssueRendererTest::testVisitDocumentedParameterTypeMismatch
-ok 59 - Eloquent\Typhoon\CodeAnalysis\Issue\IssueRendererTest::testVisitDocumentedParameterUndefined
-ok 60 - Eloquent\Typhoon\CodeAnalysis\Issue\IssueRendererTest::testVisitUndocumentedParameter
-ok 61 - Eloquent\Typhoon\CodeAnalysis\Issue\IssueSeverityTest::testEnumeration
-ok 62 - Eloquent\Typhoon\CodeAnalysis\Issue\MethodIssue\InadmissibleMethodCallTest::testConstructor
-ok 63 - Eloquent\Typhoon\CodeAnalysis\Issue\MethodIssue\InadmissibleMethodCallTest::testConstructorDefaults
-ok 64 - Eloquent\Typhoon\CodeAnalysis\Issue\MethodIssue\InadmissibleMethodCallTest::testAccept
-ok 65 - Eloquent\Typhoon\CodeAnalysis\Issue\MethodIssue\MissingMethodCallTest::testConstructor
-ok 66 - Eloquent\Typhoon\CodeAnalysis\Issue\MethodIssue\MissingMethodCallTest::testConstructorDefaults
-ok 67 - Eloquent\Typhoon\CodeAnalysis\Issue\MethodIssue\MissingMethodCallTest::testAccept
-ok 68 - Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DefinedParameterVariableLengthTest::testConstructor
-ok 69 - Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DefinedParameterVariableLengthTest::testConstructorDefaults
-ok 70 - Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DefinedParameterVariableLengthTest::testAccept
-ok 71 - Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterByReferenceMismatchTest::testConstructor
-ok 72 - Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterByReferenceMismatchTest::testConstructorDefaults
-ok 73 - Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterByReferenceMismatchTest::testAccept
-ok 74 - Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterNameMismatchTest::testConstructor
-ok 75 - Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterNameMismatchTest::testConstructorDefaults
-ok 76 - Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterNameMismatchTest::testAccept
-ok 77 - Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterTypeMismatchTest::testConstructor
-ok 78 - Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterTypeMismatchTest::testConstructorDefaults
-ok 79 - Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterTypeMismatchTest::testAccept
-ok 80 - Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterUndefinedTest::testConstructor
-ok 81 - Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterUndefinedTest::testConstructorDefaults
-ok 82 - Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterUndefinedTest::testAccept
-ok 83 - Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\UndocumentedParameterTest::testConstructor
-ok 84 - Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\UndocumentedParameterTest::testConstructorDefaults
-ok 85 - Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\UndocumentedParameterTest::testAccept
-ok 86 - Eloquent\Typhoon\CodeAnalysis\ProjectAnalyzerTest::testConstructor
-ok 87 - Eloquent\Typhoon\CodeAnalysis\ProjectAnalyzerTest::testConstructorDefaults
-ok 88 - Eloquent\Typhoon\CodeAnalysis\ProjectAnalyzerTest::testAnalyzeFailures
-ok 89 - Eloquent\Typhoon\CodeAnalysis\ProjectAnalyzerTest::testAnalyzeSuccess
-ok 90 - Eloquent\Typhoon\Configuration\ConfigurationOptionTest::testEnumValues
-ok 91 - Eloquent\Typhoon\Configuration\ConfigurationOptionTest::testUndefinedInstanceFailure
-ok 92 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testReadWithTyphoon
-ok 93 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testReadWithComposer
-ok 94 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testReadWithNeither
-ok 95 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testReadWithNeitherThrow
-ok 96 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testReadDefaultPath
-ok 97 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testReadTyphoon
-ok 98 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testReadTyphoonAllProperties
-ok 99 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testReadTyphoonNotFound
-ok 100 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testReadComposer
-ok 101 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testReadComposerNotFound
-ok 102 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testReadComposerNoTyphoonData
-ok 103 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testReadComposerParseAutoload
-ok 104 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testReadComposerFailureNoOutputPath
-ok 105 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testLoadJSON
-ok 106 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testLoadJSONFailureInvalidJSON
-ok 107 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testLoad
-ok 108 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testLoadFailure
-ok 109 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testValidateDataFailure with data set "Wrong type for main entry" ('Eloquent\\Typhoon\\Configuration\\Exception\\InvalidConfigurationException', 'Typhoon configuration data must be an object.', 'foo')
-ok 110 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testValidateDataFailure with data set "Missing output path" ('Eloquent\\Typhoon\\Configuration\\Exception\\InvalidConfigurationException', 'Invalid configuration. Output path is required.', stdClass)
-ok 111 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testValidateDataFailure with data set "Wrong type for output path" ('Eloquent\\Typhoon\\Configuration\\Exception\\InvalidConfigurationException', 'Invalid configuration. Output path must be a string.', stdClass)
-ok 112 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testValidateDataFailure with data set "Missing source paths" ('Eloquent\\Typhoon\\Configuration\\Exception\\InvalidConfigurationException', 'Invalid configuration. At least one source path is required.', stdClass)
-ok 113 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testValidateDataFailure with data set "Wrong type for source paths" ('Eloquent\\Typhoon\\Configuration\\Exception\\InvalidConfigurationException', 'Invalid configuration. Source paths must be an array.', stdClass)
-ok 114 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testValidateDataFailure with data set "Wrong type for source paths entry" ('Eloquent\\Typhoon\\Configuration\\Exception\\InvalidConfigurationException', 'Invalid configuration. Entries in source paths must be strings.', stdClass)
-ok 115 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testValidateDataFailure with data set "Wrong type for loader paths" ('Eloquent\\Typhoon\\Configuration\\Exception\\InvalidConfigurationException', 'Invalid configuration. Loader paths must be an array.', stdClass)
-ok 116 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testValidateDataFailure with data set "Wrong type for loader paths entry" ('Eloquent\\Typhoon\\Configuration\\Exception\\InvalidConfigurationException', 'Invalid configuration. Entries in loader paths must be strings.', stdClass)
-ok 117 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testValidateDataFailure with data set "Wrong type for validator namespace" ('Eloquent\\Typhoon\\Configuration\\Exception\\InvalidConfigurationException', 'Invalid configuration. Validator namespace must be a string.', stdClass)
-ok 118 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testValidateDataFailure with data set "Wrong type for use native callable option" ('Eloquent\\Typhoon\\Configuration\\Exception\\InvalidConfigurationException', 'Invalid configuration. Use native callable option must be a boolean.', stdClass)
-ok 119 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testPathIsDescandantOrEqual with data set "Path is equal relative" (true, '/foo', 'bar', 'bar')
-ok 120 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testPathIsDescandantOrEqual with data set "Path is descendant relative" (true, '/foo', 'bar', 'bar/baz')
-ok 121 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testPathIsDescandantOrEqual with data set "Path is descendant relative with dots" (true, '/foo', './bar/.', 'bar/./baz')
-ok 122 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testPathIsDescandantOrEqual with data set "Path is not descendant relative" (false, '/foo', 'bar', 'baz')
-ok 123 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testPathIsDescandantOrEqual with data set "Path is equal absolute" (true, '/foo', '/bar', '/bar')
-ok 124 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testPathIsDescandantOrEqual with data set "Path is descendant absolute" (true, '/foo', '/bar', '/bar/baz')
-ok 125 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testPathIsDescandantOrEqual with data set "Path is descendant absolute with dots" (true, '/foo', '/./bar', '/bar/./baz')
-ok 126 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testPathIsDescandantOrEqual with data set "Path is not descendant absolute" (false, '/foo', '/bar', '/baz')
-ok 127 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testPathIsDescandantOrEqual with data set "Path is equal mixed relative and absolute" (true, '/foo', 'bar', '/foo/bar')
-ok 128 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testPathIsDescandantOrEqual with data set "Path is descendant mixed relative and absolute" (true, '/foo', 'bar', '/foo/bar/baz')
-ok 129 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testPathIsDescandantOrEqual with data set "Path is descendant mixed relative and absolute with dots" (true, '/foo', './bar', '/foo/./bar/./baz/.')
-ok 130 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testPathIsDescandantOrEqual with data set "Path is not descendant mixed relative and absolute" (false, '/foo', 'bar', '/baz')
-ok 131 - Eloquent\Typhoon\Configuration\ConfigurationTest::testConstructor
-ok 132 - Eloquent\Typhoon\Configuration\ConfigurationTest::testConstructorFailureEmptySourcePaths
-ok 133 - Eloquent\Typhoon\Configuration\ConfigurationTest::testOutputPath
-ok 134 - Eloquent\Typhoon\Configuration\ConfigurationTest::testSourcePaths
-ok 135 - Eloquent\Typhoon\Configuration\ConfigurationTest::testSourcePathsFailureEmptySourcePaths
-ok 136 - Eloquent\Typhoon\Configuration\ConfigurationTest::testLoaderPaths
-ok 137 - Eloquent\Typhoon\Configuration\ConfigurationTest::testUseNativeCallable
-ok 138 - Eloquent\Typhoon\Configuration\Exception\ConfigurationReadExceptionTest::testException
-ok 139 - Eloquent\Typhoon\Configuration\Exception\InvalidConfigurationExceptionTest::testException
-ok 140 - Eloquent\Typhoon\Configuration\Exception\InvalidJSONExceptionTest::testException with data set #0 ('Invalid JSON in \'foo\'. The maximum stack depth has been exceeded.', 1)
-ok 141 - Eloquent\Typhoon\Configuration\Exception\InvalidJSONExceptionTest::testException with data set #1 ('Invalid JSON in \'foo\'. Invalid or malformed JSON.', 2)
-ok 142 - Eloquent\Typhoon\Configuration\Exception\InvalidJSONExceptionTest::testException with data set #2 ('Invalid JSON in \'foo\'. Control character error, possibly incorrectly encoded.', 3)
-ok 143 - Eloquent\Typhoon\Configuration\Exception\InvalidJSONExceptionTest::testException with data set #3 ('Invalid JSON in \'foo\'. Syntax error.', 4)
-ok 144 - Eloquent\Typhoon\Configuration\Exception\InvalidJSONExceptionTest::testException with data set #4 ('Invalid JSON in \'foo\'. Malformed UTF-8 characters, possibly incorrectly encoded.', 5)
-ok 145 - Eloquent\Typhoon\Configuration\Exception\InvalidJSONExceptionTest::testException with data set #5 ('Invalid JSON in \'foo\'. An unknown error occurred.', 0)
-ok 146 - Eloquent\Typhoon\Configuration\Exception\UndefinedConfigurationOptionExceptionTest::testException
-ok 147 - Eloquent\Typhoon\Configuration\RuntimeConfigurationTest::testConstructor
-ok 148 - Eloquent\Typhoon\Configuration\RuntimeConfigurationTest::testConstructorDefaults
-ok 149 - Eloquent\Typhoon\Configuration\RuntimeConfigurationTest::testSetValidatorNamespace
-ok 150 - Eloquent\Typhoon\Configuration\RuntimeConfigurationTest::testSetValidatorNamespaceNormalization
-ok 151 - Eloquent\Typhoon\Configuration\RuntimeConfigurationTest::testSetUseNativeCallable
-ok 152 - Eloquent\Typhoon\Console\ApplicationTest::testConstructor
-ok 153 - Eloquent\Typhoon\Console\ApplicationTest::testConstructorDefaults
-ok 154 - Eloquent\Typhoon\Console\Command\CheckCommandTest::testConstructor
-ok 155 - Eloquent\Typhoon\Console\Command\CheckCommandTest::testConstructorDefaults
-ok 156 - Eloquent\Typhoon\Console\Command\CheckCommandTest::testConfigure
-ok 157 - Eloquent\Typhoon\Console\Command\CheckCommandTest::testExecuteSuccess
-ok 158 - Eloquent\Typhoon\Console\Command\CheckCommandTest::testExecuteSuccessWithExplicitPath
-ok 159 - Eloquent\Typhoon\Console\Command\CheckCommandTest::testExecuteFailure
-ok 160 - Eloquent\Typhoon\Console\Command\CheckCommandTest::testExecuteWarning
-ok 161 - Eloquent\Typhoon\Console\Command\CheckCommandTest::testGenerateErrorBlock
-ok 162 - Eloquent\Typhoon\Console\Command\CheckCommandTest::testGenerateWarningBlock
-ok 163 - Eloquent\Typhoon\Console\Command\CheckCommandTest::testGenerateBlock
-ok 164 - Eloquent\Typhoon\Console\Command\CheckCommandTest::testIncludeLoaders
-ok 165 - Eloquent\Typhoon\Console\Command\GenerateCommandTest::testConstructor
-ok 166 - Eloquent\Typhoon\Console\Command\GenerateCommandTest::testConstructorDefaults
-ok 167 - Eloquent\Typhoon\Console\Command\GenerateCommandTest::testConfigure
-ok 168 - Eloquent\Typhoon\Console\Command\GenerateCommandTest::testExecute
-ok 169 - Eloquent\Typhoon\Console\Command\GenerateCommandTest::testExecuteWithExplicitPath
-ok 170 - Eloquent\Typhoon\Console\Command\GenerateCommandTest::testIncludeLoaders
-ok 171 - Eloquent\Typhoon\Extension\Exception\InvalidExtensionExceptionTest::testException
-ok 172 - Eloquent\Typhoon\Extension\ExtensionLoaderTest::testLoad
-ok 173 - Eloquent\Typhoon\Extension\ExtensionLoaderTest::testLoadFailure
-ok 174 - Eloquent\Typhoon\Extension\ExtensionLoaderTest::testLoadFailureDoesNotImplementInterface
-ok 175 - Eloquent\Typhoon\Extension\ExtensionLoaderTest::testUnload
-ok 176 - Eloquent\Typhoon\Generator\AbstractValidatorGeneratorTest::testConstructor
-ok 177 - Eloquent\Typhoon\Generator\AbstractValidatorGeneratorTest::testConstructorDefaults
-ok 178 - Eloquent\Typhoon\Generator\AbstractValidatorGeneratorTest::testGenerate
-ok 179 - Eloquent\Typhoon\Generator\DummyValidatorGeneratorTest::testConstructor
-ok 180 - Eloquent\Typhoon\Generator\DummyValidatorGeneratorTest::testConstructorDefaults
-ok 181 - Eloquent\Typhoon\Generator\DummyValidatorGeneratorTest::testGenerate
-ok 182 - Eloquent\Typhoon\Generator\ExceptionGenerator\MissingArgumentExceptionGeneratorTest::testConstructor
-ok 183 - Eloquent\Typhoon\Generator\ExceptionGenerator\MissingArgumentExceptionGeneratorTest::testConstructorDefaults
-ok 184 - Eloquent\Typhoon\Generator\ExceptionGenerator\MissingArgumentExceptionGeneratorTest::testGenerate
-ok 185 - Eloquent\Typhoon\Generator\ExceptionGenerator\UnexpectedArgumentExceptionGeneratorTest::testConstructor
-ok 186 - Eloquent\Typhoon\Generator\ExceptionGenerator\UnexpectedArgumentExceptionGeneratorTest::testConstructorDefaults
-ok 187 - Eloquent\Typhoon\Generator\ExceptionGenerator\UnexpectedArgumentExceptionGeneratorTest::testGenerate
-ok 188 - Eloquent\Typhoon\Generator\ExceptionGenerator\UnexpectedArgumentValueExceptionGeneratorTest::testConstructor
-ok 189 - Eloquent\Typhoon\Generator\ExceptionGenerator\UnexpectedArgumentValueExceptionGeneratorTest::testConstructorDefaults
-ok 190 - Eloquent\Typhoon\Generator\ExceptionGenerator\UnexpectedArgumentValueExceptionGeneratorTest::testGenerate
-ok 191 - Eloquent\Typhoon\Generator\ExceptionGenerator\UnexpectedInputExceptionGeneratorTest::testConstructor
-ok 192 - Eloquent\Typhoon\Generator\ExceptionGenerator\UnexpectedInputExceptionGeneratorTest::testConstructorDefaults
-ok 193 - Eloquent\Typhoon\Generator\ExceptionGenerator\UnexpectedInputExceptionGeneratorTest::testGenerate
-ok 194 - Eloquent\Typhoon\Generator\FacadeGeneratorTest::testConstructor
-ok 195 - Eloquent\Typhoon\Generator\FacadeGeneratorTest::testConstructorDefaults
-ok 196 - Eloquent\Typhoon\Generator\FacadeGeneratorTest::testGenerate
-ok 197 - Eloquent\Typhoon\Generator\FacadeGeneratorTest::testGenerateNoCallable
-ok 198 - Eloquent\Typhoon\Generator\NullifiedTypeTest::testConstructor
-ok 199 - Eloquent\Typhoon\Generator\ParameterListGeneratorTest::testConstructor
-ok 200 - Eloquent\Typhoon\Generator\ParameterListGeneratorTest::testConstructorDefaults
-ok 201 - Eloquent\Typhoon\Generator\ParameterListGeneratorTest::testSetValidatorNamespace
-ok 202 - Eloquent\Typhoon\Generator\ParameterListGeneratorTest::testSetValidatorNamespaceNormalization
-ok 203 - Eloquent\Typhoon\Generator\ParameterListGeneratorTest::testVisitParameterListLogic
-ok 204 - Eloquent\Typhoon\Generator\ParameterListGeneratorTest::testVisitParameterListLogicOptional
-ok 205 - Eloquent\Typhoon\Generator\ParameterListGeneratorTest::testVisitParameterListLogicNoRequired
-ok 206 - Eloquent\Typhoon\Generator\ParameterListGeneratorTest::testVisitParameterListLogicVariableLength
-ok 207 - Eloquent\Typhoon\Generator\ParameterListGeneratorTest::testVisitParameterListLogicEmpty
-ok 208 - Eloquent\Typhoon\Generator\ParameterListGeneratorTest::testVisitParameterListLogicFailure with data set "Not enough arguments 1" ('Typhoon\\Exception\\MissingArgumentException', 'Missing argument for parameter \'baz\' at index 2. Expected \'float\'.', Eloquent\Typhoon\Parameter\ParameterList, array('foo', 111))
-ok 209 - Eloquent\Typhoon\Generator\ParameterListGeneratorTest::testVisitParameterListLogicFailure with data set "Not enough arguments 2" ('Typhoon\\Exception\\MissingArgumentException', 'Missing argument for parameter \'bar\' at index 1. Expected \'integer\'.', Eloquent\Typhoon\Parameter\ParameterList, array('foo'))
-ok 210 - Eloquent\Typhoon\Generator\ParameterListGeneratorTest::testVisitParameterListLogicFailure with data set "Not enough arguments 3" ('Typhoon\\Exception\\MissingArgumentException', 'Missing argument for parameter \'foo\' at index 0. Expected \'string\'.', Eloquent\Typhoon\Parameter\ParameterList, array())
-ok 211 - Eloquent\Typhoon\Generator\ParameterListGeneratorTest::testVisitParameterListLogicFailure with data set "Too many arguments" ('Typhoon\\Exception\\UnexpectedArgumentException', 'Unexpected argument of type \'float\' at index 3.', Eloquent\Typhoon\Parameter\ParameterList, array('foo', 111, 1.11, 2.22))
-ok 212 - Eloquent\Typhoon\Generator\ParameterListGeneratorTest::testVisitParameterListLogicFailure with data set "Type mismatch 1" ('Typhoon\\Exception\\UnexpectedArgumentValueException', 'Unexpected argument of type \'string\' for parameter \'baz\' at index 2. Expected \'float\'.', Eloquent\Typhoon\Parameter\ParameterList, array('foo', 111, 'bar'))
-ok 213 - Eloquent\Typhoon\Generator\ParameterListGeneratorTest::testVisitParameterListLogicFailure with data set "Type mismatch 2" ('Typhoon\\Exception\\UnexpectedArgumentValueException', 'Unexpected argument of type \'string\' for parameter \'bar\' at index 1. Expected \'integer\'.', Eloquent\Typhoon\Parameter\ParameterList, array('foo', 'bar', 'baz'))
-ok 214 - Eloquent\Typhoon\Generator\ParameterListGeneratorTest::testVisitParameterListLogicFailure with data set "Type mismatch 3" ('Typhoon\\Exception\\UnexpectedArgumentValueException', 'Unexpected argument of type \'integer\' for parameter \'foo\' at index 0. Expected \'string\'.', Eloquent\Typhoon\Parameter\ParameterList, array(111, 'bar', 'baz'))
-ok 215 - Eloquent\Typhoon\Generator\ParameterListGeneratorTest::testVisitParameterListLogicFailure with data set "Variable length type mismatch" ('Typhoon\\Exception\\UnexpectedArgumentValueException', 'Unexpected argument of type \'string\' for parameter \'baz\' at index 4. Expected \'float\'.', Eloquent\Typhoon\Parameter\ParameterList, array('foo', 111, 1.11, 2.22, 'bar', 3.33))
-ok 216 - Eloquent\Typhoon\Generator\ParameterListMerge\Exception\DefinedParameterVariableLengthExceptionTest::testException
-ok 217 - Eloquent\Typhoon\Generator\ParameterListMerge\Exception\DefinedParameterVariableLengthExceptionTest::testExceptionWithoutClassName
-ok 218 - Eloquent\Typhoon\Generator\ParameterListMerge\Exception\DocumentedParameterByReferenceMismatchExceptionTest::testExceptionDocumentedByReference
-ok 219 - Eloquent\Typhoon\Generator\ParameterListMerge\Exception\DocumentedParameterByReferenceMismatchExceptionTest::testExceptionDefinedByReference
-ok 220 - Eloquent\Typhoon\Generator\ParameterListMerge\Exception\DocumentedParameterByReferenceMismatchExceptionTest::testExceptionWithoutClassName
-ok 221 - Eloquent\Typhoon\Generator\ParameterListMerge\Exception\DocumentedParameterNameMismatchExceptionTest::testException
-ok 222 - Eloquent\Typhoon\Generator\ParameterListMerge\Exception\DocumentedParameterNameMismatchExceptionTest::testExceptionWithoutClassName
-ok 223 - Eloquent\Typhoon\Generator\ParameterListMerge\Exception\DocumentedParameterTypeMismatchExceptionTest::testException
-ok 224 - Eloquent\Typhoon\Generator\ParameterListMerge\Exception\DocumentedParameterTypeMismatchExceptionTest::testExceptionWithoutClassName
-ok 225 - Eloquent\Typhoon\Generator\ParameterListMerge\Exception\DocumentedParameterTypeMismatchExceptionTest::testConstructorDefaults
-ok 226 - Eloquent\Typhoon\Generator\ParameterListMerge\Exception\DocumentedParameterUndefinedExceptionTest::testException
-ok 227 - Eloquent\Typhoon\Generator\ParameterListMerge\Exception\DocumentedParameterUndefinedExceptionTest::testExceptionWithoutClassName
-ok 228 - Eloquent\Typhoon\Generator\ParameterListMerge\Exception\UndocumentedParameterExceptionTest::testException
-ok 229 - Eloquent\Typhoon\Generator\ParameterListMerge\Exception\UndocumentedParameterExceptionTest::testExceptionWithoutClassName
-ok 230 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testNativeCallableAvailable
-ok 231 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testUseNativeCallableManualOff
-ok 232 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testUseNativeCallableNotAvailable
-ok 233 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testUseNativeCallableOn
-ok 234 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMerge with data set "Empty parameter list" (Eloquent\Typhoon\Parameter\ParameterList, Eloquent\Typhoon\Parameter\ParameterList, Eloquent\Typhoon\Parameter\ParameterList)
-ok 235 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMerge with data set "Unchanged parameter list" (Eloquent\Typhoon\Parameter\ParameterList, Eloquent\Typhoon\Parameter\ParameterList, Eloquent\Typhoon\Parameter\ParameterList)
-ok 236 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMerge with data set "Unchanged parameter list (variable length)" (Eloquent\Typhoon\Parameter\ParameterList, Eloquent\Typhoon\Parameter\ParameterList, Eloquent\Typhoon\Parameter\ParameterList)
-ok 237 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMerge with data set "Copy isOptional from native" (Eloquent\Typhoon\Parameter\ParameterList, Eloquent\Typhoon\Parameter\ParameterList, Eloquent\Typhoon\Parameter\ParameterList)
-ok 238 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeFailure with data set "Documented parameter not defined" ('Eloquent\\Typhoon\\Generator\\ParameterListMerge\\Exception\\DocumentedParameterUndefinedException', 'Documented parameter $baz not defined in method \\foo::bar().', Eloquent\Typhoon\Parameter\ParameterList, Eloquent\Typhoon\Parameter\ParameterList)
-ok 239 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeFailure with data set "Native parameter not documented" ('Eloquent\\Typhoon\\Generator\\ParameterListMerge\\Exception\\UndocumentedParameterException', 'Parameter $baz is undocumented in method \\foo::bar().', Eloquent\Typhoon\Parameter\ParameterList, Eloquent\Typhoon\Parameter\ParameterList)
-ok 240 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeFailure with data set "Parameter name mismatch" ('Eloquent\\Typhoon\\Generator\\ParameterListMerge\\Exception\\DocumentedParameterNameMismatchException', 'Documented parameter name $bar does not match defined parameter name $baz in method \\foo::bar().', Eloquent\Typhoon\Parameter\ParameterList, Eloquent\Typhoon\Parameter\ParameterList)
-ok 241 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeFailure with data set "Parameter by-reference mismatch" ('Eloquent\\Typhoon\\Generator\\ParameterListMerge\\Exception\\DocumentedParameterByReferenceMismatchException', 'Parameter $bar is documented as by-value but defined as by-reference in method \\foo::bar().', Eloquent\Typhoon\Parameter\ParameterList, Eloquent\Typhoon\Parameter\ParameterList)
-ok 242 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeFailure with data set "Non documentation-only variable length parameter" ('Eloquent\\Typhoon\\Generator\\ParameterListMerge\\Exception\\DefinedParameterVariableLengthException', 'Variable-length parameter $baz should only be documented, not defined in method \\foo::bar().', Eloquent\Typhoon\Parameter\ParameterList, Eloquent\Typhoon\Parameter\ParameterList)
-ok 243 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeFailure with data set "Variable length parameters with undefined penultimate parameter" ('Eloquent\\Typhoon\\Generator\\ParameterListMerge\\Exception\\DocumentedParameterUndefinedException', 'Documented parameter $qux not defined in method \\foo::bar().', Eloquent\Typhoon\Parameter\ParameterList, Eloquent\Typhoon\Parameter\ParameterList)
+ok 32 - Eloquent\Typhoon\ClassMapper\Exception\UndefinedClassExceptionTest::testException
+ok 33 - Eloquent\Typhoon\ClassMapper\Exception\UndefinedMethodExceptionTest::testException
+ok 34 - Eloquent\Typhoon\ClassMapper\Exception\UndefinedPropertyExceptionTest::testException
+ok 35 - Eloquent\Typhoon\ClassMapper\MethodDefinitionTest::testConstruct
+ok 36 - Eloquent\Typhoon\ClassMapper\MethodDefinitionTest::testEndLineNumber
+ok 37 - Eloquent\Typhoon\ClassMapper\MethodDefinitionTest::testCreateReflector
+ok 38 - Eloquent\Typhoon\ClassMapper\PropertyDefinitionTest::testConstruct
+ok 39 - Eloquent\Typhoon\ClassMapper\PropertyDefinitionTest::testEndLineNumber
+ok 40 - Eloquent\Typhoon\ClassMapper\PropertyDefinitionTest::testCreateReflector
+ok 41 - Eloquent\Typhoon\CodeAnalysis\AnalysisResultTest::testConstructor
+ok 42 - Eloquent\Typhoon\CodeAnalysis\AnalysisResultTest::testConstructorDefaults
+ok 43 - Eloquent\Typhoon\CodeAnalysis\AnalysisResultTest::testIssuesBySeverity
+ok 44 - Eloquent\Typhoon\CodeAnalysis\AnalysisResultTest::testClassNamesBySeverity
+ok 45 - Eloquent\Typhoon\CodeAnalysis\AnalysisResultTest::testClassIssuesBySeverityAndClass
+ok 46 - Eloquent\Typhoon\CodeAnalysis\AnalysisResultTest::testMethodRelatedIssuesBySeverityAndClass
+ok 47 - Eloquent\Typhoon\CodeAnalysis\AnalysisResultTest::testIsError
+ok 48 - Eloquent\Typhoon\CodeAnalysis\Issue\ClassIssue\MissingConstructorCallTest::testConstructor
+ok 49 - Eloquent\Typhoon\CodeAnalysis\Issue\ClassIssue\MissingConstructorCallTest::testConstructorDefaults
+ok 50 - Eloquent\Typhoon\CodeAnalysis\Issue\ClassIssue\MissingConstructorCallTest::testAccept
+ok 51 - Eloquent\Typhoon\CodeAnalysis\Issue\ClassIssue\MissingPropertyTest::testConstructor
+ok 52 - Eloquent\Typhoon\CodeAnalysis\Issue\ClassIssue\MissingPropertyTest::testConstructorDefaults
+ok 53 - Eloquent\Typhoon\CodeAnalysis\Issue\ClassIssue\MissingPropertyTest::testAccept
+ok 54 - Eloquent\Typhoon\CodeAnalysis\Issue\IssueRendererTest::testVisitMissingConstructorCall
+ok 55 - Eloquent\Typhoon\CodeAnalysis\Issue\IssueRendererTest::testVisitMissingProperty
+ok 56 - Eloquent\Typhoon\CodeAnalysis\Issue\IssueRendererTest::testVisitInadmissibleMethodCall
+ok 57 - Eloquent\Typhoon\CodeAnalysis\Issue\IssueRendererTest::testVisitMissingMethodCall
+ok 58 - Eloquent\Typhoon\CodeAnalysis\Issue\IssueRendererTest::testVisitDefinedParameterVariableLength
+ok 59 - Eloquent\Typhoon\CodeAnalysis\Issue\IssueRendererTest::testVisitDocumentedParameterByReferenceMismatchByReference
+ok 60 - Eloquent\Typhoon\CodeAnalysis\Issue\IssueRendererTest::testVisitDocumentedParameterByReferenceMismatchByValue
+ok 61 - Eloquent\Typhoon\CodeAnalysis\Issue\IssueRendererTest::testVisitDocumentedParameterNameMismatch
+ok 62 - Eloquent\Typhoon\CodeAnalysis\Issue\IssueRendererTest::testVisitDocumentedParameterTypeMismatch
+ok 63 - Eloquent\Typhoon\CodeAnalysis\Issue\IssueRendererTest::testVisitDocumentedParameterUndefined
+ok 64 - Eloquent\Typhoon\CodeAnalysis\Issue\IssueRendererTest::testVisitUndocumentedParameter
+ok 65 - Eloquent\Typhoon\CodeAnalysis\Issue\IssueSeverityTest::testEnumeration
+ok 66 - Eloquent\Typhoon\CodeAnalysis\Issue\MethodIssue\InadmissibleMethodCallTest::testConstructor
+ok 67 - Eloquent\Typhoon\CodeAnalysis\Issue\MethodIssue\InadmissibleMethodCallTest::testConstructorDefaults
+ok 68 - Eloquent\Typhoon\CodeAnalysis\Issue\MethodIssue\InadmissibleMethodCallTest::testAccept
+ok 69 - Eloquent\Typhoon\CodeAnalysis\Issue\MethodIssue\MissingMethodCallTest::testConstructor
+ok 70 - Eloquent\Typhoon\CodeAnalysis\Issue\MethodIssue\MissingMethodCallTest::testConstructorDefaults
+ok 71 - Eloquent\Typhoon\CodeAnalysis\Issue\MethodIssue\MissingMethodCallTest::testAccept
+ok 72 - Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DefinedParameterVariableLengthTest::testConstructor
+ok 73 - Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DefinedParameterVariableLengthTest::testConstructorDefaults
+ok 74 - Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DefinedParameterVariableLengthTest::testAccept
+ok 75 - Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterByReferenceMismatchTest::testConstructor
+ok 76 - Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterByReferenceMismatchTest::testConstructorDefaults
+ok 77 - Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterByReferenceMismatchTest::testAccept
+ok 78 - Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterNameMismatchTest::testConstructor
+ok 79 - Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterNameMismatchTest::testConstructorDefaults
+ok 80 - Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterNameMismatchTest::testAccept
+ok 81 - Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterTypeMismatchTest::testConstructor
+ok 82 - Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterTypeMismatchTest::testConstructorDefaults
+ok 83 - Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterTypeMismatchTest::testAccept
+ok 84 - Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterUndefinedTest::testConstructor
+ok 85 - Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterUndefinedTest::testConstructorDefaults
+ok 86 - Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterUndefinedTest::testAccept
+ok 87 - Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\UndocumentedParameterTest::testConstructor
+ok 88 - Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\UndocumentedParameterTest::testConstructorDefaults
+ok 89 - Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\UndocumentedParameterTest::testAccept
+ok 90 - Eloquent\Typhoon\CodeAnalysis\ProjectAnalyzerTest::testConstructor
+ok 91 - Eloquent\Typhoon\CodeAnalysis\ProjectAnalyzerTest::testConstructorDefaults
+ok 92 - Eloquent\Typhoon\CodeAnalysis\ProjectAnalyzerTest::testAnalyzeFailures
+ok 93 - Eloquent\Typhoon\CodeAnalysis\ProjectAnalyzerTest::testAnalyzeSuccess
+ok 94 - Eloquent\Typhoon\Configuration\ConfigurationOptionTest::testEnumValues
+ok 95 - Eloquent\Typhoon\Configuration\ConfigurationOptionTest::testUndefinedInstanceFailure
+ok 96 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testReadWithTyphoon
+ok 97 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testReadWithComposer
+ok 98 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testReadWithNeither
+ok 99 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testReadWithNeitherThrow
+ok 100 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testReadDefaultPath
+ok 101 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testReadTyphoon
+ok 102 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testReadTyphoonAllProperties
+ok 103 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testReadTyphoonNotFound
+ok 104 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testReadComposer
+ok 105 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testReadComposerNotFound
+ok 106 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testReadComposerNoTyphoonData
+ok 107 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testReadComposerParseAutoload
+ok 108 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testReadComposerFailureNoOutputPath
+ok 109 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testLoadJSON
+ok 110 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testLoadJSONFailureInvalidJSON
+ok 111 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testLoad
+ok 112 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testLoadFailure
+ok 113 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testValidateDataFailure with data set "Wrong type for main entry" ('Eloquent\\Typhoon\\Configuration\\Exception\\InvalidConfigurationException', 'Typhoon configuration data must be an object.', 'foo')
+ok 114 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testValidateDataFailure with data set "Missing output path" ('Eloquent\\Typhoon\\Configuration\\Exception\\InvalidConfigurationException', 'Invalid configuration. Output path is required.', stdClass)
+ok 115 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testValidateDataFailure with data set "Wrong type for output path" ('Eloquent\\Typhoon\\Configuration\\Exception\\InvalidConfigurationException', 'Invalid configuration. Output path must be a string.', stdClass)
+ok 116 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testValidateDataFailure with data set "Missing source paths" ('Eloquent\\Typhoon\\Configuration\\Exception\\InvalidConfigurationException', 'Invalid configuration. At least one source path is required.', stdClass)
+ok 117 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testValidateDataFailure with data set "Wrong type for source paths" ('Eloquent\\Typhoon\\Configuration\\Exception\\InvalidConfigurationException', 'Invalid configuration. Source paths must be an array.', stdClass)
+ok 118 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testValidateDataFailure with data set "Wrong type for source paths entry" ('Eloquent\\Typhoon\\Configuration\\Exception\\InvalidConfigurationException', 'Invalid configuration. Entries in source paths must be strings.', stdClass)
+ok 119 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testValidateDataFailure with data set "Wrong type for loader paths" ('Eloquent\\Typhoon\\Configuration\\Exception\\InvalidConfigurationException', 'Invalid configuration. Loader paths must be an array.', stdClass)
+ok 120 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testValidateDataFailure with data set "Wrong type for loader paths entry" ('Eloquent\\Typhoon\\Configuration\\Exception\\InvalidConfigurationException', 'Invalid configuration. Entries in loader paths must be strings.', stdClass)
+ok 121 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testValidateDataFailure with data set "Wrong type for validator namespace" ('Eloquent\\Typhoon\\Configuration\\Exception\\InvalidConfigurationException', 'Invalid configuration. Validator namespace must be a string.', stdClass)
+ok 122 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testValidateDataFailure with data set "Wrong type for use native callable option" ('Eloquent\\Typhoon\\Configuration\\Exception\\InvalidConfigurationException', 'Invalid configuration. Use native callable option must be a boolean.', stdClass)
+ok 123 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testPathIsDescandantOrEqual with data set "Path is equal relative" (true, '/foo', 'bar', 'bar')
+ok 124 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testPathIsDescandantOrEqual with data set "Path is descendant relative" (true, '/foo', 'bar', 'bar/baz')
+ok 125 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testPathIsDescandantOrEqual with data set "Path is descendant relative with dots" (true, '/foo', './bar/.', 'bar/./baz')
+ok 126 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testPathIsDescandantOrEqual with data set "Path is not descendant relative" (false, '/foo', 'bar', 'baz')
+ok 127 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testPathIsDescandantOrEqual with data set "Path is equal absolute" (true, '/foo', '/bar', '/bar')
+ok 128 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testPathIsDescandantOrEqual with data set "Path is descendant absolute" (true, '/foo', '/bar', '/bar/baz')
+ok 129 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testPathIsDescandantOrEqual with data set "Path is descendant absolute with dots" (true, '/foo', '/./bar', '/bar/./baz')
+ok 130 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testPathIsDescandantOrEqual with data set "Path is not descendant absolute" (false, '/foo', '/bar', '/baz')
+ok 131 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testPathIsDescandantOrEqual with data set "Path is equal mixed relative and absolute" (true, '/foo', 'bar', '/foo/bar')
+ok 132 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testPathIsDescandantOrEqual with data set "Path is descendant mixed relative and absolute" (true, '/foo', 'bar', '/foo/bar/baz')
+ok 133 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testPathIsDescandantOrEqual with data set "Path is descendant mixed relative and absolute with dots" (true, '/foo', './bar', '/foo/./bar/./baz/.')
+ok 134 - Eloquent\Typhoon\Configuration\ConfigurationReaderTest::testPathIsDescandantOrEqual with data set "Path is not descendant mixed relative and absolute" (false, '/foo', 'bar', '/baz')
+ok 135 - Eloquent\Typhoon\Configuration\ConfigurationTest::testConstructor
+ok 136 - Eloquent\Typhoon\Configuration\ConfigurationTest::testConstructorFailureEmptySourcePaths
+ok 137 - Eloquent\Typhoon\Configuration\ConfigurationTest::testOutputPath
+ok 138 - Eloquent\Typhoon\Configuration\ConfigurationTest::testSourcePaths
+ok 139 - Eloquent\Typhoon\Configuration\ConfigurationTest::testSourcePathsFailureEmptySourcePaths
+ok 140 - Eloquent\Typhoon\Configuration\ConfigurationTest::testLoaderPaths
+ok 141 - Eloquent\Typhoon\Configuration\ConfigurationTest::testUseNativeCallable
+ok 142 - Eloquent\Typhoon\Configuration\Exception\ConfigurationReadExceptionTest::testException
+ok 143 - Eloquent\Typhoon\Configuration\Exception\InvalidConfigurationExceptionTest::testException
+ok 144 - Eloquent\Typhoon\Configuration\Exception\InvalidJSONExceptionTest::testException with data set #0 ('Invalid JSON in \'foo\'. The maximum stack depth has been exceeded.', 1)
+ok 145 - Eloquent\Typhoon\Configuration\Exception\InvalidJSONExceptionTest::testException with data set #1 ('Invalid JSON in \'foo\'. Invalid or malformed JSON.', 2)
+ok 146 - Eloquent\Typhoon\Configuration\Exception\InvalidJSONExceptionTest::testException with data set #2 ('Invalid JSON in \'foo\'. Control character error, possibly incorrectly encoded.', 3)
+ok 147 - Eloquent\Typhoon\Configuration\Exception\InvalidJSONExceptionTest::testException with data set #3 ('Invalid JSON in \'foo\'. Syntax error.', 4)
+ok 148 - Eloquent\Typhoon\Configuration\Exception\InvalidJSONExceptionTest::testException with data set #4 ('Invalid JSON in \'foo\'. Malformed UTF-8 characters, possibly incorrectly encoded.', 5)
+ok 149 - Eloquent\Typhoon\Configuration\Exception\InvalidJSONExceptionTest::testException with data set #5 ('Invalid JSON in \'foo\'. An unknown error occurred.', 0)
+ok 150 - Eloquent\Typhoon\Configuration\Exception\UndefinedConfigurationOptionExceptionTest::testException
+ok 151 - Eloquent\Typhoon\Configuration\RuntimeConfigurationTest::testConstructor
+ok 152 - Eloquent\Typhoon\Configuration\RuntimeConfigurationTest::testConstructorDefaults
+ok 153 - Eloquent\Typhoon\Configuration\RuntimeConfigurationTest::testSetValidatorNamespace
+ok 154 - Eloquent\Typhoon\Configuration\RuntimeConfigurationTest::testSetValidatorNamespaceNormalization
+ok 155 - Eloquent\Typhoon\Configuration\RuntimeConfigurationTest::testSetUseNativeCallable
+ok 156 - Eloquent\Typhoon\Console\ApplicationTest::testConstructor
+ok 157 - Eloquent\Typhoon\Console\ApplicationTest::testConstructorDefaults
+ok 158 - Eloquent\Typhoon\Console\Command\CheckCommandTest::testConstructor
+ok 159 - Eloquent\Typhoon\Console\Command\CheckCommandTest::testConstructorDefaults
+ok 160 - Eloquent\Typhoon\Console\Command\CheckCommandTest::testConfigure
+ok 161 - Eloquent\Typhoon\Console\Command\CheckCommandTest::testExecuteSuccess
+ok 162 - Eloquent\Typhoon\Console\Command\CheckCommandTest::testExecuteSuccessWithExplicitPath
+ok 163 - Eloquent\Typhoon\Console\Command\CheckCommandTest::testExecuteFailure
+ok 164 - Eloquent\Typhoon\Console\Command\CheckCommandTest::testExecuteWarning
+ok 165 - Eloquent\Typhoon\Console\Command\CheckCommandTest::testGenerateErrorBlock
+ok 166 - Eloquent\Typhoon\Console\Command\CheckCommandTest::testGenerateWarningBlock
+ok 167 - Eloquent\Typhoon\Console\Command\CheckCommandTest::testGenerateBlock
+ok 168 - Eloquent\Typhoon\Console\Command\CheckCommandTest::testIncludeLoaders
+ok 169 - Eloquent\Typhoon\Console\Command\GenerateCommandTest::testConstructor
+ok 170 - Eloquent\Typhoon\Console\Command\GenerateCommandTest::testConstructorDefaults
+ok 171 - Eloquent\Typhoon\Console\Command\GenerateCommandTest::testConfigure
+ok 172 - Eloquent\Typhoon\Console\Command\GenerateCommandTest::testExecute
+ok 173 - Eloquent\Typhoon\Console\Command\GenerateCommandTest::testExecuteWithExplicitPath
+ok 174 - Eloquent\Typhoon\Console\Command\GenerateCommandTest::testIncludeLoaders
+ok 175 - Eloquent\Typhoon\Extension\Exception\InvalidExtensionExceptionTest::testException
+ok 176 - Eloquent\Typhoon\Extension\ExtensionLoaderTest::testLoad
+ok 177 - Eloquent\Typhoon\Extension\ExtensionLoaderTest::testLoadFailure
+ok 178 - Eloquent\Typhoon\Extension\ExtensionLoaderTest::testLoadFailureDoesNotImplementInterface
+ok 179 - Eloquent\Typhoon\Extension\ExtensionLoaderTest::testUnload
+ok 180 - Eloquent\Typhoon\Generator\AbstractValidatorGeneratorTest::testConstructor
+ok 181 - Eloquent\Typhoon\Generator\AbstractValidatorGeneratorTest::testConstructorDefaults
+ok 182 - Eloquent\Typhoon\Generator\AbstractValidatorGeneratorTest::testGenerate
+ok 183 - Eloquent\Typhoon\Generator\DummyValidatorGeneratorTest::testConstructor
+ok 184 - Eloquent\Typhoon\Generator\DummyValidatorGeneratorTest::testConstructorDefaults
+ok 185 - Eloquent\Typhoon\Generator\DummyValidatorGeneratorTest::testGenerate
+ok 186 - Eloquent\Typhoon\Generator\ExceptionGenerator\MissingArgumentExceptionGeneratorTest::testConstructor
+ok 187 - Eloquent\Typhoon\Generator\ExceptionGenerator\MissingArgumentExceptionGeneratorTest::testConstructorDefaults
+ok 188 - Eloquent\Typhoon\Generator\ExceptionGenerator\MissingArgumentExceptionGeneratorTest::testGenerate
+ok 189 - Eloquent\Typhoon\Generator\ExceptionGenerator\UnexpectedArgumentExceptionGeneratorTest::testConstructor
+ok 190 - Eloquent\Typhoon\Generator\ExceptionGenerator\UnexpectedArgumentExceptionGeneratorTest::testConstructorDefaults
+ok 191 - Eloquent\Typhoon\Generator\ExceptionGenerator\UnexpectedArgumentExceptionGeneratorTest::testGenerate
+ok 192 - Eloquent\Typhoon\Generator\ExceptionGenerator\UnexpectedArgumentValueExceptionGeneratorTest::testConstructor
+ok 193 - Eloquent\Typhoon\Generator\ExceptionGenerator\UnexpectedArgumentValueExceptionGeneratorTest::testConstructorDefaults
+ok 194 - Eloquent\Typhoon\Generator\ExceptionGenerator\UnexpectedArgumentValueExceptionGeneratorTest::testGenerate
+ok 195 - Eloquent\Typhoon\Generator\ExceptionGenerator\UnexpectedInputExceptionGeneratorTest::testConstructor
+ok 196 - Eloquent\Typhoon\Generator\ExceptionGenerator\UnexpectedInputExceptionGeneratorTest::testConstructorDefaults
+ok 197 - Eloquent\Typhoon\Generator\ExceptionGenerator\UnexpectedInputExceptionGeneratorTest::testGenerate
+ok 198 - Eloquent\Typhoon\Generator\FacadeGeneratorTest::testConstructor
+ok 199 - Eloquent\Typhoon\Generator\FacadeGeneratorTest::testConstructorDefaults
+ok 200 - Eloquent\Typhoon\Generator\FacadeGeneratorTest::testGenerate
+ok 201 - Eloquent\Typhoon\Generator\FacadeGeneratorTest::testGenerateNoCallable
+ok 202 - Eloquent\Typhoon\Generator\NullifiedTypeTest::testConstructor
+ok 203 - Eloquent\Typhoon\Generator\ParameterListGeneratorTest::testConstructor
+ok 204 - Eloquent\Typhoon\Generator\ParameterListGeneratorTest::testConstructorDefaults
+ok 205 - Eloquent\Typhoon\Generator\ParameterListGeneratorTest::testSetValidatorNamespace
+ok 206 - Eloquent\Typhoon\Generator\ParameterListGeneratorTest::testSetValidatorNamespaceNormalization
+ok 207 - Eloquent\Typhoon\Generator\ParameterListGeneratorTest::testVisitParameterListLogic
+ok 208 - Eloquent\Typhoon\Generator\ParameterListGeneratorTest::testVisitParameterListLogicOptional
+ok 209 - Eloquent\Typhoon\Generator\ParameterListGeneratorTest::testVisitParameterListLogicNoRequired
+ok 210 - Eloquent\Typhoon\Generator\ParameterListGeneratorTest::testVisitParameterListLogicVariableLength
+ok 211 - Eloquent\Typhoon\Generator\ParameterListGeneratorTest::testVisitParameterListLogicEmpty
+ok 212 - Eloquent\Typhoon\Generator\ParameterListGeneratorTest::testVisitParameterListLogicFailure with data set "Not enough arguments 1" ('Typhoon\\Exception\\MissingArgumentException', 'Missing argument for parameter \'baz\' at index 2. Expected \'float\'.', Eloquent\Typhoon\Parameter\ParameterList, array('foo', 111))
+ok 213 - Eloquent\Typhoon\Generator\ParameterListGeneratorTest::testVisitParameterListLogicFailure with data set "Not enough arguments 2" ('Typhoon\\Exception\\MissingArgumentException', 'Missing argument for parameter \'bar\' at index 1. Expected \'integer\'.', Eloquent\Typhoon\Parameter\ParameterList, array('foo'))
+ok 214 - Eloquent\Typhoon\Generator\ParameterListGeneratorTest::testVisitParameterListLogicFailure with data set "Not enough arguments 3" ('Typhoon\\Exception\\MissingArgumentException', 'Missing argument for parameter \'foo\' at index 0. Expected \'string\'.', Eloquent\Typhoon\Parameter\ParameterList, array())
+ok 215 - Eloquent\Typhoon\Generator\ParameterListGeneratorTest::testVisitParameterListLogicFailure with data set "Too many arguments" ('Typhoon\\Exception\\UnexpectedArgumentException', 'Unexpected argument of type \'float\' at index 3.', Eloquent\Typhoon\Parameter\ParameterList, array('foo', 111, 1.11, 2.22))
+ok 216 - Eloquent\Typhoon\Generator\ParameterListGeneratorTest::testVisitParameterListLogicFailure with data set "Type mismatch 1" ('Typhoon\\Exception\\UnexpectedArgumentValueException', 'Unexpected argument of type \'string\' for parameter \'baz\' at index 2. Expected \'float\'.', Eloquent\Typhoon\Parameter\ParameterList, array('foo', 111, 'bar'))
+ok 217 - Eloquent\Typhoon\Generator\ParameterListGeneratorTest::testVisitParameterListLogicFailure with data set "Type mismatch 2" ('Typhoon\\Exception\\UnexpectedArgumentValueException', 'Unexpected argument of type \'string\' for parameter \'bar\' at index 1. Expected \'integer\'.', Eloquent\Typhoon\Parameter\ParameterList, array('foo', 'bar', 'baz'))
+ok 218 - Eloquent\Typhoon\Generator\ParameterListGeneratorTest::testVisitParameterListLogicFailure with data set "Type mismatch 3" ('Typhoon\\Exception\\UnexpectedArgumentValueException', 'Unexpected argument of type \'integer\' for parameter \'foo\' at index 0. Expected \'string\'.', Eloquent\Typhoon\Parameter\ParameterList, array(111, 'bar', 'baz'))
+ok 219 - Eloquent\Typhoon\Generator\ParameterListGeneratorTest::testVisitParameterListLogicFailure with data set "Variable length type mismatch" ('Typhoon\\Exception\\UnexpectedArgumentValueException', 'Unexpected argument of type \'string\' for parameter \'baz\' at index 4. Expected \'float\'.', Eloquent\Typhoon\Parameter\ParameterList, array('foo', 111, 1.11, 2.22, 'bar', 3.33))
+ok 220 - Eloquent\Typhoon\Generator\ParameterListMerge\Exception\ParameterListMergeExceptionTest::testExceptionClassRelated
+ok 221 - Eloquent\Typhoon\Generator\ParameterListMerge\Exception\ParameterListMergeExceptionTest::testExceptionMethodRelated
+ok 222 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testConstructor
+ok 223 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testUseNativeCallableManualOff
+ok 224 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testUseNativeCallableNotAvailable
+ok 225 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testUseNativeCallableOn
+ok 226 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMerge with data set "Empty parameter list" (Eloquent\Typhoon\Parameter\ParameterList, Eloquent\Typhoon\Parameter\ParameterList, Eloquent\Typhoon\Parameter\ParameterList)
+ok 227 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMerge with data set "Unchanged parameter list" (Eloquent\Typhoon\Parameter\ParameterList, Eloquent\Typhoon\Parameter\ParameterList, Eloquent\Typhoon\Parameter\ParameterList)
+ok 228 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMerge with data set "Unchanged parameter list (variable length)" (Eloquent\Typhoon\Parameter\ParameterList, Eloquent\Typhoon\Parameter\ParameterList, Eloquent\Typhoon\Parameter\ParameterList)
+ok 229 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMerge with data set "Copy isOptional from native" (Eloquent\Typhoon\Parameter\ParameterList, Eloquent\Typhoon\Parameter\ParameterList, Eloquent\Typhoon\Parameter\ParameterList)
+ok 230 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMerge with data set "Fall back to native if undocumented" (Eloquent\Typhoon\Parameter\ParameterList, Eloquent\Typhoon\Parameter\ParameterList, Eloquent\Typhoon\Parameter\ParameterList)
+ok 231 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMerge with data set "Don't add variable length parameter if parameter count is wrong" (Eloquent\Typhoon\Parameter\ParameterList, Eloquent\Typhoon\Parameter\ParameterList, Eloquent\Typhoon\Parameter\ParameterList)
+ok 232 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeFailure with data set "Documented parameter not defined" ('Error in method \\foo::bar(): Documented parameter $baz not defined.', array(Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterUndefined, Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterUndefined), Eloquent\Typhoon\Parameter\ParameterList, Eloquent\Typhoon\Parameter\ParameterList)
+ok 233 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeFailure with data set "Native parameter not documented" ('Error in method \\foo::bar(): Parameter $baz is not documented.', array(Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\UndocumentedParameter, Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\UndocumentedParameter), Eloquent\Typhoon\Parameter\ParameterList, Eloquent\Typhoon\Parameter\ParameterList)
+ok 234 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeFailure with data set "Parameter name mismatch" ('Error in method \\foo::bar(): Documented parameter name $bar does not match defined parameter name $baz.', array(Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterNameMismatch), Eloquent\Typhoon\Parameter\ParameterList, Eloquent\Typhoon\Parameter\ParameterList)
+ok 235 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeFailure with data set "Parameter by-reference mismatch" ('Error in method \\foo::bar(): Parameter $bar is defined as by-reference but documented as by-value.', array(Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterByReferenceMismatch), Eloquent\Typhoon\Parameter\ParameterList, Eloquent\Typhoon\Parameter\ParameterList)
+ok 236 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeFailure with data set "Non documentation-only variable length parameter" ('Error in method \\foo::bar(): Variable-length parameter $baz should only be documented, not defined.', array(Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DefinedParameterVariableLength), Eloquent\Typhoon\Parameter\ParameterList, Eloquent\Typhoon\Parameter\ParameterList)
+ok 237 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeFailure with data set "Variable length parameters with undefined penultimate parameter" ('Error in method \\foo::bar(): Documented parameter $qux not defined.', array(Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterUndefined), Eloquent\Typhoon\Parameter\ParameterList, Eloquent\Typhoon\Parameter\ParameterList)
+ok 238 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeFailureIssues with data set "Documented parameter not defined" ('Error in method \\foo::bar(): Documented parameter $baz not defined.', array(Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterUndefined, Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterUndefined), Eloquent\Typhoon\Parameter\ParameterList, Eloquent\Typhoon\Parameter\ParameterList)
+ok 239 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeFailureIssues with data set "Native parameter not documented" ('Error in method \\foo::bar(): Parameter $baz is not documented.', array(Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\UndocumentedParameter, Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\UndocumentedParameter), Eloquent\Typhoon\Parameter\ParameterList, Eloquent\Typhoon\Parameter\ParameterList)
+ok 240 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeFailureIssues with data set "Parameter name mismatch" ('Error in method \\foo::bar(): Documented parameter name $bar does not match defined parameter name $baz.', array(Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterNameMismatch), Eloquent\Typhoon\Parameter\ParameterList, Eloquent\Typhoon\Parameter\ParameterList)
+ok 241 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeFailureIssues with data set "Parameter by-reference mismatch" ('Error in method \\foo::bar(): Parameter $bar is defined as by-reference but documented as by-value.', array(Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterByReferenceMismatch), Eloquent\Typhoon\Parameter\ParameterList, Eloquent\Typhoon\Parameter\ParameterList)
+ok 242 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeFailureIssues with data set "Non documentation-only variable length parameter" ('Error in method \\foo::bar(): Variable-length parameter $baz should only be documented, not defined.', array(Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DefinedParameterVariableLength), Eloquent\Typhoon\Parameter\ParameterList, Eloquent\Typhoon\Parameter\ParameterList)
+ok 243 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeFailureIssues with data set "Variable length parameters with undefined penultimate parameter" ('Error in method \\foo::bar(): Documented parameter $qux not defined.', array(Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterUndefined), Eloquent\Typhoon\Parameter\ParameterList, Eloquent\Typhoon\Parameter\ParameterList)
 ok 244 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeType with data set "Both types documented as array" (Eloquent\Typhoon\Generator\NullifiedType, Eloquent\Typhax\Type\TraversableType, Eloquent\Typhax\Type\TraversableType)
 ok 245 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeType with data set "Both types documented as array, but documented specifies subtypes" (Eloquent\Typhax\Type\TraversableType, Eloquent\Typhax\Type\TraversableType, Eloquent\Typhax\Type\TraversableType)
 ok 246 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeType with data set "Both types documented Exception|null" (Eloquent\Typhoon\Generator\NullifiedType, Eloquent\Typhax\Type\OrType, Eloquent\Typhax\Type\OrType)
@@ -354,123 +354,142 @@ ok 249 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeT
 ok 250 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeType with data set "Don't clobber basic types" (Eloquent\Typhax\Type\BooleanType, Eloquent\Typhax\Type\BooleanType, Eloquent\Typhax\Type\MixedType)
 ok 251 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeType with data set "Native type is compatible with all types in AND composite" (Eloquent\Typhax\Type\AndType, Eloquent\Typhax\Type\AndType, Eloquent\Typhax\Type\ObjectType)
 ok 252 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeType with data set "Documented type is tuple, and native is array" (Eloquent\Typhax\Type\TupleType, Eloquent\Typhax\Type\TupleType, Eloquent\Typhax\Type\TraversableType)
-ok 253 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeCallableMixed
-ok 254 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeCallableOrNullMixed
-ok 255 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailure with data set "Error when native is mixed and documented is array" ('Eloquent\\Typhoon\\Generator\\ParameterListMerge\\Exception\\DocumentedParameterTypeMismatchException', 'Documented type \'array<string, object>\' is not correct for defined type \'mixed\' for parameter $baz in method \\foo::bar().', Eloquent\Typhax\Type\TraversableType, Eloquent\Typhax\Type\MixedType)
-ok 256 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailure with data set "Error when native is array and documented is mixed" ('Eloquent\\Typhoon\\Generator\\ParameterListMerge\\Exception\\DocumentedParameterTypeMismatchException', 'Documented type \'mixed\' is not correct for defined type \'array\' for parameter $baz in method \\foo::bar().', Eloquent\Typhax\Type\MixedType, Eloquent\Typhax\Type\TraversableType)
-ok 257 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailure with data set "Error when native is array and documented is array or null" ('Eloquent\\Typhoon\\Generator\\ParameterListMerge\\Exception\\DocumentedParameterTypeMismatchException', 'Documented type \'array|null\' is not correct for defined type \'array\' for parameter $baz in method \\foo::bar().', Eloquent\Typhax\Type\OrType, Eloquent\Typhax\Type\TraversableType)
-ok 258 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailure with data set "Error when native is array or null and documented is array" ('Eloquent\\Typhoon\\Generator\\ParameterListMerge\\Exception\\DocumentedParameterTypeMismatchException', 'Documented type \'array\' is not correct for defined type \'array|null\' for parameter $baz in method \\foo::bar().', Eloquent\Typhax\Type\TraversableType, Eloquent\Typhax\Type\OrType)
-ok 259 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailure with data set "Error when native is mixed and documented is array or null" ('Eloquent\\Typhoon\\Generator\\ParameterListMerge\\Exception\\DocumentedParameterTypeMismatchException', 'Documented type \'array|null\' is not correct for defined type \'mixed\' for parameter $baz in method \\foo::bar().', Eloquent\Typhax\Type\OrType, Eloquent\Typhax\Type\MixedType)
-ok 260 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailure with data set "Error when native is mixed and documented is object of type" ('Eloquent\\Typhoon\\Generator\\ParameterListMerge\\Exception\\DocumentedParameterTypeMismatchException', 'Documented type \'Baz\' is not correct for defined type \'mixed\' for parameter $baz in method \\foo::bar().', Eloquent\Typhax\Type\ObjectType, Eloquent\Typhax\Type\MixedType)
-ok 261 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailure with data set "Error when native is object of type and documented is mixed" ('Eloquent\\Typhoon\\Generator\\ParameterListMerge\\Exception\\DocumentedParameterTypeMismatchException', 'Documented type \'mixed\' is not correct for defined type \'Baz\' for parameter $baz in method \\foo::bar().', Eloquent\Typhax\Type\MixedType, Eloquent\Typhax\Type\ObjectType)
-ok 262 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailure with data set "Error when native is object of type and documented is object of type or null" ('Eloquent\\Typhoon\\Generator\\ParameterListMerge\\Exception\\DocumentedParameterTypeMismatchException', 'Documented type \'Baz|null\' is not correct for defined type \'Baz\' for parameter $baz in method \\foo::bar().', Eloquent\Typhax\Type\OrType, Eloquent\Typhax\Type\ObjectType)
-ok 263 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailure with data set "Error when native is object of type or null and documented is object of type" ('Eloquent\\Typhoon\\Generator\\ParameterListMerge\\Exception\\DocumentedParameterTypeMismatchException', 'Documented type \'Baz\' is not correct for defined type \'Baz|null\' for parameter $baz in method \\foo::bar().', Eloquent\Typhax\Type\ObjectType, Eloquent\Typhax\Type\OrType)
-ok 264 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailure with data set "Error when native is mixed and documented is object of type or null" ('Eloquent\\Typhoon\\Generator\\ParameterListMerge\\Exception\\DocumentedParameterTypeMismatchException', 'Documented type \'Baz|null\' is not correct for defined type \'mixed\' for parameter $baz in method \\foo::bar().', Eloquent\Typhax\Type\OrType, Eloquent\Typhax\Type\MixedType)
-ok 265 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailure with data set "Error when native is a class and documented is an incompatible class" ('Eloquent\\Typhoon\\Generator\\ParameterListMerge\\Exception\\DocumentedParameterTypeMismatchException', 'Documented type \'stdClass\' is not correct for defined type \'Iterator\' for parameter $baz in method \\foo::bar().', Eloquent\Typhax\Type\ObjectType, Eloquent\Typhax\Type\ObjectType)
-ok 266 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailure with data set "Error when documented and native are both or composites, and one of the documented types is incompatible" ('Eloquent\\Typhoon\\Generator\\ParameterListMerge\\Exception\\DocumentedParameterTypeMismatchException', 'Documented type \'Baz|float|null\' is not correct for defined type \'Baz|null\' for parameter $baz in method \\foo::bar().', Eloquent\Typhax\Type\OrType, Eloquent\Typhax\Type\OrType)
-ok 267 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailure with data set "Error when native is not compatible with all types in AND composite" ('Eloquent\\Typhoon\\Generator\\ParameterListMerge\\Exception\\DocumentedParameterTypeMismatchException', 'Documented type \'Traversable+Serializable\' is not correct for defined type \'Iterator\' for parameter $baz in method \\foo::bar().', Eloquent\Typhax\Type\AndType, Eloquent\Typhax\Type\ObjectType)
-ok 268 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailure with data set "Error when native is mixed and documented is callable" ('Eloquent\\Typhoon\\Generator\\ParameterListMerge\\Exception\\DocumentedParameterTypeMismatchException', 'Documented type \'callable\' is not correct for defined type \'mixed\' for parameter $baz in method \\foo::bar().', Eloquent\Typhax\Type\CallableType, Eloquent\Typhax\Type\MixedType)
-ok 269 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailure with data set "Error when native is callable and documented is mixed" ('Eloquent\\Typhoon\\Generator\\ParameterListMerge\\Exception\\DocumentedParameterTypeMismatchException', 'Documented type \'mixed\' is not correct for defined type \'callable\' for parameter $baz in method \\foo::bar().', Eloquent\Typhax\Type\MixedType, Eloquent\Typhax\Type\CallableType)
-ok 270 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailure with data set "Error when native is callable and documented is callable or null" ('Eloquent\\Typhoon\\Generator\\ParameterListMerge\\Exception\\DocumentedParameterTypeMismatchException', 'Documented type \'callable|null\' is not correct for defined type \'callable\' for parameter $baz in method \\foo::bar().', Eloquent\Typhax\Type\OrType, Eloquent\Typhax\Type\CallableType)
-ok 271 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailure with data set "Error when native is callable or null and documented is callable" ('Eloquent\\Typhoon\\Generator\\ParameterListMerge\\Exception\\DocumentedParameterTypeMismatchException', 'Documented type \'callable\' is not correct for defined type \'callable|null\' for parameter $baz in method \\foo::bar().', Eloquent\Typhax\Type\CallableType, Eloquent\Typhax\Type\OrType)
-ok 272 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailure with data set "Error when native is mixed and documented is callable or null" ('Eloquent\\Typhoon\\Generator\\ParameterListMerge\\Exception\\DocumentedParameterTypeMismatchException', 'Documented type \'callable|null\' is not correct for defined type \'mixed\' for parameter $baz in method \\foo::bar().', Eloquent\Typhax\Type\OrType, Eloquent\Typhax\Type\MixedType)
-ok 273 - Eloquent\Typhoon\Generator\ProjectValidatorGeneratorTest::testConstructor
-ok 274 - Eloquent\Typhoon\Generator\ProjectValidatorGeneratorTest::testConstructorDefaults
-ok 275 - Eloquent\Typhoon\Generator\ProjectValidatorGeneratorTest::testGenerate
-ok 276 - Eloquent\Typhoon\Generator\ProjectValidatorGeneratorTest::testPSRPath
-ok 277 - Eloquent\Typhoon\Generator\ProjectValidatorGeneratorTest::testCleanPath
-ok 278 - Eloquent\Typhoon\Generator\RuntimeConfigurationGeneratorTest::testGenerate with data set "Use native callable" (Icecave\Pasta\AST\Expr\NewOperator, Eloquent\Typhoon\Configuration\RuntimeConfiguration)
-ok 279 - Eloquent\Typhoon\Generator\RuntimeConfigurationGeneratorTest::testGenerate with data set "Don't use native callable" (Icecave\Pasta\AST\Expr\NewOperator, Eloquent\Typhoon\Configuration\RuntimeConfiguration)
-ok 280 - Eloquent\Typhoon\Generator\TypeInspectorGeneratorTest::testConstructor
-ok 281 - Eloquent\Typhoon\Generator\TypeInspectorGeneratorTest::testConstructorDefaults
-ok 282 - Eloquent\Typhoon\Generator\TypeInspectorGeneratorTest::testGenerate
-ok 283 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitAndTypeLogic
-ok 284 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitAndTypeLogicWithClosureBasedSubCheck
-ok 285 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitArrayTypeLogic
-ok 286 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitBooleanTypeLogic
-ok 287 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitCallableTypeLogic
-ok 288 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitExtensionType
-ok 289 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitFloatTypeLogic
-ok 290 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitIntegerTypeLogic
-ok 291 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitMixedTypeLogic
-ok 292 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitNullTypeLogic
-ok 293 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitNumericTypeLogic
-ok 294 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitObjectTypeLogic
-ok 295 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitObjectOfTypeClassLogic
-ok 296 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitObjectOfTypeInterfaceLogic
-ok 297 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitOrTypeLogic
-ok 298 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitOrTypeLogicWithClosureBasedSubCheck
-ok 299 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitResourceTypeLogic
-ok 300 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitResourceTypeOfTypeLogic
-ok 301 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitStreamTypeLogic
-ok 302 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitStreamTypeReadableLogic
-ok 303 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitStreamTypeNotReadableLogic
-ok 304 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitStreamTypeWritableLogic
-ok 305 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitStreamTypeNotWritableLogic
-ok 306 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitStreamTypeReadWriteLogic
-ok 307 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitStringTypeLogic
-ok 308 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitStringableTypeLogic
-ok 309 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitTraversableTypeLogicArrayPrimary
-ok 310 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitTraversableTypeLogicObjectPrimary
-ok 311 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitTraversableTypeLogicMixedPrimary
-ok 312 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitTupleTypeLogic
-ok 313 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitNullifiedType
-ok 314 - Eloquent\Typhoon\Generator\ValidatorClassGeneratorTest::testConstructor
-ok 315 - Eloquent\Typhoon\Generator\ValidatorClassGeneratorTest::testConstructorDefaults
-ok 316 - Eloquent\Typhoon\Generator\ValidatorClassGeneratorTest::testGenerate with data set "EmptyClass" ('EmptyClass')
-ok 317 - Eloquent\Typhoon\Generator\ValidatorClassGeneratorTest::testGenerate with data set "TypicalClass" ('TypicalClass')
-ok 318 - Eloquent\Typhoon\Generator\ValidatorClassGeneratorTest::testGenerateFromSource
-ok 319 - Eloquent\Typhoon\Generator\ValidatorClassGeneratorTest::testGenerateFromFile
-ok 320 - Eloquent\Typhoon\Generator\ValidatorClassGeneratorTest::testGenerateFromClass
-ok 321 - Eloquent\Typhoon\Parameter\ParameterListTest::testParameterList
-ok 322 - Eloquent\Typhoon\Parameter\ParameterListTest::testParameterListOptionalParameters
-ok 323 - Eloquent\Typhoon\Parameter\ParameterListTest::testParameterByName
-ok 324 - Eloquent\Typhoon\Parameter\ParameterListTest::testRequiredParameters
-ok 325 - Eloquent\Typhoon\Parameter\ParameterListTest::testAccept
-ok 326 - Eloquent\Typhoon\Parameter\ParameterTest::testParameter
-ok 327 - Eloquent\Typhoon\Parameter\ParameterTest::testParameterOptionalParameters
-ok 328 - Eloquent\Typhoon\Parameter\ParameterTest::testAccept
-ok 329 - Eloquent\Typhoon\Parser\Exception\InvalidFunctionDocumentationExceptionTest::testException
-ok 330 - Eloquent\Typhoon\Parser\Exception\InvalidFunctionDocumentationExceptionTest::testExceptionWithoutClassName
-ok 331 - Eloquent\Typhoon\Parser\Exception\ParseExceptionTest::testException
-ok 332 - Eloquent\Typhoon\Parser\Exception\UnexpectedContentExceptionTest::testException
-ok 333 - Eloquent\Typhoon\Parser\ParameterListParserTest::testConstructor
-ok 334 - Eloquent\Typhoon\Parser\ParameterListParserTest::testConstructorDefaults
-ok 335 - Eloquent\Typhoon\Parser\ParameterListParserTest::testParseEmptyParameterList
-ok 336 - Eloquent\Typhoon\Parser\ParameterListParserTest::testVisitParameterList
-ok 337 - Eloquent\Typhoon\Parser\ParameterListParserTest::testVisitParameterListVariableLength
-ok 338 - Eloquent\Typhoon\Parser\ParameterListParserTest::testVisitParameterListVariableLengthNoDescription
-ok 339 - Eloquent\Typhoon\Parser\ParameterListParserTest::testVisitInvalidParameterTagFailureNoType
-ok 340 - Eloquent\Typhoon\Parser\ParameterListParserTest::testVisitInvalidParameterTagFailureNoName
-ok 341 - Eloquent\Typhoon\Parser\ParameterListParserTest::testFromReflector
-ok 342 - Eloquent\Typhoon\Parser\ParameterListParserTest::testFromReflectorCallable
-ok 343 - Eloquent\Typhoon\Resolver\ParameterListClassNameResolverTest::testResolver
-ok 344 - Eloquent\Typhoon\Resolver\ParameterListClassNameResolverTest::testResolverVariableLength
-ok 345 - Typhoon\AbstractValidatorTest::testCall
-ok 346 - Typhoon\AbstractValidatorTest::testCallFailure
-ok 347 - Typhoon\DummyValidatorTest::testCall
-ok 348 - Typhoon\Exception\MissingArgumentExceptionTest::testException
-ok 349 - Typhoon\Exception\UnexpectedArgumentExceptionTest::testException
-ok 350 - Typhoon\Exception\UnexpectedArgumentValueExceptionTest::testException
-ok 351 - Typhoon\Exception\UnexpectedInputExceptionTest::testException
-ok 352 - Typhoon\TypeInspectorTest::testInspector with data set "Array" ('array', array())
-ok 353 - Typhoon\TypeInspectorTest::testInspector with data set "Boolean true" ('boolean', true)
-ok 354 - Typhoon\TypeInspectorTest::testInspector with data set "Boolean false" ('boolean', false)
-ok 355 - Typhoon\TypeInspectorTest::testInspector with data set "Float" ('float', 1.11)
-ok 356 - Typhoon\TypeInspectorTest::testInspector with data set "Integer" ('integer', 111)
-ok 357 - Typhoon\TypeInspectorTest::testInspector with data set "Null" ('null', NULL)
-ok 358 - Typhoon\TypeInspectorTest::testInspector with data set "Object" ('stdClass', stdClass)
-ok 359 - Typhoon\TypeInspectorTest::testInspector with data set "String" ('string', 'foo')
-ok 360 - Typhoon\TypeInspectorTest::testInspector with data set "Stream context resource" ('resource {ofType: stream-context}', <resource>)
-ok 361 - Typhoon\TypeInspectorTest::testInspector with data set "Array with subtypes" ('array<integer|string, float|null>', array(1.11, NULL))
-ok 362 - Typhoon\TypeInspectorTest::testInspector with data set "Array with subtypes and max iterations" ('array<integer, float>', array(1.11, NULL), 1)
-ok 363 - Typhoon\TypeInspectorTest::testInspector with data set "Array with subtypes and default max iterations" ('array<integer, float>', array(1.11, 1.11, 1.11, 1.11, 1.11, 1.11, 1.11, 1.11, 1.11, 1.11, NULL))
-ok 364 - Typhoon\TypeInspectorTest::testInspector with data set "Traversable with subtypes" ('ArrayIterator<integer|string, float|null>', ArrayIterator)
-ok 365 - Typhoon\TypeInspectorTest::testInspector with data set "Traversable with subtypes and max iterations" ('ArrayIterator<integer, float>', ArrayIterator, 1)
-ok 366 - Typhoon\TypeInspectorTest::testStreamInspection
-ok 367 - Typhoon\TyphoonTest::testGet
-ok 368 - Typhoon\TyphoonTest::testGetWithArguments
-ok 369 - Typhoon\TyphoonTest::testGetDummyMode
-ok 370 - Typhoon\TyphoonTest::testRuntimeGeneration
-ok 371 - Typhoon\TyphoonTest::testInstall
-1..371
+ok 253 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeType with data set "Fallback to native when types are incompatible" (Eloquent\Typhax\Type\ObjectType, Eloquent\Typhax\Type\NullType, Eloquent\Typhax\Type\ObjectType)
+ok 254 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeCallableMixed
+ok 255 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeCallableOrNullMixed
+ok 256 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailure with data set "Error when native is mixed and documented is array" ('Error in method \\foo::bar(): Documented type \'array<string, object>\' is not correct for defined type \'mixed\' of parameter $baz.', Eloquent\Typhax\Type\TraversableType, Eloquent\Typhax\Type\MixedType)
+ok 257 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailure with data set "Error when native is array and documented is mixed" ('Error in method \\foo::bar(): Documented type \'mixed\' is not correct for defined type \'array\' of parameter $baz.', Eloquent\Typhax\Type\MixedType, Eloquent\Typhax\Type\TraversableType)
+ok 258 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailure with data set "Error when native is array and documented is array or null" ('Error in method \\foo::bar(): Documented type \'array|null\' is not correct for defined type \'array\' of parameter $baz.', Eloquent\Typhax\Type\OrType, Eloquent\Typhax\Type\TraversableType)
+ok 259 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailure with data set "Error when native is array or null and documented is array" ('Error in method \\foo::bar(): Documented type \'array\' is not correct for defined type \'array|null\' of parameter $baz.', Eloquent\Typhax\Type\TraversableType, Eloquent\Typhax\Type\OrType)
+ok 260 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailure with data set "Error when native is mixed and documented is array or null" ('Error in method \\foo::bar(): Documented type \'array|null\' is not correct for defined type \'mixed\' of parameter $baz.', Eloquent\Typhax\Type\OrType, Eloquent\Typhax\Type\MixedType)
+ok 261 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailure with data set "Error when native is mixed and documented is object of type" ('Error in method \\foo::bar(): Documented type \'Baz\' is not correct for defined type \'mixed\' of parameter $baz.', Eloquent\Typhax\Type\ObjectType, Eloquent\Typhax\Type\MixedType)
+ok 262 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailure with data set "Error when native is object of type and documented is mixed" ('Error in method \\foo::bar(): Documented type \'mixed\' is not correct for defined type \'Baz\' of parameter $baz.', Eloquent\Typhax\Type\MixedType, Eloquent\Typhax\Type\ObjectType)
+ok 263 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailure with data set "Error when native is object of type and documented is object of type or null" ('Error in method \\foo::bar(): Documented type \'Baz|null\' is not correct for defined type \'Baz\' of parameter $baz.', Eloquent\Typhax\Type\OrType, Eloquent\Typhax\Type\ObjectType)
+ok 264 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailure with data set "Error when native is object of type or null and documented is object of type" ('Error in method \\foo::bar(): Documented type \'Baz\' is not correct for defined type \'Baz|null\' of parameter $baz.', Eloquent\Typhax\Type\ObjectType, Eloquent\Typhax\Type\OrType)
+ok 265 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailure with data set "Error when native is mixed and documented is object of type or null" ('Error in method \\foo::bar(): Documented type \'Baz|null\' is not correct for defined type \'mixed\' of parameter $baz.', Eloquent\Typhax\Type\OrType, Eloquent\Typhax\Type\MixedType)
+ok 266 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailure with data set "Error when native is a class and documented is an incompatible class" ('Error in method \\foo::bar(): Documented type \'stdClass\' is not correct for defined type \'Iterator\' of parameter $baz.', Eloquent\Typhax\Type\ObjectType, Eloquent\Typhax\Type\ObjectType)
+ok 267 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailure with data set "Error when documented and native are both or composites, and one of the documented types is incompatible" ('Error in method \\foo::bar(): Documented type \'Baz|float|null\' is not correct for defined type \'Baz|null\' of parameter $baz.', Eloquent\Typhax\Type\OrType, Eloquent\Typhax\Type\OrType)
+ok 268 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailure with data set "Error when native is not compatible with all types in AND composite" ('Error in method \\foo::bar(): Documented type \'Traversable+Serializable\' is not correct for defined type \'Iterator\' of parameter $baz.', Eloquent\Typhax\Type\AndType, Eloquent\Typhax\Type\ObjectType)
+ok 269 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailure with data set "Error when native is mixed and documented is callable" ('Error in method \\foo::bar(): Documented type \'callable\' is not correct for defined type \'mixed\' of parameter $baz.', Eloquent\Typhax\Type\CallableType, Eloquent\Typhax\Type\MixedType)
+ok 270 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailure with data set "Error when native is callable and documented is mixed" ('Error in method \\foo::bar(): Documented type \'mixed\' is not correct for defined type \'callable\' of parameter $baz.', Eloquent\Typhax\Type\MixedType, Eloquent\Typhax\Type\CallableType)
+ok 271 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailure with data set "Error when native is callable and documented is callable or null" ('Error in method \\foo::bar(): Documented type \'callable|null\' is not correct for defined type \'callable\' of parameter $baz.', Eloquent\Typhax\Type\OrType, Eloquent\Typhax\Type\CallableType)
+ok 272 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailure with data set "Error when native is callable or null and documented is callable" ('Error in method \\foo::bar(): Documented type \'callable\' is not correct for defined type \'callable|null\' of parameter $baz.', Eloquent\Typhax\Type\CallableType, Eloquent\Typhax\Type\OrType)
+ok 273 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailure with data set "Error when native is mixed and documented is callable or null" ('Error in method \\foo::bar(): Documented type \'callable|null\' is not correct for defined type \'mixed\' of parameter $baz.', Eloquent\Typhax\Type\OrType, Eloquent\Typhax\Type\MixedType)
+ok 274 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailureIssues with data set "Error when native is mixed and documented is array" ('Error in method \\foo::bar(): Documented type \'array<string, object>\' is not correct for defined type \'mixed\' of parameter $baz.', Eloquent\Typhax\Type\TraversableType, Eloquent\Typhax\Type\MixedType)
+ok 275 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailureIssues with data set "Error when native is array and documented is mixed" ('Error in method \\foo::bar(): Documented type \'mixed\' is not correct for defined type \'array\' of parameter $baz.', Eloquent\Typhax\Type\MixedType, Eloquent\Typhax\Type\TraversableType)
+ok 276 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailureIssues with data set "Error when native is array and documented is array or null" ('Error in method \\foo::bar(): Documented type \'array|null\' is not correct for defined type \'array\' of parameter $baz.', Eloquent\Typhax\Type\OrType, Eloquent\Typhax\Type\TraversableType)
+ok 277 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailureIssues with data set "Error when native is array or null and documented is array" ('Error in method \\foo::bar(): Documented type \'array\' is not correct for defined type \'array|null\' of parameter $baz.', Eloquent\Typhax\Type\TraversableType, Eloquent\Typhax\Type\OrType)
+ok 278 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailureIssues with data set "Error when native is mixed and documented is array or null" ('Error in method \\foo::bar(): Documented type \'array|null\' is not correct for defined type \'mixed\' of parameter $baz.', Eloquent\Typhax\Type\OrType, Eloquent\Typhax\Type\MixedType)
+ok 279 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailureIssues with data set "Error when native is mixed and documented is object of type" ('Error in method \\foo::bar(): Documented type \'Baz\' is not correct for defined type \'mixed\' of parameter $baz.', Eloquent\Typhax\Type\ObjectType, Eloquent\Typhax\Type\MixedType)
+ok 280 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailureIssues with data set "Error when native is object of type and documented is mixed" ('Error in method \\foo::bar(): Documented type \'mixed\' is not correct for defined type \'Baz\' of parameter $baz.', Eloquent\Typhax\Type\MixedType, Eloquent\Typhax\Type\ObjectType)
+ok 281 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailureIssues with data set "Error when native is object of type and documented is object of type or null" ('Error in method \\foo::bar(): Documented type \'Baz|null\' is not correct for defined type \'Baz\' of parameter $baz.', Eloquent\Typhax\Type\OrType, Eloquent\Typhax\Type\ObjectType)
+ok 282 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailureIssues with data set "Error when native is object of type or null and documented is object of type" ('Error in method \\foo::bar(): Documented type \'Baz\' is not correct for defined type \'Baz|null\' of parameter $baz.', Eloquent\Typhax\Type\ObjectType, Eloquent\Typhax\Type\OrType)
+ok 283 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailureIssues with data set "Error when native is mixed and documented is object of type or null" ('Error in method \\foo::bar(): Documented type \'Baz|null\' is not correct for defined type \'mixed\' of parameter $baz.', Eloquent\Typhax\Type\OrType, Eloquent\Typhax\Type\MixedType)
+ok 284 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailureIssues with data set "Error when native is a class and documented is an incompatible class" ('Error in method \\foo::bar(): Documented type \'stdClass\' is not correct for defined type \'Iterator\' of parameter $baz.', Eloquent\Typhax\Type\ObjectType, Eloquent\Typhax\Type\ObjectType)
+ok 285 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailureIssues with data set "Error when documented and native are both or composites, and one of the documented types is incompatible" ('Error in method \\foo::bar(): Documented type \'Baz|float|null\' is not correct for defined type \'Baz|null\' of parameter $baz.', Eloquent\Typhax\Type\OrType, Eloquent\Typhax\Type\OrType)
+ok 286 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailureIssues with data set "Error when native is not compatible with all types in AND composite" ('Error in method \\foo::bar(): Documented type \'Traversable+Serializable\' is not correct for defined type \'Iterator\' of parameter $baz.', Eloquent\Typhax\Type\AndType, Eloquent\Typhax\Type\ObjectType)
+ok 287 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailureIssues with data set "Error when native is mixed and documented is callable" ('Error in method \\foo::bar(): Documented type \'callable\' is not correct for defined type \'mixed\' of parameter $baz.', Eloquent\Typhax\Type\CallableType, Eloquent\Typhax\Type\MixedType)
+ok 288 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailureIssues with data set "Error when native is callable and documented is mixed" ('Error in method \\foo::bar(): Documented type \'mixed\' is not correct for defined type \'callable\' of parameter $baz.', Eloquent\Typhax\Type\MixedType, Eloquent\Typhax\Type\CallableType)
+ok 289 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailureIssues with data set "Error when native is callable and documented is callable or null" ('Error in method \\foo::bar(): Documented type \'callable|null\' is not correct for defined type \'callable\' of parameter $baz.', Eloquent\Typhax\Type\OrType, Eloquent\Typhax\Type\CallableType)
+ok 290 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailureIssues with data set "Error when native is callable or null and documented is callable" ('Error in method \\foo::bar(): Documented type \'callable\' is not correct for defined type \'callable|null\' of parameter $baz.', Eloquent\Typhax\Type\CallableType, Eloquent\Typhax\Type\OrType)
+ok 291 - Eloquent\Typhoon\Generator\ParameterListMerge\MergeToolTest::testMergeTypeFailureIssues with data set "Error when native is mixed and documented is callable or null" ('Error in method \\foo::bar(): Documented type \'callable|null\' is not correct for defined type \'mixed\' of parameter $baz.', Eloquent\Typhax\Type\OrType, Eloquent\Typhax\Type\MixedType)
+ok 292 - Eloquent\Typhoon\Generator\ProjectValidatorGeneratorTest::testConstructor
+ok 293 - Eloquent\Typhoon\Generator\ProjectValidatorGeneratorTest::testConstructorDefaults
+ok 294 - Eloquent\Typhoon\Generator\ProjectValidatorGeneratorTest::testGenerate
+ok 295 - Eloquent\Typhoon\Generator\ProjectValidatorGeneratorTest::testPSRPath
+ok 296 - Eloquent\Typhoon\Generator\ProjectValidatorGeneratorTest::testCleanPath
+ok 297 - Eloquent\Typhoon\Generator\RuntimeConfigurationGeneratorTest::testGenerate with data set "Use native callable" (Icecave\Pasta\AST\Expr\NewOperator, Eloquent\Typhoon\Configuration\RuntimeConfiguration)
+ok 298 - Eloquent\Typhoon\Generator\RuntimeConfigurationGeneratorTest::testGenerate with data set "Don't use native callable" (Icecave\Pasta\AST\Expr\NewOperator, Eloquent\Typhoon\Configuration\RuntimeConfiguration)
+ok 299 - Eloquent\Typhoon\Generator\TypeInspectorGeneratorTest::testConstructor
+ok 300 - Eloquent\Typhoon\Generator\TypeInspectorGeneratorTest::testConstructorDefaults
+ok 301 - Eloquent\Typhoon\Generator\TypeInspectorGeneratorTest::testGenerate
+ok 302 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitAndTypeLogic
+ok 303 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitAndTypeLogicWithClosureBasedSubCheck
+ok 304 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitArrayTypeLogic
+ok 305 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitBooleanTypeLogic
+ok 306 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitCallableTypeLogic
+ok 307 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitExtensionType
+ok 308 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitFloatTypeLogic
+ok 309 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitIntegerTypeLogic
+ok 310 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitMixedTypeLogic
+ok 311 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitNullTypeLogic
+ok 312 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitNumericTypeLogic
+ok 313 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitObjectTypeLogic
+ok 314 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitObjectOfTypeClassLogic
+ok 315 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitObjectOfTypeInterfaceLogic
+ok 316 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitOrTypeLogic
+ok 317 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitOrTypeLogicWithClosureBasedSubCheck
+ok 318 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitResourceTypeLogic
+ok 319 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitResourceTypeOfTypeLogic
+ok 320 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitStreamTypeLogic
+ok 321 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitStreamTypeReadableLogic
+ok 322 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitStreamTypeNotReadableLogic
+ok 323 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitStreamTypeWritableLogic
+ok 324 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitStreamTypeNotWritableLogic
+ok 325 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitStreamTypeReadWriteLogic
+ok 326 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitStringTypeLogic
+ok 327 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitStringableTypeLogic
+ok 328 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitTraversableTypeLogicArrayPrimary
+ok 329 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitTraversableTypeLogicObjectPrimary
+ok 330 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitTraversableTypeLogicMixedPrimary
+ok 331 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitTupleTypeLogic
+ok 332 - Eloquent\Typhoon\Generator\TyphaxASTGeneratorTest::testVisitNullifiedType
+ok 333 - Eloquent\Typhoon\Generator\ValidatorClassGeneratorTest::testConstructor
+ok 334 - Eloquent\Typhoon\Generator\ValidatorClassGeneratorTest::testConstructorDefaults
+ok 335 - Eloquent\Typhoon\Generator\ValidatorClassGeneratorTest::testGenerate with data set "EmptyClass" ('EmptyClass')
+ok 336 - Eloquent\Typhoon\Generator\ValidatorClassGeneratorTest::testGenerate with data set "TypicalClass" ('TypicalClass')
+ok 337 - Eloquent\Typhoon\Generator\ValidatorClassGeneratorTest::testGenerateFromSource
+ok 338 - Eloquent\Typhoon\Generator\ValidatorClassGeneratorTest::testGenerateFromFile
+ok 339 - Eloquent\Typhoon\Generator\ValidatorClassGeneratorTest::testGenerateFromClass
+ok 340 - Eloquent\Typhoon\Parameter\ParameterListTest::testParameterList
+ok 341 - Eloquent\Typhoon\Parameter\ParameterListTest::testParameterListOptionalParameters
+ok 342 - Eloquent\Typhoon\Parameter\ParameterListTest::testParameterByName
+ok 343 - Eloquent\Typhoon\Parameter\ParameterListTest::testRequiredParameters
+ok 344 - Eloquent\Typhoon\Parameter\ParameterListTest::testAccept
+ok 345 - Eloquent\Typhoon\Parameter\ParameterTest::testParameter
+ok 346 - Eloquent\Typhoon\Parameter\ParameterTest::testParameterOptionalParameters
+ok 347 - Eloquent\Typhoon\Parameter\ParameterTest::testAccept
+ok 348 - Eloquent\Typhoon\Parser\Exception\InvalidFunctionDocumentationExceptionTest::testException
+ok 349 - Eloquent\Typhoon\Parser\Exception\InvalidFunctionDocumentationExceptionTest::testExceptionWithoutClassName
+ok 350 - Eloquent\Typhoon\Parser\Exception\ParseExceptionTest::testException
+ok 351 - Eloquent\Typhoon\Parser\Exception\UnexpectedContentExceptionTest::testException
+ok 352 - Eloquent\Typhoon\Parser\ParameterListParserTest::testConstructor
+ok 353 - Eloquent\Typhoon\Parser\ParameterListParserTest::testConstructorDefaults
+ok 354 - Eloquent\Typhoon\Parser\ParameterListParserTest::testParseEmptyParameterList
+ok 355 - Eloquent\Typhoon\Parser\ParameterListParserTest::testVisitParameterList
+ok 356 - Eloquent\Typhoon\Parser\ParameterListParserTest::testVisitParameterListVariableLength
+ok 357 - Eloquent\Typhoon\Parser\ParameterListParserTest::testVisitParameterListVariableLengthNoDescription
+ok 358 - Eloquent\Typhoon\Parser\ParameterListParserTest::testVisitInvalidParameterTagFailureNoType
+ok 359 - Eloquent\Typhoon\Parser\ParameterListParserTest::testVisitInvalidParameterTagFailureNoName
+ok 360 - Eloquent\Typhoon\Parser\ParameterListParserTest::testFromReflector
+ok 361 - Eloquent\Typhoon\Parser\ParameterListParserTest::testFromReflectorCallable
+ok 362 - Eloquent\Typhoon\Resolver\ParameterListClassNameResolverTest::testResolver
+ok 363 - Eloquent\Typhoon\Resolver\ParameterListClassNameResolverTest::testResolverVariableLength
+ok 364 - Typhoon\AbstractValidatorTest::testCall
+ok 365 - Typhoon\AbstractValidatorTest::testCallFailure
+ok 366 - Typhoon\DummyValidatorTest::testCall
+ok 367 - Typhoon\Exception\MissingArgumentExceptionTest::testException
+ok 368 - Typhoon\Exception\UnexpectedArgumentExceptionTest::testException
+ok 369 - Typhoon\Exception\UnexpectedArgumentValueExceptionTest::testException
+ok 370 - Typhoon\Exception\UnexpectedInputExceptionTest::testException
+ok 371 - Typhoon\TypeInspectorTest::testInspector with data set "Array" ('array', array())
+ok 372 - Typhoon\TypeInspectorTest::testInspector with data set "Boolean true" ('boolean', true)
+ok 373 - Typhoon\TypeInspectorTest::testInspector with data set "Boolean false" ('boolean', false)
+ok 374 - Typhoon\TypeInspectorTest::testInspector with data set "Float" ('float', 1.11)
+ok 375 - Typhoon\TypeInspectorTest::testInspector with data set "Integer" ('integer', 111)
+ok 376 - Typhoon\TypeInspectorTest::testInspector with data set "Null" ('null', NULL)
+ok 377 - Typhoon\TypeInspectorTest::testInspector with data set "Object" ('stdClass', stdClass)
+ok 378 - Typhoon\TypeInspectorTest::testInspector with data set "String" ('string', 'foo')
+ok 379 - Typhoon\TypeInspectorTest::testInspector with data set "Stream context resource" ('resource {ofType: stream-context}', <resource>)
+ok 380 - Typhoon\TypeInspectorTest::testInspector with data set "Array with subtypes" ('array<integer|string, float|null>', array(1.11, NULL))
+ok 381 - Typhoon\TypeInspectorTest::testInspector with data set "Array with subtypes and max iterations" ('array<integer, float>', array(1.11, NULL), 1)
+ok 382 - Typhoon\TypeInspectorTest::testInspector with data set "Array with subtypes and default max iterations" ('array<integer, float>', array(1.11, 1.11, 1.11, 1.11, 1.11, 1.11, 1.11, 1.11, 1.11, 1.11, NULL))
+ok 383 - Typhoon\TypeInspectorTest::testInspector with data set "Traversable with subtypes" ('ArrayIterator<integer|string, float|null>', ArrayIterator)
+ok 384 - Typhoon\TypeInspectorTest::testInspector with data set "Traversable with subtypes and max iterations" ('ArrayIterator<integer, float>', ArrayIterator, 1)
+ok 385 - Typhoon\TypeInspectorTest::testStreamInspection
+ok 386 - Typhoon\TyphoonTest::testGet
+ok 387 - Typhoon\TyphoonTest::testGetWithArguments
+ok 388 - Typhoon\TyphoonTest::testGetDummyMode
+ok 389 - Typhoon\TyphoonTest::testRuntimeGeneration
+ok 390 - Typhoon\TyphoonTest::testInstall
+1..390

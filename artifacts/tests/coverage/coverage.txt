@@ -1,19 +1,23 @@
 
 
 Code Coverage Report 
-  2013-02-17 11:16:46
+  2013-02-18 11:42:26
 
  Summary: 
-  Classes: 100.00% (75/75)
-  Methods: 100.00% (393/393)
-  Lines:   100.00% (4442/4442)
+  Classes: 100.00% (70/70)
+  Methods: 100.00% (374/374)
+  Lines:   100.00% (4319/4319)
 
 \Eloquent\Typhoon\ClassMapper::ClassDefinition
   Methods: 100.00% (11/11)   Lines: 100.00% ( 48/ 48)
 \Eloquent\Typhoon\ClassMapper::ClassMapper
-  Methods: 100.00% (16/16)   Lines: 100.00% (251/251)
+  Methods: 100.00% (16/16)   Lines: 100.00% (255/255)
 \Eloquent\Typhoon\ClassMapper::ClassMemberDefinition
-  Methods: 100.00% ( 7/ 7)   Lines: 100.00% ( 21/ 21)
+  Methods: 100.00% ( 8/ 8)   Lines: 100.00% ( 24/ 24)
+\Eloquent\Typhoon\ClassMapper::MethodDefinition
+  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 14/ 14)
+\Eloquent\Typhoon\ClassMapper::PropertyDefinition
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
 \Eloquent\Typhoon\ClassMapper\Exception::UndefinedClassException
   Methods: 100.00% ( 2/ 2)   Lines: 100.00% ( 12/ 12)
 \Eloquent\Typhoon\ClassMapper\Exception::UndefinedMethodException
@@ -99,7 +103,7 @@ Code Coverage Report
 \Eloquent\Typhoon\Generator::TyphaxASTGenerator
   Methods: 100.00% (21/21)   Lines: 100.00% (450/450)
 \Eloquent\Typhoon\Generator::ValidatorClassGenerator
-  Methods: 100.00% (17/17)   Lines: 100.00% (156/156)
+  Methods: 100.00% (16/16)   Lines: 100.00% (147/147)
 \Eloquent\Typhoon\Generator\ExceptionGenerator::MissingArgumentExceptionGenerator
   Methods: 100.00% ( 8/ 8)   Lines: 100.00% (139/139)
 \Eloquent\Typhoon\Generator\ExceptionGenerator::UnexpectedArgumentExceptionGenerator
@@ -109,19 +113,9 @@ Code Coverage Report
 \Eloquent\Typhoon\Generator\ExceptionGenerator::UnexpectedInputExceptionGenerator
   Methods: 100.00% ( 5/ 5)   Lines: 100.00% ( 56/ 56)
 \Eloquent\Typhoon\Generator\ParameterListMerge::MergeTool
-  Methods: 100.00% ( 7/ 7)   Lines: 100.00% (185/185)
-\Eloquent\Typhoon\Generator\ParameterListMerge\Exception::DefinedParameterVariableLengthException
-  Methods: 100.00% ( 4/ 4)   Lines: 100.00% ( 25/ 25)
-\Eloquent\Typhoon\Generator\ParameterListMerge\Exception::DocumentedParameterByReferenceMismatchException
-  Methods: 100.00% ( 6/ 6)   Lines: 100.00% ( 41/ 41)
-\Eloquent\Typhoon\Generator\ParameterListMerge\Exception::DocumentedParameterNameMismatchException
-  Methods: 100.00% ( 5/ 5)   Lines: 100.00% ( 30/ 30)
-\Eloquent\Typhoon\Generator\ParameterListMerge\Exception::DocumentedParameterTypeMismatchException
-  Methods: 100.00% ( 7/ 7)   Lines: 100.00% ( 41/ 41)
-\Eloquent\Typhoon\Generator\ParameterListMerge\Exception::DocumentedParameterUndefinedException
-  Methods: 100.00% ( 4/ 4)   Lines: 100.00% ( 25/ 25)
-\Eloquent\Typhoon\Generator\ParameterListMerge\Exception::UndocumentedParameterException
-  Methods: 100.00% ( 4/ 4)   Lines: 100.00% ( 25/ 25)
+  Methods: 100.00% (10/10)   Lines: 100.00% (205/205)
+\Eloquent\Typhoon\Generator\ParameterListMerge\Exception::ParameterListMergeException
+  Methods: 100.00% ( 4/ 4)   Lines: 100.00% ( 30/ 30)
 \Eloquent\Typhoon\Parameter::Parameter
   Methods: 100.00% ( 7/ 7)   Lines: 100.00% ( 19/ 19)
 \Eloquent\Typhoon\Parameter::ParameterList
