@@ -1,12 +1,12 @@
 
 
 Code Coverage Report 
-  2013-02-18 11:42:26
+  2013-02-18 13:52:10
 
  Summary: 
   Classes: 100.00% (70/70)
-  Methods: 100.00% (374/374)
-  Lines:   100.00% (4319/4319)
+  Methods: 100.00% (378/378)
+  Lines:   100.00% (4362/4362)
 
 \Eloquent\Typhoon\ClassMapper::ClassDefinition
   Methods: 100.00% (11/11)   Lines: 100.00% ( 48/ 48)
@@ -27,7 +27,7 @@ Code Coverage Report
 \Eloquent\Typhoon\CodeAnalysis::AnalysisResult
   Methods: 100.00% ( 7/ 7)   Lines: 100.00% ( 48/ 48)
 \Eloquent\Typhoon\CodeAnalysis::ProjectAnalyzer
-  Methods: 100.00% (12/12)   Lines: 100.00% (209/209)
+  Methods: 100.00% (15/15)   Lines: 100.00% (252/252)
 \Eloquent\Typhoon\CodeAnalysis\Issue::AbstractClassRelatedIssue
   Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 11/ 11)
 \Eloquent\Typhoon\CodeAnalysis\Issue::AbstractMethodRelatedIssue
@@ -113,7 +113,7 @@ Code Coverage Report
 \Eloquent\Typhoon\Generator\ExceptionGenerator::UnexpectedInputExceptionGenerator
   Methods: 100.00% ( 5/ 5)   Lines: 100.00% ( 56/ 56)
 \Eloquent\Typhoon\Generator\ParameterListMerge::MergeTool
-  Methods: 100.00% (10/10)   Lines: 100.00% (205/205)
+  Methods: 100.00% (11/11)   Lines: 100.00% (205/205)
 \Eloquent\Typhoon\Generator\ParameterListMerge\Exception::ParameterListMergeException
   Methods: 100.00% ( 4/ 4)   Lines: 100.00% ( 30/ 30)
 \Eloquent\Typhoon\Parameter::Parameter
