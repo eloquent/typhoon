@@ -41,19 +41,14 @@ use ReflectionClass;
 class MergeTool
 {
     /**
-     * @param boolean                    $throwOnError
-     * @param array<IssueInterface>|null &$issues
+     * @param boolean $throwOnError
      */
-    public function __construct($throwOnError = true, array &$issues = null)
+    public function __construct($throwOnError = true)
     {
         $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
 
-        if (null === $issues) {
-            $issues = array();
-        }
-
         $this->throwOnError = $throwOnError;
-        $this->issues = &$issues;
+        $this->clearIssues();
 
         $reflectionParameterClass = new ReflectionClass('ReflectionParameter');
         $this->nativeCallableAvailable =
@@ -69,6 +64,13 @@ class MergeTool
         $this->typeCheck->throwOnError(func_get_args());
 
         return $this->throwOnError;
+    }
+
+    public function clearIssues()
+    {
+        $this->typeCheck->clearIssues(func_get_args());
+
+        $this->issues = array();
     }
 
     /**

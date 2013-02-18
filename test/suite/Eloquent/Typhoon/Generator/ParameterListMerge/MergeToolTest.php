@@ -760,7 +760,7 @@ class MergeToolTest extends MultiGenerationTestCase
         ParameterList $documentedParameterList,
         ParameterList $nativeParameterList
     ) {
-        $this->_mergeTool = new MergeTool(false, $issues);
+        $this->_mergeTool = new MergeTool(false);
         $this->_mergeTool->merge(
             new RuntimeConfiguration,
             $this->_classDefinition,
@@ -769,10 +769,10 @@ class MergeToolTest extends MultiGenerationTestCase
             $nativeParameterList
         );
 
-        $this->assertEquals($expectedIssues, $issues);
-        $this->assertTrue($this->_comparator->equals($expectedIssues, $issues));
         $this->assertEquals($expectedIssues, $this->_mergeTool->issues());
         $this->assertTrue($this->_comparator->equals($expectedIssues, $this->_mergeTool->issues()));
+        $this->_mergeTool->clearIssues();
+        $this->assertSame(array(), $this->_mergeTool->issues());
     }
 
     public function mergeTypeData()
@@ -1239,7 +1239,7 @@ class MergeToolTest extends MultiGenerationTestCase
         Type $documentedType,
         Type $nativeType
     ) {
-        $this->_mergeTool = new MergeTool(false, $issues);
+        $this->_mergeTool = new MergeTool(false);
         Liberator::liberate($this->_mergeTool)->mergeType(
             new RuntimeConfiguration,
             $this->_classDefinition,
@@ -1258,9 +1258,9 @@ class MergeToolTest extends MultiGenerationTestCase
             ),
         );
 
-        $this->assertEquals($expectedIssues, $issues);
-        $this->assertTrue($this->_comparator->equals($expectedIssues, $issues));
         $this->assertEquals($expectedIssues, $this->_mergeTool->issues());
         $this->assertTrue($this->_comparator->equals($expectedIssues, $this->_mergeTool->issues()));
+        $this->_mergeTool->clearIssues();
+        $this->assertSame(array(), $this->_mergeTool->issues());
     }
 }

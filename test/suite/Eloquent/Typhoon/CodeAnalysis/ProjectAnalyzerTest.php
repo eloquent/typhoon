@@ -94,6 +94,72 @@ class ProjectAnalyzerTest extends MultiGenerationTestCase
                 '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\NonPrivateProperty',
             ),
             array(
+                'Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DefinedParameterVariableLength',
+                '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\ParameterListIssues',
+                'definedParameterVariableLength',
+                'one',
+            ),
+            array(
+                'Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterByReferenceMismatch',
+                '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\ParameterListIssues',
+                'documentedParameterByReferenceMismatch',
+                'one',
+            ),
+            array(
+                'Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterByReferenceMismatch',
+                '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\ParameterListIssues',
+                'documentedParameterByReferenceMismatch',
+                'two',
+            ),
+            array(
+                'Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterNameMismatch',
+                '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\ParameterListIssues',
+                'documentedParameterNameMismatch',
+                'one',
+            ),
+            array(
+                'Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterNameMismatch',
+                '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\ParameterListIssues',
+                'documentedParameterNameMismatch',
+                'two',
+            ),
+            array(
+                'Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterTypeMismatch',
+                '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\ParameterListIssues',
+                'documentedParameterTypeMismatch',
+                'one',
+            ),
+            array(
+                'Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterTypeMismatch',
+                '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\ParameterListIssues',
+                'documentedParameterTypeMismatch',
+                'two',
+            ),
+            array(
+                'Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterUndefined',
+                '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\ParameterListIssues',
+                'documentedParameterUndefined',
+                'one',
+            ),
+            array(
+                'Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\DocumentedParameterUndefined',
+                '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\ParameterListIssues',
+                'documentedParameterUndefined',
+                'two',
+            ),
+            array(
+                'Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\UndocumentedParameter',
+                '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\ParameterListIssues',
+                'undocumentedParameter',
+                'one',
+            ),
+            array(
+                'Eloquent\Typhoon\CodeAnalysis\Issue\ParameterIssue\UndocumentedParameter',
+                '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\ParameterListIssues',
+                'undocumentedParameter',
+                'two',
+            ),
+            array(
                 'Eloquent\Typhoon\CodeAnalysis\Issue\ClassIssue\MissingProperty',
                 '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\StaticProperty',
             ),
@@ -113,6 +179,7 @@ class ProjectAnalyzerTest extends MultiGenerationTestCase
         );
         $actual = $this->_analyzer->analyze($configuration);
 
+        $this->assertAnalysisResult(array(), $actual);
         $this->assertFalse($actual->isError());
     }
 
@@ -121,15 +188,22 @@ class ProjectAnalyzerTest extends MultiGenerationTestCase
         $issues = $actual->issues();
         $sort = array();
         foreach ($issues as $issue) {
+            $sortString = '';
             if ($issue instanceof Issue\ClassRelatedIssueInterface) {
-                $sort[] = $issue->classDefinition()->className()->string();
-            } else {
-                $sort[] = '';
+                $sortString .= $issue->classDefinition()->className()->string();
             }
+            if ($issue instanceof Issue\MethodRelatedIssueInterface) {
+                $sortString .= '.'.$issue->methodDefinition()->name();
+            }
+            if ($issue instanceof Issue\ParameterRelatedIssueInterface) {
+                $sortString .= '.'.$issue->parameterName();
+            }
+
+            $sort[] = $sortString;
         }
         array_multisort($sort, SORT_STRING, $issues);
 
-        $actualArray = '';
+        $actualArray = array();
         foreach ($issues as $issue) {
             $actualArrayEntry = array(
                 get_class($issue)
@@ -140,10 +214,14 @@ class ProjectAnalyzerTest extends MultiGenerationTestCase
             if ($issue instanceof Issue\MethodRelatedIssueInterface) {
                 $actualArrayEntry[] = $issue->methodDefinition()->name();
             }
+            if ($issue instanceof Issue\ParameterRelatedIssueInterface) {
+                $actualArrayEntry[] = $issue->parameterName();
+            }
 
             $actualArray[] = $actualArrayEntry;
         }
 
+        $this->assertEquals($expected, $actualArray);
         $this->assertSame($expected, $actualArray);
     }
 }

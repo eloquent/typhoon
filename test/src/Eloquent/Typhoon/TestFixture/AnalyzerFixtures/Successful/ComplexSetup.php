@@ -13,11 +13,15 @@ namespace Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Successful;
 
 use Typhoon\TypeCheck as Baz;
 
-class ComplexSetup
+abstract class ComplexSetup
 {
+    /**
+     * @param array          $array
+     * @param \stdClass|null $class
+     */
     public static function qux(
-        array $array = array('one', 'two', array('three'), static::FOUR),
-        SomeClass $class = null
+        array $array = array('one', 'two', array('three'), self::FOUR),
+        \stdClass $class = null
     ) {
         Baz :: get ( __CLASS__ ) -> qux
         (
@@ -25,9 +29,13 @@ class ComplexSetup
         );
     }
 
+    /**
+     * @param array          $array
+     * @param \stdClass|null $class
+     */
     public function __construct(
-        array $array = array('one', 'two', array('three'), static::FOUR),
-        SomeClass $class = null
+        array $array = array('one', 'two', array('three'), self::FOUR),
+        \stdClass $class = null
     ) {
         $this -> bar
         =
@@ -37,9 +45,13 @@ class ComplexSetup
         );
     }
 
+    /**
+     * @param array          $array
+     * @param \stdClass|null $class
+     */
     public function foo(
-        array $array = array('one', 'two', array('three'), static::FOUR),
-        SomeClass $class = null
+        array $array = array('one', 'two', array('three'), self::FOUR),
+        \stdClass $class = null
     ) {
         $this -> bar
         ->
@@ -49,9 +61,13 @@ class ComplexSetup
         );
     }
 
+    /**
+     * @param array          $array
+     * @param \stdClass|null $class
+     */
     public function __doom(
-        array $array = array('one', 'two', array('three'), static::FOUR),
-        SomeClass $class = null
+        array $array = array('one', 'two', array('three'), self::FOUR),
+        \stdClass $class = null
     ) {
         $this -> bar
         ->
@@ -61,9 +77,13 @@ class ComplexSetup
         );
     }
 
+    /**
+     * @param array          $array
+     * @param \stdClass|null $class
+     */
     abstract public function splat(
-        array $array = array('one', 'two', array('three'), static::FOUR),
-        SomeClass $class = null
+        array $array = array('one', 'two', array('three'), self::FOUR),
+        \stdClass $class = null
     );
 
     private $bar;

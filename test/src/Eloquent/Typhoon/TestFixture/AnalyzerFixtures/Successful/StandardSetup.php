@@ -41,11 +41,11 @@ abstract class StandardSetup
 
     abstract public function qux();
 
-    public static function __toString()
+    public function __toString()
     {
     }
 
-    public static function __wakeup()
+    public function __wakeup()
     {
     }
 

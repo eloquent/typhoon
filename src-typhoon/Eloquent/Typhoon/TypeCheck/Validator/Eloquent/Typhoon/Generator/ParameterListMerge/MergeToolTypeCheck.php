@@ -6,8 +6,8 @@ class MergeToolTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
     public function validateConstruct(array $arguments)
     {
         $argumentCount = \count($arguments);
-        if ($argumentCount > 2) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(2, $arguments[2]);
+        if ($argumentCount > 1) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
         }
         if ($argumentCount > 0) {
             $value = $arguments[0];
@@ -20,37 +20,16 @@ class MergeToolTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
                 );
             }
         }
-        if ($argumentCount > 1) {
-            $value = $arguments[1];
-            $check = function ($value) {
-                $check = function ($value) {
-                    if (!\is_array($value)) {
-                        return false;
-                    }
-                    foreach ($value as $key => $subValue) {
-                        if (!$subValue instanceof \Eloquent\Typhoon\CodeAnalysis\Issue\IssueInterface) {
-                            return false;
-                        }
-                    }
-                    return true;
-                };
-                if ($check($value)) {
-                    return true;
-                }
-                return $value === null;
-            };
-            if (!$check($arguments[1])) {
-                throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
-                    'issues',
-                    1,
-                    $arguments[1],
-                    'array<Eloquent\\Typhoon\\CodeAnalysis\\Issue\\IssueInterface>|null'
-                );
-            }
-        }
     }
 
     public function throwOnError(array $arguments)
+    {
+        if (\count($arguments) > 0) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(0, $arguments[0]);
+        }
+    }
+
+    public function clearIssues(array $arguments)
     {
         if (\count($arguments) > 0) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(0, $arguments[0]);
