@@ -452,44 +452,48 @@ ok 347 - Eloquent\Typhoon\Parameter\ParameterTest::testAccept
 ok 348 - Eloquent\Typhoon\Parser\Exception\InvalidFunctionDocumentationExceptionTest::testException
 ok 349 - Eloquent\Typhoon\Parser\Exception\InvalidFunctionDocumentationExceptionTest::testExceptionWithoutClassName
 ok 350 - Eloquent\Typhoon\Parser\Exception\ParseExceptionTest::testException
-ok 351 - Eloquent\Typhoon\Parser\Exception\UnexpectedContentExceptionTest::testException
-ok 352 - Eloquent\Typhoon\Parser\ParameterListParserTest::testConstructor
-ok 353 - Eloquent\Typhoon\Parser\ParameterListParserTest::testConstructorDefaults
-ok 354 - Eloquent\Typhoon\Parser\ParameterListParserTest::testParseEmptyParameterList
-ok 355 - Eloquent\Typhoon\Parser\ParameterListParserTest::testVisitParameterList
-ok 356 - Eloquent\Typhoon\Parser\ParameterListParserTest::testVisitParameterListVariableLength
-ok 357 - Eloquent\Typhoon\Parser\ParameterListParserTest::testVisitParameterListVariableLengthNoDescription
-ok 358 - Eloquent\Typhoon\Parser\ParameterListParserTest::testVisitInvalidParameterTagFailureNoType
-ok 359 - Eloquent\Typhoon\Parser\ParameterListParserTest::testVisitInvalidParameterTagFailureNoName
-ok 360 - Eloquent\Typhoon\Parser\ParameterListParserTest::testFromReflector
-ok 361 - Eloquent\Typhoon\Parser\ParameterListParserTest::testFromReflectorCallable
-ok 362 - Eloquent\Typhoon\Resolver\ParameterListClassNameResolverTest::testResolver
-ok 363 - Eloquent\Typhoon\Resolver\ParameterListClassNameResolverTest::testResolverVariableLength
-ok 364 - Typhoon\AbstractValidatorTest::testCall
-ok 365 - Typhoon\AbstractValidatorTest::testCallFailure
-ok 366 - Typhoon\DummyValidatorTest::testCall
-ok 367 - Typhoon\Exception\MissingArgumentExceptionTest::testException
-ok 368 - Typhoon\Exception\UnexpectedArgumentExceptionTest::testException
-ok 369 - Typhoon\Exception\UnexpectedArgumentValueExceptionTest::testException
-ok 370 - Typhoon\Exception\UnexpectedInputExceptionTest::testException
-ok 371 - Typhoon\TypeInspectorTest::testInspector with data set "Array" ('array', array())
-ok 372 - Typhoon\TypeInspectorTest::testInspector with data set "Boolean true" ('boolean', true)
-ok 373 - Typhoon\TypeInspectorTest::testInspector with data set "Boolean false" ('boolean', false)
-ok 374 - Typhoon\TypeInspectorTest::testInspector with data set "Float" ('float', 1.11)
-ok 375 - Typhoon\TypeInspectorTest::testInspector with data set "Integer" ('integer', 111)
-ok 376 - Typhoon\TypeInspectorTest::testInspector with data set "Null" ('null', NULL)
-ok 377 - Typhoon\TypeInspectorTest::testInspector with data set "Object" ('stdClass', stdClass)
-ok 378 - Typhoon\TypeInspectorTest::testInspector with data set "String" ('string', 'foo')
-ok 379 - Typhoon\TypeInspectorTest::testInspector with data set "Stream context resource" ('resource {ofType: stream-context}', <resource>)
-ok 380 - Typhoon\TypeInspectorTest::testInspector with data set "Array with subtypes" ('array<integer|string, float|null>', array(1.11, NULL))
-ok 381 - Typhoon\TypeInspectorTest::testInspector with data set "Array with subtypes and max iterations" ('array<integer, float>', array(1.11, NULL), 1)
-ok 382 - Typhoon\TypeInspectorTest::testInspector with data set "Array with subtypes and default max iterations" ('array<integer, float>', array(1.11, 1.11, 1.11, 1.11, 1.11, 1.11, 1.11, 1.11, 1.11, 1.11, NULL))
-ok 383 - Typhoon\TypeInspectorTest::testInspector with data set "Traversable with subtypes" ('ArrayIterator<integer|string, float|null>', ArrayIterator)
-ok 384 - Typhoon\TypeInspectorTest::testInspector with data set "Traversable with subtypes and max iterations" ('ArrayIterator<integer, float>', ArrayIterator, 1)
-ok 385 - Typhoon\TypeInspectorTest::testStreamInspection
-ok 386 - Typhoon\TyphoonTest::testGet
-ok 387 - Typhoon\TyphoonTest::testGetWithArguments
-ok 388 - Typhoon\TyphoonTest::testGetDummyMode
-ok 389 - Typhoon\TyphoonTest::testRuntimeGeneration
-ok 390 - Typhoon\TyphoonTest::testInstall
-1..390
+ok 351 - Eloquent\Typhoon\Parser\Exception\TypeHintUndefinedClassExceptionTest::testException
+ok 352 - Eloquent\Typhoon\Parser\Exception\TypeHintUndefinedClassExceptionTest::testExceptionWithoutClassName
+ok 353 - Eloquent\Typhoon\Parser\Exception\TypeHintUndefinedClassExceptionTest::testExceptionWithUnexpectedParameterFormat
+ok 354 - Eloquent\Typhoon\Parser\Exception\UnexpectedContentExceptionTest::testException
+ok 355 - Eloquent\Typhoon\Parser\ParameterListParserTest::testConstructor
+ok 356 - Eloquent\Typhoon\Parser\ParameterListParserTest::testConstructorDefaults
+ok 357 - Eloquent\Typhoon\Parser\ParameterListParserTest::testParseEmptyParameterList
+ok 358 - Eloquent\Typhoon\Parser\ParameterListParserTest::testVisitParameterList
+ok 359 - Eloquent\Typhoon\Parser\ParameterListParserTest::testVisitParameterListVariableLength
+ok 360 - Eloquent\Typhoon\Parser\ParameterListParserTest::testVisitParameterListVariableLengthNoDescription
+ok 361 - Eloquent\Typhoon\Parser\ParameterListParserTest::testVisitInvalidParameterTagFailureNoType
+ok 362 - Eloquent\Typhoon\Parser\ParameterListParserTest::testVisitInvalidParameterTagFailureNoName
+ok 363 - Eloquent\Typhoon\Parser\ParameterListParserTest::testFromReflector
+ok 364 - Eloquent\Typhoon\Parser\ParameterListParserTest::testFromReflectorCallable
+ok 365 - Eloquent\Typhoon\Parser\ParameterListParserTest::testParseParameterReflectorFailureUndefinedClass
+ok 366 - Eloquent\Typhoon\Resolver\ParameterListClassNameResolverTest::testResolver
+ok 367 - Eloquent\Typhoon\Resolver\ParameterListClassNameResolverTest::testResolverVariableLength
+ok 368 - Typhoon\AbstractValidatorTest::testCall
+ok 369 - Typhoon\AbstractValidatorTest::testCallFailure
+ok 370 - Typhoon\DummyValidatorTest::testCall
+ok 371 - Typhoon\Exception\MissingArgumentExceptionTest::testException
+ok 372 - Typhoon\Exception\UnexpectedArgumentExceptionTest::testException
+ok 373 - Typhoon\Exception\UnexpectedArgumentValueExceptionTest::testException
+ok 374 - Typhoon\Exception\UnexpectedInputExceptionTest::testException
+ok 375 - Typhoon\TypeInspectorTest::testInspector with data set "Array" ('array', array())
+ok 376 - Typhoon\TypeInspectorTest::testInspector with data set "Boolean true" ('boolean', true)
+ok 377 - Typhoon\TypeInspectorTest::testInspector with data set "Boolean false" ('boolean', false)
+ok 378 - Typhoon\TypeInspectorTest::testInspector with data set "Float" ('float', 1.11)
+ok 379 - Typhoon\TypeInspectorTest::testInspector with data set "Integer" ('integer', 111)
+ok 380 - Typhoon\TypeInspectorTest::testInspector with data set "Null" ('null', NULL)
+ok 381 - Typhoon\TypeInspectorTest::testInspector with data set "Object" ('stdClass', stdClass)
+ok 382 - Typhoon\TypeInspectorTest::testInspector with data set "String" ('string', 'foo')
+ok 383 - Typhoon\TypeInspectorTest::testInspector with data set "Stream context resource" ('resource {ofType: stream-context}', <resource>)
+ok 384 - Typhoon\TypeInspectorTest::testInspector with data set "Array with subtypes" ('array<integer|string, float|null>', array(1.11, NULL))
+ok 385 - Typhoon\TypeInspectorTest::testInspector with data set "Array with subtypes and max iterations" ('array<integer, float>', array(1.11, NULL), 1)
+ok 386 - Typhoon\TypeInspectorTest::testInspector with data set "Array with subtypes and default max iterations" ('array<integer, float>', array(1.11, 1.11, 1.11, 1.11, 1.11, 1.11, 1.11, 1.11, 1.11, 1.11, NULL))
+ok 387 - Typhoon\TypeInspectorTest::testInspector with data set "Traversable with subtypes" ('ArrayIterator<integer|string, float|null>', ArrayIterator)
+ok 388 - Typhoon\TypeInspectorTest::testInspector with data set "Traversable with subtypes and max iterations" ('ArrayIterator<integer, float>', ArrayIterator, 1)
+ok 389 - Typhoon\TypeInspectorTest::testStreamInspection
+ok 390 - Typhoon\TyphoonTest::testGet
+ok 391 - Typhoon\TyphoonTest::testGetWithArguments
+ok 392 - Typhoon\TyphoonTest::testGetDummyMode
+ok 393 - Typhoon\TyphoonTest::testRuntimeGeneration
+ok 394 - Typhoon\TyphoonTest::testInstall
+1..394

@@ -1,12 +1,12 @@
 
 
 Code Coverage Report 
-  2013-02-18 23:18:47
+  2013-02-19 12:19:11
 
  Summary: 
-  Classes: 100.00% (70/70)
-  Methods: 100.00% (378/378)
-  Lines:   100.00% (4362/4362)
+  Classes: 100.00% (71/71)
+  Methods: 100.00% (383/383)
+  Lines:   100.00% (4416/4416)
 
 \Eloquent\Typhoon\ClassMapper::ClassDefinition
   Methods: 100.00% (11/11)   Lines: 100.00% ( 48/ 48)
@@ -121,11 +121,13 @@ Code Coverage Report
 \Eloquent\Typhoon\Parameter::ParameterList
   Methods: 100.00% ( 6/ 6)   Lines: 100.00% ( 30/ 30)
 \Eloquent\Typhoon\Parser::ParameterListParser
-  Methods: 100.00% (13/13)   Lines: 100.00% (141/141)
+  Methods: 100.00% (13/13)   Lines: 100.00% (155/155)
 \Eloquent\Typhoon\Parser\Exception::InvalidFunctionDocumentationException
   Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 20/ 20)
 \Eloquent\Typhoon\Parser\Exception::ParseException
   Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  6/  6)
+\Eloquent\Typhoon\Parser\Exception::TypeHintUndefinedClassException
+  Methods: 100.00% ( 5/ 5)   Lines: 100.00% ( 40/ 40)
 \Eloquent\Typhoon\Parser\Exception::UnexpectedContentException
   Methods: 100.00% ( 2/ 2)   Lines: 100.00% ( 10/ 10)
 \Eloquent\Typhoon\Resolver::ParameterListClassNameResolver
