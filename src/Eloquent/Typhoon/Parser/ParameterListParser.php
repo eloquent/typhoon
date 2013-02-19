@@ -30,6 +30,7 @@ use Eloquent\Typhax\Type\Type;
 use Eloquent\Typhoon\Parameter\Parameter;
 use Eloquent\Typhoon\Parameter\ParameterList;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
+use ReflectionException;
 use ReflectionFunctionAbstract;
 use ReflectionObject;
 use ReflectionParameter;
@@ -121,7 +122,26 @@ class ParameterListParser implements Visitor
     {
         $this->typeCheck->parseParameterReflector(func_get_args());
 
-        if ($class = $reflector->getClass()) {
+        $class = null;
+        try {
+            $class = $reflector->getClass();
+        } catch (ReflectionException $e) {
+            $className = null;
+            if ($declaringClass = $reflector->getDeclaringClass()) {
+                $className = ClassName::fromString(
+                    $declaringClass->getName()
+                )->toAbsolute();
+            }
+
+            throw new Exception\TypeHintUndefinedClassException(
+                $className,
+                $reflector->getDeclaringFunction()->getName(),
+                $reflector,
+                $e
+            );
+        }
+
+        if ($class) {
             $type = new ObjectType(ClassName::fromString($class->getName())->toAbsolute());
         } elseif ($reflector->isArray()) {
             $type = new TraversableType(

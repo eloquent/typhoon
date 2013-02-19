@@ -26,6 +26,7 @@ use Eloquent\Typhax\Type\TraversableType;
 use Eloquent\Typhoon\Parameter\ParameterList;
 use Eloquent\Typhoon\Parameter\Parameter;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
+use Phake;
 use ReflectionClass;
 use ReflectionMethod;
 use stdClass;
@@ -397,5 +398,42 @@ EOD;
         ));
 
         $this->assertEquals($expected, $this->_parser->parseReflector($reflector));
+    }
+
+    public function testParseParameterReflectorFailureUndefinedClass()
+    {
+        $classReflector = new ReflectionClass(__CLASS__);
+        $methodReflector = new ReflectionMethod(__METHOD__);
+        $parameterReflector = Phake::mock('ReflectionParameter');
+        Phake::when($parameterReflector)
+            ->getDeclaringClass(Phake::anyParameters())
+            ->thenReturn($classReflector)
+        ;
+        Phake::when($parameterReflector)
+            ->getDeclaringFunction(Phake::anyParameters())
+            ->thenReturn($methodReflector)
+        ;
+        Phake::when($parameterReflector)
+            ->getName(Phake::anyParameters())
+            ->thenReturn('foo')
+        ;
+        Phake::when($parameterReflector)
+            ->__toString(Phake::anyParameters())
+            ->thenReturn('Parameter #0 [ <required> bar\baz $qux ]')
+        ;
+        Phake::when($parameterReflector)
+            ->getClass(Phake::anyParameters())
+            ->thenThrow(Phake::mock('ReflectionException'))
+        ;
+
+        $this->setExpectedException(
+            __NAMESPACE__.'\Exception\TypeHintUndefinedClassException',
+            sprintf(
+                'Unable to resolve type hint of \bar\baz for parameter $foo in method \%s::%s().',
+                __CLASS__,
+                __FUNCTION__
+            )
+        );
+        $this->_parser->parseParameterReflector($parameterReflector);
     }
 }
