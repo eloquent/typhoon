@@ -1,12 +1,12 @@
 
 
 Code Coverage Report 
-  2013-02-19 12:19:11
+  2013-02-20 08:18:52
 
  Summary: 
   Classes: 100.00% (71/71)
-  Methods: 100.00% (383/383)
-  Lines:   100.00% (4416/4416)
+  Methods: 100.00% (387/387)
+  Lines:   100.00% (4435/4435)
 
 \Eloquent\Typhoon\ClassMapper::ClassDefinition
   Methods: 100.00% (11/11)   Lines: 100.00% ( 48/ 48)
@@ -85,7 +85,7 @@ Code Coverage Report
 \Eloquent\Typhoon\Extension\Exception::InvalidExtensionException
   Methods: 100.00% ( 2/ 2)   Lines: 100.00% ( 12/ 12)
 \Eloquent\Typhoon\Generator::AbstractValidatorGenerator
-  Methods: 100.00% ( 6/ 6)   Lines: 100.00% (121/121)
+  Methods: 100.00% ( 8/ 8)   Lines: 100.00% (149/149)
 \Eloquent\Typhoon\Generator::DummyValidatorGenerator
   Methods: 100.00% ( 5/ 5)   Lines: 100.00% ( 41/ 41)
 \Eloquent\Typhoon\Generator::FacadeGenerator
@@ -133,13 +133,13 @@ Code Coverage Report
 \Eloquent\Typhoon\Resolver::ParameterListClassNameResolver
   Methods: 100.00% ( 4/ 4)   Lines: 100.00% ( 22/ 22)
 \Typhoon::AbstractValidator
-  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  7/  7)
+  Methods: 100.00% ( 4/ 4)   Lines: 100.00% (  9/  9)
 \Typhoon::DummyValidator
   Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
-\Typhoon::TypeInspector
-  Methods: 100.00% ( 6/ 6)   Lines: 100.00% ( 62/ 62)
-\Typhoon::Typhoon
+\Typhoon::TypeCheck
   Methods: 100.00% ( 7/ 7)   Lines: 100.00% ( 28/ 28)
+\Typhoon::TypeInspector
+  Methods: 100.00% ( 6/ 6)   Lines: 100.00% ( 51/ 51)
 \Typhoon\Exception::MissingArgumentException
   Methods: 100.00% ( 4/ 4)   Lines: 100.00% ( 14/ 14)
 \Typhoon\Exception::UnexpectedArgumentException
