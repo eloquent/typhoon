@@ -1,5 +1,5 @@
 {
-    "hash": "e8bd616af9e6a46db5cc563d0fe03ecc",
+    "hash": "c1fe874e5059c36e4742f5b23f64c192",
     "packages": [
         {
             "name": "eloquent/asplode",
@@ -102,6 +102,58 @@
                 "phpDocumentor",
                 "phpdoc",
                 "tag"
+            ]
+        },
+        {
+            "name": "eloquent/composer-config-reader",
+            "version": "1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/eloquent/composer-config-reader.git",
+                "reference": "1.1.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/eloquent/composer-config-reader/zipball/1.1.1",
+                "reference": "1.1.1",
+                "shasum": ""
+            },
+            "require": {
+                "eloquent/enumeration": "3.*",
+                "eloquent/liberator": "1.*",
+                "icecave/isolator": "2.*",
+                "justinrainbow/json-schema": "1.*",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "eloquent/asplode": "1.*",
+                "phake/phake": "1.*"
+            },
+            "time": "2012-10-30 18:02:16",
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Eloquent\\Composer\\Configuration": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Erin Millard",
+                    "email": "ezzatron@gmail.com",
+                    "homepage": "http://ezzatron.com/"
+                }
+            ],
+            "description": "A light-weight component for reading Composer configuration files.",
+            "homepage": "https://github.com/eloquent/composer-config-reader",
+            "keywords": [
+                "composer",
+                "configuration",
+                "parser",
+                "reader"
             ]
         },
         {
@@ -553,6 +605,64 @@
             ]
         },
         {
+            "name": "justinrainbow/json-schema",
+            "version": "1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/justinrainbow/json-schema.git",
+                "reference": "1.3.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/1.3.0",
+                "reference": "1.3.0",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "time": "2013-02-18 05:00:27",
+            "bin": [
+                "bin/validate-json"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "JsonSchema": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Igor Wiedler",
+                    "email": "igor@wiedler.ch",
+                    "homepage": "http://wiedler.ch/igor/"
+                },
+                {
+                    "name": "Bruno Prieto Reis",
+                    "email": "bruno.p.reis@gmail.com"
+                },
+                {
+                    "name": "Justin Rainbow",
+                    "email": "justin.rainbow@gmail.com"
+                },
+                {
+                    "name": "Robert Schönthal",
+                    "email": "seroscho@googlemail.com",
+                    "homepage": "http://digitalkaoz.net"
+                }
+            ],
+            "description": "A library to validate a json schema.",
+            "homepage": "https://github.com/justinrainbow/json-schema",
+            "keywords": [
+                "json",
+                "schema"
+            ]
+        },
+        {
             "name": "symfony/console",
             "version": "v2.1.7",
             "target-dir": "Symfony/Component/Console",
@@ -778,16 +888,16 @@
         },
         {
             "name": "icecave/archer",
-            "version": "0.1.1",
+            "version": "0.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/IcecaveStudios/archer.git",
-                "reference": "0.1.1"
+                "reference": "0.1.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/IcecaveStudios/archer/zipball/0.1.1",
-                "reference": "0.1.1",
+                "url": "https://api.github.com/repos/IcecaveStudios/archer/zipball/0.1.2",
+                "reference": "0.1.2",
                 "shasum": ""
             },
             "require": {
@@ -798,7 +908,7 @@
             "suggest": {
                 "ext-openssl": "OpenSSL is required to encrypt GitHub OAuth tokens for artifact publication."
             },
-            "time": "2013-02-17 02:17:57",
+            "time": "2013-02-18 01:42:16",
             "bin": [
                 "bin/archer",
                 "bin/woodhouse"

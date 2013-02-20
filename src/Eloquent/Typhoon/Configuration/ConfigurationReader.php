@@ -11,6 +11,7 @@
 
 namespace Eloquent\Typhoon\Configuration;
 
+use Eloquent\Composer\Configuration\ConfigurationReader as ComposerReader;
 use Eloquent\Cosmos\ClassName;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 use ErrorException;
@@ -21,14 +22,46 @@ use stdClass;
 class ConfigurationReader
 {
     /**
-     * @param Isolator|null $isolator
+     * @param Filesystem|null     $filesystemHelper
+     * @param ComposerReader|null $composerReader
+     * @param Isolator|null       $isolator
      */
-    public function __construct(Isolator $isolator = null)
-    {
+    public function __construct(
+        Filesystem $filesystemHelper = null,
+        ComposerReader $composerReader = null,
+        Isolator $isolator = null
+    ) {
         $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
+        if (null === $filesystemHelper) {
+            $filesystemHelper = new Filesystem;
+        }
+        if (null === $composerReader) {
+            $composerReader = new ComposerReader;
+        }
 
-        $this->filesystemHelper = new Filesystem;
+        $this->filesystemHelper = $filesystemHelper;
+        $this->composerReader = $composerReader;
         $this->isolator = Isolator::get($isolator);
+    }
+
+    /**
+     * @return Filesystem
+     */
+    public function filesystemHelper()
+    {
+        $this->typeCheck->filesystemHelper(func_get_args());
+
+        return $this->filesystemHelper;
+    }
+
+    /**
+     * @return ComposerReader
+     */
+    public function composerReader()
+    {
+        $this->typeCheck->composerReader(func_get_args());
+
+        return $this->composerReader;
     }
 
     /**
@@ -121,85 +154,35 @@ class ConfigurationReader
             return null;
         }
 
-        $data = $this->loadJSON($composerPath);
+        $composerData = $this->composerReader()->read($composerPath);
         if (
-            !$data instanceof stdClass ||
-            !property_exists($data, 'extra') ||
-            !$data->extra instanceof stdClass ||
-            !property_exists($data->extra, 'typhoon')
+            $composerData->extra() instanceof stdClass &&
+            property_exists($composerData->extra(), 'typhoon') &&
+            $composerData->extra()->typhoon instanceof stdClass
         ) {
-            return null;
+            $typhoonData = $composerData->extra()->typhoon;
+        } else {
+            $typhoonData = new stdClass;
         }
 
-        $typhoonData = $data->extra->typhoon;
-        if (!property_exists($typhoonData, ConfigurationOption::OUTPUT_PATH()->value())) {
-            throw new Exception\InvalidConfigurationException(
-                "Output path is required."
-            );
-        }
-        if (property_exists($typhoonData, ConfigurationOption::SOURCE_PATHS()->value())) {
-            return $this->buildConfiguration($typhoonData);
-        }
+        if (!property_exists($typhoonData, ConfigurationOption::SOURCE_PATHS()->value())) {
+            $sourcePaths = $composerData->allSourcePaths();
 
-        if (
-            property_exists($data, 'autoload') &&
-            $data->autoload instanceof stdClass
-        ) {
-            // psr-0
-            if (
-                property_exists($data->autoload, 'psr-0') &&
-                $data->autoload->{'psr-0'} instanceof stdClass
-            ) {
-                foreach ($data->autoload->{'psr-0'} as $sourcePath) {
-                    if (is_array($sourcePath)) {
-                        foreach ($sourcePath as $subSourcePath) {
-                            $sourcePaths[] = $subSourcePath;
-                        }
-                    } else {
-                        $sourcePaths[] = $sourcePath;
-                    }
+            if (!property_exists($typhoonData, ConfigurationOption::OUTPUT_PATH()->value())) {
+                $typhoonData->{ConfigurationOption::OUTPUT_PATH()->value()} = $this->inferOutputPath(
+                    $sourcePaths
+                );
+            }
+
+            $typhoonData->{ConfigurationOption::SOURCE_PATHS()->value()} = array();
+            foreach ($sourcePaths as $sourcePath) {
+                if (!$this->pathIsDescandantOrEqual(
+                    $path,
+                    $typhoonData->{ConfigurationOption::OUTPUT_PATH()->value()},
+                    $sourcePath
+                )) {
+                    $typhoonData->{ConfigurationOption::SOURCE_PATHS()->value()}[] = $sourcePath;
                 }
-            }
-
-            // classmap
-            if (
-                property_exists($data->autoload, 'classmap') &&
-                is_array($data->autoload->classmap)
-            ) {
-                foreach ($data->autoload->classmap as $sourcePath) {
-                    $sourcePaths[] = $sourcePath;
-                }
-            }
-
-            // files
-            if (
-                property_exists($data->autoload, 'files') &&
-                is_array($data->autoload->files)
-            ) {
-                foreach ($data->autoload->files as $sourcePath) {
-                    $sourcePaths[] = $sourcePath;
-                }
-            }
-        }
-
-        // include-path
-        if (
-            property_exists($data, 'include-path') &&
-            is_array($data->{'include-path'})
-        ) {
-            foreach ($data->{'include-path'} as $sourcePath) {
-                $sourcePaths[] = $sourcePath;
-            }
-        }
-
-        $typhoonData->{'source-paths'} = array();
-        foreach ($sourcePaths as $sourcePath) {
-            if (!$this->pathIsDescandantOrEqual(
-                $path,
-                $typhoonData->{'output-path'},
-                $sourcePath
-            )) {
-                $typhoonData->{'source-paths'}[] = $sourcePath;
             }
         }
 
@@ -216,20 +199,36 @@ class ConfigurationReader
         $this->typeCheck->buildConfiguration(func_get_args());
 
         $this->validateData($data);
+
+        if (property_exists($data, ConfigurationOption::OUTPUT_PATH()->value())) {
+            $outputPath = $data->{ConfigurationOption::OUTPUT_PATH()->value()};
+        } else {
+            $outputPath = $this->inferOutputPath(
+                $data->{ConfigurationOption::SOURCE_PATHS()->value()}
+            );
+        }
+
         $configuration = new Configuration(
-            $data->{'output-path'},
-            $data->{'source-paths'}
+            $outputPath,
+            $data->{ConfigurationOption::SOURCE_PATHS()->value()}
         );
+
         if (property_exists($data, ConfigurationOption::LOADER_PATHS()->value())) {
-            $configuration->setLoaderPaths($data->{'loader-paths'});
+            $configuration->setLoaderPaths(
+                $data->{ConfigurationOption::LOADER_PATHS()->value()}
+            );
         }
         if (property_exists($data, ConfigurationOption::VALIDATOR_NAMESPACE()->value())) {
             $configuration->setValidatorNamespace(
-                ClassName::fromString($data->{'validator-namespace'})
+                ClassName::fromString(
+                    $data->{ConfigurationOption::VALIDATOR_NAMESPACE()->value()}
+                )
             );
         }
         if (property_exists($data, ConfigurationOption::USE_NATIVE_CALLABLE()->value())) {
-            $configuration->setUseNativeCallable($data->{'use-native-callable'});
+            $configuration->setUseNativeCallable(
+                $data->{ConfigurationOption::USE_NATIVE_CALLABLE()->value()}
+            );
         }
 
         return $configuration;
@@ -288,15 +287,12 @@ class ConfigurationReader
         }
 
         // output path
-        if (!property_exists($data, ConfigurationOption::OUTPUT_PATH()->value())) {
-            throw new Exception\InvalidConfigurationException(
-                "Output path is required."
-            );
-        }
-        if (!is_string($data->{'output-path'})) {
-            throw new Exception\InvalidConfigurationException(
-                "Output path must be a string."
-            );
+        if (property_exists($data, ConfigurationOption::OUTPUT_PATH()->value())) {
+            if (!is_string($data->{ConfigurationOption::OUTPUT_PATH()->value()})) {
+                throw new Exception\InvalidConfigurationException(
+                    "Output path must be a string."
+                );
+            }
         }
 
         // source paths
@@ -305,12 +301,12 @@ class ConfigurationReader
                 "At least one source path is required."
             );
         }
-        if (!is_array($data->{'source-paths'})) {
+        if (!is_array($data->{ConfigurationOption::SOURCE_PATHS()->value()})) {
             throw new Exception\InvalidConfigurationException(
                 "Source paths must be an array."
             );
         }
-        foreach ($data->{'source-paths'} as $sourcePath) {
+        foreach ($data->{ConfigurationOption::SOURCE_PATHS()->value()} as $sourcePath) {
             if (!is_string($sourcePath)) {
                 throw new Exception\InvalidConfigurationException(
                     "Entries in source paths must be strings."
@@ -320,12 +316,12 @@ class ConfigurationReader
 
         // loader paths
         if (property_exists($data, ConfigurationOption::LOADER_PATHS()->value())) {
-            if (!is_array($data->{'loader-paths'})) {
+            if (!is_array($data->{ConfigurationOption::LOADER_PATHS()->value()})) {
                 throw new Exception\InvalidConfigurationException(
                     "Loader paths must be an array."
                 );
             }
-            foreach ($data->{'loader-paths'} as $loaderPath) {
+            foreach ($data->{ConfigurationOption::LOADER_PATHS()->value()} as $loaderPath) {
                 if (!is_string($loaderPath)) {
                     throw new Exception\InvalidConfigurationException(
                         "Entries in loader paths must be strings."
@@ -336,7 +332,7 @@ class ConfigurationReader
 
         // validator namespace
         if (property_exists($data, ConfigurationOption::VALIDATOR_NAMESPACE()->value())) {
-            if (!is_string($data->{'validator-namespace'})) {
+            if (!is_string($data->{ConfigurationOption::VALIDATOR_NAMESPACE()->value()})) {
                 throw new Exception\InvalidConfigurationException(
                     "Validator namespace must be a string."
                 );
@@ -345,12 +341,31 @@ class ConfigurationReader
 
         // use native callable
         if (property_exists($data, ConfigurationOption::USE_NATIVE_CALLABLE()->value())) {
-            if (!is_bool($data->{'use-native-callable'})) {
+            if (!is_bool($data->{ConfigurationOption::USE_NATIVE_CALLABLE()->value()})) {
                 throw new Exception\InvalidConfigurationException(
                     "Use native callable option must be a boolean."
                 );
             }
         }
+    }
+
+    /**
+     * @param array<string> $sourcePaths
+     *
+     * @return string
+     */
+    protected function inferOutputPath(array $sourcePaths)
+    {
+        $this->typeCheck->inferOutputPath(func_get_args());
+
+        if (in_array('src', $sourcePaths, true)) {
+            return 'src-typhoon';
+        }
+        if (in_array('lib', $sourcePaths, true)) {
+            return 'lib-typhoon';
+        }
+
+        return 'src-typhoon';
     }
 
     /**
@@ -402,6 +417,7 @@ class ConfigurationReader
     }
 
     private $filesystemHelper;
+    private $composerReader;
     private $isolator;
     private $typeCheck;
 }
