@@ -105,7 +105,10 @@ class AbstractValidatorGenerator implements StaticClassGenerator
             new Identifier($className->shortName()->string()),
             ClassModifier::ABSTRACT_()
         );
+        $classDefinition->addInterface(QualifiedIdentifier::fromString('\Serializable'));
         $classDefinition->add($this->generateConstructor());
+        $classDefinition->add($this->generateSerializeMethod());
+        $classDefinition->add($this->generateUnserializeMethod());
         $classDefinition->add($this->generateCallMethod());
 
         $classDefinition->add(new Property(new Identifier('reflector')));
@@ -146,6 +149,50 @@ class AbstractValidatorGenerator implements StaticClassGenerator
             ),
             new NewOperator($newReflectorCall)
         )));
+
+        return $method;
+    }
+
+    /**
+     * @return ConcreteMethod
+     */
+    protected function generateSerializeMethod()
+    {
+        $this->typeCheck->generateSerializeMethod(func_get_args());
+
+        $method = new ConcreteMethod(
+            new Identifier('serialize'),
+            AccessModifier::PUBLIC_()
+        );
+        $method->statementBlock()->add(
+            new ReturnStatement(new Literal(''))
+        );
+
+        return $method;
+    }
+
+    /**
+     * @return ConcreteMethod
+     */
+    protected function generateUnserializeMethod()
+    {
+        $this->typeCheck->generateUnserializeMethod(func_get_args());
+
+        $serializedIdentifier = new Identifier('serialized');
+
+        $method = new ConcreteMethod(
+            new Identifier('unserialize'),
+            AccessModifier::PUBLIC_()
+        );
+        $method->addParameter(new Parameter($serializedIdentifier));
+        $method->statementBlock()->add(new ExpressionStatement(
+            new Call(
+                new Member(
+                    new Variable(new Identifier('this')),
+                    new Constant(new Identifier('__construct'))
+                )
+            )
+        ));
 
         return $method;
     }

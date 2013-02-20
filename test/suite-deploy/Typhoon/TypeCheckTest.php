@@ -16,39 +16,39 @@ use PHPUnit_Framework_TestCase;
 use stdClass;
 use Typhoon\Validator\Eloquent\Typhoon\TestFixture\ExampleClassTypeCheck;
 
-class TyphoonTest extends PHPUnit_Framework_TestCase
+class TypeCheckTest extends PHPUnit_Framework_TestCase
 {
     protected function setUp()
     {
         parent::setUp();
 
-        Liberator::liberateClass(__NAMESPACE__.'\Typhoon')->instances = array();
-        Liberator::liberateClass(__NAMESPACE__.'\Typhoon')->dummyMode = false;
+        Liberator::liberateClass(__NAMESPACE__.'\TypeCheck')->instances = array();
+        Liberator::liberateClass(__NAMESPACE__.'\TypeCheck')->dummyMode = false;
         if (class_exists('Typhoon\Validator\Eloquent\Typhoon\TestFixture\ExampleClassTypeCheck', false)) {
             ExampleClassTypeCheck::$arguments = array();
         }
 
-        $this->_oldRuntimeGeneration = Typhoon::runtimeGeneration();
-        Typhoon::setRuntimeGeneration(false);
+        $this->_oldRuntimeGeneration = TypeCheck::runtimeGeneration();
+        TypeCheck::setRuntimeGeneration(false);
     }
 
     protected function tearDown()
     {
         parent::tearDown();
 
-        Typhoon::setRuntimeGeneration($this->_oldRuntimeGeneration);
+        TypeCheck::setRuntimeGeneration($this->_oldRuntimeGeneration);
     }
 
     public function testGet()
     {
         $className = 'Eloquent\Typhoon\TestFixture\ExampleClass';
-        $validator = Typhoon::get($className);
+        $validator = TypeCheck::get($className);
 
         $this->assertInstanceOf(
             'Typhoon\Validator\Eloquent\Typhoon\TestFixture\ExampleClassTypeCheck',
             $validator
         );
-        $this->assertSame($validator, Typhoon::get($className));
+        $this->assertSame($validator, TypeCheck::get($className));
         $this->assertFalse(array_key_exists('validateConstruct', ExampleClassTypeCheck::$arguments));
     }
 
@@ -56,47 +56,47 @@ class TyphoonTest extends PHPUnit_Framework_TestCase
     {
         $className = 'Eloquent\Typhoon\TestFixture\ExampleClass';
         $arguments = array(new stdClass);
-        $validator = Typhoon::get($className, $arguments);
+        $validator = TypeCheck::get($className, $arguments);
 
         $this->assertInstanceOf(
             'Typhoon\Validator\Eloquent\Typhoon\TestFixture\ExampleClassTypeCheck',
             $validator
         );
-        $this->assertSame($validator, Typhoon::get($className));
+        $this->assertSame($validator, TypeCheck::get($className));
         $this->assertTrue(array_key_exists('validateConstruct', ExampleClassTypeCheck::$arguments));
         $this->assertSame($arguments, ExampleClassTypeCheck::$arguments['validateConstruct']);
     }
 
     public function testGetDummyMode()
     {
-        Liberator::liberateClass(__NAMESPACE__.'\Typhoon')->dummyMode = true;
+        Liberator::liberateClass(__NAMESPACE__.'\TypeCheck')->dummyMode = true;
 
         $this->assertInstanceOf(
             __NAMESPACE__.'\DummyValidator',
-            Typhoon::get('foo')
+            TypeCheck::get('foo')
         );
     }
 
     public function testRuntimeGeneration()
     {
-        Typhoon::setRuntimeGeneration(true);
+        TypeCheck::setRuntimeGeneration(true);
         $className = 'Eloquent\Typhoon\TestFixture\ExampleClassRuntime';
-        $validator = Typhoon::get($className);
+        $validator = TypeCheck::get($className);
 
         $this->assertInstanceOf(
             'Typhoon\Validator\Eloquent\Typhoon\TestFixture\ExampleClassRuntimeTypeCheck',
             $validator
         );
-        $this->assertSame($validator, Typhoon::get($className));
+        $this->assertSame($validator, TypeCheck::get($className));
     }
 
     public function testInstall()
     {
         $className = 'Eloquent\Typhoon\TestFixture\ExampleClass';
-        Typhoon::get($className);
+        TypeCheck::get($className);
         $validator = new stdClass;
-        Typhoon::install($className, $validator);
+        TypeCheck::install($className, $validator);
 
-        $this->assertSame($validator, Typhoon::get($className));
+        $this->assertSame($validator, TypeCheck::get($className));
     }
 }

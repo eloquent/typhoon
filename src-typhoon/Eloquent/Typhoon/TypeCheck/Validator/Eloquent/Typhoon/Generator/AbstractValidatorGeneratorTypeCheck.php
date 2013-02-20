@@ -67,6 +67,20 @@ class AbstractValidatorGeneratorTypeCheck extends \Eloquent\Typhoon\TypeCheck\Ab
         }
     }
 
+    public function generateSerializeMethod(array $arguments)
+    {
+        if (\count($arguments) > 0) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(0, $arguments[0]);
+        }
+    }
+
+    public function generateUnserializeMethod(array $arguments)
+    {
+        if (\count($arguments) > 0) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(0, $arguments[0]);
+        }
+    }
+
     public function generateCallMethod(array $arguments)
     {
         if (\count($arguments) > 0) {

@@ -1,7 +1,7 @@
 <?php
 namespace Typhoon;
 
-abstract class Typhoon
+abstract class TypeCheck
 {
     public static function get($className, array $arguments = null)
     {

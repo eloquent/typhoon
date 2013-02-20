@@ -31,6 +31,14 @@ class AbstractValidatorTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testCallAfterSerialization()
+    {
+        $validator = new ExampleValidator;
+        $validator = unserialize(serialize($validator));
+
+        $this->assertNull($validator->foo(array('qux', 'doom')));
+    }
+
     public function testCallFailure()
     {
         $validator = new ExampleValidator;

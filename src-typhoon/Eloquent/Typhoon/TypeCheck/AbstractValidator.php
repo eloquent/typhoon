@@ -1,11 +1,21 @@
 <?php
 namespace Eloquent\Typhoon\TypeCheck;
 
-abstract class AbstractValidator
+abstract class AbstractValidator implements \Serializable
 {
     public function __construct()
     {
         $this->reflector = new \ReflectionObject($this);
+    }
+
+    public function serialize()
+    {
+        return '';
+    }
+
+    public function unserialize($serialized)
+    {
+        $this->__construct();
     }
 
     public function __call($name, array $arguments)
