@@ -184,6 +184,43 @@ class ConfigurationReader
                     $typhoonData->{ConfigurationOption::SOURCE_PATHS()->value()}[] = $sourcePath;
                 }
             }
+        } elseif (!property_exists($typhoonData, ConfigurationOption::OUTPUT_PATH()->value())) {
+            $typhoonData->{ConfigurationOption::OUTPUT_PATH()->value()} = $this->inferOutputPath(
+                $typhoonData->{ConfigurationOption::SOURCE_PATHS()->value()}
+            );
+        }
+
+        if (!property_exists($typhoonData, ConfigurationOption::VALIDATOR_NAMESPACE()->value())) {
+            $validatorNamespace = array_search(
+                array($typhoonData->{ConfigurationOption::OUTPUT_PATH()->value()}),
+                $composerData->autoloadPSR0(),
+                true
+            );
+
+            if (false === $validatorNamespace) {
+                $mainNamespace = null;
+                $mainNamespaceLength = null;
+                foreach ($composerData->autoloadPSR0() as $namespace => $paths) {
+                    $namespaceLength = count(explode('\\', $namespace));
+                    if (
+                        null === $mainNamespace ||
+                        $namespace < $mainNamespaceLength
+                    ) {
+                        $mainNamespace = $namespace;
+                        $mainNamespaceLength = $namespaceLength;
+                    }
+                }
+
+                if (null !== $mainNamespace) {
+                    $typhoonData->{ConfigurationOption::VALIDATOR_NAMESPACE()->value()} =
+                        sprintf('%s\\TypeCheck', $mainNamespace)
+                    ;
+                }
+            } else {
+                $typhoonData->{ConfigurationOption::VALIDATOR_NAMESPACE()->value()} =
+                    $validatorNamespace
+                ;
+            }
         }
 
         return $this->buildConfiguration($typhoonData);
