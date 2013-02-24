@@ -63,6 +63,10 @@ class ProjectAnalyzerTest extends MultiGenerationTestCase
                 '__toString',
             ),
             array(
+                'Eloquent\Typhoon\CodeAnalysis\Issue\ClassIssue\MissingConstructorCall',
+                '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\Issue106',
+            ),
+            array(
                 'Eloquent\Typhoon\CodeAnalysis\Issue\MethodIssue\MissingMethodCall',
                 '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\MissingCalls',
                 'bar',

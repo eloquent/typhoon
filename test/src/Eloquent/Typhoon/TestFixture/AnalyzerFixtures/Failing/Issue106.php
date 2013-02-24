@@ -13,17 +13,22 @@ namespace Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing;
 
 use Typhoon\TypeCheck;
 
-class MissingCalls
+/**
+ * @see https://github.com/eloquent/typhoon/issues/106
+ */
+class Issue106
 {
-    public static function baz()
+    public function __construct()
     {
+        parent::__construct();
+
+        $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
     }
 
     public function foo()
     {
+        $this->typeCheck->foo(func_get_args());
     }
 
-    public function bar()
-    {
-    }
+    private $typeCheck;
 }

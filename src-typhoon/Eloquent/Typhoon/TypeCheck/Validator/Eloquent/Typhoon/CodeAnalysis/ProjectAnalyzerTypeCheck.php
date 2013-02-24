@@ -89,7 +89,7 @@ class ProjectAnalyzerTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValid
                 throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('methodDefinition', 0, 'Eloquent\\Typhoon\\ClassMapper\\MethodDefinition');
             }
             if ($argumentCount < 2) {
-                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('expectedfacadeClassName', 1, 'Eloquent\\Cosmos\\ClassName');
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('expectedFacadeClassName', 1, 'Eloquent\\Cosmos\\ClassName');
             }
             throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('propertyName', 2, 'string');
         } elseif ($argumentCount > 3) {
@@ -135,7 +135,7 @@ class ProjectAnalyzerTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValid
             if ($argumentCount < 1) {
                 throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('methodDefinition', 0, 'Eloquent\\Typhoon\\ClassMapper\\MethodDefinition');
             }
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('expectedfacadeClassName', 1, 'Eloquent\\Cosmos\\ClassName');
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('expectedFacadeClassName', 1, 'Eloquent\\Cosmos\\ClassName');
         } elseif ($argumentCount > 2) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(2, $arguments[2]);
         }
@@ -148,7 +148,7 @@ class ProjectAnalyzerTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValid
             if ($argumentCount < 1) {
                 throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('methodDefinition', 0, 'Eloquent\\Typhoon\\ClassMapper\\MethodDefinition');
             }
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('expectedfacadeClassName', 1, 'Eloquent\\Cosmos\\ClassName');
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('expectedFacadeClassName', 1, 'Eloquent\\Cosmos\\ClassName');
         } elseif ($argumentCount > 2) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(2, $arguments[2]);
         }

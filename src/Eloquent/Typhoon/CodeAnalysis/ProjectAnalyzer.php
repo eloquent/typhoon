@@ -124,26 +124,24 @@ class ProjectAnalyzer
     ) {
         $this->typeCheck->analyzeClass(func_get_args());
 
-        $expectedfacadeClassName = $classDefinition
+        $expectedFacadeClassName = $classDefinition
             ->classNameResolver()
             ->shorten($facadeClassName)
         ;
 
+        $constructorDefinition = null;
         $hasConstructorInit = false;
         $propertyName = 'typeCheck';
-        $hasNonStaticCalls = false;
-
         if ($classDefinition->hasMethod('__construct')) {
-            $methodDefinition = $classDefinition->method('__construct');
-            if ($this->methodHasInit($methodDefinition, $expectedfacadeClassName, $propertyName)) {
-                $hasConstructorInit = true;
-            } elseif (!$this->methodHasConstructorStaticCall($methodDefinition, $expectedfacadeClassName)) {
-                $issues[] = new Issue\ClassIssue\MissingConstructorCall(
-                    $classDefinition
-                );
-            }
+            $constructorDefinition = $classDefinition->method('__construct');
+            $hasConstructorInit = $this->methodHasInit(
+                $constructorDefinition,
+                $expectedFacadeClassName,
+                $propertyName
+            );
         }
 
+        $hasNonStaticCalls = false;
         foreach ($classDefinition->methods() as $methodDefinition) {
             switch ($methodDefinition->name()) {
                 case '__construct':
@@ -153,7 +151,7 @@ class ProjectAnalyzer
                 case '__toString':
                     if (
                         $this->methodHasCall($methodDefinition, $propertyName) ||
-                        $this->methodHasStaticCall($methodDefinition, $expectedfacadeClassName)
+                        $this->methodHasStaticCall($methodDefinition, $expectedFacadeClassName)
                     ) {
                         $issues[] = new Issue\MethodIssue\InadmissibleMethodCall(
                             $classDefinition,
@@ -172,11 +170,11 @@ class ProjectAnalyzer
 
                     $missingCall = false;
                     if ($methodDefinition->isStatic()) {
-                        $missingCall = !$this->methodHasStaticCall($methodDefinition, $expectedfacadeClassName);
+                        $missingCall = !$this->methodHasStaticCall($methodDefinition, $expectedFacadeClassName);
                     } else {
                         if ($this->methodHasCall($methodDefinition, $propertyName)) {
                             $hasNonStaticCalls = true;
-                        } elseif (!$this->methodHasStaticCall($methodDefinition, $expectedfacadeClassName)) {
+                        } elseif (!$this->methodHasStaticCall($methodDefinition, $expectedFacadeClassName)) {
                             $missingCall = true;
                         }
                     }
@@ -219,7 +217,17 @@ class ProjectAnalyzer
             }
         }
 
-        if ($hasNonStaticCalls && !$hasConstructorInit) {
+        if (
+            ($hasNonStaticCalls && !$hasConstructorInit) ||
+            (
+                !$hasNonStaticCalls &&
+                null !== $constructorDefinition &&
+                !$this->methodHasConstructorStaticCall(
+                    $constructorDefinition,
+                    $expectedFacadeClassName
+                )
+            )
+        ) {
             array_unshift(
                 $issues,
                 new Issue\ClassIssue\MissingConstructorCall(
@@ -227,6 +235,7 @@ class ProjectAnalyzer
                 )
             );
         }
+
         if ($hasConstructorInit) {
             if ($classDefinition->hasProperty($propertyName)) {
                 $typhoonProperty = $classDefinition->property($propertyName);
@@ -248,14 +257,14 @@ class ProjectAnalyzer
 
     /**
      * @param MethodDefinition $methodDefinition
-     * @param ClassName        $expectedfacadeClassName
+     * @param ClassName        $expectedFacadeClassName
      * @param string           &$propertyName
      *
      * @return boolean
      */
     protected function methodHasInit(
         MethodDefinition $methodDefinition,
-        ClassName $expectedfacadeClassName,
+        ClassName $expectedFacadeClassName,
         &$propertyName
     ) {
         $this->typeCheck->methodHasInit(func_get_args());
@@ -264,7 +273,7 @@ class ProjectAnalyzer
         $callPattern = sprintf(
             '/^\s*\$this\s*->\s*(%s)\s*=\s*%s\s*::\s*get\s*\(\s*__CLASS__\s*,\s*\\\\?func_get_args\s*\(\s*\)\s*\)\s*;$/',
             '[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*', // PHP variable name
-            preg_quote($expectedfacadeClassName->string(), '/')
+            preg_quote($expectedFacadeClassName->string(), '/')
         );
 
         $firstStatement = $this->parseFirstMethodStatement($methodDefinition->source());
@@ -308,13 +317,13 @@ class ProjectAnalyzer
 
     /**
      * @param MethodDefinition $methodDefinition
-     * @param ClassName        $expectedfacadeClassName
+     * @param ClassName        $expectedFacadeClassName
      *
      * @return boolean
      */
     protected function methodHasStaticCall(
         MethodDefinition $methodDefinition,
-        ClassName $expectedfacadeClassName
+        ClassName $expectedFacadeClassName
     ) {
         $this->typeCheck->methodHasStaticCall(func_get_args());
 
@@ -324,7 +333,7 @@ class ProjectAnalyzer
         );
         $callPattern = sprintf(
             '/^\s*%s\s*::\s*get\s*\(\s*__CLASS__\s*\)\s*->\s*%s\s*\(\s*\\\\?func_get_args\s*\(\s*\)\s*\)\s*;$/',
-            preg_quote($expectedfacadeClassName->string(), '/'),
+            preg_quote($expectedFacadeClassName->string(), '/'),
             preg_quote($expectedMethodName, '/')
         );
 
@@ -338,20 +347,20 @@ class ProjectAnalyzer
 
     /**
      * @param MethodDefinition $methodDefinition
-     * @param ClassName        $expectedfacadeClassName
+     * @param ClassName        $expectedFacadeClassName
      *
      * @return boolean
      */
     protected function methodHasConstructorStaticCall(
         MethodDefinition $methodDefinition,
-        ClassName $expectedfacadeClassName
+        ClassName $expectedFacadeClassName
     ) {
         $this->typeCheck->methodHasConstructorStaticCall(func_get_args());
 
         $hasCall = false;
         $callPattern = sprintf(
             '/^\s*%s\s*::\s*get\s*\(\s*__CLASS__\s*,\s*\\\\?func_get_args\s*\(\s*\)\s*\)\s*;$/',
-            preg_quote($expectedfacadeClassName->string(), '/')
+            preg_quote($expectedFacadeClassName->string(), '/')
         );
 
         $firstStatement = $this->parseFirstMethodStatement($methodDefinition->source());
