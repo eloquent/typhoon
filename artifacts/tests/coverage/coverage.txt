@@ -1,12 +1,12 @@
 
 
 Code Coverage Report 
-  2013-02-20 08:18:52
+  2013-02-24 09:06:56
 
  Summary: 
   Classes: 100.00% (71/71)
-  Methods: 100.00% (387/387)
-  Lines:   100.00% (4435/4435)
+  Methods: 100.00% (390/390)
+  Lines:   100.00% (4475/4475)
 
 \Eloquent\Typhoon\ClassMapper::ClassDefinition
   Methods: 100.00% (11/11)   Lines: 100.00% ( 48/ 48)
@@ -61,7 +61,7 @@ Code Coverage Report
 \Eloquent\Typhoon\Configuration::ConfigurationOption
   Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  2/  2)
 \Eloquent\Typhoon\Configuration::ConfigurationReader
-  Methods: 100.00% (13/13)   Lines: 100.00% (186/186)
+  Methods: 100.00% (16/16)   Lines: 100.00% (226/226)
 \Eloquent\Typhoon\Configuration::RuntimeConfiguration
   Methods: 100.00% ( 5/ 5)   Lines: 100.00% ( 20/ 20)
 \Eloquent\Typhoon\Configuration\Exception::ConfigurationReadException
