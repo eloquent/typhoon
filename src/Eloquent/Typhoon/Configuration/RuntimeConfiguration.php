@@ -29,7 +29,7 @@ class RuntimeConfiguration
             $validatorNamespace = ClassName::fromAtoms(array('Typhoon'), true);
         }
         if (null === $useNativeCallable) {
-            $useNativeCallable = true;
+            $useNativeCallable = false;
         }
 
         $this->validatorNamespace = $validatorNamespace;

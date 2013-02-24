@@ -549,6 +549,162 @@ EOD;
         Phake::verify($this->_isolator)->is_file('doom/composer.json');
     }
 
+    public function testReadComposerInferNativeCallable5_4()
+    {
+        $data = <<<'EOD'
+{
+    "name": "eloquent/typhoon",
+    "require": {
+        "php": ">=5.4"
+    },
+    "autoload": {
+        "psr-0": {
+            "Foo\\TypeCheck": "src-typhoon",
+            "Foo": "src"
+        }
+    }
+}
+
+EOD;
+        Phake::when($this->_isolator)
+            ->is_file(Phake::anyParameters())
+            ->thenReturn(true)
+        ;
+        Phake::when($this->_isolator)
+            ->file_get_contents(Phake::anyParameters())
+            ->thenReturn($data)
+        ;
+        $expected = new Configuration(
+            'src-typhoon',
+            array('src')
+        );
+        $expected->setValidatorNamespace(ClassName::fromString('\Foo\TypeCheck'));
+        $expected->setUseNativeCallable(true);
+
+        $this->assertEquals(
+            $expected,
+            Liberator::liberate($this->_reader)->readComposer('doom')
+        );
+        Phake::verify($this->_isolator)->is_file('doom/composer.json');
+    }
+
+    public function testReadComposerInferNativeCallable5_4_x()
+    {
+        $data = <<<'EOD'
+{
+    "name": "eloquent/typhoon",
+    "require": {
+        "php": ">=5.4.11"
+    },
+    "autoload": {
+        "psr-0": {
+            "Foo\\TypeCheck": "src-typhoon",
+            "Foo": "src"
+        }
+    }
+}
+
+EOD;
+        Phake::when($this->_isolator)
+            ->is_file(Phake::anyParameters())
+            ->thenReturn(true)
+        ;
+        Phake::when($this->_isolator)
+            ->file_get_contents(Phake::anyParameters())
+            ->thenReturn($data)
+        ;
+        $expected = new Configuration(
+            'src-typhoon',
+            array('src')
+        );
+        $expected->setValidatorNamespace(ClassName::fromString('\Foo\TypeCheck'));
+        $expected->setUseNativeCallable(true);
+
+        $this->assertEquals(
+            $expected,
+            Liberator::liberate($this->_reader)->readComposer('doom')
+        );
+        Phake::verify($this->_isolator)->is_file('doom/composer.json');
+    }
+
+    public function testReadComposerInferNativeCallableMixedConstraint()
+    {
+        $data = <<<'EOD'
+{
+    "name": "eloquent/typhoon",
+    "require": {
+        "php": "< 5.5.3, >= 5.4"
+    },
+    "autoload": {
+        "psr-0": {
+            "Foo\\TypeCheck": "src-typhoon",
+            "Foo": "src"
+        }
+    }
+}
+
+EOD;
+        Phake::when($this->_isolator)
+            ->is_file(Phake::anyParameters())
+            ->thenReturn(true)
+        ;
+        Phake::when($this->_isolator)
+            ->file_get_contents(Phake::anyParameters())
+            ->thenReturn($data)
+        ;
+        $expected = new Configuration(
+            'src-typhoon',
+            array('src')
+        );
+        $expected->setValidatorNamespace(ClassName::fromString('\Foo\TypeCheck'));
+        $expected->setUseNativeCallable(true);
+
+        $this->assertEquals(
+            $expected,
+            Liberator::liberate($this->_reader)->readComposer('doom')
+        );
+        Phake::verify($this->_isolator)->is_file('doom/composer.json');
+    }
+
+    public function testReadComposerInferNativeCallable64Bit()
+    {
+        $data = <<<'EOD'
+{
+    "name": "eloquent/typhoon",
+    "require": {
+        "php-64bit": ">=5.4"
+    },
+    "autoload": {
+        "psr-0": {
+            "Foo\\TypeCheck": "src-typhoon",
+            "Foo": "src"
+        }
+    }
+}
+
+EOD;
+        Phake::when($this->_isolator)
+            ->is_file(Phake::anyParameters())
+            ->thenReturn(true)
+        ;
+        Phake::when($this->_isolator)
+            ->file_get_contents(Phake::anyParameters())
+            ->thenReturn($data)
+        ;
+        $expected = new Configuration(
+            'src-typhoon',
+            array('src')
+        );
+        $expected->setValidatorNamespace(ClassName::fromString('\Foo\TypeCheck'));
+        $expected->setUseNativeCallable(true);
+
+        $this->assertEquals(
+            $expected,
+            Liberator::liberate($this->_reader)->readComposer('doom')
+        );
+        Phake::verify($this->_isolator)->is_file('doom/composer.json');
+    }
+
     public function testLoadJSON()
     {
         Phake::when($this->_reader)

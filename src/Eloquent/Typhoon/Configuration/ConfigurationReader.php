@@ -223,6 +223,32 @@ class ConfigurationReader
             }
         }
 
+        if (!property_exists($typhoonData, ConfigurationOption::USE_NATIVE_CALLABLE()->value())) {
+            $composerDependencies = $composerData->dependencies();
+            $phpConstraint = null;
+            if (array_key_exists('php', $composerDependencies)) {
+                $phpConstraint = $composerDependencies['php'];
+            } elseif (array_key_exists('php-64bit', $composerDependencies)) {
+                $phpConstraint = $composerDependencies['php-64bit'];
+            }
+
+            $useNativeCallable = false;
+            if (null !== $phpConstraint) {
+                foreach (explode(',', $phpConstraint) as $constraint) {
+                    if (
+                        preg_match('/>=?\s*(\d+(?:\.\d+)?(?:\.\d+)?)/', $constraint, $matches) &&
+                        version_compare($matches[1], '5.4', '>=')
+                    ) {
+                        $useNativeCallable = true;
+                    }
+                }
+            }
+
+            $typhoonData->{ConfigurationOption::USE_NATIVE_CALLABLE()->value()} =
+                $useNativeCallable
+            ;
+        }
+
         return $this->buildConfiguration($typhoonData);
     }
 
