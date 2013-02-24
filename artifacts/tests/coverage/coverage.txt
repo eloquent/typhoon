@@ -1,12 +1,12 @@
 
 
 Code Coverage Report 
-  2013-02-24 09:06:56
+  2013-02-24 10:04:45
 
  Summary: 
   Classes: 100.00% (71/71)
   Methods: 100.00% (390/390)
-  Lines:   100.00% (4475/4475)
+  Lines:   100.00% (4481/4481)
 
 \Eloquent\Typhoon\ClassMapper::ClassDefinition
   Methods: 100.00% (11/11)   Lines: 100.00% ( 48/ 48)
@@ -27,7 +27,7 @@ Code Coverage Report
 \Eloquent\Typhoon\CodeAnalysis::AnalysisResult
   Methods: 100.00% ( 7/ 7)   Lines: 100.00% ( 48/ 48)
 \Eloquent\Typhoon\CodeAnalysis::ProjectAnalyzer
-  Methods: 100.00% (15/15)   Lines: 100.00% (252/252)
+  Methods: 100.00% (15/15)   Lines: 100.00% (258/258)
 \Eloquent\Typhoon\CodeAnalysis\Issue::AbstractClassRelatedIssue
   Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 11/ 11)
 \Eloquent\Typhoon\CodeAnalysis\Issue::AbstractMethodRelatedIssue
