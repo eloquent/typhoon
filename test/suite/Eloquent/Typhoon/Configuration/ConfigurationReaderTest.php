@@ -11,12 +11,15 @@
 
 namespace Eloquent\Typhoon\Configuration;
 
+use Eloquent\Composer\Configuration\ConfigurationReader as ComposerReader;
 use Eloquent\Cosmos\ClassName;
 use Eloquent\Liberator\Liberator;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use ErrorException;
+use Icecave\Isolator\Isolator;
 use Phake;
 use stdClass;
+use Symfony\Component\Filesystem\Filesystem;
 
 class ConfigurationReaderTest extends MultiGenerationTestCase
 {
@@ -25,9 +28,33 @@ class ConfigurationReaderTest extends MultiGenerationTestCase
         parent::setUp();
 
         $this->_isolator = Phake::mock('Icecave\Isolator\Isolator');
+        $this->_filesystemHelper = new Filesystem;
+        $this->_composerReader = new ComposerReader(null, $this->_isolator);
         $this->_reader = Phake::partialMock(
             __NAMESPACE__.'\ConfigurationReader',
+            $this->_filesystemHelper,
+            $this->_composerReader,
             $this->_isolator
+        );
+    }
+
+    public function testConstructor()
+    {
+        $this->assertSame($this->_filesystemHelper, $this->_reader->filesystemHelper());
+        $this->assertSame($this->_composerReader, $this->_reader->composerReader());
+    }
+
+    public function testConstructorDefaults()
+    {
+        $this->_reader = new ConfigurationReader;
+
+        $this->assertInstanceOf(
+            'Symfony\Component\Filesystem\Filesystem',
+            $this->_reader->filesystemHelper()
+        );
+        $this->assertInstanceOf(
+            'Eloquent\Composer\Configuration\ConfigurationReader',
+            $this->_reader->composerReader()
         );
     }
 
@@ -181,6 +208,75 @@ class ConfigurationReaderTest extends MultiGenerationTestCase
         );
     }
 
+    public function testReadTyphoonInferOutputPathSrc()
+    {
+        Phake::when($this->_isolator)
+            ->is_file(Phake::anyParameters())
+            ->thenReturn(true)
+        ;
+        $data = new stdClass;
+        $data->{'source-paths'} = array('lib', 'src');
+        Phake::when($this->_reader)
+            ->loadJSON(Phake::anyParameters())
+            ->thenReturn($data)
+        ;
+        $expected = new Configuration(
+            'src-typhoon',
+            array('lib', 'src')
+        );
+
+        $this->assertEquals(
+            $expected,
+            Liberator::liberate($this->_reader)->readTyphoon('doom')
+        );
+    }
+
+    public function testReadTyphoonInferOutputPathLib()
+    {
+        Phake::when($this->_isolator)
+            ->is_file(Phake::anyParameters())
+            ->thenReturn(true)
+        ;
+        $data = new stdClass;
+        $data->{'source-paths'} = array('bar', 'lib');
+        Phake::when($this->_reader)
+            ->loadJSON(Phake::anyParameters())
+            ->thenReturn($data)
+        ;
+        $expected = new Configuration(
+            'lib-typhoon',
+            array('bar', 'lib')
+        );
+
+        $this->assertEquals(
+            $expected,
+            Liberator::liberate($this->_reader)->readTyphoon('doom')
+        );
+    }
+
+    public function testReadTyphoonInferOutputPathDefault()
+    {
+        Phake::when($this->_isolator)
+            ->is_file(Phake::anyParameters())
+            ->thenReturn(true)
+        ;
+        $data = new stdClass;
+        $data->{'source-paths'} = array('bar', 'baz');
+        Phake::when($this->_reader)
+            ->loadJSON(Phake::anyParameters())
+            ->thenReturn($data)
+        ;
+        $expected = new Configuration(
+            'src-typhoon',
+            array('bar', 'baz')
+        );
+
+        $this->assertEquals(
+            $expected,
+            Liberator::liberate($this->_reader)->readTyphoon('doom')
+        );
+    }
+
     public function testReadTyphoonNotFound()
     {
         Phake::when($this->_isolator)
@@ -197,32 +293,44 @@ class ConfigurationReaderTest extends MultiGenerationTestCase
 
     public function testReadComposer()
     {
+        $data = <<<'EOD'
+{
+    "name": "eloquent/typhoon",
+    "autoload": {
+        "psr-0": {
+            "Eloquent\\Typhoon\\TypeCheck": "src-typhoon",
+            "Eloquent\\Typhoon": "src"
+        }
+    },
+    "extra": {
+        "typhoon": {
+            "output-path": "foo",
+            "source-paths": ["bar", "baz"],
+            "validator-namespace": "qux"
+        }
+    }
+}
+
+EOD;
         Phake::when($this->_isolator)
             ->is_file(Phake::anyParameters())
             ->thenReturn(true)
         ;
-        $data = new stdClass;
-        $data->extra = new stdClass;
-        $data->extra->typhoon = new stdClass;
-        $data->extra->typhoon->{'output-path'} = 'foo';
-        $data->extra->typhoon->{'source-paths'} = array('bar', 'baz');
-        Phake::when($this->_reader)
-            ->loadJSON(Phake::anyParameters())
+        Phake::when($this->_isolator)
+            ->file_get_contents(Phake::anyParameters())
             ->thenReturn($data)
         ;
         $expected = new Configuration(
             'foo',
             array('bar', 'baz')
         );
+        $expected->setValidatorNamespace(ClassName::fromString('\qux'));
 
         $this->assertEquals(
             $expected,
             Liberator::liberate($this->_reader)->readComposer('doom')
         );
-        Phake::inOrder(
-            Phake::verify($this->_isolator)->is_file('doom/composer.json'),
-            Phake::verify($this->_reader)->loadJSON('doom/composer.json')
-        );
+        Phake::verify($this->_isolator)->is_file('doom/composer.json');
     }
 
     public function testReadComposerNotFound()
@@ -241,45 +349,181 @@ class ConfigurationReaderTest extends MultiGenerationTestCase
 
     public function testReadComposerNoTyphoonData()
     {
+        $data = <<<'EOD'
+{
+    "name": "eloquent/typhoon",
+    "autoload": {
+        "psr-0": {
+            "Foo": "src"
+        }
+    }
+}
+
+EOD;
         Phake::when($this->_isolator)
             ->is_file(Phake::anyParameters())
             ->thenReturn(true)
         ;
-        $data = new stdClass;
-        Phake::when($this->_reader)
-            ->loadJSON(Phake::anyParameters())
+        Phake::when($this->_isolator)
+            ->file_get_contents(Phake::anyParameters())
             ->thenReturn($data)
         ;
+        $expected = new Configuration(
+            'src-typhoon',
+            array('src')
+        );
+        $expected->setValidatorNamespace(ClassName::fromString('\Foo\TypeCheck'));
 
-        $this->assertNull(
+        $this->assertEquals(
+            $expected,
             Liberator::liberate($this->_reader)->readComposer('doom')
         );
-        Phake::inOrder(
-            Phake::verify($this->_isolator)->is_file('doom/composer.json'),
-            Phake::verify($this->_reader)->loadJSON('doom/composer.json')
+        Phake::verify($this->_isolator)->is_file('doom/composer.json');
+    }
+
+    public function testReadComposerInferValidatorNamespace()
+    {
+        $data = <<<'EOD'
+{
+    "name": "eloquent/typhoon",
+    "autoload": {
+        "psr-0": {
+            "Foo": "src",
+            "Bar": "baz"
+        }
+    },
+    "extra": {
+        "typhoon": {
+            "output-path": "baz"
+        }
+    }
+}
+
+EOD;
+        Phake::when($this->_isolator)
+            ->is_file(Phake::anyParameters())
+            ->thenReturn(true)
+        ;
+        Phake::when($this->_isolator)
+            ->file_get_contents(Phake::anyParameters())
+            ->thenReturn($data)
+        ;
+        $expected = new Configuration(
+            'baz',
+            array('src')
         );
+        $expected->setValidatorNamespace(ClassName::fromString('\Bar'));
+
+        $this->assertEquals(
+            $expected,
+            Liberator::liberate($this->_reader)->readComposer('doom')
+        );
+        Phake::verify($this->_isolator)->is_file('doom/composer.json');
+    }
+
+    public function testReadComposerInferValidatorNamespaceFromOutputPath()
+    {
+        $data = <<<'EOD'
+{
+    "name": "eloquent/typhoon",
+    "autoload": {
+        "psr-0": {
+            "Foo": "src",
+            "Bar": "baz"
+        }
+    },
+    "extra": {
+        "typhoon": {
+            "output-path": "baz"
+        }
+    }
+}
+
+EOD;
+        Phake::when($this->_isolator)
+            ->is_file(Phake::anyParameters())
+            ->thenReturn(true)
+        ;
+        Phake::when($this->_isolator)
+            ->file_get_contents(Phake::anyParameters())
+            ->thenReturn($data)
+        ;
+        $expected = new Configuration(
+            'baz',
+            array('src')
+        );
+        $expected->setValidatorNamespace(ClassName::fromString('\Bar'));
+
+        $this->assertEquals(
+            $expected,
+            Liberator::liberate($this->_reader)->readComposer('doom')
+        );
+        Phake::verify($this->_isolator)->is_file('doom/composer.json');
+    }
+
+    public function testReadComposerInferValidatorNamespaceFromSourcePaths()
+    {
+        $data = <<<'EOD'
+{
+    "name": "eloquent/typhoon",
+    "extra": {
+        "typhoon": {
+            "source-paths": ["foo"]
+        }
+    }
+}
+
+EOD;
+        Phake::when($this->_isolator)
+            ->is_file(Phake::anyParameters())
+            ->thenReturn(true)
+        ;
+        Phake::when($this->_isolator)
+            ->file_get_contents(Phake::anyParameters())
+            ->thenReturn($data)
+        ;
+        $expected = new Configuration(
+            'src-typhoon',
+            array('foo')
+        );
+
+        $this->assertEquals(
+            $expected,
+            Liberator::liberate($this->_reader)->readComposer('doom')
+        );
+        Phake::verify($this->_isolator)->is_file('doom/composer.json');
     }
 
     public function testReadComposerParseAutoload()
     {
+        $data = <<<'EOD'
+{
+    "name": "eloquent/typhoon",
+    "autoload": {
+        "psr-0": {
+            "Foo\\TypeCheck": "excludeMe",
+            "Foo": "foo",
+            "Bar": ["bar", "baz", "excludeMe/foo"],
+            "Baz": "excludeMe"
+        },
+        "classmap": ["qux", "excludeMe/bar", "doom"],
+        "files": ["excludeMe/baz", "splat", "ping"]
+    },
+    "include-path": ["pong", "pang", "excludeMe"],
+    "extra": {
+        "typhoon": {
+            "output-path": "excludeMe"
+        }
+    }
+}
+
+EOD;
         Phake::when($this->_isolator)
             ->is_file(Phake::anyParameters())
             ->thenReturn(true)
         ;
-        $data = new stdClass;
-        $data->autoload = new stdClass;
-        $data->autoload->{'psr-0'} = new stdClass;
-        $data->autoload->{'psr-0'}->Foo = 'foo';
-        $data->autoload->{'psr-0'}->Bar = array('bar', 'baz', 'excludeMe/foo');
-        $data->autoload->{'psr-0'}->Baz = 'excludeMe';
-        $data->autoload->classmap = array('qux', 'excludeMe/bar', 'doom');
-        $data->autoload->files = array('excludeMe/baz', 'splat', 'ping');
-        $data->{'include-path'} = array('pong', 'pang', 'excludeMe');
-        $data->extra = new stdClass;
-        $data->extra->typhoon = new stdClass;
-        $data->extra->typhoon->{'output-path'} = 'excludeMe';
-        Phake::when($this->_reader)
-            ->loadJSON(Phake::anyParameters())
+        Phake::when($this->_isolator)
+            ->file_get_contents(Phake::anyParameters())
             ->thenReturn($data)
         ;
         $expected = new Configuration(
@@ -296,36 +540,169 @@ class ConfigurationReaderTest extends MultiGenerationTestCase
                 'pang',
             )
         );
+        $expected->setValidatorNamespace(ClassName::fromString('\Foo\TypeCheck'));
 
         $this->assertEquals(
             $expected,
             Liberator::liberate($this->_reader)->readComposer('doom')
         );
-        Phake::inOrder(
-            Phake::verify($this->_isolator)->is_file('doom/composer.json'),
-            Phake::verify($this->_reader)->loadJSON('doom/composer.json')
-        );
+        Phake::verify($this->_isolator)->is_file('doom/composer.json');
     }
 
-    public function testReadComposerFailureNoOutputPath()
+    public function testReadComposerInferNativeCallable5_4()
     {
+        $data = <<<'EOD'
+{
+    "name": "eloquent/typhoon",
+    "require": {
+        "php": ">=5.4"
+    },
+    "autoload": {
+        "psr-0": {
+            "Foo\\TypeCheck": "src-typhoon",
+            "Foo": "src"
+        }
+    }
+}
+
+EOD;
         Phake::when($this->_isolator)
             ->is_file(Phake::anyParameters())
             ->thenReturn(true)
         ;
-        $data = new stdClass;
-        $data->extra = new stdClass;
-        $data->extra->typhoon = new stdClass;
-        Phake::when($this->_reader)
-            ->loadJSON(Phake::anyParameters())
+        Phake::when($this->_isolator)
+            ->file_get_contents(Phake::anyParameters())
             ->thenReturn($data)
         ;
-
-        $this->setExpectedException(
-            __NAMESPACE__.'\Exception\InvalidConfigurationException',
-            "Invalid configuration. Output path is required."
+        $expected = new Configuration(
+            'src-typhoon',
+            array('src')
         );
-        Liberator::liberate($this->_reader)->readComposer('doom');
+        $expected->setValidatorNamespace(ClassName::fromString('\Foo\TypeCheck'));
+        $expected->setUseNativeCallable(true);
+
+        $this->assertEquals(
+            $expected,
+            Liberator::liberate($this->_reader)->readComposer('doom')
+        );
+        Phake::verify($this->_isolator)->is_file('doom/composer.json');
+    }
+
+    public function testReadComposerInferNativeCallable5_4_x()
+    {
+        $data = <<<'EOD'
+{
+    "name": "eloquent/typhoon",
+    "require": {
+        "php": ">=5.4.11"
+    },
+    "autoload": {
+        "psr-0": {
+            "Foo\\TypeCheck": "src-typhoon",
+            "Foo": "src"
+        }
+    }
+}
+
+EOD;
+        Phake::when($this->_isolator)
+            ->is_file(Phake::anyParameters())
+            ->thenReturn(true)
+        ;
+        Phake::when($this->_isolator)
+            ->file_get_contents(Phake::anyParameters())
+            ->thenReturn($data)
+        ;
+        $expected = new Configuration(
+            'src-typhoon',
+            array('src')
+        );
+        $expected->setValidatorNamespace(ClassName::fromString('\Foo\TypeCheck'));
+        $expected->setUseNativeCallable(true);
+
+        $this->assertEquals(
+            $expected,
+            Liberator::liberate($this->_reader)->readComposer('doom')
+        );
+        Phake::verify($this->_isolator)->is_file('doom/composer.json');
+    }
+
+    public function testReadComposerInferNativeCallableMixedConstraint()
+    {
+        $data = <<<'EOD'
+{
+    "name": "eloquent/typhoon",
+    "require": {
+        "php": "< 5.5.3, >= 5.4"
+    },
+    "autoload": {
+        "psr-0": {
+            "Foo\\TypeCheck": "src-typhoon",
+            "Foo": "src"
+        }
+    }
+}
+
+EOD;
+        Phake::when($this->_isolator)
+            ->is_file(Phake::anyParameters())
+            ->thenReturn(true)
+        ;
+        Phake::when($this->_isolator)
+            ->file_get_contents(Phake::anyParameters())
+            ->thenReturn($data)
+        ;
+        $expected = new Configuration(
+            'src-typhoon',
+            array('src')
+        );
+        $expected->setValidatorNamespace(ClassName::fromString('\Foo\TypeCheck'));
+        $expected->setUseNativeCallable(true);
+
+        $this->assertEquals(
+            $expected,
+            Liberator::liberate($this->_reader)->readComposer('doom')
+        );
+        Phake::verify($this->_isolator)->is_file('doom/composer.json');
+    }
+
+    public function testReadComposerInferNativeCallable64Bit()
+    {
+        $data = <<<'EOD'
+{
+    "name": "eloquent/typhoon",
+    "require": {
+        "php-64bit": ">=5.4"
+    },
+    "autoload": {
+        "psr-0": {
+            "Foo\\TypeCheck": "src-typhoon",
+            "Foo": "src"
+        }
+    }
+}
+
+EOD;
+        Phake::when($this->_isolator)
+            ->is_file(Phake::anyParameters())
+            ->thenReturn(true)
+        ;
+        Phake::when($this->_isolator)
+            ->file_get_contents(Phake::anyParameters())
+            ->thenReturn($data)
+        ;
+        $expected = new Configuration(
+            'src-typhoon',
+            array('src')
+        );
+        $expected->setValidatorNamespace(ClassName::fromString('\Foo\TypeCheck'));
+        $expected->setUseNativeCallable(true);
+
+        $this->assertEquals(
+            $expected,
+            Liberator::liberate($this->_reader)->readComposer('doom')
+        );
+        Phake::verify($this->_isolator)->is_file('doom/composer.json');
     }
 
     public function testLoadJSON()
@@ -394,17 +771,6 @@ class ConfigurationReaderTest extends MultiGenerationTestCase
             __NAMESPACE__.'\Exception\InvalidConfigurationException',
             "Typhoon configuration data must be an object.",
             'foo',
-        );
-
-        $jsonData = new stdClass;
-        $jsonData->{'source-paths'} = array('bar', 'baz');
-        $jsonData->{'loader-paths'} = array('qux', 'doom');
-        $jsonData->{'validator-namespace'} = 'splat';
-        $jsonData->{'use-native-callable'} = false;
-        $data['Missing output path'] = array(
-            __NAMESPACE__.'\Exception\InvalidConfigurationException',
-            "Invalid configuration. Output path is required.",
-            $jsonData,
         );
 
         $jsonData = new stdClass;

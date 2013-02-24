@@ -30,7 +30,7 @@ class ConfigurationTest extends MultiGenerationTestCase
         $this->assertSame('foo', $this->_configuration->outputPath());
         $this->assertSame(array('bar', 'baz'), $this->_configuration->sourcePaths());
         $this->assertSame(array('vendor/autoload.php'), $this->_configuration->loaderPaths());
-        $this->assertTrue($this->_configuration->useNativeCallable());
+        $this->assertFalse($this->_configuration->useNativeCallable());
     }
 
     public function testConstructorFailureEmptySourcePaths()
@@ -83,10 +83,10 @@ class ConfigurationTest extends MultiGenerationTestCase
 
     public function testUseNativeCallable()
     {
-        $this->assertTrue($this->_configuration->useNativeCallable());
-
-        $this->_configuration->setUseNativeCallable(false);
-
         $this->assertFalse($this->_configuration->useNativeCallable());
+
+        $this->_configuration->setUseNativeCallable(true);
+
+        $this->assertTrue($this->_configuration->useNativeCallable());
     }
 }

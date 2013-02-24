@@ -1222,7 +1222,7 @@ class MergeToolTest extends MultiGenerationTestCase
             $expected
         );
         Liberator::liberate($this->_mergeTool)->mergeType(
-            new RuntimeConfiguration,
+            new RuntimeConfiguration(null, true),
             $this->_classDefinition,
             $this->_methodDefinition,
             'baz',
@@ -1241,7 +1241,7 @@ class MergeToolTest extends MultiGenerationTestCase
     ) {
         $this->_mergeTool = new MergeTool(false);
         Liberator::liberate($this->_mergeTool)->mergeType(
-            new RuntimeConfiguration,
+            new RuntimeConfiguration(null, true),
             $this->_classDefinition,
             $this->_methodDefinition,
             'baz',

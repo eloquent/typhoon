@@ -6,8 +6,22 @@ class ConfigurationReaderTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractV
     public function validateConstruct(array $arguments)
     {
         $argumentCount = \count($arguments);
-        if ($argumentCount > 1) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
+        if ($argumentCount > 3) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(3, $arguments[3]);
+        }
+    }
+
+    public function filesystemHelper(array $arguments)
+    {
+        if (\count($arguments) > 0) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(0, $arguments[0]);
+        }
+    }
+
+    public function composerReader(array $arguments)
+    {
+        if (\count($arguments) > 0) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(0, $arguments[0]);
         }
     }
 
@@ -172,6 +186,36 @@ class ConfigurationReaderTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractV
             throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('data', 0, 'mixed');
         } elseif ($argumentCount > 1) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
+        }
+    }
+
+    public function inferOutputPath(array $arguments)
+    {
+        $argumentCount = \count($arguments);
+        if ($argumentCount < 1) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('sourcePaths', 0, 'array<string>');
+        } elseif ($argumentCount > 1) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
+        }
+        $value = $arguments[0];
+        $check = function ($value) {
+            if (!\is_array($value)) {
+                return false;
+            }
+            foreach ($value as $key => $subValue) {
+                if (!\is_string($subValue)) {
+                    return false;
+                }
+            }
+            return true;
+        };
+        if (!$check($arguments[0])) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
+                'sourcePaths',
+                0,
+                $arguments[0],
+                'array<string>'
+            );
         }
     }
 
