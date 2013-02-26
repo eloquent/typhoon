@@ -489,22 +489,23 @@ ok 384 - Typhoon\Exception\UnexpectedArgumentValueExceptionTest::testException
 ok 385 - Typhoon\Exception\UnexpectedInputExceptionTest::testException
 ok 386 - Typhoon\TypeCheckTest::testGet
 ok 387 - Typhoon\TypeCheckTest::testGetWithArguments
-ok 388 - Typhoon\TypeCheckTest::testGetDummyMode
-ok 389 - Typhoon\TypeCheckTest::testRuntimeGeneration
-ok 390 - Typhoon\TypeCheckTest::testInstall
-ok 391 - Typhoon\TypeInspectorTest::testInspector with data set "Array" ('array', array())
-ok 392 - Typhoon\TypeInspectorTest::testInspector with data set "Boolean true" ('boolean', true)
-ok 393 - Typhoon\TypeInspectorTest::testInspector with data set "Boolean false" ('boolean', false)
-ok 394 - Typhoon\TypeInspectorTest::testInspector with data set "Float" ('float', 1.11)
-ok 395 - Typhoon\TypeInspectorTest::testInspector with data set "Integer" ('integer', 111)
-ok 396 - Typhoon\TypeInspectorTest::testInspector with data set "Null" ('null', NULL)
-ok 397 - Typhoon\TypeInspectorTest::testInspector with data set "Object" ('stdClass', stdClass)
-ok 398 - Typhoon\TypeInspectorTest::testInspector with data set "String" ('string', 'foo')
-ok 399 - Typhoon\TypeInspectorTest::testInspector with data set "Stream context resource" ('resource {ofType: stream-context}', <resource>)
-ok 400 - Typhoon\TypeInspectorTest::testInspector with data set "Array with subtypes" ('array<integer|string, float|null>', array(1.11, NULL))
-ok 401 - Typhoon\TypeInspectorTest::testInspector with data set "Array with subtypes and max iterations" ('array<integer, float>', array(1.11, NULL), 1)
-ok 402 - Typhoon\TypeInspectorTest::testInspector with data set "Array with subtypes and default max iterations" ('array<integer, float>', array(1.11, 1.11, 1.11, 1.11, 1.11, 1.11, 1.11, 1.11, 1.11, 1.11, NULL))
-ok 403 - Typhoon\TypeInspectorTest::testInspector with data set "Traversable with subtypes" ('ArrayIterator<integer|string, float|null>', ArrayIterator)
-ok 404 - Typhoon\TypeInspectorTest::testInspector with data set "Traversable with subtypes and max iterations" ('ArrayIterator<integer, float>', ArrayIterator, 1)
-ok 405 - Typhoon\TypeInspectorTest::testStreamInspection
-1..405
+ok 388 - Typhoon\TypeCheckTest::testDummyMode
+ok 389 - Typhoon\TypeCheckTest::testGetDummyValidator
+ok 390 - Typhoon\TypeCheckTest::testRuntimeGeneration
+ok 391 - Typhoon\TypeCheckTest::testInstall
+ok 392 - Typhoon\TypeInspectorTest::testInspector with data set "Array" ('array', array())
+ok 393 - Typhoon\TypeInspectorTest::testInspector with data set "Boolean true" ('boolean', true)
+ok 394 - Typhoon\TypeInspectorTest::testInspector with data set "Boolean false" ('boolean', false)
+ok 395 - Typhoon\TypeInspectorTest::testInspector with data set "Float" ('float', 1.11)
+ok 396 - Typhoon\TypeInspectorTest::testInspector with data set "Integer" ('integer', 111)
+ok 397 - Typhoon\TypeInspectorTest::testInspector with data set "Null" ('null', NULL)
+ok 398 - Typhoon\TypeInspectorTest::testInspector with data set "Object" ('stdClass', stdClass)
+ok 399 - Typhoon\TypeInspectorTest::testInspector with data set "String" ('string', 'foo')
+ok 400 - Typhoon\TypeInspectorTest::testInspector with data set "Stream context resource" ('resource {ofType: stream-context}', <resource>)
+ok 401 - Typhoon\TypeInspectorTest::testInspector with data set "Array with subtypes" ('array<integer|string, float|null>', array(1.11, NULL))
+ok 402 - Typhoon\TypeInspectorTest::testInspector with data set "Array with subtypes and max iterations" ('array<integer, float>', array(1.11, NULL), 1)
+ok 403 - Typhoon\TypeInspectorTest::testInspector with data set "Array with subtypes and default max iterations" ('array<integer, float>', array(1.11, 1.11, 1.11, 1.11, 1.11, 1.11, 1.11, 1.11, 1.11, 1.11, NULL))
+ok 404 - Typhoon\TypeInspectorTest::testInspector with data set "Traversable with subtypes" ('ArrayIterator<integer|string, float|null>', ArrayIterator)
+ok 405 - Typhoon\TypeInspectorTest::testInspector with data set "Traversable with subtypes and max iterations" ('ArrayIterator<integer, float>', ArrayIterator, 1)
+ok 406 - Typhoon\TypeInspectorTest::testStreamInspection
+1..406
