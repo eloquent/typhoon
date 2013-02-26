@@ -81,6 +81,20 @@ class FacadeGeneratorTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValid
         }
     }
 
+    public function generateSetDummyModeMethod(array $arguments)
+    {
+        if (\count($arguments) > 0) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(0, $arguments[0]);
+        }
+    }
+
+    public function generateDummyModeMethod(array $arguments)
+    {
+        if (\count($arguments) > 0) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(0, $arguments[0]);
+        }
+    }
+
     public function generateSetRuntimeGenerationMethod(array $arguments)
     {
         if (\count($arguments) > 0) {

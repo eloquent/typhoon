@@ -71,6 +71,9 @@ class GenerateCommand extends Command
     {
         $this->typeCheck->execute(func_get_args());
 
+        $dummyMode = TypeCheck::dummyMode();
+        TypeCheck::setDummyMode(true);
+
         $this->isolator->chdir($input->getArgument('path'));
 
         $output->setVerbosity(OutputInterface::VERBOSITY_VERBOSE);
@@ -81,6 +84,8 @@ class GenerateCommand extends Command
         $this->generator()->generate($configuration);
 
         $output->writeln('<info>Done.</info>');
+
+        TypeCheck::setDummyMode($dummyMode);
     }
 
     private $generator;

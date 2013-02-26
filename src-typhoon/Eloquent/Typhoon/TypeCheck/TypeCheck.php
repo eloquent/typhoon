@@ -5,7 +5,7 @@ abstract class TypeCheck
 {
     public static function get($className, array $arguments = null)
     {
-        if (static::$dummyMode) {
+        if (static::dummyMode()) {
             return new DummyValidator();
         }
         if (!\array_key_exists($className, static::$instances)) {
@@ -23,6 +23,16 @@ abstract class TypeCheck
         static::$instances[$className] = $validator;
     }
 
+    public static function setDummyMode($dummyMode)
+    {
+        static::$dummyMode = $dummyMode;
+    }
+
+    public static function dummyMode()
+    {
+        return static::$dummyMode;
+    }
+
     public static function setRuntimeGeneration($runtimeGeneration)
     {
         static::$runtimeGeneration = $runtimeGeneration;
@@ -37,9 +47,10 @@ abstract class TypeCheck
     {
         $validatorClassName = '\\Eloquent\\Typhoon\\TypeCheck\\Validator\\' . $className . 'TypeCheck';
         if (static::runtimeGeneration() && !\class_exists($validatorClassName)) {
-            static::$dummyMode = true;
+            $dummyMode = static::dummyMode();
+            static::setDummyMode(true);
             static::defineValidator($className);
-            static::$dummyMode = false;
+            static::setDummyMode($dummyMode);
         }
         return new $validatorClassName;
     }

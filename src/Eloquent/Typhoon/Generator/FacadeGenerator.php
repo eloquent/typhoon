@@ -131,6 +131,8 @@ class FacadeGenerator implements StaticClassGenerator
         );
         $classDefinition->add($this->generateGetMethod());
         $classDefinition->add($this->generateInstallMethod());
+        $classDefinition->add($this->generateSetDummyModeMethod());
+        $classDefinition->add($this->generateDummyModeMethod());
         $classDefinition->add($this->generateSetRuntimeGenerationMethod());
         $classDefinition->add($this->generateRuntimeGenerationMethod());
         $classDefinition->add($this->generateCreateValidatorMethod(
@@ -212,10 +214,10 @@ class FacadeGenerator implements StaticClassGenerator
         $method->addParameter($argumentsParameter);
 
         $dummyModeIf = new IfStatement(
-            new StaticMember(
+            new Call(new StaticMember(
                 $staticConstant,
-                new Variable(new Identifier('dummyMode'))
-            )
+                new Constant(new Identifier('dummyMode'))
+            ))
         );
         $newDummyCall = new Call(QualifiedIdentifier::fromString('DummyValidator'));
         $newDummy = new NewOperator($newDummyCall);
@@ -298,6 +300,59 @@ class FacadeGenerator implements StaticClassGenerator
                     new Variable($classNameIdentifier)
                 ),
                 new Variable($validatorIdentifier)
+            )
+        ));
+
+        return $method;
+    }
+
+    /**
+     * @return ConcreteMethod
+     */
+    protected function generateSetDummyModeMethod()
+    {
+        $this->typeCheck->generateSetDummyModeMethod(func_get_args());
+
+        $dummyModeIdentifier = new Identifier('dummyMode');
+        $dummyModeVariable = new Variable($dummyModeIdentifier);
+
+        $method = new ConcreteMethod(
+            new Identifier('setDummyMode'),
+            AccessModifier::PUBLIC_(),
+            true
+        );
+        $method->addParameter(new Parameter($dummyModeIdentifier));
+
+        $method->statementBlock()->add(new ExpressionStatement(
+            new Assign(
+                new StaticMember(
+                    new Constant(new Identifier('static')),
+                    $dummyModeVariable
+                ),
+                $dummyModeVariable
+            )
+        ));
+
+        return $method;
+    }
+
+    /**
+     * @return ConcreteMethod
+     */
+    protected function generateDummyModeMethod()
+    {
+        $this->typeCheck->generateDummyModeMethod(func_get_args());
+
+        $method = new ConcreteMethod(
+            new Identifier('dummyMode'),
+            AccessModifier::PUBLIC_(),
+            true
+        );
+
+        $method->statementBlock()->add(new ReturnStatement(
+            new StaticMember(
+                new Constant(new Identifier('static')),
+                new Variable(new Identifier('dummyMode'))
             )
         ));
 
@@ -405,16 +460,25 @@ class FacadeGenerator implements StaticClassGenerator
             $runtimeGenerationCall,
             new LogicalNot($classExistsCall)
         ));
-        $staticDummyModeVariable = new StaticMember(
-            $staticConstant,
-            new Variable(new Identifier('dummyMode'))
-        );
+        $dummyModeVariable = new Variable(new Identifier('dummyMode'));
+        $dummyModeCall = new Call(new StaticMember(
+            new Constant(new Identifier('static')),
+            new Constant(new Identifier('dummyMode'))
+        ));
         $runtimeGenerationIf->trueBranch()->add(
             new ExpressionStatement(new Assign(
-                $staticDummyModeVariable,
-                new Literal(true)
+                $dummyModeVariable,
+                $dummyModeCall
             ))
         );
+        $setDummyModeTrueCall = new Call(new StaticMember(
+            new Constant(new Identifier('static')),
+            new Constant(new Identifier('setDummyMode'))
+        ));
+        $setDummyModeTrueCall->add(new Literal(true));
+        $runtimeGenerationIf->trueBranch()->add(new ExpressionStatement(
+            $setDummyModeTrueCall
+        ));
         $defineValidatorCall = new Call(new StaticMember(
             $staticConstant,
             new Constant(new Identifier('defineValidator'))
@@ -423,12 +487,14 @@ class FacadeGenerator implements StaticClassGenerator
         $runtimeGenerationIf->trueBranch()->add(
             new ExpressionStatement($defineValidatorCall)
         );
-        $runtimeGenerationIf->trueBranch()->add(
-            new ExpressionStatement(new Assign(
-                $staticDummyModeVariable,
-                new Literal(false)
-            ))
-        );
+        $resetDummyModeCall = new Call(new StaticMember(
+            new Constant(new Identifier('static')),
+            new Constant(new Identifier('setDummyMode'))
+        ));
+        $resetDummyModeCall->add($dummyModeVariable);
+        $runtimeGenerationIf->trueBranch()->add(new ExpressionStatement(
+            $resetDummyModeCall
+        ));
         $method->statementBlock()->add($runtimeGenerationIf);
 
         $method->statementBlock()->add(new ReturnStatement(

@@ -28,7 +28,9 @@ class TypeCheckTest extends PHPUnit_Framework_TestCase
             ExampleClassTypeCheck::$arguments = array();
         }
 
+        $this->_oldDummyMode = TypeCheck::dummyMode();
         $this->_oldRuntimeGeneration = TypeCheck::runtimeGeneration();
+        TypeCheck::setDummyMode(false);
         TypeCheck::setRuntimeGeneration(false);
     }
 
@@ -36,6 +38,7 @@ class TypeCheckTest extends PHPUnit_Framework_TestCase
     {
         parent::tearDown();
 
+        TypeCheck::setDummyMode($this->_oldDummyMode);
         TypeCheck::setRuntimeGeneration($this->_oldRuntimeGeneration);
     }
 
@@ -67,9 +70,18 @@ class TypeCheckTest extends PHPUnit_Framework_TestCase
         $this->assertSame($arguments, ExampleClassTypeCheck::$arguments['validateConstruct']);
     }
 
-    public function testGetDummyMode()
+    public function testDummyMode()
     {
-        Liberator::liberateClass(__NAMESPACE__.'\TypeCheck')->dummyMode = true;
+        $this->assertFalse(TypeCheck::dummyMode());
+
+        TypeCheck::setDummyMode(true);
+
+        $this->assertTrue(TypeCheck::dummyMode());
+    }
+
+    public function testGetDummyValidator()
+    {
+        TypeCheck::setDummyMode(true);
 
         $this->assertInstanceOf(
             __NAMESPACE__.'\DummyValidator',

@@ -23,6 +23,16 @@ abstract class TypeCheck
         static::$instances[$className] = $validator;
     }
 
+    public static function setDummyMode($dummyMode)
+    {
+        static::$dummyMode = $dummyMode;
+    }
+
+    public static function dummyMode()
+    {
+        return static::$dummyMode;
+    }
+
     public static function setRuntimeGeneration($runtimeGeneration)
     {
         static::$runtimeGeneration = $runtimeGeneration;
