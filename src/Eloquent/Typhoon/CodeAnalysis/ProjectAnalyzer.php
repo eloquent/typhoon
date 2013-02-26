@@ -83,20 +83,25 @@ class ProjectAnalyzer
     }
 
     /**
-     * @param Configuration $configuration
+     * @param Configuration      $configuration
+     * @param array<string>|null $sourcePaths
      *
      * @return AnalysisResult
      */
-    public function analyze(Configuration $configuration)
-    {
+    public function analyze(
+        Configuration $configuration,
+        array $sourcePaths = null
+    ) {
         $this->typeCheck->analyze(func_get_args());
+        if (null === $sourcePaths) {
+            $sourcePaths = $configuration->sourcePaths();
+        }
 
         $facadeClassName = $configuration
             ->validatorNamespace()
             ->joinAtoms('TypeCheck')
         ;
 
-        $sourcePaths = $configuration->sourcePaths();
         $issues = array();
         foreach ($this->classMapper()->classesByPaths($sourcePaths) as $classDefinition) {
             $this->analyzeClass(

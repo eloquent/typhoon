@@ -219,6 +219,112 @@ class ProjectValidatorGeneratorTest extends MultiGenerationTestCase
         ), $generatedPaths);
     }
 
+    public function testGenerateWithExplicitPaths()
+    {
+        $configuration = new Configuration(
+            'foo',
+            array(
+                'bar',
+                'baz',
+            )
+        );
+        $classDefinitionA = Phake::mock('Eloquent\Typhoon\ClassMapper\ClassDefinition');
+        $classDefinitionB = Phake::mock('Eloquent\Typhoon\ClassMapper\ClassDefinition');
+        $classMap = array(
+            $classDefinitionA,
+            $classDefinitionB,
+        );
+        Phake::when($this->_classMapper)
+            ->classesByPaths(Phake::anyParameters())
+            ->thenReturn($classMap)
+        ;
+        Phake::when($this->_validatorClassGenerator)
+            ->generate(Phake::anyParameters())
+            ->thenReturn(null)
+        ;
+        Phake::when($this->_validatorClassGenerator)
+            ->generate(
+                $this->identicalTo($configuration),
+                $this->identicalTo($classDefinitionA),
+                Phake::setReference(ClassName::fromString('\Namespace\Name\A\Class_Name_A'))
+            )
+            ->thenReturn('A source')
+        ;
+        Phake::when($this->_validatorClassGenerator)
+            ->generate(
+                $this->identicalTo($configuration),
+                $this->identicalTo($classDefinitionB),
+                Phake::setReference(ClassName::fromString('\Namespace\Name\B\Class_Name_B'))
+            )
+            ->thenReturn('B source')
+        ;
+        Phake::when($this->_staticClassGeneratorA)
+            ->generate(
+                $this->identicalTo($configuration),
+                Phake::setReference(ClassName::fromString('\Namespace\Name\Static_Class_A'))
+            )
+            ->thenReturn('Static class A source')
+        ;
+        Phake::when($this->_staticClassGeneratorB)
+            ->generate(
+                $this->identicalTo($configuration),
+                Phake::setReference(ClassName::fromString('\Namespace\Name\Static_Class_B'))
+            )
+            ->thenReturn('Static class B source')
+        ;
+        Phake::when($this->_isolator)
+            ->is_dir(Phake::anyParameters())
+            ->thenReturn(true)
+            ->thenReturn(false)
+            ->thenReturn(false)
+            ->thenReturn(true)
+        ;
+        Phake::when($this->_generator)
+            ->cleanDirectory(Phake::anyParameters())
+            ->thenReturn(null)
+        ;
+        $this->_generator->generate($configuration, array('qux', 'doom'));
+
+        Phake::inOrder(
+            Phake::verify($this->_classMapper)->classesByPaths(array('qux', 'doom')),
+            Phake::verify($this->_validatorClassGenerator)->generate(
+                $this->identicalTo($configuration),
+                $this->identicalTo($classDefinitionA),
+                null
+            ),
+            Phake::verify($this->_isolator)->is_dir('foo/Namespace/Name/A/Class/Name'),
+            Phake::verify($this->_isolator)->file_put_contents(
+                'foo/Namespace/Name/A/Class/Name/A.php',
+                'A source'
+            ),
+            Phake::verify($this->_validatorClassGenerator)->generate(
+                $this->identicalTo($configuration),
+                $this->identicalTo($classDefinitionB),
+                null
+            ),
+            Phake::verify($this->_isolator)->is_dir('foo/Namespace/Name/B/Class/Name'),
+            Phake::verify($this->_isolator)->mkdir(
+                'foo/Namespace/Name/B/Class/Name',
+                0777,
+                true
+            ),
+            Phake::verify($this->_isolator)->file_put_contents(
+                'foo/Namespace/Name/B/Class/Name/B.php',
+                'B source'
+            )
+        );
+        Phake::verify($this->_isolator, Phake::never())->mkdir(
+            'foo/Namespace/Name/A/Class/Name',
+            $this->anything(),
+            $this->anything()
+        );
+        Phake::verify($this->_isolator, Phake::never())->mkdir(
+            'foo/Namespace/Name/Static/Class',
+            $this->anything(),
+            $this->anything()
+        );
+    }
+
     public function testPSRPath()
     {
         $className = ClassName::fromString('Foo\Bar_Baz\Qux\Doom_Splat_Pip');

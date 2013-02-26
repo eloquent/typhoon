@@ -65,8 +65,36 @@ class ProjectValidatorGeneratorTypeCheck extends \Eloquent\Typhoon\TypeCheck\Abs
         $argumentCount = \count($arguments);
         if ($argumentCount < 1) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('configuration', 0, 'Eloquent\\Typhoon\\Configuration\\Configuration');
-        } elseif ($argumentCount > 1) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
+        } elseif ($argumentCount > 2) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(2, $arguments[2]);
+        }
+        if ($argumentCount > 1) {
+            $value = $arguments[1];
+            $check = function ($value) {
+                $check = function ($value) {
+                    if (!\is_array($value)) {
+                        return false;
+                    }
+                    foreach ($value as $key => $subValue) {
+                        if (!\is_string($subValue)) {
+                            return false;
+                        }
+                    }
+                    return true;
+                };
+                if ($check($value)) {
+                    return true;
+                }
+                return $value === null;
+            };
+            if (!$check($arguments[1])) {
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
+                    'sourcePaths',
+                    1,
+                    $arguments[1],
+                    'array<string>|null'
+                );
+            }
         }
     }
 
@@ -77,18 +105,40 @@ class ProjectValidatorGeneratorTypeCheck extends \Eloquent\Typhoon\TypeCheck\Abs
             if ($argumentCount < 1) {
                 throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('configuration', 0, 'Eloquent\\Typhoon\\Configuration\\Configuration');
             }
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('generatedPaths', 1, 'null');
-        } elseif ($argumentCount > 2) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(2, $arguments[2]);
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('sourcePaths', 1, 'array<string>');
+        } elseif ($argumentCount > 3) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(3, $arguments[3]);
         }
         $value = $arguments[1];
-        if (!($value === null)) {
+        $check = function ($value) {
+            if (!\is_array($value)) {
+                return false;
+            }
+            foreach ($value as $key => $subValue) {
+                if (!\is_string($subValue)) {
+                    return false;
+                }
+            }
+            return true;
+        };
+        if (!$check($arguments[1])) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
-                'generatedPaths',
+                'sourcePaths',
                 1,
                 $arguments[1],
-                'null'
+                'array<string>'
             );
+        }
+        if ($argumentCount > 2) {
+            $value = $arguments[2];
+            if (!($value === null)) {
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
+                    'generatedPaths',
+                    2,
+                    $arguments[2],
+                    'null'
+                );
+            }
         }
     }
 

@@ -88,26 +88,40 @@ class ProjectValidatorGenerator
     }
 
     /**
-     * @param Configuration $configuration
+     * @param Configuration      $configuration
+     * @param array<string>|null $sourcePaths
      */
-    public function generate(Configuration $configuration)
-    {
+    public function generate(
+        Configuration $configuration,
+        array $sourcePaths = null
+    ) {
         $this->typeCheck->generate(func_get_args());
 
-        $this->generateClassValidators($configuration, $generatedPaths);
-        $this->generateStaticClasses($configuration, $generatedPaths);
-        $this->cleanDirectory($configuration->outputPath(), $generatedPaths);
+        if (null === $sourcePaths) {
+            $this->generateClassValidators(
+                $configuration,
+                $configuration->sourcePaths(),
+                $generatedPaths
+            );
+            $this->generateStaticClasses($configuration, $generatedPaths);
+            $this->cleanDirectory($configuration->outputPath(), $generatedPaths);
+        } else {
+            $this->generateClassValidators($configuration, $sourcePaths);
+        }
     }
 
     /**
      * @param Configuration $configuration
+     * @param array<string> $sourcePaths
      * @param null          &$generatedPaths
      */
-    protected function generateClassValidators(Configuration $configuration, &$generatedPaths)
-    {
+    protected function generateClassValidators(
+        Configuration $configuration,
+        array $sourcePaths,
+        &$generatedPaths = null
+    ) {
         $this->typeCheck->generateClassValidators(func_get_args());
 
-        $sourcePaths = $configuration->sourcePaths();
         $generatedPaths = array();
         foreach ($this->classMapper()->classesByPaths($sourcePaths) as $classDefinition) {
             $className = null;

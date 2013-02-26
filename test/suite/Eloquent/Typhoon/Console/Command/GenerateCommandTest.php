@@ -88,10 +88,17 @@ class GenerateCommandTest extends MultiGenerationTestCase
         $inputDefinition = new InputDefinition;
         $inputDefinition->addArgument(
             new InputArgument(
-                'path',
+                'project-path',
                 InputArgument::OPTIONAL,
                 'The path to the root of the project.',
                 '.'
+            )
+        );
+        $inputDefinition->addArgument(
+            new InputArgument(
+                'source-path',
+                InputArgument::OPTIONAL | InputArgument::IS_ARRAY,
+                'One or more source paths.'
             )
         );
 
@@ -102,6 +109,10 @@ class GenerateCommandTest extends MultiGenerationTestCase
     {
         $input = Phake::mock('Symfony\Component\Console\Input\InputInterface');
         $output = Phake::mock('Symfony\Component\Console\Output\OutputInterface');
+        Phake::when($input)
+            ->getArgument('source-path')
+            ->thenReturn(array())
+        ;
         Liberator::liberate($this->_command)->execute($input, $output);
 
         Phake::inOrder(
@@ -111,33 +122,37 @@ class GenerateCommandTest extends MultiGenerationTestCase
             ),
             Phake::verify($output)->writeln('<info>Generating classes...</info>'),
             Phake::verify($this->_generator)->generate(
-                $this->identicalTo($this->_configuration)
+                $this->identicalTo($this->_configuration),
+                null
             ),
             Phake::verify($output)->writeln('<info>Done.</info>')
         );
     }
 
-    public function testExecuteWithExplicitPath()
+    public function testExecuteWithExplicitPaths()
     {
         $input = Phake::mock('Symfony\Component\Console\Input\InputInterface');
         $output = Phake::mock('Symfony\Component\Console\Output\OutputInterface');
-
         Phake::when($input)
-            ->getArgument('path')
-            ->thenReturn('/path/to/project')
+            ->getArgument('project-path')
+            ->thenReturn('foo')
         ;
-
+        Phake::when($input)
+            ->getArgument('source-path')
+            ->thenReturn(array('bar', 'baz'))
+        ;
         Liberator::liberate($this->_command)->execute($input, $output);
 
         Phake::inOrder(
-            Phake::verify($this->_isolator)->chdir('/path/to/project'),
+            Phake::verify($this->_isolator)->chdir('foo'),
             Phake::verify($this->_command)->includeLoaders(
                 $this->identicalTo($this->_configuration),
                 $this->identicalTo($output)
             ),
             Phake::verify($output)->writeln('<info>Generating classes...</info>'),
             Phake::verify($this->_generator)->generate(
-                $this->identicalTo($this->_configuration)
+                $this->identicalTo($this->_configuration),
+                array('bar', 'baz')
             ),
             Phake::verify($output)->writeln('<info>Done.</info>')
         );

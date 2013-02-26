@@ -131,10 +131,17 @@ class CheckCommandTest extends MultiGenerationTestCase
         $inputDefinition = new InputDefinition;
         $inputDefinition->addArgument(
             new InputArgument(
-                'path',
+                'project-path',
                 InputArgument::OPTIONAL,
                 'The path to the root of the project.',
                 '.'
+            )
+        );
+        $inputDefinition->addArgument(
+            new InputArgument(
+                'source-path',
+                InputArgument::OPTIONAL | InputArgument::IS_ARRAY,
+                'One or more source paths.'
             )
         );
 
@@ -150,6 +157,10 @@ class CheckCommandTest extends MultiGenerationTestCase
         ;
         $input = Phake::mock('Symfony\Component\Console\Input\InputInterface');
         $output = Phake::mock('Symfony\Component\Console\Output\OutputInterface');
+        Phake::when($input)
+            ->getArgument('source-path')
+            ->thenReturn(array())
+        ;
         $exitCode = Liberator::liberate($this->_command)->execute($input, $output);
 
         $this->assertSame(0, $exitCode);
@@ -160,7 +171,8 @@ class CheckCommandTest extends MultiGenerationTestCase
             ),
             Phake::verify($output)->writeln('<info>Checking for correct Typhoon setup...</info>'),
             Phake::verify($this->_analyzer)->analyze(
-                $this->identicalTo($this->_configuration)
+                $this->identicalTo($this->_configuration),
+                null
             ),
             Phake::verify($result, Phake::times(2))->issues(),
             Phake::verify($output)->writeln('<info>No problems detected.</info>'),
@@ -168,7 +180,7 @@ class CheckCommandTest extends MultiGenerationTestCase
         );
     }
 
-    public function testExecuteSuccessWithExplicitPath()
+    public function testExecuteSuccessWithExplicitPaths()
     {
         $result = Phake::partialMock('Eloquent\Typhoon\CodeAnalysis\AnalysisResult');
         Phake::when($this->_analyzer)
@@ -177,24 +189,27 @@ class CheckCommandTest extends MultiGenerationTestCase
         ;
         $input = Phake::mock('Symfony\Component\Console\Input\InputInterface');
         $output = Phake::mock('Symfony\Component\Console\Output\OutputInterface');
-
         Phake::when($input)
-            ->getArgument('path')
-            ->thenReturn('/path/to/project')
+            ->getArgument('project-path')
+            ->thenReturn('foo')
         ;
-
+        Phake::when($input)
+            ->getArgument('source-path')
+            ->thenReturn(array('bar', 'baz'))
+        ;
         $exitCode = Liberator::liberate($this->_command)->execute($input, $output);
 
         $this->assertSame(0, $exitCode);
         Phake::inOrder(
-            Phake::verify($this->_isolator)->chdir('/path/to/project'),
+            Phake::verify($this->_isolator)->chdir('foo'),
             Phake::verify($this->_command)->includeLoaders(
                 $this->identicalTo($this->_configuration),
                 $this->identicalTo($output)
             ),
             Phake::verify($output)->writeln('<info>Checking for correct Typhoon setup...</info>'),
             Phake::verify($this->_analyzer)->analyze(
-                $this->identicalTo($this->_configuration)
+                $this->identicalTo($this->_configuration),
+                array('bar', 'baz')
             ),
             Phake::verify($result, Phake::times(2))->issues(),
             Phake::verify($output)->writeln('<info>No problems detected.</info>'),
@@ -235,7 +250,8 @@ class CheckCommandTest extends MultiGenerationTestCase
             ),
             Phake::verify($output)->writeln('<info>Checking for correct Typhoon setup...</info>'),
             Phake::verify($this->_analyzer)->analyze(
-                $this->identicalTo($this->_configuration)
+                $this->identicalTo($this->_configuration),
+                null
             ),
             Phake::verify($result, Phake::atLeast(1))->issues(),
             Phake::verify($result, Phake::atLeast(1))->issuesBySeverity(IssueSeverity::ERROR()),
@@ -275,7 +291,8 @@ class CheckCommandTest extends MultiGenerationTestCase
             ),
             Phake::verify($output)->writeln('<info>Checking for correct Typhoon setup...</info>'),
             Phake::verify($this->_analyzer)->analyze(
-                $this->identicalTo($this->_configuration)
+                $this->identicalTo($this->_configuration),
+                null
             ),
             Phake::verify($result, Phake::atLeast(1))->issues(),
             Phake::verify($result, Phake::atLeast(1))->issuesBySeverity(IssueSeverity::WARNING()),

@@ -29,9 +29,6 @@ class GenerateCommand extends Command
         Isolator $isolator = null
     ) {
         $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
-        if (null === $generator) {
-            $generator = new ProjectValidatorGenerator;
-        }
 
         $this->generator = $generator;
 
@@ -45,6 +42,10 @@ class GenerateCommand extends Command
     {
         $this->typeCheck->generator(func_get_args());
 
+        if (null === $this->generator) {
+            $this->generator = new ProjectValidatorGenerator;
+        }
+
         return $this->generator;
     }
 
@@ -56,10 +57,15 @@ class GenerateCommand extends Command
         $this->setDescription('Generates Typhoon classes for a project.');
 
         $this->addArgument(
-            'path',
+            'project-path',
             InputArgument::OPTIONAL,
             'The path to the root of the project.',
             '.'
+        );
+        $this->addArgument(
+            'source-path',
+            InputArgument::OPTIONAL | InputArgument::IS_ARRAY,
+            'One or more source paths.'
         );
     }
 
@@ -71,17 +77,21 @@ class GenerateCommand extends Command
     {
         $this->typeCheck->execute(func_get_args());
 
+        $sourcePaths = $input->getArgument('source-path');
+        if (array() === $sourcePaths) {
+            $sourcePaths = null;
+        }
+
         $dummyMode = TypeCheck::dummyMode();
         TypeCheck::setDummyMode(true);
 
-        $this->isolator->chdir($input->getArgument('path'));
+        $this->isolator->chdir($input->getArgument('project-path'));
 
-        $output->setVerbosity(OutputInterface::VERBOSITY_VERBOSE);
         $configuration = $this->getApplication()->configurationReader()->read(null, true);
         $this->includeLoaders($configuration, $output);
 
         $output->writeln('<info>Generating classes...</info>');
-        $this->generator()->generate($configuration);
+        $this->generator()->generate($configuration, $sourcePaths);
 
         $output->writeln('<info>Done.</info>');
 

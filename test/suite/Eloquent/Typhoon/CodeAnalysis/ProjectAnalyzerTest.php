@@ -173,6 +173,35 @@ class ProjectAnalyzerTest extends MultiGenerationTestCase
         $this->assertAnalysisResult($expected, $actual);
     }
 
+    public function testAnalyzeFailuresWithExplicitPaths()
+    {
+        $configuration = new Configuration(
+            'foo',
+            array(
+                __DIR__.'/../../../../src/Eloquent/Typhoon/TestFixture/AnalyzerFixtures/Failing',
+            )
+        );
+        $actual = $this->_analyzer->analyze($configuration, array(
+            __DIR__.'/../../../../src/Eloquent/Typhoon/TestFixture/AnalyzerFixtures/Failing/CallInDestructor.php',
+            __DIR__.'/../../../../src/Eloquent/Typhoon/TestFixture/AnalyzerFixtures/Failing/CallInToString.php',
+        ));
+        $expected = array(
+            array(
+                'Eloquent\Typhoon\CodeAnalysis\Issue\MethodIssue\InadmissibleMethodCall',
+                '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\CallInDestructor',
+                '__destruct',
+            ),
+            array(
+                'Eloquent\Typhoon\CodeAnalysis\Issue\MethodIssue\InadmissibleMethodCall',
+                '\Eloquent\Typhoon\TestFixture\AnalyzerFixtures\Failing\CallInToString',
+                '__toString',
+            ),
+        );
+
+        $this->assertTrue($actual->isError());
+        $this->assertAnalysisResult($expected, $actual);
+    }
+
     public function testAnalyzeSuccess()
     {
         $configuration = new Configuration(

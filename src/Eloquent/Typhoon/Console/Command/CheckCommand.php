@@ -75,10 +75,15 @@ class CheckCommand extends Command
         $this->setDescription('Checks for correct Typhoon setup within a project.');
 
         $this->addArgument(
-            'path',
+            'project-path',
             InputArgument::OPTIONAL,
             'The path to the root of the project.',
             '.'
+        );
+        $this->addArgument(
+            'source-path',
+            InputArgument::OPTIONAL | InputArgument::IS_ARRAY,
+            'One or more source paths.'
         );
     }
 
@@ -92,14 +97,18 @@ class CheckCommand extends Command
     {
         $this->typeCheck->execute(func_get_args());
 
-        $this->isolator->chdir($input->getArgument('path'));
+        $sourcePaths = $input->getArgument('source-path');
+        if (array() === $sourcePaths) {
+            $sourcePaths = null;
+        }
 
-        $output->setVerbosity(OutputInterface::VERBOSITY_VERBOSE);
+        $this->isolator->chdir($input->getArgument('project-path'));
+
         $configuration = $this->getApplication()->configurationReader()->read(null, true);
         $this->includeLoaders($configuration, $output);
 
         $output->writeln('<info>Checking for correct Typhoon setup...</info>');
-        $result = $this->analyzer()->analyze($configuration);
+        $result = $this->analyzer()->analyze($configuration, $sourcePaths);
 
         if (count($result->issues()) < 1) {
             $output->writeln('<info>No problems detected.</info>');
