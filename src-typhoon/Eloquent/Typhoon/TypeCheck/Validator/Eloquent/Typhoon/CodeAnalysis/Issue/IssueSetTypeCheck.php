@@ -1,7 +1,7 @@
 <?php
-namespace Eloquent\Typhoon\TypeCheck\Validator\Eloquent\Typhoon\CodeAnalysis;
+namespace Eloquent\Typhoon\TypeCheck\Validator\Eloquent\Typhoon\CodeAnalysis\Issue;
 
-class AnalysisResultTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
+class IssueSetTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
 {
     public function validateConstruct(array $arguments)
     {

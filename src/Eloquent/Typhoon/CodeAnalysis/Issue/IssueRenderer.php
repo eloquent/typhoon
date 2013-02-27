@@ -40,6 +40,23 @@ class IssueRenderer implements IssueVisitorInterface
     }
 
     /**
+     * @param IssueSet $issues
+     *
+     * @return array<string>
+     */
+    public function visitIssueSet(IssueSet $issues)
+    {
+        $this->typeCheck->visitIssueSet(func_get_args());
+
+        $rendered = array();
+        foreach ($issues->issues() as $issue) {
+            $rendered[] = $issue->accept($this);
+        }
+
+        return $rendered;
+    }
+
+    /**
      * @param ClassIssue\MissingConstructorCall $issue
      *
      * @return string

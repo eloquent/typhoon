@@ -65,7 +65,7 @@ class GenerateCommand extends Command
         $this->addArgument(
             'source-path',
             InputArgument::OPTIONAL | InputArgument::IS_ARRAY,
-            'One or more source paths.'
+            'One or more source paths. Defaults to configured source paths.'
         );
     }
 

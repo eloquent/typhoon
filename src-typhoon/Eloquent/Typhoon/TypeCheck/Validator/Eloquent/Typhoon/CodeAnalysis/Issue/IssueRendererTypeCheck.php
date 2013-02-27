@@ -18,6 +18,16 @@ class IssueRendererTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidat
         }
     }
 
+    public function visitIssueSet(array $arguments)
+    {
+        $argumentCount = \count($arguments);
+        if ($argumentCount < 1) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('issues', 0, 'Eloquent\\Typhoon\\CodeAnalysis\\Issue\\IssueSet');
+        } elseif ($argumentCount > 1) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
+        }
+    }
+
     public function visitMissingConstructorCall(array $arguments)
     {
         $argumentCount = \count($arguments);

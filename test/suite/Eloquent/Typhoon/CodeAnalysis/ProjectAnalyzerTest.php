@@ -170,7 +170,7 @@ class ProjectAnalyzerTest extends MultiGenerationTestCase
         );
 
         $this->assertTrue($actual->isError());
-        $this->assertAnalysisResult($expected, $actual);
+        $this->assertIssueSet($expected, $actual);
     }
 
     public function testAnalyzeFailuresWithExplicitPaths()
@@ -199,7 +199,7 @@ class ProjectAnalyzerTest extends MultiGenerationTestCase
         );
 
         $this->assertTrue($actual->isError());
-        $this->assertAnalysisResult($expected, $actual);
+        $this->assertIssueSet($expected, $actual);
     }
 
     public function testAnalyzeSuccess()
@@ -212,11 +212,11 @@ class ProjectAnalyzerTest extends MultiGenerationTestCase
         );
         $actual = $this->_analyzer->analyze($configuration);
 
-        $this->assertAnalysisResult(array(), $actual);
+        $this->assertIssueSet(array(), $actual);
         $this->assertFalse($actual->isError());
     }
 
-    protected function assertAnalysisResult(array $expected, AnalysisResult $actual)
+    protected function assertIssueSet(array $expected, Issue\IssueSet $actual)
     {
         $issues = $actual->issues();
         $sort = array();

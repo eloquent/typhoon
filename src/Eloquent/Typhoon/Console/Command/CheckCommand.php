@@ -11,8 +11,8 @@
 
 namespace Eloquent\Typhoon\Console\Command;
 
-use Eloquent\Typhoon\CodeAnalysis\AnalysisResult;
 use Eloquent\Typhoon\CodeAnalysis\Issue\IssueRenderer;
+use Eloquent\Typhoon\CodeAnalysis\Issue\IssueSet;
 use Eloquent\Typhoon\CodeAnalysis\Issue\IssueSeverity;
 use Eloquent\Typhoon\CodeAnalysis\ProjectAnalyzer;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
@@ -83,7 +83,7 @@ class CheckCommand extends Command
         $this->addArgument(
             'source-path',
             InputArgument::OPTIONAL | InputArgument::IS_ARRAY,
-            'One or more source paths.'
+            'One or more source paths to check for issues. Defaults to configured source paths.'
         );
     }
 
@@ -131,11 +131,11 @@ class CheckCommand extends Command
     }
 
     /**
-     * @param AnalysisResult $result
+     * @param IssueSet $result
      *
      * @return string
      */
-    protected function generateErrorBlock(AnalysisResult $result)
+    protected function generateErrorBlock(IssueSet $result)
     {
         $this->typeCheck->generateErrorBlock(func_get_args());
 
@@ -148,11 +148,11 @@ class CheckCommand extends Command
     }
 
     /**
-     * @param AnalysisResult $result
+     * @param IssueSet $result
      *
      * @return string
      */
-    protected function generateWarningBlock(AnalysisResult $result)
+    protected function generateWarningBlock(IssueSet $result)
     {
         $this->typeCheck->generateWarningBlock(func_get_args());
 
@@ -165,17 +165,17 @@ class CheckCommand extends Command
     }
 
     /**
-     * @param string         $label
-     * @param string         $blockStyle
-     * @param AnalysisResult $result
-     * @param IssueSeverity  $severity
+     * @param string        $label
+     * @param string        $blockStyle
+     * @param IssueSet      $result
+     * @param IssueSeverity $severity
      *
      * @return string
      */
     protected function generateBlock(
         $label,
         $blockStyle,
-        AnalysisResult $result,
+        IssueSet $result,
         IssueSeverity $severity
     ) {
         $this->typeCheck->generateBlock(func_get_args());

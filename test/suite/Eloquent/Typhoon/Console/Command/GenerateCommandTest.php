@@ -98,7 +98,7 @@ class GenerateCommandTest extends MultiGenerationTestCase
             new InputArgument(
                 'source-path',
                 InputArgument::OPTIONAL | InputArgument::IS_ARRAY,
-                'One or more source paths.'
+                'One or more source paths. Defaults to configured source paths.'
             )
         );
 

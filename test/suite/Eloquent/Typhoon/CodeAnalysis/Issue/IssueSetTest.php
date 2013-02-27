@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Eloquent\Typhoon\CodeAnalysis;
+namespace Eloquent\Typhoon\CodeAnalysis\Issue;
 
 use Eloquent\Cosmos\ClassName;
 use Eloquent\Typhoon\ClassMapper\ClassDefinition;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
 use Phake;
 
-class AnalysisResultTest extends MultiGenerationTestCase
+class IssueSetTest extends MultiGenerationTestCase
 {
     protected function setUp()
     {
@@ -34,43 +34,43 @@ class AnalysisResultTest extends MultiGenerationTestCase
         $this->_methodDefinitionB = $this->methodDefinitionFixture('B');
 
         $this->_warningA = Phake::partialMock(
-            __NAMESPACE__.'\Issue\AbstractMethodRelatedIssue',
+            __NAMESPACE__.'\AbstractMethodRelatedIssue',
             $this->_classDefinitionA,
             $this->_methodDefinitionA,
-            Issue\IssueSeverity::WARNING()
+            IssueSeverity::WARNING()
         );
         $this->_warningB = Phake::partialMock(
-            __NAMESPACE__.'\Issue\AbstractMethodRelatedIssue',
+            __NAMESPACE__.'\AbstractMethodRelatedIssue',
             $this->_classDefinitionB,
             $this->_methodDefinitionB,
-            Issue\IssueSeverity::WARNING()
+            IssueSeverity::WARNING()
         );
         $this->_warningC = Phake::partialMock(
-            __NAMESPACE__.'\Issue\ClassIssue\MissingConstructorCall',
+            __NAMESPACE__.'\ClassIssue\MissingConstructorCall',
             $this->_classDefinitionA,
-            Issue\IssueSeverity::WARNING()
+            IssueSeverity::WARNING()
         );
         $this->_warningD = Phake::partialMock(
-            __NAMESPACE__.'\Issue\ClassIssue\MissingConstructorCall',
+            __NAMESPACE__.'\ClassIssue\MissingConstructorCall',
             $this->_classDefinitionC,
-            Issue\IssueSeverity::WARNING()
+            IssueSeverity::WARNING()
         );
         $this->_errorA = Phake::partialMock(
-            __NAMESPACE__.'\Issue\AbstractMethodRelatedIssue',
+            __NAMESPACE__.'\AbstractMethodRelatedIssue',
             $this->_classDefinitionA,
             $this->_methodDefinitionA
         );
         $this->_errorB = Phake::partialMock(
-            __NAMESPACE__.'\Issue\AbstractMethodRelatedIssue',
+            __NAMESPACE__.'\AbstractMethodRelatedIssue',
             $this->_classDefinitionB,
             $this->_methodDefinitionB
         );
         $this->_errorC = Phake::partialMock(
-            __NAMESPACE__.'\Issue\ClassIssue\MissingConstructorCall',
+            __NAMESPACE__.'\ClassIssue\MissingConstructorCall',
             $this->_classDefinitionA
         );
         $this->_errorD = Phake::partialMock(
-            __NAMESPACE__.'\Issue\ClassIssue\MissingConstructorCall',
+            __NAMESPACE__.'\ClassIssue\MissingConstructorCall',
             $this->_classDefinitionD
         );
 
@@ -84,7 +84,7 @@ class AnalysisResultTest extends MultiGenerationTestCase
             $this->_errorC,
             $this->_errorD,
         );
-        $this->_result = new AnalysisResult($this->_issues);
+        $this->_set = new IssueSet($this->_issues);
     }
 
     protected function methodDefinitionFixture($name)
@@ -100,14 +100,14 @@ class AnalysisResultTest extends MultiGenerationTestCase
 
     public function testConstructor()
     {
-        $this->assertSame($this->_issues, $this->_result->issues());
+        $this->assertSame($this->_issues, $this->_set->issues());
     }
 
     public function testConstructorDefaults()
     {
-        $this->_result = new AnalysisResult;
+        $this->_set = new IssueSet;
 
-        $this->assertSame(array(), $this->_result->issues());
+        $this->assertSame(array(), $this->_set->issues());
     }
 
     public function testIssuesBySeverity()
@@ -117,13 +117,13 @@ class AnalysisResultTest extends MultiGenerationTestCase
             $this->_warningB,
             $this->_warningC,
             $this->_warningD,
-        ), $this->_result->issuesBySeverity(Issue\IssueSeverity::WARNING()));
+        ), $this->_set->issuesBySeverity(IssueSeverity::WARNING()));
         $this->assertSame(array(
             $this->_errorA,
             $this->_errorB,
             $this->_errorC,
             $this->_errorD,
-        ), $this->_result->issuesBySeverity(Issue\IssueSeverity::ERROR()));
+        ), $this->_set->issuesBySeverity(IssueSeverity::ERROR()));
     }
 
     public function testClassNamesBySeverity()
@@ -132,35 +132,35 @@ class AnalysisResultTest extends MultiGenerationTestCase
             $this->_classNameA,
             $this->_classNameB,
             $this->_classNameC,
-        ), $this->_result->classNamesBySeverity(Issue\IssueSeverity::WARNING()));
+        ), $this->_set->classNamesBySeverity(IssueSeverity::WARNING()));
         $this->assertSame(array(
             $this->_classNameA,
             $this->_classNameB,
             $this->_classNameD,
-        ), $this->_result->classNamesBySeverity(Issue\IssueSeverity::ERROR()));
+        ), $this->_set->classNamesBySeverity(IssueSeverity::ERROR()));
     }
 
     public function testClassIssuesBySeverityAndClass()
     {
         $this->assertSame(array(
             $this->_warningC,
-        ), $this->_result->classIssuesBySeverityAndClass(Issue\IssueSeverity::WARNING(), $this->_classNameA));
+        ), $this->_set->classIssuesBySeverityAndClass(IssueSeverity::WARNING(), $this->_classNameA));
         $this->assertSame(array(
             $this->_errorC,
-        ), $this->_result->classIssuesBySeverityAndClass(Issue\IssueSeverity::ERROR(), $this->_classNameA));
+        ), $this->_set->classIssuesBySeverityAndClass(IssueSeverity::ERROR(), $this->_classNameA));
         $this->assertSame(array(
             $this->_warningD,
-        ), $this->_result->classIssuesBySeverityAndClass(Issue\IssueSeverity::WARNING(), $this->_classNameC));
+        ), $this->_set->classIssuesBySeverityAndClass(IssueSeverity::WARNING(), $this->_classNameC));
         $this->assertSame(array(
             $this->_errorD,
-        ), $this->_result->classIssuesBySeverityAndClass(Issue\IssueSeverity::ERROR(), $this->_classNameD));
+        ), $this->_set->classIssuesBySeverityAndClass(IssueSeverity::ERROR(), $this->_classNameD));
         $this->assertSame(
             array(),
-            $this->_result->classIssuesBySeverityAndClass(Issue\IssueSeverity::WARNING(), $this->_classNameB)
+            $this->_set->classIssuesBySeverityAndClass(IssueSeverity::WARNING(), $this->_classNameB)
         );
         $this->assertSame(
             array(),
-            $this->_result->classIssuesBySeverityAndClass(Issue\IssueSeverity::ERROR(), $this->_classNameB)
+            $this->_set->classIssuesBySeverityAndClass(IssueSeverity::ERROR(), $this->_classNameB)
         );
     }
 
@@ -168,25 +168,25 @@ class AnalysisResultTest extends MultiGenerationTestCase
     {
         $this->assertSame(array(
             'A' => array($this->_warningA),
-        ), $this->_result->methodRelatedIssuesBySeverityAndClass(Issue\IssueSeverity::WARNING(), $this->_classNameA));
+        ), $this->_set->methodRelatedIssuesBySeverityAndClass(IssueSeverity::WARNING(), $this->_classNameA));
         $this->assertSame(array(
             'B' => array($this->_warningB),
-        ), $this->_result->methodRelatedIssuesBySeverityAndClass(Issue\IssueSeverity::WARNING(), $this->_classNameB));
+        ), $this->_set->methodRelatedIssuesBySeverityAndClass(IssueSeverity::WARNING(), $this->_classNameB));
         $this->assertSame(array(
             'A' => array($this->_errorA),
-        ), $this->_result->methodRelatedIssuesBySeverityAndClass(Issue\IssueSeverity::ERROR(), $this->_classNameA));
+        ), $this->_set->methodRelatedIssuesBySeverityAndClass(IssueSeverity::ERROR(), $this->_classNameA));
         $this->assertSame(array(
             'B' => array($this->_errorB),
-        ), $this->_result->methodRelatedIssuesBySeverityAndClass(Issue\IssueSeverity::ERROR(), $this->_classNameB));
+        ), $this->_set->methodRelatedIssuesBySeverityAndClass(IssueSeverity::ERROR(), $this->_classNameB));
     }
 
     public function testIsError()
     {
-        $successResult = new AnalysisResult;
-        $warningResult = new AnalysisResult(array(
+        $successResult = new IssueSet;
+        $warningResult = new IssueSet(array(
             $this->_warningA,
         ));
-        $errorResult = new AnalysisResult(array(
+        $errorResult = new IssueSet(array(
             $this->_warningA,
             $this->_errorA,
         ));

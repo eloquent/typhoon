@@ -9,15 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Eloquent\Typhoon\CodeAnalysis;
+namespace Eloquent\Typhoon\CodeAnalysis\Issue;
 
 use Eloquent\Cosmos\ClassName;
 use Eloquent\Typhoon\TypeCheck\TypeCheck;
 
-class AnalysisResult
+class IssueSet
 {
     /**
-     * @param array<Issue\IssueInterface> $issues
+     * @param array<IssueInterface> $issues
      */
     public function __construct(array $issues = array())
     {
@@ -26,7 +26,7 @@ class AnalysisResult
     }
 
     /**
-     * @return array<Issue\IssueInterface>
+     * @return array<IssueInterface>
      */
     public function issues()
     {
@@ -36,11 +36,11 @@ class AnalysisResult
     }
 
     /**
-     * @param Issue\IssueSeverity $severity
+     * @param IssueSeverity $severity
      *
-     * @return array<Issue\IssueInterface>
+     * @return array<IssueInterface>
      */
-    public function issuesBySeverity(Issue\IssueSeverity $severity)
+    public function issuesBySeverity(IssueSeverity $severity)
     {
         $this->typeCheck->issuesBySeverity(func_get_args());
 
@@ -55,18 +55,18 @@ class AnalysisResult
     }
 
     /**
-     * @param Issue\IssueSeverity $severity
+     * @param IssueSeverity $severity
      *
      * @return array<ClassName>
      */
-    public function classNamesBySeverity(Issue\IssueSeverity $severity)
+    public function classNamesBySeverity(IssueSeverity $severity)
     {
         $this->typeCheck->classNamesBySeverity(func_get_args());
 
         $classNames = array();
         foreach ($this->issuesBySeverity($severity) as $issue) {
             if (
-                $issue instanceof Issue\ClassRelatedIssueInterface &&
+                $issue instanceof ClassRelatedIssueInterface &&
                 !in_array(
                     $issue->classDefinition()->className(),
                     $classNames
@@ -81,13 +81,13 @@ class AnalysisResult
     }
 
     /**
-     * @param Issue\IssueSeverity $severity
-     * @param ClassName           $className
+     * @param IssueSeverity $severity
+     * @param ClassName     $className
      *
-     * @return array<Issue\IssueInterface>
+     * @return array<IssueInterface>
      */
     public function classIssuesBySeverityAndClass(
-        Issue\IssueSeverity $severity,
+        IssueSeverity $severity,
         ClassName $className
     ) {
         $this->typeCheck->classIssuesBySeverityAndClass(func_get_args());
@@ -95,7 +95,7 @@ class AnalysisResult
         $issues = array();
         foreach ($this->issuesBySeverity($severity) as $issue) {
             if (
-                $issue instanceof Issue\ClassIssueInterface &&
+                $issue instanceof ClassIssueInterface &&
                 $issue->classDefinition()->className()->isEqualTo($className)
             ) {
                 $issues[] = $issue;
@@ -106,13 +106,13 @@ class AnalysisResult
     }
 
     /**
-     * @param Issue\IssueSeverity $severity
-     * @param ClassName           $className
+     * @param IssueSeverity $severity
+     * @param ClassName     $className
      *
-     * @return array<Issue\IssueInterface>
+     * @return array<IssueInterface>
      */
     public function methodRelatedIssuesBySeverityAndClass(
-        Issue\IssueSeverity $severity,
+        IssueSeverity $severity,
         ClassName $className
     ) {
         $this->typeCheck->methodRelatedIssuesBySeverityAndClass(func_get_args());
@@ -120,7 +120,7 @@ class AnalysisResult
         $issues = array();
         foreach ($this->issuesBySeverity($severity) as $issue) {
             if (
-                $issue instanceof Issue\MethodRelatedIssueInterface &&
+                $issue instanceof MethodRelatedIssueInterface &&
                 $issue->classDefinition()->className()->isEqualTo($className)
             ) {
                 $issues[$issue->methodDefinition()->name()][] = $issue;
@@ -137,7 +137,7 @@ class AnalysisResult
     {
         $this->typeCheck->isError(func_get_args());
 
-        return count($this->issuesBySeverity(Issue\IssueSeverity::ERROR())) > 0;
+        return count($this->issuesBySeverity(IssueSeverity::ERROR())) > 0;
     }
 
     private $issues;

@@ -15,12 +15,12 @@ use Eloquent\Cosmos\ClassName;
 use Eloquent\Liberator\Liberator;
 use Eloquent\Typhoon\ClassMapper\ClassDefinition;
 use Eloquent\Typhoon\ClassMapper\MethodDefinition;
-use Eloquent\Typhoon\CodeAnalysis\AnalysisResult;
 use Eloquent\Typhoon\CodeAnalysis\Issue\ClassIssue\MissingConstructorCall;
 use Eloquent\Typhoon\CodeAnalysis\Issue\ClassIssue\MissingProperty;
 use Eloquent\Typhoon\CodeAnalysis\Issue\MethodIssue\InadmissibleMethodCall;
 use Eloquent\Typhoon\CodeAnalysis\Issue\MethodIssue\MissingMethodCall;
 use Eloquent\Typhoon\CodeAnalysis\Issue\IssueRenderer;
+use Eloquent\Typhoon\CodeAnalysis\Issue\IssueSet;
 use Eloquent\Typhoon\CodeAnalysis\Issue\IssueSeverity;
 use Eloquent\Typhoon\Configuration\Configuration;
 use Eloquent\Typhoon\TestCase\MultiGenerationTestCase;
@@ -141,7 +141,7 @@ class CheckCommandTest extends MultiGenerationTestCase
             new InputArgument(
                 'source-path',
                 InputArgument::OPTIONAL | InputArgument::IS_ARRAY,
-                'One or more source paths.'
+                'One or more source paths to check for issues. Defaults to configured source paths.'
             )
         );
 
@@ -150,7 +150,7 @@ class CheckCommandTest extends MultiGenerationTestCase
 
     public function testExecuteSuccess()
     {
-        $result = Phake::partialMock('Eloquent\Typhoon\CodeAnalysis\AnalysisResult');
+        $result = Phake::partialMock('Eloquent\Typhoon\CodeAnalysis\Issue\IssueSet');
         Phake::when($this->_analyzer)
             ->analyze(Phake::anyParameters())
             ->thenReturn($result)
@@ -182,7 +182,7 @@ class CheckCommandTest extends MultiGenerationTestCase
 
     public function testExecuteSuccessWithExplicitPaths()
     {
-        $result = Phake::partialMock('Eloquent\Typhoon\CodeAnalysis\AnalysisResult');
+        $result = Phake::partialMock('Eloquent\Typhoon\CodeAnalysis\Issue\IssueSet');
         Phake::when($this->_analyzer)
             ->analyze(Phake::anyParameters())
             ->thenReturn($result)
@@ -220,7 +220,7 @@ class CheckCommandTest extends MultiGenerationTestCase
     public function testExecuteFailure()
     {
         $result = Phake::partialMock(
-            'Eloquent\Typhoon\CodeAnalysis\AnalysisResult',
+            'Eloquent\Typhoon\CodeAnalysis\Issue\IssueSet',
             array(
                 $this->_error,
                 $this->_warning,
@@ -266,7 +266,7 @@ class CheckCommandTest extends MultiGenerationTestCase
     public function testExecuteWarning()
     {
         $result = Phake::partialMock(
-            'Eloquent\Typhoon\CodeAnalysis\AnalysisResult',
+            'Eloquent\Typhoon\CodeAnalysis\Issue\IssueSet',
             array(
                 $this->_warning,
             )
@@ -307,7 +307,7 @@ class CheckCommandTest extends MultiGenerationTestCase
             ->generateBlock(Phake::anyParameters())
             ->thenReturn('foo')
         ;
-        $result = Phake::mock('Eloquent\Typhoon\CodeAnalysis\AnalysisResult');
+        $result = Phake::mock('Eloquent\Typhoon\CodeAnalysis\Issue\IssueSet');
         $actual = Liberator::liberate($this->_command)->generateErrorBlock($result);
 
         $this->assertSame('foo', $actual);
@@ -325,7 +325,7 @@ class CheckCommandTest extends MultiGenerationTestCase
             ->generateBlock(Phake::anyParameters())
             ->thenReturn('foo')
         ;
-        $result = Phake::mock('Eloquent\Typhoon\CodeAnalysis\AnalysisResult');
+        $result = Phake::mock('Eloquent\Typhoon\CodeAnalysis\Issue\IssueSet');
         $actual = Liberator::liberate($this->_command)->generateWarningBlock($result);
 
         $this->assertSame('foo', $actual);
@@ -350,7 +350,7 @@ class CheckCommandTest extends MultiGenerationTestCase
         $methodIssueB = new MissingMethodCall($classDefinitionA, $this->methodDefinitionFixture('B'));
         $methodIssueC = new InadmissibleMethodCall($classDefinitionC, $this->methodDefinitionFixture('A'));
         $methodIssueD = new MissingMethodCall($classDefinitionC, $this->methodDefinitionFixture('B'));
-        $result = new AnalysisResult(array(
+        $result = new IssueSet(array(
             $classIssueA,
             $classIssueB,
             $methodIssueA,

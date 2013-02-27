@@ -14,6 +14,13 @@ namespace Eloquent\Typhoon\CodeAnalysis\Issue;
 interface IssueVisitorInterface
 {
     /**
+     * @param IssueSet $issues
+     *
+     * @return mixed
+     */
+    public function visitIssueSet(IssueSet $issues);
+
+    /**
      * @param ClassIssue\MissingConstructorCall $issue
      *
      * @return mixed

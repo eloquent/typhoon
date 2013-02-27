@@ -49,7 +49,7 @@ class CheckCommandTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidato
     {
         $argumentCount = \count($arguments);
         if ($argumentCount < 1) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('result', 0, 'Eloquent\\Typhoon\\CodeAnalysis\\AnalysisResult');
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('result', 0, 'Eloquent\\Typhoon\\CodeAnalysis\\Issue\\IssueSet');
         } elseif ($argumentCount > 1) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
         }
@@ -59,7 +59,7 @@ class CheckCommandTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidato
     {
         $argumentCount = \count($arguments);
         if ($argumentCount < 1) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('result', 0, 'Eloquent\\Typhoon\\CodeAnalysis\\AnalysisResult');
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('result', 0, 'Eloquent\\Typhoon\\CodeAnalysis\\Issue\\IssueSet');
         } elseif ($argumentCount > 1) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
         }
@@ -76,7 +76,7 @@ class CheckCommandTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidato
                 throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('blockStyle', 1, 'string');
             }
             if ($argumentCount < 3) {
-                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('result', 2, 'Eloquent\\Typhoon\\CodeAnalysis\\AnalysisResult');
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('result', 2, 'Eloquent\\Typhoon\\CodeAnalysis\\Issue\\IssueSet');
             }
             throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('severity', 3, 'Eloquent\\Typhoon\\CodeAnalysis\\Issue\\IssueSeverity');
         } elseif ($argumentCount > 4) {

@@ -86,7 +86,7 @@ class ProjectAnalyzer
      * @param Configuration      $configuration
      * @param array<string>|null $sourcePaths
      *
-     * @return AnalysisResult
+     * @return Issue\IssueSet
      */
     public function analyze(
         Configuration $configuration,
@@ -112,7 +112,7 @@ class ProjectAnalyzer
             );
         }
 
-        return new AnalysisResult($issues);
+        return new Issue\IssueSet($issues);
     }
 
     /**
