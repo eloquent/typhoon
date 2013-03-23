@@ -64,14 +64,14 @@ class ClassMapperTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
     {
         $argumentCount = \count($arguments);
         if ($argumentCount < 1) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('directoryPath', 0, 'string');
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('path', 0, 'string');
         } elseif ($argumentCount > 1) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
         }
         $value = $arguments[0];
         if (!\is_string($value)) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
-                'directoryPath',
+                'path',
                 0,
                 $arguments[0],
                 'string'
@@ -83,14 +83,14 @@ class ClassMapperTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
     {
         $argumentCount = \count($arguments);
         if ($argumentCount < 1) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('filePath', 0, 'string');
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('path', 0, 'string');
         } elseif ($argumentCount > 1) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
         }
         $value = $arguments[0];
         if (!\is_string($value)) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
-                'filePath',
+                'path',
                 0,
                 $arguments[0],
                 'string'
@@ -103,8 +103,8 @@ class ClassMapperTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
         $argumentCount = \count($arguments);
         if ($argumentCount < 1) {
             throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('source', 0, 'string');
-        } elseif ($argumentCount > 1) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
+        } elseif ($argumentCount > 2) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(2, $arguments[2]);
         }
         $value = $arguments[0];
         if (!\is_string($value)) {
@@ -114,6 +114,17 @@ class ClassMapperTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
                 $arguments[0],
                 'string'
             );
+        }
+        if ($argumentCount > 1) {
+            $value = $arguments[1];
+            if (!(\is_string($value) || $value === null)) {
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
+                    'path',
+                    1,
+                    $arguments[1],
+                    'string|null'
+                );
+            }
         }
     }
 
@@ -125,8 +136,8 @@ class ClassMapperTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
                 throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('className', 0, 'Eloquent\\Cosmos\\ClassName');
             }
             throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('source', 1, 'string');
-        } elseif ($argumentCount > 2) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(2, $arguments[2]);
+        } elseif ($argumentCount > 3) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(3, $arguments[3]);
         }
         $value = $arguments[1];
         if (!\is_string($value)) {
@@ -136,6 +147,17 @@ class ClassMapperTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
                 $arguments[1],
                 'string'
             );
+        }
+        if ($argumentCount > 2) {
+            $value = $arguments[2];
+            if (!(\is_string($value) || $value === null)) {
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
+                    'path',
+                    2,
+                    $arguments[2],
+                    'string|null'
+                );
+            }
         }
     }
 
@@ -202,16 +224,22 @@ class ClassMapperTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
     public function parseClassDefinition(array $arguments)
     {
         $argumentCount = \count($arguments);
-        if ($argumentCount < 3) {
+        if ($argumentCount < 5) {
             if ($argumentCount < 1) {
                 throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('tokens', 0, 'array<string|array>');
             }
             if ($argumentCount < 2) {
                 throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('namespaceName', 1, 'Eloquent\\Cosmos\\ClassName|null');
             }
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('usedClasses', 2, 'array<array<Eloquent\\Cosmos\\ClassName>>');
-        } elseif ($argumentCount > 3) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(3, $arguments[3]);
+            if ($argumentCount < 3) {
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('usedClasses', 2, 'array<array<Eloquent\\Cosmos\\ClassName>>');
+            }
+            if ($argumentCount < 4) {
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('path', 3, 'string|null');
+            }
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('lineNumber', 4, 'integer');
+        } elseif ($argumentCount > 5) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(5, $arguments[5]);
         }
         $value = $arguments[0];
         $check = function ($value) {
@@ -264,12 +292,30 @@ class ClassMapperTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
                 'array<array<Eloquent\\Cosmos\\ClassName>>'
             );
         }
+        $value = $arguments[3];
+        if (!(\is_string($value) || $value === null)) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
+                'path',
+                3,
+                $arguments[3],
+                'string|null'
+            );
+        }
+        $value = $arguments[4];
+        if (!\is_int($value)) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
+                'lineNumber',
+                4,
+                $arguments[4],
+                'integer'
+            );
+        }
     }
 
     public function parseClassMemberModifiers(array $arguments)
     {
         $argumentCount = \count($arguments);
-        if ($argumentCount < 6) {
+        if ($argumentCount < 7) {
             if ($argumentCount < 1) {
                 throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('token', 0, 'tuple<integer, string, integer>');
             }
@@ -285,9 +331,12 @@ class ClassMapperTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
             if ($argumentCount < 5) {
                 throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('isAbstract', 4, 'null');
             }
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('source', 5, 'null');
-        } elseif ($argumentCount > 6) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(6, $arguments[6]);
+            if ($argumentCount < 6) {
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('source', 5, 'null');
+            }
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('classSource', 6, 'string');
+        } elseif ($argumentCount > 7) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(7, $arguments[7]);
         }
         $value = $arguments[0];
         if (!(\is_array($value) && \array_keys($value) === \range(0, 2) && \is_int($value[0]) && \is_string($value[1]) && \is_int($value[2]))) {
@@ -354,12 +403,21 @@ class ClassMapperTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
                 'null'
             );
         }
+        $value = $arguments[6];
+        if (!\is_string($value)) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
+                'classSource',
+                6,
+                $arguments[6],
+                'string'
+            );
+        }
     }
 
     public function parseProperty(array $arguments)
     {
         $argumentCount = \count($arguments);
-        if ($argumentCount < 7) {
+        if ($argumentCount < 8) {
             if ($argumentCount < 1) {
                 throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('className', 0, 'Eloquent\\Cosmos\\ClassName');
             }
@@ -378,9 +436,12 @@ class ClassMapperTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
             if ($argumentCount < 6) {
                 throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('source', 5, 'string');
             }
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('lineNumber', 6, 'integer');
-        } elseif ($argumentCount > 7) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(7, $arguments[7]);
+            if ($argumentCount < 7) {
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('lineNumber', 6, 'integer');
+            }
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('classSource', 7, 'string');
+        } elseif ($argumentCount > 8) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(8, $arguments[8]);
         }
         $value = $arguments[1];
         if (!(\is_array($value) && \array_keys($value) === \range(0, 2) && \is_int($value[0]) && \is_string($value[1]) && \is_int($value[2]))) {
@@ -438,12 +499,21 @@ class ClassMapperTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
                 'integer'
             );
         }
+        $value = $arguments[7];
+        if (!\is_string($value)) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
+                'classSource',
+                7,
+                $arguments[7],
+                'string'
+            );
+        }
     }
 
     public function parseMethod(array $arguments)
     {
         $argumentCount = \count($arguments);
-        if ($argumentCount < 8) {
+        if ($argumentCount < 9) {
             if ($argumentCount < 1) {
                 throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('className', 0, 'Eloquent\\Cosmos\\ClassName');
             }
@@ -465,9 +535,12 @@ class ClassMapperTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
             if ($argumentCount < 7) {
                 throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('source', 6, 'string');
             }
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('lineNumber', 7, 'integer');
-        } elseif ($argumentCount > 8) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(8, $arguments[8]);
+            if ($argumentCount < 8) {
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('lineNumber', 7, 'integer');
+            }
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('classSource', 8, 'string');
+        } elseif ($argumentCount > 9) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(9, $arguments[9]);
         }
         $value = $arguments[1];
         if (!(\is_array($value) && \array_keys($value) === \range(0, 2) && \is_int($value[0]) && \is_string($value[1]) && \is_int($value[2]))) {
@@ -534,15 +607,27 @@ class ClassMapperTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
                 'integer'
             );
         }
+        $value = $arguments[8];
+        if (!\is_string($value)) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
+                'classSource',
+                8,
+                $arguments[8],
+                'string'
+            );
+        }
     }
 
     public function parseClassName(array $arguments)
     {
         $argumentCount = \count($arguments);
-        if ($argumentCount < 1) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('tokens', 0, 'array<string|array>');
-        } elseif ($argumentCount > 1) {
-            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(1, $arguments[1]);
+        if ($argumentCount < 2) {
+            if ($argumentCount < 1) {
+                throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('tokens', 0, 'array<string|array>');
+            }
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\MissingArgumentException('classSource', 1, 'null');
+        } elseif ($argumentCount > 2) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentException(2, $arguments[2]);
         }
         $value = $arguments[0];
         $check = function ($value) {
@@ -562,6 +647,15 @@ class ClassMapperTypeCheck extends \Eloquent\Typhoon\TypeCheck\AbstractValidator
                 0,
                 $arguments[0],
                 'array<string|array>'
+            );
+        }
+        $value = $arguments[1];
+        if (!($value === null)) {
+            throw new \Eloquent\Typhoon\TypeCheck\Exception\UnexpectedArgumentValueException(
+                'classSource',
+                1,
+                $arguments[1],
+                'null'
             );
         }
     }

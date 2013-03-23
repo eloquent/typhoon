@@ -73,9 +73,12 @@ class ClassDefinitionTest extends MultiGenerationTestCase
         );
         $this->_definition = new ClassDefinition(
             $this->_className,
+            'rip',
             $this->_usedClasses,
             $this->_methods,
-            $this->_properties
+            $this->_properties,
+            'rop',
+            555
         );
 
         $this->_expectedClassName = ClassName::fromString('\doom\qux');
@@ -95,20 +98,26 @@ class ClassDefinitionTest extends MultiGenerationTestCase
     public function testConstructor()
     {
         $this->assertEquals($this->_expectedClassName, $this->_definition->className());
+        $this->assertSame('rip', $this->_definition->source());
         $this->assertEquals($this->_expectedUsedClasses, $this->_definition->usedClasses());
         $this->assertSame($this->_methods, $this->_definition->methods());
         $this->assertSame($this->_properties, $this->_definition->properties());
+        $this->assertSame('rop', $this->_definition->path());
+        $this->assertSame(555, $this->_definition->lineNumber());
     }
 
     public function testConstructorDefaults()
     {
         $this->_definition = new ClassDefinition(
-            $this->_className
+            $this->_className,
+            'rip'
         );
 
         $this->assertSame(array(), $this->_definition->usedClasses());
         $this->assertSame(array(), $this->_definition->methods());
         $this->assertSame(array(), $this->_definition->properties());
+        $this->assertNull($this->_definition->path());
+        $this->assertSame(0, $this->_definition->lineNumber());
     }
 
     public function testHasMethod()
@@ -167,6 +176,7 @@ class ClassDefinitionTest extends MultiGenerationTestCase
     {
         $this->_definition = new ClassDefinition(
             ClassName::fromString('\qux'),
+            'rip',
             $this->_usedClasses
         );
         $expected = new ClassNameResolver(
@@ -180,7 +190,8 @@ class ClassDefinitionTest extends MultiGenerationTestCase
     public function testCreateReflector()
     {
         $this->_definition = new ClassDefinition(
-            ClassName::fromString(__CLASS__)
+            ClassName::fromString(__CLASS__),
+            'rip'
         );
         $expected = new ReflectionClass(__CLASS__);
 

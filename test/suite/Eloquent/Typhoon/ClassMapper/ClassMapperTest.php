@@ -41,8 +41,14 @@ class ClassMapperTest extends MultiGenerationTestCase
 
     public function testClassesByPaths()
     {
-        $classDefinitionA = new ClassDefinition(ClassName::fromString('\A'));
-        $classDefinitionB = new ClassDefinition(ClassName::fromString('\B'));
+        $classDefinitionA = new ClassDefinition(
+            ClassName::fromString('\A'),
+            'class A {}'
+        );
+        $classDefinitionB = new ClassDefinition(
+            ClassName::fromString('\B'),
+            'class B {}'
+        );
         $classDefinitions = array(
             $classDefinitionA,
             $classDefinitionB,
@@ -62,8 +68,14 @@ class ClassMapperTest extends MultiGenerationTestCase
 
     public function testClassesByPathDirectory()
     {
-        $classDefinitionA = new ClassDefinition(ClassName::fromString('\A'));
-        $classDefinitionB = new ClassDefinition(ClassName::fromString('\B'));
+        $classDefinitionA = new ClassDefinition(
+            ClassName::fromString('\A'),
+            'class A {}'
+        );
+        $classDefinitionB = new ClassDefinition(
+            ClassName::fromString('\B'),
+            'class B {}'
+        );
         $classDefinitions = array(
             $classDefinitionA,
             $classDefinitionB,
@@ -83,8 +95,14 @@ class ClassMapperTest extends MultiGenerationTestCase
 
     public function testClassesByPathFile()
     {
-        $classDefinitionA = new ClassDefinition(ClassName::fromString('\A'));
-        $classDefinitionB = new ClassDefinition(ClassName::fromString('\B'));
+        $classDefinitionA = new ClassDefinition(
+            ClassName::fromString('\A'),
+            'class A {}'
+        );
+        $classDefinitionB = new ClassDefinition(
+            ClassName::fromString('\B'),
+            'class B {}'
+        );
         $classDefinitions = array(
             $classDefinitionA,
             $classDefinitionB,
@@ -110,12 +128,30 @@ class ClassMapperTest extends MultiGenerationTestCase
             $this->fileInfoFixture('baz'),
         ));
         Phake::when($this->_mapper)->fileIterator(Phake::anyParameters())->thenReturn($iterator);
-        $fooOneDefinition = new ClassDefinition(ClassName::fromString('\FooOne'));
-        $fooTwoDefinition = new ClassDefinition(ClassName::fromString('\FooTwo'));
-        $barOneDefinition = new ClassDefinition(ClassName::fromString('\BarOne'));
-        $barTwoDefinition = new ClassDefinition(ClassName::fromString('\BarTwo'));
-        $bazOneDefinition = new ClassDefinition(ClassName::fromString('\BazOne'));
-        $bazTwoDefinition = new ClassDefinition(ClassName::fromString('\BazTwo'));
+        $fooOneDefinition = new ClassDefinition(
+            ClassName::fromString('\FooOne'),
+            'class FooOne {}'
+        );
+        $fooTwoDefinition = new ClassDefinition(
+            ClassName::fromString('\FooTwo'),
+            'class FooTwo {}'
+        );
+        $barOneDefinition = new ClassDefinition(
+            ClassName::fromString('\BarOne'),
+            'class BarOne {}'
+        );
+        $barTwoDefinition = new ClassDefinition(
+            ClassName::fromString('\BarTwo'),
+            'class BarTwo {}'
+        );
+        $bazOneDefinition = new ClassDefinition(
+            ClassName::fromString('\BazOne'),
+            'class BazOne {}'
+        );
+        $bazTwoDefinition = new ClassDefinition(
+            ClassName::fromString('\BazTwo'),
+            'class BazTwo {}'
+        );
         Phake::when($this->_mapper)->classesByFile(Phake::anyParameters())
             ->thenReturn(array(
                 $fooOneDefinition,
@@ -149,14 +185,17 @@ class ClassMapperTest extends MultiGenerationTestCase
     public function testClassesByFile()
     {
         $expected = array(
-            new ClassDefinition(ClassName::fromString('\foo')),
+            new ClassDefinition(
+                ClassName::fromString('\foo'),
+                'class foo {}'
+            ),
         );
         Phake::when($this->_isolator)->file_get_contents(Phake::anyParameters())->thenReturn('bar');
         Phake::when($this->_mapper)->classesBySource(Phake::anyParameters())->thenReturn($expected);
 
         $this->assertSame($expected, $this->_mapper->classesByFile('baz'));
         Phake::verify($this->_isolator)->file_get_contents('baz');
-        Phake::verify($this->_mapper)->classesBySource('bar');
+        Phake::verify($this->_mapper)->classesBySource('bar', 'baz');
     }
 
     public function classesBySourceData()
@@ -173,7 +212,15 @@ EOD
 
             'Source with a single class' => array(
                 array(
-                    new ClassDefinition(ClassName::fromString('\Foo')),
+                    new ClassDefinition(
+                        ClassName::fromString('\Foo'),
+                        'class Foo {}',
+                        null,
+                        null,
+                        null,
+                        'rap',
+                        2
+                    ),
                 ),
                 <<<'EOD'
 <?php
@@ -184,7 +231,15 @@ EOD
 
             'Source with a single, namespaced class' => array(
                 array(
-                    new ClassDefinition(ClassName::fromString('\Foo\Bar\Baz')),
+                    new ClassDefinition(
+                        ClassName::fromString('\Foo\Bar\Baz'),
+                        'class Baz {}',
+                        null,
+                        null,
+                        null,
+                        'rap',
+                        3
+                    ),
                 ),
                 <<<'EOD'
 <?php
@@ -196,8 +251,24 @@ EOD
 
             'Source with a multiple, namespaced classes, and extends/implements keywords' => array(
                 array(
-                    new ClassDefinition(ClassName::fromString('\Foo\Bar\Baz')),
-                    new ClassDefinition(ClassName::fromString('\Foo\Bar\Pip')),
+                    new ClassDefinition(
+                        ClassName::fromString('\Foo\Bar\Baz'),
+                        'class Baz extends Qux implements Doom, Splat {}',
+                        null,
+                        null,
+                        null,
+                        'rap',
+                        3
+                    ),
+                    new ClassDefinition(
+                        ClassName::fromString('\Foo\Bar\Pip'),
+                        'class Pip extends Pop implements Pep, Pap {}',
+                        null,
+                        null,
+                        null,
+                        'rap',
+                        4
+                    ),
                 ),
                 <<<'EOD'
 <?php
@@ -210,10 +281,42 @@ EOD
 
             'Source with multiple namespaces' => array(
                 array(
-                    new ClassDefinition(ClassName::fromString('\Foo\Bar\Baz')),
-                    new ClassDefinition(ClassName::fromString('\Foo\Bar\Qux')),
-                    new ClassDefinition(ClassName::fromString('\Doom\Splat\Pip')),
-                    new ClassDefinition(ClassName::fromString('\Doom\Splat\Pop')),
+                    new ClassDefinition(
+                        ClassName::fromString('\Foo\Bar\Baz'),
+                        'class Baz {}',
+                        null,
+                        null,
+                        null,
+                        'rap',
+                        3
+                    ),
+                    new ClassDefinition(
+                        ClassName::fromString('\Foo\Bar\Qux'),
+                        'class Qux {}',
+                        null,
+                        null,
+                        null,
+                        'rap',
+                        4
+                    ),
+                    new ClassDefinition(
+                        ClassName::fromString('\Doom\Splat\Pip'),
+                        'class Pip {}',
+                        null,
+                        null,
+                        null,
+                        'rap',
+                        6
+                    ),
+                    new ClassDefinition(
+                        ClassName::fromString('\Doom\Splat\Pop'),
+                        'class Pop {}',
+                        null,
+                        null,
+                        null,
+                        'rap',
+                        7
+                    ),
                 ),
                 <<<'EOD'
 <?php
@@ -231,6 +334,7 @@ EOD
                 array(
                     new ClassDefinition(
                         ClassName::fromString('\Foo\Bar\Pop'),
+                        'class Pop {}',
                         array(
                             array(
                                 ClassName::fromString('Baz\Qux'),
@@ -239,10 +343,15 @@ EOD
                                 ClassName::fromString('Doom\Splat'),
                                 ClassName::fromString('Pip')
                             )
-                        )
+                        ),
+                        null,
+                        null,
+                        'rap',
+                        5
                     ),
                     new ClassDefinition(
                         ClassName::fromString('\Foo\Bar\Pep'),
+                        'class Pep {}',
                         array(
                             array(
                                 ClassName::fromString('Baz\Qux'),
@@ -251,7 +360,11 @@ EOD
                                 ClassName::fromString('Doom\Splat'),
                                 ClassName::fromString('Pip')
                             )
-                        )
+                        ),
+                        null,
+                        null,
+                        'rap',
+                        6
                     ),
                 ),
                 <<<'EOD'
@@ -269,19 +382,29 @@ EOD
                 array(
                     new ClassDefinition(
                         ClassName::fromString('\Foo\Baz'),
+                        'class Baz {}',
                         array(
                             array(
                                 ClassName::fromString('Bar'),
                             )
-                        )
+                        ),
+                        null,
+                        null,
+                        'rap',
+                        4
                     ),
                     new ClassDefinition(
                         ClassName::fromString('\Qux\Splat'),
+                        'class Splat {}',
                         array(
                             array(
                                 ClassName::fromString('Doom'),
                             )
-                        )
+                        ),
+                        null,
+                        null,
+                        'rap',
+                        7
                     ),
                 ),
                 <<<'EOD'
@@ -300,6 +423,18 @@ EOD
                 array(
                     new ClassDefinition(
                         ClassName::fromString('Foo'),
+                        <<<'EOD'
+class Foo
+{
+    public function bar()
+    {
+        $baz = null;
+        $qux = function() use ($baz) {};
+        foreach (array() as $doom) {}
+    }
+}
+EOD
+                        ,
                         array(),
                         array(
                             new MethodDefinition(
@@ -311,9 +446,20 @@ EOD
                                 4,
                                 "public function bar()\n    {\n        \$baz = null;\n        \$qux = function() use (\$baz) {};\n        foreach (array() as \$doom) {}\n    }"
                             ),
-                        )
+                        ),
+                        null,
+                        'rap',
+                        2
                     ),
-                    new ClassDefinition(ClassName::fromString('\Splat')),
+                    new ClassDefinition(
+                        ClassName::fromString('\Splat'),
+                        'class Splat {}',
+                        null,
+                        null,
+                        null,
+                        'rap',
+                        11
+                    ),
                 ),
                 <<<'EOD'
 <?php
@@ -333,10 +479,42 @@ EOD
 
             'Alternate namespace syntax' => array(
                 array(
-                    new ClassDefinition(ClassName::fromString('\Foo\Bar\Baz')),
-                    new ClassDefinition(ClassName::fromString('\Foo\Bar\Qux')),
-                    new ClassDefinition(ClassName::fromString('\Doom\Splat\Pip')),
-                    new ClassDefinition(ClassName::fromString('\Doom\Splat\Pop')),
+                    new ClassDefinition(
+                        ClassName::fromString('\Foo\Bar\Baz'),
+                        'class Baz {}',
+                        null,
+                        null,
+                        null,
+                        'rap',
+                        4
+                    ),
+                    new ClassDefinition(
+                        ClassName::fromString('\Foo\Bar\Qux'),
+                        'class Qux {}',
+                        null,
+                        null,
+                        null,
+                        'rap',
+                        5
+                    ),
+                    new ClassDefinition(
+                        ClassName::fromString('\Doom\Splat\Pip'),
+                        'class Pip {}',
+                        null,
+                        null,
+                        null,
+                        'rap',
+                        9
+                    ),
+                    new ClassDefinition(
+                        ClassName::fromString('\Doom\Splat\Pop'),
+                        'class Pop {}',
+                        null,
+                        null,
+                        null,
+                        'rap',
+                        10
+                    ),
                 ),
                 <<<'EOD'
 <?php
@@ -358,6 +536,15 @@ EOD
                 array(
                     new ClassDefinition(
                         ClassName::fromString('Foo'),
+                        <<<'EOD'
+class Foo
+{
+    public $bar;
+    protected static $baz;
+    private $qux;
+}
+EOD
+                        ,
                         array(),
                         array(),
                         array(
@@ -385,10 +572,25 @@ EOD
                                 6,
                                 'private $qux;'
                             ),
-                        )
+                        ),
+                        'rap',
+                        2
                     ),
                     new ClassDefinition(
                         ClassName::fromString('Bar'),
+                        <<<'EOD'
+class Bar
+{
+    public $doom = <<<EOT
+peng pung
+pip pop
+EOT;
+    static protected $splat
+    ;
+    private $ping = array('pang', 'pong');
+}
+EOD
+                        ,
                         array(),
                         array(),
                         array(
@@ -416,7 +618,9 @@ EOD
                                 16,
                                 "private \$ping = array('pang', 'pong');"
                             ),
-                        )
+                        ),
+                        'rap',
+                        8
                     ),
                 ),
                 <<<'EOD'
@@ -445,6 +649,21 @@ EOD
                 array(
                     new ClassDefinition(
                         ClassName::fromString('Foo'),
+                        <<<'EOD'
+class Foo
+{
+    public function __construct()
+    {
+        // baz
+    }
+
+    protected static function qux()
+    {
+        // doom
+    }
+}
+EOD
+                        ,
                         array(),
                         array(
                             new MethodDefinition(
@@ -465,10 +684,29 @@ EOD
                                 9,
                                 "protected static function qux()\n    {\n        // doom\n    }"
                             ),
-                        )
+                        ),
+                        null,
+                        'rap',
+                        2
                     ),
                     new ClassDefinition(
                         ClassName::fromString('Bar'),
+                        <<<'EOD'
+class Bar
+{
+    private function splat(array $ping = array())
+    {
+        $pong = function() use ($ping) {
+        };
+    }
+
+    static public function pang()
+    {
+        // pung
+    }
+}
+EOD
+                        ,
                         array(),
                         array(
                             new MethodDefinition(
@@ -489,7 +727,10 @@ EOD
                                 22,
                                 "static public function pang()\n    {\n        // pung\n    }"
                             ),
-                        )
+                        ),
+                        null,
+                        'rap',
+                        14
                     ),
                 ),
                 <<<'EOD'
@@ -527,6 +768,18 @@ EOD
                 array(
                     new ClassDefinition(
                         ClassName::fromString('Foo'),
+                        <<<'EOD'
+class Foo
+{
+    abstract public function perg();
+
+    protected static function qux()
+    {
+        // doom
+    }
+}
+EOD
+                        ,
                         array(),
                         array(
                             new MethodDefinition(
@@ -547,10 +800,26 @@ EOD
                                 6,
                                 "protected static function qux()\n    {\n        // doom\n    }"
                             ),
-                        )
+                        ),
+                        null,
+                        'rap',
+                        2
                     ),
                     new ClassDefinition(
                         ClassName::fromString('Bar'),
+                        <<<'EOD'
+class Bar
+{
+    private function splat(array $ping = array())
+    {
+        $pong = function() use ($ping) {
+        };
+    }
+
+    abstract public function pang();
+}
+EOD
+                        ,
                         array(),
                         array(
                             new MethodDefinition(
@@ -571,7 +840,10 @@ EOD
                                 19,
                                 "abstract public function pang();"
                             ),
-                        )
+                        ),
+                        null,
+                        'rap',
+                        11
                     ),
                 ),
                 <<<'EOD'
@@ -608,13 +880,22 @@ EOD
     {
         $this->_mapper = new ClassMapper($this->_isolator);
 
-        $this->assertEquals($expected, $this->_mapper->classesBySource($source));
+        $this->assertEquals(
+            $expected,
+            $this->_mapper->classesBySource($source, 'rap')
+        );
     }
 
     public function testClassBySource()
     {
-        $fooDefinition = new ClassDefinition(ClassName::fromString('\Foo'));
-        $barDefinition = new ClassDefinition(ClassName::fromString('\Bar'));
+        $fooDefinition = new ClassDefinition(
+            ClassName::fromString('\Foo'),
+            'class Foo {}'
+        );
+        $barDefinition = new ClassDefinition(
+            ClassName::fromString('\Bar'),
+            'class Bar {}'
+        );
         Phake::when($this->_mapper)
             ->classesBySource(Phake::anyParameters())
             ->thenReturn(array(
@@ -623,11 +904,17 @@ EOD
             ))
         ;
 
-        $this->assertSame($fooDefinition, $this->_mapper->classBySource(ClassName::fromString('Foo'), 'baz'));
-        $this->assertSame($barDefinition, $this->_mapper->classBySource(ClassName::fromString('Bar'), 'qux'));
+        $this->assertSame(
+            $fooDefinition,
+            $this->_mapper->classBySource(ClassName::fromString('Foo'), 'baz', 'rap')
+        );
+        $this->assertSame(
+            $barDefinition,
+            $this->_mapper->classBySource(ClassName::fromString('Bar'), 'qux')
+        );
         Phake::inOrder(
-            Phake::verify($this->_mapper)->classesBySource('baz'),
-            Phake::verify($this->_mapper)->classesBySource('qux')
+            Phake::verify($this->_mapper)->classesBySource('baz', 'rap'),
+            Phake::verify($this->_mapper)->classesBySource('qux', null)
         );
     }
 
@@ -636,7 +923,10 @@ EOD
         Phake::when($this->_mapper)
             ->classesBySource(Phake::anyParameters())
             ->thenReturn(array(
-                new ClassDefinition(ClassName::fromString('\Foo')),
+                new ClassDefinition(
+                    ClassName::fromString('\Foo'),
+                    'class Foo {}'
+                ),
             ))
         ;
 

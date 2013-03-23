@@ -67,16 +67,16 @@ class ClassMapper
     }
 
     /**
-     * @param string $directoryPath
+     * @param string $path
      *
      * @return array<ClassDefinition>
      */
-    public function classesByDirectory($directoryPath)
+    public function classesByDirectory($path)
     {
         $this->typeCheck->classesByDirectory(func_get_args());
 
         $classDefinitions = array();
-        foreach ($this->fileIterator($directoryPath) as $filePathInfo) {
+        foreach ($this->fileIterator($path) as $filePathInfo) {
             $classDefinitions = array_merge(
                 $classDefinitions,
                 $this->classesByFile($filePathInfo->getPathname())
@@ -87,25 +87,27 @@ class ClassMapper
     }
 
     /**
-     * @param string $filePath
+     * @param string $path
      *
      * @return array<ClassDefinition>
      */
-    public function classesByFile($filePath)
+    public function classesByFile($path)
     {
         $this->typeCheck->classesByFile(func_get_args());
 
         return $this->classesBySource(
-            $this->isolator->file_get_contents($filePath)
+            $this->isolator->file_get_contents($path),
+            $path
         );
     }
 
     /**
-     * @param string $source
+     * @param string      $source
+     * @param string|null $path
      *
      * @return array<ClassDefinition>
      */
-    public function classesBySource($source)
+    public function classesBySource($source, $path = null)
     {
         $this->typeCheck->classesBySource(func_get_args());
 
@@ -128,7 +130,9 @@ class ClassMapper
                         $classDefinitions[] = $this->parseClassDefinition(
                             $tokens,
                             $namespaceName,
-                            $usedClasses
+                            $usedClasses,
+                            $path,
+                            $token[2]
                         );
                         break;
                 }
@@ -139,17 +143,18 @@ class ClassMapper
     }
 
     /**
-     * @param ClassName $className
-     * @param string    $source
+     * @param ClassName   $className
+     * @param string      $source
+     * @param string|null $path
      *
      * @return ClassDefinition
      * @throws Exception\UndefinedClassException
      */
-    public function classBySource(ClassName $className, $source)
+    public function classBySource(ClassName $className, $source, $path = null)
     {
         $this->typeCheck->classBySource(func_get_args());
 
-        foreach ($this->classesBySource($source) as $classDefinition) {
+        foreach ($this->classesBySource($source, $path) as $classDefinition) {
             if ($classDefinition->className()->string() === $className->toAbsolute()->string()) {
                 return $classDefinition;
             }
@@ -242,14 +247,21 @@ class ClassMapper
      * @param array<string|array>     &$tokens
      * @param ClassName|null          $namespaceName
      * @param array<array<ClassName>> $usedClasses
+     * @param string|null             $path
+     * @param integer                 $lineNumber
      *
      * @return ClassDefinition
      */
-    protected function parseClassDefinition(array &$tokens, ClassName $namespaceName = null, array $usedClasses)
-    {
+    protected function parseClassDefinition(
+        array &$tokens,
+        ClassName $namespaceName = null,
+        array $usedClasses,
+        $path,
+        $lineNumber
+    ) {
         $this->typeCheck->parseClassDefinition(func_get_args());
 
-        $className = $this->parseClassName($tokens);
+        $className = $this->parseClassName($tokens, $classSource);
         if (null !== $namespaceName) {
             $className = $namespaceName->join($className);
         }
@@ -263,6 +275,7 @@ class ClassMapper
         $source = null;
         while ($token = next($tokens)) {
             $token = $this->normalizeToken($token);
+            $classSource .= $token[1];
 
             if ($inClassBody) {
                 if ('}' === $token[0]) {
@@ -277,14 +290,15 @@ class ClassMapper
                     T_ABSTRACT === $token[0] ||
                     T_FINAL === $token[0]
                 ) {
-                    $lineNumber = $token[2];
+                    $memberLineNumber = $token[2];
                     $token = $this->parseClassMemberModifiers(
                         $token,
                         $tokens,
                         $accessModifier,
                         $isStatic,
                         $isAbstract,
-                        $source
+                        $source,
+                        $classSource
                     );
 
                     if (T_FUNCTION === $token[0]) {
@@ -296,7 +310,8 @@ class ClassMapper
                             $isStatic,
                             $isAbstract,
                             $source,
-                            $lineNumber
+                            $memberLineNumber,
+                            $classSource
                         );
                     } elseif (T_VARIABLE === $token[0]) {
                         $properties[] = $this->parseProperty(
@@ -306,7 +321,8 @@ class ClassMapper
                             $accessModifier,
                             $isStatic,
                             $source,
-                            $lineNumber
+                            $memberLineNumber,
+                            $classSource
                         );
                     }
 
@@ -322,9 +338,12 @@ class ClassMapper
 
         return new ClassDefinition(
             $className,
+            $classSource,
             $usedClasses,
             $methods,
-            $properties
+            $properties,
+            $path,
+            $lineNumber
         );
     }
 
@@ -335,6 +354,7 @@ class ClassMapper
      * @param null                          &$isStatic
      * @param null                          &$isAbstract
      * @param null                          &$source
+     * @param string                        &$classSource
      *
      * @return tuple<integer|string,string,integer|null>
      */
@@ -344,7 +364,8 @@ class ClassMapper
         &$accessModifier,
         &$isStatic,
         &$isAbstract,
-        &$source
+        &$source,
+        &$classSource
     ) {
         $this->typeCheck->parseClassMemberModifiers(func_get_args());
 
@@ -353,8 +374,8 @@ class ClassMapper
         $source = '';
 
         while ($token) {
-            $token = $this->normalizeToken($token);
             $source .= $token[1];
+
             if (
                 T_FUNCTION === $token[0] ||
                 T_VARIABLE === $token[0]
@@ -374,7 +395,8 @@ class ClassMapper
                 $isAbstract = true;
             }
 
-            $token = next($tokens);
+            $token = $this->normalizeToken(next($tokens));
+            $classSource .= $token[1];
         }
 
         return $token;
@@ -388,6 +410,7 @@ class ClassMapper
      * @param boolean                       $isStatic
      * @param string                        $source
      * @param integer                       $lineNumber
+     * @param string                        &$classSource
      *
      * @return PropertyDefinition
      */
@@ -398,7 +421,8 @@ class ClassMapper
         AccessModifier $accessModifier,
         $isStatic,
         $source,
-        $lineNumber
+        $lineNumber,
+        &$classSource
     ) {
         $this->typeCheck->parseProperty(func_get_args());
 
@@ -407,6 +431,7 @@ class ClassMapper
         while ($token = next($tokens)) {
             $token = $this->normalizeToken($token);
             $source .= $token[1];
+            $classSource .= $token[1];
             if (';' === $token[0]) {
                 break;
             }
@@ -431,6 +456,7 @@ class ClassMapper
      * @param boolean                       $isAbstract
      * @param string                        $source
      * @param integer                       $lineNumber
+     * @param string                        &$classSource
      *
      * @return MethodDefinition
      */
@@ -442,13 +468,15 @@ class ClassMapper
         $isStatic,
         $isAbstract,
         $source,
-        $lineNumber
+        $lineNumber,
+        &$classSource
     ) {
         $this->typeCheck->parseMethod(func_get_args());
 
         do {
             $token = $this->normalizeToken(next($tokens));
             $source .= $token[1];
+            $classSource .= $token[1];
         } while (T_WHITESPACE === $token[0]);
 
         $name = $token[1];
@@ -457,6 +485,7 @@ class ClassMapper
         while ($token = next($tokens)) {
             $token = $this->normalizeToken($token);
             $source .= $token[1];
+            $classSource .= $token[1];
 
             if ('{' === $token[0]) {
                 $bracketDepth ++;
@@ -486,15 +515,20 @@ class ClassMapper
 
     /**
      * @param array<string|array> &$tokens
+     * @param null                &$classSource
      *
      * @return ClassName
      */
-    protected function parseClassName(array &$tokens)
+    protected function parseClassName(array &$tokens, &$classSource)
     {
         $this->typeCheck->parseClassName(func_get_args());
 
+        $token = $this->normalizeToken(current($tokens));
+        $classSource = $token[1];
+
         do {
             $token = $this->normalizeToken(next($tokens));
+            $classSource .= $token[1];
         } while (T_WHITESPACE === $token[0]);
 
         return ClassName::fromAtoms(array($token[1]), false);

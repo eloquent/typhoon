@@ -19,21 +19,43 @@ use ReflectionClass;
 class ClassDefinition
 {
     /**
-     * @param ClassName                 $className
-     * @param array<array<ClassName>>   $usedClasses
-     * @param array<MethodDefinition>   $methods
-     * @param array<PropertyDefinition> $properties
+     * @param ClassName                      $className
+     * @param string                         $source
+     * @param array<array<ClassName>>|null   $usedClasses
+     * @param array<MethodDefinition>|null   $methods
+     * @param array<PropertyDefinition>|null $properties
+     * @param string|null                    $path
+     * @param integer|null                   $lineNumber
      */
     public function __construct(
         ClassName $className,
-        array $usedClasses = array(),
-        array $methods = array(),
-        array $properties = array()
+        $source,
+        array $usedClasses = null,
+        array $methods = null,
+        array $properties = null,
+        $path = null,
+        $lineNumber = null
     ) {
         $this->typeCheck = TypeCheck::get(__CLASS__, func_get_args());
+        if (null === $usedClasses) {
+            $usedClasses = array();
+        }
+        if (null === $methods) {
+            $methods = array();
+        }
+        if (null === $properties) {
+            $properties = array();
+        }
+        if (null === $lineNumber) {
+            $lineNumber = 0;
+        }
+
         $this->className = $className->toAbsolute();
+        $this->source = $source;
         $this->methods = $methods;
         $this->properties = $properties;
+        $this->path = $path;
+        $this->lineNumber = $lineNumber;
 
         if ($className->hasParent()) {
             $namespaceName = $className->parent();
@@ -55,6 +77,16 @@ class ClassDefinition
         $this->typeCheck->className(func_get_args());
 
         return $this->className;
+    }
+
+    /**
+     * @return string
+     */
+    public function source()
+    {
+        $this->typeCheck->source(func_get_args());
+
+        return $this->source;
     }
 
     /**
@@ -160,6 +192,26 @@ class ClassDefinition
     }
 
     /**
+     * @return string|null
+     */
+    public function path()
+    {
+        $this->typeCheck->path(func_get_args());
+
+        return $this->path;
+    }
+
+    /**
+     * @return integer
+     */
+    public function lineNumber()
+    {
+        $this->typeCheck->lineNumber(func_get_args());
+
+        return $this->lineNumber;
+    }
+
+    /**
      * @return ClassNameResolver
      */
     public function classNameResolver()
@@ -180,8 +232,11 @@ class ClassDefinition
     }
 
     private $className;
-    private $classNameResolver;
+    private $source;
     private $methods;
     private $properties;
+    private $path;
+    private $lineNumber;
+    private $classNameResolver;
     private $typeCheck;
 }
