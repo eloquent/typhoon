@@ -39,6 +39,7 @@ class IssueRendererTest extends MultiGenerationTestCase
         );
         $this->_classDefinition = new ClassDefinition(
             $this->_className,
+            'class foo {}',
             array(),
             array($this->_methodDefinition)
         );

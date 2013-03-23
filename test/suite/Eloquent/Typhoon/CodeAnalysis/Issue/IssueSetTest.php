@@ -26,10 +26,22 @@ class IssueSetTest extends MultiGenerationTestCase
         $this->_classNameB = ClassName::fromString('\B');
         $this->_classNameC = ClassName::fromString('\C');
         $this->_classNameD = ClassName::fromString('\D');
-        $this->_classDefinitionA = new ClassDefinition($this->_classNameA);
-        $this->_classDefinitionB = new ClassDefinition($this->_classNameB);
-        $this->_classDefinitionC = new ClassDefinition($this->_classNameC);
-        $this->_classDefinitionD = new ClassDefinition($this->_classNameD);
+        $this->_classDefinitionA = new ClassDefinition(
+            $this->_classNameA,
+            'class A {}'
+        );
+        $this->_classDefinitionB = new ClassDefinition(
+            $this->_classNameB,
+            'class B {}'
+        );
+        $this->_classDefinitionC = new ClassDefinition(
+            $this->_classNameC,
+            'class C {}'
+        );
+        $this->_classDefinitionD = new ClassDefinition(
+            $this->_classNameD,
+            'class D {}'
+        );
         $this->_methodDefinitionA = $this->methodDefinitionFixture('A');
         $this->_methodDefinitionB = $this->methodDefinitionFixture('B');
 

@@ -134,7 +134,10 @@ class ValidatorClassGeneratorTest extends MultiGenerationTestCase
     public function testGenerateFromSource()
     {
         $configuration = new RuntimeConfiguration;
-        $classDefinition = new ClassDefinition(ClassName::fromString('\Foo'));
+        $classDefinition = new ClassDefinition(
+            ClassName::fromString('\Foo'),
+            'class Foo {}'
+        );
         $generatedClassName = ClassName::fromString('\qux');
         Phake::when($this->_classMapper)
             ->classBySource(Phake::anyParameters())

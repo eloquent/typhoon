@@ -71,7 +71,10 @@ class CheckCommandTest extends MultiGenerationTestCase
             ->thenReturn(null)
         ;
 
-        $this->_classDefinition = new ClassDefinition(ClassName::fromString('A'));
+        $this->_classDefinition = new ClassDefinition(
+            ClassName::fromString('\A'),
+            'class A {}'
+        );
         $this->_methodDefinition = Phake::mock(
             'Eloquent\Typhoon\ClassMapper\MethodDefinition'
         );
@@ -341,9 +344,18 @@ class CheckCommandTest extends MultiGenerationTestCase
     {
         $formatter = Phake::mock('Symfony\Component\Console\Helper\FormatterHelper');
         $helperSet = Phake::mock('Symfony\Component\Console\Helper\HelperSet');
-        $classDefinitionA = new ClassDefinition(ClassName::fromString('\A'));
-        $classDefinitionB = new ClassDefinition(ClassName::fromString('\B'));
-        $classDefinitionC = new ClassDefinition(ClassName::fromString('\C'));
+        $classDefinitionA = new ClassDefinition(
+            ClassName::fromString('\A'),
+            'class A {}'
+        );
+        $classDefinitionB = new ClassDefinition(
+            ClassName::fromString('\B'),
+            'class B {}'
+        );
+        $classDefinitionC = new ClassDefinition(
+            ClassName::fromString('\C'),
+            'class C {}'
+        );
         $classIssueA = new MissingConstructorCall($classDefinitionA);
         $classIssueB = new MissingProperty($classDefinitionB);
         $methodIssueA = new InadmissibleMethodCall($classDefinitionA, $this->methodDefinitionFixture('A'));

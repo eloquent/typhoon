@@ -34,7 +34,10 @@ class ParameterListMergeExceptionTest extends MultiGenerationTestCase
     public function testExceptionClassRelated()
     {
         $issue = new MissingConstructorCall(
-            new ClassDefinition(ClassName::fromString('\foo'))
+            new ClassDefinition(
+                ClassName::fromString('\foo'),
+                'class foo {}'
+            )
         );
         $previous = Phake::mock('Exception');
         $exception = new ParameterListMergeException(
@@ -54,7 +57,10 @@ class ParameterListMergeExceptionTest extends MultiGenerationTestCase
     public function testExceptionMethodRelated()
     {
         $issue = new MissingMethodCall(
-            new ClassDefinition(ClassName::fromString('\foo')),
+            new ClassDefinition(
+                ClassName::fromString('\foo'),
+                'class foo {}'
+            ),
             $this->methodDefinitionFixture('bar')
         );
         $previous = Phake::mock('Exception');
