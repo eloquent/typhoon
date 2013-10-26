@@ -53,6 +53,14 @@ abstract class AbstractClassRelatedIssue implements ClassRelatedIssueInterface
         return $this->severity;
     }
 
+    /**
+     * @return string|null
+     */
+    public function path()
+    {
+        return $this->classDefinition()->lineNumber();
+    }
+
     private $classDefinition;
     private $severity;
     private $typeCheck;

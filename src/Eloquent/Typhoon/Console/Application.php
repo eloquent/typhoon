@@ -32,8 +32,9 @@ class Application extends SymfonyApplication
 
         parent::__construct('Typhoon', '0.9.0');
 
-        $this->add(new Command\GenerateCommand);
         $this->add(new Command\CheckCommand);
+        // $this->add(new Command\FixCommand);
+        $this->add(new Command\GenerateCommand);
     }
 
     /**
